@@ -212,6 +212,23 @@ namespace ForgottenKingdom.Tests
         }
 
         [Test]
+        public void AttackingOnTheWayUpDoesNotCutTheJump()
+        {
+            var velocity = _logic.Step(Vector2.zero, true, new MovementInput(0f, true, true), StepTime);
+            Assume.That(velocity.y, Is.GreaterThan(10f));
+            // The swing starts one step into the rise, with jump still held.
+            velocity = _logic.Step(velocity, false, new MovementInput(0f, false, true), StepTime,
+                LocomotionMode.Restricted, 0.3f);
+            Assert.That(velocity.y, Is.GreaterThan(_settings.ReleasedJumpSpeed + 4f),
+                "An attack in the air must not act like letting go of jump.");
+
+            _logic.Reset();
+            var pressed = _logic.Step(Vector2.zero, true, new MovementInput(0f, true, true), StepTime,
+                LocomotionMode.Restricted, 0.3f);
+            Assert.That(pressed.y, Is.Zero, "A press during an attack is still not a jump.");
+        }
+
+        [Test]
         public void ReleasingAJumpSlowsItOverTwoStepsRatherThanCuttingIt()
         {
             var velocity = _logic.Step(Vector2.zero, true,

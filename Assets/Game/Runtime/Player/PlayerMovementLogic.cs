@@ -156,8 +156,10 @@ namespace ForgottenKingdom
             _coyoteRemaining = IsGrounded ? _settings.CoyoteTime : _coyoteRemaining - deltaTime;
             if (mode == LocomotionMode.Restricted)
             {
-                // Keep steering, drop the jump: an attack must not be turned into a leap.
-                input = new MovementInput(input.Horizontal);
+                // Keep steering, drop the press: an attack must not be turned into a leap. The
+                // hold stays, so swinging on the way up does not cut the jump short — in
+                // Hollow Knight an attack in the air never shortens the rise.
+                input = new MovementInput(input.Horizontal, isJumpHeld: input.IsJumpHeld);
             }
             else if (mode != LocomotionMode.Normal)
             {
