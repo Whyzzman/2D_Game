@@ -52,8 +52,34 @@ namespace ForgottenKingdom.EditorTools
         private static System.Collections.Generic.Dictionary<string, Sprite> _tomb;
         private static System.Collections.Generic.Dictionary<string, Sprite[]> _vfx;
 
+        /// <summary>
+        /// Regenerates art, audio, data and prefabs. The scenes are the source of truth for the
+        /// level since 2026-09-26 and are left as they are — hand edits in the Editor survive —
+        /// unless a scene file is missing, in which case it is built from scratch.
+        /// </summary>
         [MenuItem("Forgotten Kingdom/Rebuild MVP Content")]
-        public static void Build()
+        public static void Build() => BuildContent(rebuildScenes: false);
+
+        /// <summary>
+        /// Everything <see cref="Build"/> does, then TombTrial and MainMenu rebuilt from scratch
+        /// with <c>NewScene</c>. This throws away every hand edit made to those scenes; it is for
+        /// recovering a broken scene, not for everyday content work. Asks first in the Editor;
+        /// in batch mode, calling it is the confirmation.
+        /// </summary>
+        [MenuItem("Forgotten Kingdom/Rebuild Scenes From Scratch (discards scene edits)")]
+        public static void BuildWithScenes()
+        {
+            if (!Application.isBatchMode && !EditorUtility.DisplayDialog("Rebuild scenes",
+                    "TombTrial and MainMenu will be rebuilt from the generator. Every hand edit "
+                    + "made to them in the Editor will be lost.", "Rebuild", "Cancel"))
+            {
+                return;
+            }
+
+            BuildContent(rebuildScenes: true);
+        }
+
+        private static void BuildContent(bool rebuildScenes)
         {
             _sprite = AssetDatabase.LoadAssetAtPath<Sprite>(SpritePath);
             _material = AssetDatabase.LoadAssetAtPath<Material>(MaterialPath);
@@ -120,12 +146,24 @@ namespace ForgottenKingdom.EditorTools
             BuildPickupPrefab();
             AssetDatabase.SaveAssets();
 
-            BuildScene(playerPrefab, zombiePrefab, guardPrefab, bossPrefab, checkpointPrefab,
-                dummyPrefab, attackerPrefab, forest);
-            AssetDatabase.SaveAssets();
+            if (rebuildScenes || !File.Exists(ScenePath))
+            {
+                BuildScene(playerPrefab, zombiePrefab, guardPrefab, bossPrefab, checkpointPrefab,
+                    dummyPrefab, attackerPrefab, forest);
+                AssetDatabase.SaveAssets();
+            }
+            else
+            {
+                Debug.Log($"Forgotten Kingdom: {ScenePath} kept as edited; "
+                    + "use BuildWithScenes to rebuild it from scratch.");
+            }
+
             // After the game scene, because the menu is placed in front of it in the build.
-            BuildMainMenuScene();
-            AssetDatabase.SaveAssets();
+            if (rebuildScenes || !File.Exists(MainMenuScenePath))
+            {
+                BuildMainMenuScene();
+                AssetDatabase.SaveAssets();
+            }
             AssetDatabase.Refresh();
             Debug.Log("Forgotten Kingdom: MVP content rebuilt; "
                 + $"{PlaceholderImport.FinalArtUsed} file(s) taken from final art.");
