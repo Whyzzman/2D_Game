@@ -98,8 +98,16 @@ namespace ForgottenKingdom
             return GameProgressData.CreateNew();
         }
 
+        /// <summary>
+        /// Bumped by every <see cref="Delete"/>. A save scheduled for later remembers the value it
+        /// was scheduled under and is dropped if a delete came in between — a new game must not
+        /// be undone by the old session's debounced write landing a moment afterwards.
+        /// </summary>
+        public static int Generation { get; private set; }
+
         public static void Delete()
         {
+            Generation++;
             TryDelete(FilePath);
             TryDelete(BackupPath);
             TryDelete(TempPath);

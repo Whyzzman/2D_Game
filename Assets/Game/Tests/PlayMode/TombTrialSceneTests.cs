@@ -40,6 +40,23 @@ namespace ForgottenKingdom.Tests
             Time.timeScale = 1f;
         }
 
+        [UnityTest]
+        public IEnumerator ADebouncedSaveDoesNotBringBackADeletedFile()
+        {
+            // The old session's debounced write used to land after a delete: a new game started
+            // with a boss already beaten, and the arena test after the boss test failed by timing.
+            _progress.MarkBossDefeated(_boss.BossId);
+            _progress.Save();
+            SaveSystem.Delete();
+            var end = Time.realtimeSinceStartup + 0.6f;
+            while (Time.realtimeSinceStartup < end)
+            {
+                yield return null;
+            }
+
+            Assert.That(SaveSystem.Exists, Is.False, "A save asked for before the delete came back.");
+        }
+
         [Test]
         public void EveryMovingBodyIsInterpolated()
         {

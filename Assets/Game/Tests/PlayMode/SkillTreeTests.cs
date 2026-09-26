@@ -716,16 +716,28 @@ namespace ForgottenKingdom.Tests
         /// <summary>
         /// Sends one swing's worth of damage through the real pipeline and reports what landed.
         /// The target is restored afterwards, so a measurement never changes the fight.
+        ///
+        /// A critical is rolled on every swing, so once a skill grants crit chance one reading can
+        /// come out 1.5 times the other by luck — which is exactly how PredatorOnlyPaysFromBehind
+        /// failed now and then (a frontal 25.5 against 18.7 from behind: 17 × 1.5 and 17 × 1.1).
+        /// The smallest of many swings is the hit without a critical, which is what the damage
+        /// tests compare.
         /// </summary>
         private float MeasureHit(EnemyController target, SwingKind kind)
         {
             var offense = _player.GetComponent<PlayerOffense>();
             var weapon = _combat.Weapon;
             var attack = kind == SwingKind.Heavy ? weapon.HeavyAttack : weapon.LightAttack(0);
-            offense.BeginSwing(kind);
-            var built = attack.BuildWeaponDamage(weapon, _stats.ActiveWeaponAttack,
-                _player.gameObject, null, 1);
-            return offense.Augment(built, target.Actor).Amount;
+            var smallest = float.MaxValue;
+            for (var i = 0; i < 30; i++)
+            {
+                offense.BeginSwing(kind);
+                var built = attack.BuildWeaponDamage(weapon, _stats.ActiveWeaponAttack,
+                    _player.gameObject, null, 1);
+                smallest = Mathf.Min(smallest, offense.Augment(built, target.Actor).Amount);
+            }
+
+            return smallest;
         }
 
         private float MeasureStagger(EnemyController target, SwingKind kind)

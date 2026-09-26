@@ -43,6 +43,7 @@ namespace ForgottenKingdom
         private readonly HashSet<string> _unlockedShortcuts = new HashSet<string>();
         private readonly HashSet<string> _seenZoneIntros = new HashSet<string>();
         private Coroutine _pendingSave;
+        private int _pendingGeneration;
 
         /// <summary>Raised after progression has been replaced, so the world can reapply it.</summary>
         public event Action Loaded;
@@ -440,7 +441,11 @@ namespace ForgottenKingdom
                 return;
             }
 
-            _pendingSave ??= StartCoroutine(SaveSoon());
+            if (_pendingSave == null)
+            {
+                _pendingGeneration = SaveSystem.Generation;
+                _pendingSave = StartCoroutine(SaveSoon());
+            }
         }
 
         /// <summary>Writes immediately; for quitting and for anything that must not be lost.</summary>
@@ -456,6 +461,14 @@ namespace ForgottenKingdom
         {
             yield return new WaitForSecondsRealtime(_saveDebounce);
             _pendingSave = null;
+            // The file was deleted after this save was asked for: writing now would bring the
+            // deleted progress back. Loading old data over a fresh start is worse than a lost
+            // fraction of a second of progress.
+            if (_pendingGeneration != SaveSystem.Generation)
+            {
+                yield break;
+            }
+
             SaveNow();
         }
 
