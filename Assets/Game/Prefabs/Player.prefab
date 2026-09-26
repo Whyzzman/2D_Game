@@ -871,7 +871,7 @@ MonoBehaviour:
     _dashSpeed: 16
     _dashDuration: 0.18
     _cooldown: 0.35
-    _staminaCost: 20
+    _staminaCost: 0
     _invincibilityDelay: 0.02
     _invincibilityDuration: 0.14
     _exitSpeedFraction: 0.35
@@ -946,7 +946,7 @@ MonoBehaviour:
   _body: {fileID: 3281479909745918718}
   _knockbackLift: 1.2
   _knockbackResistance: 0
-  _hitInvulnerability: 0.12
+  _hitInvulnerability: 1
 --- !u!114 &3758665319008867847
 MonoBehaviour:
   m_ObjectHideFlags: 0

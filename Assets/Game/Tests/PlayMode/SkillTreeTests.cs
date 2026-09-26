@@ -289,21 +289,21 @@ namespace ForgottenKingdom.Tests
         }
 
         [UnityTest]
-        public IEnumerator EfficientMovementMakesTheDashCheaper()
+        public IEnumerator EfficientMovementMakesTheWallRunCheaper()
         {
-            yield return Land();
-            var plain = MeasureDashCost();
+            // The dash became free (item 37), so "Ощадливий рух" now pays for the wall run.
+            var wall = _player.GetComponent<WallMovement>();
+            var plain = wall.RunStaminaPerSecond;
             Assert.That(plain, Is.GreaterThan(0f));
-            yield return new WaitForSeconds(1f);
 
             Learn("hunter_training");
             Learn("hunter_quickstep");
             Learn("hunter_efficiency");
             yield return new WaitForFixedUpdate();
 
-            var trained = MeasureDashCost();
-            Assert.That(trained, Is.LessThan(plain));
-            Assert.That(trained, Is.GreaterThan(0f), "A free dash would end stamina as a cost.");
+            Assert.That(wall.RunStaminaPerSecond, Is.EqualTo(plain * 0.85f).Within(0.01f));
+            yield return Land();
+            Assert.That(MeasureDashCost(), Is.Zero, "And the dash stays free.");
         }
 
         [UnityTest]

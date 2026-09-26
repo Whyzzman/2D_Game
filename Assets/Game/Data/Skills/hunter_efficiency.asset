@@ -14,8 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.SkillDefinition
   _skillId: hunter_efficiency
   _displayName: "\u041E\u0449\u0430\u0434\u043B\u0438\u0432\u0438\u0439 \u0440\u0443\u0445"
-  _description: "\u0420\u0438\u0432\u043E\u043A \u043A\u043E\u0448\u0442\u0443\u0454
-    \u043C\u0435\u043D\u0448\u0435 \u0432\u0438\u0442\u0440\u0438\u0432\u0430\u043B\u043E\u0441\u0442\u0456."
+  _description: "Біг по стіні коштує менше витривалості."
   _branch: 1
   _type: 0
   _cost: 1
@@ -24,7 +23,7 @@ MonoBehaviour:
   _prerequisites:
   - hunter_quickstep
   _effects:
-  - _type: 9
+  - _type: 30
     _valuePerRank: -0.15
   _active:
     _attack:

@@ -18,10 +18,19 @@ namespace ForgottenKingdom
         private float _runUsed;
         private float _jumpDirection;
         private Stamina _stamina;
+        private PlayerSkills _skills;
         public WallMovementState State { get; private set; }
         public event System.Action<WallMovementState> StateChanged;
 
-        private void Awake() { _stamina = GetComponent<Stamina>(); }
+        private void Awake()
+        {
+            _stamina = GetComponent<Stamina>();
+            _skills = FindAnyObjectByType<PlayerSkills>();
+        }
+
+        /// <summary>What a second on the wall costs now, after "Ощадливий рух".</summary>
+        public float RunStaminaPerSecond => _runStaminaPerSecond
+            * (_skills != null ? _skills.Multiplier(SkillEffectType.WallRunStaminaCost) : 1f);
 
         public Vector2 Step(Vector2 velocity, MovementInput input, int wallDirection,
             bool grounded, bool allowed, float deltaTime)
@@ -48,7 +57,7 @@ namespace ForgottenKingdom
                     }
                     // Holding jump against the wall runs up it; a fresh press above leaps off.
                     else if (input.IsJumpHeld && _runUsed < _runDuration
-                        && _stamina != null && _stamina.TrySpend(_runStaminaPerSecond * deltaTime))
+                        && _stamina != null && _stamina.TrySpend(RunStaminaPerSecond * deltaTime))
                     {
                         _runUsed += deltaTime;
                         velocity = new Vector2(0f, _runSpeed);

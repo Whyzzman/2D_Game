@@ -129,7 +129,8 @@ namespace ForgottenKingdom.EditorTools
             BuildSpellProjectilePrefab();
             var playerPrefab = BuildPlayerPrefab();
             var zombiePrefab = BuildEnemyPrefab("ZombieSoldier", zombie, false,
-                new Color(0.45f, 0.62f, 0.35f), 100f, 50f, zombieDrops,
+                // 70: about four sword swings, a Hollow Knight husk's worth (item 37).
+                new Color(0.45f, 0.62f, 0.35f), 70f, 50f, zombieDrops,
                 // Dry and long dead: fire finds it easily, cold barely touches it.
                 Resist(physical: 0f, fire: -0.25f, frost: 0.15f, magic: 0f));
             var guardPrefab = BuildEnemyPrefab("ShieldGuard", guard, true,
@@ -340,9 +341,9 @@ namespace ForgottenKingdom.EditorTools
                     1, 1, 1, new Vector2Int(1, 0), new[] { "hunter_training" },
                     new[] { new SkillEffect(SkillEffectType.DashCooldown, -0.15f) }),
                 BuildSkill("hunter_efficiency", "Ощадливий рух", SkillBranch.Hunter,
-                    "Ривок коштує менше витривалості.",
+                    "Біг по стіні коштує менше витривалості.",
                     1, 1, 1, new Vector2Int(2, 0), new[] { "hunter_quickstep" },
-                    new[] { new SkillEffect(SkillEffectType.DashStaminaCost, -0.15f) }),
+                    new[] { new SkillEffect(SkillEffectType.WallRunStaminaCost, -0.15f) }),
                 BuildSkill("hunter_momentum", "Інерція", SkillBranch.Hunter,
                     "Ухилившись від справжнього удару, ви ненадовго б'єте сильніше.",
                     1, 1, 1, new Vector2Int(2, 1), new[] { "hunter_quickstep" },
@@ -763,7 +764,7 @@ namespace ForgottenKingdom.EditorTools
                 ""_lightCombo"": [
                     {""_displayName"":""Light 1"",""_animationState"":""LightAttack1"",""_damage"":0,
                      ""_damageMultiplier"":0.75,
-                     ""_damageType"":0,""_staminaCost"":10,""_staggerDamage"":10,
+                     ""_damageType"":0,""_staminaCost"":0,""_staggerDamage"":10,
                      ""_guardDamage"":5,""_knockback"":3,
                      ""_hitStop"":0.03,""_isUnblockable"":false,
                      ""_windup"":0.10,""_activeTime"":0.07,""_recovery"":0.18,
@@ -772,7 +773,7 @@ namespace ForgottenKingdom.EditorTools
                      ""_movementScale"":0.3},
                     {""_displayName"":""Light 2"",""_animationState"":""LightAttack2"",""_damage"":0,
                      ""_damageMultiplier"":0.9,
-                     ""_damageType"":0,""_staminaCost"":10,""_staggerDamage"":12,
+                     ""_damageType"":0,""_staminaCost"":0,""_staggerDamage"":12,
                      ""_guardDamage"":7,""_knockback"":4,
                      ""_hitStop"":0.04,""_isUnblockable"":false,
                      ""_windup"":0.09,""_activeTime"":0.07,""_recovery"":0.20,
@@ -781,7 +782,7 @@ namespace ForgottenKingdom.EditorTools
                      ""_movementScale"":0.2},
                     {""_displayName"":""Light 3"",""_animationState"":""LightAttack3"",""_damage"":0,
                      ""_damageMultiplier"":1.25,
-                     ""_damageType"":0,""_staminaCost"":15,""_staggerDamage"":22,
+                     ""_damageType"":0,""_staminaCost"":0,""_staggerDamage"":22,
                      ""_guardDamage"":14,""_knockback"":7,
                      ""_hitStop"":0.06,""_isUnblockable"":false,
                      ""_windup"":0.15,""_activeTime"":0.09,""_recovery"":0.32,
@@ -829,7 +830,7 @@ namespace ForgottenKingdom.EditorTools
                 ""_lightCombo"": [
                     {""_displayName"":""Wide Swing"",""_animationState"":""GreatLight1"",""_damage"":0,
                      ""_damageMultiplier"":0.85,
-                     ""_damageType"":0,""_staminaCost"":10,""_staggerDamage"":20,
+                     ""_damageType"":0,""_staminaCost"":0,""_staggerDamage"":20,
                      ""_guardDamage"":10,""_knockback"":5,
                      ""_hitStop"":0.05,""_isUnblockable"":false,
                      ""_windup"":0.24,""_activeTime"":0.10,""_recovery"":0.30,
@@ -838,7 +839,7 @@ namespace ForgottenKingdom.EditorTools
                      ""_movementScale"":0.2},
                     {""_displayName"":""Reverse Swing"",""_animationState"":""GreatLight2"",""_damage"":0,
                      ""_damageMultiplier"":0.95,
-                     ""_damageType"":0,""_staminaCost"":10,""_staggerDamage"":24,
+                     ""_damageType"":0,""_staminaCost"":0,""_staggerDamage"":24,
                      ""_guardDamage"":12,""_knockback"":6,
                      ""_hitStop"":0.05,""_isUnblockable"":false,
                      ""_windup"":0.22,""_activeTime"":0.10,""_recovery"":0.34,
@@ -847,7 +848,7 @@ namespace ForgottenKingdom.EditorTools
                      ""_movementScale"":0.15},
                     {""_displayName"":""Overhead Finisher"",""_animationState"":""GreatLight3"",
                      ""_damage"":0,""_damageMultiplier"":1.35,
-                     ""_damageType"":0,""_staminaCost"":15,""_staggerDamage"":40,
+                     ""_damageType"":0,""_staminaCost"":0,""_staggerDamage"":40,
                      ""_guardDamage"":26,""_knockback"":10,
                      ""_hitStop"":0.09,""_isUnblockable"":false,
                      ""_windup"":0.34,""_activeTime"":0.12,""_recovery"":0.52,
@@ -1031,6 +1032,9 @@ namespace ForgottenKingdom.EditorTools
             var actor = Ensure<CombatActor>(root);
             SetEnum(actor, "_faction", (int)Faction.Player);
             SetFloat(actor, "_knockbackLift", 1.2f);
+            // Hollow Knight's mercy window (item 37): about a second after a hit, so a group
+            // cannot take the player apart in one volley.
+            SetFloat(actor, "_hitInvulnerability", 1f);
             Ensure<Hurtbox>(root);
 
             var hitbox = Ensure<Hitbox>(root);
@@ -1073,7 +1077,7 @@ namespace ForgottenKingdom.EditorTools
             dash.FindProperty("_dashSettings._dashSpeed").floatValue = 16f;
             dash.FindProperty("_dashSettings._dashDuration").floatValue = 0.18f;
             dash.FindProperty("_dashSettings._cooldown").floatValue = 0.35f;
-            dash.FindProperty("_dashSettings._staminaCost").floatValue = 20f;
+            dash.FindProperty("_dashSettings._staminaCost").floatValue = 0f;
             dash.FindProperty("_dashSettings._invincibilityDelay").floatValue = 0.02f;
             dash.FindProperty("_dashSettings._invincibilityDuration").floatValue = 0.14f;
             dash.FindProperty("_dashSettings._airDashes").intValue = 1;

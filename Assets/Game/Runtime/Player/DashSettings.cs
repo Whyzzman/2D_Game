@@ -13,7 +13,8 @@ namespace ForgottenKingdom
         [SerializeField, Min(0f)] private float _dashSpeed = 16f;
         [SerializeField, Min(0.01f)] private float _dashDuration = 0.18f;
         [SerializeField, Min(0f)] private float _cooldown = 0.35f;
-        [SerializeField, Min(0f)] private float _staminaCost = 20f;
+        [Tooltip("Free since 2026-09-26, as in Hollow Knight (item 37).")]
+        [SerializeField, Min(0f)] private float _staminaCost = 0f;
         [Tooltip("Delay from the dash start before the invincibility window opens.")]
         [SerializeField, Min(0f)] private float _invincibilityDelay = 0.02f;
         [Tooltip("How long the invincibility lasts; shorter than the dash, so its end is punishable.")]

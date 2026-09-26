@@ -74,7 +74,7 @@ namespace ForgottenKingdom.Tests
         }
 
         [UnityTest]
-        public IEnumerator TheFirstLightAttackDamagesTheDummyAndSpendsStamina()
+        public IEnumerator TheFirstLightAttackDamagesTheDummyAndCostsNoStamina()
         {
             var stamina = _stamina.Current;
             yield return PressLightAttack();
@@ -82,7 +82,8 @@ namespace ForgottenKingdom.Tests
 
             Assert.That(_dummyHealth.Current,
                 Is.EqualTo(DummyStartHealth - ExpectedLight(0)).Within(0.01f));
-            Assert.That(stamina - _stamina.Current, Is.EqualTo(10f).Within(0.01f));
+            // As in Hollow Knight, swinging the sword is free (item 37, 2026-09-26).
+            Assert.That(_stamina.Current, Is.EqualTo(stamina).Within(0.01f));
             Assert.That(_dummy.HitCount, Is.EqualTo(1));
         }
 
@@ -151,15 +152,18 @@ namespace ForgottenKingdom.Tests
         }
 
         [UnityTest]
-        public IEnumerator AnAttackIsRefusedWhenStaminaIsTooLow()
+        public IEnumerator ALightAttackNeedsNoStaminaButAHeavyOneDoes()
         {
             _stamina.Drain(_stamina.Current - 4f);
             yield return Neutral(2);
 
+            yield return PressHeavyAttack();
+            yield return WaitForSecondsRealtime(0.6f);
+            Assert.That(_dummy.HitCount, Is.Zero, "A heavy blow still needs its stamina.");
+
             yield return PressLightAttack();
             yield return WaitForSecondsRealtime(0.4f);
-            Assert.That(_dummy.HitCount, Is.Zero, "An attack must not start without stamina.");
-            Assert.That(_player.Action, Is.EqualTo(PlayerAction.None));
+            Assert.That(_dummy.HitCount, Is.EqualTo(1), "The sword swings on an empty bar.");
         }
 
         [UnityTest]

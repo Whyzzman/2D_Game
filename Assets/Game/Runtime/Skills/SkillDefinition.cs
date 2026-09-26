@@ -77,7 +77,12 @@ namespace ForgottenKingdom
         BloodBuildup,
         ShadowCost,
         StatusTargetDamage,
-        CuttingShadow
+        CuttingShadow,
+        /// <summary>
+        /// Stamina spent running up a wall. Added last so saved skill data keeps its numbers.
+        /// Took over "Ощадливий рух" when the dash became free (item 37, 2026-09-26).
+        /// </summary>
+        WallRunStaminaCost
     }
 
     /// <summary>One line of "this skill changes that, by this much per rank".</summary>
@@ -138,6 +143,7 @@ namespace ForgottenKingdom
                 case SkillEffectType.StunnedDamage: return "Урон по оглушених";
                 case SkillEffectType.BackAttackDamage: return "Урон зі спини";
                 case SkillEffectType.DashStaminaCost: return "Вартість ривка";
+                case SkillEffectType.WallRunStaminaCost: return "Вартість бігу по стіні";
                 case SkillEffectType.DashCooldown: return "Відкат ривка";
                 case SkillEffectType.CritChance: return "Шанс критичного удару";
                 case SkillEffectType.DexterityWeaponDamage: return "Урон легкою зброєю";

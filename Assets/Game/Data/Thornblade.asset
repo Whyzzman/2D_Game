@@ -35,7 +35,7 @@ MonoBehaviour:
     _damage: 0
     _damageMultiplier: 0.78
     _damageType: 0
-    _staminaCost: 9
+    _staminaCost: 0
     _staggerDamage: 8
     _knockback: 3
     _guardDamage: 4
@@ -58,7 +58,7 @@ MonoBehaviour:
     _damage: 0
     _damageMultiplier: 0.92
     _damageType: 0
-    _staminaCost: 9
+    _staminaCost: 0
     _staggerDamage: 10
     _knockback: 4
     _guardDamage: 6
@@ -81,7 +81,7 @@ MonoBehaviour:
     _damage: 0
     _damageMultiplier: 1.2
     _damageType: 0
-    _staminaCost: 13
+    _staminaCost: 0
     _staggerDamage: 18
     _knockback: 6
     _guardDamage: 12

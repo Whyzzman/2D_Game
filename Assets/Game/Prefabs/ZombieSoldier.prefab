@@ -1216,7 +1216,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c04082a8658e5ac48b00534d90e23552, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.Health
-  _maxHealth: 100
+  _maxHealth: 70
 --- !u!114 &336602293317406695
 MonoBehaviour:
   m_ObjectHideFlags: 0

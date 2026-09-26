@@ -84,7 +84,7 @@ namespace ForgottenKingdom.Tests
         }
 
         [UnityTest]
-        public IEnumerator DashIsRefusedWithoutStaminaAndDuringItsCooldown()
+        public IEnumerator DashIsLimitedByItsCooldownNotByStamina()
         {
             yield return PressDash();
             Assert.That(_motor.IsDashing, Is.True);
@@ -95,8 +95,8 @@ namespace ForgottenKingdom.Tests
             yield return Realtime(0.5f);
             _stamina.Drain(_stamina.Current);
             yield return PressDash();
-            Assert.That(_motor.IsDashing, Is.False, "No stamina, no dash.");
-            Assert.That(_player.Action, Is.EqualTo(PlayerAction.None));
+            // Free since 2026-09-26, as in Hollow Knight: only the cooldown limits it.
+            Assert.That(_motor.IsDashing, Is.True, "The dash needs no stamina.");
         }
 
         [UnityTest]
