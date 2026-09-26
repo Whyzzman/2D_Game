@@ -1,0 +1,7 @@
+{
+  "name": "Game.Editor",
+  "rootNamespace": "ForgottenKingdom.EditorTools",
+  "references": ["Game.Runtime", "Unity.InputSystem", "Unity.RenderPipelines.Universal.Runtime",
+    "Unity.RenderPipelines.Universal.2D.Runtime", "Unity.RenderPipelines.Core.Runtime"],
+  "includePlatforms": ["Editor"]
+}

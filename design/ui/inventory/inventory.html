@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<title>Тінь Забутого Королівства — Спорядження</title>
+<link rel="stylesheet" href="../_shared/ui.css">
+<style>
+  /* Екран інвентаря: вкладки, сітка, деталі. Три колонки, без зайвого. */
+  .screen { position: absolute; inset: 64px 96px; display: flex; flex-direction: column; }
+  .screen__body { flex: 1; display: grid; grid-template-columns: 1fr 430px; gap: var(--s5); min-height: 0; padding: var(--s5); }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(8, 84px);
+    gap: var(--s3);
+    align-content: start;
+    padding-right: var(--s3);
+  }
+  .grid .slot { width: 84px; height: 84px; }
+
+  .detail { display: flex; flex-direction: column; gap: var(--s4); min-height: 0; }
+  .detail__name { font-family: var(--font-display); font-size: var(--fs-lead); color: var(--ink-bright); margin: 0; }
+  .detail__type { font-size: var(--fs-micro); letter-spacing: 0.14em; text-transform: uppercase; }
+  .detail__desc { font-size: var(--fs-small); line-height: 1.5; color: var(--ink-muted); margin: 0; }
+
+  .rar-common    { color: var(--rar-common); }
+  .rar-uncommon  { color: var(--rar-uncommon); }
+  .rar-rare      { color: var(--rar-rare); }
+  .rar-unique    { color: var(--rar-unique); }
+  .rar-legendary { color: var(--rar-legendary); }
+
+  /* Порівняння: поточне ліворуч, обране праворуч, дельта поруч зі значенням. */
+  .compare { display: grid; grid-template-columns: 1fr auto; gap: var(--s2) var(--s4); font-size: var(--fs-small); }
+  .compare__head { font-size: var(--fs-micro); letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold-dim); }
+  .compare__row { display: contents; }
+  .compare__row > span { padding: var(--s1) 0; border-bottom: 1px solid rgba(58,47,37,0.6); }
+  .compare__val { text-align: right; font-variant-numeric: tabular-nums; }
+
+  .requirement { font-size: var(--fs-small); }
+  .requirement--unmet { color: var(--danger); }
+  .requirement--unmet::before { content: "✕ "; }
+  .requirement--met { color: var(--ink-muted); }
+  .requirement--met::before { content: "✓ "; }
+
+  .actions { display: flex; gap: var(--s3); }
+  .footer { display: flex; align-items: center; gap: var(--s5); padding: var(--s3) var(--s5); border-top: 1px solid var(--edge-mid); font-size: var(--fs-small); }
+  .hint { display: flex; align-items: center; gap: var(--s2); color: var(--ink-muted); }
+  .purse { display: flex; align-items: center; gap: var(--s2); color: var(--gold); font-variant-numeric: tabular-nums; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="gameplay-backdrop"></div>
+  <div class="scrim">
+
+    <div class="panel panel--royal screen">
+      <div class="panel__header">
+        <h1 class="panel__title">Спорядження</h1>
+        <div class="row">
+          <span class="purse">
+            <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="7.5" fill="#8a7434" stroke="#c9a14a" stroke-width="1.4"/>
+              <path d="M12 7.5l1.3 2.7 3 .4-2.2 2.1.5 3-2.6-1.4-2.6 1.4.5-3-2.2-2.1 3-.4z" fill="#0f0d0b" opacity="0.5"/>
+            </svg>
+            1 284
+          </span>
+        </div>
+      </div>
+
+      <div class="tabs" style="padding: 0 var(--s5);">
+        <button class="tab is-active">Зброя</button>
+        <button class="tab">Броня</button>
+        <button class="tab">Прикраси</button>
+        <button class="tab">Витратне</button>
+        <button class="tab">Матеріали</button>
+        <button class="tab">Ключові <span class="pip"></span></button>
+      </div>
+
+      <div class="screen__body">
+
+        <!-- сітка предметів -->
+        <div class="grid scroll">
+          <div class="slot slot--selected slot--equipped" data-rarity="common" title="Старий Меч">
+            <svg width="46" height="46" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M14.5 3.5l3 3-8 8-3-3z" fill="#b9c0c9"/>
+              <path d="M6.2 11.8l3 3-1.6 1.6-3-3z" fill="#8a7434"/>
+              <path d="M4 18l2.4-2.4 1.6 1.6L5.6 19.6z" fill="#4a3b2e"/>
+            </svg>
+          </div>
+          <div class="slot" data-rarity="uncommon" title="Залізний Дворучник">
+            <svg width="46" height="46" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M15.5 2.5l4 4-9.5 9.5-4-4z" fill="#9aa2ad"/>
+              <path d="M5.4 12.6l4 4-2 2-4-4z" fill="#8a7434"/>
+              <path d="M2.6 18.4L5 16l2 2-2.4 2.4z" fill="#4a3b2e"/>
+            </svg>
+          </div>
+          <div class="slot slot--empty"></div>
+          <div class="slot slot--empty"></div>
+          <div class="slot slot--empty"></div>
+          <div class="slot slot--empty"></div>
+          <div class="slot slot--empty"></div>
+          <div class="slot slot--empty"></div>
+        </div>
+
+        <!-- деталі предмета -->
+        <div class="detail">
+          <div>
+            <h2 class="detail__name">Залізний Дворучник</h2>
+            <div class="detail__type rar-uncommon">Незвичайний · Дворучна зброя</div>
+          </div>
+
+          <p class="detail__desc">
+            Важкий клинок королівської кузні. Повільний, але кожен удар вибиває
+            супротивника з рівноваги.
+          </p>
+
+          <div>
+            <h3 class="section-label">Порівняння з екіпірованим</h3>
+            <div class="compare">
+              <span class="compare__head">Характеристика</span>
+              <span class="compare__head compare__val">Старий Меч → Дворучник</span>
+
+              <div class="compare__row">
+                <span>Шкода</span>
+                <span class="compare__val">34 → 52 <b class="delta delta--up">+18</b></span>
+              </div>
+              <div class="compare__row">
+                <span>Шкода рівновазі</span>
+                <span class="compare__val">22 → 40 <b class="delta delta--up">+18</b></span>
+              </div>
+              <div class="compare__row">
+                <span>Витривалість за удар</span>
+                <span class="compare__val">14 → 25 <b class="delta delta--down">+11</b></span>
+              </div>
+              <div class="compare__row">
+                <span>Швидкість атаки</span>
+                <span class="compare__val">0.35 с → 0.64 с <b class="delta delta--down">−0.29</b></span>
+              </div>
+              <div class="compare__row">
+                <span>Масштаб. Сила</span>
+                <span class="compare__val">C → B <b class="delta delta--up">вище</b></span>
+              </div>
+              <div class="compare__row">
+                <span>Масштаб. Спритність</span>
+                <span class="compare__val">C → D <b class="delta delta--down">нижче</b></span>
+              </div>
+              <div class="compare__row">
+                <span>Вага</span>
+                <span class="compare__val">4.0 → 9.5 <b class="delta delta--down">+5.5</b></span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h3 class="section-label">Вимоги</h3>
+            <div class="col" style="gap:var(--s1)">
+              <span class="requirement requirement--unmet">Сила 16 — у вас 12</span>
+              <span class="requirement requirement--met">Спритність 8</span>
+            </div>
+          </div>
+
+          <div class="spacer"></div>
+
+          <div class="actions">
+            <button class="btn btn--primary is-disabled" disabled>Екіпірувати</button>
+            <button class="btn">Порівняти з другим слотом</button>
+          </div>
+          <!-- Відмова завжди пояснює себе, а не мовчить. -->
+          <p class="detail__desc" style="color:var(--danger); margin:0">
+            Не вистачає Сили: потрібно 16, у вас 12. Підійде Перстень Могутності (+5 Сили).
+          </p>
+        </div>
+      </div>
+
+      <div class="footer">
+        <span class="hint"><span class="glyph">↔</span> Вкладки</span>
+        <span class="hint"><span class="glyph glyph--pad">A</span> Екіпірувати</span>
+        <span class="hint"><span class="glyph glyph--pad">Y</span> Порівняти</span>
+        <span class="hint"><span class="glyph">Esc</span> Назад</span>
+        <span class="spacer"></span>
+        <span class="muted">Зброя — 2 з 60</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+<div class="viewport-note"></div>
+<script src="../_shared/stage.js"></script>
+</body>
+</html>

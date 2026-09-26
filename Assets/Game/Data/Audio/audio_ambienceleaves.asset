@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f262bfdbc3db1d1448a3cf59cba06016, type: 3}
+  m_Name: audio_ambienceleaves
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.AudioEvent
+  _id: 126
+  _clips:
+  - {fileID: 8300000, guid: daa17b495c6cc1047a9c7c20f93ddbf1, type: 3}
+  - {fileID: 8300000, guid: 001e882d93c41724b89ee446f343ccb3, type: 3}
+  - {fileID: 8300000, guid: 01fb3c29b115bde47831211d87ed287e, type: 3}
+  - {fileID: 8300000, guid: 98d58bfee1be5214a8139f82bcd05a6e, type: 3}
+  _bus: 4
+  _volume: 0.38
+  _volumeJitter: 0.06
+  _pitchJitter: 0.045
+  _spatialBlend: 0.6
+  _maxDistance: 26
+  _maxVoices: 2
+  _minimumInterval: 0
+  _priority: 8
+  _loop: 0

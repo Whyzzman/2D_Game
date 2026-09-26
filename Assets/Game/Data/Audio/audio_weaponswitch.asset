@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f262bfdbc3db1d1448a3cf59cba06016, type: 3}
+  m_Name: audio_weaponswitch
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.AudioEvent
+  _id: 12
+  _clips:
+  - {fileID: 8300000, guid: caf38b7524fe214418062f7b06ee3d48, type: 3}
+  - {fileID: 8300000, guid: c6df02b42bd77d740872b8f92671a887, type: 3}
+  - {fileID: 8300000, guid: 5931a43477b135b40bf8272e3cac9528, type: 3}
+  _bus: 2
+  _volume: 0.45
+  _volumeJitter: 0.06
+  _pitchJitter: 0.045
+  _spatialBlend: 0.55
+  _maxDistance: 26
+  _maxVoices: 1
+  _minimumInterval: 0.25
+  _priority: 30
+  _loop: 0

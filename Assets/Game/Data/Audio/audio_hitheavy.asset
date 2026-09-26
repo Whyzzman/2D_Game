@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f262bfdbc3db1d1448a3cf59cba06016, type: 3}
+  m_Name: audio_hitheavy
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.AudioEvent
+  _id: 15
+  _clips:
+  - {fileID: 8300000, guid: b3680e3fbca128846a3c68230810002e, type: 3}
+  - {fileID: 8300000, guid: c6cd66dedf5b87a4fbb790786082e7ed, type: 3}
+  - {fileID: 8300000, guid: a12bad77a3c421546b00d199decf4549, type: 3}
+  _bus: 2
+  _volume: 0.74
+  _volumeJitter: 0.06
+  _pitchJitter: 0.045
+  _spatialBlend: 0.55
+  _maxDistance: 26
+  _maxVoices: 3
+  _minimumInterval: 0
+  _priority: 65
+  _loop: 0

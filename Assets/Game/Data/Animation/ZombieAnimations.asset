@@ -1,0 +1,141 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 649169c22105a06499c9bc0695fd8d1d, type: 3}
+  m_Name: ZombieAnimations
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.EnemyAnimationSet
+  _clips:
+  - state: 1
+    clip:
+      _clipName: enemy_zombie_idle
+      _frames:
+      - {fileID: 21300000, guid: 3408269090e1cc54d9c51aedf6bf6379, type: 3}
+      - {fileID: 21300000, guid: 945872ed12ef0004da29e0564bed208a, type: 3}
+      - {fileID: 21300000, guid: 60025d6afb3f89d4295d65cf5f47914b, type: 3}
+      - {fileID: 21300000, guid: 82af81e0000a15a46a3d38c17453837b, type: 3}
+      - {fileID: 21300000, guid: 1200de836615a3e4bb8ff2914b6da56e, type: 3}
+      - {fileID: 21300000, guid: 89e4ff20b7341574380c3c5c221e68fe, type: 3}
+      _framesPerSecond: 8
+      _isLooping: 1
+  - state: 2
+    clip:
+      _clipName: enemy_zombie_patrol
+      _frames:
+      - {fileID: 21300000, guid: 7a0a65dc0f09ed8478b92b971e652170, type: 3}
+      - {fileID: 21300000, guid: bbffb9175bfb2da4c92edcbe7b884dad, type: 3}
+      - {fileID: 21300000, guid: 31fc52f1e497ad5468c937d2b8280098, type: 3}
+      - {fileID: 21300000, guid: 80c724d7fd5222f4887a0dd7dc6700a1, type: 3}
+      - {fileID: 21300000, guid: 283320357a49e474a9c149c0488432d9, type: 3}
+      - {fileID: 21300000, guid: 9b88e2318d3f87e4086b6e296613361f, type: 3}
+      - {fileID: 21300000, guid: 91a660678ed38d8479b7afed57d8a37a, type: 3}
+      - {fileID: 21300000, guid: 513fd9464d6d5184483050f39ff9344f, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 1
+  - state: 3
+    clip:
+      _clipName: enemy_zombie_alert
+      _frames:
+      - {fileID: 21300000, guid: 7f5b860b3086ba048b7de05f3ef535be, type: 3}
+      - {fileID: 21300000, guid: 84983bdf1fb0e5240914042bcabc8174, type: 3}
+      - {fileID: 21300000, guid: ddfaaaa26b865d843858553fda08109e, type: 3}
+      - {fileID: 21300000, guid: ea23c8f4bceb6dd45b5c1744fe805aaa, type: 3}
+      - {fileID: 21300000, guid: 6530ef91e68dfd94787a253eb90c23ef, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 0
+  - state: 4
+    clip:
+      _clipName: enemy_zombie_chase
+      _frames:
+      - {fileID: 21300000, guid: 66343de19b02c7b489a472878a725826, type: 3}
+      - {fileID: 21300000, guid: a6e213c85d4a1bc4686ac5b8ce5bd071, type: 3}
+      - {fileID: 21300000, guid: 79f799558bb13a14e84ed30f68912394, type: 3}
+      - {fileID: 21300000, guid: 830704c188e9fe44fa98ae6263d531fc, type: 3}
+      - {fileID: 21300000, guid: 86eb2b1d055d16b4881a7d0855f176ad, type: 3}
+      - {fileID: 21300000, guid: 23a58a3f97c50ae45a83e5dc755b8c1b, type: 3}
+      - {fileID: 21300000, guid: 413a6a82f5b722545a510e7b94c53ced, type: 3}
+      - {fileID: 21300000, guid: 14bbbc5f0bc1e2c42bc5ec01445d118b, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 1
+  - state: 0
+    clip:
+      _clipName: enemy_zombie_attacklight
+      _frames:
+      - {fileID: 21300000, guid: 1961ea7c32f7a2b48ba5e5ab02301ab2, type: 3}
+      - {fileID: 21300000, guid: cec692ca1d5a4c04a81c9c4ef67008bf, type: 3}
+      - {fileID: 21300000, guid: 49d4f10cd3c1fc74b87cf8bbafa6f4fb, type: 3}
+      - {fileID: 21300000, guid: 5e8101bae07b5a54b9e5f8d898ca7797, type: 3}
+      - {fileID: 21300000, guid: a86ebe8610bd7404da243aa3e25ec583, type: 3}
+      - {fileID: 21300000, guid: 80471a3631309e7409c39085f411114f, type: 3}
+      - {fileID: 21300000, guid: ce0139345eadd0d478cc743c006beeb6, type: 3}
+      - {fileID: 21300000, guid: 7aaaa410f26239f4da105ea473044434, type: 3}
+      - {fileID: 21300000, guid: 70d3f1caafb6d8845b321be4a254afa6, type: 3}
+      - {fileID: 21300000, guid: a241263517219984987f64e0fbb251e8, type: 3}
+      - {fileID: 21300000, guid: b3cd585a66fd98741835cf45570e4861, type: 3}
+      - {fileID: 21300000, guid: e46e4ffbd701ca447a1d8a53bb3c6754, type: 3}
+      - {fileID: 21300000, guid: bda1eaac2ee58f246b742958a93c71ba, type: 3}
+      - {fileID: 21300000, guid: a64b8f3e14a8ce049b2350820ec83a28, type: 3}
+      - {fileID: 21300000, guid: 31fcd24c9f98b4247a2cea2b3e83a821, type: 3}
+      - {fileID: 21300000, guid: d1c90a13a99b2fc4f8d0469fae4bb65f, type: 3}
+      - {fileID: 21300000, guid: 0ac0fad18691c7d41969a2f5112a735a, type: 3}
+      - {fileID: 21300000, guid: 5755840cea013254eaa18869f72b965c, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 11
+    clip:
+      _clipName: enemy_zombie_hurt
+      _frames:
+      - {fileID: 21300000, guid: ed96d7b2431a32a4896f3f089696c958, type: 3}
+      - {fileID: 21300000, guid: 6e530025c802d2b439912afa8c5b83e5, type: 3}
+      - {fileID: 21300000, guid: c3335ed6955af6d4b863dc8b511e64dc, type: 3}
+      - {fileID: 21300000, guid: 5d9b2eff703ad66409c75d487919ebea, type: 3}
+      - {fileID: 21300000, guid: a681933c6619dff4e8dae06b1bb86202, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 12
+    clip:
+      _clipName: enemy_zombie_stunned
+      _frames:
+      - {fileID: 21300000, guid: 4164eb5000cc08d44bd1860cedbd1077, type: 3}
+      - {fileID: 21300000, guid: 8ff154c582f3e40448d3bc1d4c711886, type: 3}
+      - {fileID: 21300000, guid: 8daf8b7614da8bb4a91a06eef0a2be8c, type: 3}
+      - {fileID: 21300000, guid: f9f563018df937a4985b28ce8031960f, type: 3}
+      - {fileID: 21300000, guid: 3d3db68906f702743bf181f5ab40f037, type: 3}
+      - {fileID: 21300000, guid: 62b13e7607aae30489815048508f6e54, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 1
+  - state: 13
+    clip:
+      _clipName: enemy_zombie_death
+      _frames:
+      - {fileID: 21300000, guid: 57c1c9e14f90f6444898f5f8c8ac22ee, type: 3}
+      - {fileID: 21300000, guid: 9a11dfefa3f0c744a8ff314919dd30f2, type: 3}
+      - {fileID: 21300000, guid: 2e1dab94901199e419ed97e0c69961a3, type: 3}
+      - {fileID: 21300000, guid: 9dc6783f03b890f419e9e0144cbe3dfa, type: 3}
+      - {fileID: 21300000, guid: e1ba600eaf409b645b07aaad9296552a, type: 3}
+      - {fileID: 21300000, guid: 7fc9a5dabbc025344866a13793eb338e, type: 3}
+      - {fileID: 21300000, guid: 2683134b18926484db40f9df1e089ade, type: 3}
+      - {fileID: 21300000, guid: b6f3dcea613f2914b8801925b0be1314, type: 3}
+      - {fileID: 21300000, guid: 82019cde45a427742971cd05f8b17e8a, type: 3}
+      - {fileID: 21300000, guid: 4c2055e7796887f46892c507ef48fe0e, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 0
+  _fallback:
+    _clipName: enemy_zombie_idle
+    _frames:
+    - {fileID: 21300000, guid: 3408269090e1cc54d9c51aedf6bf6379, type: 3}
+    - {fileID: 21300000, guid: 945872ed12ef0004da29e0564bed208a, type: 3}
+    - {fileID: 21300000, guid: 60025d6afb3f89d4295d65cf5f47914b, type: 3}
+    - {fileID: 21300000, guid: 82af81e0000a15a46a3d38c17453837b, type: 3}
+    - {fileID: 21300000, guid: 1200de836615a3e4bb8ff2914b6da56e, type: 3}
+    - {fileID: 21300000, guid: 89e4ff20b7341574380c3c5c221e68fe, type: 3}
+    _framesPerSecond: 8
+    _isLooping: 1
+  _carriesShield: 0

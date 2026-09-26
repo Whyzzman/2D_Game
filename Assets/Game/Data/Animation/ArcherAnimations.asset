@@ -1,0 +1,165 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 649169c22105a06499c9bc0695fd8d1d, type: 3}
+  m_Name: ArcherAnimations
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.EnemyAnimationSet
+  _clips:
+  - state: 1
+    clip:
+      _clipName: enemy_archer_idle
+      _frames:
+      - {fileID: 21300000, guid: e33e7d5fce303134cb702e4777962efd, type: 3}
+      - {fileID: 21300000, guid: 824594e83e5f0e14bb05700187ce0a78, type: 3}
+      - {fileID: 21300000, guid: a1ff91b7bbaacd74a8d964c645c54d8a, type: 3}
+      - {fileID: 21300000, guid: 2b85b72c4b9accd47a1c1e26b78e0097, type: 3}
+      - {fileID: 21300000, guid: edaf6cbf020b3c74fa40c6c904fa13fc, type: 3}
+      - {fileID: 21300000, guid: 6b423e7bef4573046a64698945986e47, type: 3}
+      _framesPerSecond: 8
+      _isLooping: 1
+  - state: 2
+    clip:
+      _clipName: enemy_archer_patrol
+      _frames:
+      - {fileID: 21300000, guid: 59bff291fffdea444905d2745ebd6a08, type: 3}
+      - {fileID: 21300000, guid: 1a373b8058a395c499e5d983e64c44f0, type: 3}
+      - {fileID: 21300000, guid: e669e53b5603a944ca7a1f00490342ad, type: 3}
+      - {fileID: 21300000, guid: ff38dda8642b47f4582b47fafbea44c4, type: 3}
+      - {fileID: 21300000, guid: 8d1ddc092657f7f4486f5778cd0e1aa3, type: 3}
+      - {fileID: 21300000, guid: b13e5cea54fe75b49a917c8399b283a2, type: 3}
+      - {fileID: 21300000, guid: 5054dbede4141d641bdd451cde041091, type: 3}
+      - {fileID: 21300000, guid: 4b35bba6706809b43b47529b16ceed46, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 1
+  - state: 3
+    clip:
+      _clipName: enemy_archer_alert
+      _frames:
+      - {fileID: 21300000, guid: 3687007a98447d64eaa68a5ae9a7b708, type: 3}
+      - {fileID: 21300000, guid: 2fe8d5ed3b42c7440b4416fe3f7b9266, type: 3}
+      - {fileID: 21300000, guid: 6ec37c5371947444c8422a724ed31104, type: 3}
+      - {fileID: 21300000, guid: 95ba72cb4d9eedb408290ed764697ecc, type: 3}
+      - {fileID: 21300000, guid: 203d0ea65bc14b041b6b89f0457507e1, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 0
+  - state: 4
+    clip:
+      _clipName: enemy_archer_chase
+      _frames:
+      - {fileID: 21300000, guid: cf921dec2a4b16649be84f454549dfcc, type: 3}
+      - {fileID: 21300000, guid: e149261a54426a249936bd79e541ad28, type: 3}
+      - {fileID: 21300000, guid: 33bc6e47a5140f24a85056afe01c8b0a, type: 3}
+      - {fileID: 21300000, guid: 3c07bca094145cd448361d650e08cfc0, type: 3}
+      - {fileID: 21300000, guid: ce948c023c4d10c46a619202cd0a233f, type: 3}
+      - {fileID: 21300000, guid: f09abc107422d2848aee47f932444596, type: 3}
+      - {fileID: 21300000, guid: 510baae54564cb14282a16a60c413993, type: 3}
+      - {fileID: 21300000, guid: 2b8f8c412eb81754e9106f411e46153b, type: 3}
+      _framesPerSecond: 14
+      _isLooping: 1
+  - state: 0
+    clip:
+      _clipName: enemy_archer_attacklight
+      _frames:
+      - {fileID: 21300000, guid: 5768827a388cbff44ad0089ad8c9289d, type: 3}
+      - {fileID: 21300000, guid: b708fd55ae513ad439d78fd8b6473e4d, type: 3}
+      - {fileID: 21300000, guid: 625300a6078ea13479b25f49b13f74b5, type: 3}
+      - {fileID: 21300000, guid: 553c384501dbb0e47b2a8916026dbf81, type: 3}
+      - {fileID: 21300000, guid: 5edc7e85d1aac50448827edc17b83e1b, type: 3}
+      - {fileID: 21300000, guid: 055fd187e9c08c64b954813d60609be8, type: 3}
+      - {fileID: 21300000, guid: ca423dfcf2d0b154bb14bf22b177ddc9, type: 3}
+      - {fileID: 21300000, guid: 1dd17927c48bf7342bbc50ca86faf361, type: 3}
+      - {fileID: 21300000, guid: dc2de44687d4ec647b6abdc064665f90, type: 3}
+      - {fileID: 21300000, guid: 0409223b3319832478ee170b7efae7e3, type: 3}
+      - {fileID: 21300000, guid: 6d8daf8d153b07646b2c5c115fb8aa1a, type: 3}
+      - {fileID: 21300000, guid: 337fc02b832f7d940b76db043172fa8a, type: 3}
+      - {fileID: 21300000, guid: 4fd1c37e1a3b20f45af849f7d48715af, type: 3}
+      - {fileID: 21300000, guid: 9bec5fb89cf138648aa881f38ecef76b, type: 3}
+      - {fileID: 21300000, guid: 7968a51ee75e5e847b413ee9af9e0efc, type: 3}
+      - {fileID: 21300000, guid: 8d8821651907090478df6d53b2d2709e, type: 3}
+      - {fileID: 21300000, guid: 234c2001694b38043b890b425fe8b9e3, type: 3}
+      - {fileID: 21300000, guid: 4c768f855d5b1da49964ee0521eaa8eb, type: 3}
+      - {fileID: 21300000, guid: 8f80758f6a0801d46a6b0a3867f0978c, type: 3}
+      - {fileID: 21300000, guid: 2ab914dff786ce84aaf21cb24a78de24, type: 3}
+      - {fileID: 21300000, guid: 142b0c186888e69448108e1b11560402, type: 3}
+      - {fileID: 21300000, guid: fd6889b9e08c38749a17758ac7080d25, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 10
+    clip:
+      _clipName: enemy_archer_shieldbash
+      _frames:
+      - {fileID: 21300000, guid: a737859edd7181e4ea9c3bd189bdaa45, type: 3}
+      - {fileID: 21300000, guid: 582d8daa545036848a9c5dd087599192, type: 3}
+      - {fileID: 21300000, guid: 1697a24bc5b51b446a1a991a29d1329c, type: 3}
+      - {fileID: 21300000, guid: 841ae8aefa7c0164bb6fd2a2af94e8a2, type: 3}
+      - {fileID: 21300000, guid: d07b58bc6b0c73a47b776ccffe28fc50, type: 3}
+      - {fileID: 21300000, guid: c5892eefe81cdc043a8f325bc345e049, type: 3}
+      - {fileID: 21300000, guid: c4e2ed442da14e740bf7aef5766f7c43, type: 3}
+      - {fileID: 21300000, guid: e111ee8e4728f6e44b69047b3b6d2569, type: 3}
+      - {fileID: 21300000, guid: ff6f3f36a56441b49aecbf5596431944, type: 3}
+      - {fileID: 21300000, guid: 2906e6795dc3b764ba2e2f5518500455, type: 3}
+      - {fileID: 21300000, guid: 57d481241f11c714c912dd025175252f, type: 3}
+      - {fileID: 21300000, guid: 593e0e86450069a4593b86a4b8424557, type: 3}
+      - {fileID: 21300000, guid: c6629c3e1c93e6c46bb98a087b9969ff, type: 3}
+      - {fileID: 21300000, guid: c897c78bf34951844b2652ac567202ba, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 11
+    clip:
+      _clipName: enemy_archer_hurt
+      _frames:
+      - {fileID: 21300000, guid: fd6aae4a6ae9f2948aca341a31b23d26, type: 3}
+      - {fileID: 21300000, guid: 9b46a1fc67b73e84bb64500e8be57052, type: 3}
+      - {fileID: 21300000, guid: 80f07e46179d94e47a8b9c6bf664129f, type: 3}
+      - {fileID: 21300000, guid: 8f068a35c1e31684899ccb90a09a37c0, type: 3}
+      - {fileID: 21300000, guid: 6c0fd2bd33218e54781fe329755c5981, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 12
+    clip:
+      _clipName: enemy_archer_stunned
+      _frames:
+      - {fileID: 21300000, guid: 5c91f1f4653f2874bb1b5fdadd8ca66b, type: 3}
+      - {fileID: 21300000, guid: 72382ef3779e07d4ab8ae448aeaea141, type: 3}
+      - {fileID: 21300000, guid: ac0fee67fd9661d41896f9f93ad0d2b1, type: 3}
+      - {fileID: 21300000, guid: 4f92673da91d9cd4ca4b9c60c1a45c7c, type: 3}
+      - {fileID: 21300000, guid: 252c5db6dabc7be4bb6cfe0f8320ca7e, type: 3}
+      - {fileID: 21300000, guid: 675b36fd3d8fdca438a51aeba507243f, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 1
+  - state: 13
+    clip:
+      _clipName: enemy_archer_death
+      _frames:
+      - {fileID: 21300000, guid: 658a4d7a334bb5049b47d5fb5873ee66, type: 3}
+      - {fileID: 21300000, guid: fa55b7c7c63797d47b7c0d9a3b00c0e1, type: 3}
+      - {fileID: 21300000, guid: 88373849ce8987a409fdee2f8d8f7a5d, type: 3}
+      - {fileID: 21300000, guid: c83a009520c6dcf4fbacd848f1acca63, type: 3}
+      - {fileID: 21300000, guid: 67923780251f4f442b8c2ad3fdc51bdc, type: 3}
+      - {fileID: 21300000, guid: ddeec950f3376c248b9a4928099d1e94, type: 3}
+      - {fileID: 21300000, guid: 144f9ce8767671d44ac39c956c193039, type: 3}
+      - {fileID: 21300000, guid: 95f346e95aac807489d9d35940f4f611, type: 3}
+      - {fileID: 21300000, guid: 261fd0a4c863d074088059e6730f5d44, type: 3}
+      - {fileID: 21300000, guid: c8c0499a24fc88a458f6d2f6dfa61f5b, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 0
+  _fallback:
+    _clipName: enemy_archer_idle
+    _frames:
+    - {fileID: 21300000, guid: e33e7d5fce303134cb702e4777962efd, type: 3}
+    - {fileID: 21300000, guid: 824594e83e5f0e14bb05700187ce0a78, type: 3}
+    - {fileID: 21300000, guid: a1ff91b7bbaacd74a8d964c645c54d8a, type: 3}
+    - {fileID: 21300000, guid: 2b85b72c4b9accd47a1c1e26b78e0097, type: 3}
+    - {fileID: 21300000, guid: edaf6cbf020b3c74fa40c6c904fa13fc, type: 3}
+    - {fileID: 21300000, guid: 6b423e7bef4573046a64698945986e47, type: 3}
+    _framesPerSecond: 8
+    _isLooping: 1
+  _carriesShield: 0

@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f262bfdbc3db1d1448a3cf59cba06016, type: 3}
+  m_Name: audio_wardenthrust
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.AudioEvent
+  _id: 110
+  _clips:
+  - {fileID: 8300000, guid: e75d35d9cb3bb374898ad18960d5c92b, type: 3}
+  - {fileID: 8300000, guid: 1a9f732ce2fbaae4086d3fe503f32b12, type: 3}
+  - {fileID: 8300000, guid: ca15bfa93c8b4aa4db7de460dbe73b80, type: 3}
+  _bus: 2
+  _volume: 0.8
+  _volumeJitter: 0.06
+  _pitchJitter: 0.045
+  _spatialBlend: 0.55
+  _maxDistance: 26
+  _maxVoices: 2
+  _minimumInterval: 0
+  _priority: 118
+  _loop: 0

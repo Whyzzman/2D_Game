@@ -1,0 +1,203 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 649169c22105a06499c9bc0695fd8d1d, type: 3}
+  m_Name: SpearmanAnimations
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.EnemyAnimationSet
+  _clips:
+  - state: 1
+    clip:
+      _clipName: enemy_spearman_idle
+      _frames:
+      - {fileID: 21300000, guid: 261b40723c9b0fb4eb9003299b284753, type: 3}
+      - {fileID: 21300000, guid: e7120dbcf8933454faa7585625de17d6, type: 3}
+      - {fileID: 21300000, guid: 4bd0e2b6919f0b84fa84cb0080198bb9, type: 3}
+      - {fileID: 21300000, guid: 14ca898cef6f24049ac151f423df01c2, type: 3}
+      - {fileID: 21300000, guid: b5128096875c2a7418ca4214d4b2d131, type: 3}
+      - {fileID: 21300000, guid: 37ed173af84f5484f9515f37008e409b, type: 3}
+      _framesPerSecond: 8
+      _isLooping: 1
+  - state: 2
+    clip:
+      _clipName: enemy_spearman_patrol
+      _frames:
+      - {fileID: 21300000, guid: 2e249e291471a894cb25469e5bf7e423, type: 3}
+      - {fileID: 21300000, guid: c7b9a297820b64545b4eff20202a3c76, type: 3}
+      - {fileID: 21300000, guid: 4b1dff49287d6ff49b4708a569e9528d, type: 3}
+      - {fileID: 21300000, guid: 51d45d58a82f2aa469032b4fc32742af, type: 3}
+      - {fileID: 21300000, guid: f9ac0f1223d9a7846861e2774e5fb9df, type: 3}
+      - {fileID: 21300000, guid: 5ce8b10b3926bfd40ade4d1d34098329, type: 3}
+      - {fileID: 21300000, guid: e3dc8ba088c17e14fbf2739c0d08050f, type: 3}
+      - {fileID: 21300000, guid: 2f404c2c79206c24091295cb4dbf52bd, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 1
+  - state: 3
+    clip:
+      _clipName: enemy_spearman_alert
+      _frames:
+      - {fileID: 21300000, guid: 97474b30d9428434995980d2cc9c4bf4, type: 3}
+      - {fileID: 21300000, guid: 695f6b56b8c462940af936e6021e0cab, type: 3}
+      - {fileID: 21300000, guid: 0169df1e918fdae48a13d35f63c79fd9, type: 3}
+      - {fileID: 21300000, guid: 5fcd7f2a7fd54764e9f76d9f92936e50, type: 3}
+      - {fileID: 21300000, guid: ba456009d0ba42b4e880dc1238fad72e, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 0
+  - state: 4
+    clip:
+      _clipName: enemy_spearman_chase
+      _frames:
+      - {fileID: 21300000, guid: 945a9a1d3b996174eb4d098b98359a25, type: 3}
+      - {fileID: 21300000, guid: 18a302c99714e5d4d811b3a5ab7f0d40, type: 3}
+      - {fileID: 21300000, guid: b6714c0e0ab506d4ebb812617eb88905, type: 3}
+      - {fileID: 21300000, guid: 4ca7cc9a4f98ffe46b36cb4ce7939106, type: 3}
+      - {fileID: 21300000, guid: ab54330c7dfb20140a95f1ffa1614ae1, type: 3}
+      - {fileID: 21300000, guid: 582331891b80cff4c8ff0b17797c205a, type: 3}
+      - {fileID: 21300000, guid: bb953d1512f1aad46875a2e9977f835a, type: 3}
+      - {fileID: 21300000, guid: 6ea0050874a6f9e429972f76ff0b3ef0, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 1
+  - state: 0
+    clip:
+      _clipName: enemy_spearman_attacklight
+      _frames:
+      - {fileID: 21300000, guid: bb66b61149893764fbc54c902594b5b8, type: 3}
+      - {fileID: 21300000, guid: be4b3dd5d19cb394ab4943d931d89f04, type: 3}
+      - {fileID: 21300000, guid: 2516f2faf87720a47802a958f26baa42, type: 3}
+      - {fileID: 21300000, guid: d5248e0d3b317d142a8d884c97c2e402, type: 3}
+      - {fileID: 21300000, guid: 6365a270a5c196b489e16be7d6f3cf21, type: 3}
+      - {fileID: 21300000, guid: 04e11e6b1cf032b4292f95d46d693d46, type: 3}
+      - {fileID: 21300000, guid: d76734ad50d817c45bbe11aae8d8ea96, type: 3}
+      - {fileID: 21300000, guid: 89c2ca999e660d94c8c5976cbd2cb7a7, type: 3}
+      - {fileID: 21300000, guid: 9db16e414d3d99b4b90de917b7877d43, type: 3}
+      - {fileID: 21300000, guid: b931fc1b3fca0d24d9484cda2cd3a4f6, type: 3}
+      - {fileID: 21300000, guid: fff069624bfc19c479f817c4877957b8, type: 3}
+      - {fileID: 21300000, guid: 17c5f73c1c13874409fecb1df89c27c0, type: 3}
+      - {fileID: 21300000, guid: 131e863b913b1804db4685988707f91c, type: 3}
+      - {fileID: 21300000, guid: 9f7a088b72ead894da2984dd788ae934, type: 3}
+      - {fileID: 21300000, guid: 3fb23a3915efb3847b811fe3c5232fad, type: 3}
+      - {fileID: 21300000, guid: cc69834626ee7494f88e638c37cc33a7, type: 3}
+      - {fileID: 21300000, guid: eda6dee65c6ad4b409938afb75391a18, type: 3}
+      - {fileID: 21300000, guid: 0d426a882e68ec347a01ff6b0b31e8f7, type: 3}
+      - {fileID: 21300000, guid: 5be82bc5304db5f4ca1d8c2cfe21e194, type: 3}
+      - {fileID: 21300000, guid: bfff41ee445b5af4abe346ca35979c1b, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 9
+    clip:
+      _clipName: enemy_spearman_attackheavy
+      _frames:
+      - {fileID: 21300000, guid: c3aac88e7161bf84fba76e1c980711d6, type: 3}
+      - {fileID: 21300000, guid: 29b1de1ac30f1934a8ce21266d2ce1c6, type: 3}
+      - {fileID: 21300000, guid: 23996c8fa344fe448b80bf36cf0832bf, type: 3}
+      - {fileID: 21300000, guid: 969654f8e2b07354d832fa01aa7b99b2, type: 3}
+      - {fileID: 21300000, guid: 0c152279485a91c4fac9e3047cda4065, type: 3}
+      - {fileID: 21300000, guid: 48832d055c375914d8a4699e5ca326bc, type: 3}
+      - {fileID: 21300000, guid: c8dd79f9a87582444a2b370956c1deb4, type: 3}
+      - {fileID: 21300000, guid: 02dbdcca0d1d1ef4881d939f28462ade, type: 3}
+      - {fileID: 21300000, guid: 80d7238a2ca37fa45bee4055ac5bad5f, type: 3}
+      - {fileID: 21300000, guid: c24a8c60f1bae5243aec454b4236bdac, type: 3}
+      - {fileID: 21300000, guid: 840930eb67dec9b45b608d5dc9da07be, type: 3}
+      - {fileID: 21300000, guid: 308e52d474fb5b242acfe7e76cd226d8, type: 3}
+      - {fileID: 21300000, guid: 66d9aaee310cf144a93b58486fc4db8a, type: 3}
+      - {fileID: 21300000, guid: 58d39732e88a82049905411d1b427e55, type: 3}
+      - {fileID: 21300000, guid: 9d692bae6803f4b498a9448ba9faaecc, type: 3}
+      - {fileID: 21300000, guid: 478f491ef640eae44bcfbc6e29180833, type: 3}
+      - {fileID: 21300000, guid: 4b81a9faba7ab3345a698ce3efbec28b, type: 3}
+      - {fileID: 21300000, guid: c6fce285b499bcd44b9205d1d731d407, type: 3}
+      - {fileID: 21300000, guid: 64c89f5c12692314ba973bd6c34eb0e4, type: 3}
+      - {fileID: 21300000, guid: 2d38bf00209135f45a163308ef5d7c85, type: 3}
+      - {fileID: 21300000, guid: 16a91281f21384843b828962550700fb, type: 3}
+      - {fileID: 21300000, guid: 85701909e2d80d244a187398f2ee8fb9, type: 3}
+      - {fileID: 21300000, guid: 34d687d390a7f7542b8044a096668665, type: 3}
+      - {fileID: 21300000, guid: 7cb7d42122543a84a9934338e13eac72, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 10
+    clip:
+      _clipName: enemy_spearman_shieldbash
+      _frames:
+      - {fileID: 21300000, guid: 6708e15a9c2d7a847a23d44d3cedbf5c, type: 3}
+      - {fileID: 21300000, guid: f4a18aad86ddd3149b88063bbfed4de6, type: 3}
+      - {fileID: 21300000, guid: 14c2aea8e2721f248aaaa1af4c3de591, type: 3}
+      - {fileID: 21300000, guid: 4cc01c5f4c437b544bed3e10bcbb5579, type: 3}
+      - {fileID: 21300000, guid: 1a66883087a4f454ab398ea1ed94e94a, type: 3}
+      - {fileID: 21300000, guid: 50f909c7dc322994f94dd8475d5dfc58, type: 3}
+      - {fileID: 21300000, guid: 45a2d666dbb58b741803c3c15eb1c5cc, type: 3}
+      - {fileID: 21300000, guid: 7e2deafe06ddf50468d3c93d6d75f203, type: 3}
+      - {fileID: 21300000, guid: d376eed51baef15419a1e677cff25b59, type: 3}
+      - {fileID: 21300000, guid: f5b1fe9b9e0f44c4cbc7cb07bc46a09b, type: 3}
+      - {fileID: 21300000, guid: 5dc686ed9b54fad428d2a89b089c8868, type: 3}
+      - {fileID: 21300000, guid: fe97665a19ea982498a15f04bad09b61, type: 3}
+      - {fileID: 21300000, guid: 1c9c692234ebc3049af929500d8a8c25, type: 3}
+      - {fileID: 21300000, guid: 5045862cdf1f3f7458fbce35c626bb8a, type: 3}
+      - {fileID: 21300000, guid: b64ad2083c0679e4295c477fee23f55f, type: 3}
+      - {fileID: 21300000, guid: b5e8cef8f82824747bea80c47e3ba135, type: 3}
+      - {fileID: 21300000, guid: 910e06a8a148f6a4388468c62145440a, type: 3}
+      - {fileID: 21300000, guid: b264501a47e44da4f8c63596cbd61819, type: 3}
+      - {fileID: 21300000, guid: dc653bb7182152640a28480bd59d634a, type: 3}
+      - {fileID: 21300000, guid: 0d6042d946aad504a8c30532e8962d43, type: 3}
+      - {fileID: 21300000, guid: 35d649bc117b8ad46809876e007a3489, type: 3}
+      - {fileID: 21300000, guid: cc21bb4cf2fba7c439bb589a34bc6cc3, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 11
+    clip:
+      _clipName: enemy_spearman_hurt
+      _frames:
+      - {fileID: 21300000, guid: 6cddfd299a8ad8f42af673b2a828a777, type: 3}
+      - {fileID: 21300000, guid: 63ee6797044c2e24e9c5cc10d8ae9b23, type: 3}
+      - {fileID: 21300000, guid: 0dcc9ad3cd941604f806c12e3589ce44, type: 3}
+      - {fileID: 21300000, guid: ac98ee266a0d56341a362e48f4dbe139, type: 3}
+      - {fileID: 21300000, guid: c80cec7ddaa951a4f85a5c581228a5cc, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 12
+    clip:
+      _clipName: enemy_spearman_stunned
+      _frames:
+      - {fileID: 21300000, guid: 7b48472b2cda35f448ed274a9242c912, type: 3}
+      - {fileID: 21300000, guid: 479bc786dd57ef647a4bebcbe6e2c237, type: 3}
+      - {fileID: 21300000, guid: ab95fb0180ba7854da1248f5b8c68575, type: 3}
+      - {fileID: 21300000, guid: d4d9ec4748d16d540a73554cd8ec4f5a, type: 3}
+      - {fileID: 21300000, guid: 169cae735d1c2a44bbfbc2ad5723bcea, type: 3}
+      - {fileID: 21300000, guid: d69ac0eb24fe7464fa15f3afe647a147, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 1
+  - state: 13
+    clip:
+      _clipName: enemy_spearman_death
+      _frames:
+      - {fileID: 21300000, guid: 5875394aeb31af945b86baa069c29681, type: 3}
+      - {fileID: 21300000, guid: c016b7d0abd645e43811551148c286b4, type: 3}
+      - {fileID: 21300000, guid: 1b1f3cffe65f84548852bf1831adcffd, type: 3}
+      - {fileID: 21300000, guid: f4ba8a33aee936544bada5430a4bbfd0, type: 3}
+      - {fileID: 21300000, guid: a88fbd51240b4f8499771faf871f0073, type: 3}
+      - {fileID: 21300000, guid: 33c1ea3d46122864487ca6b8d27a8a06, type: 3}
+      - {fileID: 21300000, guid: 71e92d3fe1b3a384da741134298e4cee, type: 3}
+      - {fileID: 21300000, guid: e2ffee0a7a41a9b46ba754ab56751f46, type: 3}
+      - {fileID: 21300000, guid: 15e2912a0c9658f409d989d296a9506b, type: 3}
+      - {fileID: 21300000, guid: a5ca0377d25939947b1819e06124f996, type: 3}
+      - {fileID: 21300000, guid: e431c537fd53cc1419311d7d917b6ae7, type: 3}
+      - {fileID: 21300000, guid: 8bd883a7c19d10e4bb39d4e2493e4280, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 0
+  _fallback:
+    _clipName: enemy_spearman_idle
+    _frames:
+    - {fileID: 21300000, guid: 261b40723c9b0fb4eb9003299b284753, type: 3}
+    - {fileID: 21300000, guid: e7120dbcf8933454faa7585625de17d6, type: 3}
+    - {fileID: 21300000, guid: 4bd0e2b6919f0b84fa84cb0080198bb9, type: 3}
+    - {fileID: 21300000, guid: 14ca898cef6f24049ac151f423df01c2, type: 3}
+    - {fileID: 21300000, guid: b5128096875c2a7418ca4214d4b2d131, type: 3}
+    - {fileID: 21300000, guid: 37ed173af84f5484f9515f37008e409b, type: 3}
+    _framesPerSecond: 8
+    _isLooping: 1
+  _carriesShield: 0

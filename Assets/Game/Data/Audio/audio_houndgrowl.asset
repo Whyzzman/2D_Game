@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f262bfdbc3db1d1448a3cf59cba06016, type: 3}
+  m_Name: audio_houndgrowl
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.AudioEvent
+  _id: 90
+  _clips:
+  - {fileID: 8300000, guid: bb572a6f40102124d9a6e847ed7bc092, type: 3}
+  - {fileID: 8300000, guid: e95d3d51ff9385a488a59ad7abdd5b9c, type: 3}
+  - {fileID: 8300000, guid: cef842eddc1bd3f4fb18baba46300169, type: 3}
+  _bus: 2
+  _volume: 0.6
+  _volumeJitter: 0.06
+  _pitchJitter: 0.045
+  _spatialBlend: 0.55
+  _maxDistance: 26
+  _maxVoices: 2
+  _minimumInterval: 0
+  _priority: 68
+  _loop: 0

@@ -1,0 +1,551 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84f4db3b7222ee046a84610767e996ec, type: 3}
+  m_Name: WardenAnimations
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.BossAnimationSet
+  _clips:
+  - state: 1
+    clip:
+      _clipName: boss_warden_dormant
+      _frames:
+      - {fileID: 21300000, guid: ea5acc66d30f02f4ca4636aa3e3a8dda, type: 3}
+      - {fileID: 21300000, guid: 782fa793eb8313f4abd3f0c328b09c05, type: 3}
+      - {fileID: 21300000, guid: 5f5435acc5cafaf4f9f0280dc4094db4, type: 3}
+      - {fileID: 21300000, guid: 8482e2b604ce5214ebdcf53a0b28edfd, type: 3}
+      _framesPerSecond: 8
+      _isLooping: 1
+  - state: 2
+    clip:
+      _clipName: boss_warden_intro
+      _frames:
+      - {fileID: 21300000, guid: 72c37171036083d448c9f9e8e280c448, type: 3}
+      - {fileID: 21300000, guid: f5f2d7cc65f738b4abe622caebd0e75e, type: 3}
+      - {fileID: 21300000, guid: 3c97e7bfd2bde4c48bb2c4ac082cdedf, type: 3}
+      - {fileID: 21300000, guid: 31dfecd446154934c9cf2b176fdf8a00, type: 3}
+      - {fileID: 21300000, guid: be72f20f238622d459356f492382d397, type: 3}
+      - {fileID: 21300000, guid: 181d80fd9681c734d9d2d069a54e86e6, type: 3}
+      - {fileID: 21300000, guid: 9db53e95c2928344d9d246d973cf8bb5, type: 3}
+      - {fileID: 21300000, guid: 583bde2edcb3b8f4a9864ab18a80d412, type: 3}
+      - {fileID: 21300000, guid: cf7b42749417cf645a08b27c59befeb2, type: 3}
+      - {fileID: 21300000, guid: 90ac065e811f8da41b9278708c14cec6, type: 3}
+      - {fileID: 21300000, guid: 70e381266dc30bf4aa58965f3c4c15fe, type: 3}
+      - {fileID: 21300000, guid: 429fa2909f7b719479bcda20dbe28510, type: 3}
+      - {fileID: 21300000, guid: c8153bffb3c82154bab7eb490cd8b4d4, type: 3}
+      - {fileID: 21300000, guid: 6d9c10034bec6d54baba8df96ef8601f, type: 3}
+      - {fileID: 21300000, guid: e268265184844e34d88bd7a4a08e4029, type: 3}
+      - {fileID: 21300000, guid: 113659bc49a756c468a09afe309ad4af, type: 3}
+      - {fileID: 21300000, guid: e169c30493bcaaf4284919b15df2f5c2, type: 3}
+      - {fileID: 21300000, guid: 0bf604d1c262d7645a9ff9e7892bea8c, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 0
+  - state: 3
+    clip:
+      _clipName: boss_warden_idlep1
+      _frames:
+      - {fileID: 21300000, guid: 412b17f4e1f793f46821ecb0f82cc751, type: 3}
+      - {fileID: 21300000, guid: 940d768617a95a543b448ca051572cb4, type: 3}
+      - {fileID: 21300000, guid: 47b331bdf77c8c548baa5cc3c739f3e9, type: 3}
+      - {fileID: 21300000, guid: e8612c27ae6443c418971e1387735913, type: 3}
+      - {fileID: 21300000, guid: 9bf73996789bed54d8e7c774b3d6f6ec, type: 3}
+      - {fileID: 21300000, guid: aa17b48139c88c44f962522d3d08b1f5, type: 3}
+      _framesPerSecond: 8
+      _isLooping: 1
+  - state: 4
+    clip:
+      _clipName: boss_warden_walkp1
+      _frames:
+      - {fileID: 21300000, guid: 7150f5330968f764ebd02f4cc711b139, type: 3}
+      - {fileID: 21300000, guid: f20846515c5734049937a11a2bec6335, type: 3}
+      - {fileID: 21300000, guid: dd840517a1b48ea44856effbfa9f29a8, type: 3}
+      - {fileID: 21300000, guid: c63f46784f2cc6747b7b3f92879d8a0d, type: 3}
+      - {fileID: 21300000, guid: 7663fd7f5448d3b469b4db6e2d27c89b, type: 3}
+      - {fileID: 21300000, guid: f8b0d43668249d846affffb1851894f4, type: 3}
+      - {fileID: 21300000, guid: c8f595d00abb5f9498ac54c8cddcc591, type: 3}
+      - {fileID: 21300000, guid: b560ac497d8d03f4f88ad68ae6eff44c, type: 3}
+      _framesPerSecond: 14
+      _isLooping: 1
+  - state: 0
+    clip:
+      _clipName: boss_warden_slashp1
+      _frames:
+      - {fileID: 21300000, guid: 9995645429bc74a4c8beab265fc0dd27, type: 3}
+      - {fileID: 21300000, guid: c215d20489609fa4f99143aa81477fbf, type: 3}
+      - {fileID: 21300000, guid: bea0d941fd6001443ad47aa921072008, type: 3}
+      - {fileID: 21300000, guid: aa61e85baa4b5c6489168f081fef6b64, type: 3}
+      - {fileID: 21300000, guid: c917247e76d296f4ba422dee0be3f966, type: 3}
+      - {fileID: 21300000, guid: c407efd274a6f2d4d9d3510d66724250, type: 3}
+      - {fileID: 21300000, guid: 80158ad0e5b2bd44db038bfdec0ed14f, type: 3}
+      - {fileID: 21300000, guid: b4538ff27861b47419d336f8173ece31, type: 3}
+      - {fileID: 21300000, guid: 217a7ac49489c3548ae2058a079bf466, type: 3}
+      - {fileID: 21300000, guid: 0f102ebe06d04604887b654b1da59d54, type: 3}
+      - {fileID: 21300000, guid: 3a7b8619f621e3a4cbf3c97a707c6832, type: 3}
+      - {fileID: 21300000, guid: e667ef2b8eafd814da48bbf7e4d99ac3, type: 3}
+      - {fileID: 21300000, guid: 0f7e766c52d088a4191891ca7a2f9e9b, type: 3}
+      - {fileID: 21300000, guid: ef3f3d3451023574fa2283468dbbe979, type: 3}
+      - {fileID: 21300000, guid: 8c41f54127db07f4d8241e3db43b2f32, type: 3}
+      - {fileID: 21300000, guid: ef8473f8dbbe54b41b0227e6b1256cf9, type: 3}
+      - {fileID: 21300000, guid: 742565de9ffceb0418c0d037729ce5f2, type: 3}
+      - {fileID: 21300000, guid: ed6afe94765df3e42b45822742dfa6e2, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 24
+    clip:
+      _clipName: boss_warden_sweep
+      _frames:
+      - {fileID: 21300000, guid: 8927ba26109bca64999d5a03baf16d09, type: 3}
+      - {fileID: 21300000, guid: 42b84dfa9b2c2d84f8d512c54574bf1f, type: 3}
+      - {fileID: 21300000, guid: b6b8c31b1f79c3e40889a5dccf6dd6b3, type: 3}
+      - {fileID: 21300000, guid: 0268a5300ed620f44ae23a873fc59383, type: 3}
+      - {fileID: 21300000, guid: 717e1032c93f82346b6b6f3b513368bb, type: 3}
+      - {fileID: 21300000, guid: 6776c19fd81bef443b460d41352000f6, type: 3}
+      - {fileID: 21300000, guid: ab23fbb58daf83d4b925ed25c6c1b591, type: 3}
+      - {fileID: 21300000, guid: 2664a8db5f4f58248b53628d6fe84246, type: 3}
+      - {fileID: 21300000, guid: 22445182df911cd439b832bddf821389, type: 3}
+      - {fileID: 21300000, guid: abb38e0b53f9b5a4cb9f8c041ad7d073, type: 3}
+      - {fileID: 21300000, guid: ec375f7f2719a0a4789c8f43d6f20edd, type: 3}
+      - {fileID: 21300000, guid: 4c2c75e4e9130a44daabf4668e766041, type: 3}
+      - {fileID: 21300000, guid: 6f041bbc08b167f47a7222f78c0113ba, type: 3}
+      - {fileID: 21300000, guid: 85e28011307d67f4d86aeca1578dfc73, type: 3}
+      - {fileID: 21300000, guid: 3ef984cdb9e917840ad90e58efe1b44a, type: 3}
+      - {fileID: 21300000, guid: 8073db49d7f5553449db8fce3eef77d4, type: 3}
+      - {fileID: 21300000, guid: 05d00878df911cf40b9e1a6d8397b922, type: 3}
+      - {fileID: 21300000, guid: 27afe53fadac7794492dae446b60b308, type: 3}
+      - {fileID: 21300000, guid: 6b439af2242a742489571347e2b4b3bd, type: 3}
+      - {fileID: 21300000, guid: d1a66e3968737124c8027a5de4b941b0, type: 3}
+      - {fileID: 21300000, guid: 6da5afe087c380a40be296099563428a, type: 3}
+      - {fileID: 21300000, guid: 6b5a90a493051db4a86e4859300c7869, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 6
+    clip:
+      _clipName: boss_warden_chargestart
+      _frames:
+      - {fileID: 21300000, guid: fae7bc658d70e3542b0f54ff286e457e, type: 3}
+      - {fileID: 21300000, guid: 440d609a93b5f6b4fbef217827cecc2c, type: 3}
+      - {fileID: 21300000, guid: d4b2de8d058be6745a2805b223acc21b, type: 3}
+      - {fileID: 21300000, guid: ff7bb08a3261fd641884130d36315b27, type: 3}
+      - {fileID: 21300000, guid: 9e6290ffd28238f4ab2ade040b5d9eca, type: 3}
+      - {fileID: 21300000, guid: 9d15f18f47ebad84abc8cd512fc3dddd, type: 3}
+      - {fileID: 21300000, guid: 0986188ea66932e4d9803adfd7e6d851, type: 3}
+      - {fileID: 21300000, guid: 80b1c17509b12754881936eb1f3ebd0a, type: 3}
+      - {fileID: 21300000, guid: 4907faaa3502b6542aaa8eceb3a87288, type: 3}
+      - {fileID: 21300000, guid: bbc026706d7343647a825f8ead7acdb8, type: 3}
+      - {fileID: 21300000, guid: 4dec77555a2a47d4f9d11266d1fa66ea, type: 3}
+      - {fileID: 21300000, guid: bab05e83356cd484cb1cdfc23f8870c2, type: 3}
+      - {fileID: 21300000, guid: e7c35f541273b124eacffcbcabe69a5e, type: 3}
+      - {fileID: 21300000, guid: 0d99b55e38bb3fc4e93ef095d5bf8dbf, type: 3}
+      - {fileID: 21300000, guid: 11abe2510039b9843943eecc57cd2966, type: 3}
+      - {fileID: 21300000, guid: a4273610863ec814cb5c5d5a68f88220, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 7
+    clip:
+      _clipName: boss_warden_charge
+      _frames:
+      - {fileID: 21300000, guid: 2b76ef7e766af984f9a8d922b9beafcc, type: 3}
+      - {fileID: 21300000, guid: cd253c0fdb404b549a8470ba161cc284, type: 3}
+      - {fileID: 21300000, guid: 17f08456a25cbf642a6b687865ab579c, type: 3}
+      - {fileID: 21300000, guid: f8ad309b2968c404d9b9e660d2f7556c, type: 3}
+      - {fileID: 21300000, guid: f44825406eb14414eb3c8a4dc886aaf2, type: 3}
+      - {fileID: 21300000, guid: 411c149e5cf5d1445ac17cd269e16f25, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 1
+  - state: 8
+    clip:
+      _clipName: boss_warden_chargerecover
+      _frames:
+      - {fileID: 21300000, guid: 3943a5600c627a647a95b1101f22ebf7, type: 3}
+      - {fileID: 21300000, guid: f859c0d3cd7567545bd922e9f9e83097, type: 3}
+      - {fileID: 21300000, guid: 99d2b46f64011824ca2313b2a13ac714, type: 3}
+      - {fileID: 21300000, guid: e5c272f676fed1c49a674f3449a4c81f, type: 3}
+      - {fileID: 21300000, guid: 604559dfcb37b9f4f980b30469c6cf4c, type: 3}
+      - {fileID: 21300000, guid: ec4476eec999ca0498c0bbfa71ca0fbf, type: 3}
+      - {fileID: 21300000, guid: 1c774b4371be16b44a763fd51c31b7a3, type: 3}
+      - {fileID: 21300000, guid: 28afa07f0e1e18440a93ec951f7c0c25, type: 3}
+      - {fileID: 21300000, guid: 49725b146af4e8242bc007de881a63fa, type: 3}
+      - {fileID: 21300000, guid: 672df6d35d9d69d4eaaaf0e0f72381d7, type: 3}
+      - {fileID: 21300000, guid: 50d3f5a76afd35943845cbdb4d2d8dad, type: 3}
+      - {fileID: 21300000, guid: d7d36ca4277d6294ab4f619c836a6442, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 25
+    clip:
+      _clipName: boss_warden_rootshot
+      _frames:
+      - {fileID: 21300000, guid: 51195908fe946914d83a7f9d1892b008, type: 3}
+      - {fileID: 21300000, guid: 90a0c95a964aa974e8d0c1b77655ecd0, type: 3}
+      - {fileID: 21300000, guid: 1db6e6375ec5f78458096725910e9050, type: 3}
+      - {fileID: 21300000, guid: 07f5f16fc1fb5bd43af84e7595ec0eb6, type: 3}
+      - {fileID: 21300000, guid: 03135d30899c47a488805248cd543c51, type: 3}
+      - {fileID: 21300000, guid: 6a2c0000a8078ba4d8bb3b34565b5b85, type: 3}
+      - {fileID: 21300000, guid: aa17ac2da0c14d3429690193fc3db981, type: 3}
+      - {fileID: 21300000, guid: 9a98f7335273d284eb373f15f1edf887, type: 3}
+      - {fileID: 21300000, guid: 159a7ed5e1040f646b652b2e4fc534f2, type: 3}
+      - {fileID: 21300000, guid: 6ba77e5bd07201441960c254cc7b12f4, type: 3}
+      - {fileID: 21300000, guid: e12467fe6a49efb4eab02a4a55ddc5b7, type: 3}
+      - {fileID: 21300000, guid: 0540ef57bb9e0a74daf0007a6e549e70, type: 3}
+      - {fileID: 21300000, guid: ffea4a96d83ed0341b3d92bdb2d7e643, type: 3}
+      - {fileID: 21300000, guid: 68c97dfef2c3f48498fe8829cc45acef, type: 3}
+      - {fileID: 21300000, guid: 39e9afa199068ca43b0906cb40e44007, type: 3}
+      - {fileID: 21300000, guid: 115829ecdc93e8247bfbf50caf36961c, type: 3}
+      - {fileID: 21300000, guid: 89ac1161205271446a674fca4dfe88c7, type: 3}
+      - {fileID: 21300000, guid: b60a5f738ef9f11448cd2f12ddb4d7a9, type: 3}
+      - {fileID: 21300000, guid: 1668a9ffd30bda34c9a68027c09754df, type: 3}
+      - {fileID: 21300000, guid: 83e5d5537a06d2e40a8d2fb3591ce006, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 12
+    clip:
+      _clipName: boss_warden_stunned
+      _frames:
+      - {fileID: 21300000, guid: 6ac11e6cc4a144b4e9033aa993f8166f, type: 3}
+      - {fileID: 21300000, guid: dfb1621ce73904b4ab5d3dcec505ec22, type: 3}
+      - {fileID: 21300000, guid: 12e699978ce6065498082038abfa2368, type: 3}
+      - {fileID: 21300000, guid: 63085e81151deec42b8bc46fd7bbd548, type: 3}
+      - {fileID: 21300000, guid: 4dc33b4ccc9d7804cac1cb383463bac8, type: 3}
+      - {fileID: 21300000, guid: a9e9b41de76e25f4ba7802ef3c764109, type: 3}
+      - {fileID: 21300000, guid: 2784bcd25fc9cbc40b55c6491b701d25, type: 3}
+      - {fileID: 21300000, guid: 17730411ab20dc74093f926cbda20fb0, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 1
+  - state: 13
+    clip:
+      _clipName: boss_warden_recoil
+      _frames:
+      - {fileID: 21300000, guid: 78502fab93aeead44a91b0e1fdb92114, type: 3}
+      - {fileID: 21300000, guid: d4ea2ba830e8c5345b18d71bcce1ab9b, type: 3}
+      - {fileID: 21300000, guid: c32b663b0bb6f9945a854e56a1325c77, type: 3}
+      - {fileID: 21300000, guid: a8affc24afc532c43a69552ed6281e19, type: 3}
+      - {fileID: 21300000, guid: 7e41e174fc74ec74eb91e1d4a2862c4e, type: 3}
+      - {fileID: 21300000, guid: 36239314e8af24540a99fc325229bbca, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 14
+    clip:
+      _clipName: boss_warden_phasetransition
+      _frames:
+      - {fileID: 21300000, guid: a0e8eeb37d2e6414997f35e347e5f162, type: 3}
+      - {fileID: 21300000, guid: f0db195302aeb674c862c521bdf4e848, type: 3}
+      - {fileID: 21300000, guid: f69f3d52c1a77fa4094f06fa58fc19a6, type: 3}
+      - {fileID: 21300000, guid: 3a2f5db5fca1bb44fba3c81583077bec, type: 3}
+      - {fileID: 21300000, guid: f7c47ccb43bd5264c941ae3b8e136492, type: 3}
+      - {fileID: 21300000, guid: 05dcbb89688d9ec45b9c75cf6495ef23, type: 3}
+      - {fileID: 21300000, guid: 5d0fa74f78bf67b48bd43ce989b76dc2, type: 3}
+      - {fileID: 21300000, guid: e14515652c5241946875eda73d053553, type: 3}
+      - {fileID: 21300000, guid: 1614dfb9354d24546b8e0d1d1ef1f6b5, type: 3}
+      - {fileID: 21300000, guid: 0b36437f25762cd4caaee2d18ea106d4, type: 3}
+      - {fileID: 21300000, guid: 59ad618b427f6744e98f195918e4b8ca, type: 3}
+      - {fileID: 21300000, guid: 4f5e466779ae18c4994f1d29202b960e, type: 3}
+      - {fileID: 21300000, guid: 0c06f33d7f386b943a349e92f7a7a2f1, type: 3}
+      - {fileID: 21300000, guid: 2828d93f7d1fac2499b8ffec26233acf, type: 3}
+      - {fileID: 21300000, guid: b250621be60d1f44b99d452f7d23ef48, type: 3}
+      - {fileID: 21300000, guid: c128c97a8034562469b9231e3c977d63, type: 3}
+      - {fileID: 21300000, guid: ce6c2595d7c00ba45a8615245a1d798a, type: 3}
+      - {fileID: 21300000, guid: 21419797dc24e9f4f9f484a0bbaf8c3f, type: 3}
+      - {fileID: 21300000, guid: 10c92e7cc54db4e4cb41d479a66ba2c1, type: 3}
+      - {fileID: 21300000, guid: bbc3615dc23b93d4fbfa6e5956dd0a0a, type: 3}
+      - {fileID: 21300000, guid: c5b594f03495f074ab7d71e9ebcfe974, type: 3}
+      - {fileID: 21300000, guid: dc177183ceba0444fa15b1ea9ca0ff9d, type: 3}
+      - {fileID: 21300000, guid: aa4527cab14c4a349bafe0680a5c2d48, type: 3}
+      - {fileID: 21300000, guid: 4652764d40dd7d6409f60ff2c704df94, type: 3}
+      - {fileID: 21300000, guid: 5cf15e761fcfc2c47996764176cc6452, type: 3}
+      - {fileID: 21300000, guid: b66b095bcc8a9db42a92ba1dfab8423e, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 0
+  - state: 15
+    clip:
+      _clipName: boss_warden_idlep2
+      _frames:
+      - {fileID: 21300000, guid: 279d1fdddc47831408ef7b1d42b314d9, type: 3}
+      - {fileID: 21300000, guid: 4c2fc7224b5928040af44e6dd7e682d1, type: 3}
+      - {fileID: 21300000, guid: 396ed22e26e6e464890a9cc8a92cd67a, type: 3}
+      - {fileID: 21300000, guid: c4bb2d281a87d4545bf7e90ff62720c4, type: 3}
+      - {fileID: 21300000, guid: b3844b8497223174b970f5a331af8569, type: 3}
+      - {fileID: 21300000, guid: 38d61667bd7840a42abf8fe27dae599d, type: 3}
+      _framesPerSecond: 8
+      _isLooping: 1
+  - state: 16
+    clip:
+      _clipName: boss_warden_movep2
+      _frames:
+      - {fileID: 21300000, guid: 602cf2b034752e240b7188ddb2be7bef, type: 3}
+      - {fileID: 21300000, guid: d6f4569991006234d818065b7861643a, type: 3}
+      - {fileID: 21300000, guid: 09330213d400da44b9685ac18e87f28f, type: 3}
+      - {fileID: 21300000, guid: f83e444c5246a7d459577f3d32299f54, type: 3}
+      - {fileID: 21300000, guid: 1454d2e6bf2421e48952bcb0a4ff0ef5, type: 3}
+      - {fileID: 21300000, guid: 55bbc0c3fdeb62a4e817b4df986bd5f1, type: 3}
+      - {fileID: 21300000, guid: dea3980cc6512e441829851e573e591d, type: 3}
+      - {fileID: 21300000, guid: e14f610f230f82e45aefca86fd20a38d, type: 3}
+      _framesPerSecond: 14
+      _isLooping: 1
+  - state: 17
+    clip:
+      _clipName: boss_warden_slashp2
+      _frames:
+      - {fileID: 21300000, guid: f21c8f91d36d68d40a2bdb4dc7cb50d5, type: 3}
+      - {fileID: 21300000, guid: f774a174b2050dc489faba7c6e997bc4, type: 3}
+      - {fileID: 21300000, guid: f0d8b44c435a1a548a0dd02cb6511a0f, type: 3}
+      - {fileID: 21300000, guid: c0b71a6d3a0dc954d8c24e27c03b2c26, type: 3}
+      - {fileID: 21300000, guid: 93c9da7c3af29d44291708916c214fe2, type: 3}
+      - {fileID: 21300000, guid: 86929f3d341ab6b46b621ac5b1b67166, type: 3}
+      - {fileID: 21300000, guid: 2c061dcd8e3f1ae438c1141b1812b2e7, type: 3}
+      - {fileID: 21300000, guid: a40a89ac02f6c2b4197e4cdfde057204, type: 3}
+      - {fileID: 21300000, guid: c0fc3edf945b2c74dbdcdbc78e99f401, type: 3}
+      - {fileID: 21300000, guid: 40cf73e8f99becd4e97ee67969c7ae76, type: 3}
+      - {fileID: 21300000, guid: a091878377a1624469baaba97b0a8147, type: 3}
+      - {fileID: 21300000, guid: f66f669d988051345bcb4623ab3d253f, type: 3}
+      - {fileID: 21300000, guid: 3edba27057935cd439fb00541f78c7de, type: 3}
+      - {fileID: 21300000, guid: 3e110bf71c631b646b928c9d795a88c5, type: 3}
+      - {fileID: 21300000, guid: 178996c8f44afb04c894f42fe1aa24cd, type: 3}
+      - {fileID: 21300000, guid: 3fbbc0bab3120134388a9f3afd2372b4, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 18
+    clip:
+      _clipName: boss_warden_combop2
+      _frames:
+      - {fileID: 21300000, guid: e96ed542810318d43b7b7fcc42119370, type: 3}
+      - {fileID: 21300000, guid: b4f8426447fa099479570462b49540b8, type: 3}
+      - {fileID: 21300000, guid: dff4f1c1bb3e5a744b0a94c0b9d4efa1, type: 3}
+      - {fileID: 21300000, guid: 51b63f423742cbf41a4bddf6cafd1958, type: 3}
+      - {fileID: 21300000, guid: 5e105490e943f0345bfe30fa40c7a50e, type: 3}
+      - {fileID: 21300000, guid: da33a99eb2db31c4bbdd9c893a709fca, type: 3}
+      - {fileID: 21300000, guid: 1d04bb4673756f146a0851efb9c449cb, type: 3}
+      - {fileID: 21300000, guid: d18e93f56f35a734e9df90a133f3a411, type: 3}
+      - {fileID: 21300000, guid: c1ed0d3eff4e4544c81008b4cede91c2, type: 3}
+      - {fileID: 21300000, guid: 33cd5caf16e926642b67dae34f7b0169, type: 3}
+      - {fileID: 21300000, guid: 19f7c1a67c49b6e479f14a1e5f2b0eb1, type: 3}
+      - {fileID: 21300000, guid: d08c0743029c22e4297cb7485f784fab, type: 3}
+      - {fileID: 21300000, guid: c2ff870085ca1a0448b44c85bd4cdd2b, type: 3}
+      - {fileID: 21300000, guid: 6a5557d2c73448f4785654f15983e8db, type: 3}
+      - {fileID: 21300000, guid: 0e9edc9f38aaa634fbfe303a0605de67, type: 3}
+      - {fileID: 21300000, guid: 8032b55d77798794999ec7c7625ff42c, type: 3}
+      - {fileID: 21300000, guid: 03eab2aed6185d74da079dc7405c1b0b, type: 3}
+      - {fileID: 21300000, guid: e4b1e3a1f3817bc4593a3fb99be8098f, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 9
+    clip:
+      _clipName: boss_warden_combo1
+      _frames:
+      - {fileID: 21300000, guid: bdc9548307b78b74c83ce6699cdccfe0, type: 3}
+      - {fileID: 21300000, guid: e6da5daaba219784a9b9378d57b3f0cb, type: 3}
+      - {fileID: 21300000, guid: 932b5b31d13dbaf4e9b6569fa5fe4bce, type: 3}
+      - {fileID: 21300000, guid: a58cb9d97dce3104eadd2e73b4e58262, type: 3}
+      - {fileID: 21300000, guid: e76a736d9ef9a4b43b5dc8a9f8c2d5dd, type: 3}
+      - {fileID: 21300000, guid: ebf6b45896a69c84f8f791b491e900f0, type: 3}
+      - {fileID: 21300000, guid: eccd2a079603df543bbd53cd4d80c7c6, type: 3}
+      - {fileID: 21300000, guid: 75c33006e7e40d348a6d88cb30b4d6d4, type: 3}
+      - {fileID: 21300000, guid: 14ea722189357054d958e6dad777f3fe, type: 3}
+      - {fileID: 21300000, guid: 7cfe56c7253044d4f947b1f9cc4ab41b, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 10
+    clip:
+      _clipName: boss_warden_combo2
+      _frames:
+      - {fileID: 21300000, guid: a79062bbbbe16dd488900babb14b60d0, type: 3}
+      - {fileID: 21300000, guid: 1615869afbd0eb147b249dc4876d0381, type: 3}
+      - {fileID: 21300000, guid: 45d6b880609619d459e92cda2b25a609, type: 3}
+      - {fileID: 21300000, guid: f8c247be750cfd34d9ee6c5b70d302cb, type: 3}
+      - {fileID: 21300000, guid: 532e026060371594282cb727fc95af2e, type: 3}
+      - {fileID: 21300000, guid: 3dc37ebf7d87b9740a8624c256611c25, type: 3}
+      - {fileID: 21300000, guid: c65b5be98c2d1364b8ebc9846efe331d, type: 3}
+      - {fileID: 21300000, guid: 5daf115819fd4ff4eb6abb8e5130b40a, type: 3}
+      - {fileID: 21300000, guid: 73eda2e6a9038b54cb1b183327eb14aa, type: 3}
+      - {fileID: 21300000, guid: 254fd45582f331e48a6878a78ce3e7ce, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 11
+    clip:
+      _clipName: boss_warden_combo3
+      _frames:
+      - {fileID: 21300000, guid: f89f887bc30053d44bcd0e5a61bd0170, type: 3}
+      - {fileID: 21300000, guid: c952c306019736544a73da97df33de06, type: 3}
+      - {fileID: 21300000, guid: 2ce75551f1fee8f4aa9adf77375f2267, type: 3}
+      - {fileID: 21300000, guid: 69bd081e763ec424dae629127893d39a, type: 3}
+      - {fileID: 21300000, guid: 081489c0bfc352d4ba346b800fd6a035, type: 3}
+      - {fileID: 21300000, guid: 23668f253b2bcdb4283de0d8f045e0fb, type: 3}
+      - {fileID: 21300000, guid: 330ebcdc35debf5459766be5b564a94e, type: 3}
+      - {fileID: 21300000, guid: fd6a973d210cc664eaee4dbd3da377af, type: 3}
+      - {fileID: 21300000, guid: 27b57aad51894134b99628994e53f0eb, type: 3}
+      - {fileID: 21300000, guid: 9b0007130d5b5384aa0c3df69c0c4bad, type: 3}
+      - {fileID: 21300000, guid: 31958644fe107c04e8bbaba15d045da8, type: 3}
+      - {fileID: 21300000, guid: b60a0e7a16aa6484c9c54dff3f6c729b, type: 3}
+      - {fileID: 21300000, guid: d2e764507ee317449b16e837113dd451, type: 3}
+      - {fileID: 21300000, guid: 08b54192ab212ed4dbd5dbde03d98689, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 26
+    clip:
+      _clipName: boss_warden_rootslam
+      _frames:
+      - {fileID: 21300000, guid: 19897a84326199b48825537647d7d5f0, type: 3}
+      - {fileID: 21300000, guid: fa08fe83a6bc67b469eb107c73c8f76b, type: 3}
+      - {fileID: 21300000, guid: 6ae5d909f5dc1474da044218ce15194c, type: 3}
+      - {fileID: 21300000, guid: 04ca5c5a124b4944eacb6562f249cad8, type: 3}
+      - {fileID: 21300000, guid: af2f6402e034c194ba32107d365d2f60, type: 3}
+      - {fileID: 21300000, guid: 313dc97778562944bbf0f5d3c083e72b, type: 3}
+      - {fileID: 21300000, guid: a7ecde7c785fdbd4194183f845c9411b, type: 3}
+      - {fileID: 21300000, guid: 3de98ca8b00828b41bb405642b6dfec3, type: 3}
+      - {fileID: 21300000, guid: cc800618556a6784c99b5aa4c681c93d, type: 3}
+      - {fileID: 21300000, guid: 9be63efd71f44e047b12e182af4bd6b1, type: 3}
+      - {fileID: 21300000, guid: c6993c14d14663647ac012b01f7dae35, type: 3}
+      - {fileID: 21300000, guid: 95e7d1c4321452441b54363ccd6f2f1b, type: 3}
+      - {fileID: 21300000, guid: 32798685bb6eb8740ac8163e518ec1d1, type: 3}
+      - {fileID: 21300000, guid: 5316f65d4687d934db29d4f50a4a67f1, type: 3}
+      - {fileID: 21300000, guid: 7b3bbf43509de304bb62178e374fb293, type: 3}
+      - {fileID: 21300000, guid: d3e83dd334d322349a322c82e977d74c, type: 3}
+      - {fileID: 21300000, guid: 1f18623a96e6a664a9362512e99b7720, type: 3}
+      - {fileID: 21300000, guid: a98e50a684af81546b44031ac8ba62c2, type: 3}
+      - {fileID: 21300000, guid: 3e6ca0d09e0983f438e35cc191e96481, type: 3}
+      - {fileID: 21300000, guid: a3d0470ab040d8347b691b1509a0d930, type: 3}
+      - {fileID: 21300000, guid: 428753d0c9d1ce148a23b148d71062e7, type: 3}
+      - {fileID: 21300000, guid: 299268f6309824546b5209068fcb7d54, type: 3}
+      - {fileID: 21300000, guid: 8666ad3918d03464f90dd5887205b7e2, type: 3}
+      - {fileID: 21300000, guid: 75956ac641923f94288fc0db54b5beb2, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 27
+    clip:
+      _clipName: boss_warden_poisonfieldcast
+      _frames:
+      - {fileID: 21300000, guid: 648c53433f00fb245a6cba932658a4fc, type: 3}
+      - {fileID: 21300000, guid: 9b430d96ecff9534e8c9680edb94313c, type: 3}
+      - {fileID: 21300000, guid: ec01a1fe1b8c04d40859f7e6294cb942, type: 3}
+      - {fileID: 21300000, guid: ec2e868bfb5550b42a9911f664986b65, type: 3}
+      - {fileID: 21300000, guid: 4f97157235813af4ea907290514568a8, type: 3}
+      - {fileID: 21300000, guid: 0f5e865fc7946cf40a2511481800616a, type: 3}
+      - {fileID: 21300000, guid: 0939c15349eebbd469f4213fa0b4a2d0, type: 3}
+      - {fileID: 21300000, guid: 6c40f46618662dd42bdec732fc604678, type: 3}
+      - {fileID: 21300000, guid: 2f200152f096a9842bac8ea9f6996438, type: 3}
+      - {fileID: 21300000, guid: 42f8496ede7430d44b449ece18a00f1f, type: 3}
+      - {fileID: 21300000, guid: d36af0aa2eed7fc49af1e34ca478c33b, type: 3}
+      - {fileID: 21300000, guid: e3f181d0fc373234185b7ff7aee76bd4, type: 3}
+      - {fileID: 21300000, guid: 2619316cbf9d6da4082cbcd7ce919b72, type: 3}
+      - {fileID: 21300000, guid: bd2a558931a39864c98b1cbf97f3226f, type: 3}
+      - {fileID: 21300000, guid: 2465d1d1e15080648b141d88581fd9aa, type: 3}
+      - {fileID: 21300000, guid: 2dffafbcc05579742b7fb8c7d5702134, type: 3}
+      - {fileID: 21300000, guid: 482969b6037dc22458b956c62c24e10d, type: 3}
+      - {fileID: 21300000, guid: fed3ccd1e3e155e48ac16599a27682cc, type: 3}
+      - {fileID: 21300000, guid: d963e6d326ac90e499f1201bae9de2f3, type: 3}
+      - {fileID: 21300000, guid: 5b815511bf512e449a02f576fd1260ba, type: 3}
+      - {fileID: 21300000, guid: fe893edebc259a74f9dbe57d27385d97, type: 3}
+      - {fileID: 21300000, guid: b23b00fd63646f04985423cc07d54f14, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 19
+    clip:
+      _clipName: boss_warden_jumpstart
+      _frames:
+      - {fileID: 21300000, guid: c28e4d906632c4b4b821527a50b51b96, type: 3}
+      - {fileID: 21300000, guid: 4207098806eea31469d68a70c0ba13b6, type: 3}
+      - {fileID: 21300000, guid: 7372e7fafec99e048bee961974f4cb8b, type: 3}
+      - {fileID: 21300000, guid: d851d66e4aa4d35479ecaaee94a776e2, type: 3}
+      - {fileID: 21300000, guid: a69642e468c560342b73d7899168e0d3, type: 3}
+      - {fileID: 21300000, guid: ca58c31b215085b42a762d090a3ff505, type: 3}
+      - {fileID: 21300000, guid: 5508ef9a0d0afef47b88ae86c64531f1, type: 3}
+      - {fileID: 21300000, guid: a1e35f84746945148bc84a1b450b65fc, type: 3}
+      - {fileID: 21300000, guid: fda3252e452673a4b85f947c58832c26, type: 3}
+      - {fileID: 21300000, guid: 0cdbd4e28db08704582a68f95dcbd538, type: 3}
+      - {fileID: 21300000, guid: 489092c636d839444b7c2bdcefaac7e8, type: 3}
+      - {fileID: 21300000, guid: 104f75ab83c1463479b1c7606c84bdf2, type: 3}
+      - {fileID: 21300000, guid: a1e02e94ae9d6f74ca8d6f47f2682b22, type: 3}
+      - {fileID: 21300000, guid: 097fa93159cc7364a97af16d21255dae, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 20
+    clip:
+      _clipName: boss_warden_jump
+      _frames:
+      - {fileID: 21300000, guid: b6a2cd4f7ea812e4fb765b85144e6491, type: 3}
+      - {fileID: 21300000, guid: f120fc1e6b390ae4eb2139688fbe3b85, type: 3}
+      - {fileID: 21300000, guid: 2fac927e497c17a4f8e2b7e8ac43e686, type: 3}
+      - {fileID: 21300000, guid: a6ced7cdb82fef747ab8b0666fcb1253, type: 3}
+      - {fileID: 21300000, guid: 86587ac3b3c78804b89bc46f37becac6, type: 3}
+      - {fileID: 21300000, guid: db262667d781d5548a8c2d40984a55f2, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 1
+  - state: 21
+    clip:
+      _clipName: boss_warden_slam
+      _frames:
+      - {fileID: 21300000, guid: 5d57b96a385ea9846a421385a387a0e5, type: 3}
+      - {fileID: 21300000, guid: f89769e91813f954eb3f81a53c93b31d, type: 3}
+      - {fileID: 21300000, guid: c3126029abbabdb4daaefff9883df561, type: 3}
+      - {fileID: 21300000, guid: 654a0560228a7c44cbc68ee862251a4e, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 22
+    clip:
+      _clipName: boss_warden_slamrecover
+      _frames:
+      - {fileID: 21300000, guid: 121d2917786950b4e9e8e262ed566d55, type: 3}
+      - {fileID: 21300000, guid: 3a3ed22ac4c6bdf4ea72ffcf1f667177, type: 3}
+      - {fileID: 21300000, guid: b1d1e57a619e58e4c829ba616cc79919, type: 3}
+      - {fileID: 21300000, guid: 874ee2aabdebf2540965ffeee09b9a57, type: 3}
+      - {fileID: 21300000, guid: 7c96da67281c2014492fdeaf2b45067d, type: 3}
+      - {fileID: 21300000, guid: 77f7a86fda9434c42aa176cd5d7960c5, type: 3}
+      - {fileID: 21300000, guid: 54522f4d5f9bcc24097a528fc7b0b1ca, type: 3}
+      - {fileID: 21300000, guid: 766c2b3adfad81d4c9e5f09a01ab019a, type: 3}
+      - {fileID: 21300000, guid: 224eff4794dcb0e499d7144b97ee409f, type: 3}
+      - {fileID: 21300000, guid: 7d2d68ec8d2193440bbb3d637db1aaa8, type: 3}
+      - {fileID: 21300000, guid: 64688a1b9071d384a879af8b99b3a15a, type: 3}
+      - {fileID: 21300000, guid: c94a12bbcb2b9fa4e96cdb86a9fae5c7, type: 3}
+      - {fileID: 21300000, guid: baeb6c86c3209934da628bc2e97685a3, type: 3}
+      - {fileID: 21300000, guid: 42040458ae6a4734280151dffbd9999e, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 23
+    clip:
+      _clipName: boss_warden_death
+      _frames:
+      - {fileID: 21300000, guid: 7c702aa5cb3e97e4bbe4974bf07be4e4, type: 3}
+      - {fileID: 21300000, guid: 8e27fedcffed1be48894196108195f9c, type: 3}
+      - {fileID: 21300000, guid: 9b93a60fc49968644b0899334b60cc29, type: 3}
+      - {fileID: 21300000, guid: 741f6286d9f3ca64ca763a705ec1e105, type: 3}
+      - {fileID: 21300000, guid: 944b1d28f10bab447ab7f51e18e24ed8, type: 3}
+      - {fileID: 21300000, guid: b6392f7d706708d4085c199a344adeac, type: 3}
+      - {fileID: 21300000, guid: 2f1c767267d59dc44babc182ff4d0ace, type: 3}
+      - {fileID: 21300000, guid: f480ed9249663134eafcf456c0c46e9b, type: 3}
+      - {fileID: 21300000, guid: 6e7a4f0d0a5aa064eb7fcc59f908568e, type: 3}
+      - {fileID: 21300000, guid: 9537736b235f54240bb7fbf53c777cde, type: 3}
+      - {fileID: 21300000, guid: 08bec5cffd6d2904b9c4165700eda3ba, type: 3}
+      - {fileID: 21300000, guid: b811b5181ed95ed4f8a81a1794ccc760, type: 3}
+      - {fileID: 21300000, guid: 89a1ada1caec0e64598b34616520c95c, type: 3}
+      - {fileID: 21300000, guid: f1785e82e8e40e743839fa20ab9f2ccf, type: 3}
+      - {fileID: 21300000, guid: 5ed8754e0ef67b0459ae592c8f149fb1, type: 3}
+      - {fileID: 21300000, guid: 4b0829377e838a347b752b8c9b01fbcc, type: 3}
+      - {fileID: 21300000, guid: 3fbfa016178056f4ba1918586e2dd885, type: 3}
+      - {fileID: 21300000, guid: a9e3be9804e7eb14bb6ac91884174a21, type: 3}
+      - {fileID: 21300000, guid: 86838a47808f7bc4b9f60127c454c529, type: 3}
+      - {fileID: 21300000, guid: dd8daf28b2787764d913ab210835888a, type: 3}
+      - {fileID: 21300000, guid: 4d9a1ac292571be4696dc138b879e9f8, type: 3}
+      - {fileID: 21300000, guid: 2a7a92c45026f20419bbda3de786f74b, type: 3}
+      - {fileID: 21300000, guid: 0a6432e3e1c4e4445adf2e03db3c3533, type: 3}
+      - {fileID: 21300000, guid: 2e2e8d0bc797bda49aeedf61678ab3d4, type: 3}
+      - {fileID: 21300000, guid: e9be1f09970bdde4ba9b92f6b28ece07, type: 3}
+      - {fileID: 21300000, guid: d8d5d70fe22b256479ee1eaefad44b18, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 0
+  _fallback:
+    _clipName: boss_warden_idlep1
+    _frames:
+    - {fileID: 21300000, guid: 412b17f4e1f793f46821ecb0f82cc751, type: 3}
+    - {fileID: 21300000, guid: 940d768617a95a543b448ca051572cb4, type: 3}
+    - {fileID: 21300000, guid: 47b331bdf77c8c548baa5cc3c739f3e9, type: 3}
+    - {fileID: 21300000, guid: e8612c27ae6443c418971e1387735913, type: 3}
+    - {fileID: 21300000, guid: 9bf73996789bed54d8e7c774b3d6f6ec, type: 3}
+    - {fileID: 21300000, guid: aa17b48139c88c44f962522d3d08b1f5, type: 3}
+    _framesPerSecond: 8
+    _isLooping: 1
+  _requiredStates: 010000000200000003000000040000000000000018000000060000000700000008000000190000000c0000000d0000000e0000000f000000100000001100000012000000090000000a0000000b0000001a0000001b0000001300000014000000150000001600000017000000

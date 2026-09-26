@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fae553a26d5219b4c88495b664062a28, type: 3}
+  m_Name: warden_pauldron
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.ItemDefinition
+  _itemId: warden_pauldron
+  _displayName: "\u041D\u0430\u043F\u043B\u0456\u0447\u043D\u0438\u043A \u0412\u0430\u0440\u0442\u043E\u0432\u043E\u0433\u043E"
+  _description: "\u041D\u0430\u043F\u043B\u0456\u0447\u043D\u0438\u043A \u043B\u0456\u0441\u043E\u0432\u043E\u0457
+    \u0432\u0430\u0440\u0442\u0438, \u043F\u0440\u043E\u0448\u0438\u0442\u0438\u0439
+    \u043A\u043E\u0440\u0456\u043D\u043D\u044F\u043C."
+  _category: 3
+  _rarity: 2
+  _icon: {fileID: 0}
+  _isStackable: 1
+  _maxStack: 1
+  _isUnique: 1
+  _autosaveOnAcquire: 0
+  _equipment: {fileID: 11400000, guid: 543562a984c87d04299db60b6783a9eb, type: 2}
+  _baseValue: 190
+  _pickupColor: {r: 0.42, g: 0.5, b: 0.42, a: 1}

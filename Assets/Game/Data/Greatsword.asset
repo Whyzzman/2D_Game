@@ -1,0 +1,121 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0454e77d929ac8c4b942f2de05a0d90d, type: 3}
+  m_Name: Greatsword
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.WeaponDefinition
+  _itemId: iron_greatsword
+  _modifiers: []
+  _displayName: "\u0417\u0430\u043B\u0456\u0437\u043D\u0438\u0439 \u0414\u0432\u043E\u0440\u0443\u0447\u043D\u0438\u043A"
+  _weaponType: 1
+  _baseDamage: 34
+  _attackSpeed: 0.78
+  _staminaMultiplier: 1.6
+  _staggerMultiplier: 1.7
+  _knockbackMultiplier: 1.5
+  _critChance: 0
+  _critMultiplier: 1.5
+  _comboResetTime: 0.8
+  _strengthScaling: 0.9
+  _dexterityScaling: 0.1
+  _intelligenceScaling: 0
+  _strengthRequirement: 10
+  _dexterityRequirement: 3
+  _lightCombo:
+  - _displayName: Wide Swing
+    _animationState: GreatLight1
+    _damage: 0
+    _damageMultiplier: 0.85
+    _damageType: 0
+    _staminaCost: 10
+    _staggerDamage: 20
+    _knockback: 5
+    _guardDamage: 10
+    _hitStop: 0.05
+    _isUnblockable: 0
+    _isParryable: 1
+    _windup: 0.24
+    _activeTime: 0.1
+    _recovery: 0.3
+    _comboLinkTime: 0.34
+    _cancelableAfter: 0.3
+    _hitboxOffset: {x: 1.05, y: 0.05}
+    _hitboxSize: {x: 1.9, y: 1.5}
+    _movementScale: 0.2
+    _statusBuildup: []
+  - _displayName: Reverse Swing
+    _animationState: GreatLight2
+    _damage: 0
+    _damageMultiplier: 0.95
+    _damageType: 0
+    _staminaCost: 10
+    _staggerDamage: 24
+    _knockback: 6
+    _guardDamage: 12
+    _hitStop: 0.05
+    _isUnblockable: 0
+    _isParryable: 1
+    _windup: 0.22
+    _activeTime: 0.1
+    _recovery: 0.34
+    _comboLinkTime: 0.33
+    _cancelableAfter: 0.3
+    _hitboxOffset: {x: 1.1, y: 0.05}
+    _hitboxSize: {x: 2, y: 1.55}
+    _movementScale: 0.15
+    _statusBuildup: []
+  - _displayName: Overhead Finisher
+    _animationState: GreatLight3
+    _damage: 0
+    _damageMultiplier: 1.35
+    _damageType: 0
+    _staminaCost: 15
+    _staggerDamage: 40
+    _knockback: 10
+    _guardDamage: 26
+    _hitStop: 0.09
+    _isUnblockable: 0
+    _isParryable: 1
+    _windup: 0.34
+    _activeTime: 0.12
+    _recovery: 0.52
+    _comboLinkTime: 0.9
+    _cancelableAfter: 0.5
+    _hitboxOffset: {x: 1.15, y: 0.05}
+    _hitboxSize: {x: 2.3, y: 1.8}
+    _movementScale: 0.05
+    _statusBuildup: []
+  _heavyAttack:
+    _displayName: Great Overhead
+    _animationState: GreatHeavy
+    _damage: 0
+    _damageMultiplier: 1.9
+    _damageType: 0
+    _staminaCost: 25
+    _staggerDamage: 60
+    _knockback: 12
+    _guardDamage: 60
+    _hitStop: 0.12
+    _isUnblockable: 0
+    _isParryable: 1
+    _windup: 0.5
+    _activeTime: 0.14
+    _recovery: 0.62
+    _comboLinkTime: 1.1
+    _cancelableAfter: 0.66
+    _hitboxOffset: {x: 1.2, y: 0.05}
+    _hitboxSize: {x: 2.5, y: 2}
+    _movementScale: 0
+    _statusBuildup: []
+  _visualColor: {r: 0.72, g: 0.74, b: 0.8, a: 1}
+  _visualSize: {x: 0.2, y: 1.35}
+  _visualOffset: {x: 0.36, y: 0.2}
+  _visualSprite: {fileID: 0}

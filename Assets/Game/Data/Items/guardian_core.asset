@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fae553a26d5219b4c88495b664062a28, type: 3}
+  m_Name: guardian_core
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.ItemDefinition
+  _itemId: guardian_core
+  _displayName: "\u042F\u0434\u0440\u043E \u0421\u0442\u0440\u0430\u0436\u0430"
+  _description: "\u042F\u0434\u0440\u043E, \u0437\u0430\u043B\u0438\u0448\u0435\u043D\u0435
+    \u0421\u0442\u0440\u0430\u0436\u0435\u043C \u0413\u0440\u043E\u0431\u043D\u0438\u0446\u0456."
+  _category: 7
+  _rarity: 4
+  _icon: {fileID: 0}
+  _isStackable: 1
+  _maxStack: 1
+  _isUnique: 1
+  _autosaveOnAcquire: 1
+  _equipment: {fileID: 0}
+  _baseValue: 0
+  _pickupColor: {r: 1, g: 0.78, b: 0.35, a: 1}

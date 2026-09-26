@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f262bfdbc3db1d1448a3cf59cba06016, type: 3}
+  m_Name: audio_archerdraw
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.AudioEvent
+  _id: 96
+  _clips:
+  - {fileID: 8300000, guid: c3a8a4b8e7e164d4da2fa70205a3a1fd, type: 3}
+  - {fileID: 8300000, guid: 83aa3fb1aa0f67849838875ed9120b73, type: 3}
+  - {fileID: 8300000, guid: 1cfc35aa60bfbe04daacb66db84a3b0a, type: 3}
+  _bus: 2
+  _volume: 0.6
+  _volumeJitter: 0.06
+  _pitchJitter: 0.045
+  _spatialBlend: 0.55
+  _maxDistance: 26
+  _maxVoices: 3
+  _minimumInterval: 0
+  _priority: 86
+  _loop: 0

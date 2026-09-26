@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<title>Тінь Забутого Королівства — Персонаж</title>
+<link rel="stylesheet" href="../_shared/ui.css">
+<style>
+  .screen { position: absolute; inset: 64px 96px; display: flex; flex-direction: column; }
+  .screen__body { flex: 1; display: grid; grid-template-columns: 1fr 1fr 380px; gap: var(--s6); min-height: 0; padding: var(--s5); }
+
+  .level-head { display: flex; align-items: baseline; gap: var(--s4); margin-bottom: var(--s3); }
+  .level-num { font-family: var(--font-display); font-size: 52px; color: var(--gold-bright); line-height: 1; }
+  .xp-bar { height: 12px; margin-top: var(--s2); }
+
+  /* Розподіл характеристик: назва, значення, попередній перегляд, кнопка. */
+  .stat-row {
+    display: grid;
+    grid-template-columns: 1fr auto auto 40px;
+    align-items: center;
+    gap: var(--s3);
+    padding: var(--s3) var(--s2);
+    border-bottom: 1px solid rgba(58,47,37,0.6);
+  }
+  .stat-row.is-focused { background: linear-gradient(90deg, rgba(138,116,52,0.14), transparent); box-shadow: inset 2px 0 0 var(--gold); }
+  .stat-row__name { display: flex; flex-direction: column; gap: 2px; }
+  .stat-row__name b { font-size: var(--fs-body); color: var(--ink-bright); font-weight: 500; }
+  .stat-row__name span { font-size: var(--fs-micro); color: var(--ink-dim); }
+  .stat-row__value { font-family: var(--font-display); font-size: var(--fs-lead); color: var(--ink-bright); font-variant-numeric: tabular-nums; }
+  /* Попередній перегляд: видно, що дасть очко, до того як його витратити. */
+  .stat-row__preview { font-size: var(--fs-small); color: var(--ok); font-variant-numeric: tabular-nums; min-width: 54px; text-align: right; }
+  .stat-add {
+    width: 34px; height: 34px;
+    display: grid; place-items: center;
+    font-size: 20px; line-height: 1;
+    color: var(--gold-bright);
+    background: linear-gradient(180deg, var(--surface-raised), var(--surface-sunken));
+    border: 1px solid var(--gold-dim);
+    cursor: pointer;
+  }
+  .stat-add[disabled] { color: var(--ink-dim); border-color: var(--edge-mid); cursor: not-allowed; opacity: 0.5; }
+
+  .points-banner {
+    display: flex; align-items: center; gap: var(--s3);
+    padding: var(--s3) var(--s4);
+    border: 1px solid var(--gold-dim);
+    background: rgba(138,116,52,0.1);
+    font-size: var(--fs-small);
+    margin-bottom: var(--s4);
+  }
+  .points-banner b { color: var(--gold-bright); font-size: var(--fs-lead); font-family: var(--font-display); }
+
+  /* Пояснення характеристики — поруч, а не у спливаючій підказці, яку легко проґавити. */
+  .tip { border-left: 2px solid var(--gold-dim); padding: var(--s3) var(--s4); background: rgba(138,116,52,0.07); }
+  .tip h4 { margin: 0 0 var(--s2); font-family: var(--font-display); font-size: var(--fs-body); color: var(--ink-bright); }
+  .tip p { margin: 0 0 var(--s2); font-size: var(--fs-small); line-height: 1.5; color: var(--ink-muted); }
+  .tip ul { margin: 0; padding-left: 18px; font-size: var(--fs-small); color: var(--ink); }
+  .tip li { margin-bottom: 3px; }
+
+  .footer { display: flex; align-items: center; gap: var(--s5); padding: var(--s3) var(--s5); border-top: 1px solid var(--edge-mid); font-size: var(--fs-small); }
+  .hint { display: flex; align-items: center; gap: var(--s2); color: var(--ink-muted); }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="gameplay-backdrop"></div>
+  <div class="scrim">
+    <div class="panel panel--royal screen">
+
+      <div class="panel__header">
+        <h1 class="panel__title">Персонаж</h1>
+        <div class="tabs" style="border:none">
+          <button class="tab">Спорядження</button>
+          <button class="tab">Екіпірування</button>
+          <button class="tab is-active">Персонаж <span class="pip"></span></button>
+          <button class="tab">Уміння <span class="pip"></span></button>
+          <button class="tab">Закляття</button>
+        </div>
+      </div>
+
+      <div class="screen__body">
+
+        <!-- рівень і характеристики -->
+        <div>
+          <div class="level-head">
+            <span class="level-num">7</span>
+            <div style="flex:1">
+              <div class="row">
+                <span class="section-label" style="border:none; margin:0; padding:0">Рівень</span>
+                <span class="spacer"></span>
+                <span class="muted tabular" style="font-size:var(--fs-micro)">1 240 / 1 810 досвіду</span>
+              </div>
+              <div class="bar xp-bar">
+                <div class="bar__fill" style="width:68%; background:linear-gradient(180deg,var(--gold),var(--gold-dim))"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="points-banner">
+            <span class="pip"></span>
+            <span>Нерозподілених очок</span>
+            <b>3</b>
+          </div>
+
+          <div class="stat-row is-focused">
+            <div class="stat-row__name"><b>Сила</b><span>Шкода зброєю, важке спорядження</span></div>
+            <span class="stat-row__value">12</span>
+            <span class="stat-row__preview">→ 13</span>
+            <button class="stat-add">+</button>
+          </div>
+          <div class="stat-row">
+            <div class="stat-row__name"><b>Спритність</b><span>Швидка зброя, критичний шанс</span></div>
+            <span class="stat-row__value">9</span>
+            <span class="stat-row__preview"></span>
+            <button class="stat-add">+</button>
+          </div>
+          <div class="stat-row">
+            <div class="stat-row__name"><b>Живучість</b><span>Здоров'я, опір станам</span></div>
+            <span class="stat-row__value">14</span>
+            <span class="stat-row__preview"></span>
+            <button class="stat-add">+</button>
+          </div>
+          <div class="stat-row">
+            <div class="stat-row__name"><b>Витривалість</b><span>Запас витривалості, вага</span></div>
+            <span class="stat-row__value">11</span>
+            <span class="stat-row__preview"></span>
+            <button class="stat-add">+</button>
+          </div>
+          <div class="stat-row">
+            <div class="stat-row__name"><b>Інтелект</b><span>Сила заклять, мана</span></div>
+            <span class="stat-row__value">8</span>
+            <span class="stat-row__preview"></span>
+            <button class="stat-add">+</button>
+          </div>
+          <div class="stat-row">
+            <div class="stat-row__name"><b>Воля</b><span>Сила Тіні, опір псуванню</span></div>
+            <span class="stat-row__value">5</span>
+            <span class="stat-row__preview"></span>
+            <button class="stat-add">+</button>
+          </div>
+        </div>
+
+        <!-- пояснення обраної характеристики -->
+        <div class="col">
+          <div>
+            <h3 class="section-label">Що дає Сила</h3>
+            <div class="tip">
+              <h4>Сила 12 → 13</h4>
+              <p>
+                Визначає шкоду зброєю з масштабуванням за Силою і дозволяє носити
+                важче спорядження. Понад 40 приріст сповільнюється.
+              </p>
+              <ul>
+                <li>Атака <b>34 → 36</b></li>
+                <li>Межа навантаження <b>35.0 → 36.2</b></li>
+                <li>Вимога Дворучника: <b>16</b> — лишилося 4</li>
+              </ul>
+            </div>
+          </div>
+
+          <div>
+            <h3 class="section-label">Похідні характеристики</h3>
+            <table class="stats">
+              <tr><td>Атака</td><td>34</td></tr>
+              <tr><td>Захист</td><td>21</td></tr>
+              <tr><td>Макс. здоров'я</td><td>180</td></tr>
+              <tr><td>Макс. мана</td><td>80</td></tr>
+              <tr><td>Макс. витривалість</td><td>124</td></tr>
+              <tr><td>Опір рівноваги</td><td>12%</td></tr>
+              <tr><td>Межа навантаження</td><td>35.0</td></tr>
+            </table>
+          </div>
+        </div>
+
+        <!-- зведення -->
+        <div class="col">
+          <div>
+            <h3 class="section-label">Стан</h3>
+            <table class="stats">
+              <tr><td>Здоров'я</td><td>124 / 180</td></tr>
+              <tr><td>Мана</td><td>37 / 80</td></tr>
+              <tr><td>Витривалість</td><td>103 / 124</td></tr>
+            </table>
+          </div>
+          <div>
+            <h3 class="section-label">Опір шкоді</h3>
+            <table class="stats">
+              <tr><td>Фізична</td><td>8%</td></tr>
+              <tr><td>Вогонь</td><td>0%</td></tr>
+              <tr><td>Лід</td><td>0%</td></tr>
+              <tr><td>Темрява</td><td>−10%</td></tr>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="footer">
+        <span class="hint"><span class="glyph glyph--pad">A</span> Вкласти очко</span>
+        <span class="hint"><span class="glyph">↕</span> Характеристика</span>
+        <span class="hint"><span class="glyph">Esc</span> Назад</span>
+        <span class="spacer"></span>
+        <span class="muted">Очки витрачаються одразу й не повертаються</span>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="viewport-note"></div>
+<script src="../_shared/stage.js"></script>
+</body>
+</html>

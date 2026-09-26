@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f262bfdbc3db1d1448a3cf59cba06016, type: 3}
+  m_Name: audio_houndstep
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.AudioEvent
+  _id: 89
+  _clips:
+  - {fileID: 8300000, guid: 26c467af547fab24d9759e33a3ff8252, type: 3}
+  - {fileID: 8300000, guid: a97ef6a08c8b0d541adc898208d0c825, type: 3}
+  - {fileID: 8300000, guid: 2e832db67b3a0cf418f9b916c1f37c3a, type: 3}
+  - {fileID: 8300000, guid: 6ebf85ea6e6e13d4b9bbc2b5b08cc2e1, type: 3}
+  - {fileID: 8300000, guid: 00ac406a4f1c9204191c99e235f5f969, type: 3}
+  _bus: 2
+  _volume: 0.3
+  _volumeJitter: 0.06
+  _pitchJitter: 0.045
+  _spatialBlend: 0.5
+  _maxDistance: 26
+  _maxVoices: 4
+  _minimumInterval: 0.08
+  _priority: 14
+  _loop: 0

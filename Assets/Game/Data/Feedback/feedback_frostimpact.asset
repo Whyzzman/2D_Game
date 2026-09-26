@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1948b099c584578408b2536d2dd0cc7d, type: 3}
+  m_Name: feedback_frostimpact
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.FeedbackProfile
+  _burst:
+    _clipName: vfx_frost_impact
+    _frames:
+    - {fileID: 21300000, guid: 54f3d6c2c3c7b904bad9fab70c9b1f8c, type: 3}
+    - {fileID: 21300000, guid: 7c4fb25010b60f7468f168fcae9d7baa, type: 3}
+    - {fileID: 21300000, guid: a4f541e5425b2bb47ad7972890bdc0e6, type: 3}
+    - {fileID: 21300000, guid: 2676b7ece8dbc844aafa5a069799347a, type: 3}
+    - {fileID: 21300000, guid: 7f2121544ece64145aca5fb32d1b3284, type: 3}
+    - {fileID: 21300000, guid: dd44b1d00009ec944b38d5c6b6b7eb4f, type: 3}
+    - {fileID: 21300000, guid: 69f59ddf1fcb5ee4e9e5d407874620f2, type: 3}
+    _framesPerSecond: 26
+    _isLooping: 0
+  _tint: {r: 1, g: 1, b: 1, a: 1}
+  _scale: 1
+  _facesHitDirection: 1
+  _sortingLayer: VFXFront
+  _sortingOrder: 0
+  _hitStop: 0.04
+  _shake: 2
+  _shakeScale: 1
+  _shakeVerticalBias: 1
+  _screenFlash: 0
+  _flashColor: {r: 1, g: 1, b: 1, a: 1}
+  _lightColor: {r: 0.56, g: 0.84, b: 1, a: 0.75}
+  _lightRadius: 2.8
+  _lightDuration: 0.18
+  _priority: 22
+  _soundEvent: frost
+  _haptic: 0

@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f4cacb77cb2d7d4fbb0176dba278d4b, type: 3}
+  m_Name: shadow_dash
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.SkillDefinition
+  _skillId: shadow_dash
+  _displayName: "\u0420\u0438\u0432\u043E\u043A \u0422\u0456\u043D\u0456"
+  _description: "\u0420\u0438\u0432\u043E\u043A \u043A\u0440\u0456\u0437\u044C \u0432\u043E\u0440\u043E\u0433\u0430,
+    \u0430\u043B\u0435 \u043D\u0435 \u0441\u0442\u0456\u043D\u0438."
+  _branch: 3
+  _type: 1
+  _cost: 1
+  _maxRank: 1
+  _requiredLevel: 1
+  _prerequisites:
+  - shadow_veiled_step
+  _effects: []
+  _active:
+    _attack:
+      _displayName: Attack
+      _animationState: ShadowDash
+      _damage: 10
+      _damageMultiplier: 1
+      _damageType: 0
+      _staminaCost: 20
+      _staggerDamage: 5
+      _knockback: 4
+      _guardDamage: 0
+      _hitStop: 0.04
+      _isUnblockable: 0
+      _isParryable: 1
+      _windup: 0.01
+      _activeTime: 0.24
+      _recovery: 0.03
+      _comboLinkTime: 0.26
+      _cancelableAfter: 0.2
+      _hitboxOffset: {x: 0, y: 0}
+      _hitboxSize: {x: 1.2, y: 1.5}
+      _movementScale: 0.2
+      _statusBuildup: []
+    _cooldown: 3
+    _requiresMeleeWeapon: 0
+    _lungeSpeed: 0
+    _invulnerability: 0
+    _tags: []
+    _shadowAction: 1
+    _manaCost: 15
+    _animationState: 0
+  _grantedSpellId: 
+  _icon: {fileID: 0}
+  _position: {x: 2, y: 1}

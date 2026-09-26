@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fae553a26d5219b4c88495b664062a28, type: 3}
+  m_Name: old_sword
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.ItemDefinition
+  _itemId: old_sword
+  _displayName: "\u0421\u0442\u0430\u0440\u0438\u0439 \u041C\u0435\u0447"
+  _description: "\u041F\u043E\u0442\u0435\u0440\u0442\u0438\u0439 \u043C\u0435\u0447
+    \u0432\u0430\u0440\u0442\u043E\u0432\u043E\u0433\u043E. \u0414\u043E\u0441\u0456
+    \u0433\u043E\u0441\u0442\u0440\u0438\u0439."
+  _category: 2
+  _rarity: 0
+  _icon: {fileID: 0}
+  _isStackable: 1
+  _maxStack: 1
+  _isUnique: 1
+  _autosaveOnAcquire: 1
+  _equipment: {fileID: 11400000, guid: c7e24765a62867f499f09b73e0cc8d00, type: 2}
+  _baseValue: 50
+  _pickupColor: {r: 0.8, g: 0.8, b: 0.86, a: 1}

@@ -1,0 +1,188 @@
+/*
+ * Title screen. Follows design/ui/menus/menus.html (frames 1-2): the title, a vertical list,
+ * quiet service information in the corners. The Tomb behind it is a real lit scene.
+ */
+
+.menu {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    color: rgb(216, 203, 180);
+    font-size: 17px;
+}
+
+.menu__vignette,
+.menu__fade {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    -unity-background-scale-mode: stretch-to-fill;
+}
+
+.menu__fade {
+    background-color: rgb(4, 3, 3);
+    opacity: 1;
+    transition-property: opacity;
+    transition-duration: 2.2s;
+}
+
+.menu__fade--open {
+    opacity: 0;
+}
+
+.menu__fade--leaving {
+    opacity: 1;
+    transition-duration: 0.9s;
+}
+
+.display {
+    -unity-font-style: bold;
+}
+
+.ornament {
+    -unity-background-scale-mode: stretch-to-fill;
+    height: 22px;
+}
+
+.menu__front {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 16%;
+    align-items: center;
+}
+
+.title {
+    font-size: 96px;
+    letter-spacing: 18px;
+    color: rgb(240, 230, 210);
+    -unity-text-align: middle-center;
+    text-shadow: 0 6px 20px rgba(0, 0, 0, 0.95);
+    -unity-text-outline-width: 0.5px;
+    -unity-text-outline-color: rgba(0, 0, 0, 0.85);
+    margin: 0;
+    padding: 0;
+}
+
+.title--second {
+    font-size: 58px;
+    letter-spacing: 9px;
+    margin-top: -6px;
+}
+
+.title__rule {
+    width: 620px;
+    margin: 10px 0 6px 0;
+}
+
+.title__small {
+    font-size: 22px;
+    letter-spacing: 12px;
+    color: rgb(138, 116, 52);
+    margin-bottom: 54px;
+}
+
+.menu-list {
+    width: 400px;
+}
+
+.menu-button {
+    height: 52px;
+    margin: 0 0 12px 0;
+    font-size: 20px;
+    letter-spacing: 4px;
+    color: rgb(216, 203, 180);
+    background-color: rgba(15, 13, 11, 0.72);
+    border-width: 1px;
+    border-color: rgb(58, 47, 37);
+    border-radius: 2px;
+    -unity-text-align: middle-center;
+    transition-property: background-color, border-color, color, translate;
+    transition-duration: 0.15s;
+}
+
+.menu-button:hover,
+.menu-button--focused {
+    color: rgb(240, 230, 210);
+    background-color: rgba(60, 46, 24, 0.85);
+    border-color: rgb(201, 161, 74);
+    border-left-width: 3px;
+    translate: 4px 0;
+}
+
+/* Disabled, not hidden: it has to read as "there is no save", so it stays legible. */
+.menu-button:disabled {
+    color: rgb(142, 131, 117);
+    background-color: rgba(11, 9, 7, 0.78);
+    border-color: rgb(58, 47, 37);
+    translate: 0 0;
+    opacity: 0.75;
+}
+
+.menu-button--small {
+    width: 220px;
+    align-self: center;
+    margin-top: 18px;
+}
+
+.options {
+    position: absolute;
+    left: 50%;
+    top: 26%;
+    width: 640px;
+    translate: -50% 0;
+    padding: 28px 40px 24px 40px;
+    background-color: rgba(15, 13, 11, 0.94);
+    border-width: 1px;
+    border-color: rgb(138, 116, 52);
+    display: none;
+}
+
+.options--open {
+    display: flex;
+}
+
+.options__title {
+    font-size: 30px;
+    letter-spacing: 6px;
+    color: rgb(240, 230, 210);
+    -unity-text-align: middle-center;
+}
+
+.options__rule {
+    margin: 6px 60px 18px 60px;
+}
+
+.option {
+    margin: 6px 0;
+}
+
+.option > Label {
+    min-width: 240px;
+    font-size: 17px;
+    color: rgb(216, 203, 180);
+}
+
+.option--focused > Label {
+    color: rgb(232, 205, 138);
+}
+
+.save-meta {
+    position: absolute;
+    left: 64px;
+    bottom: 56px;
+    font-size: 15px;
+    color: rgb(142, 131, 117);
+}
+
+.build-tag {
+    position: absolute;
+    right: 64px;
+    bottom: 56px;
+    font-size: 13px;
+    color: rgb(95, 87, 76);
+}

@@ -1,0 +1,816 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcc997f2240858c4c9de2ad27c51079e, type: 3}
+  m_Name: WorldGraph
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.WorldGraph
+  _zones:
+  - _zoneId: zone_forgotten_tomb
+    _displayName: "\u0417\u0430\u0431\u0443\u0442\u0430 \u0413\u0440\u043E\u0431\u043D\u0438\u0446\u044F"
+    _titleCard: "\u0417\u0430\u0431\u0443\u0442\u0430 \u0413\u0440\u043E\u0431\u043D\u0438\u0446\u044F"
+    _sceneName: TombTrial
+    _defaultSpawn: {x: -12, y: 0.85}
+    _isImplemented: 1
+    _mapTint: {r: 0.72, g: 0.66, b: 0.55, a: 1}
+  - _zoneId: zone_withered_forest
+    _displayName: "\u0417\u0456\u0432'\u044F\u043B\u0438\u0439 \u041B\u0456\u0441"
+    _titleCard: "\u0417\u0456\u0432'\u044F\u043B\u0438\u0439 \u041B\u0456\u0441"
+    _sceneName: TombTrial
+    _defaultSpawn: {x: 80, y: 0.85}
+    _isImplemented: 1
+    _mapTint: {r: 0.5, g: 0.66, b: 0.46, a: 1}
+  - _zoneId: zone_unknown_east
+    _displayName: 
+    _titleCard: 
+    _sceneName: TombTrial
+    _defaultSpawn: {x: 0, y: 0}
+    _isImplemented: 0
+    _mapTint: {r: 0.4, g: 0.4, b: 0.42, a: 1}
+  _areas:
+  - _areaId: room_tomb_entrance
+    _zoneId: zone_forgotten_tomb
+    _displayName: "\u0412\u0445\u0456\u0434 \u0434\u043E \u0413\u0440\u043E\u0431\u043D\u0438\u0446\u0456"
+    _mapPosition: {x: -1.45, y: 0}
+    _mapSize: {x: 1.35, y: 1.2}
+    _worldBounds:
+      serializedVersion: 2
+      x: -22
+      y: -8
+      width: 15
+      height: 26
+    _isSecret: 0
+    _isOptional: 0
+    _discoveryRule: 0
+    _requiredAbilityId: 
+    _iconType: 0
+    _bossId: 
+  - _areaId: room_tomb_burial_hall
+    _zoneId: zone_forgotten_tomb
+    _displayName: "\u041F\u043E\u0445\u043E\u0432\u0430\u043B\u044C\u043D\u0430 \u0437\u0430\u043B\u0430"
+    _mapPosition: {x: -0.05, y: 0}
+    _mapSize: {x: 1.15, y: 1.2}
+    _worldBounds:
+      serializedVersion: 2
+      x: -7
+      y: -8
+      width: 13
+      height: 26
+    _isSecret: 0
+    _isOptional: 0
+    _discoveryRule: 0
+    _requiredAbilityId: 
+    _iconType: 0
+    _bossId: 
+  - _areaId: room_tomb_guard_passage
+    _zoneId: zone_forgotten_tomb
+    _displayName: "\u041F\u0440\u043E\u0445\u0456\u0434 \u0432\u0430\u0440\u0442\u0438"
+    _mapPosition: {x: 1.325, y: 0}
+    _mapSize: {x: 1.3, y: 1.2}
+    _worldBounds:
+      serializedVersion: 2
+      x: 6
+      y: -8
+      width: 14.5
+      height: 26
+    _isSecret: 0
+    _isOptional: 0
+    _discoveryRule: 0
+    _requiredAbilityId: 
+    _iconType: 0
+    _bossId: 
+  - _areaId: room_tomb_collapsed_crypt
+    _zoneId: zone_forgotten_tomb
+    _displayName: "\u041E\u0431\u0432\u0430\u043B\u0435\u043D\u0438\u0439 \u0441\u043A\u043B\u0435\u043F"
+    _mapPosition: {x: 2.375, y: 0}
+    _mapSize: {x: 0.6, y: 1.2}
+    _worldBounds:
+      serializedVersion: 2
+      x: 20.5
+      y: -8
+      width: 6.5
+      height: 26
+    _isSecret: 0
+    _isOptional: 0
+    _discoveryRule: 0
+    _requiredAbilityId: 
+    _iconType: 0
+    _bossId: 
+  - _areaId: room_tomb_guardian_approach
+    _zoneId: zone_forgotten_tomb
+    _displayName: "\u041F\u0456\u0434\u0441\u0442\u0443\u043F \u0434\u043E \u0421\u0442\u0440\u0430\u0436\u0430"
+    _mapPosition: {x: 3.275, y: 0}
+    _mapSize: {x: 1, y: 1.2}
+    _worldBounds:
+      serializedVersion: 2
+      x: 27
+      y: -8
+      width: 11.5
+      height: 26
+    _isSecret: 0
+    _isOptional: 0
+    _discoveryRule: 0
+    _requiredAbilityId: 
+    _iconType: 0
+    _bossId: 
+  - _areaId: room_tomb_guardian_arena
+    _zoneId: zone_forgotten_tomb
+    _displayName: "\u0410\u0440\u0435\u043D\u0430 \u0421\u0442\u0440\u0430\u0436\u0430"
+    _mapPosition: {x: 5.05, y: 0}
+    _mapSize: {x: 2.25, y: 1.2}
+    _worldBounds:
+      serializedVersion: 2
+      x: 38.5
+      y: -8
+      width: 24
+      height: 26
+    _isSecret: 0
+    _isOptional: 0
+    _discoveryRule: 0
+    _requiredAbilityId: 
+    _iconType: 2
+    _bossId: guardian-of-the-tomb
+  - _areaId: room_tomb_royal_ossuary
+    _zoneId: zone_forgotten_tomb
+    _displayName: "\u041A\u043E\u0440\u043E\u043B\u0456\u0432\u0441\u044C\u043A\u0430
+      \u043A\u043E\u0441\u0442\u043D\u0438\u0446\u044F"
+    _mapPosition: {x: 1.35, y: 1.6}
+    _mapSize: {x: 0.7, y: 0.6}
+    _worldBounds:
+      serializedVersion: 2
+      x: 12
+      y: 7.2
+      width: 3
+      height: 2.1999998
+    _isSecret: 1
+    _isOptional: 1
+    _discoveryRule: 1
+    _requiredAbilityId: double-jump
+    _iconType: 5
+    _bossId: 
+  - _areaId: room_tomb_bell_shaft
+    _zoneId: zone_forgotten_tomb
+    _displayName: "\u0414\u0437\u0432\u043E\u043D\u043E\u0432\u0430 \u0448\u0430\u0445\u0442\u0430"
+    _mapPosition: {x: -0.48, y: 1.6}
+    _mapSize: {x: 0.7, y: 0.6}
+    _worldBounds:
+      serializedVersion: 2
+      x: -6.8
+      y: 10.4
+      width: 4
+      height: 2.1999998
+    _isSecret: 1
+    _isOptional: 1
+    _discoveryRule: 1
+    _requiredAbilityId: wall-run
+    _iconType: 5
+    _bossId: 
+  - _areaId: room_tomb_reliquary
+    _zoneId: zone_forgotten_tomb
+    _displayName: "\u0420\u0435\u043B\u0456\u043A\u0432\u0456\u0430\u0440\u0456\u0439"
+    _mapPosition: {x: 0.4, y: 1.6}
+    _mapSize: {x: 0.7, y: 0.6}
+    _worldBounds:
+      serializedVersion: 2
+      x: 3
+      y: 4
+      width: 2
+      height: 2.1999998
+    _isSecret: 0
+    _isOptional: 1
+    _discoveryRule: 1
+    _requiredAbilityId: air-dash
+    _iconType: 0
+    _bossId: 
+  - _areaId: room_forest_root_tunnel
+    _zoneId: zone_withered_forest
+    _displayName: "\u041A\u043E\u0440\u0435\u043D\u0435\u0432\u0438\u0439 \u0442\u0443\u043D\u0435\u043B\u044C"
+    _mapPosition: {x: 7.175, y: 0}
+    _mapSize: {x: 1.7, y: 1.2}
+    _worldBounds:
+      serializedVersion: 2
+      x: 62.5
+      y: -8
+      width: 18.5
+      height: 26
+    _isSecret: 0
+    _isOptional: 0
+    _discoveryRule: 0
+    _requiredAbilityId: 
+    _iconType: 0
+    _bossId: 
+  - _areaId: room_forest_entrance
+    _zoneId: zone_withered_forest
+    _displayName: "\u0423\u0437\u043B\u0456\u0441\u0441\u044F"
+    _mapPosition: {x: 9.55, y: 0}
+    _mapSize: {x: 2.75, y: 1.2}
+    _worldBounds:
+      serializedVersion: 2
+      x: 81
+      y: -8
+      width: 29
+      height: 26
+    _isSecret: 0
+    _isOptional: 0
+    _discoveryRule: 0
+    _requiredAbilityId: 
+    _iconType: 0
+    _bossId: 
+  - _areaId: room_forest_royal_road
+    _zoneId: zone_withered_forest
+    _displayName: "\u0417\u0440\u0443\u0439\u043D\u043E\u0432\u0430\u043D\u0438\u0439
+      \u043A\u043E\u0440\u043E\u043B\u0456\u0432\u0441\u044C\u043A\u0438\u0439 \u0448\u043B\u044F\u0445"
+    _mapPosition: {x: 12.2, y: 0}
+    _mapSize: {x: 2.25, y: 1.2}
+    _worldBounds:
+      serializedVersion: 2
+      x: 110
+      y: -8
+      width: 24
+      height: 26
+    _isSecret: 0
+    _isOptional: 0
+    _discoveryRule: 0
+    _requiredAbilityId: 
+    _iconType: 0
+    _bossId: 
+  - _areaId: room_forest_broken_arch
+    _zoneId: zone_withered_forest
+    _displayName: "\u0417\u043B\u0430\u043C\u0430\u043D\u0430 \u0430\u0440\u043A\u0430"
+    _mapPosition: {x: 14.05, y: 0}
+    _mapSize: {x: 1.15, y: 1.2}
+    _worldBounds:
+      serializedVersion: 2
+      x: 134
+      y: -8
+      width: 13
+      height: 26
+    _isSecret: 0
+    _isOptional: 0
+    _discoveryRule: 0
+    _requiredAbilityId: 
+    _iconType: 0
+    _bossId: 
+  - _areaId: room_forest_poison_grove
+    _zoneId: zone_withered_forest
+    _displayName: "\u041E\u0442\u0440\u0443\u0439\u043D\u0438\u0439 \u0433\u0430\u0439"
+    _mapPosition: {x: 16.4, y: 0}
+    _mapSize: {x: 3.25, y: 1.2}
+    _worldBounds:
+      serializedVersion: 2
+      x: 147
+      y: -8
+      width: 34
+      height: 26
+    _isSecret: 0
+    _isOptional: 0
+    _discoveryRule: 0
+    _requiredAbilityId: 
+    _iconType: 0
+    _bossId: 
+  - _areaId: room_forest_watchtower
+    _zoneId: zone_withered_forest
+    _displayName: "\u0420\u0443\u0457\u043D\u0438 \u0441\u0442\u043E\u0440\u043E\u0436\u043E\u0432\u043E\u0457
+      \u0432\u0435\u0436\u0456"
+    _mapPosition: {x: 19.65, y: 0}
+    _mapSize: {x: 2.95, y: 1.2}
+    _worldBounds:
+      serializedVersion: 2
+      x: 181
+      y: -8
+      width: 31
+      height: 19.9
+    _isSecret: 0
+    _isOptional: 0
+    _discoveryRule: 0
+    _requiredAbilityId: 
+    _iconType: 0
+    _bossId: 
+  - _areaId: room_forest_watchtower_top
+    _zoneId: zone_withered_forest
+    _displayName: "\u0412\u0435\u0440\u0448\u0438\u043D\u0430 \u0432\u0435\u0436\u0456"
+    _mapPosition: {x: 19.7, y: 1.9}
+    _mapSize: {x: 1.6, y: 0.9}
+    _worldBounds:
+      serializedVersion: 2
+      x: 186
+      y: 11.9
+      width: 20
+      height: 6.1000004
+    _isSecret: 0
+    _isOptional: 1
+    _discoveryRule: 0
+    _requiredAbilityId: wall-run
+    _iconType: 0
+    _bossId: 
+  - _areaId: room_forest_hunters_perch
+    _zoneId: zone_withered_forest
+    _displayName: "\u041C\u0438\u0441\u043B\u0438\u0432\u0441\u044C\u043A\u0438\u0439
+      \u043F\u043E\u043C\u0456\u0441\u0442"
+    _mapPosition: {x: 20.3, y: 3.1}
+    _mapSize: {x: 0.7, y: 0.6}
+    _worldBounds:
+      serializedVersion: 2
+      x: 201
+      y: 14.9
+      width: 4
+      height: 2.2000008
+    _isSecret: 1
+    _isOptional: 1
+    _discoveryRule: 1
+    _requiredAbilityId: double-jump
+    _iconType: 5
+    _bossId: 
+  - _areaId: room_forest_deep
+    _zoneId: zone_withered_forest
+    _displayName: "\u0413\u043B\u0438\u0431\u043E\u043A\u0438\u0439 \u043B\u0456\u0441"
+    _mapPosition: {x: 23, y: 0}
+    _mapSize: {x: 3.45, y: 1.2}
+    _worldBounds:
+      serializedVersion: 2
+      x: 212
+      y: -8
+      width: 36
+      height: 26
+    _isSecret: 0
+    _isOptional: 0
+    _discoveryRule: 0
+    _requiredAbilityId: 
+    _iconType: 0
+    _bossId: 
+  - _areaId: room_forest_warden_approach
+    _zoneId: zone_withered_forest
+    _displayName: "\u041F\u0456\u0434\u0441\u0442\u0443\u043F \u0434\u043E \u0412\u0430\u0440\u0442\u043E\u0432\u043E\u0433\u043E"
+    _mapPosition: {x: 26.025, y: 0}
+    _mapSize: {x: 2.3, y: 1.2}
+    _worldBounds:
+      serializedVersion: 2
+      x: 248
+      y: -8
+      width: 24.5
+      height: 26
+    _isSecret: 0
+    _isOptional: 0
+    _discoveryRule: 0
+    _requiredAbilityId: 
+    _iconType: 0
+    _bossId: 
+  - _areaId: room_forest_warden_arena
+    _zoneId: zone_withered_forest
+    _displayName: "\u0413\u0430\u043B\u044F\u0432\u0438\u043D\u0430 \u0412\u0430\u0440\u0442\u043E\u0432\u043E\u0433\u043E"
+    _mapPosition: {x: 28.725, y: 0}
+    _mapSize: {x: 2.8, y: 1.2}
+    _worldBounds:
+      serializedVersion: 2
+      x: 272.5
+      y: -8
+      width: 29.5
+      height: 26
+    _isSecret: 0
+    _isOptional: 0
+    _discoveryRule: 0
+    _requiredAbilityId: 
+    _iconType: 2
+    _bossId: hollow-warden
+  - _areaId: room_forest_far_gate
+    _zoneId: zone_withered_forest
+    _displayName: "\u041A\u0440\u0430\u0439 \u043B\u0456\u0441\u0443"
+    _mapPosition: {x: 31, y: 0}
+    _mapSize: {x: 1.45, y: 1.2}
+    _worldBounds:
+      serializedVersion: 2
+      x: 302
+      y: -8
+      width: 16
+      height: 26
+    _isSecret: 0
+    _isOptional: 0
+    _discoveryRule: 0
+    _requiredAbilityId: 
+    _iconType: 0
+    _bossId: 
+  - _areaId: room_forest_warden_overlook
+    _zoneId: zone_withered_forest
+    _displayName: "\u041E\u0433\u043B\u044F\u0434\u043E\u0432\u0438\u0439 \u0432\u0438\u0441\u0442\u0443\u043F"
+    _mapPosition: {x: 30.7, y: 1.6}
+    _mapSize: {x: 0.7, y: 0.6}
+    _worldBounds:
+      serializedVersion: 2
+      x: 304.5
+      y: 2.8
+      width: 5
+      height: 2.2
+    _isSecret: 1
+    _isOptional: 1
+    _discoveryRule: 1
+    _requiredAbilityId: double-jump
+    _iconType: 5
+    _bossId: 
+  - _areaId: room_beyond_forest
+    _zoneId: zone_unknown_east
+    _displayName: 
+    _mapPosition: {x: 32.4, y: 0}
+    _mapSize: {x: 0.8, y: 1.2}
+    _worldBounds:
+      serializedVersion: 2
+      x: 318
+      y: -8
+      width: 12
+      height: 24
+    _isSecret: 0
+    _isOptional: 1
+    _discoveryRule: 0
+    _requiredAbilityId: 
+    _iconType: 0
+    _bossId: 
+  _connections:
+  - _connectionId: conn_tomb_entrance_hall
+    _fromAreaId: room_tomb_entrance
+    _toAreaId: room_tomb_burial_hall
+    _direction: 0
+    _type: 0
+    _isBidirectional: 1
+    _requiredAbilityId: 
+    _requiredProgressionId: 
+    _requiredBossId: 
+    _isShortcut: 0
+    _persistentUnlockId: 
+    _openedFromAreaId: 
+    _isFuture: 0
+  - _connectionId: conn_tomb_hall_passage
+    _fromAreaId: room_tomb_burial_hall
+    _toAreaId: room_tomb_guard_passage
+    _direction: 0
+    _type: 0
+    _isBidirectional: 1
+    _requiredAbilityId: 
+    _requiredProgressionId: 
+    _requiredBossId: 
+    _isShortcut: 0
+    _persistentUnlockId: 
+    _openedFromAreaId: 
+    _isFuture: 0
+  - _connectionId: conn_tomb_passage_crypt
+    _fromAreaId: room_tomb_guard_passage
+    _toAreaId: room_tomb_collapsed_crypt
+    _direction: 0
+    _type: 0
+    _isBidirectional: 1
+    _requiredAbilityId: 
+    _requiredProgressionId: 
+    _requiredBossId: 
+    _isShortcut: 0
+    _persistentUnlockId: 
+    _openedFromAreaId: 
+    _isFuture: 0
+  - _connectionId: conn_tomb_crypt_bridge
+    _fromAreaId: room_tomb_guard_passage
+    _toAreaId: room_tomb_collapsed_crypt
+    _direction: 0
+    _type: 7
+    _isBidirectional: 1
+    _requiredAbilityId: 
+    _requiredProgressionId: 
+    _requiredBossId: 
+    _isShortcut: 1
+    _persistentUnlockId: shortcut_tomb_crypt_bridge
+    _openedFromAreaId: room_tomb_collapsed_crypt
+    _isFuture: 0
+  - _connectionId: conn_tomb_crypt_approach
+    _fromAreaId: room_tomb_collapsed_crypt
+    _toAreaId: room_tomb_guardian_approach
+    _direction: 0
+    _type: 0
+    _isBidirectional: 1
+    _requiredAbilityId: 
+    _requiredProgressionId: 
+    _requiredBossId: 
+    _isShortcut: 0
+    _persistentUnlockId: 
+    _openedFromAreaId: 
+    _isFuture: 0
+  - _connectionId: conn_tomb_approach_arena
+    _fromAreaId: room_tomb_guardian_approach
+    _toAreaId: room_tomb_guardian_arena
+    _direction: 0
+    _type: 1
+    _isBidirectional: 1
+    _requiredAbilityId: 
+    _requiredProgressionId: 
+    _requiredBossId: 
+    _isShortcut: 0
+    _persistentUnlockId: 
+    _openedFromAreaId: 
+    _isFuture: 0
+  - _connectionId: conn_tomb_to_forest
+    _fromAreaId: room_tomb_guardian_arena
+    _toAreaId: room_forest_root_tunnel
+    _direction: 0
+    _type: 8
+    _isBidirectional: 1
+    _requiredAbilityId: 
+    _requiredProgressionId: 
+    _requiredBossId: guardian-of-the-tomb
+    _isShortcut: 0
+    _persistentUnlockId: 
+    _openedFromAreaId: 
+    _isFuture: 0
+  - _connectionId: conn_tomb_passage_ossuary
+    _fromAreaId: room_tomb_guard_passage
+    _toAreaId: room_tomb_royal_ossuary
+    _direction: 2
+    _type: 5
+    _isBidirectional: 1
+    _requiredAbilityId: double-jump
+    _requiredProgressionId: 
+    _requiredBossId: 
+    _isShortcut: 0
+    _persistentUnlockId: 
+    _openedFromAreaId: 
+    _isFuture: 0
+  - _connectionId: conn_tomb_hall_bellshaft
+    _fromAreaId: room_tomb_burial_hall
+    _toAreaId: room_tomb_bell_shaft
+    _direction: 2
+    _type: 5
+    _isBidirectional: 1
+    _requiredAbilityId: wall-run
+    _requiredProgressionId: 
+    _requiredBossId: 
+    _isShortcut: 0
+    _persistentUnlockId: 
+    _openedFromAreaId: 
+    _isFuture: 0
+  - _connectionId: conn_tomb_passage_reliquary
+    _fromAreaId: room_tomb_guard_passage
+    _toAreaId: room_tomb_reliquary
+    _direction: 1
+    _type: 5
+    _isBidirectional: 1
+    _requiredAbilityId: air-dash
+    _requiredProgressionId: 
+    _requiredBossId: 
+    _isShortcut: 0
+    _persistentUnlockId: 
+    _openedFromAreaId: 
+    _isFuture: 0
+  - _connectionId: conn_forest_tunnel_entrance
+    _fromAreaId: room_forest_root_tunnel
+    _toAreaId: room_forest_entrance
+    _direction: 0
+    _type: 0
+    _isBidirectional: 1
+    _requiredAbilityId: 
+    _requiredProgressionId: 
+    _requiredBossId: 
+    _isShortcut: 0
+    _persistentUnlockId: 
+    _openedFromAreaId: 
+    _isFuture: 0
+  - _connectionId: conn_forest_entrance_road
+    _fromAreaId: room_forest_entrance
+    _toAreaId: room_forest_royal_road
+    _direction: 0
+    _type: 0
+    _isBidirectional: 1
+    _requiredAbilityId: 
+    _requiredProgressionId: 
+    _requiredBossId: 
+    _isShortcut: 0
+    _persistentUnlockId: 
+    _openedFromAreaId: 
+    _isFuture: 0
+  - _connectionId: conn_forest_road_ledge
+    _fromAreaId: room_forest_royal_road
+    _toAreaId: room_forest_broken_arch
+    _direction: 0
+    _type: 4
+    _isBidirectional: 0
+    _requiredAbilityId: 
+    _requiredProgressionId: 
+    _requiredBossId: 
+    _isShortcut: 0
+    _persistentUnlockId: 
+    _openedFromAreaId: 
+    _isFuture: 0
+  - _connectionId: conn_forest_road_gate
+    _fromAreaId: room_forest_royal_road
+    _toAreaId: room_forest_broken_arch
+    _direction: 0
+    _type: 7
+    _isBidirectional: 1
+    _requiredAbilityId: 
+    _requiredProgressionId: 
+    _requiredBossId: 
+    _isShortcut: 1
+    _persistentUnlockId: shortcut_forest_road_gate
+    _openedFromAreaId: room_forest_broken_arch
+    _isFuture: 0
+  - _connectionId: conn_forest_arch_grove
+    _fromAreaId: room_forest_broken_arch
+    _toAreaId: room_forest_poison_grove
+    _direction: 0
+    _type: 0
+    _isBidirectional: 1
+    _requiredAbilityId: 
+    _requiredProgressionId: 
+    _requiredBossId: 
+    _isShortcut: 0
+    _persistentUnlockId: 
+    _openedFromAreaId: 
+    _isFuture: 0
+  - _connectionId: conn_forest_grove_watchtower
+    _fromAreaId: room_forest_poison_grove
+    _toAreaId: room_forest_watchtower
+    _direction: 0
+    _type: 0
+    _isBidirectional: 1
+    _requiredAbilityId: 
+    _requiredProgressionId: 
+    _requiredBossId: 
+    _isShortcut: 0
+    _persistentUnlockId: 
+    _openedFromAreaId: 
+    _isFuture: 0
+  - _connectionId: conn_forest_watchtower_deep
+    _fromAreaId: room_forest_watchtower
+    _toAreaId: room_forest_deep
+    _direction: 0
+    _type: 0
+    _isBidirectional: 1
+    _requiredAbilityId: 
+    _requiredProgressionId: 
+    _requiredBossId: 
+    _isShortcut: 0
+    _persistentUnlockId: 
+    _openedFromAreaId: 
+    _isFuture: 0
+  - _connectionId: conn_forest_watchtower_climb
+    _fromAreaId: room_forest_watchtower
+    _toAreaId: room_forest_watchtower_top
+    _direction: 2
+    _type: 5
+    _isBidirectional: 1
+    _requiredAbilityId: wall-run
+    _requiredProgressionId: 
+    _requiredBossId: 
+    _isShortcut: 0
+    _persistentUnlockId: 
+    _openedFromAreaId: 
+    _isFuture: 0
+  - _connectionId: conn_forest_watchtower_drop
+    _fromAreaId: room_forest_watchtower_top
+    _toAreaId: room_forest_watchtower
+    _direction: 3
+    _type: 4
+    _isBidirectional: 0
+    _requiredAbilityId: 
+    _requiredProgressionId: 
+    _requiredBossId: 
+    _isShortcut: 0
+    _persistentUnlockId: 
+    _openedFromAreaId: 
+    _isFuture: 0
+  - _connectionId: conn_forest_top_perch
+    _fromAreaId: room_forest_watchtower_top
+    _toAreaId: room_forest_hunters_perch
+    _direction: 2
+    _type: 5
+    _isBidirectional: 1
+    _requiredAbilityId: double-jump
+    _requiredProgressionId: 
+    _requiredBossId: 
+    _isShortcut: 0
+    _persistentUnlockId: 
+    _openedFromAreaId: 
+    _isFuture: 0
+  - _connectionId: conn_forest_deep_approach
+    _fromAreaId: room_forest_deep
+    _toAreaId: room_forest_warden_approach
+    _direction: 0
+    _type: 0
+    _isBidirectional: 1
+    _requiredAbilityId: 
+    _requiredProgressionId: 
+    _requiredBossId: 
+    _isShortcut: 0
+    _persistentUnlockId: 
+    _openedFromAreaId: 
+    _isFuture: 0
+  - _connectionId: conn_forest_approach_arena
+    _fromAreaId: room_forest_warden_approach
+    _toAreaId: room_forest_warden_arena
+    _direction: 0
+    _type: 1
+    _isBidirectional: 1
+    _requiredAbilityId: 
+    _requiredProgressionId: 
+    _requiredBossId: 
+    _isShortcut: 0
+    _persistentUnlockId: 
+    _openedFromAreaId: 
+    _isFuture: 0
+  - _connectionId: conn_forest_arena_far
+    _fromAreaId: room_forest_warden_arena
+    _toAreaId: room_forest_far_gate
+    _direction: 0
+    _type: 6
+    _isBidirectional: 1
+    _requiredAbilityId: 
+    _requiredProgressionId: 
+    _requiredBossId: hollow-warden
+    _isShortcut: 0
+    _persistentUnlockId: 
+    _openedFromAreaId: 
+    _isFuture: 0
+  - _connectionId: conn_forest_far_overlook
+    _fromAreaId: room_forest_far_gate
+    _toAreaId: room_forest_warden_overlook
+    _direction: 2
+    _type: 5
+    _isBidirectional: 1
+    _requiredAbilityId: double-jump
+    _requiredProgressionId: 
+    _requiredBossId: 
+    _isShortcut: 0
+    _persistentUnlockId: 
+    _openedFromAreaId: 
+    _isFuture: 0
+  - _connectionId: conn_forest_far_beyond
+    _fromAreaId: room_forest_far_gate
+    _toAreaId: room_beyond_forest
+    _direction: 0
+    _type: 2
+    _isBidirectional: 1
+    _requiredAbilityId: 
+    _requiredProgressionId: 
+    _requiredBossId: hollow-warden
+    _isShortcut: 0
+    _persistentUnlockId: 
+    _openedFromAreaId: 
+    _isFuture: 1
+  _checkpoints:
+  - _checkpointId: tomb-altar-01
+    _displayName: "\u0412\u0456\u0432\u0442\u0430\u0440 \u0432\u0445\u043E\u0434\u0443"
+    _zoneId: zone_forgotten_tomb
+    _areaId: room_tomb_entrance
+    _canFastTravel: 1
+  - _checkpointId: tomb-altar-02
+    _displayName: "\u0412\u0456\u0432\u0442\u0430\u0440 \u043F\u0435\u0440\u0435\u0445\u043E\u0434\u0443"
+    _zoneId: zone_forgotten_tomb
+    _areaId: room_tomb_collapsed_crypt
+    _canFastTravel: 1
+  - _checkpointId: forest-entrance
+    _displayName: "\u0412\u0456\u0432\u0442\u0430\u0440 \u0443\u0437\u043B\u0456\u0441\u0441\u044F"
+    _zoneId: zone_withered_forest
+    _areaId: room_forest_entrance
+    _canFastTravel: 1
+  - _checkpointId: royal-road-shrine
+    _displayName: "\u041F\u0440\u0438\u0434\u043E\u0440\u043E\u0436\u043D\u044F \u0441\u0432\u044F\u0442\u0438\u043D\u044F"
+    _zoneId: zone_withered_forest
+    _areaId: room_forest_royal_road
+    _canFastTravel: 1
+  - _checkpointId: deep-forest-shrine
+    _displayName: "\u0421\u0432\u044F\u0442\u0438\u043D\u044F \u0433\u043B\u0438\u0431\u043E\u043A\u043E\u0433\u043E
+      \u043B\u0456\u0441\u0443"
+    _zoneId: zone_withered_forest
+    _areaId: room_forest_deep
+    _canFastTravel: 1
+  - _checkpointId: warden-shrine
+    _displayName: "\u0421\u0432\u044F\u0442\u0438\u043D\u044F \u0412\u0430\u0440\u0442\u043E\u0432\u043E\u0433\u043E"
+    _zoneId: zone_withered_forest
+    _areaId: room_forest_warden_approach
+    _canFastTravel: 1
+  _abilities:
+  - _abilityId: dash
+    _displayName: "\u0420\u0438\u0432\u043E\u043A"
+    _kind: 0
+    _guaranteedByBossId: 
+  - _abilityId: double-jump
+    _displayName: "\u041F\u043E\u0434\u0432\u0456\u0439\u043D\u0438\u0439 \u0441\u0442\u0440\u0438\u0431\u043E\u043A"
+    _kind: 0
+    _guaranteedByBossId: hollow-warden
+  - _abilityId: air-dash
+    _displayName: "\u0420\u0438\u0432\u043E\u043A \u0443 \u043F\u043E\u0432\u0456\u0442\u0440\u0456"
+    _kind: 1
+    _guaranteedByBossId: 
+  - _abilityId: wall-run
+    _displayName: "\u0411\u0456\u0433 \u043F\u043E \u0441\u0442\u0456\u043D\u0456"
+    _kind: 1
+    _guaranteedByBossId: 
+  - _abilityId: shadow-dash
+    _displayName: "\u0422\u0456\u043D\u044C\u043E\u0432\u0438\u0439 \u0440\u0438\u0432\u043E\u043A"
+    _kind: 2
+    _guaranteedByBossId: 
+  _startAreaId: room_tomb_entrance
+  _fastTravelRequirement:
+    _kind: 2
+    _id: guardian-of-the-tomb
+  _fastTravelOverrideId: fast-travel

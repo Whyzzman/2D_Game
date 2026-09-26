@@ -1,0 +1,74 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47eb4056fcdc6c54bb84cd2091b57ba1, type: 3}
+  m_Name: FeedbackLibrary
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.FeedbackLibrary
+  _entries:
+  - kind: 0
+    profile: {fileID: 11400000, guid: e89051c71743d2848b9c0a81f3f06bda, type: 2}
+  - kind: 1
+    profile: {fileID: 11400000, guid: c7be25d727ed33e468d7555c197e44a9, type: 2}
+  - kind: 2
+    profile: {fileID: 11400000, guid: b13660677949cef4890c2182e821d633, type: 2}
+  - kind: 3
+    profile: {fileID: 11400000, guid: eae592dbdc3ae734eb103d3846bb5a87, type: 2}
+  - kind: 4
+    profile: {fileID: 11400000, guid: 1453782f21779f74c9092932db27ef4b, type: 2}
+  - kind: 5
+    profile: {fileID: 11400000, guid: 17ef58bf566700744a5824445a2302e5, type: 2}
+  - kind: 6
+    profile: {fileID: 11400000, guid: c225de7049f166549ba804a4f6d93a4f, type: 2}
+  - kind: 7
+    profile: {fileID: 11400000, guid: 7c48518d326143247b1329b9889d877d, type: 2}
+  - kind: 8
+    profile: {fileID: 11400000, guid: 1f6debc3b48afa84d850ba578265d34e, type: 2}
+  - kind: 9
+    profile: {fileID: 11400000, guid: 4d5102a3e7dd49c45b5726a05e1257ab, type: 2}
+  - kind: 10
+    profile: {fileID: 11400000, guid: 69e4ec36ca0d19d409a3623d7aa426f3, type: 2}
+  - kind: 11
+    profile: {fileID: 11400000, guid: 91c248e76d9a1234fbd81464aa8dfdd9, type: 2}
+  - kind: 12
+    profile: {fileID: 11400000, guid: cc00b228a4db46648b75bba825168723, type: 2}
+  - kind: 13
+    profile: {fileID: 11400000, guid: 4d4157e10d59e2e41b2a03f087f76217, type: 2}
+  - kind: 14
+    profile: {fileID: 11400000, guid: 657873e6975066b40bbeabe5c4b8fa22, type: 2}
+  - kind: 15
+    profile: {fileID: 11400000, guid: 3b6a7645efe7f0f468c307a8e603f9f4, type: 2}
+  - kind: 16
+    profile: {fileID: 11400000, guid: 01d9a90ff51306a4a8c2e40437e867c9, type: 2}
+  - kind: 17
+    profile: {fileID: 11400000, guid: 366620684cdbd2a41957da43449f4f65, type: 2}
+  - kind: 18
+    profile: {fileID: 11400000, guid: 3468d205c7a13324d89f9a07b2a2de9d, type: 2}
+  - kind: 19
+    profile: {fileID: 11400000, guid: 4d9c8c3bd70a4794bb16c6d6f3f4cad3, type: 2}
+  - kind: 20
+    profile: {fileID: 11400000, guid: bd991e75ff3f8bb4abb13f8650ddd5f8, type: 2}
+  - kind: 21
+    profile: {fileID: 11400000, guid: 157a08cd404005f479f6d2c5035c21fd, type: 2}
+  - kind: 22
+    profile: {fileID: 11400000, guid: fb27afb8036023f4199b41761d71a3e1, type: 2}
+  - kind: 24
+    profile: {fileID: 11400000, guid: 7390be3799e9e4645af787f21ed00497, type: 2}
+  - kind: 23
+    profile: {fileID: 11400000, guid: d187400be6657f144b2a348299ed3fc9, type: 2}
+  - kind: 25
+    profile: {fileID: 11400000, guid: a16933735d9dccd44b5d34b8c17afcdb, type: 2}
+  - kind: 26
+    profile: {fileID: 11400000, guid: 04d94ef08b3a5bc42b56422f73e3995f, type: 2}
+  - kind: 27
+    profile: {fileID: 11400000, guid: aabd5908eaee92a4cbd90066fc1099c2, type: 2}
+  - kind: 28
+    profile: {fileID: 11400000, guid: ee478c757e402de4bbeeeedc30a164f2, type: 2}
+  _fallback: {fileID: 11400000, guid: e89051c71743d2848b9c0a81f3f06bda, type: 2}

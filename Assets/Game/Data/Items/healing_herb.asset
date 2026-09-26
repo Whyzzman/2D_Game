@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fae553a26d5219b4c88495b664062a28, type: 3}
+  m_Name: healing_herb
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.ItemDefinition
+  _itemId: healing_herb
+  _displayName: "\u041B\u0456\u043A\u0443\u0432\u0430\u043B\u044C\u043D\u0430 \u0442\u0440\u0430\u0432\u0430"
+  _description: "\u041B\u0456\u043A\u0443\u0432\u0430\u043B\u044C\u043D\u0430 \u0440\u043E\u0441\u043B\u0438\u043D\u0430.
+    \u041F\u0456\u0437\u043D\u0456\u0448\u0435 \u043C\u043E\u0436\u0435 \u0432\u0438\u043A\u043E\u0440\u0438\u0441\u0442\u043E\u0432\u0443\u0432\u0430\u0442\u0438\u0441\u044F
+    \u0432 \u0430\u043B\u0445\u0456\u043C\u0456\u0457."
+  _category: 1
+  _rarity: 0
+  _icon: {fileID: 0}
+  _isStackable: 1
+  _maxStack: 20
+  _isUnique: 0
+  _autosaveOnAcquire: 0
+  _equipment: {fileID: 0}
+  _baseValue: 8
+  _pickupColor: {r: 0.45, g: 0.75, b: 0.42, a: 1}

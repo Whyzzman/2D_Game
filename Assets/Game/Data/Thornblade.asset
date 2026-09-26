@@ -1,0 +1,129 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0454e77d929ac8c4b942f2de05a0d90d, type: 3}
+  m_Name: Thornblade
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.WeaponDefinition
+  _itemId: thornblade
+  _modifiers: []
+  _displayName: "\u0422\u0435\u0440\u043D\u043E\u0432\u0438\u0439 \u041A\u043B\u0438\u043D\u043E\u043A"
+  _weaponType: 0
+  _baseDamage: 17
+  _attackSpeed: 1.12
+  _staminaMultiplier: 0.9
+  _staggerMultiplier: 0.8
+  _knockbackMultiplier: 0.85
+  _critChance: 0.05
+  _critMultiplier: 1.5
+  _comboResetTime: 0.5
+  _strengthScaling: 0.25
+  _dexterityScaling: 0.75
+  _intelligenceScaling: 0
+  _strengthRequirement: 5
+  _dexterityRequirement: 12
+  _lightCombo:
+  - _displayName: Light 1
+    _animationState: LightAttack1
+    _damage: 0
+    _damageMultiplier: 0.78
+    _damageType: 0
+    _staminaCost: 9
+    _staggerDamage: 8
+    _knockback: 3
+    _guardDamage: 4
+    _hitStop: 0.03
+    _isUnblockable: 0
+    _isParryable: 1
+    _windup: 0.09
+    _activeTime: 0.07
+    _recovery: 0.17
+    _comboLinkTime: 0.16
+    _cancelableAfter: 0.15
+    _hitboxOffset: {x: 0.85, y: 0.05}
+    _hitboxSize: {x: 1.3, y: 1.2}
+    _movementScale: 0.35
+    _statusBuildup:
+    - type: 0
+      amount: 14
+  - _displayName: Light 2
+    _animationState: LightAttack2
+    _damage: 0
+    _damageMultiplier: 0.92
+    _damageType: 0
+    _staminaCost: 9
+    _staggerDamage: 10
+    _knockback: 4
+    _guardDamage: 6
+    _hitStop: 0.04
+    _isUnblockable: 0
+    _isParryable: 1
+    _windup: 0.08
+    _activeTime: 0.07
+    _recovery: 0.19
+    _comboLinkTime: 0.15
+    _cancelableAfter: 0.15
+    _hitboxOffset: {x: 0.9, y: 0.05}
+    _hitboxSize: {x: 1.45, y: 1.25}
+    _movementScale: 0.25
+    _statusBuildup:
+    - type: 0
+      amount: 14
+  - _displayName: Light 3
+    _animationState: LightAttack3
+    _damage: 0
+    _damageMultiplier: 1.2
+    _damageType: 0
+    _staminaCost: 13
+    _staggerDamage: 18
+    _knockback: 6
+    _guardDamage: 12
+    _hitStop: 0.06
+    _isUnblockable: 0
+    _isParryable: 1
+    _windup: 0.13
+    _activeTime: 0.09
+    _recovery: 0.3
+    _comboLinkTime: 0.42
+    _cancelableAfter: 0.24
+    _hitboxOffset: {x: 1, y: 0.05}
+    _hitboxSize: {x: 1.7, y: 1.35}
+    _movementScale: 0.15
+    _statusBuildup:
+    - type: 0
+      amount: 20
+  _heavyAttack:
+    _displayName: Heavy
+    _animationState: HeavyAttack
+    _damage: 0
+    _damageMultiplier: 1.6
+    _damageType: 0
+    _staminaCost: 22
+    _staggerDamage: 34
+    _knockback: 8
+    _guardDamage: 34
+    _hitStop: 0.08
+    _isUnblockable: 0
+    _isParryable: 1
+    _windup: 0.29
+    _activeTime: 0.11
+    _recovery: 0.41
+    _comboLinkTime: 0.76
+    _cancelableAfter: 0.42
+    _hitboxOffset: {x: 1.05, y: 0.05}
+    _hitboxSize: {x: 1.95, y: 1.5}
+    _movementScale: 0.05
+    _statusBuildup:
+    - type: 0
+      amount: 30
+  _visualColor: {r: 0.62, g: 0.78, b: 0.6, a: 1}
+  _visualSize: {x: 0.11, y: 0.88}
+  _visualOffset: {x: 0.3, y: 0.15}
+  _visualSprite: {fileID: 0}

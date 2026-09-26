@@ -1,0 +1,1768 @@
+fileFormatVersion: 2
+guid: 81faf516336d80149850b29202e61923
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 4559724345342140649
+    second: env_forest_decal_spores_01_0
+  - first:
+      213: 600828506151672694
+    second: env_forest_decal_spores_01_1
+  - first:
+      213: -4713322150509897078
+    second: env_forest_decal_spores_01_2
+  - first:
+      213: -6891310502759120784
+    second: env_forest_decal_spores_01_3
+  - first:
+      213: -7474022088275162674
+    second: env_forest_decal_spores_01_4
+  - first:
+      213: 5177385917485064886
+    second: env_forest_decal_spores_01_5
+  - first:
+      213: -1859488812156525170
+    second: env_forest_decal_spores_01_6
+  - first:
+      213: 6072300522155049446
+    second: env_forest_decal_spores_01_7
+  - first:
+      213: -8992996581935795338
+    second: env_forest_decal_spores_01_8
+  - first:
+      213: -5804661443040226385
+    second: env_forest_decal_spores_01_9
+  - first:
+      213: 2682553463986146028
+    second: env_forest_decal_spores_01_10
+  - first:
+      213: 3846355931270440595
+    second: env_forest_decal_spores_01_11
+  - first:
+      213: -6134315590297287225
+    second: env_forest_decal_spores_01_12
+  - first:
+      213: -7711096661556647945
+    second: env_forest_decal_spores_01_13
+  - first:
+      213: 600853572904797491
+    second: env_forest_decal_spores_01_14
+  - first:
+      213: -5219897081524584098
+    second: env_forest_decal_spores_01_15
+  - first:
+      213: 6200561115613855347
+    second: env_forest_decal_spores_01_16
+  - first:
+      213: -1619393240711475315
+    second: env_forest_decal_spores_01_17
+  - first:
+      213: -1076608369079959786
+    second: env_forest_decal_spores_01_18
+  - first:
+      213: -2933270680394950974
+    second: env_forest_decal_spores_01_19
+  - first:
+      213: -8525636226406764977
+    second: env_forest_decal_spores_01_20
+  - first:
+      213: 3300490309482353622
+    second: env_forest_decal_spores_01_21
+  - first:
+      213: 5581302850942736122
+    second: env_forest_decal_spores_01_22
+  - first:
+      213: -2089456191214838793
+    second: env_forest_decal_spores_01_23
+  - first:
+      213: 6558629151804906149
+    second: env_forest_decal_spores_01_24
+  - first:
+      213: 2133049566453927369
+    second: env_forest_decal_spores_01_25
+  - first:
+      213: 996611401212188118
+    second: env_forest_decal_spores_01_26
+  - first:
+      213: -7163936389882013675
+    second: env_forest_decal_spores_01_27
+  - first:
+      213: 4886823593511224871
+    second: env_forest_decal_spores_01_28
+  - first:
+      213: 7138956704149050394
+    second: env_forest_decal_spores_01_29
+  - first:
+      213: -7685059150817506347
+    second: env_forest_decal_spores_01_30
+  - first:
+      213: 6008399070213095647
+    second: env_forest_decal_spores_01_31
+  - first:
+      213: -3976352180738549568
+    second: env_forest_decal_spores_01_32
+  - first:
+      213: -4283475855312586043
+    second: env_forest_decal_spores_01_33
+  - first:
+      213: 5829848883997919246
+    second: env_forest_decal_spores_01_34
+  - first:
+      213: -8911285994571398918
+    second: env_forest_decal_spores_01_35
+  - first:
+      213: 6203034984565881003
+    second: env_forest_decal_spores_01_36
+  - first:
+      213: -8771405847226949711
+    second: env_forest_decal_spores_01_37
+  - first:
+      213: 6254652643495245890
+    second: env_forest_decal_spores_01_38
+  - first:
+      213: 3398185055040374980
+    second: env_forest_decal_spores_01_39
+  - first:
+      213: 8035834044007022969
+    second: env_forest_decal_spores_01_40
+  - first:
+      213: -4542969651671842922
+    second: env_forest_decal_spores_01_41
+  - first:
+      213: 5621106126858984105
+    second: env_forest_decal_spores_01_42
+  - first:
+      213: 4147084611101931374
+    second: env_forest_decal_spores_01_43
+  - first:
+      213: 7203098447483147823
+    second: env_forest_decal_spores_01_44
+  - first:
+      213: -7856428891966826575
+    second: env_forest_decal_spores_01_45
+  - first:
+      213: 636077018687705999
+    second: env_forest_decal_spores_01_46
+  - first:
+      213: 3947980489125765307
+    second: env_forest_decal_spores_01_47
+  - first:
+      213: -402541390747485359
+    second: env_forest_decal_spores_01_48
+  - first:
+      213: -4924817921368559970
+    second: env_forest_decal_spores_01_49
+  - first:
+      213: 4492816124374118314
+    second: env_forest_decal_spores_01_50
+  - first:
+      213: -7388155897398228876
+    second: env_forest_decal_spores_01_51
+  - first:
+      213: -454780790376818651
+    second: env_forest_decal_spores_01_52
+  - first:
+      213: -6723631179527602018
+    second: env_forest_decal_spores_01_53
+  - first:
+      213: -8884978358894623969
+    second: env_forest_decal_spores_01_54
+  - first:
+      213: -5678231104675508688
+    second: env_forest_decal_spores_01_55
+  - first:
+      213: 3603078555588530621
+    second: env_forest_decal_spores_01_56
+  - first:
+      213: -9118939804567289163
+    second: env_forest_decal_spores_01_57
+  - first:
+      213: 1788621657587783207
+    second: env_forest_decal_spores_01_58
+  - first:
+      213: -7446895617502378988
+    second: env_forest_decal_spores_01_59
+  - first:
+      213: -8040229737791305148
+    second: env_forest_decal_spores_01_60
+  - first:
+      213: 3926963082429562804
+    second: env_forest_decal_spores_01_61
+  - first:
+      213: -5440587751007058416
+    second: env_forest_decal_spores_01_62
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 0
+  alignment: 9
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_0
+      rect:
+        serializedVersion: 2
+        x: 10
+        y: 193
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9e0a1d53225674f30800000000000000
+      internalID: 4559724345342140649
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_1
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 190
+        width: 6
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 67b5910d752965800800000000000000
+      internalID: 600828506151672694
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_2
+      rect:
+        serializedVersion: 2
+        x: 124
+        y: 186
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a8a90e2f97ae69eb0800000000000000
+      internalID: -4713322150509897078
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_3
+      rect:
+        serializedVersion: 2
+        x: 141
+        y: 188
+        width: 8
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 070cf160c952d50a0800000000000000
+      internalID: -6891310502759120784
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_4
+      rect:
+        serializedVersion: 2
+        x: 116
+        y: 185
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ec98fe08280f64890800000000000000
+      internalID: -7474022088275162674
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_5
+      rect:
+        serializedVersion: 2
+        x: 136
+        y: 185
+        width: 8
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6b2aecc9f05c9d740800000000000000
+      internalID: 5177385917485064886
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_6
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 162
+        width: 9
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e85e89ff6c4c136e0800000000000000
+      internalID: -1859488812156525170
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_7
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 175
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6e188780725254450800000000000000
+      internalID: 6072300522155049446
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_8
+      rect:
+        serializedVersion: 2
+        x: 91
+        y: 160
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6733a637145723380800000000000000
+      internalID: -8992996581935795338
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_9
+      rect:
+        serializedVersion: 2
+        x: 108
+        y: 154
+        width: 12
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fa35e260c23b17fa0800000000000000
+      internalID: -5804661443040226385
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_10
+      rect:
+        serializedVersion: 2
+        x: 147
+        y: 160
+        width: 10
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cea43e7a9285a3520800000000000000
+      internalID: 2682553463986146028
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_11
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 139
+        width: 8
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 39667133750016530800000000000000
+      internalID: 3846355931270440595
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_12
+      rect:
+        serializedVersion: 2
+        x: 19
+        y: 147
+        width: 12
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7c5803cb8788edaa0800000000000000
+      internalID: -6134315590297287225
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_13
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 140
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7f72733017eacf490800000000000000
+      internalID: -7711096661556647945
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_14
+      rect:
+        serializedVersion: 2
+        x: 139
+        y: 147
+        width: 8
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 335c30f1429a65800800000000000000
+      internalID: 600853572904797491
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_15
+      rect:
+        serializedVersion: 2
+        x: 57
+        y: 140
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e5101a3b2433f87b0800000000000000
+      internalID: -5219897081524584098
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_16
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 134
+        width: 8
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 37e73409b71dc0650800000000000000
+      internalID: 6200561115613855347
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_17
+      rect:
+        serializedVersion: 2
+        x: 174
+        y: 132
+        width: 13
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d8f49bf6d62c689e0800000000000000
+      internalID: -1619393240711475315
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_18
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 130
+        width: 10
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 61fb6c6746e1f01f0800000000000000
+      internalID: -1076608369079959786
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_19
+      rect:
+        serializedVersion: 2
+        x: 34
+        y: 117
+        width: 10
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2c69df87bddea47d0800000000000000
+      internalID: -2933270680394950974
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_20
+      rect:
+        serializedVersion: 2
+        x: 114
+        y: 118
+        width: 6
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f4ea2d8d50bdea980800000000000000
+      internalID: -8525636226406764977
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_21
+      rect:
+        serializedVersion: 2
+        x: 129
+        y: 115
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6d390512372bdcd20800000000000000
+      internalID: 3300490309482353622
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_22
+      rect:
+        serializedVersion: 2
+        x: 133
+        y: 112
+        width: 10
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: af611563f55c47d40800000000000000
+      internalID: 5581302850942736122
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_23
+      rect:
+        serializedVersion: 2
+        x: 158
+        y: 110
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7fb16ec1aa2c003e0800000000000000
+      internalID: -2089456191214838793
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_24
+      rect:
+        serializedVersion: 2
+        x: 185
+        y: 117
+        width: 12
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5aa5ad6e67ee40b50800000000000000
+      internalID: 6558629151804906149
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_25
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 101
+        width: 6
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9cd89c0874d1a9d10800000000000000
+      internalID: 2133049566453927369
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_26
+      rect:
+        serializedVersion: 2
+        x: 86
+        y: 99
+        width: 15
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6d55b540acca4dd00800000000000000
+      internalID: 996611401212188118
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_27
+      rect:
+        serializedVersion: 2
+        x: 126
+        y: 108
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 518969f3fc5949c90800000000000000
+      internalID: -7163936389882013675
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_28
+      rect:
+        serializedVersion: 2
+        x: 141
+        y: 109
+        width: 12
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7260c33ba2c71d340800000000000000
+      internalID: 4886823593511224871
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_29
+      rect:
+        serializedVersion: 2
+        x: 56
+        y: 95
+        width: 12
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a1492b17c4ba21360800000000000000
+      internalID: 7138956704149050394
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_30
+      rect:
+        serializedVersion: 2
+        x: 77
+        y: 101
+        width: 10
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5db48a56b6f295590800000000000000
+      internalID: -7685059150817506347
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_31
+      rect:
+        serializedVersion: 2
+        x: 72
+        y: 94
+        width: 12
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fd0c6d8de1f126350800000000000000
+      internalID: 6008399070213095647
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_32
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 85
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0c89a3d52c821d8c0800000000000000
+      internalID: -3976352180738549568
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_33
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 82
+        width: 8
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5ca712887690e84c0800000000000000
+      internalID: -4283475855312586043
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_34
+      rect:
+        serializedVersion: 2
+        x: 20
+        y: 72
+        width: 8
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e0847e01ca8c7e050800000000000000
+      internalID: 5829848883997919246
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_35
+      rect:
+        serializedVersion: 2
+        x: 34
+        y: 67
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: af088a91a90c45480800000000000000
+      internalID: -8911285994571398918
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_36
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 60
+        width: 10
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ba8be50147b951650800000000000000
+      internalID: 6203034984565881003
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_37
+      rect:
+        serializedVersion: 2
+        x: 95
+        y: 66
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1bfd047dad4b54680800000000000000
+      internalID: -8771405847226949711
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_38
+      rect:
+        serializedVersion: 2
+        x: 140
+        y: 72
+        width: 12
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 248fdf0d07dfcc650800000000000000
+      internalID: 6254652643495245890
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_39
+      rect:
+        serializedVersion: 2
+        x: 169
+        y: 72
+        width: 12
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c809be9d47c82f20800000000000000
+      internalID: 3398185055040374980
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_40
+      rect:
+        serializedVersion: 2
+        x: 184
+        y: 70
+        width: 8
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9718703cc74058f60800000000000000
+      internalID: 8035834044007022969
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_41
+      rect:
+        serializedVersion: 2
+        x: 62
+        y: 50
+        width: 17
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 69f38b6eb2124f0c0800000000000000
+      internalID: -4542969651671842922
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_42
+      rect:
+        serializedVersion: 2
+        x: 143
+        y: 51
+        width: 10
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9aa93309d3e220e40800000000000000
+      internalID: 5621106126858984105
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_43
+      rect:
+        serializedVersion: 2
+        x: 51
+        y: 32
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e67383a4b776d8930800000000000000
+      internalID: 4147084611101931374
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_44
+      rect:
+        serializedVersion: 2
+        x: 91
+        y: 40
+        width: 8
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f269664dfdb86f360800000000000000
+      internalID: 7203098447483147823
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_45
+      rect:
+        serializedVersion: 2
+        x: 139
+        y: 39
+        width: 12
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1b793334c8b58f290800000000000000
+      internalID: -7856428891966826575
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_46
+      rect:
+        serializedVersion: 2
+        x: 176
+        y: 36
+        width: 14
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f839bacadacc3d800800000000000000
+      internalID: 636077018687705999
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_47
+      rect:
+        serializedVersion: 2
+        x: 68
+        y: 30
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bb0a38a665b0ac630800000000000000
+      internalID: 3947980489125765307
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_48
+      rect:
+        serializedVersion: 2
+        x: 73
+        y: 25
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 15bba15ecb2e96af0800000000000000
+      internalID: -402541390747485359
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_49
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 26
+        width: 8
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e9e695d713887abb0800000000000000
+      internalID: -4924817921368559970
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_50
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 17
+        width: 10
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aaf677e0670b95e30800000000000000
+      internalID: 4492816124374118314
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_51
+      rect:
+        serializedVersion: 2
+        x: 19
+        y: 14
+        width: 8
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4780f5efa5ff77990800000000000000
+      internalID: -7388155897398228876
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_52
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 12
+        width: 8
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5281bead74b40b9f0800000000000000
+      internalID: -454780790376818651
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_53
+      rect:
+        serializedVersion: 2
+        x: 85
+        y: 14
+        width: 8
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e904487c01dd0b2a0800000000000000
+      internalID: -6723631179527602018
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_54
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 14
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f138d09d14732b480800000000000000
+      internalID: -8884978358894623969
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_55
+      rect:
+        serializedVersion: 2
+        x: 110
+        y: 14
+        width: 6
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 03e0e3515eed231b0800000000000000
+      internalID: -5678231104675508688
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_56
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 17
+        width: 8
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: db19eab3bd4b00230800000000000000
+      internalID: 3603078555588530621
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_57
+      rect:
+        serializedVersion: 2
+        x: 153
+        y: 9
+        width: 10
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5b2c89cdf84037180800000000000000
+      internalID: -9118939804567289163
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_58
+      rect:
+        serializedVersion: 2
+        x: 31
+        y: 6
+        width: 10
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 726171acbe572d810800000000000000
+      internalID: 1788621657587783207
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_59
+      rect:
+        serializedVersion: 2
+        x: 53
+        y: 0
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4148b5724ef47a890800000000000000
+      internalID: -7446895617502378988
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_60
+      rect:
+        serializedVersion: 2
+        x: 94
+        y: 3
+        width: 12
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 44aca6607ad5b6090800000000000000
+      internalID: -8040229737791305148
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_61
+      rect:
+        serializedVersion: 2
+        x: 143
+        y: 0
+        width: 12
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4bf79461e106f7630800000000000000
+      internalID: 3926963082429562804
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_decal_spores_01_62
+      rect:
+        serializedVersion: 2
+        x: 88
+        y: 0
+        width: 12
+        height: 5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 01602e314462f74b0800000000000000
+      internalID: -5440587751007058416
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      env_forest_decal_spores_01_0: 4559724345342140649
+      env_forest_decal_spores_01_1: 600828506151672694
+      env_forest_decal_spores_01_10: 2682553463986146028
+      env_forest_decal_spores_01_11: 3846355931270440595
+      env_forest_decal_spores_01_12: -6134315590297287225
+      env_forest_decal_spores_01_13: -7711096661556647945
+      env_forest_decal_spores_01_14: 600853572904797491
+      env_forest_decal_spores_01_15: -5219897081524584098
+      env_forest_decal_spores_01_16: 6200561115613855347
+      env_forest_decal_spores_01_17: -1619393240711475315
+      env_forest_decal_spores_01_18: -1076608369079959786
+      env_forest_decal_spores_01_19: -2933270680394950974
+      env_forest_decal_spores_01_2: -4713322150509897078
+      env_forest_decal_spores_01_20: -8525636226406764977
+      env_forest_decal_spores_01_21: 3300490309482353622
+      env_forest_decal_spores_01_22: 5581302850942736122
+      env_forest_decal_spores_01_23: -2089456191214838793
+      env_forest_decal_spores_01_24: 6558629151804906149
+      env_forest_decal_spores_01_25: 2133049566453927369
+      env_forest_decal_spores_01_26: 996611401212188118
+      env_forest_decal_spores_01_27: -7163936389882013675
+      env_forest_decal_spores_01_28: 4886823593511224871
+      env_forest_decal_spores_01_29: 7138956704149050394
+      env_forest_decal_spores_01_3: -6891310502759120784
+      env_forest_decal_spores_01_30: -7685059150817506347
+      env_forest_decal_spores_01_31: 6008399070213095647
+      env_forest_decal_spores_01_32: -3976352180738549568
+      env_forest_decal_spores_01_33: -4283475855312586043
+      env_forest_decal_spores_01_34: 5829848883997919246
+      env_forest_decal_spores_01_35: -8911285994571398918
+      env_forest_decal_spores_01_36: 6203034984565881003
+      env_forest_decal_spores_01_37: -8771405847226949711
+      env_forest_decal_spores_01_38: 6254652643495245890
+      env_forest_decal_spores_01_39: 3398185055040374980
+      env_forest_decal_spores_01_4: -7474022088275162674
+      env_forest_decal_spores_01_40: 8035834044007022969
+      env_forest_decal_spores_01_41: -4542969651671842922
+      env_forest_decal_spores_01_42: 5621106126858984105
+      env_forest_decal_spores_01_43: 4147084611101931374
+      env_forest_decal_spores_01_44: 7203098447483147823
+      env_forest_decal_spores_01_45: -7856428891966826575
+      env_forest_decal_spores_01_46: 636077018687705999
+      env_forest_decal_spores_01_47: 3947980489125765307
+      env_forest_decal_spores_01_48: -402541390747485359
+      env_forest_decal_spores_01_49: -4924817921368559970
+      env_forest_decal_spores_01_5: 5177385917485064886
+      env_forest_decal_spores_01_50: 4492816124374118314
+      env_forest_decal_spores_01_51: -7388155897398228876
+      env_forest_decal_spores_01_52: -454780790376818651
+      env_forest_decal_spores_01_53: -6723631179527602018
+      env_forest_decal_spores_01_54: -8884978358894623969
+      env_forest_decal_spores_01_55: -5678231104675508688
+      env_forest_decal_spores_01_56: 3603078555588530621
+      env_forest_decal_spores_01_57: -9118939804567289163
+      env_forest_decal_spores_01_58: 1788621657587783207
+      env_forest_decal_spores_01_59: -7446895617502378988
+      env_forest_decal_spores_01_6: -1859488812156525170
+      env_forest_decal_spores_01_60: -8040229737791305148
+      env_forest_decal_spores_01_61: 3926963082429562804
+      env_forest_decal_spores_01_62: -5440587751007058416
+      env_forest_decal_spores_01_7: 6072300522155049446
+      env_forest_decal_spores_01_8: -8992996581935795338
+      env_forest_decal_spores_01_9: -5804661443040226385
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

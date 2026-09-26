@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f262bfdbc3db1d1448a3cf59cba06016, type: 3}
+  m_Name: audio_guardheavy
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.AudioEvent
+  _id: 53
+  _clips:
+  - {fileID: 8300000, guid: 1ce886700366cd64ab8324940d764577, type: 3}
+  - {fileID: 8300000, guid: 72c7842e600812b4784a2e7b7f8f39aa, type: 3}
+  - {fileID: 8300000, guid: 972415eb2c255ab40bffd63aeea6299e, type: 3}
+  _bus: 2
+  _volume: 0.72
+  _volumeJitter: 0.06
+  _pitchJitter: 0.045
+  _spatialBlend: 0.55
+  _maxDistance: 26
+  _maxVoices: 2
+  _minimumInterval: 0
+  _priority: 80
+  _loop: 0

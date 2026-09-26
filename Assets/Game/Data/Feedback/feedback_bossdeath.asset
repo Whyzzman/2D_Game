@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1948b099c584578408b2536d2dd0cc7d, type: 3}
+  m_Name: feedback_bossdeath
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.FeedbackProfile
+  _burst:
+    _clipName: vfx_boss_death
+    _frames:
+    - {fileID: 21300000, guid: 2c60e806f0190e4469a104c18592d0dd, type: 3}
+    - {fileID: 21300000, guid: be262276b5d98624eb731344a2f222b5, type: 3}
+    - {fileID: 21300000, guid: fc4aa02ae4c99b24383b637c11464725, type: 3}
+    - {fileID: 21300000, guid: 43e3afebc50329c49a9e1182edd4b477, type: 3}
+    - {fileID: 21300000, guid: a4a227e1245db0346ad08493b70e12b5, type: 3}
+    - {fileID: 21300000, guid: c95a5a75eeb218242864ca7bd848655f, type: 3}
+    - {fileID: 21300000, guid: 93cbead91bd6a97438939931ef9a263a, type: 3}
+    - {fileID: 21300000, guid: 9e251a4c17cb8dd40b36a164058b9852, type: 3}
+    - {fileID: 21300000, guid: f4df87a9fadb2b04d8e423ec83a9d64a, type: 3}
+    - {fileID: 21300000, guid: d3326c944e2787f49982108a1578ba28, type: 3}
+    - {fileID: 21300000, guid: 6e0910f978ec27f40a8b0cdf715520a6, type: 3}
+    - {fileID: 21300000, guid: 5bc94de4bf9ca4f4593f167ac3c0c16d, type: 3}
+    - {fileID: 21300000, guid: 7ae6ab09b2facdb4b8439d0554534213, type: 3}
+    - {fileID: 21300000, guid: 7bb6513524e03f649997e01fb60c8b01, type: 3}
+    - {fileID: 21300000, guid: 7ac69b15008c6f54c9e603106a6a2483, type: 3}
+    - {fileID: 21300000, guid: a89aae2a59829144faa67070c3278fdc, type: 3}
+    - {fileID: 21300000, guid: a8f577c2d2b62634d901eea7ebc8064e, type: 3}
+    - {fileID: 21300000, guid: e9c13484b44038749b43566d0226e913, type: 3}
+    _framesPerSecond: 16
+    _isLooping: 0
+  _tint: {r: 1, g: 1, b: 1, a: 1}
+  _scale: 1
+  _facesHitDirection: 0
+  _sortingLayer: VFXFront
+  _sortingOrder: 0
+  _hitStop: 0.1
+  _shake: 5
+  _shakeScale: 1
+  _shakeVerticalBias: 1
+  _screenFlash: 0.28
+  _flashColor: {r: 0.7, g: 0.5, b: 1, a: 1}
+  _lightColor: {r: 0.61, g: 0.3, b: 1, a: 0.85}
+  _lightRadius: 6
+  _lightDuration: 0.18
+  _priority: 100
+  _soundEvent: boss_death
+  _haptic: 0

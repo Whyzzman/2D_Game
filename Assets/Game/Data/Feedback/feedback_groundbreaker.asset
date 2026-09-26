@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1948b099c584578408b2536d2dd0cc7d, type: 3}
+  m_Name: feedback_groundbreaker
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.FeedbackProfile
+  _burst:
+    _clipName: vfx_ground_breaker
+    _frames:
+    - {fileID: 21300000, guid: 2195de2e055d5644992d2ffb5c152601, type: 3}
+    - {fileID: 21300000, guid: 6feecc8cd74d5804cbb645f158250c8f, type: 3}
+    - {fileID: 21300000, guid: c34ffcd398522a442b32d02ade773db7, type: 3}
+    - {fileID: 21300000, guid: 5abe158ece3d74046a2cf0a7f6d4e183, type: 3}
+    - {fileID: 21300000, guid: 81ea2df6a041e17448d656fa7c8f8ea8, type: 3}
+    - {fileID: 21300000, guid: 04a572bf372c8c7458f03690ad152104, type: 3}
+    - {fileID: 21300000, guid: 52187f0b0cb4a7246b8baf9eabbb17bf, type: 3}
+    - {fileID: 21300000, guid: 87d324d492143114b9ded26c8daa2201, type: 3}
+    - {fileID: 21300000, guid: 457f51e26dce9ed48a2bab6078498f67, type: 3}
+    - {fileID: 21300000, guid: 753b73ec49885a042b098c5805c87ccb, type: 3}
+    _framesPerSecond: 22
+    _isLooping: 0
+  _tint: {r: 1, g: 1, b: 1, a: 1}
+  _scale: 1
+  _facesHitDirection: 0
+  _sortingLayer: VFXFront
+  _sortingOrder: 0
+  _hitStop: 0.08
+  _shake: 4
+  _shakeScale: 1
+  _shakeVerticalBias: 1.6
+  _screenFlash: 0
+  _flashColor: {r: 1, g: 1, b: 1, a: 1}
+  _lightColor: {r: 0.85, g: 0.75, b: 0.55, a: 0.5}
+  _lightRadius: 3.4
+  _lightDuration: 0.18
+  _priority: 55
+  _soundEvent: ground_breaker
+  _haptic: 0

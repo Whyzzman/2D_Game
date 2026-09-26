@@ -1,0 +1,150 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <Style src="Hud.uss" />
+    <ui:VisualElement name="hud" class="hud" picking-mode="Ignore">
+        <ui:VisualElement name="vignette" class="vignette" picking-mode="Ignore" />
+
+        <ui:VisualElement name="conditions" class="conditions" picking-mode="Ignore">
+            <ui:VisualElement name="status-bleed" class="chip chip--bleed" picking-mode="Ignore">
+                <ui:VisualElement class="chip__icon" picking-mode="Ignore" />
+                <ui:VisualElement class="chip__meter" picking-mode="Ignore"><ui:VisualElement class="chip__meter-fill" picking-mode="Ignore" /></ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement name="status-poison" class="chip chip--poison" picking-mode="Ignore">
+                <ui:VisualElement class="chip__icon" picking-mode="Ignore" />
+                <ui:VisualElement class="chip__meter" picking-mode="Ignore"><ui:VisualElement class="chip__meter-fill" picking-mode="Ignore" /></ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement name="status-burn" class="chip chip--burn" picking-mode="Ignore">
+                <ui:VisualElement class="chip__icon" picking-mode="Ignore" />
+                <ui:VisualElement class="chip__meter" picking-mode="Ignore"><ui:VisualElement class="chip__meter-fill" picking-mode="Ignore" /></ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement name="status-frost" class="chip chip--frost" picking-mode="Ignore">
+                <ui:VisualElement class="chip__icon" picking-mode="Ignore" />
+                <ui:VisualElement class="chip__meter" picking-mode="Ignore"><ui:VisualElement class="chip__meter-fill" picking-mode="Ignore" /></ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+
+        <ui:VisualElement name="purse" class="purse" picking-mode="Ignore">
+            <ui:VisualElement name="purse-icon" class="purse__icon" picking-mode="Ignore" />
+            <ui:Label name="purse-value" class="purse__value" text="0" picking-mode="Ignore" />
+        </ui:VisualElement>
+
+        <ui:VisualElement name="boss" class="boss" picking-mode="Ignore">
+            <ui:Label name="boss-name" class="boss__name display" text="Страж Гробниці" picking-mode="Ignore" />
+            <ui:VisualElement name="boss-divider" class="boss__divider ornament" picking-mode="Ignore" />
+            <ui:VisualElement name="boss-frame" class="bar boss__bar" picking-mode="Ignore">
+                <ui:VisualElement name="boss-loss" class="bar__loss" picking-mode="Ignore" />
+                <ui:VisualElement name="boss-fill" class="bar__fill bar__fill--boss" picking-mode="Ignore" />
+                <ui:VisualElement class="bar__sheen" picking-mode="Ignore" />
+                <ui:VisualElement name="boss-mark" class="boss__mark" picking-mode="Ignore" />
+                <ui:VisualElement class="bar__frame" picking-mode="Ignore" />
+            </ui:VisualElement>
+            <ui:VisualElement class="boss__meta" picking-mode="Ignore">
+                <ui:Label name="boss-phase" class="boss__phase display" text="Фаза I" picking-mode="Ignore" />
+                <ui:Label name="boss-value" class="boss__value" text="" picking-mode="Ignore" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+
+        <ui:VisualElement name="resources" class="resources" picking-mode="Ignore">
+            <ui:VisualElement class="resources__head" picking-mode="Ignore">
+                <ui:Label class="resources__label display" text="Здоров'я" picking-mode="Ignore" />
+                <ui:Label name="hp-value" class="resources__value" text="" picking-mode="Ignore" />
+            </ui:VisualElement>
+            <ui:VisualElement name="hp-frame" class="bar bar--hp" picking-mode="Ignore">
+                <ui:VisualElement name="hp-loss" class="bar__loss" picking-mode="Ignore" />
+                <ui:VisualElement name="hp-fill" class="bar__fill bar__fill--hp" picking-mode="Ignore" />
+                <ui:VisualElement class="bar__sheen" picking-mode="Ignore" />
+                <ui:VisualElement class="bar__frame" picking-mode="Ignore" />
+            </ui:VisualElement>
+            <ui:VisualElement name="mana-frame" class="bar bar--mana" picking-mode="Ignore">
+                <ui:VisualElement name="mana-loss" class="bar__loss" picking-mode="Ignore" />
+                <ui:VisualElement name="mana-fill" class="bar__fill bar__fill--mana" picking-mode="Ignore" />
+                <ui:VisualElement class="bar__sheen" picking-mode="Ignore" />
+                <ui:VisualElement class="bar__frame" picking-mode="Ignore" />
+            </ui:VisualElement>
+            <ui:VisualElement name="stamina-frame" class="bar bar--stamina" picking-mode="Ignore">
+                <ui:VisualElement name="stamina-loss" class="bar__loss" picking-mode="Ignore" />
+                <ui:VisualElement name="stamina-fill" class="bar__fill bar__fill--stamina" picking-mode="Ignore" />
+                <ui:VisualElement class="bar__sheen" picking-mode="Ignore" />
+                <ui:VisualElement class="bar__frame" picking-mode="Ignore" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+
+        <ui:VisualElement name="loadout" class="loadout" picking-mode="Ignore">
+            <ui:VisualElement class="loadout__group" picking-mode="Ignore">
+                <ui:Label class="loadout__caption display" text="Зброя" picking-mode="Ignore" />
+                <ui:VisualElement class="loadout__row" picking-mode="Ignore">
+                    <ui:VisualElement name="slot-weapon" class="slot slot--large" picking-mode="Ignore">
+                        <ui:VisualElement class="slot__icon" picking-mode="Ignore" />
+                        <ui:VisualElement class="slot__cooldown" picking-mode="Ignore" />
+                        <ui:Label class="slot__timer" picking-mode="Ignore" />
+                        <ui:VisualElement class="slot__frame" picking-mode="Ignore" />
+                        <ui:Label class="slot__key" text="F" picking-mode="Ignore" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement class="loadout__group" picking-mode="Ignore">
+                <ui:Label class="loadout__caption display" text="Уміння" picking-mode="Ignore" />
+                <ui:VisualElement class="loadout__row" picking-mode="Ignore">
+                    <ui:VisualElement name="slot-skill-0" class="slot" picking-mode="Ignore">
+                        <ui:VisualElement class="slot__icon" picking-mode="Ignore" />
+                        <ui:VisualElement class="slot__cooldown" picking-mode="Ignore" />
+                        <ui:Label class="slot__timer" picking-mode="Ignore" />
+                        <ui:VisualElement class="slot__frame" picking-mode="Ignore" />
+                        <ui:Label class="slot__key" text="1" picking-mode="Ignore" />
+                    </ui:VisualElement>
+                    <ui:VisualElement name="slot-skill-1" class="slot" picking-mode="Ignore">
+                        <ui:VisualElement class="slot__icon" picking-mode="Ignore" />
+                        <ui:VisualElement class="slot__cooldown" picking-mode="Ignore" />
+                        <ui:Label class="slot__timer" picking-mode="Ignore" />
+                        <ui:VisualElement class="slot__frame" picking-mode="Ignore" />
+                        <ui:Label class="slot__key" text="2" picking-mode="Ignore" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement class="loadout__group" picking-mode="Ignore">
+                <ui:Label class="loadout__caption display" text="Закляття" picking-mode="Ignore" />
+                <ui:VisualElement class="loadout__row" picking-mode="Ignore">
+                    <ui:VisualElement name="slot-spell-0" class="slot" picking-mode="Ignore">
+                        <ui:VisualElement class="slot__icon" picking-mode="Ignore" />
+                        <ui:VisualElement class="slot__cooldown" picking-mode="Ignore" />
+                        <ui:Label class="slot__timer" picking-mode="Ignore" />
+                        <ui:VisualElement class="slot__frame" picking-mode="Ignore" />
+                        <ui:Label class="slot__key" text="3" picking-mode="Ignore" />
+                    </ui:VisualElement>
+                    <ui:VisualElement name="slot-spell-1" class="slot" picking-mode="Ignore">
+                        <ui:VisualElement class="slot__icon" picking-mode="Ignore" />
+                        <ui:VisualElement class="slot__cooldown" picking-mode="Ignore" />
+                        <ui:Label class="slot__timer" picking-mode="Ignore" />
+                        <ui:VisualElement class="slot__frame" picking-mode="Ignore" />
+                        <ui:Label class="slot__key" text="4" picking-mode="Ignore" />
+                    </ui:VisualElement>
+                    <ui:VisualElement name="slot-spell-2" class="slot" picking-mode="Ignore">
+                        <ui:VisualElement class="slot__icon" picking-mode="Ignore" />
+                        <ui:VisualElement class="slot__cooldown" picking-mode="Ignore" />
+                        <ui:Label class="slot__timer" picking-mode="Ignore" />
+                        <ui:VisualElement class="slot__frame" picking-mode="Ignore" />
+                        <ui:Label class="slot__key" text="5" picking-mode="Ignore" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+
+        <ui:VisualElement name="prompt" class="prompt" picking-mode="Ignore">
+            <ui:Label class="prompt__glyph" text="E" picking-mode="Ignore" />
+            <ui:Label name="prompt-text" class="prompt__text" text="" picking-mode="Ignore" />
+        </ui:VisualElement>
+
+        <ui:VisualElement name="zone-title" class="zone-title" picking-mode="Ignore">
+            <ui:VisualElement class="zone-title__rule ornament" picking-mode="Ignore" />
+            <ui:Label name="zone-title-text" class="zone-title__text display" text="" picking-mode="Ignore" />
+            <ui:VisualElement class="zone-title__rule ornament" picking-mode="Ignore" />
+        </ui:VisualElement>
+
+        <ui:VisualElement name="fade" class="fade" picking-mode="Ignore" />
+
+        <ui:VisualElement name="death" class="death" picking-mode="Ignore">
+            <ui:Label class="death__text display" text="ВИ ЗАГИНУЛИ" picking-mode="Ignore" />
+            <ui:VisualElement class="death__rule ornament" picking-mode="Ignore" />
+            <ui:Label class="death__sub" text="Повернення до вівтаря" picking-mode="Ignore" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

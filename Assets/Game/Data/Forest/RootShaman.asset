@@ -1,0 +1,128 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a3bf27c6a3b5a64bba1a1b22b6e25e4, type: 3}
+  m_Name: RootShaman
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.EnemyDefinition
+  _displayName: "\u041A\u043E\u0440\u0435\u043D\u0435\u0432\u0438\u0439 \u0428\u0430\u043C\u0430\u043D"
+  _experienceReward: 80
+  _patrolSpeed: 1.2
+  _chaseSpeed: 2.4
+  _returnSpeed: 1.8
+  _patrolRange: 2.5
+  _idleTime: 1.4
+  _idleTimeVariance: 0.6
+  _detectionRange: 11
+  _loseSightRange: 14
+  _verticalDetectionRange: 4.5
+  _alertTime: 0.5
+  _searchTime: 3.5
+  _behindDetectionRange: 2.5
+  _facingDeadZone: 0.35
+  _aiTickInterval: 0.09
+  _attackRange: 10
+  _verticalAttackRange: 4
+  _attackCooldown: 2
+  _facingLockTime: 0.6
+  _decisionCooldown: 0.35
+  _guardMovementScale: 1
+  _attacks:
+  - _kind: 0
+    _attack:
+      _displayName: Poison Orb
+      _animationState: Attack
+      _damage: 14
+      _damageMultiplier: 1
+      _damageType: 3
+      _staminaCost: 0
+      _staggerDamage: 8
+      _knockback: 2
+      _guardDamage: 18
+      _hitStop: 0.04
+      _isUnblockable: 0
+      _isParryable: 0
+      _windup: 0.78
+      _activeTime: 0.06
+      _recovery: 0.62
+      _comboLinkTime: 1.2
+      _cancelableAfter: 1.2
+      _hitboxOffset: {x: 0.5, y: 0.1}
+      _hitboxSize: {x: 0.4, y: 0.4}
+      _movementScale: 0
+      _statusBuildup:
+      - type: 1
+        amount: 34
+    _cooldown: 3.4
+    _minRange: 2.8
+    _maxRange: 10
+    _weight: 4
+    _requiredPressure: 0
+    _weightAgainstGuard: 0
+    _facingLockTime: 0.6
+    _spawn:
+      _kind: 1
+      _prefab: {fileID: 2658736008269049233, guid: d88d827eaef3302488b245f558d6909d, type: 3}
+      _offset: {x: 0.6, y: 0.45}
+      _speed: 6.5
+      _range: 14
+      _pierce: 1
+      _color: {r: 0.55, g: 0.9, b: 0.4, a: 1}
+      _atTargetPosition: 0
+      _maxPlacementDistance: 8
+    _lunge: {x: 0, y: 0}
+  - _kind: 1
+    _attack:
+      _displayName: Toxic Ground
+      _animationState: HeavyAttack
+      _damage: 0
+      _damageMultiplier: 1
+      _damageType: 3
+      _staminaCost: 0
+      _staggerDamage: 0
+      _knockback: 0
+      _guardDamage: 0
+      _hitStop: 0
+      _isUnblockable: 1
+      _isParryable: 0
+      _windup: 0.92
+      _activeTime: 0.05
+      _recovery: 0.75
+      _comboLinkTime: 1.4
+      _cancelableAfter: 1.4
+      _hitboxOffset: {x: 0, y: 0}
+      _hitboxSize: {x: 0.01, y: 0.01}
+      _movementScale: 0
+      _statusBuildup: []
+    _cooldown: 8
+    _minRange: 2
+    _maxRange: 8
+    _weight: 3
+    _requiredPressure: 0
+    _weightAgainstGuard: 0
+    _facingLockTime: 0.9
+    _spawn:
+      _kind: 2
+      _prefab: {fileID: 367150762718032026, guid: fb44f89142b42b748be358db1402cf47, type: 3}
+      _offset: {x: 0, y: -0.85}
+      _speed: 9
+      _range: 14
+      _pierce: 1
+      _color: {r: 1, g: 1, b: 1, a: 1}
+      _atTargetPosition: 1
+      _maxPlacementDistance: 8
+    _lunge: {x: 0, y: 0}
+  _preferredRange: 6.5
+  _retreatRange: 4
+  _retreatSpeed: 2.6
+  _hurtTime: 0.38
+  _hitReactionCooldown: 0.5
+  _deathTime: 1.6
+  _maxChaseTime: 16

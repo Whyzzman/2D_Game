@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f262bfdbc3db1d1448a3cf59cba06016, type: 3}
+  m_Name: audio_houndhurt
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.AudioEvent
+  _id: 93
+  _clips:
+  - {fileID: 8300000, guid: c8e755a88323c98449db86fb4836a044, type: 3}
+  - {fileID: 8300000, guid: c5d55ccaec314b445a0f532081ec7613, type: 3}
+  - {fileID: 8300000, guid: 449387b5b217e9148a9a37dce834bbdc, type: 3}
+  - {fileID: 8300000, guid: 45decdb71ca92944db6c80df96bd5253, type: 3}
+  _bus: 2
+  _volume: 0.55
+  _volumeJitter: 0.06
+  _pitchJitter: 0.045
+  _spatialBlend: 0.55
+  _maxDistance: 26
+  _maxVoices: 3
+  _minimumInterval: 0
+  _priority: 55
+  _loop: 0

@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60938d5ed6953cd40864b1bdd44f1d9b, type: 3}
+  m_Name: ProgressionCurve
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.ProgressionCurve
+  _baseExperience: 100
+  _experienceExponent: 0.85
+  _experienceRounding: 10
+  _maxLevel: 100
+  _statPointsPerLevel: 1
+  _startingStrength: 5
+  _startingDexterity: 5
+  _startingVitality: 5
+  _startingEndurance: 5
+  _startingIntelligence: 5
+  _startingWill: 5
+  _shadowScaleFactor: 0.035
+  _statusResistancePerWill: 0.003
+  _maxWillResistance: 0.3
+  _statCap: 99
+  _baseHealth: 100
+  _baseStamina: 100
+  _healthPerVitality: 10
+  _healthPerVitalityMid: 7
+  _healthPerVitalityHigh: 4
+  _staminaPerEndurance: 6
+  _staminaPerEnduranceMid: 4
+  _staminaPerEnduranceHigh: 2
+  _softCap: 20
+  _hardCap: 40
+  _baseMana: 100
+  _manaPerIntelligence: 8
+  _manaPerIntelligenceMid: 6
+  _manaPerIntelligenceHigh: 3
+  _spellScaleFactor: 0.035
+  _baseEquipLoad: 30
+  _equipLoadPerEndurance: 2
+  _scaleFactor: 0.03
+  _requirementPenalty: 0.6

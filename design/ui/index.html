@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<title>Тінь Забутого Королівства — Інтерфейс, погодження</title>
+<link rel="stylesheet" href="_shared/ui.css">
+<style>
+  body { background: #070605; padding: 40px 56px 96px; }
+  .wrap { max-width: 1320px; margin: 0 auto; }
+
+  h1 { font-family: var(--font-display); font-size: 40px; letter-spacing: 0.08em; color: var(--ink-bright); margin: 0 0 var(--s2); }
+  .lede { font-size: var(--fs-body); line-height: 1.6; color: var(--ink-muted); max-width: 78ch; margin: 0 0 var(--s7); }
+  h2 { font-family: var(--font-display); font-size: 24px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); margin: var(--s7) 0 var(--s4); padding-bottom: var(--s2); border-bottom: 1px solid var(--edge-mid); }
+  h3 { font-family: var(--font-display); font-size: var(--fs-body); letter-spacing: 0.08em; color: var(--ink-bright); margin: var(--s5) 0 var(--s3); }
+  p { font-size: var(--fs-small); line-height: 1.6; color: var(--ink-muted); max-width: 84ch; }
+
+  .screens { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: var(--s4); }
+  .screen-link {
+    display: block; padding: var(--s4);
+    border: 1px solid var(--edge-mid);
+    background: linear-gradient(180deg, rgba(34,28,23,0.7), rgba(11,9,7,0.6));
+    text-decoration: none;
+  }
+  .screen-link:hover { border-color: var(--gold-dim); }
+  .screen-link b { display: block; font-family: var(--font-display); font-size: var(--fs-body); color: var(--ink-bright); letter-spacing: 0.06em; margin-bottom: var(--s1); }
+  .screen-link span { font-size: var(--fs-micro); color: var(--ink-dim); line-height: 1.5; }
+
+  .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--s3); }
+  .swatch { border: 1px solid var(--edge-mid); }
+  .swatch__chip { height: 52px; }
+  .swatch__meta { padding: var(--s2); font-size: var(--fs-micro); }
+  .swatch__meta b { display: block; color: var(--ink); font-weight: 500; }
+  .swatch__meta code { color: var(--ink-dim); font-family: ui-monospace, monospace; }
+
+  .gallery { display: flex; flex-wrap: wrap; gap: var(--s5); align-items: flex-start; }
+  .spec { display: flex; flex-direction: column; align-items: center; gap: var(--s2); }
+  .spec__label { font-size: var(--fs-micro); color: var(--ink-dim); letter-spacing: 0.08em; text-align: center; max-width: 110px; }
+
+  .type-sample { border-left: 2px solid var(--edge-mid); padding-left: var(--s4); margin-bottom: var(--s4); }
+  .type-sample__meta { font-size: var(--fs-micro); color: var(--ink-dim); margin-bottom: var(--s1); font-family: ui-monospace, monospace; }
+
+  .rules { font-size: var(--fs-small); line-height: 1.7; color: var(--ink); max-width: 84ch; }
+  .rules li { margin-bottom: var(--s2); }
+  .rules b { color: var(--ink-bright); font-weight: 600; }
+
+  .gate {
+    border: 1px solid var(--gold-dim);
+    background: rgba(138,116,52,0.09);
+    padding: var(--s5);
+    margin-bottom: var(--s6);
+  }
+  .gate h2 { margin-top: 0; border: none; padding: 0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>Інтерфейс — фінальний HTML на погодження</h1>
+  <p class="lede">
+    PHASE 21. Усі екрани інтерфейсу в тому вигляді, в якому вони мають піти
+    в Unity. Мова інтерфейсу — українська, цільовий viewport 1920×1080,
+    перевірено також 16:10. На кожному екрані клавіша <b>A</b> перемикає
+    співвідношення сторін.
+  </p>
+
+  <div class="gate">
+    <h2>Що саме погоджується</h2>
+    <p style="color:var(--ink)">
+      Це <b>Approval 1</b> за пайплайном UI Toolkit. До вашого погодження
+      інтерфейс у Unity не переноситься. Подивіться, будь ласка, і скажіть,
+      що правити:
+    </p>
+    <ul class="rules">
+      <li>стиль і дизайн-система: кольори, типографіка, форма панелей і слотів;</li>
+      <li>розташування елементів на кожному екрані;</li>
+      <li>іконки, форми смуг і стани (звичайний, наведення, обраний, вимкнений);</li>
+      <li>склад екранів і viewport.</li>
+    </ul>
+  </div>
+
+  <h2>Екрани</h2>
+  <div class="screens">
+    <a class="screen-link" href="hud/hud.html">
+      <b>HUD</b>
+      <span>Здоров'я, мана, витривалість, зброя, уміння, закляття, стани, бафи,
+      підказка взаємодії, смуга боса, сповіщення, числа шкоди</span>
+    </a>
+    <a class="screen-link" href="inventory/inventory.html">
+      <b>Спорядження</b>
+      <span>Шість категорій, сітка, деталі предмета, порівняння з екіпірованим,
+      пояснення відмови</span>
+    </a>
+    <a class="screen-link" href="equipment/equipment.html">
+      <b>Екіпірування</b>
+      <span>Вісім слотів, фільтр придатного, похідні характеристики,
+      навантаження</span>
+    </a>
+    <a class="screen-link" href="character/character.html">
+      <b>Персонаж</b>
+      <span>Рівень і досвід, шість характеристик, розподіл очок із попереднім
+      переглядом, пояснення, опори</span>
+    </a>
+    <a class="screen-link" href="skills/skills.html">
+      <b>Уміння</b>
+      <span>Чотири гілки, стани вузлів, лінії передумов, деталі, призначення
+      в слоти</span>
+    </a>
+    <a class="screen-link" href="spellbook/spellbook.html">
+      <b>Закляття</b>
+      <span>Вивчені закляття, три слоти, деталі, призначення</span>
+    </a>
+    <a class="screen-link" href="menus/menus.html">
+      <b>Меню</b>
+      <span>Головне меню зі збереженням і без, підтвердження перезапису, пауза,
+      налаштування, вівтар, смерть, збереження й помилка</span>
+    </a>
+    <a class="screen-link" href="map/map.html">
+      <b>Карта і мандри</b>
+      <span>PHASE 25. Карта світу на початку й наприкінці, туман, іконки, шорткати,
+      запечатана дорога; вівтар із мандрами, вибір місця, картка зони, пауза з картою</span>
+    </a>
+  </div>
+
+  <h2>Дизайн-система</h2>
+
+  <h3>Кольори</h3>
+  <p>Поверхні темні й ненасичені; акцент — вицвіле золото. Ресурси й стани мають
+  фіксовані кольори, які більше ніде не використовуються.</p>
+  <div class="swatches">
+    <div class="swatch"><div class="swatch__chip" style="background:#17130f"></div><div class="swatch__meta"><b>Панель</b><code>#17130f</code></div></div>
+    <div class="swatch"><div class="swatch__chip" style="background:#221c17"></div><div class="swatch__meta"><b>Піднята поверхня</b><code>#221c17</code></div></div>
+    <div class="swatch"><div class="swatch__chip" style="background:#6b5a42"></div><div class="swatch__meta"><b>Кант</b><code>#6b5a42</code></div></div>
+    <div class="swatch"><div class="swatch__chip" style="background:#c9a14a"></div><div class="swatch__meta"><b>Золото</b><code>#c9a14a</code></div></div>
+    <div class="swatch"><div class="swatch__chip" style="background:#d8cbb4"></div><div class="swatch__meta"><b>Текст</b><code>#d8cbb4</code></div></div>
+    <div class="swatch"><div class="swatch__chip" style="background:#b3202a"></div><div class="swatch__meta"><b>Здоров'я</b><code>#b3202a</code></div></div>
+    <div class="swatch"><div class="swatch__chip" style="background:#3e6fa8"></div><div class="swatch__meta"><b>Мана</b><code>#3e6fa8</code></div></div>
+    <div class="swatch"><div class="swatch__chip" style="background:#c8a24a"></div><div class="swatch__meta"><b>Витривалість</b><code>#c8a24a</code></div></div>
+    <div class="swatch"><div class="swatch__chip" style="background:#8f1d2c"></div><div class="swatch__meta"><b>Бос</b><code>#8f1d2c</code></div></div>
+    <div class="swatch"><div class="swatch__chip" style="background:#8e1b28"></div><div class="swatch__meta"><b>Кровотеча</b><code>#8e1b28</code></div></div>
+    <div class="swatch"><div class="swatch__chip" style="background:#7fa83c"></div><div class="swatch__meta"><b>Отрута</b><code>#7fa83c</code></div></div>
+    <div class="swatch"><div class="swatch__chip" style="background:#ff8c33"></div><div class="swatch__meta"><b>Горіння</b><code>#ff8c33</code></div></div>
+    <div class="swatch"><div class="swatch__chip" style="background:#8fd6ff"></div><div class="swatch__meta"><b>Лід</b><code>#8fd6ff</code></div></div>
+    <div class="swatch"><div class="swatch__chip" style="background:#9b4dff"></div><div class="swatch__meta"><b>Тінь</b><code>#9b4dff</code></div></div>
+  </div>
+
+  <h3>Типографіка</h3>
+  <p>Акцидентний шрифт — <b>лише</b> заголовки, імена боса й назви розділів.
+  Довгі тексти, характеристики й кнопки набрані читабельним гротеском.</p>
+  <div class="type-sample">
+    <div class="type-sample__meta">display · 34 px · ім'я боса</div>
+    <div class="display" style="font-size:34px; color:var(--ink-bright)">Страж Гробниці</div>
+  </div>
+  <div class="type-sample">
+    <div class="type-sample__meta">display · 28 px · заголовок екрана</div>
+    <div class="display" style="font-size:28px; color:var(--ink-bright); text-transform:uppercase">Спорядження</div>
+  </div>
+  <div class="type-sample">
+    <div class="type-sample__meta">body · 17 px · опис, кнопки</div>
+    <div style="font-size:17px">Важкий клинок королівської кузні. Повільний, але кожен удар вибиває супротивника з рівноваги.</div>
+  </div>
+  <div class="type-sample">
+    <div class="type-sample__meta">body · 15 px · характеристики (мінімум для таблиць)</div>
+    <div style="font-size:15px">Шкода 52 · Шкода рівновазі 40 · Витривалість за удар 25</div>
+  </div>
+  <div class="type-sample">
+    <div class="type-sample__meta">body · 13 px · підписи слотів (абсолютний мінімум)</div>
+    <div style="font-size:13px">Основна зброя</div>
+  </div>
+
+  <h3>Стани слотів</h3>
+  <p>Кожен стан відрізняється <b>формою або яскравістю канта</b>, а не лише
+  кольором — інтерфейс має лишатися зрозумілим без розрізнення кольорів.</p>
+  <div class="gallery">
+    <div class="spec">
+      <div class="slot"><svg width="34" height="34" viewBox="0 0 24 24"><path d="M14.5 3.5l3 3-8 8-3-3z" fill="#b9c0c9"/><path d="M6.2 11.8l3 3-1.6 1.6-3-3z" fill="#8a7434"/></svg></div>
+      <span class="spec__label">Звичайний</span>
+    </div>
+    <div class="spec">
+      <div class="slot slot--selected"><svg width="34" height="34" viewBox="0 0 24 24"><path d="M14.5 3.5l3 3-8 8-3-3z" fill="#b9c0c9"/><path d="M6.2 11.8l3 3-1.6 1.6-3-3z" fill="#8a7434"/></svg></div>
+      <span class="spec__label">Обраний</span>
+    </div>
+    <div class="spec">
+      <div class="slot slot--equipped"><svg width="34" height="34" viewBox="0 0 24 24"><path d="M14.5 3.5l3 3-8 8-3-3z" fill="#b9c0c9"/><path d="M6.2 11.8l3 3-1.6 1.6-3-3z" fill="#8a7434"/></svg></div>
+      <span class="spec__label">Екіпіровано (кутовий ромб)</span>
+    </div>
+    <div class="spec">
+      <div class="slot slot--disabled"><svg width="34" height="34" viewBox="0 0 24 24"><path d="M14.5 3.5l3 3-8 8-3-3z" fill="#b9c0c9"/><path d="M6.2 11.8l3 3-1.6 1.6-3-3z" fill="#8a7434"/></svg></div>
+      <span class="spec__label">Недоступний</span>
+    </div>
+    <div class="spec">
+      <div class="slot slot--empty"></div>
+      <span class="spec__label">Порожній (пунктир)</span>
+    </div>
+    <div class="spec">
+      <div class="slot"><svg width="34" height="34" viewBox="0 0 24 24"><path d="M3 12h11" stroke="#8fb8d6" stroke-width="2" stroke-linecap="round"/><path d="M13 7l6 5-6 5z" fill="#8fb8d6"/></svg><div class="slot__cooldown" style="--cd:64%"></div><div class="slot__cooldown-text">3</div></div>
+      <span class="spec__label">Відкат (радіальний)</span>
+    </div>
+    <div class="spec">
+      <div class="slot" data-rarity="unique"><svg width="34" height="34" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7" fill="none" stroke="#9b6bd6" stroke-width="1.8"/><path d="M12 7l1.6 3.4 3.4.5-2.5 2.4.6 3.5L12 15.2 8.9 16.8l.6-3.5L7 10.9l3.4-.5z" fill="#9b6bd6"/></svg></div>
+      <span class="spec__label">Унікальний (подвійна рамка)</span>
+    </div>
+  </div>
+
+  <h3>Смуги ресурсів</h3>
+  <p>Форма заповнення однакова скрізь: зліва направо, з відкладеним слідом
+  шкоди. Розмір задає важливість — здоров'я найбільше.</p>
+  <div class="col" style="max-width:460px; gap:var(--s3)">
+    <div class="bar" style="height:34px"><div class="bar__loss" style="width:78%"></div><div class="bar__fill bar__fill--hp" style="width:69%"></div><div class="bar__ticks"></div><div class="bar__value">124 / 180</div></div>
+    <div class="bar" style="height:18px; width:82%"><div class="bar__fill bar__fill--mana" style="width:46%"></div><div class="bar__value">37 / 80</div></div>
+    <div class="bar" style="height:13px; width:70%"><div class="bar__fill bar__fill--stamina" style="width:83%"></div></div>
+    <div class="bar" style="height:22px"><div class="bar__loss" style="width:64%"></div><div class="bar__fill bar__fill--boss" style="width:58%"></div><div class="bar__ticks"></div></div>
+  </div>
+
+  <h3>Кнопки й фокус</h3>
+  <p>Фокус позначається <b>світлом і кольором канта</b> одразу, щоб його було
+  видно з дивана й на геймпаді.</p>
+  <div class="gallery">
+    <button class="btn">Звичайна</button>
+    <button class="btn is-focused">У фокусі</button>
+    <button class="btn btn--primary">Основна дія</button>
+    <button class="btn btn--danger">Небезпечна дія</button>
+    <button class="btn is-disabled" disabled>Вимкнена</button>
+  </div>
+
+  <h3>Гліфи вводу</h3>
+  <p>Підказки ніколи не пишуть «натисніть E» текстом — гліф приходить з системи
+  вводу й змінюється разом із пристроєм.</p>
+  <div class="gallery">
+    <span class="glyph">E</span>
+    <span class="glyph">Esc</span>
+    <span class="glyph">↔</span>
+    <span class="glyph glyph--pad">A</span>
+    <span class="glyph glyph--pad">X</span>
+    <span class="glyph glyph--pad">Y</span>
+  </div>
+
+  <h2>Правила, які тримає ця система</h2>
+  <ul class="rules">
+    <li><b>Центр екрана належить бою.</b> HUD притиснутий до кутів; жоден
+      елемент не заходить у зону, де відбувається бій.</li>
+    <li><b>Стан читається без кольору.</b> Кожен стан має свою форму: пунктир для
+      порожнього, ромб для екіпірованого, подвійна рамка для унікального,
+      стрілка для дельти.</li>
+    <li><b>Відмова пояснює себе.</b> Недоступна дія завжди пише, чого бракує,
+      і ніколи не мовчить.</li>
+    <li><b>Нічого не тримається на дрібному тексті.</b> Мінімум 13 px, і лише
+      для підписів слотів; характеристики — від 15 px.</li>
+    <li><b>Довший текст не ламає верстку.</b> Кнопки тягнуться, описи
+      переносяться; українська довша за англійську, і макет це враховує.</li>
+    <li><b>Акцидентний шрифт — лише заголовки.</b> Абзаци готикою не набираються.</li>
+  </ul>
+
+  <h2>Чого тут свідомо немає</h2>
+  <ul class="rules">
+    <li><b>Нових механік.</b> Кожен екран показує рівно ті дані, які вже є в
+      грі: `InventoryScreen` уже вміє все це, але не має жодного віджета.</li>
+    <li><b>Екрана завантаження</b> — переходи в зрізі миттєві.</li>
+    <li><b>Системи навчання</b> — її в проєкті немає, і ця фаза її не додає.</li>
+    <li><b>Перепризначення клавіш</b> — гліфи готові, але самої системи немає.</li>
+  </ul>
+
+</div>
+</body>
+</html>

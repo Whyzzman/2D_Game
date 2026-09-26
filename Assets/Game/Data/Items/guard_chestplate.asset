@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fae553a26d5219b4c88495b664062a28, type: 3}
+  m_Name: guard_chestplate
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.ItemDefinition
+  _itemId: guard_chestplate
+  _displayName: "\u041A\u0456\u0440\u0430\u0441\u0430 \u0432\u0430\u0440\u0442\u0438"
+  _description: "\u0412\u0430\u0436\u043A\u0430 \u0441\u0442\u0430\u043B\u044C \u043A\u043E\u0440\u043E\u043B\u0456\u0432\u0441\u044C\u043A\u043E\u0457
+    \u0432\u0430\u0440\u0442\u0438. \u0417\u0430\u0445\u0438\u0449\u0430\u0454 \u0434\u043E\u0431\u0440\u0435,
+    \u0432\u0430\u0436\u0438\u0442\u044C \u0432\u0456\u0434\u043F\u043E\u0432\u0456\u0434\u043D\u043E."
+  _category: 3
+  _rarity: 1
+  _icon: {fileID: 0}
+  _isStackable: 1
+  _maxStack: 1
+  _isUnique: 1
+  _autosaveOnAcquire: 0
+  _equipment: {fileID: 11400000, guid: a8dd812cd33c46b4d97e753505eb2cb3, type: 2}
+  _baseValue: 150
+  _pickupColor: {r: 0.6, g: 0.62, b: 0.7, a: 1}

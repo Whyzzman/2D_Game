@@ -1,0 +1,167 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 649169c22105a06499c9bc0695fd8d1d, type: 3}
+  m_Name: HoundAnimations
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.EnemyAnimationSet
+  _clips:
+  - state: 1
+    clip:
+      _clipName: enemy_hound_idle
+      _frames:
+      - {fileID: 21300000, guid: 1eb21291a518e2f4f8e4a7cbb4a032ed, type: 3}
+      - {fileID: 21300000, guid: 2bf31a3e924ef1e4aae20dc8dca467fb, type: 3}
+      - {fileID: 21300000, guid: 1c29bfd3a8e37a84bbd0a338ddc65a7c, type: 3}
+      - {fileID: 21300000, guid: 59441b588e7bc4145a635eb71289bde6, type: 3}
+      - {fileID: 21300000, guid: f217c12bfd015c14caf593c69ae89d64, type: 3}
+      - {fileID: 21300000, guid: d3c32186df9f2df459722c7e77e31ccf, type: 3}
+      _framesPerSecond: 8
+      _isLooping: 1
+  - state: 2
+    clip:
+      _clipName: enemy_hound_patrol
+      _frames:
+      - {fileID: 21300000, guid: 517368dac57417d489eaa0ce590d758a, type: 3}
+      - {fileID: 21300000, guid: 56923793c4af36b43a895cdb2852f595, type: 3}
+      - {fileID: 21300000, guid: 5e7d7b9a4ae5374449959bd564be1bac, type: 3}
+      - {fileID: 21300000, guid: 1e83450892ecf7347a6fec30e7ecce36, type: 3}
+      - {fileID: 21300000, guid: 66dc0360a9b9ed54983d77ebdc525080, type: 3}
+      - {fileID: 21300000, guid: 1b0081932c9c98246891003335941544, type: 3}
+      - {fileID: 21300000, guid: fcaff1af795cb1044a19d2823a43d901, type: 3}
+      - {fileID: 21300000, guid: 649bd33f47daae04b8dfdd4df0ebf22f, type: 3}
+      _framesPerSecond: 14
+      _isLooping: 1
+  - state: 3
+    clip:
+      _clipName: enemy_hound_alert
+      _frames:
+      - {fileID: 21300000, guid: 1dd947d3530e1c342874aeaf1e5886f5, type: 3}
+      - {fileID: 21300000, guid: a915884a3ef66b1468340cea5ad85f1d, type: 3}
+      - {fileID: 21300000, guid: bf6b1468d138e7a4eb3b684a09503bd3, type: 3}
+      - {fileID: 21300000, guid: 7a200e46e32483f4db8c92e537407144, type: 3}
+      - {fileID: 21300000, guid: 1cd92dc289b0d9a409cd31c3248d9244, type: 3}
+      _framesPerSecond: 14
+      _isLooping: 0
+  - state: 4
+    clip:
+      _clipName: enemy_hound_chase
+      _frames:
+      - {fileID: 21300000, guid: d7c881d443d813d47b4945a0312ed233, type: 3}
+      - {fileID: 21300000, guid: 38538550a97c5094bab8bc7e00e3d65d, type: 3}
+      - {fileID: 21300000, guid: bf7447e7a7c0d8447ad0371cc98b5ecb, type: 3}
+      - {fileID: 21300000, guid: 35798b21f9c366440bf5c940d73b0276, type: 3}
+      - {fileID: 21300000, guid: 00f03d2c41f156d488ae76e88e3d718e, type: 3}
+      - {fileID: 21300000, guid: 5215e01acfdf5254bb7f3af31baa4da4, type: 3}
+      - {fileID: 21300000, guid: 0c91554c0ec9adc4b95a39101880e420, type: 3}
+      - {fileID: 21300000, guid: bdb5d1b1b6a31d84b805633493aa0557, type: 3}
+      _framesPerSecond: 18
+      _isLooping: 1
+  - state: 0
+    clip:
+      _clipName: enemy_hound_attacklight
+      _frames:
+      - {fileID: 21300000, guid: 6ba915f9d13442a428db7d0798699c73, type: 3}
+      - {fileID: 21300000, guid: 0a196dc4451afb846ad9077bd5cc0408, type: 3}
+      - {fileID: 21300000, guid: ec0206f0c51c52b48a14a1668c700e6b, type: 3}
+      - {fileID: 21300000, guid: b8bf783174077d4498717b32d87dd396, type: 3}
+      - {fileID: 21300000, guid: 2ad822d6c654c8149ab9d88025514979, type: 3}
+      - {fileID: 21300000, guid: 9cf22fff7b71a21429135c78bf3a727d, type: 3}
+      - {fileID: 21300000, guid: e5903e5f122c14c40adfdf57bd07b7a6, type: 3}
+      - {fileID: 21300000, guid: ebc7a4cb244d3444d83c232288a45d70, type: 3}
+      - {fileID: 21300000, guid: 3d7586ea87da2e143bd20f31d5d4d302, type: 3}
+      - {fileID: 21300000, guid: e4c1b7c3f9d809045abba67c1be2f3e8, type: 3}
+      - {fileID: 21300000, guid: b107cebe88ffb79449607d6beeb385d4, type: 3}
+      - {fileID: 21300000, guid: 5e01129c28bf4df418c9d91525a0acd0, type: 3}
+      - {fileID: 21300000, guid: 7c636aee2d845534e94af87588ec9c7f, type: 3}
+      - {fileID: 21300000, guid: a09a66043fadf394896a16f6cd89152f, type: 3}
+      - {fileID: 21300000, guid: 1fb31cc494cdadb46945788231f4a1a9, type: 3}
+      - {fileID: 21300000, guid: 2b1a3b10fe16ca949ba9a026f4010aa9, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 9
+    clip:
+      _clipName: enemy_hound_attackheavy
+      _frames:
+      - {fileID: 21300000, guid: 62e66760dd0b24b43b1e8bc49fa4a069, type: 3}
+      - {fileID: 21300000, guid: 97e07d06dc3a27a4b88f00e0cee0b843, type: 3}
+      - {fileID: 21300000, guid: 6cfcf02210faeb24db4e42fba9a3473d, type: 3}
+      - {fileID: 21300000, guid: 0388f8d8daca1954cb07e50e9b335fa1, type: 3}
+      - {fileID: 21300000, guid: cf6d0bc84ef730f4399ccc5298cdbfac, type: 3}
+      - {fileID: 21300000, guid: 03ee0cdca976f284d924a0894cdd0412, type: 3}
+      - {fileID: 21300000, guid: ef221d0e3e76fb04e84a2880ab84985e, type: 3}
+      - {fileID: 21300000, guid: 22fcc3972aa9319439a21f9edeabaaf2, type: 3}
+      - {fileID: 21300000, guid: 7765df2038e080c4890a0f35f354b6b7, type: 3}
+      - {fileID: 21300000, guid: 1178e803e5e72eb4789161ecdd0c6cd3, type: 3}
+      - {fileID: 21300000, guid: aef3f6eb282a5b44294ff4c894779421, type: 3}
+      - {fileID: 21300000, guid: 4f470449a51e11a428092644f81cdded, type: 3}
+      - {fileID: 21300000, guid: 2c91854c1a600194482f83548b3449c5, type: 3}
+      - {fileID: 21300000, guid: 15f6fd17dbe91864aa6f2a9371db733c, type: 3}
+      - {fileID: 21300000, guid: b56fba27fb11b46429e37d4b322a176c, type: 3}
+      - {fileID: 21300000, guid: fbbf2aeb1b8798e419822d54ea98e580, type: 3}
+      - {fileID: 21300000, guid: 91bc877641e160d42acce8406f896411, type: 3}
+      - {fileID: 21300000, guid: 16296ed2247509548880169acf8b54f3, type: 3}
+      - {fileID: 21300000, guid: 1a4f99b5c90bbb548b7409257e990d28, type: 3}
+      - {fileID: 21300000, guid: 7f828c59b823acb4dbb459cef12a4c53, type: 3}
+      - {fileID: 21300000, guid: 08ed1f8825172194482d64d4b5efe8c3, type: 3}
+      - {fileID: 21300000, guid: 0e2f8e2ade784114e96cec11f70534b9, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 11
+    clip:
+      _clipName: enemy_hound_hurt
+      _frames:
+      - {fileID: 21300000, guid: 6f4d352d9eee09640a956e70f5ec7d03, type: 3}
+      - {fileID: 21300000, guid: 1e50505ac4c64b24b8e35d0c6f7ccb29, type: 3}
+      - {fileID: 21300000, guid: 1a2c9452641a63142a45b6b81d743425, type: 3}
+      - {fileID: 21300000, guid: 72a872e70dbdca1448d6c67855807d37, type: 3}
+      - {fileID: 21300000, guid: 5e6d3df8e96a813499982cc237648a45, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 12
+    clip:
+      _clipName: enemy_hound_stunned
+      _frames:
+      - {fileID: 21300000, guid: e036bfcf7047d7a418b0732460d6cca3, type: 3}
+      - {fileID: 21300000, guid: 5378780c21e79384697d25f89a144b36, type: 3}
+      - {fileID: 21300000, guid: 944c1e40a5a400443a74d578a446fefd, type: 3}
+      - {fileID: 21300000, guid: 2c96af7ade593c34f9daf91e03d203ef, type: 3}
+      - {fileID: 21300000, guid: 218a0700216123e40ac6d26c71457144, type: 3}
+      - {fileID: 21300000, guid: 8d109913e7b9a01478fec52059a7eec8, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 1
+  - state: 13
+    clip:
+      _clipName: enemy_hound_death
+      _frames:
+      - {fileID: 21300000, guid: 4cc7ea4d56811c9468f5a93ed4e0ef16, type: 3}
+      - {fileID: 21300000, guid: a53f7c9e171e5e84baa699df8eb44b46, type: 3}
+      - {fileID: 21300000, guid: 7ce528cf703d2784fbb4dee9aad6d307, type: 3}
+      - {fileID: 21300000, guid: de51e840aca2cc94c982f2bce4c55d71, type: 3}
+      - {fileID: 21300000, guid: bfe5c33ba7fec25449bb28589f702b5b, type: 3}
+      - {fileID: 21300000, guid: f563c91e4e9f3bb40b5f99bd6886743d, type: 3}
+      - {fileID: 21300000, guid: df047281b9990d441875e071606bed1b, type: 3}
+      - {fileID: 21300000, guid: 7401798cccc9c3d44b16f3c237b8d48b, type: 3}
+      - {fileID: 21300000, guid: 7c2878612daadd74a8a1db3daae7ffe4, type: 3}
+      - {fileID: 21300000, guid: 14f8a0f134d8d734ca367883a6c7e263, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 0
+  _fallback:
+    _clipName: enemy_hound_idle
+    _frames:
+    - {fileID: 21300000, guid: 1eb21291a518e2f4f8e4a7cbb4a032ed, type: 3}
+    - {fileID: 21300000, guid: 2bf31a3e924ef1e4aae20dc8dca467fb, type: 3}
+    - {fileID: 21300000, guid: 1c29bfd3a8e37a84bbd0a338ddc65a7c, type: 3}
+    - {fileID: 21300000, guid: 59441b588e7bc4145a635eb71289bde6, type: 3}
+    - {fileID: 21300000, guid: f217c12bfd015c14caf593c69ae89d64, type: 3}
+    - {fileID: 21300000, guid: d3c32186df9f2df459722c7e77e31ccf, type: 3}
+    _framesPerSecond: 8
+    _isLooping: 1
+  _carriesShield: 0

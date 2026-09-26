@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1948b099c584578408b2536d2dd0cc7d, type: 3}
+  m_Name: feedback_bossslam
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.FeedbackProfile
+  _burst:
+    _clipName: vfx_guardian_slam
+    _frames:
+    - {fileID: 21300000, guid: 86ac3837ae0341743a9279168d37389a, type: 3}
+    - {fileID: 21300000, guid: 3b35b037ad7cfb7498296cdda9b5ad81, type: 3}
+    - {fileID: 21300000, guid: 9c11f1c6cf61bde49b3f092af15767c8, type: 3}
+    - {fileID: 21300000, guid: 45dafd92408ea464fa348789795dca2c, type: 3}
+    - {fileID: 21300000, guid: ed8442d03ba7b0d40b8dee52ba82394c, type: 3}
+    - {fileID: 21300000, guid: acb9dac5860fd40408734b3946c94390, type: 3}
+    - {fileID: 21300000, guid: d952e257c3419cf4f999b8336b9d640d, type: 3}
+    - {fileID: 21300000, guid: e243815fc88c63f488d72d843d797e6b, type: 3}
+    - {fileID: 21300000, guid: 220708781bfd8354eb80f7523846d498, type: 3}
+    - {fileID: 21300000, guid: d94fd8f584925584ca38b31d9089adf0, type: 3}
+    - {fileID: 21300000, guid: 971a2c2541889754793fc34459af58f4, type: 3}
+    - {fileID: 21300000, guid: 8e3135c2b18ed8b4fbe0278c53f12af4, type: 3}
+    _framesPerSecond: 22
+    _isLooping: 0
+  _tint: {r: 1, g: 1, b: 1, a: 1}
+  _scale: 1
+  _facesHitDirection: 0
+  _sortingLayer: VFXFront
+  _sortingOrder: 0
+  _hitStop: 0.09
+  _shake: 5
+  _shakeScale: 1
+  _shakeVerticalBias: 1.8
+  _screenFlash: 0.16
+  _flashColor: {r: 1, g: 0.9, b: 0.72, a: 1}
+  _lightColor: {r: 1, g: 0.86, b: 0.6, a: 0.7}
+  _lightRadius: 5
+  _lightDuration: 0.18
+  _priority: 80
+  _soundEvent: boss_slam
+  _haptic: 0

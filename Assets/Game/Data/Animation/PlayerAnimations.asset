@@ -1,0 +1,329 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 986580eb83175f34d83fba7bcc2c4c45, type: 3}
+  m_Name: PlayerAnimations
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.PlayerAnimationSet
+  _clips:
+  - state: 1
+    clip:
+      _clipName: player_idle
+      _frames:
+      - {fileID: 21300000, guid: 1219195d92096c44595311790623a27f, type: 3}
+      - {fileID: 21300000, guid: 5b450145002424640ba3a90507573709, type: 3}
+      - {fileID: 21300000, guid: 55227077beacfd64b980c565562f613e, type: 3}
+      - {fileID: 21300000, guid: 68a732bb567d8274a81b22907ab4a85a, type: 3}
+      _framesPerSecond: 8
+      _isLooping: 1
+  - state: 2
+    clip:
+      _clipName: player_run
+      _frames:
+      - {fileID: 21300000, guid: 137af4001ede8274e916659a7e3b7905, type: 3}
+      - {fileID: 21300000, guid: 411fbd17f16662842ad17966f59e9ccb, type: 3}
+      - {fileID: 21300000, guid: 127f21fce853f374182f197cb6c8560e, type: 3}
+      - {fileID: 21300000, guid: f07e8bd1c2ca64e49a9366fe80160011, type: 3}
+      - {fileID: 21300000, guid: d3f0c4dbdf515314bb6707e9188ee16c, type: 3}
+      - {fileID: 21300000, guid: 1e54cce4b5844ba42bcca3b5a9c62832, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 1
+  - state: 3
+    clip:
+      _clipName: player_jumpstart
+      _frames:
+      - {fileID: 21300000, guid: ce3bb29cf2e2290429980ffc71ac3a49, type: 3}
+      - {fileID: 21300000, guid: 98ceeb7feba0bde4e8eac47ea66d728a, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 4
+    clip:
+      _clipName: player_jumprise
+      _frames:
+      - {fileID: 21300000, guid: 6ff74a0bfca76c14dac0f3a7388964a2, type: 3}
+      - {fileID: 21300000, guid: 16c10b12a5e9b4540a5dd5eae4dabc76, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 1
+  - state: 5
+    clip:
+      _clipName: player_fall
+      _frames:
+      - {fileID: 21300000, guid: 495b713eaef3c7f4bb909815142d269e, type: 3}
+      - {fileID: 21300000, guid: 12adf5141cdc0dc4f805cde6e1c22ba7, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 1
+  - state: 6
+    clip:
+      _clipName: player_land
+      _frames:
+      - {fileID: 21300000, guid: 788595a2428a2fb489fe5e272a74e453, type: 3}
+      - {fileID: 21300000, guid: 349dd3dd54b9ba64facba6f4b23e7809, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 7
+    clip:
+      _clipName: player_dash
+      _frames:
+      - {fileID: 21300000, guid: 18e55af2f56abef429d38da68e5ea873, type: 3}
+      - {fileID: 21300000, guid: daa150db518a16348aa2706412988ae2, type: 3}
+      - {fileID: 21300000, guid: 3a8a498e0be2c2340b40c36db2244c3f, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 8
+    clip:
+      _clipName: player_airdash
+      _frames:
+      - {fileID: 21300000, guid: 623f58b86350cc440b3f16898fcd9181, type: 3}
+      - {fileID: 21300000, guid: 6fc18cc8da5242844947683da6c10905, type: 3}
+      - {fileID: 21300000, guid: ba1b7e8f52285ef45a0c47d32ad6241a, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 9
+    clip:
+      _clipName: player_wallslide
+      _frames:
+      - {fileID: 21300000, guid: bbb17d8dc31704a4b9ff7b8f270e802b, type: 3}
+      - {fileID: 21300000, guid: 383fff5ecf66435499ff870737ebf0fc, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 1
+  - state: 10
+    clip:
+      _clipName: player_walljump
+      _frames:
+      - {fileID: 21300000, guid: 87c204e3ec9ea4641b085e9caf3d0353, type: 3}
+      - {fileID: 21300000, guid: 42c60bcf105ff6643961ffbe5573b6f6, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 11
+    clip:
+      _clipName: player_wallrun
+      _frames:
+      - {fileID: 21300000, guid: f5ac9647feb7e8447b89970d282f7565, type: 3}
+      - {fileID: 21300000, guid: 9e76dd08167bede4c911f2503c1f0579, type: 3}
+      - {fileID: 21300000, guid: 676035321a909b540a3927de2486e5ee, type: 3}
+      - {fileID: 21300000, guid: 0341b2c8bdca2d144a8f55809a79219d, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 1
+  - state: 12
+    clip:
+      _clipName: player_attack1
+      _frames:
+      - {fileID: 21300000, guid: 502931b39f0af7342a16a756b581b0bb, type: 3}
+      - {fileID: 21300000, guid: 59f4de008e004c74ebf2454bbd89985d, type: 3}
+      - {fileID: 21300000, guid: 611c11475bf6132448f574035e0faaad, type: 3}
+      - {fileID: 21300000, guid: 23294beaf11dc0846a61c427ae4640ff, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 13
+    clip:
+      _clipName: player_attack2
+      _frames:
+      - {fileID: 21300000, guid: fe0b0fe9a1e72e84fbb35e014b8ada45, type: 3}
+      - {fileID: 21300000, guid: a635a897ed5daa44cada2ed5265ca7e4, type: 3}
+      - {fileID: 21300000, guid: cfb9909739c6131428658faa5b669c6e, type: 3}
+      - {fileID: 21300000, guid: 0753fc918faac0941862d88867edab6f, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 14
+    clip:
+      _clipName: player_attack3
+      _frames:
+      - {fileID: 21300000, guid: 1b48513a852957140b4b0cb5484b5826, type: 3}
+      - {fileID: 21300000, guid: 2ba871383c4a02b408ccfdb64dd332e6, type: 3}
+      - {fileID: 21300000, guid: 9283f45a35c0db148b3bdb2d390c1f1a, type: 3}
+      - {fileID: 21300000, guid: 8382160832ac9374da659902a9b27e79, type: 3}
+      - {fileID: 21300000, guid: c36749980d36956458d4d689424739eb, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 15
+    clip:
+      _clipName: player_heavy
+      _frames:
+      - {fileID: 21300000, guid: 7a846230562777a4884e901d28ae8a85, type: 3}
+      - {fileID: 21300000, guid: fd775d285e78b8a41bf5bf7da365b1f6, type: 3}
+      - {fileID: 21300000, guid: 4a891c10ad0291a489c04f732c49ab2f, type: 3}
+      - {fileID: 21300000, guid: cbc437a13e606f746bca609db5b62cfc, type: 3}
+      - {fileID: 21300000, guid: 0687c95883154b640bdfae7a8f648960, type: 3}
+      - {fileID: 21300000, guid: 0a4668441108c8c46b6beb70a6a85bca, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 16
+    clip:
+      _clipName: player_block
+      _frames:
+      - {fileID: 21300000, guid: 924847808556b704db4804e8d3f82af2, type: 3}
+      - {fileID: 21300000, guid: 26389937df585894fa5a4381405cd44e, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 1
+  - state: 17
+    clip:
+      _clipName: player_blockimpact
+      _frames:
+      - {fileID: 21300000, guid: fa4acdf548840ff4b8d84f91e63a8587, type: 3}
+      - {fileID: 21300000, guid: 814eed03de66bb04fb119f4b0c25a893, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 18
+    clip:
+      _clipName: player_parry
+      _frames:
+      - {fileID: 21300000, guid: cedf5db472d2e894ea8a06631d75d8fa, type: 3}
+      - {fileID: 21300000, guid: c9622dbd428e15241a5c384192eb3b31, type: 3}
+      - {fileID: 21300000, guid: 97b31b1c6b0f59742b38be5fa5c7c57e, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 19
+    clip:
+      _clipName: player_guardbroken
+      _frames:
+      - {fileID: 21300000, guid: be66653a001670b49a92aa12206c9ec8, type: 3}
+      - {fileID: 21300000, guid: 1f2ca2f2fe38bf94ba0d943a26817eb6, type: 3}
+      - {fileID: 21300000, guid: 0c0a62a837f9a684f8d11ed81cef2361, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 0
+  - state: 20
+    clip:
+      _clipName: player_hurt
+      _frames:
+      - {fileID: 21300000, guid: e6f6f932c09c1ba4fa89c8652b531841, type: 3}
+      - {fileID: 21300000, guid: e98e78ac6c58e1f4ba3e05a2a8696917, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 21
+    clip:
+      _clipName: player_stunned
+      _frames:
+      - {fileID: 21300000, guid: 73c8497e3983bc44892ea56b89bc41ba, type: 3}
+      - {fileID: 21300000, guid: fdb5d02e07c753d4fb5ef6e829746380, type: 3}
+      - {fileID: 21300000, guid: ba9ad0455f2764f43845ccc19036b096, type: 3}
+      - {fileID: 21300000, guid: 32c5d63a05087204ea2f04b6b9e3e9cf, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 1
+  - state: 22
+    clip:
+      _clipName: player_death
+      _frames:
+      - {fileID: 21300000, guid: f86723fecf6817c4ebe1fb6fc92f5d84, type: 3}
+      - {fileID: 21300000, guid: 5c9f9daaa22f60441abede121eea10be, type: 3}
+      - {fileID: 21300000, guid: 7f46adbd969aa974196b70d49c893286, type: 3}
+      - {fileID: 21300000, guid: 2bbc4a867b09c314abf3c4cb6cb280b7, type: 3}
+      - {fileID: 21300000, guid: 6339ce892dfc4db4aa48d8bb3267b21f, type: 3}
+      - {fileID: 21300000, guid: 7cef341dd72a4a14496f3b4a3f4ff62d, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 0
+  - state: 23
+    clip:
+      _clipName: player_caststart
+      _frames:
+      - {fileID: 21300000, guid: 8a507a5f9cfc5074d9b3a6540a26a3a7, type: 3}
+      - {fileID: 21300000, guid: 09cf06ceb6a65a541a70ff149922471e, type: 3}
+      - {fileID: 21300000, guid: 8586b46aca4cd1743b9b4d6d12b690fe, type: 3}
+      - {fileID: 21300000, guid: 80dc8d54fe67d5043842762c08b7ddca, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 1
+  - state: 24
+    clip:
+      _clipName: player_castrelease
+      _frames:
+      - {fileID: 21300000, guid: 9e72427fd7d4b10448c6ef59417a0460, type: 3}
+      - {fileID: 21300000, guid: 9c4fb629dc3665444b882633191982e5, type: 3}
+      - {fileID: 21300000, guid: 4bc9532434a457b449070597c6271132, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 25
+    clip:
+      _clipName: player_groundbreaker
+      _frames:
+      - {fileID: 21300000, guid: fd689fc3713822e4c8214e9be5e748cb, type: 3}
+      - {fileID: 21300000, guid: 6c15d21056b30f2439eea13b76afcda7, type: 3}
+      - {fileID: 21300000, guid: 80ae4467591ba3c468cc59ef844fc3c2, type: 3}
+      - {fileID: 21300000, guid: 0d76a3fea32076649aeae90377b7a09a, type: 3}
+      - {fileID: 21300000, guid: fb639958aa0924447aaab8c67b4ffa30, type: 3}
+      - {fileID: 21300000, guid: c63d925bcd1857b43aa337cbe530eb83, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 26
+    clip:
+      _clipName: player_dashstrike
+      _frames:
+      - {fileID: 21300000, guid: 1a07b70e7db76614d84048898f3b9f40, type: 3}
+      - {fileID: 21300000, guid: 57d38d92359c4634083c0212b129b0c1, type: 3}
+      - {fileID: 21300000, guid: 5aa4a21786611e443b54e928fb9927ed, type: 3}
+      - {fileID: 21300000, guid: 90496227c877f1448bc8dc710b67d323, type: 3}
+      - {fileID: 21300000, guid: 1215d2c1a1e987d40b9065327a5e5191, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 27
+    clip:
+      _clipName: player_shadowdashstart
+      _frames:
+      - {fileID: 21300000, guid: 0b33b6af89470a74495bc8eb85b39bd0, type: 3}
+      - {fileID: 21300000, guid: 6868a2c0abf8b23419cdc51f89ea2a7a, type: 3}
+      - {fileID: 21300000, guid: 4afb36ad56cd9e0429a027fd1405f1e2, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 28
+    clip:
+      _clipName: player_shadowdashloop
+      _frames:
+      - {fileID: 21300000, guid: 1fd6d80fb2a52e648a0591c236d76b5d, type: 3}
+      - {fileID: 21300000, guid: e0da81df2b846ad42bb0c423674822a8, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 1
+  - state: 29
+    clip:
+      _clipName: player_shadowdashend
+      _frames:
+      - {fileID: 21300000, guid: ebfb7157daeeb7c43a74cea614c92f00, type: 3}
+      - {fileID: 21300000, guid: 0da61a172bc3db042821f0e3f93fa560, type: 3}
+      - {fileID: 21300000, guid: 8c4ea14aea67d7544a200511305a7e9d, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 30
+    clip:
+      _clipName: player_shadowstrike
+      _frames:
+      - {fileID: 21300000, guid: f160e95b3b206754eb715b640f231c7f, type: 3}
+      - {fileID: 21300000, guid: 9da0909bca5ad784c869f488337c8cb2, type: 3}
+      - {fileID: 21300000, guid: 2d70db2d3b8e88041886e4e81d3c12f4, type: 3}
+      - {fileID: 21300000, guid: 6a329148f7bc8334995c7dd41f0e78e9, type: 3}
+      - {fileID: 21300000, guid: 736e0959390e5514daaf7bc9f24f7fb3, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 31
+    clip:
+      _clipName: player_weaponswitch
+      _frames:
+      - {fileID: 21300000, guid: 4e7ce5c3900dfad4187323cd7076330f, type: 3}
+      - {fileID: 21300000, guid: bf777de985cb1ca42af4d6535d77084f, type: 3}
+      - {fileID: 21300000, guid: 8e73adcad95261848bfe1b6777ddc519, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 0
+    clip:
+      _clipName: player_activeskill
+      _frames:
+      - {fileID: 21300000, guid: ec6014a0c624f624b9a10e2b7f0e0056, type: 3}
+      - {fileID: 21300000, guid: 4341ab0417154a84d96b6b06fabb280a, type: 3}
+      - {fileID: 21300000, guid: 2ce88b2a3a04a0a418bdca76fa74a441, type: 3}
+      - {fileID: 21300000, guid: 301b47535881b254c9a4c50502b1328a, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  _fallback:
+    _clipName: player_idle
+    _frames:
+    - {fileID: 21300000, guid: 1219195d92096c44595311790623a27f, type: 3}
+    - {fileID: 21300000, guid: 5b450145002424640ba3a90507573709, type: 3}
+    - {fileID: 21300000, guid: 55227077beacfd64b980c565562f613e, type: 3}
+    - {fileID: 21300000, guid: 68a732bb567d8274a81b22907ab4a85a, type: 3}
+    _framesPerSecond: 8
+    _isLooping: 1
+  _weaponSets:
+  - {fileID: 11400000, guid: 635e20c10b1651245b4acd11bdb727d5, type: 2}

@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1948b099c584578408b2536d2dd0cc7d, type: 3}
+  m_Name: feedback_shadowdashend
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.FeedbackProfile
+  _burst:
+    _clipName: vfx_shadow_dash_end
+    _frames:
+    - {fileID: 21300000, guid: 3010809f8e3fc074abacb5a8ce579d3a, type: 3}
+    - {fileID: 21300000, guid: b368430d7f1715147bb2e81a96a06d1a, type: 3}
+    - {fileID: 21300000, guid: ede16af10d1b84a4f8a17632432ecaeb, type: 3}
+    - {fileID: 21300000, guid: 34ddb5b6ee67c0144b4b51abf5f60408, type: 3}
+    _framesPerSecond: 26
+    _isLooping: 0
+  _tint: {r: 1, g: 1, b: 1, a: 1}
+  _scale: 1
+  _facesHitDirection: 0
+  _sortingLayer: VFXFront
+  _sortingOrder: 0
+  _hitStop: 0
+  _shake: 0
+  _shakeScale: 1
+  _shakeVerticalBias: 1
+  _screenFlash: 0
+  _flashColor: {r: 1, g: 1, b: 1, a: 1}
+  _lightColor: {r: 0, g: 0, b: 0, a: 0}
+  _lightRadius: 2
+  _lightDuration: 0.18
+  _priority: 5
+  _soundEvent: 
+  _haptic: 0

@@ -1,0 +1,550 @@
+/*
+ * The in-game HUD. Values follow design/ui/_shared/ui.css and design/ui/hud/hud.html;
+ * the reference resolution is 1920x1080 (the PanelSettings scale with the screen).
+ *
+ * Iron frames, sheen, vignette and ornaments are procedural textures assigned from
+ * HudController (Assets/Game/Art/UI); the slice values here are for those textures.
+ */
+
+.hud {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    color: rgb(216, 203, 180);
+    font-size: 17px;
+}
+
+.vignette {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    -unity-background-scale-mode: stretch-to-fill;
+}
+
+.display {
+    -unity-font-style: bold;
+    letter-spacing: 2px;
+}
+
+.ornament {
+    -unity-background-scale-mode: stretch-to-fill;
+    height: 18px;
+}
+
+/* ---------- bars ---------- */
+
+.bar {
+    position: relative;
+    height: 22px;
+    margin-bottom: 8px;
+    background-color: rgba(11, 9, 7, 0.86);
+    overflow: hidden;
+}
+
+.bar__loss,
+.bar__fill,
+.bar__sheen,
+.bar__frame {
+    position: absolute;
+    top: 3px;
+    bottom: 3px;
+    left: 3px;
+}
+
+.bar__loss {
+    width: 0;
+    background-color: rgb(217, 105, 79);
+}
+
+.bar__fill {
+    width: 0;
+    border-right-width: 2px;
+}
+
+.bar__sheen {
+    right: 3px;
+    -unity-background-scale-mode: stretch-to-fill;
+    opacity: 0.85;
+}
+
+.bar__frame {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    -unity-slice-left: 10;
+    -unity-slice-right: 10;
+    -unity-slice-top: 8;
+    -unity-slice-bottom: 8;
+}
+
+.bar__fill--hp {
+    background-color: rgb(179, 32, 42);
+    border-right-color: rgb(236, 120, 110);
+}
+
+.bar__fill--hp.bar__fill--low {
+    background-color: rgb(109, 18, 25);
+}
+
+.bar__fill--mana {
+    background-color: rgb(62, 111, 168);
+    border-right-color: rgb(160, 205, 240);
+}
+
+.bar__fill--stamina {
+    background-color: rgb(200, 162, 74);
+    border-right-color: rgb(240, 222, 160);
+}
+
+.bar__fill--stamina.bar__fill--low {
+    background-color: rgb(110, 87, 35);
+}
+
+.bar__fill--boss {
+    background-color: rgb(143, 29, 44);
+    border-right-color: rgb(230, 110, 110);
+}
+
+/* ---------- resources, bottom left ---------- */
+
+.resources {
+    position: absolute;
+    left: 48px;
+    bottom: 44px;
+    width: 460px;
+}
+
+.resources__head {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 4px;
+}
+
+.resources__label {
+    font-size: 15px;
+    color: rgb(201, 161, 74);
+    text-shadow: 0 2px 3px rgba(0, 0, 0, 0.9);
+}
+
+.resources__value {
+    font-size: 15px;
+    color: rgb(240, 230, 210);
+    text-shadow: 0 2px 3px rgba(0, 0, 0, 0.9);
+}
+
+.bar--hp {
+    height: 34px;
+}
+
+.bar--mana {
+    height: 18px;
+    width: 82%;
+}
+
+.bar--stamina {
+    height: 13px;
+    width: 70%;
+    margin-bottom: 0;
+}
+
+.bar--mana .bar__loss,
+.bar--mana .bar__fill,
+.bar--mana .bar__sheen,
+.bar--stamina .bar__loss,
+.bar--stamina .bar__fill,
+.bar--stamina .bar__sheen {
+    top: 2px;
+    bottom: 2px;
+    left: 2px;
+}
+
+.bar--mana .bar__frame,
+.bar--stamina .bar__frame {
+    -unity-slice-left: 6;
+    -unity-slice-right: 6;
+    -unity-slice-top: 5;
+    -unity-slice-bottom: 5;
+}
+
+/* ---------- boss, top centre ---------- */
+
+.boss {
+    position: absolute;
+    top: 52px;
+    left: 50%;
+    width: 880px;
+    translate: -50% 0;
+    align-items: stretch;
+    opacity: 0;
+    transition-property: opacity, translate;
+    transition-duration: 0.6s, 0.6s;
+}
+
+.boss--visible {
+    opacity: 1;
+}
+
+.boss__name {
+    font-size: 34px;
+    color: rgb(240, 230, 210);
+    -unity-text-align: middle-center;
+    text-shadow: 0 3px 6px rgba(0, 0, 0, 0.95);
+    -unity-text-outline-width: 0.4px;
+    -unity-text-outline-color: rgba(0, 0, 0, 0.8);
+}
+
+.boss__divider {
+    margin: 2px 120px 8px 120px;
+}
+
+.boss__bar {
+    height: 22px;
+}
+
+.boss__mark {
+    position: absolute;
+    top: -1px;
+    bottom: -1px;
+    width: 3px;
+    left: 50%;
+    background-color: rgb(232, 205, 138);
+}
+
+.boss__mark--passed {
+    background-color: rgba(138, 116, 52, 0.7);
+}
+
+.boss__meta {
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 2px;
+}
+
+.boss__phase {
+    font-size: 15px;
+    color: rgb(201, 161, 74);
+    text-shadow: 0 2px 3px rgba(0, 0, 0, 0.9);
+}
+
+.boss__phase--two {
+    color: rgb(192, 48, 63);
+}
+
+.boss__value {
+    font-size: 15px;
+    color: rgb(142, 131, 117);
+    text-shadow: 0 2px 3px rgba(0, 0, 0, 0.9);
+}
+
+/* ---------- loadout, bottom right ---------- */
+
+.loadout {
+    position: absolute;
+    right: 48px;
+    bottom: 44px;
+    flex-direction: row;
+    align-items: flex-end;
+}
+
+.loadout__group {
+    margin-left: 22px;
+    align-items: center;
+}
+
+.loadout__caption {
+    font-size: 13px;
+    color: rgb(142, 131, 117);
+    margin-bottom: 6px;
+    text-shadow: 0 2px 3px rgba(0, 0, 0, 0.9);
+}
+
+.loadout__row {
+    flex-direction: row;
+}
+
+.slot {
+    width: 58px;
+    height: 58px;
+    margin-left: 6px;
+    background-color: rgba(11, 9, 7, 0.88);
+}
+
+.slot--large {
+    width: 68px;
+    height: 68px;
+}
+
+.slot--empty .slot__icon {
+    opacity: 0;
+}
+
+.slot--empty {
+    opacity: 0.55;
+}
+
+.slot__icon {
+    position: absolute;
+    left: 8px;
+    top: 8px;
+    right: 8px;
+    bottom: 8px;
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.slot__cooldown {
+    position: absolute;
+    left: 3px;
+    right: 3px;
+    bottom: 3px;
+    height: 0;
+    background-color: rgba(8, 7, 6, 0.78);
+}
+
+.slot__timer {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    -unity-text-align: middle-center;
+    font-size: 17px;
+    -unity-font-style: bold;
+    color: rgb(240, 230, 210);
+    text-shadow: 0 2px 3px rgba(0, 0, 0, 1);
+}
+
+.slot__frame {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    -unity-slice-left: 14;
+    -unity-slice-right: 14;
+    -unity-slice-top: 14;
+    -unity-slice-bottom: 14;
+}
+
+.slot__key {
+    position: absolute;
+    right: -6px;
+    bottom: -8px;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 4px;
+    -unity-text-align: middle-center;
+    font-size: 13px;
+    -unity-font-style: bold;
+    color: rgb(232, 205, 138);
+    background-color: rgb(23, 19, 15);
+    border-width: 1px;
+    border-color: rgb(138, 116, 52);
+}
+
+.slot--ready .slot__frame {
+    -unity-background-image-tint-color: rgb(255, 236, 190);
+}
+
+/* ---------- conditions, top left ---------- */
+
+.conditions {
+    position: absolute;
+    left: 48px;
+    top: 48px;
+    flex-direction: row;
+}
+
+.chip {
+    width: 42px;
+    height: 42px;
+    margin-right: 8px;
+    background-color: rgba(11, 9, 7, 0.88);
+    border-width: 2px;
+    border-color: rgb(58, 47, 37);
+    display: none;
+}
+
+.chip--visible {
+    display: flex;
+}
+
+.chip__icon {
+    position: absolute;
+    left: 4px;
+    top: 4px;
+    right: 4px;
+    bottom: 6px;
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.chip__meter {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -8px;
+    height: 4px;
+    background-color: rgba(11, 9, 7, 0.9);
+}
+
+.chip__meter-fill {
+    height: 100%;
+    width: 0;
+}
+
+.chip--active {
+    border-color: rgb(201, 161, 74);
+}
+
+.chip--bleed .chip__meter-fill { background-color: rgb(217, 105, 79); }
+.chip--poison .chip__meter-fill { background-color: rgb(127, 168, 60); }
+.chip--burn .chip__meter-fill { background-color: rgb(255, 140, 51); }
+.chip--frost .chip__meter-fill { background-color: rgb(143, 214, 255); }
+
+/* ---------- purse, top right ---------- */
+
+.purse {
+    position: absolute;
+    right: 48px;
+    top: 48px;
+    flex-direction: row;
+    align-items: center;
+    padding: 4px 14px 4px 6px;
+    background-color: rgba(11, 9, 7, 0.7);
+    border-bottom-width: 1px;
+    border-color: rgb(107, 90, 66);
+}
+
+.purse__icon {
+    width: 30px;
+    height: 30px;
+    margin-right: 8px;
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.purse__value {
+    font-size: 20px;
+    -unity-font-style: bold;
+    color: rgb(232, 205, 138);
+    text-shadow: 0 2px 3px rgba(0, 0, 0, 0.9);
+}
+
+/* ---------- interaction prompt ---------- */
+
+.prompt {
+    position: absolute;
+    bottom: 300px;
+    left: 50%;
+    translate: -50% 0;
+    flex-direction: row;
+    align-items: center;
+    padding: 6px 18px 6px 6px;
+    background-color: rgba(15, 13, 11, 0.9);
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    border-color: rgb(138, 116, 52);
+    opacity: 0;
+    transition-property: opacity;
+    transition-duration: 0.2s;
+}
+
+.prompt--visible {
+    opacity: 1;
+}
+
+.prompt__glyph {
+    width: 30px;
+    height: 30px;
+    margin-right: 12px;
+    -unity-text-align: middle-center;
+    font-size: 17px;
+    -unity-font-style: bold;
+    color: rgb(15, 13, 11);
+    background-color: rgb(201, 161, 74);
+    border-width: 1px;
+    border-color: rgb(232, 205, 138);
+}
+
+.prompt__text {
+    font-size: 17px;
+    color: rgb(240, 230, 210);
+}
+
+/* ---------- zone title card ---------- */
+
+.zone-title {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 26%;
+    align-items: center;
+    opacity: 0;
+}
+
+.zone-title__text {
+    font-size: 54px;
+    color: rgb(240, 230, 210);
+    letter-spacing: 6px;
+    margin: 6px 0;
+    text-shadow: 0 4px 10px rgba(0, 0, 0, 1);
+    -unity-text-outline-width: 0.4px;
+    -unity-text-outline-color: rgba(0, 0, 0, 0.8);
+}
+
+.zone-title__rule {
+    width: 560px;
+}
+
+/* ---------- fade and death ---------- */
+
+.fade {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgb(4, 3, 3);
+    opacity: 0;
+}
+
+.death {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 38%;
+    align-items: center;
+    opacity: 0;
+    transition-property: opacity, scale;
+    transition-duration: 1.2s, 3s;
+    scale: 1.06 1.06;
+}
+
+.death--visible {
+    opacity: 1;
+    scale: 1 1;
+}
+
+.death__text {
+    font-size: 72px;
+    color: rgb(160, 26, 38);
+    letter-spacing: 12px;
+    text-shadow: 0 0 18px rgba(0, 0, 0, 1);
+    -unity-text-outline-width: 0.6px;
+    -unity-text-outline-color: rgba(20, 0, 0, 0.9);
+}
+
+.death__rule {
+    width: 640px;
+    margin: 8px 0;
+}
+
+.death__sub {
+    font-size: 20px;
+    color: rgb(142, 131, 117);
+    letter-spacing: 3px;
+}

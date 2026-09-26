@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<title>Тінь Забутого Королівства — HUD</title>
+<link rel="stylesheet" href="../_shared/ui.css">
+<style>
+  /* HUD компактний і притиснутий до кутів: центр екрана належить бою. */
+  .hud { position: absolute; inset: 0; pointer-events: none; }
+
+  /* Ліворуч знизу — ресурси. HP найбільша, мана окремішня, витривалість тонша. */
+  .resources { position: absolute; left: 48px; bottom: 44px; width: 460px; }
+  .resources .bar { width: 100%; }
+  .bar-hp      { height: 34px; margin-bottom: 7px; }
+  .bar-mana    { height: 18px; width: 82% !important; margin-bottom: 5px; }
+  .bar-stamina { height: 13px; width: 70% !important; }
+
+  .hp-label {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: var(--s1);
+  }
+  .hp-label .name {
+    font-family: var(--font-display); font-size: var(--fs-micro);
+    letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-dim);
+  }
+
+  /* Праворуч знизу — усе, що натискається: зброя, уміння, закляття. */
+  .loadout {
+    position: absolute; right: 48px; bottom: 44px;
+    display: flex; align-items: flex-end; gap: var(--s5);
+  }
+  .group { display: flex; flex-direction: column; align-items: center; gap: var(--s2); }
+  .group__label {
+    font-family: var(--font-display); font-size: var(--fs-micro);
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim);
+  }
+  .group__slots { display: flex; gap: var(--s2); }
+
+  .slot--weapon { width: 58px; height: 58px; }
+  .slot--weapon.is-active { border-color: var(--gold); box-shadow: 0 0 12px rgba(201,161,74,0.45), inset 0 0 12px rgba(0,0,0,0.75); }
+
+  /* Ліворуч зверху — стани й бафи. З'являються лише коли є що показати. */
+  .conditions { position: absolute; left: 48px; top: 40px; display: flex; flex-direction: column; gap: var(--s3); }
+  .chip-row { display: flex; gap: var(--s2); }
+  .chip {
+    position: relative;
+    width: 42px; height: 42px;
+    display: grid; place-items: center;
+    background: rgba(11,9,7,0.82);
+    border: 1px solid var(--edge-mid);
+    border-radius: var(--radius);
+  }
+  .chip__timer {
+    position: absolute; inset: 0;
+    background: conic-gradient(transparent var(--left, 100%), rgba(0,0,0,0.72) 0);
+    pointer-events: none;
+  }
+  /* Наростання стану — тонка смужка знизу, а не повний ефект. */
+  .chip__buildup {
+    position: absolute; left: 3px; right: 3px; bottom: 3px; height: 3px;
+    background: rgba(0,0,0,0.6);
+  }
+  .chip__buildup span { display: block; height: 100%; }
+
+  /* Підказка взаємодії — біля гравця, не в кутку. */
+  .prompt {
+    position: absolute; left: 50%; bottom: 300px; transform: translateX(-50%);
+    display: flex; align-items: center; gap: var(--s3);
+    padding: var(--s2) var(--s4);
+    background: rgba(11,9,7,0.85);
+    border: 1px solid var(--edge-light);
+    border-radius: var(--radius);
+    font-size: var(--fs-body);
+  }
+  .prompt .action { color: var(--ink-bright); }
+  .prompt .target { color: var(--gold); }
+
+  /* Смуга боса — зверху по центру, велика, але не закриває арену. */
+  .boss { position: absolute; left: 50%; top: 52px; transform: translateX(-50%); width: 880px; text-align: center; }
+  .boss__name {
+    font-family: var(--font-display); font-size: var(--fs-boss);
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--ink-bright); text-shadow: 0 2px 10px #000;
+    margin: 0 0 var(--s2);
+  }
+  .boss__bar { height: 22px; }
+  /* Поділка фази: гравець бачить, де почнеться друга половина бою. */
+  .boss__phase-mark {
+    position: absolute; top: -4px; bottom: -4px; left: 50%;
+    width: 2px; background: var(--gold);
+    box-shadow: 0 0 6px rgba(201,161,74,0.8);
+  }
+  .boss__meta { display: flex; justify-content: space-between; margin-top: var(--s2); font-size: var(--fs-micro); }
+  .boss__phase { font-family: var(--font-display); letter-spacing: 0.16em; color: var(--gold); text-transform: uppercase; }
+
+  /* Сповіщення — стовпчик праворуч зверху, з чергою й агрегацією. */
+  .notices { position: absolute; right: 48px; top: 40px; width: 330px; display: flex; flex-direction: column; gap: var(--s2); }
+  .notice {
+    display: flex; align-items: center; gap: var(--s3);
+    padding: var(--s2) var(--s3);
+    background: rgba(11,9,7,0.88);
+    border: 1px solid var(--edge-mid);
+    border-left: 3px solid var(--edge-light);
+    font-size: var(--fs-small);
+  }
+  .notice--progress { border-left-color: var(--gold); }
+  .notice--rare { border-left-color: var(--rar-unique); }
+  .notice__text { flex: 1; color: var(--ink); }
+  .notice__text b { color: var(--ink-bright); font-weight: 600; }
+  .notice__count { color: var(--gold); font-variant-numeric: tabular-nums; }
+
+  /* Валюта — маленька й тиха, поруч зі сповіщеннями. */
+  .purse {
+    position: absolute; right: 48px; top: 40px;
+    display: none;
+  }
+
+  /* Числа шкоди в світі. Ієрархія розміром, не ефектами. */
+  .dmg { position: absolute; font-family: var(--font-display); font-variant-numeric: tabular-nums; text-shadow: 0 2px 6px #000; }
+  .dmg--normal { font-size: 26px; color: var(--ink-bright); }
+  .dmg--crit   { font-size: 38px; color: var(--gold-bright); }
+  .dmg--status { font-size: 19px; }
+  .dmg--block  { font-size: 20px; color: var(--guard); letter-spacing: 0.08em; }
+
+  .legend {
+    position: absolute; left: 50%; bottom: 8px; transform: translateX(-50%);
+    font-size: 12px; color: var(--ink-dim); letter-spacing: 0.05em;
+  }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="gameplay-backdrop"></div>
+
+  <div class="hud">
+
+    <!-- ресурси -->
+    <div class="resources">
+      <div class="hp-label">
+        <span class="name">Здоров'я</span>
+        <span class="tabular muted" style="font-size:var(--fs-micro)">124 / 180</span>
+      </div>
+      <div class="bar bar-hp bar--low">
+        <div class="bar__loss" style="width:78%"></div>
+        <div class="bar__fill bar__fill--hp" style="width:69%"></div>
+        <div class="bar__ticks"></div>
+      </div>
+      <div class="bar bar-mana">
+        <div class="bar__fill bar__fill--mana" style="width:46%"></div>
+        <div class="bar__value">37 / 80</div>
+      </div>
+      <div class="bar bar-stamina">
+        <div class="bar__fill bar__fill--stamina" style="width:83%"></div>
+      </div>
+    </div>
+
+    <!-- стани й бафи -->
+    <div class="conditions">
+      <div class="chip-row">
+        <!-- горіння: активне, з таймером -->
+        <div class="chip" title="Горіння — 4.2 с">
+          <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 2c1 4-3 5-3 9a3 3 0 0 0 6 0c0-2-1-3-1-3 3 1 4 3 4 6a6 6 0 0 1-12 0c0-5 6-6 6-12z"
+                  fill="#ff8c33"/>
+            <path d="M12 12c1 1 1.5 2 1.5 3a1.5 1.5 0 0 1-3 0c0-1 .5-2 1.5-3z" fill="#ffd98c"/>
+          </svg>
+          <div class="chip__timer" style="--left:42%"></div>
+        </div>
+        <!-- лід: активний -->
+        <div class="chip" title="Обмороження — 2.8 с">
+          <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
+            <g stroke="#8fd6ff" stroke-width="1.8" stroke-linecap="round">
+              <path d="M12 3v18M4.2 7.5l15.6 9M19.8 7.5l-15.6 9"/>
+              <path d="M12 6.5l-2 2M12 6.5l2 2M12 17.5l-2-2M12 17.5l2-2"/>
+            </g>
+          </svg>
+          <div class="chip__timer" style="--left:28%"></div>
+        </div>
+        <!-- кровотеча: лише наростання, ефекту ще немає -->
+        <div class="chip" title="Кровотеча — наростання 61%">
+          <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 3s6 7 6 11a6 6 0 0 1-12 0c0-4 6-11 6-11z" fill="#8e1b28"/>
+            <path d="M10 13c0 2 .8 3 2 3.5" stroke="#d9694f" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+          </svg>
+          <div class="chip__buildup"><span style="width:61%;background:var(--bleed)"></span></div>
+        </div>
+      </div>
+      <div class="chip-row">
+        <!-- бафи: та сама форма, золотий кант -->
+        <div class="chip" style="border-color:var(--gold-dim)" title="Інерція — 3.1 с">
+          <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M3 17l7-10 4 5 3-4 4 9z" fill="none" stroke="#c9a14a" stroke-width="1.8" stroke-linejoin="round"/>
+          </svg>
+          <div class="chip__timer" style="--left:62%"></div>
+        </div>
+        <div class="chip" style="border-color:var(--gold-dim)" title="Мановий щит — 6.0 с">
+          <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6z" fill="none" stroke="#6b8fff" stroke-width="1.8"/>
+            <path d="M12 8v7" stroke="#6b8fff" stroke-width="1.4"/>
+          </svg>
+          <div class="chip__timer" style="--left:78%"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- спорядження, уміння, закляття -->
+    <div class="loadout">
+
+      <div class="group">
+        <span class="group__label">Зброя</span>
+        <div class="group__slots">
+          <div class="slot slot--weapon is-active" data-rarity="common" title="Старий Меч">
+            <svg width="34" height="34" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M14.5 3.5l3 3-8 8-3-3z" fill="#b9c0c9"/>
+              <path d="M6.2 11.8l3 3-1.6 1.6-3-3z" fill="#8a7434"/>
+              <path d="M4 18l2.4-2.4 1.6 1.6L5.6 19.6z" fill="#4a3b2e"/>
+            </svg>
+            <span class="slot__key">1</span>
+          </div>
+          <div class="slot slot--weapon" data-rarity="uncommon" title="Залізний Дворучник">
+            <svg width="34" height="34" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M15.5 2.5l4 4-9.5 9.5-4-4z" fill="#9aa2ad"/>
+              <path d="M5.4 12.6l4 4-2 2-4-4z" fill="#8a7434"/>
+              <path d="M2.6 18.4L5 16l2 2-2.4 2.4z" fill="#4a3b2e"/>
+            </svg>
+            <span class="slot__key">2</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="group">
+        <span class="group__label">Уміння</span>
+        <div class="group__slots">
+          <!-- готове -->
+          <div class="slot slot--ready" title="Розлом — готово">
+            <svg width="32" height="32" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 2l3 7h-6z" fill="#c9a14a"/>
+              <path d="M4 20l8-9 8 9z" fill="none" stroke="#c9a14a" stroke-width="1.8" stroke-linejoin="round"/>
+              <path d="M9 20l3-4 3 4" fill="none" stroke="#e8cd8a" stroke-width="1.4"/>
+            </svg>
+            <span class="slot__key">Q</span>
+          </div>
+          <!-- на відкаті -->
+          <div class="slot" title="Ривковий удар — 3 с">
+            <svg width="32" height="32" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M3 12h11" stroke="#8fb8d6" stroke-width="2" stroke-linecap="round"/>
+              <path d="M13 7l6 5-6 5z" fill="#8fb8d6"/>
+            </svg>
+            <div class="slot__cooldown" style="--cd:64%"></div>
+            <div class="slot__cooldown-text">3</div>
+            <span class="slot__key">E</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="group">
+        <span class="group__label">Закляття</span>
+        <div class="group__slots">
+          <div class="slot" title="Вогняний Спалах — 12 мани">
+            <svg width="32" height="32" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 2c1 4-3 5-3 9a3 3 0 0 0 6 0c0-2-1-3-1-3 3 1 4 3 4 6a6 6 0 0 1-12 0c0-5 6-6 6-12z" fill="#ff8c33"/>
+              <path d="M12 12c1 1 1.5 2 1.5 3a1.5 1.5 0 0 1-3 0c0-1 .5-2 1.5-3z" fill="#ffd98c"/>
+            </svg>
+            <span class="slot__key">3</span>
+            <span class="slot__count">12</span>
+          </div>
+          <!-- не вистачає мани: слот вимкнено -->
+          <div class="slot slot--disabled" title="Вибух Сили — бракує мани">
+            <svg width="32" height="32" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="8" fill="none" stroke="#6b8fff" stroke-width="1.8"/>
+              <circle cx="12" cy="12" r="3.4" fill="#6b8fff"/>
+              <g stroke="#6b8fff" stroke-width="1.4">
+                <path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>
+              </g>
+            </svg>
+            <span class="slot__key">4</span>
+            <span class="slot__count">42</span>
+          </div>
+          <div class="slot slot--empty" title="Слот порожній">
+            <span class="slot__key">5</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- підказка взаємодії -->
+    <div class="prompt">
+      <span class="glyph">E</span>
+      <span class="action">Запалити</span>
+      <span class="target">Вівтар переходу</span>
+    </div>
+
+    <!-- бос -->
+    <div class="boss">
+      <h2 class="boss__name">Страж Гробниці</h2>
+      <div class="bar boss__bar">
+        <div class="bar__loss" style="width:64%"></div>
+        <div class="bar__fill bar__fill--boss" style="width:58%"></div>
+        <div class="bar__ticks"></div>
+        <div class="boss__phase-mark"></div>
+      </div>
+      <div class="boss__meta">
+        <span class="boss__phase">Фаза I</span>
+        <span class="muted tabular">1160 / 2000</span>
+      </div>
+    </div>
+
+    <!-- сповіщення -->
+    <div class="notices">
+      <div class="notice notice--progress">
+        <span class="pip"></span>
+        <span class="notice__text"><b>Вівтар переходу</b> запалено</span>
+      </div>
+      <div class="notice notice--rare">
+        <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="7" fill="none" stroke="#9b6bd6" stroke-width="1.8"/>
+          <path d="M12 7l1.6 3.4 3.4.5-2.5 2.4.6 3.5L12 15.2 8.9 16.8l.6-3.5L7 10.9l3.4-.5z" fill="#9b6bd6"/>
+        </svg>
+        <span class="notice__text"><b>Ядро Стража</b></span>
+      </div>
+      <div class="notice">
+        <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M5 8l7-3 7 3-7 3z" fill="#8a7434"/>
+          <path d="M5 8v8l7 3 7-3V8l-7 3z" fill="#4a3b2e"/>
+        </svg>
+        <span class="notice__text">Уламок заліза</span>
+        <span class="notice__count">×3</span>
+      </div>
+      <div class="notice">
+        <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="7.5" fill="#8a7434" stroke="#c9a14a" stroke-width="1.4"/>
+          <path d="M12 7.5l1.3 2.7 3 .4-2.2 2.1.5 3-2.6-1.4-2.6 1.4.5-3-2.2-2.1 3-.4z" fill="#0f0d0b" opacity="0.55"/>
+        </svg>
+        <span class="notice__text">Золото</span>
+        <span class="notice__count">+37</span>
+      </div>
+    </div>
+
+    <!-- числа шкоди -->
+    <div class="dmg dmg--normal" style="left:1075px; top:585px;">48</div>
+    <div class="dmg dmg--crit"   style="left:1180px; top:530px;">96</div>
+    <div class="dmg dmg--status" style="left:1015px; top:625px; color:var(--burn)">7</div>
+    <div class="dmg dmg--block"  style="left:760px;  top:600px;">БЛОК</div>
+  </div>
+
+  <div class="legend">
+    HUD у бою: ресурси ліворуч, дії праворуч, стани зліва зверху, бос зверху.
+    Центр екрана лишається порожнім.
+  </div>
+</div>
+
+<div class="viewport-note"></div>
+<script src="../_shared/stage.js"></script>
+</body>
+</html>

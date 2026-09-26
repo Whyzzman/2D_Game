@@ -1,0 +1,449 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84f4db3b7222ee046a84610767e996ec, type: 3}
+  m_Name: GuardianAnimations
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.BossAnimationSet
+  _clips:
+  - state: 1
+    clip:
+      _clipName: boss_guardian_dormant
+      _frames:
+      - {fileID: 21300000, guid: b642ec111fad78c488633ec75002c181, type: 3}
+      - {fileID: 21300000, guid: a64850cc1934ca04aa49edd9b18a316e, type: 3}
+      - {fileID: 21300000, guid: e50833828bd2fb54ca8a4fdfcd23f683, type: 3}
+      - {fileID: 21300000, guid: 5d43ba4a46cac724ba24ed1a03d5a151, type: 3}
+      _framesPerSecond: 8
+      _isLooping: 1
+  - state: 2
+    clip:
+      _clipName: boss_guardian_intro
+      _frames:
+      - {fileID: 21300000, guid: 19e2c9bb11f39d04ca9acdb9d06ae8be, type: 3}
+      - {fileID: 21300000, guid: 883f100bfe84bc54f8e46fb7c9ad2735, type: 3}
+      - {fileID: 21300000, guid: cf5e4327051d335488d1d53cb6d224fa, type: 3}
+      - {fileID: 21300000, guid: 029b733f16c67c84db594c96545bc663, type: 3}
+      - {fileID: 21300000, guid: 9238c9c865a9dc54d85c30c4756138c6, type: 3}
+      - {fileID: 21300000, guid: 1f371c07d7c2b914e8f829259e2f673c, type: 3}
+      - {fileID: 21300000, guid: 8d47606a953be9e40918ed511eabfd6c, type: 3}
+      - {fileID: 21300000, guid: d7c5b60d44f00c04abd960416f8646ab, type: 3}
+      - {fileID: 21300000, guid: 05b263795d3945a4586fb80f2b0d9869, type: 3}
+      - {fileID: 21300000, guid: 5e47436cb3ef5cb449a42411b3ea3ee7, type: 3}
+      - {fileID: 21300000, guid: 0ea59aedc4becce4a928456c7e6e5138, type: 3}
+      - {fileID: 21300000, guid: 1e860a34fbb3e6b4c9f305d7c6d6a787, type: 3}
+      - {fileID: 21300000, guid: 4d1a2029bf3be7c4b9ce1827f5705f0e, type: 3}
+      - {fileID: 21300000, guid: 83273888dc2478942ac38400e541e26d, type: 3}
+      - {fileID: 21300000, guid: 6c61ca39c69584f40865191b6464d72e, type: 3}
+      - {fileID: 21300000, guid: 7feec1784545b1c4ab3cb27b23498b51, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 0
+  - state: 3
+    clip:
+      _clipName: boss_guardian_idlep1
+      _frames:
+      - {fileID: 21300000, guid: 57e4041c8caf65f4086a9b784981b2d3, type: 3}
+      - {fileID: 21300000, guid: cea4e0f66d857284d9ae13f8b871a010, type: 3}
+      - {fileID: 21300000, guid: 2cf5615371097f34b964db0fe3250011, type: 3}
+      - {fileID: 21300000, guid: f70da4a6adc4fa04e83e9704675ec7ef, type: 3}
+      - {fileID: 21300000, guid: d452ec5b3e44a0748818f3c67744eff9, type: 3}
+      - {fileID: 21300000, guid: a98db0e2d50383f49b26571686aeb20d, type: 3}
+      _framesPerSecond: 8
+      _isLooping: 1
+  - state: 4
+    clip:
+      _clipName: boss_guardian_walkp1
+      _frames:
+      - {fileID: 21300000, guid: ca53c122d8b03314c83c49a6e2746ef7, type: 3}
+      - {fileID: 21300000, guid: ccee52ad31a665f439ed0340e3b4b531, type: 3}
+      - {fileID: 21300000, guid: f67ce1ea2c7b9834da5050568b3fc7ad, type: 3}
+      - {fileID: 21300000, guid: 62b4f7a5e1444584e94a571b27608aaa, type: 3}
+      - {fileID: 21300000, guid: 1733291d92ac3634f920f23dc489f043, type: 3}
+      - {fileID: 21300000, guid: 39730522388810f48accefe76aa1db93, type: 3}
+      - {fileID: 21300000, guid: 3e1bebfb23ed086489cf2be91fee4bbe, type: 3}
+      - {fileID: 21300000, guid: a22f872b84090594a9d99a475a681111, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 1
+  - state: 0
+    clip:
+      _clipName: boss_guardian_slashp1
+      _frames:
+      - {fileID: 21300000, guid: 3899f9f6274c6364f8e689d3005ea51a, type: 3}
+      - {fileID: 21300000, guid: 34755d2423c348741aea6604b95f5932, type: 3}
+      - {fileID: 21300000, guid: fd80c2d7e72ee1b40ade323300c03d89, type: 3}
+      - {fileID: 21300000, guid: 9dd618a6731afcf45a9789cc01ca3552, type: 3}
+      - {fileID: 21300000, guid: 466826cdbe4de2441aad382e763905de, type: 3}
+      - {fileID: 21300000, guid: 74052176355f5d849a2ed23c31330ee2, type: 3}
+      - {fileID: 21300000, guid: 5dbb0768a743dbb459e5ee78e63893a4, type: 3}
+      - {fileID: 21300000, guid: 7b944a8887106ca40ab50f54973743e6, type: 3}
+      - {fileID: 21300000, guid: 2be036dc6ecec784aaa1b6b5e75fded8, type: 3}
+      - {fileID: 21300000, guid: 5a20b1f39776bbc4a91811cac86c9e7a, type: 3}
+      - {fileID: 21300000, guid: 9e3e258df488f2f4aa202dd1cf8accb7, type: 3}
+      - {fileID: 21300000, guid: 3e2e75307d2600f40906475f728dc57c, type: 3}
+      - {fileID: 21300000, guid: 8428b6727e9a17b439b0882b45b59a77, type: 3}
+      - {fileID: 21300000, guid: 7303732848209d1468d07a074a7199bb, type: 3}
+      - {fileID: 21300000, guid: dfe5f10c3d6146441a86f6df258d82c7, type: 3}
+      - {fileID: 21300000, guid: d627374faab12134da64f50e16e79b6f, type: 3}
+      - {fileID: 21300000, guid: e6d03cf9bcb86334085290fcb4353bd8, type: 3}
+      - {fileID: 21300000, guid: e6143e21da4613a4c8e9243fe2dbeaef, type: 3}
+      - {fileID: 21300000, guid: 32650aebf0234854693fd0948bcc01fd, type: 3}
+      - {fileID: 21300000, guid: 8580efb8acc780147970991992022111, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 5
+    clip:
+      _clipName: boss_guardian_shieldbash
+      _frames:
+      - {fileID: 21300000, guid: 714a185b0cd03dd4aa9a4f97a175ba2e, type: 3}
+      - {fileID: 21300000, guid: f25531b29f1fe0549835277b29c39f32, type: 3}
+      - {fileID: 21300000, guid: 73818728b5005394795cd847cce3f92e, type: 3}
+      - {fileID: 21300000, guid: f32b3f05da84bd94bae6036ed9cb8daf, type: 3}
+      - {fileID: 21300000, guid: f27dd7324a9372d46adb28f6dcdb3b79, type: 3}
+      - {fileID: 21300000, guid: b0964e00f8a6d3b43b501e8d9692913f, type: 3}
+      - {fileID: 21300000, guid: a5e43d203a2a5084983294a81284fe04, type: 3}
+      - {fileID: 21300000, guid: e9fabad9836897e459ecf7baa294e66d, type: 3}
+      - {fileID: 21300000, guid: 4c2d8b0539670954e9f801890a8acc53, type: 3}
+      - {fileID: 21300000, guid: 3b16a0a15bcbe92449c9944362a37d9d, type: 3}
+      - {fileID: 21300000, guid: 2a2724f8f4f0f0a47ae1f3543cb7b26c, type: 3}
+      - {fileID: 21300000, guid: d0a666136dc41f144b31a47d8c6e029e, type: 3}
+      - {fileID: 21300000, guid: f3aaffcadb76f7a478318a481a73309e, type: 3}
+      - {fileID: 21300000, guid: c8d63bd248cb0f34c94b2a4988f3bd70, type: 3}
+      - {fileID: 21300000, guid: 5643411e573cb2246bb629ac63f36a6d, type: 3}
+      - {fileID: 21300000, guid: 44813327f98e0fc49926d433f7a13dd4, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 6
+    clip:
+      _clipName: boss_guardian_chargestart
+      _frames:
+      - {fileID: 21300000, guid: f59305d8c3bfceb4d9afff7a7405ce23, type: 3}
+      - {fileID: 21300000, guid: ce403ef029374a84b849e30124f7c970, type: 3}
+      - {fileID: 21300000, guid: 45c372cdc7e379349a7f4643a8822f91, type: 3}
+      - {fileID: 21300000, guid: 5b81d826cae1496499667374dc49ee77, type: 3}
+      - {fileID: 21300000, guid: 65880d910ad75dc49aee2ff76dda843c, type: 3}
+      - {fileID: 21300000, guid: 87cce2c2c9676f44288209c733d7f66a, type: 3}
+      - {fileID: 21300000, guid: 8da944b05e0897148988b0ec1d01e266, type: 3}
+      - {fileID: 21300000, guid: 168fe9eb0a85c5043bbd32b8e9e92724, type: 3}
+      - {fileID: 21300000, guid: dca5fdb11ef90b34381991b97c2aed54, type: 3}
+      - {fileID: 21300000, guid: 31b30d6008827aa43abbfa782016cd01, type: 3}
+      - {fileID: 21300000, guid: 95173bc0c2a78a94fb4c9838dcb18231, type: 3}
+      - {fileID: 21300000, guid: 4334efcedeeb8124e9f6f7e79e28b544, type: 3}
+      - {fileID: 21300000, guid: ed298ceb52292314cb97eb213c8e09df, type: 3}
+      - {fileID: 21300000, guid: cb274820e10237b418cb30a19ade0c51, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 7
+    clip:
+      _clipName: boss_guardian_charge
+      _frames:
+      - {fileID: 21300000, guid: 9f3a9ad384516514396c9302c062fc33, type: 3}
+      - {fileID: 21300000, guid: 78dd45512dd07d44e9904483badc6616, type: 3}
+      - {fileID: 21300000, guid: 293ce7928fdd75648bd0c7cf1c096f2e, type: 3}
+      - {fileID: 21300000, guid: d62eb64841539884f96075a75139fe5d, type: 3}
+      - {fileID: 21300000, guid: 5047eb79bb398d340897b99d52f2a3ce, type: 3}
+      - {fileID: 21300000, guid: 23503840a2d9fc144b916f564d3cd367, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 1
+  - state: 8
+    clip:
+      _clipName: boss_guardian_chargerecover
+      _frames:
+      - {fileID: 21300000, guid: cffd7f9eb86b37643b3ae7a9c89e65df, type: 3}
+      - {fileID: 21300000, guid: 4fae059d35a402746bd9eba8d8b9b123, type: 3}
+      - {fileID: 21300000, guid: 824b897d518d4924d816471f51c496b9, type: 3}
+      - {fileID: 21300000, guid: ee5308be84caac74f88bfb2cf67ca9ca, type: 3}
+      - {fileID: 21300000, guid: 41f65d34bd360e04fb8fbedf08c14888, type: 3}
+      - {fileID: 21300000, guid: 054c8ea98e273874aac9913de27efc41, type: 3}
+      - {fileID: 21300000, guid: 4779c5e347cea7e49af8fe87c6f92c51, type: 3}
+      - {fileID: 21300000, guid: 6076ad16ea4b1da41b1da63b84e2ad2a, type: 3}
+      - {fileID: 21300000, guid: 94ae48a9bca46bf469d76280bc29ec77, type: 3}
+      - {fileID: 21300000, guid: 168295214dbed3f4da71bc7734db1e22, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 9
+    clip:
+      _clipName: boss_guardian_combo1
+      _frames:
+      - {fileID: 21300000, guid: e98ccfad316a4844b93509f3113fd44f, type: 3}
+      - {fileID: 21300000, guid: 623e40c22526cdc4ebc4d126c1db46a5, type: 3}
+      - {fileID: 21300000, guid: 6c69bfda6b83fe7438f867656502d42c, type: 3}
+      - {fileID: 21300000, guid: edcc4cd98780350488c7cea654c9859d, type: 3}
+      - {fileID: 21300000, guid: d430f3da10aebb74ebfc41e7c0cbe8e4, type: 3}
+      - {fileID: 21300000, guid: 38da6eb2678b67a4caf82427686ce17b, type: 3}
+      - {fileID: 21300000, guid: ee8890807e825b548a7e70ad2b09a2f7, type: 3}
+      - {fileID: 21300000, guid: efaaa3dd55896ec408ac5e7f0b5ee428, type: 3}
+      - {fileID: 21300000, guid: f3ab9a11119855d41b44a2e83362a95c, type: 3}
+      - {fileID: 21300000, guid: bcb6fb76d576ee84ab4e4de0b1f483c4, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 10
+    clip:
+      _clipName: boss_guardian_combo2
+      _frames:
+      - {fileID: 21300000, guid: 3b8f891c8a350ee4ba2d4d15d2e1b112, type: 3}
+      - {fileID: 21300000, guid: 56a590deaf2ac90448b00db4de832aee, type: 3}
+      - {fileID: 21300000, guid: 64c46d08774776a41ae4988cfcab4528, type: 3}
+      - {fileID: 21300000, guid: 4e468e17ab9598947ad7b6b917a2cba7, type: 3}
+      - {fileID: 21300000, guid: d6b772acb480f9543b32250c8d87bdf0, type: 3}
+      - {fileID: 21300000, guid: 82bf852c239c6f24eb31839b80d91701, type: 3}
+      - {fileID: 21300000, guid: 1ce1eba72853a634cbfdd631d863d9c3, type: 3}
+      - {fileID: 21300000, guid: bd1662f0b7f2c9547bef5c852714e1aa, type: 3}
+      - {fileID: 21300000, guid: 98d9b6e200e1ff7439ca120129d45316, type: 3}
+      - {fileID: 21300000, guid: d056bf655039e214c857401db8f01728, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 11
+    clip:
+      _clipName: boss_guardian_combo3
+      _frames:
+      - {fileID: 21300000, guid: 7442d1d567620df4b936bd04e56bfaaa, type: 3}
+      - {fileID: 21300000, guid: f49917b8637ef6a41bc98eb4b7977469, type: 3}
+      - {fileID: 21300000, guid: fffd2c95f4bbda9478fd32ce370d11ff, type: 3}
+      - {fileID: 21300000, guid: 83d0570630e2e33469001a909e0c8afd, type: 3}
+      - {fileID: 21300000, guid: 723ab41f1fcde3d49881b8fede2a031b, type: 3}
+      - {fileID: 21300000, guid: 5faa29e7bc8f44444ae2392f26cda912, type: 3}
+      - {fileID: 21300000, guid: 69ca398c748d3024c9375a22962296b9, type: 3}
+      - {fileID: 21300000, guid: c41d556ba0ce65a41af9bae88135553d, type: 3}
+      - {fileID: 21300000, guid: f8097577f382ad84791459d73241eca8, type: 3}
+      - {fileID: 21300000, guid: 2c70291a0f9a6fa42a7eda48da35aabe, type: 3}
+      - {fileID: 21300000, guid: d88b9bb73307a0c4e8b0016218e568c9, type: 3}
+      - {fileID: 21300000, guid: 730376599cca324438a90651bf2e8c57, type: 3}
+      - {fileID: 21300000, guid: 20d209b0330a2ae4da51cf3b4f92b59a, type: 3}
+      - {fileID: 21300000, guid: d56b681b63a444b4e871cfd7d27c238c, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 12
+    clip:
+      _clipName: boss_guardian_stunned
+      _frames:
+      - {fileID: 21300000, guid: 4fdf43174b4d6074fb7c4cd38e135e90, type: 3}
+      - {fileID: 21300000, guid: 2a4c009201a534541969f53e963712d3, type: 3}
+      - {fileID: 21300000, guid: 32de78d7c37978d44b4f745f822e2346, type: 3}
+      - {fileID: 21300000, guid: 4af799a627c113448b7ef18d7b6a42f5, type: 3}
+      - {fileID: 21300000, guid: 1ff218ac8691caa4db9f21f195151638, type: 3}
+      - {fileID: 21300000, guid: b1fefc87919045244abe5c7f9c982a92, type: 3}
+      - {fileID: 21300000, guid: ba816fb79618746439594044c7b10b18, type: 3}
+      - {fileID: 21300000, guid: 2a53b91b0c120204abcb9eb5341cf01a, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 1
+  - state: 13
+    clip:
+      _clipName: boss_guardian_recoil
+      _frames:
+      - {fileID: 21300000, guid: 765b5321cc815494fa0b64b53b892489, type: 3}
+      - {fileID: 21300000, guid: db1ac456e6897844c88c56ab9e07a85e, type: 3}
+      - {fileID: 21300000, guid: 2c3a13bbe415dfa49a20dc317c46adf5, type: 3}
+      - {fileID: 21300000, guid: 892fbb045cf7a7044a7e0a5378eee463, type: 3}
+      - {fileID: 21300000, guid: c077083b7f7570a42a97f506a49e687c, type: 3}
+      - {fileID: 21300000, guid: fd2d71af6ac855b409e7940b3e18986c, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 14
+    clip:
+      _clipName: boss_guardian_phasetransition
+      _frames:
+      - {fileID: 21300000, guid: 17f7f749394eba14cb5cf18781f39d83, type: 3}
+      - {fileID: 21300000, guid: a81e3279b9bd8a54abe571db7cab72d8, type: 3}
+      - {fileID: 21300000, guid: 72f69ee684e61034f9e87a16e6d54314, type: 3}
+      - {fileID: 21300000, guid: 1fb101b67355bd5429f041d8bef8c9b8, type: 3}
+      - {fileID: 21300000, guid: 97b7aadf704fe194ba62c5b878c4010c, type: 3}
+      - {fileID: 21300000, guid: a0b419176a730894b87616197aa9001f, type: 3}
+      - {fileID: 21300000, guid: 01a8b5b9dc31356479b9b2204aace7d8, type: 3}
+      - {fileID: 21300000, guid: 0a0eb810b533a50409e3c595a5d70459, type: 3}
+      - {fileID: 21300000, guid: a5d602fede04e2d4ca4519a774a0ed7b, type: 3}
+      - {fileID: 21300000, guid: bde69c5fcd90226488a19dd6807e505a, type: 3}
+      - {fileID: 21300000, guid: 2f5ba3d1e954c1f4f8dc65290265a982, type: 3}
+      - {fileID: 21300000, guid: 4f3d72d8a0c23bb41a3044facfe4d74d, type: 3}
+      - {fileID: 21300000, guid: a96046999dfd9a24cb3e77e1a07723b9, type: 3}
+      - {fileID: 21300000, guid: 854ab88363c96f44da014965376933c1, type: 3}
+      - {fileID: 21300000, guid: 83a76e7d64d42074f84941cd70222871, type: 3}
+      - {fileID: 21300000, guid: 7cb1fae24a409514b8474392b73835d7, type: 3}
+      - {fileID: 21300000, guid: 6459f11443817d440b8f504903e7e6be, type: 3}
+      - {fileID: 21300000, guid: d38dc8e83407a5745a7834ef0ec31658, type: 3}
+      - {fileID: 21300000, guid: 3f6348ca4c7199943b847071b58f17c8, type: 3}
+      - {fileID: 21300000, guid: 6fb5a88a1c561ab439597f0c8eea2223, type: 3}
+      - {fileID: 21300000, guid: dc6f3c241a7c7324189955f63d4d1f29, type: 3}
+      - {fileID: 21300000, guid: b282cd51f36f20c4b8f4d3675af97eb8, type: 3}
+      - {fileID: 21300000, guid: 17c6f82f03604a749b9504d6cd93572f, type: 3}
+      - {fileID: 21300000, guid: cf8ae6ba618d980489b68fa5174f0e6c, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 0
+  - state: 15
+    clip:
+      _clipName: boss_guardian_idlep2
+      _frames:
+      - {fileID: 21300000, guid: 4b6a075a634f36d4cbc9ae6860d31fe0, type: 3}
+      - {fileID: 21300000, guid: ea528d3811b763b4e873ac65d87729dc, type: 3}
+      - {fileID: 21300000, guid: b453359076662194195ba78dd1bdd9be, type: 3}
+      - {fileID: 21300000, guid: 924b38165f0faf0409bfca3a86560464, type: 3}
+      - {fileID: 21300000, guid: 085f2ce8ce3f3644cb34ae3232320965, type: 3}
+      - {fileID: 21300000, guid: 24db9b351daabfc4c97a0c2fe1e30475, type: 3}
+      _framesPerSecond: 8
+      _isLooping: 1
+  - state: 16
+    clip:
+      _clipName: boss_guardian_movep2
+      _frames:
+      - {fileID: 21300000, guid: 4303d70f85d677046af64431a21f34b0, type: 3}
+      - {fileID: 21300000, guid: e77e6f34f4d908b49a97ad8667a354fe, type: 3}
+      - {fileID: 21300000, guid: 9d5f72d63fd6ca74995b1e7e2c54c2fa, type: 3}
+      - {fileID: 21300000, guid: e931a6c2236ad7648aa4edb49c689614, type: 3}
+      - {fileID: 21300000, guid: 9709a3d50ed40744fbb7ef8ee368e274, type: 3}
+      - {fileID: 21300000, guid: 45cddb6340369854fb7558f6468b6424, type: 3}
+      - {fileID: 21300000, guid: 28577abb7f6c2ca4da0a457306b397c7, type: 3}
+      - {fileID: 21300000, guid: 065d36e5b298e7444b54237a21511bca, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 1
+  - state: 17
+    clip:
+      _clipName: boss_guardian_slashp2
+      _frames:
+      - {fileID: 21300000, guid: 2ba20a3d846be144aaf58e47a46ecd4c, type: 3}
+      - {fileID: 21300000, guid: f180c7f3fe5d22a4aa4ec5dd1d0b6f70, type: 3}
+      - {fileID: 21300000, guid: f69ee5d948f61a042a0c40e5eda88772, type: 3}
+      - {fileID: 21300000, guid: 316276c3405161644b340502dad3c93f, type: 3}
+      - {fileID: 21300000, guid: 024e8261a79edd64cae099bf59076cac, type: 3}
+      - {fileID: 21300000, guid: 6468a05fc3148654f8540cf7bac5ac56, type: 3}
+      - {fileID: 21300000, guid: 5867305feb86f424d90ecbd7209a584c, type: 3}
+      - {fileID: 21300000, guid: 3e9b1c5801c9a174db8e277a138ed609, type: 3}
+      - {fileID: 21300000, guid: 4d0754ac6ae76b242874d491f76ef1d1, type: 3}
+      - {fileID: 21300000, guid: 9094bf8fe9d32154aa99e996bd46d48e, type: 3}
+      - {fileID: 21300000, guid: cd2233856957f41479cc88d13e9de6ac, type: 3}
+      - {fileID: 21300000, guid: 82244bea82a4f8c45ba1197e0c662137, type: 3}
+      - {fileID: 21300000, guid: 9c91e0a17af5fea4792aa121b04b5ef7, type: 3}
+      - {fileID: 21300000, guid: d3bdbf3b509785342b955b4801a452a7, type: 3}
+      - {fileID: 21300000, guid: f0807e1da5747c44fb9132444facef52, type: 3}
+      - {fileID: 21300000, guid: 9d8bed56b6c490e469ffaa4880e31523, type: 3}
+      - {fileID: 21300000, guid: 23f4c28682bb59641bb374ab6b22be7f, type: 3}
+      - {fileID: 21300000, guid: f8de318d7b7381c41a785eb941f961b7, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 18
+    clip:
+      _clipName: boss_guardian_combop2
+      _frames:
+      - {fileID: 21300000, guid: f2dd80dfd184c1d48adbfcdd9ba8ce14, type: 3}
+      - {fileID: 21300000, guid: d22a41926bc609249b31cd30c725300c, type: 3}
+      - {fileID: 21300000, guid: 9d908d45854871942baa8bceeb72d0d6, type: 3}
+      - {fileID: 21300000, guid: 05d62eae850737a48bdcd7193035d5bf, type: 3}
+      - {fileID: 21300000, guid: 7e405bceac447184a8bba04c963a60ea, type: 3}
+      - {fileID: 21300000, guid: 83f708c46e39f0248b8a644ee28882d1, type: 3}
+      - {fileID: 21300000, guid: ba8a516ab5c573e47babb2d8a872318c, type: 3}
+      - {fileID: 21300000, guid: 8d634e6cf3e74274798d7fa84fe050aa, type: 3}
+      - {fileID: 21300000, guid: fd4cb2b866d0b3c40956f7fa0704d8c5, type: 3}
+      - {fileID: 21300000, guid: c2de8371c3321f74d8dc0aa1b6cdecee, type: 3}
+      - {fileID: 21300000, guid: 0f6aa63fea9610549b1ca0a822a43350, type: 3}
+      - {fileID: 21300000, guid: 40de3a887fc271c44b2e008b427581a8, type: 3}
+      - {fileID: 21300000, guid: 785862d35b3750b45aedecff489bdbcc, type: 3}
+      - {fileID: 21300000, guid: 72f1e69029ed7214d92d2d249ceea34a, type: 3}
+      - {fileID: 21300000, guid: 6b2bc4b1310636e4e9af606ec7bd2413, type: 3}
+      - {fileID: 21300000, guid: 0be73926bbe14e84c9603050461c65dc, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 19
+    clip:
+      _clipName: boss_guardian_jumpstart
+      _frames:
+      - {fileID: 21300000, guid: 56efaee8ccba53d46a35a70377eab5f0, type: 3}
+      - {fileID: 21300000, guid: 124e029972e696546bebd679d3238aef, type: 3}
+      - {fileID: 21300000, guid: 90ef6a8f5fc0f0948ad8ff8695ef6520, type: 3}
+      - {fileID: 21300000, guid: d5a8e629beb15e54b82d600800f08236, type: 3}
+      - {fileID: 21300000, guid: 8ee157bdb42e1b34c81568557b18876c, type: 3}
+      - {fileID: 21300000, guid: c02ba8e7050f890489831460ed54f54f, type: 3}
+      - {fileID: 21300000, guid: aaf5cea66789ffc409a9775f0c16706f, type: 3}
+      - {fileID: 21300000, guid: 275095022d832f84796d29f1216304f6, type: 3}
+      - {fileID: 21300000, guid: 42eac673b54c7da41877e0a8cb054e4c, type: 3}
+      - {fileID: 21300000, guid: f1706ed8e4a30d249b6376e745e23f03, type: 3}
+      - {fileID: 21300000, guid: aa77e0a3ba952b5479977e4abdeca73b, type: 3}
+      - {fileID: 21300000, guid: db295702e7250a74589aa5639c141443, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 20
+    clip:
+      _clipName: boss_guardian_jump
+      _frames:
+      - {fileID: 21300000, guid: 4bfb8831c7aff31439fbc730e7f8c84d, type: 3}
+      - {fileID: 21300000, guid: 1907756f742275a4fb8fb29444e9d2b1, type: 3}
+      - {fileID: 21300000, guid: df1fdb4921d0f6a4891d6d390402d475, type: 3}
+      - {fileID: 21300000, guid: c37a0a4da7d84b3418e596b5918fc903, type: 3}
+      - {fileID: 21300000, guid: e2a8be6e51b9ace48b5af2911c55ecfb, type: 3}
+      - {fileID: 21300000, guid: 52814ec43b07b5a4f8d8109f181dce38, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 1
+  - state: 21
+    clip:
+      _clipName: boss_guardian_slam
+      _frames:
+      - {fileID: 21300000, guid: 6b1540b7579dc7f45b264fccfa1bb9ce, type: 3}
+      - {fileID: 21300000, guid: c8c9988adedf60a45b56c9f83cb88817, type: 3}
+      - {fileID: 21300000, guid: 6e9adcc59af61854cb0168c19ed6d6df, type: 3}
+      - {fileID: 21300000, guid: b8a4d142affb4f94b99d08d222a058f2, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 22
+    clip:
+      _clipName: boss_guardian_slamrecover
+      _frames:
+      - {fileID: 21300000, guid: 79e1cae55499091468d437826644b54c, type: 3}
+      - {fileID: 21300000, guid: 9638b332230cdd9458071ee9b1a3b6b1, type: 3}
+      - {fileID: 21300000, guid: 04354eddaf52c7241a91f213097612ee, type: 3}
+      - {fileID: 21300000, guid: b46c4e9f26cf31a46914e67489469eb3, type: 3}
+      - {fileID: 21300000, guid: 396ecb3157b6f9d4e90da95a91e0e6d9, type: 3}
+      - {fileID: 21300000, guid: 2bf08f1af8a4d3c47a3418e6753ae9e2, type: 3}
+      - {fileID: 21300000, guid: 8792ff7f38105a34a83e68f9c8455f88, type: 3}
+      - {fileID: 21300000, guid: da3ae022e8aec9a49b646c4f4a56f199, type: 3}
+      - {fileID: 21300000, guid: 2886d74d1c38ba34a87155e7c6724ebe, type: 3}
+      - {fileID: 21300000, guid: 42abf3b5dd4228c4fb6f7118ec87f5b1, type: 3}
+      - {fileID: 21300000, guid: 72449dadd4a105b46b76adebd528608f, type: 3}
+      - {fileID: 21300000, guid: 50c02d0e7120861438931b5f25c2033b, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 23
+    clip:
+      _clipName: boss_guardian_death
+      _frames:
+      - {fileID: 21300000, guid: 3aa1f0534fad32d4ca46cda1a8296286, type: 3}
+      - {fileID: 21300000, guid: 3caf1db452bb0044f95f1c9bae7a9920, type: 3}
+      - {fileID: 21300000, guid: a9fd126edbf32054a8c2934cedeea9b5, type: 3}
+      - {fileID: 21300000, guid: c43f61a177fddeb4d898ee08fb0c0195, type: 3}
+      - {fileID: 21300000, guid: 89312ff566b22bc40a0b104d4e6728f1, type: 3}
+      - {fileID: 21300000, guid: edcafcc4dfd8a32459f7bacf392683ce, type: 3}
+      - {fileID: 21300000, guid: 4c9ce1d3366bf1746845572590aa496b, type: 3}
+      - {fileID: 21300000, guid: 02f1c4b616383fb47857fa9db2b20b95, type: 3}
+      - {fileID: 21300000, guid: 57cb3fe57754c824f83dfd7852f53090, type: 3}
+      - {fileID: 21300000, guid: 6967086ad8d734a44aafc74b40286150, type: 3}
+      - {fileID: 21300000, guid: dbcbc47ffee58ec4a88dd0257fa15abb, type: 3}
+      - {fileID: 21300000, guid: e2353c28df8af29449667210e1c960fd, type: 3}
+      - {fileID: 21300000, guid: 926094965b572ec4bad3ccf96cf54e9a, type: 3}
+      - {fileID: 21300000, guid: ae3557a0b554bb44596f248fb7aa8971, type: 3}
+      - {fileID: 21300000, guid: 544dc63fea9e707468cab350d3f2b6ca, type: 3}
+      - {fileID: 21300000, guid: db4b4cf49820d8b47bd802318004190c, type: 3}
+      - {fileID: 21300000, guid: a5402d7b0a89925439d097e9c845a187, type: 3}
+      - {fileID: 21300000, guid: 0d2059bd570d5fc48bc467b3225f8782, type: 3}
+      - {fileID: 21300000, guid: 3971b367acdc14045a41efd03fa78c78, type: 3}
+      - {fileID: 21300000, guid: 49f3ec9aab3c6b74b91910b6545a1aa1, type: 3}
+      - {fileID: 21300000, guid: 0fe77a63d995664498a2429f45e6876f, type: 3}
+      - {fileID: 21300000, guid: fee7bd10ed96f3648abf5ff30b55978b, type: 3}
+      - {fileID: 21300000, guid: 007bd4c60b16d5a46b8d167cdc98accb, type: 3}
+      - {fileID: 21300000, guid: e4444c2084bf1794da37ee94be654b77, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 0
+  _fallback:
+    _clipName: boss_guardian_idlep1
+    _frames:
+    - {fileID: 21300000, guid: 57e4041c8caf65f4086a9b784981b2d3, type: 3}
+    - {fileID: 21300000, guid: cea4e0f66d857284d9ae13f8b871a010, type: 3}
+    - {fileID: 21300000, guid: 2cf5615371097f34b964db0fe3250011, type: 3}
+    - {fileID: 21300000, guid: f70da4a6adc4fa04e83e9704675ec7ef, type: 3}
+    - {fileID: 21300000, guid: d452ec5b3e44a0748818f3c67744eff9, type: 3}
+    - {fileID: 21300000, guid: a98db0e2d50383f49b26571686aeb20d, type: 3}
+    _framesPerSecond: 8
+    _isLooping: 1
+  _requiredStates: 

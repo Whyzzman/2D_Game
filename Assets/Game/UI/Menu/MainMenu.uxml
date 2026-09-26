@@ -1,0 +1,35 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <Style src="MainMenu.uss" />
+    <ui:VisualElement name="menu" class="menu">
+        <ui:VisualElement name="vignette" class="menu__vignette" picking-mode="Ignore" />
+        <ui:VisualElement name="fade" class="menu__fade" picking-mode="Ignore" />
+
+        <ui:VisualElement name="front" class="menu__front">
+            <ui:Label class="title display" text="ТІНЬ" picking-mode="Ignore" />
+            <ui:Label class="title title--second display" text="ЗАБУТОГО КОРОЛІВСТВА" picking-mode="Ignore" />
+            <ui:VisualElement class="title__rule ornament" picking-mode="Ignore" />
+            <ui:Label class="title__small display" text="ПРОЛОГ" picking-mode="Ignore" />
+
+            <ui:VisualElement name="list" class="menu-list">
+                <ui:Button name="continue" class="menu-button display" text="Продовжити" />
+                <ui:Button name="new-game" class="menu-button display" text="Нова гра" />
+                <ui:Button name="options" class="menu-button display" text="Налаштування" />
+                <ui:Button name="quit" class="menu-button display" text="Вийти" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+
+        <ui:VisualElement name="options-panel" class="options">
+            <ui:Label class="options__title display" text="Налаштування" />
+            <ui:VisualElement class="options__rule ornament" picking-mode="Ignore" />
+            <ui:Slider name="opt-master" class="option" label="Гучність" low-value="0" high-value="1" />
+            <ui:Slider name="opt-effects" class="option" label="Ефекти" low-value="0" high-value="1" />
+            <ui:Slider name="opt-shake" class="option" label="Тремтіння камери" low-value="0" high-value="1" />
+            <ui:Slider name="opt-flash" class="option" label="Спалахи" low-value="0" high-value="1" />
+            <ui:Slider name="opt-hitstop" class="option" label="Зупинка при ударі" low-value="0" high-value="1" />
+            <ui:Button name="options-back" class="menu-button menu-button--small display" text="Назад" />
+        </ui:VisualElement>
+
+        <ui:Label name="save-meta" class="save-meta" text="Збереження не знайдено" picking-mode="Ignore" />
+        <ui:Label name="build-tag" class="build-tag" text="Вертикальний зріз" picking-mode="Ignore" />
+    </ui:VisualElement>
+</ui:UXML>

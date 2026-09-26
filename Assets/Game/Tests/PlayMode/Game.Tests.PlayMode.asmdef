@@ -1,0 +1,7 @@
+{
+  "name": "Game.Tests.PlayMode",
+  "rootNamespace": "ForgottenKingdom.Tests",
+  "references": ["Game.Runtime", "Unity.InputSystem", "Unity.RenderPipelines.Universal.Runtime",
+    "Unity.RenderPipelines.Universal.2D.Runtime", "Unity.RenderPipelines.Core.Runtime"],
+  "optionalUnityReferences": ["TestAssemblies"]
+}

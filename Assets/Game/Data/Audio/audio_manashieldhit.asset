@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f262bfdbc3db1d1448a3cf59cba06016, type: 3}
+  m_Name: audio_manashieldhit
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.AudioEvent
+  _id: 35
+  _clips:
+  - {fileID: 8300000, guid: 98026d83dce008941b7076f4b302a26d, type: 3}
+  - {fileID: 8300000, guid: e8d357816d90f0d40b9e1964efcab54c, type: 3}
+  - {fileID: 8300000, guid: 9555aaa36dc20f640957330499af2aac, type: 3}
+  _bus: 2
+  _volume: 0.55
+  _volumeJitter: 0.06
+  _pitchJitter: 0.045
+  _spatialBlend: 0.55
+  _maxDistance: 26
+  _maxVoices: 2
+  _minimumInterval: 0
+  _priority: 60
+  _loop: 0

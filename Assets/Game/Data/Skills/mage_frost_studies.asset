@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f4cacb77cb2d7d4fbb0176dba278d4b, type: 3}
+  m_Name: mage_frost_studies
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.SkillDefinition
+  _skillId: mage_frost_studies
+  _displayName: "\u0421\u0442\u0443\u0434\u0456\u0457 \u043B\u044C\u043E\u0434\u0443"
+  _description: "\u0412\u0456\u0434\u043A\u0440\u0438\u0432\u0430\u0454 \u041A\u0440\u0438\u0436\u0430\u043D\u0438\u0439
+    \u041E\u0441\u043A\u043E\u043B\u043E\u043A \u0456 \u043F\u0456\u0434\u0441\u0438\u043B\u044E\u0454
+    \u043A\u0440\u0438\u0436\u0430\u043D\u0456 \u0437\u0430\u043A\u043B\u044F\u0442\u0442\u044F."
+  _branch: 2
+  _type: 0
+  _cost: 1
+  _maxRank: 1
+  _requiredLevel: 1
+  _prerequisites:
+  - mage_training
+  _effects:
+  - _type: 18
+    _valuePerRank: 0.1
+  _active:
+    _attack:
+      _displayName: Attack
+      _animationState: 
+      _damage: 10
+      _damageMultiplier: 1
+      _damageType: 0
+      _staminaCost: 0
+      _staggerDamage: 10
+      _knockback: 4
+      _guardDamage: 0
+      _hitStop: 0.04
+      _isUnblockable: 0
+      _isParryable: 1
+      _windup: 0.12
+      _activeTime: 0.08
+      _recovery: 0.22
+      _comboLinkTime: 0.26
+      _cancelableAfter: 0.2
+      _hitboxOffset: {x: 0.85, y: 0.1}
+      _hitboxSize: {x: 1.3, y: 1.1}
+      _movementScale: 0.2
+      _statusBuildup: []
+    _cooldown: 8
+    _requiresMeleeWeapon: 1
+    _lungeSpeed: 0
+    _invulnerability: 0
+    _tags: []
+    _shadowAction: 0
+    _manaCost: 0
+    _animationState: 0
+  _grantedSpellId: frost_shard
+  _icon: {fileID: 0}
+  _position: {x: 1, y: 4}

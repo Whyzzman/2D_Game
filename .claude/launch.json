@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "ui-prototype",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["design/ui/_shared/serve.js"],
+      "port": 8123
+    }
+  ]
+}

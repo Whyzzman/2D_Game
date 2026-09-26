@@ -1,0 +1,85 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a3bf27c6a3b5a64bba1a1b22b6e25e4, type: 3}
+  m_Name: ZombieSoldier
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.EnemyDefinition
+  _displayName: "\u0417\u043E\u043C\u0431\u0456-\u0441\u043E\u043B\u0434\u0430\u0442"
+  _experienceReward: 25
+  _patrolSpeed: 1.5
+  _chaseSpeed: 3.2
+  _returnSpeed: 2.2
+  _patrolRange: 4
+  _idleTime: 0.8
+  _idleTimeVariance: 0.8
+  _detectionRange: 8
+  _loseSightRange: 11
+  _verticalDetectionRange: 3.5
+  _alertTime: 0.35
+  _searchTime: 2
+  _behindDetectionRange: 2
+  _facingDeadZone: 0.35
+  _aiTickInterval: 0.08
+  _attackRange: 1.6
+  _verticalAttackRange: 1.3
+  _attackCooldown: 1.2
+  _facingLockTime: 0.12
+  _decisionCooldown: 0.25
+  _guardMovementScale: 0.3
+  _attacks:
+  - _kind: 0
+    _attack:
+      _displayName: Sword Slash
+      _animationState: Attack
+      _damage: 16
+      _damageMultiplier: 1
+      _damageType: 0
+      _staminaCost: 0
+      _staggerDamage: 15
+      _knockback: 5
+      _guardDamage: 15
+      _hitStop: 0.04
+      _isUnblockable: 0
+      _isParryable: 1
+      _windup: 0.42
+      _activeTime: 0.1
+      _recovery: 0.42
+      _comboLinkTime: 0.5
+      _cancelableAfter: 0.5
+      _hitboxOffset: {x: 0.95, y: 0}
+      _hitboxSize: {x: 1.6, y: 1.4}
+      _movementScale: 0
+      _statusBuildup: []
+    _cooldown: 0
+    _minRange: 0
+    _maxRange: 1.7
+    _weight: 1
+    _requiredPressure: 0
+    _weightAgainstGuard: 0
+    _facingLockTime: 0.12
+    _spawn:
+      _kind: 0
+      _prefab: {fileID: 0}
+      _offset: {x: 0.7, y: 0.2}
+      _speed: 9
+      _range: 14
+      _pierce: 1
+      _color: {r: 1, g: 1, b: 1, a: 1}
+      _atTargetPosition: 1
+      _maxPlacementDistance: 7
+    _lunge: {x: 0, y: 0}
+  _preferredRange: 0
+  _retreatRange: 0
+  _retreatSpeed: 3
+  _hurtTime: 0.3
+  _hitReactionCooldown: 0.55
+  _deathTime: 1.6
+  _maxChaseTime: 12

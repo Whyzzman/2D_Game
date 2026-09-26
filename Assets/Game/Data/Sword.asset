@@ -1,0 +1,121 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0454e77d929ac8c4b942f2de05a0d90d, type: 3}
+  m_Name: Sword
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.WeaponDefinition
+  _itemId: old_sword
+  _modifiers: []
+  _displayName: "\u0421\u0442\u0430\u0440\u0438\u0439 \u041C\u0435\u0447"
+  _weaponType: 0
+  _baseDamage: 20
+  _attackSpeed: 1
+  _staminaMultiplier: 1
+  _staggerMultiplier: 1
+  _knockbackMultiplier: 1
+  _critChance: 0
+  _critMultiplier: 1.5
+  _comboResetTime: 0.55
+  _strengthScaling: 0.5
+  _dexterityScaling: 0.4
+  _intelligenceScaling: 0
+  _strengthRequirement: 5
+  _dexterityRequirement: 5
+  _lightCombo:
+  - _displayName: Light 1
+    _animationState: LightAttack1
+    _damage: 0
+    _damageMultiplier: 0.75
+    _damageType: 0
+    _staminaCost: 10
+    _staggerDamage: 10
+    _knockback: 3
+    _guardDamage: 5
+    _hitStop: 0.03
+    _isUnblockable: 0
+    _isParryable: 1
+    _windup: 0.1
+    _activeTime: 0.07
+    _recovery: 0.18
+    _comboLinkTime: 0.17
+    _cancelableAfter: 0.16
+    _hitboxOffset: {x: 0.85, y: 0.05}
+    _hitboxSize: {x: 1.3, y: 1.2}
+    _movementScale: 0.3
+    _statusBuildup: []
+  - _displayName: Light 2
+    _animationState: LightAttack2
+    _damage: 0
+    _damageMultiplier: 0.9
+    _damageType: 0
+    _staminaCost: 10
+    _staggerDamage: 12
+    _knockback: 4
+    _guardDamage: 7
+    _hitStop: 0.04
+    _isUnblockable: 0
+    _isParryable: 1
+    _windup: 0.09
+    _activeTime: 0.07
+    _recovery: 0.2
+    _comboLinkTime: 0.16
+    _cancelableAfter: 0.16
+    _hitboxOffset: {x: 0.9, y: 0.05}
+    _hitboxSize: {x: 1.45, y: 1.25}
+    _movementScale: 0.2
+    _statusBuildup: []
+  - _displayName: Light 3
+    _animationState: LightAttack3
+    _damage: 0
+    _damageMultiplier: 1.25
+    _damageType: 0
+    _staminaCost: 15
+    _staggerDamage: 22
+    _knockback: 7
+    _guardDamage: 14
+    _hitStop: 0.06
+    _isUnblockable: 0
+    _isParryable: 1
+    _windup: 0.15
+    _activeTime: 0.09
+    _recovery: 0.32
+    _comboLinkTime: 0.45
+    _cancelableAfter: 0.26
+    _hitboxOffset: {x: 1, y: 0.05}
+    _hitboxSize: {x: 1.7, y: 1.35}
+    _movementScale: 0.1
+    _statusBuildup: []
+  _heavyAttack:
+    _displayName: Heavy
+    _animationState: HeavyAttack
+    _damage: 0
+    _damageMultiplier: 1.75
+    _damageType: 0
+    _staminaCost: 25
+    _staggerDamage: 45
+    _knockback: 9
+    _guardDamage: 45
+    _hitStop: 0.08
+    _isUnblockable: 0
+    _isParryable: 1
+    _windup: 0.32
+    _activeTime: 0.11
+    _recovery: 0.44
+    _comboLinkTime: 0.8
+    _cancelableAfter: 0.45
+    _hitboxOffset: {x: 1.05, y: 0.05}
+    _hitboxSize: {x: 1.95, y: 1.5}
+    _movementScale: 0.05
+    _statusBuildup: []
+  _visualColor: {r: 0.82, g: 0.84, b: 0.9, a: 1}
+  _visualSize: {x: 0.12, y: 0.9}
+  _visualOffset: {x: 0.3, y: 0.15}
+  _visualSprite: {fileID: 0}

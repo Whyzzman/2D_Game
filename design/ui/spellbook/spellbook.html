@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<title>Тінь Забутого Королівства — Закляття</title>
+<link rel="stylesheet" href="../_shared/ui.css">
+<style>
+  .screen { position: absolute; inset: 64px 96px; display: flex; flex-direction: column; }
+  .screen__body { flex: 1; display: grid; grid-template-columns: 1fr 440px; gap: var(--s5); min-height: 0; padding: var(--s5); }
+
+  .spells { display: flex; flex-direction: column; gap: var(--s3); }
+  .spell {
+    display: flex; align-items: center; gap: var(--s4);
+    padding: var(--s3);
+    border: 1px solid var(--edge-mid);
+    background: linear-gradient(90deg, rgba(34,28,23,0.75), rgba(11,9,7,0.5));
+    cursor: pointer;
+  }
+  .spell:hover { border-color: var(--edge-light); }
+  .spell.is-selected { border-color: var(--gold); box-shadow: var(--focus); }
+  .spell.is-locked { opacity: 0.45; filter: grayscale(0.8); cursor: not-allowed; }
+  .spell__body { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+  .spell__name { font-size: var(--fs-body); color: var(--ink-bright); }
+  .spell__meta { font-size: var(--fs-micro); letter-spacing: 0.1em; text-transform: uppercase; }
+  .spell__slot {
+    min-width: 46px; text-align: center;
+    font-size: var(--fs-micro); letter-spacing: 0.1em;
+    color: var(--gold); border: 1px solid var(--gold-dim); padding: var(--s1) var(--s2);
+  }
+  .spell__slot.is-empty { color: var(--ink-dim); border-color: var(--edge-mid); }
+
+  .el-fire   { color: var(--burn); }
+  .el-frost  { color: var(--frost); }
+  .el-arcane { color: var(--arcane); }
+
+  /* Три слоти — рівно стільки, скільки в HUD. */
+  .slots { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s3); }
+  .slot-card {
+    display: flex; flex-direction: column; align-items: center; gap: var(--s2);
+    padding: var(--s3);
+    border: 1px solid var(--edge-mid);
+    cursor: pointer;
+  }
+  .slot-card.is-target { border-color: var(--gold); background: rgba(138,116,52,0.1); }
+  .slot-card__key { font-size: var(--fs-micro); color: var(--ink-dim); letter-spacing: 0.1em; }
+  .slot-card__name { font-size: var(--fs-small); color: var(--ink-bright); text-align: center; }
+  .slot-card__name.is-empty { color: var(--ink-dim); font-style: italic; }
+
+  .detail { display: flex; flex-direction: column; gap: var(--s4); }
+  .detail__name { font-family: var(--font-display); font-size: var(--fs-lead); color: var(--ink-bright); margin: 0; }
+  .detail__desc { font-size: var(--fs-small); line-height: 1.5; color: var(--ink-muted); margin: 0; }
+
+  .footer { display: flex; align-items: center; gap: var(--s5); padding: var(--s3) var(--s5); border-top: 1px solid var(--edge-mid); font-size: var(--fs-small); }
+  .hint { display: flex; align-items: center; gap: var(--s2); color: var(--ink-muted); }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="gameplay-backdrop"></div>
+  <div class="scrim">
+    <div class="panel panel--royal screen">
+
+      <div class="panel__header">
+        <h1 class="panel__title">Книга заклять</h1>
+        <div class="tabs" style="border:none">
+          <button class="tab">Спорядження</button>
+          <button class="tab">Екіпірування</button>
+          <button class="tab">Персонаж</button>
+          <button class="tab">Уміння <span class="pip"></span></button>
+          <button class="tab is-active">Закляття</button>
+        </div>
+      </div>
+
+      <div class="screen__body">
+
+        <div class="col">
+          <div>
+            <h3 class="section-label">Вивчені закляття</h3>
+            <div class="spells">
+              <div class="spell is-selected">
+                <div class="slot" style="width:56px;height:56px">
+                  <svg width="32" height="32" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 2c1 4-3 5-3 9a3 3 0 0 0 6 0c0-2-1-3-1-3 3 1 4 3 4 6a6 6 0 0 1-12 0c0-5 6-6 6-12z" fill="#ff8c33"/>
+                    <path d="M12 12c1 1 1.5 2 1.5 3a1.5 1.5 0 0 1-3 0c0-1 .5-2 1.5-3z" fill="#ffd98c"/>
+                  </svg>
+                </div>
+                <div class="spell__body">
+                  <span class="spell__name">Вогняний Спалах</span>
+                  <span class="spell__meta el-fire">Вогонь · 12 мани · 0.30 с</span>
+                </div>
+                <span class="spell__slot">Слот 1</span>
+              </div>
+
+              <div class="spell">
+                <div class="slot" style="width:56px;height:56px">
+                  <svg width="32" height="32" viewBox="0 0 24 24" aria-hidden="true">
+                    <g stroke="#8fd6ff" stroke-width="1.8" stroke-linecap="round">
+                      <path d="M12 3v18M4.2 7.5l15.6 9M19.8 7.5l-15.6 9"/>
+                      <path d="M12 6.5l-2 2M12 6.5l2 2M12 17.5l-2-2M12 17.5l2-2"/>
+                    </g>
+                  </svg>
+                </div>
+                <div class="spell__body">
+                  <span class="spell__name">Крижаний Осколок</span>
+                  <span class="spell__meta el-frost">Лід · 16 мани · 0.35 с</span>
+                </div>
+                <span class="spell__slot">Слот 2</span>
+              </div>
+
+              <div class="spell">
+                <div class="slot" style="width:56px;height:56px">
+                  <svg width="32" height="32" viewBox="0 0 24 24" aria-hidden="true">
+                    <circle cx="12" cy="12" r="8" fill="none" stroke="#6b8fff" stroke-width="1.8"/>
+                    <circle cx="12" cy="12" r="3.4" fill="#6b8fff"/>
+                    <g stroke="#6b8fff" stroke-width="1.4"><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></g>
+                  </svg>
+                </div>
+                <div class="spell__body">
+                  <span class="spell__name">Вибух Сили</span>
+                  <span class="spell__meta el-arcane">Аркана · 42 мани · 0.75 с</span>
+                </div>
+                <span class="spell__slot is-empty">—</span>
+              </div>
+
+              <div class="spell is-locked">
+                <div class="slot" style="width:56px;height:56px">
+                  <svg width="32" height="32" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6z" fill="none" stroke="#8e8375" stroke-width="1.8"/>
+                  </svg>
+                </div>
+                <div class="spell__body">
+                  <span class="spell__name">Мановий Щит</span>
+                  <span class="spell__meta">Потрібне вміння «Мановий щит»</span>
+                </div>
+                <span class="spell__slot is-empty">—</span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h3 class="section-label">Слоти заклять</h3>
+            <div class="slots">
+              <div class="slot-card is-target">
+                <span class="slot-card__key">Клавіша 3</span>
+                <div class="slot" style="width:60px;height:60px">
+                  <svg width="34" height="34" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 2c1 4-3 5-3 9a3 3 0 0 0 6 0c0-2-1-3-1-3 3 1 4 3 4 6a6 6 0 0 1-12 0c0-5 6-6 6-12z" fill="#ff8c33"/>
+                  </svg>
+                </div>
+                <span class="slot-card__name">Вогняний Спалах</span>
+              </div>
+              <div class="slot-card">
+                <span class="slot-card__key">Клавіша 4</span>
+                <div class="slot" style="width:60px;height:60px">
+                  <svg width="34" height="34" viewBox="0 0 24 24" aria-hidden="true">
+                    <g stroke="#8fd6ff" stroke-width="1.8" stroke-linecap="round">
+                      <path d="M12 3v18M4.2 7.5l15.6 9M19.8 7.5l-15.6 9"/>
+                    </g>
+                  </svg>
+                </div>
+                <span class="slot-card__name">Крижаний Осколок</span>
+              </div>
+              <div class="slot-card">
+                <span class="slot-card__key">Клавіша 5</span>
+                <div class="slot slot--empty" style="width:60px;height:60px"></div>
+                <span class="slot-card__name is-empty">Порожньо</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- деталі закляття -->
+        <div class="detail">
+          <div>
+            <h2 class="detail__name">Вогняний Спалах</h2>
+            <div class="spell__meta el-fire">Вогонь · Снаряд</div>
+          </div>
+          <p class="detail__desc">
+            Кидає згусток вогню. Швидке й дешеве закляття — основа будь-якої
+            магічної збірки. Накопичує горіння.
+          </p>
+          <div>
+            <h3 class="section-label">Характеристики</h3>
+            <table class="stats">
+              <tr><td>Шкода</td><td>28</td></tr>
+              <tr><td>Стихія</td><td class="el-fire">Вогонь</td></tr>
+              <tr><td>Вартість мани</td><td>12</td></tr>
+              <tr><td>Час читання</td><td>0.30 с</td></tr>
+              <tr><td>Відкат</td><td>1.2 с</td></tr>
+              <tr><td>Масштаб. Інтелект</td><td>B</td></tr>
+              <tr><td>Накопичення горіння</td><td>18</td></tr>
+            </table>
+          </div>
+          <div class="spacer"></div>
+          <div class="row">
+            <button class="btn btn--primary">Призначити в слот 3</button>
+            <button class="btn">Зняти зі слоту</button>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="footer">
+        <span class="hint"><span class="glyph glyph--pad">A</span> Призначити</span>
+        <span class="hint"><span class="glyph">1—3</span> Слот</span>
+        <span class="hint"><span class="glyph">Esc</span> Назад</span>
+        <span class="spacer"></span>
+        <span class="muted">Слоти заклять збігаються з клавішами в бою</span>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="viewport-note"></div>
+<script src="../_shared/stage.js"></script>
+</body>
+</html>

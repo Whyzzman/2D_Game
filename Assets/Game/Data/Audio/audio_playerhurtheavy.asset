@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f262bfdbc3db1d1448a3cf59cba06016, type: 3}
+  m_Name: audio_playerhurtheavy
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.AudioEvent
+  _id: 23
+  _clips:
+  - {fileID: 8300000, guid: 46b44b89ecfda7c4c875782a650d0dca, type: 3}
+  - {fileID: 8300000, guid: a66e990aa399d7e48b03dc801b93c13c, type: 3}
+  - {fileID: 8300000, guid: d370a2bdd06e77942908e2cd5cfe86c7, type: 3}
+  _bus: 2
+  _volume: 0.88
+  _volumeJitter: 0.06
+  _pitchJitter: 0.045
+  _spatialBlend: 0.1
+  _maxDistance: 26
+  _maxVoices: 1
+  _minimumInterval: 0
+  _priority: 92
+  _loop: 0

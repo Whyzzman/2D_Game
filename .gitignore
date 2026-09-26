@@ -1,0 +1,75 @@
+# Unity: кеш, временные файлы и локальные настройки редактора
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+/[Mm]emoryCaptures/
+/[Rr]ecordings/
+
+# Unity: сборки и проверочная копия проекта
+/[Bb]uild/
+/[Bb]uilds/
+/[Bb]uild[Ss]/
+/Artifacts/
+
+# Unity: служебные файлы
+/[Aa]ssets/AssetStoreTools*
+/[Aa]ssets/Plugins/Editor/JetBrains*
+/[Aa]ssets/StreamingAssets/aa/
+/[Aa]ssets/StreamingAssets/aa.meta
+/[Aa]ssets/SceneDependencyCache/
+/[Aa]ssets/SceneDependencyCache.meta
+*.pidb.meta
+*.pdb.meta
+*.mdb.meta
+sysinfo.txt
+crashlytics-build.properties
+mono_crash.*
+
+# Сборки плеера
+*.apk
+*.aab
+*.unitypackage
+*.app
+*.exe
+*_BurstDebugInformation_DoNotShip/
+*_BackUpThisFolder_ButDontShipItWithYourGame/
+
+# Автогенерируемые проекты IDE (Unity пересоздаёт их)
+*.csproj
+*.unityproj
+*.sln
+*.slnx
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+# IDE
+.vs/
+.vscode/
+.idea/
+.fleet/
+*.swp
+*~
+
+# Системные файлы
+.DS_Store
+._*
+Thumbs.db
+Desktop.ini
+
+# Node (UI-прототип в design/ui)
+node_modules/
+npm-debug.log*
+
+# Логи
+*.log

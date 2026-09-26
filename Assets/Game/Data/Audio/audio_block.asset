@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f262bfdbc3db1d1448a3cf59cba06016, type: 3}
+  m_Name: audio_block
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.AudioEvent
+  _id: 17
+  _clips:
+  - {fileID: 8300000, guid: 57533ab9c9bf03c4fb020b727c8e81ff, type: 3}
+  - {fileID: 8300000, guid: 4a48a00a7766b8747b0d5e13ce362c22, type: 3}
+  - {fileID: 8300000, guid: 7dfea0e11b86d6d4a905986aa4604699, type: 3}
+  - {fileID: 8300000, guid: 4e5ecc58eccb9a7419b133eef6f1882a, type: 3}
+  _bus: 2
+  _volume: 0.66
+  _volumeJitter: 0.06
+  _pitchJitter: 0.045
+  _spatialBlend: 0.55
+  _maxDistance: 26
+  _maxVoices: 3
+  _minimumInterval: 0
+  _priority: 70
+  _loop: 0

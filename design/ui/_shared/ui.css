@@ -1,0 +1,514 @@
+/* ---------------------------------------------------------------------------
+   Тінь Забутого Королівства — дизайн-система інтерфейсу
+   PHASE 21. Мінімальна система під наявні екрани: кольори, типографіка,
+   відступи, форми панелей/слотів/кнопок/смуг і потрібні стани.
+   Нічого «на майбутнє» тут немає.
+   --------------------------------------------------------------------------- */
+
+:root {
+  /* Поверхні: темний метал і камінь. Три рівні, не більше. */
+  --surface-deep:    #0f0d0b;
+  --surface-panel:   #17130f;
+  --surface-raised:  #221c17;
+  --surface-sunken:  #0b0907;
+
+  /* Рамки: потемніла сталь із теплим кантом. */
+  --edge-dark:   #0b0907;
+  --edge-mid:    #3a2f25;
+  --edge-light:  #6b5a42;
+
+  /* Вицвіле золото — акцент королівства. Стримано. */
+  --gold-dim:    #8a7434;
+  --gold:        #c9a14a;
+  --gold-bright: #e8cd8a;
+
+  /* Текст: пергамент. Чотири рівні читабельності. */
+  --ink-bright: #f0e6d2;
+  --ink:        #d8cbb4;
+  --ink-muted:  #8e8375;
+  --ink-dim:    #5f574c;
+
+  /* Ресурси. HP найсильніший, мана окремішня, витривалість стриманіша. */
+  --hp:        #b3202a;
+  --hp-low:    #6d1219;
+  --hp-loss:   #d9694f;
+  --mana:      #3e6fa8;
+  --mana-high: #6fa8d6;
+  --stamina:   #c8a24a;
+  --stamina-low: #6e5723;
+  --poise:     #6f8fb8;
+  --guard:     #8d94a8;
+  --boss:      #8f1d2c;
+  --boss-high: #c0303f;
+
+  /* Стани. Кожен має свою форму іконки, не лише колір. */
+  --bleed:  #8e1b28;
+  --poison: #7fa83c;
+  --burn:   #ff8c33;
+  --frost:  #8fd6ff;
+  --shadow: #9b4dff;
+  --arcane: #6b8fff;
+
+  /* Рідкісність. Форма рамки теж змінюється — не лише колір. */
+  --rar-common:    #8e8375;
+  --rar-uncommon:  #6f8f5a;
+  --rar-rare:      #4e7fb0;
+  --rar-unique:    #9b6bd6;
+  --rar-legendary: #c9a14a;
+
+  --danger: #c4552f;
+  --ok:     #7fa85c;
+
+  /* Відступи. Крок 4 px, щоб усе вирівнювалося само собою. */
+  --s1: 4px;  --s2: 8px;  --s3: 12px; --s4: 16px;
+  --s5: 24px; --s6: 32px; --s7: 48px; --s8: 64px;
+
+  /* Типографіка. Акцидентний — лише заголовки й імена. */
+  --font-display: "Cinzel", "Trajan Pro", Georgia, "Times New Roman", serif;
+  --font-body: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+
+  /* Мінімальні читабельні розміри на 1080p. Нижче не опускатися. */
+  --fs-micro: 13px;  /* підписи слотів, лічильники */
+  --fs-small: 15px;  /* характеристики, таблиці */
+  --fs-body:  17px;  /* описи, кнопки */
+  --fs-lead:  20px;  /* назви предметів, навичок */
+  --fs-title: 28px;  /* заголовки екранів */
+  --fs-boss:  34px;  /* ім'я боса */
+
+  --radius: 2px;     /* камінь і метал не бувають округлими */
+  --focus: 0 0 0 2px var(--gold), 0 0 14px rgba(201,161,74,0.35);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #000;
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Сцена 1920×1080, масштабована під вікно: прототип дивляться в реальних
+   пропорціях, а не «як вийде». */
+.stage {
+  position: relative;
+  width: 1920px;
+  height: 1080px;
+  transform-origin: top left;
+  overflow: hidden;
+  background: #0a0908;
+}
+
+.stage--wide { width: 1920px; height: 1200px; } /* 16:10 */
+
+/* Кадр гри під інтерфейсом: темний камінь гробниці, щоб перевіряти контраст
+   інтерфейсу на тому фоні, на якому він реально працюватиме. */
+.gameplay-backdrop {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(120% 90% at 50% 12%, #2b2620 0%, #14110e 55%, #0a0908 100%),
+    repeating-linear-gradient(0deg, transparent 0 58px, rgba(0,0,0,0.35) 58px 60px),
+    repeating-linear-gradient(90deg, transparent 0 96px, rgba(0,0,0,0.3) 96px 98px);
+}
+
+/* --------------------------------------------------------------------- панель */
+
+.panel {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.035), rgba(0,0,0,0.25)),
+    var(--surface-panel);
+  border: 1px solid var(--edge-mid);
+  box-shadow:
+    inset 0 0 0 1px rgba(0,0,0,0.6),
+    inset 0 1px 0 rgba(255,255,255,0.05),
+    0 12px 32px rgba(0,0,0,0.55);
+  border-radius: var(--radius);
+}
+
+/* Королівський кант: тонка золота лінія, не орнаментальна рамка. */
+.panel--royal { border-color: var(--edge-light); }
+.panel--royal::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border: 1px solid rgba(138,116,52,0.35);
+  pointer-events: none;
+}
+
+.panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s4);
+  padding: var(--s3) var(--s5);
+  border-bottom: 1px solid var(--edge-mid);
+  background: linear-gradient(180deg, rgba(138,116,52,0.10), transparent);
+}
+
+.panel__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--fs-title);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--ink-bright);
+  text-transform: uppercase;
+}
+
+.panel__body { padding: var(--s5); }
+
+.section-label {
+  font-family: var(--font-display);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  margin: 0 0 var(--s3);
+  padding-bottom: var(--s2);
+  border-bottom: 1px solid var(--edge-mid);
+}
+
+/* ---------------------------------------------------------------------- смуги */
+
+.bar {
+  position: relative;
+  background: var(--surface-sunken);
+  border: 1px solid var(--edge-dark);
+  box-shadow: inset 0 2px 5px rgba(0,0,0,0.8), 0 0 0 1px rgba(107,90,66,0.35);
+  overflow: hidden;
+}
+
+/* Відкладена шкода: світліший слід повзе за основним заповненням. */
+.bar__loss {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: var(--hp-loss);
+  opacity: 0.55;
+  transition: width 0.55s ease 0.25s;
+}
+
+.bar__fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  transition: width 0.18s ease-out;
+}
+
+.bar__fill--hp      { background: linear-gradient(180deg, var(--hp), var(--hp-low)); }
+.bar__fill--mana    { background: linear-gradient(180deg, var(--mana-high), var(--mana)); }
+.bar__fill--stamina { background: linear-gradient(180deg, var(--stamina), var(--stamina-low)); }
+.bar__fill--boss    { background: linear-gradient(180deg, var(--boss-high), var(--boss)); }
+
+/* Блик по верхньому канту — метал, а не пластик. */
+.bar__fill::after {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 40%;
+  background: linear-gradient(180deg, rgba(255,255,255,0.22), transparent);
+}
+
+.bar__ticks {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(90deg, transparent 0 39px, rgba(0,0,0,0.45) 39px 40px);
+  pointer-events: none;
+}
+
+.bar__value {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: var(--s2);
+  font-size: var(--fs-micro);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+  text-shadow: 0 1px 2px #000, 0 0 4px #000;
+}
+
+/* Низьке HP: повільна пульсація канта, не миготіння екрана. */
+@keyframes low-pulse {
+  0%, 100% { box-shadow: inset 0 2px 5px rgba(0,0,0,0.8), 0 0 0 1px rgba(179,32,42,0.4); }
+  50%      { box-shadow: inset 0 2px 5px rgba(0,0,0,0.8), 0 0 10px 1px rgba(179,32,42,0.85); }
+}
+.bar--low { animation: low-pulse 1.5s ease-in-out infinite; }
+
+/* ---------------------------------------------------------------------- слоти */
+
+.slot {
+  position: relative;
+  width: 68px;
+  height: 68px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(180deg, var(--surface-raised), var(--surface-sunken));
+  border: 1px solid var(--edge-mid);
+  box-shadow: inset 0 0 12px rgba(0,0,0,0.75);
+  border-radius: var(--radius);
+}
+
+.slot--empty { border-style: dashed; border-color: var(--edge-mid); opacity: 0.75; }
+.slot--empty::after {
+  content: "";
+  width: 16px; height: 16px;
+  border: 1px solid var(--ink-dim);
+  transform: rotate(45deg);
+}
+
+.slot--selected { border-color: var(--gold); box-shadow: var(--focus), inset 0 0 12px rgba(0,0,0,0.75); }
+.slot--equipped::before {
+  content: "";
+  position: absolute;
+  top: 3px; right: 3px;
+  width: 8px; height: 8px;
+  background: var(--gold);
+  transform: rotate(45deg);
+}
+
+.slot--disabled { opacity: 0.4; filter: grayscale(0.8); }
+
+.slot__key {
+  position: absolute;
+  bottom: 2px; left: 4px;
+  font-size: var(--fs-micro);
+  color: var(--ink-muted);
+  text-shadow: 0 1px 2px #000;
+}
+
+.slot__count {
+  position: absolute;
+  bottom: 2px; right: 4px;
+  font-size: var(--fs-micro);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-bright);
+  text-shadow: 0 1px 2px #000;
+}
+
+/* Радіальний відкат — один підхід на всю гру, без мішанини з цифрами. */
+.slot__cooldown {
+  position: absolute;
+  inset: 0;
+  background: conic-gradient(rgba(0,0,0,0.78) var(--cd, 0%), transparent 0);
+  pointer-events: none;
+}
+
+.slot__cooldown-text {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-variant-numeric: tabular-nums;
+  font-size: var(--fs-small);
+  color: var(--ink-bright);
+  text-shadow: 0 1px 3px #000;
+}
+
+@keyframes ready-flash {
+  0%   { box-shadow: 0 0 0 0 rgba(201,161,74,0.0), inset 0 0 12px rgba(0,0,0,0.75); }
+  35%  { box-shadow: 0 0 14px 2px rgba(201,161,74,0.75), inset 0 0 12px rgba(0,0,0,0.75); }
+  100% { box-shadow: 0 0 0 0 rgba(201,161,74,0.0), inset 0 0 12px rgba(0,0,0,0.75); }
+}
+/* Один спалах на готовність, не постійне блимання. */
+.slot--ready { animation: ready-flash 0.7s ease-out 1; }
+
+/* Рідкісність: колір канта плюс кутовий маркер, щоб не залежати лише від кольору. */
+.slot[data-rarity="uncommon"]  { border-color: var(--rar-uncommon); }
+.slot[data-rarity="rare"]      { border-color: var(--rar-rare); }
+.slot[data-rarity="unique"]    { border-color: var(--rar-unique); }
+.slot[data-rarity="legendary"] { border-color: var(--rar-legendary); }
+.slot[data-rarity="unique"]::after,
+.slot[data-rarity="legendary"]::after {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  border: 1px solid currentColor;
+  color: inherit;
+  opacity: 0.25;
+  pointer-events: none;
+}
+
+/* --------------------------------------------------------------------- кнопки */
+
+.btn {
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  color: var(--ink);
+  padding: var(--s2) var(--s5);
+  min-height: 44px;
+  background: linear-gradient(180deg, var(--surface-raised), var(--surface-sunken));
+  border: 1px solid var(--edge-light);
+  border-radius: var(--radius);
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
+}
+
+.btn:hover { color: var(--ink-bright); border-color: var(--gold-dim); }
+
+/* Фокус видно формою і світлом, а не ледь помітним відтінком. */
+.btn:focus-visible,
+.btn.is-focused {
+  outline: none;
+  color: var(--gold-bright);
+  border-color: var(--gold);
+  box-shadow: var(--focus);
+}
+
+.btn[disabled],
+.btn.is-disabled {
+  color: var(--ink-dim);
+  border-color: var(--edge-mid);
+  background: var(--surface-sunken);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.btn--primary { color: var(--gold-bright); border-color: var(--gold-dim); }
+.btn--danger:hover { color: #f0b9a4; border-color: var(--danger); }
+
+@keyframes deny-shake {
+  0%,100% { transform: translateX(0); }
+  25%     { transform: translateX(-4px); }
+  75%     { transform: translateX(4px); }
+}
+.is-denied { animation: deny-shake 0.18s ease-in-out 2; }
+
+/* --------------------------------------------------------------- гліфи вводу */
+
+/* Підказка ніколи не пише «натисни E» текстом — гліф приходить з input system. */
+.glyph {
+  display: inline-grid;
+  place-items: center;
+  min-width: 30px;
+  height: 30px;
+  padding: 0 var(--s2);
+  font-size: var(--fs-micro);
+  font-weight: 600;
+  color: var(--ink-bright);
+  background: linear-gradient(180deg, #3a322a, #1b1712);
+  border: 1px solid var(--edge-light);
+  border-radius: var(--radius);
+  box-shadow: 0 2px 0 var(--edge-dark);
+}
+
+.glyph--pad {
+  border-radius: 50%;
+  background: linear-gradient(180deg, #4a4030, #201a14);
+}
+
+/* ---------------------------------------------------------------- таблиці стат */
+
+.stats { width: 100%; border-collapse: collapse; font-size: var(--fs-small); }
+.stats td { padding: var(--s2) 0; border-bottom: 1px solid rgba(58,47,37,0.6); }
+.stats td:last-child { text-align: right; font-variant-numeric: tabular-nums; color: var(--ink-bright); }
+.stats tr:last-child td { border-bottom: none; }
+
+/* Дельти порівняння: колір ПЛЮС стрілка, щоб не залежати від розрізнення кольорів. */
+.delta { font-variant-numeric: tabular-nums; }
+.delta--up::before   { content: "▲ "; }
+.delta--down::before { content: "▼ "; }
+.delta--up   { color: var(--ok); }
+.delta--down { color: var(--danger); }
+.delta--same { color: var(--ink-muted); }
+
+/* ------------------------------------------------------------------ допоміжне */
+
+.row { display: flex; align-items: center; gap: var(--s3); }
+.col { display: flex; flex-direction: column; gap: var(--s3); }
+.spacer { flex: 1; }
+.muted { color: var(--ink-muted); }
+.dim { color: var(--ink-dim); }
+.display { font-family: var(--font-display); letter-spacing: 0.05em; }
+.tabular { font-variant-numeric: tabular-nums; }
+
+.scroll { overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--edge-light) var(--surface-sunken); }
+.scroll::-webkit-scrollbar { width: 10px; }
+.scroll::-webkit-scrollbar-track { background: var(--surface-sunken); }
+.scroll::-webkit-scrollbar-thumb { background: var(--edge-light); border: 2px solid var(--surface-sunken); }
+
+/* Порожній стан завжди пояснює себе, а не лишає порожнечу. */
+.empty-state {
+  display: grid;
+  place-items: center;
+  gap: var(--s3);
+  padding: var(--s7);
+  text-align: center;
+  color: var(--ink-muted);
+  font-size: var(--fs-small);
+}
+
+/* Маркер «є що витратити» — на вкладці, а не окремим вікном. */
+.pip {
+  display: inline-block;
+  width: 9px; height: 9px;
+  background: var(--gold);
+  transform: rotate(45deg);
+  box-shadow: 0 0 8px rgba(201,161,74,0.8);
+}
+
+/* ------------------------------------------------------------------- вкладки */
+
+.tabs { display: flex; gap: var(--s1); border-bottom: 1px solid var(--edge-mid); }
+
+.tab {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  padding: var(--s3) var(--s5);
+  font-family: var(--font-display);
+  font-size: var(--fs-small);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  background: transparent;
+  border: 1px solid transparent;
+  border-bottom: none;
+  cursor: pointer;
+}
+
+.tab:hover { color: var(--ink); }
+
+.tab.is-active {
+  color: var(--gold-bright);
+  background: linear-gradient(180deg, rgba(138,116,52,0.16), transparent);
+  border-color: var(--edge-mid);
+}
+
+.tab.is-active::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: -1px;
+  height: 2px;
+  background: var(--gold);
+}
+
+/* ------------------------------------------------------------ модальні вікна */
+
+.scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(4,3,3,0.72);
+  display: grid;
+  place-items: center;
+}
+
+.modal { width: 560px; position: relative; }
+.modal .panel__body { padding: var(--s5) var(--s6) var(--s6); }
+
+.viewport-note {
+  position: fixed;
+  right: 12px;
+  bottom: 12px;
+  z-index: 50;
+  font-size: 12px;
+  color: var(--ink-dim);
+  background: rgba(0,0,0,0.7);
+  border: 1px solid var(--edge-mid);
+  padding: 6px 10px;
+}

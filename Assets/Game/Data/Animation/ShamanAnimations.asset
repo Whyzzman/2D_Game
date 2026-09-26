@@ -1,0 +1,182 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 649169c22105a06499c9bc0695fd8d1d, type: 3}
+  m_Name: ShamanAnimations
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.EnemyAnimationSet
+  _clips:
+  - state: 1
+    clip:
+      _clipName: enemy_shaman_idle
+      _frames:
+      - {fileID: 21300000, guid: e3bab8ebe3d81384e8593e407e5624a9, type: 3}
+      - {fileID: 21300000, guid: b0a30dacad39986489f94d3b3fdd8823, type: 3}
+      - {fileID: 21300000, guid: e1a2dfb78a762fd4fa197b5726318056, type: 3}
+      - {fileID: 21300000, guid: 32eb97c338737a44f98abe5c65a21b0e, type: 3}
+      - {fileID: 21300000, guid: 86786628d9ed82c4286a6c6cda624ac3, type: 3}
+      - {fileID: 21300000, guid: 30e05e255a2e45544a7585a47633535c, type: 3}
+      _framesPerSecond: 8
+      _isLooping: 1
+  - state: 2
+    clip:
+      _clipName: enemy_shaman_patrol
+      _frames:
+      - {fileID: 21300000, guid: 5cefc33d472518847b4cec1098ebe0a0, type: 3}
+      - {fileID: 21300000, guid: 0365c4a748f9fa743bd8ddad8908831a, type: 3}
+      - {fileID: 21300000, guid: fb895b5fe02451d4bbb904c5a8342c9e, type: 3}
+      - {fileID: 21300000, guid: 54ff54e9dcbf2a445a7de191537026b9, type: 3}
+      - {fileID: 21300000, guid: 4fae35256d71f174dba828c0316f2c51, type: 3}
+      - {fileID: 21300000, guid: 513ee6aacf3f9ea46a61f754c0c75fe8, type: 3}
+      - {fileID: 21300000, guid: bd2708e9d3633ed4c9544d72f8d12156, type: 3}
+      - {fileID: 21300000, guid: af3de6caef23f5d438b08696801770ac, type: 3}
+      _framesPerSecond: 10
+      _isLooping: 1
+  - state: 3
+    clip:
+      _clipName: enemy_shaman_alert
+      _frames:
+      - {fileID: 21300000, guid: 6d952d1fcb8d87c4a96c84af18a6cfb4, type: 3}
+      - {fileID: 21300000, guid: e6eaed1bcae6a704d8058d9f65eb2f2a, type: 3}
+      - {fileID: 21300000, guid: eb02f7e7e39811e4f918fbee0746efa0, type: 3}
+      - {fileID: 21300000, guid: 72108de63e5a43843a0ecd0a39f11206, type: 3}
+      - {fileID: 21300000, guid: 444619b99bc023c49a7eee70144ad48d, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 0
+  - state: 4
+    clip:
+      _clipName: enemy_shaman_chase
+      _frames:
+      - {fileID: 21300000, guid: b18ae05cdbd862b40b78a60c3d1ac488, type: 3}
+      - {fileID: 21300000, guid: af8770edfa558984089771fbc10a0e32, type: 3}
+      - {fileID: 21300000, guid: 1d62c7f7b3d2ae9439fa26428c60efae, type: 3}
+      - {fileID: 21300000, guid: 341b32d62177753489edd67bd26d2f02, type: 3}
+      - {fileID: 21300000, guid: ca9c8e214a1f39148844e85d6bdcc63c, type: 3}
+      - {fileID: 21300000, guid: 7433c12017dd82848a3c8bf8bb605d00, type: 3}
+      - {fileID: 21300000, guid: bfcf0ef0236e6fa4b87db9bb5da7746e, type: 3}
+      - {fileID: 21300000, guid: 4f3ac17fff5c3ec4ca916f574fc7001d, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 1
+  - state: 0
+    clip:
+      _clipName: enemy_shaman_attacklight
+      _frames:
+      - {fileID: 21300000, guid: 510b633b1ab0c3342a0adc16dfdfdc0b, type: 3}
+      - {fileID: 21300000, guid: 4b280716a94fa8b4d92c89bbf0c6f975, type: 3}
+      - {fileID: 21300000, guid: ee687a00f1c73674c89130ad59f07eab, type: 3}
+      - {fileID: 21300000, guid: d6f8e2f084af15a4a95c668f25b317b4, type: 3}
+      - {fileID: 21300000, guid: 9309980a83d225b4cba5c897bfc79125, type: 3}
+      - {fileID: 21300000, guid: 64817936a50d9de40b8fa5efa74b7b6f, type: 3}
+      - {fileID: 21300000, guid: ec2129fc155dcc24587a4ff31df51825, type: 3}
+      - {fileID: 21300000, guid: 0b8df1d7e7782a745b28a03cb7150106, type: 3}
+      - {fileID: 21300000, guid: 09491f0fcdc2cf1409d63920c7b31d31, type: 3}
+      - {fileID: 21300000, guid: 0506afb40436cbc4586e2633e6e448aa, type: 3}
+      - {fileID: 21300000, guid: e1658ad7640068345b0d5ee5e8f1fe39, type: 3}
+      - {fileID: 21300000, guid: ba234e923e713324a83aa99da70f563c, type: 3}
+      - {fileID: 21300000, guid: 8a5d378253dcd4645862088455c3ad7b, type: 3}
+      - {fileID: 21300000, guid: 7a714c15b11b16a4f9bc0f54c8bf8bbd, type: 3}
+      - {fileID: 21300000, guid: 85634ef294ed4ef478ca3f30ad565b24, type: 3}
+      - {fileID: 21300000, guid: 6967fc1879688f54cb17fdf0e6d74d7c, type: 3}
+      - {fileID: 21300000, guid: f20460eea6980a940b5e69f0099df6a4, type: 3}
+      - {fileID: 21300000, guid: b3c879caec23b93419f6d8d0c30eee23, type: 3}
+      - {fileID: 21300000, guid: d4e3cdbee68645344867f08b8c3ebf73, type: 3}
+      - {fileID: 21300000, guid: 41b2b9a9c958ae144ba0ddade37c1f78, type: 3}
+      - {fileID: 21300000, guid: 077e9267b2f2ad94fa24eab3ab76a4ef, type: 3}
+      - {fileID: 21300000, guid: 6557070c440d1df4c9ee08fd2e1a65c3, type: 3}
+      - {fileID: 21300000, guid: 52aec1977f1602b4195ddc34be0011a2, type: 3}
+      - {fileID: 21300000, guid: 935402ab957eeb248aed5cc26e44b6ce, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 9
+    clip:
+      _clipName: enemy_shaman_attackheavy
+      _frames:
+      - {fileID: 21300000, guid: 15fd1fb04fc0ca44e8695c9c2daa8b24, type: 3}
+      - {fileID: 21300000, guid: 80fb0a5799464e549aaeda3aa433b48e, type: 3}
+      - {fileID: 21300000, guid: 1895415348cddd2438e515a9240ef3e5, type: 3}
+      - {fileID: 21300000, guid: 2197e08dc277bbf48928eee98cfadb0e, type: 3}
+      - {fileID: 21300000, guid: afd343ba6877b9f4381a3055eb5954ac, type: 3}
+      - {fileID: 21300000, guid: 51c506f7eb7726f4da0d5a332c64ad03, type: 3}
+      - {fileID: 21300000, guid: 4295c07c2a5423e4d9138444abfec241, type: 3}
+      - {fileID: 21300000, guid: ae4dbe40e20147344a0eb0fd2ed78f09, type: 3}
+      - {fileID: 21300000, guid: 461d3a4fbe0d3e9439439a22a18ddca9, type: 3}
+      - {fileID: 21300000, guid: e71f6ab3efb05834e85e0ef0af5b9950, type: 3}
+      - {fileID: 21300000, guid: 15b51ee6f52dd3b4fb2a90ed330aa228, type: 3}
+      - {fileID: 21300000, guid: 303bca828b036e64aa977753276ef160, type: 3}
+      - {fileID: 21300000, guid: 39f97e5eec1d50544a92bf54c06a90f9, type: 3}
+      - {fileID: 21300000, guid: b8a6486d4b67d144c91e3e1b15582e3b, type: 3}
+      - {fileID: 21300000, guid: 3b1c1b92cdc094f4eb7d9fc1354cbcd2, type: 3}
+      - {fileID: 21300000, guid: 3510a89164902994381f9b8b30dc13b7, type: 3}
+      - {fileID: 21300000, guid: 64d0891e94eaacd4aa26e0b0a5c90645, type: 3}
+      - {fileID: 21300000, guid: 227d05cefbb4258409cbad16282da43c, type: 3}
+      - {fileID: 21300000, guid: e4814ad44c6c8ed49a1815435f04b79f, type: 3}
+      - {fileID: 21300000, guid: 23e3b85d762753d4c8e77eb484ab36ef, type: 3}
+      - {fileID: 21300000, guid: a01e97ea48afc424ab39bcc71e22a51d, type: 3}
+      - {fileID: 21300000, guid: 7599d588a43df86458cab601bb2332ee, type: 3}
+      - {fileID: 21300000, guid: d9348bb7d7f504244b3af8a623598e77, type: 3}
+      - {fileID: 21300000, guid: afd21e27fcc8fb64899230d264d24c2a, type: 3}
+      - {fileID: 21300000, guid: 7d921ccb8afbac34cbf56ae7c08a30cd, type: 3}
+      - {fileID: 21300000, guid: 0ec40e04315abe645b3b8c0b2292d241, type: 3}
+      - {fileID: 21300000, guid: a95bfd922ee08c94b8a6eab6dba78b15, type: 3}
+      - {fileID: 21300000, guid: 6e096560c5e45ea438abae64a9ff3947, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 11
+    clip:
+      _clipName: enemy_shaman_hurt
+      _frames:
+      - {fileID: 21300000, guid: 77e8e263a8ba44a4b858e0128b01e448, type: 3}
+      - {fileID: 21300000, guid: 2dcf5e3a119d9dd438bc69d6307ad253, type: 3}
+      - {fileID: 21300000, guid: 46f8a82329c457e41a7f61ad988486a2, type: 3}
+      - {fileID: 21300000, guid: 673c420adcdff31429066529665e93e3, type: 3}
+      - {fileID: 21300000, guid: 24f13cd8416849543a2dbdf4e337ebe3, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 12
+    clip:
+      _clipName: enemy_shaman_stunned
+      _frames:
+      - {fileID: 21300000, guid: 388b48eae6265484eae1ae2724c398c5, type: 3}
+      - {fileID: 21300000, guid: 67b8c9fbe898ce14885f16d071b5341e, type: 3}
+      - {fileID: 21300000, guid: f4e93ff395e893a498c22a00c11b50ea, type: 3}
+      - {fileID: 21300000, guid: 3873aca825a84334cb31af90ec0e7f7b, type: 3}
+      - {fileID: 21300000, guid: 096e19bfeabb0ad41b6e1a6e27a103c0, type: 3}
+      - {fileID: 21300000, guid: d076e21509396ec41b7ac8c9de8f3f52, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 1
+  - state: 13
+    clip:
+      _clipName: enemy_shaman_death
+      _frames:
+      - {fileID: 21300000, guid: 176766dbd8ec677428145b078f7e6697, type: 3}
+      - {fileID: 21300000, guid: b7416a75ec7d6fe439563bd2a678ba13, type: 3}
+      - {fileID: 21300000, guid: a46c9aeac7796f1489d9314b6adffaeb, type: 3}
+      - {fileID: 21300000, guid: bfd5ce5cdfdc24b4985f070e2de8c346, type: 3}
+      - {fileID: 21300000, guid: cbc13469eb7d74e4e8b18e5d96912d66, type: 3}
+      - {fileID: 21300000, guid: d9f91fc13afe2d148a84f8aa89bfdb35, type: 3}
+      - {fileID: 21300000, guid: d7a41041f102bb04ab03a500dca9554d, type: 3}
+      - {fileID: 21300000, guid: a2f2225843c95e64e87c5c577d4dd403, type: 3}
+      - {fileID: 21300000, guid: f3ccabcc3ea62824b994c701f2b80971, type: 3}
+      - {fileID: 21300000, guid: 86d94e820635f184db5f36447a422f8e, type: 3}
+      - {fileID: 21300000, guid: d2c28a6951bdf63448a8155ffd3da6f3, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 0
+  _fallback:
+    _clipName: enemy_shaman_idle
+    _frames:
+    - {fileID: 21300000, guid: e3bab8ebe3d81384e8593e407e5624a9, type: 3}
+    - {fileID: 21300000, guid: b0a30dacad39986489f94d3b3fdd8823, type: 3}
+    - {fileID: 21300000, guid: e1a2dfb78a762fd4fa197b5726318056, type: 3}
+    - {fileID: 21300000, guid: 32eb97c338737a44f98abe5c65a21b0e, type: 3}
+    - {fileID: 21300000, guid: 86786628d9ed82c4286a6c6cda624ac3, type: 3}
+    - {fileID: 21300000, guid: 30e05e255a2e45544a7585a47633535c, type: 3}
+    _framesPerSecond: 8
+    _isLooping: 1
+  _carriesShield: 0

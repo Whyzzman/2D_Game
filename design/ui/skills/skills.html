@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<title>Тінь Забутого Королівства — Уміння</title>
+<link rel="stylesheet" href="../_shared/ui.css">
+<style>
+  .screen { position: absolute; inset: 64px 96px; display: flex; flex-direction: column; }
+  .screen__body { flex: 1; display: grid; grid-template-columns: 1fr 420px; gap: var(--s5); min-height: 0; padding: var(--s5); }
+
+  /* Дерево: вузли на сітці, лінії — SVG під ними. */
+  .tree { position: relative; }
+  /* Лінії лежать рівно на сітці вузлів (5 × 120 px, ряди по 116 px).
+     Розтягувати їх під ширину колонки не можна — вони поїдуть із вузлів. */
+  .tree__lines { position: absolute; left: 0; top: 0; width: 600px; height: 464px; pointer-events: none; }
+  .tree__nodes { position: relative; display: grid; grid-template-columns: repeat(5, 120px); grid-auto-rows: 116px; justify-content: start; }
+
+  .node {
+    position: relative;
+    width: 84px; height: 84px;
+    display: grid; place-items: center;
+    background: linear-gradient(180deg, var(--surface-raised), var(--surface-sunken));
+    border: 2px solid var(--edge-mid);
+    cursor: pointer;
+  }
+  /* Форма вузла — мова гілки. Воїн кутастий, Мисливець гострий,
+     Маг круглий, Тінь надламана. Стан читається і без кольору. */
+  .node--warrior { clip-path: polygon(50% 0, 100% 26%, 100% 74%, 50% 100%, 0 74%, 0 26%); }
+  .node--hunter  { clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); }
+  .node--mage    { border-radius: 50%; }
+  .node--shadow  { clip-path: polygon(50% 0, 92% 22%, 100% 70%, 58% 100%, 8% 82%, 0 34%); }
+
+  .node.is-locked    { border-color: var(--edge-mid); opacity: 0.45; filter: grayscale(0.85); }
+  .node.is-available { border-color: var(--gold-dim); box-shadow: 0 0 10px rgba(138,116,52,0.35); }
+  .node.is-unlocked  { border-color: var(--gold); }
+  .node.is-max       { border-color: var(--gold-bright); box-shadow: 0 0 14px rgba(232,205,138,0.45); }
+  .node.is-selected  { box-shadow: var(--focus); }
+
+  .node__rank {
+    position: absolute; bottom: -6px; left: 50%; transform: translateX(-50%);
+    padding: 0 6px;
+    font-size: var(--fs-micro); font-variant-numeric: tabular-nums;
+    color: var(--ink-bright);
+    background: var(--surface-sunken);
+    border: 1px solid var(--edge-light);
+  }
+  .node__active-mark {
+    position: absolute; top: -6px; right: -6px;
+    width: 18px; height: 18px;
+    display: grid; place-items: center;
+    font-size: 11px; color: var(--surface-deep);
+    background: var(--gold);
+    transform: rotate(45deg);
+  }
+  .node__active-mark span { transform: rotate(-45deg); }
+
+  .detail { display: flex; flex-direction: column; gap: var(--s4); min-height: 0; }
+  .detail__name { font-family: var(--font-display); font-size: var(--fs-lead); color: var(--ink-bright); margin: 0; }
+  .detail__meta { font-size: var(--fs-micro); letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold-dim); }
+  .detail__desc { font-size: var(--fs-small); line-height: 1.5; color: var(--ink-muted); margin: 0; }
+
+  .effect { display: flex; justify-content: space-between; font-size: var(--fs-small); padding: var(--s2) 0; border-bottom: 1px solid rgba(58,47,37,0.6); }
+  .effect b { color: var(--ink-bright); font-variant-numeric: tabular-nums; }
+
+  .gate { font-size: var(--fs-small); }
+  .gate--unmet { color: var(--danger); }
+  .gate--unmet::before { content: "✕ "; }
+  .gate--met { color: var(--ink-muted); }
+  .gate--met::before { content: "✓ "; }
+
+  .assign { display: flex; gap: var(--s2); }
+  .assign__slot {
+    flex: 1;
+    display: flex; align-items: center; gap: var(--s2);
+    padding: var(--s2) var(--s3);
+    border: 1px solid var(--edge-mid);
+    font-size: var(--fs-small);
+    cursor: pointer;
+  }
+  .assign__slot.is-taken { border-color: var(--gold-dim); color: var(--ink-bright); }
+  .assign__slot:hover { border-color: var(--edge-light); }
+
+  .points {
+    display: flex; align-items: center; gap: var(--s2);
+    font-size: var(--fs-small); color: var(--ink);
+  }
+  .points b { font-family: var(--font-display); font-size: var(--fs-lead); color: var(--gold-bright); }
+
+  .footer { display: flex; align-items: center; gap: var(--s5); padding: var(--s3) var(--s5); border-top: 1px solid var(--edge-mid); font-size: var(--fs-small); }
+  .hint { display: flex; align-items: center; gap: var(--s2); color: var(--ink-muted); }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="gameplay-backdrop"></div>
+  <div class="scrim">
+    <div class="panel panel--royal screen">
+
+      <div class="panel__header">
+        <h1 class="panel__title">Уміння</h1>
+        <div class="row">
+          <!-- Лічильник очок видно завжди, поки відкрите дерево. -->
+          <span class="points"><span class="pip"></span> Очок умінь <b>2</b></span>
+        </div>
+      </div>
+
+      <div class="tabs" style="padding: 0 var(--s5);">
+        <button class="tab is-active">Воїн</button>
+        <button class="tab">Мисливець</button>
+        <button class="tab">Маг</button>
+        <button class="tab">Тінь</button>
+      </div>
+
+      <div class="screen__body">
+
+        <div class="tree">
+          <!-- Лінії передумов: суцільна — виконана, пунктир — ще ні. -->
+          <svg class="tree__lines" viewBox="0 0 600 464">
+            <g stroke="#c9a14a" stroke-width="2" fill="none">
+              <path d="M42 84 L42 116"/>
+              <path d="M42 200 L42 232"/>
+            </g>
+            <g stroke="#6b5a42" stroke-width="2" fill="none" stroke-dasharray="5 5">
+              <path d="M42 200 L162 232"/>
+              <path d="M42 316 L42 348"/>
+              <path d="M162 316 L282 348"/>
+            </g>
+          </svg>
+
+          <div class="tree__nodes">
+            <!-- ряд 1 -->
+            <div class="node node--warrior is-max" title="Вишкіл воїна">
+              <svg width="38" height="38" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6z" fill="none" stroke="#c9a14a" stroke-width="1.8"/>
+                <path d="M12 8l2 4h-4z" fill="#c9a14a"/>
+              </svg>
+              <span class="node__rank">3/3</span>
+            </div>
+            <div></div><div></div><div></div><div></div>
+
+            <!-- ряд 2 -->
+            <div class="node node--warrior is-unlocked" title="Майстер важкої зброї">
+              <svg width="38" height="38" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M15.5 2.5l4 4-9.5 9.5-4-4z" fill="#c9a14a"/>
+                <path d="M5.4 12.6l4 4-2 2-4-4z" fill="#8a7434"/>
+              </svg>
+              <span class="node__rank">1/2</span>
+            </div>
+            <div class="node node--warrior is-locked" title="Ощадливий блок">
+              <svg width="38" height="38" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6z" fill="none" stroke="#8e8375" stroke-width="1.8"/>
+              </svg>
+              <span class="node__rank">0/2</span>
+            </div>
+            <div></div><div></div><div></div>
+
+            <!-- ряд 3 -->
+            <div class="node node--warrior is-available is-selected" title="Розлом">
+              <svg width="38" height="38" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 2l3 7h-6z" fill="#c9a14a"/>
+                <path d="M4 20l8-9 8 9z" fill="none" stroke="#c9a14a" stroke-width="1.8" stroke-linejoin="round"/>
+              </svg>
+              <span class="node__rank">0/1</span>
+              <span class="node__active-mark"><span>Q</span></span>
+            </div>
+            <div class="node node--warrior is-locked" title="Сила відповіді">
+              <svg width="38" height="38" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 12h9M12 7l6 5-6 5" fill="none" stroke="#8e8375" stroke-width="1.8" stroke-linecap="round"/>
+              </svg>
+              <span class="node__rank">0/2</span>
+            </div>
+            <div class="node node--warrior is-locked" title="Залізне тіло">
+              <svg width="38" height="38" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M9 3l3 2 3-2 4 3-1.5 4V19H7.5V10L6 6z" fill="none" stroke="#8e8375" stroke-width="1.8"/>
+              </svg>
+              <span class="node__rank">0/3</span>
+            </div>
+            <div></div><div></div>
+
+            <!-- ряд 4 -->
+            <div class="node node--warrior is-locked" title="Кат">
+              <svg width="38" height="38" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M6 18L18 6M14 4h6v6" fill="none" stroke="#8e8375" stroke-width="1.8" stroke-linecap="round"/>
+              </svg>
+              <span class="node__rank">0/2</span>
+            </div>
+            <div></div>
+            <div class="node node--warrior is-locked" title="Друге дихання">
+              <svg width="38" height="38" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 20c4-3 7-6 7-10a4 4 0 0 0-7-2.6A4 4 0 0 0 5 10c0 4 3 7 7 10z" fill="none" stroke="#8e8375" stroke-width="1.8"/>
+              </svg>
+              <span class="node__rank">0/1</span>
+            </div>
+            <div></div><div></div>
+          </div>
+        </div>
+
+        <!-- деталі вузла -->
+        <div class="detail">
+          <div>
+            <h2 class="detail__name">Розлом</h2>
+            <div class="detail__meta">Активне вміння · Ранг 0 / 1 · Вартість 2 очки</div>
+          </div>
+
+          <p class="detail__desc">
+            Обвалює зброю в землю перед собою. Величезна шкода рівновазі й блоку.
+          </p>
+
+          <div>
+            <h3 class="section-label">Ефект</h3>
+            <div class="effect"><span>Множник шкоди</span><b>×2.2</b></div>
+            <div class="effect"><span>Шкода рівновазі</span><b>90</b></div>
+            <div class="effect"><span>Шкода блоку</span><b>110</b></div>
+            <div class="effect"><span>Витривалість</span><b>40</b></div>
+            <div class="effect"><span>Відкат</span><b>9.0 с</b></div>
+          </div>
+
+          <div>
+            <h3 class="section-label">Вимоги</h3>
+            <div class="col" style="gap:var(--s1)">
+              <span class="gate gate--met">Майстер важкої зброї — ранг 1</span>
+              <span class="gate gate--met">Рівень 5</span>
+              <span class="gate gate--unmet">Очок умінь: потрібно 2, у вас 2</span>
+            </div>
+          </div>
+
+          <div>
+            <h3 class="section-label">Слот активного вміння</h3>
+            <div class="assign">
+              <div class="assign__slot is-taken"><span class="glyph">Q</span> Розлом</div>
+              <div class="assign__slot"><span class="glyph">E</span> <span class="dim">Порожньо</span></div>
+            </div>
+          </div>
+
+          <div class="spacer"></div>
+          <div class="row">
+            <button class="btn btn--primary">Вивчити за 2 очки</button>
+            <button class="btn">Призначити в слот</button>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="footer">
+        <span class="hint"><span class="glyph glyph--pad">A</span> Вивчити</span>
+        <span class="hint"><span class="glyph glyph--pad">X</span> Призначити</span>
+        <span class="hint"><span class="glyph">↔</span> Гілка</span>
+        <span class="hint"><span class="glyph">Esc</span> Назад</span>
+        <span class="spacer"></span>
+        <span class="muted">Суцільна лінія — передумову виконано, пунктир — ще ні</span>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="viewport-note"></div>
+<script src="../_shared/stage.js"></script>
+</body>
+</html>

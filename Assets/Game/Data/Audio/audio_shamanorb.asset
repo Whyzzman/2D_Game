@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f262bfdbc3db1d1448a3cf59cba06016, type: 3}
+  m_Name: audio_shamanorb
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.AudioEvent
+  _id: 103
+  _clips:
+  - {fileID: 8300000, guid: 6f7e95ad57e4c3e439a1599a28109cf5, type: 3}
+  - {fileID: 8300000, guid: e75eb05378edead4da41c296ad56d538, type: 3}
+  - {fileID: 8300000, guid: ea24c17a25f3ad2438efd24fab7e928f, type: 3}
+  _bus: 2
+  _volume: 0.55
+  _volumeJitter: 0.06
+  _pitchJitter: 0.045
+  _spatialBlend: 0.55
+  _maxDistance: 26
+  _maxVoices: 3
+  _minimumInterval: 0
+  _priority: 64
+  _loop: 0

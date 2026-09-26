@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f39d0086f0ad8449b67897dbfdc2fe7, type: 3}
+  m_Name: SpellDatabase
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.SpellDatabase
+  _spells:
+  - {fileID: 11400000, guid: 320b1035eaecf284391cecc1af87df15, type: 2}
+  - {fileID: 11400000, guid: cd8399ce185c4084e8e73e6a97a47aeb, type: 2}
+  - {fileID: 11400000, guid: ecd58b2b36681504fb57e09eeeb2d92e, type: 2}
+  - {fileID: 11400000, guid: 3cd6e9aeb73b4614cb945935d565af3c, type: 2}

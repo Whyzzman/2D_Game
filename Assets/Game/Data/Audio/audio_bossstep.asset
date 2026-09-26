@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f262bfdbc3db1d1448a3cf59cba06016, type: 3}
+  m_Name: audio_bossstep
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.AudioEvent
+  _id: 57
+  _clips:
+  - {fileID: 8300000, guid: 25f8d345bbe22f149b0186b36f466895, type: 3}
+  - {fileID: 8300000, guid: e1d6684907bd0ae44b1d84b3938a4581, type: 3}
+  - {fileID: 8300000, guid: 846891fecedcf8e47b1dc474d60bf6c4, type: 3}
+  - {fileID: 8300000, guid: 169ca4dfd0eeb134e82c15f261c255f9, type: 3}
+  _bus: 2
+  _volume: 0.55
+  _volumeJitter: 0.06
+  _pitchJitter: 0.045
+  _spatialBlend: 0.55
+  _maxDistance: 26
+  _maxVoices: 2
+  _minimumInterval: 0.2
+  _priority: 40
+  _loop: 0

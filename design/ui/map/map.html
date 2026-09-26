@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<title>Тінь Забутого Королівства — Карта і мандри</title>
+<link rel="stylesheet" href="../_shared/ui.css">
+<style>
+  body { background: #050403; }
+  .sheet { display: flex; flex-wrap: wrap; gap: 28px; padding: 28px; }
+  .frame { position: relative; flex-shrink: 0; width: 912px; height: 513px; overflow: hidden; border: 1px solid var(--edge-mid); }
+  .frame--wide { width: 1852px; height: 1041px; }
+  .frame > .stage-inner { position: absolute; width: 1920px; height: 1080px; transform: scale(0.475); transform-origin: top left; }
+  .frame--wide > .stage-inner { transform: scale(0.964); }
+  .frame__caption {
+    position: absolute; left: 0; right: 0; bottom: 0; z-index: 5;
+    padding: 6px 10px;
+    font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--gold-dim); background: rgba(5,4,3,0.88);
+    border-top: 1px solid var(--edge-mid);
+  }
+
+  /* ------------------------------------------------------------- карта
+     Картографія, а не навігатор: темний камінь і вицвілий пергамент, тонкі
+     лінії маршрутів, силуети кімнат. Золото — лише там, де гравець зараз,
+     і на місцях відпочинку. */
+  .map-screen { position: absolute; inset: 0; background: #0b0907; }
+  .map-screen__sheet {
+    position: absolute; inset: 72px 64px 96px;
+    border: 1px solid var(--edge-mid);
+    background:
+      radial-gradient(90% 70% at 50% 45%, rgba(92,78,55,0.20) 0%, transparent 70%),
+      repeating-linear-gradient(0deg, transparent 0 3px, rgba(0,0,0,0.12) 3px 4px),
+      linear-gradient(180deg, #1c1813, #120f0c);
+    box-shadow: inset 0 0 120px rgba(0,0,0,0.85), inset 0 0 0 1px rgba(0,0,0,0.6);
+    overflow: hidden;
+  }
+  /* Ледь помітна сітка картографа: відчуття креслення, не міліметрівки. */
+  .map-screen__sheet::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background:
+      repeating-linear-gradient(90deg, transparent 0 199px, rgba(138,116,52,0.06) 199px 200px),
+      repeating-linear-gradient(0deg, transparent 0 199px, rgba(138,116,52,0.06) 199px 200px);
+  }
+  .map-header {
+    position: absolute; left: 64px; right: 64px; top: 18px;
+    display: flex; align-items: baseline; justify-content: space-between;
+  }
+  .map-header__zone {
+    font-family: var(--font-display); font-size: var(--fs-title); letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--ink-bright); margin: 0;
+  }
+  .map-header__meta { font-size: var(--fs-small); color: var(--ink-muted); display: flex; gap: var(--s5); }
+  .map-header__meta b { color: var(--gold); font-weight: 500; font-variant-numeric: tabular-nums; }
+
+  .map-footer {
+    position: absolute; left: 64px; right: 64px; bottom: 30px;
+    display: flex; gap: var(--s6); align-items: center;
+    font-size: var(--fs-small); color: var(--ink-muted);
+  }
+  .map-footer span { display: inline-flex; align-items: center; gap: var(--s2); }
+
+  /* Легенда: маленька, у кутку, лише те, що є на карті. */
+  .map-legend {
+    position: absolute; right: 88px; bottom: 120px;
+    padding: var(--s3) var(--s4);
+    background: rgba(11,9,7,0.82); border: 1px solid var(--edge-mid);
+    font-size: var(--fs-micro); color: var(--ink-muted);
+    display: grid; grid-template-columns: 22px auto; gap: 6px var(--s3); align-items: center;
+  }
+
+  /* Панель обраної кімнати: назва, що в ній є, звідки не пройти. */
+  .map-info {
+    position: absolute; left: 88px; bottom: 120px; width: 420px;
+    padding: var(--s4) var(--s5);
+    background: rgba(11,9,7,0.86); border: 1px solid var(--edge-light);
+  }
+  .map-info h3 { margin: 0 0 var(--s2); font-family: var(--font-display); font-size: var(--fs-lead); letter-spacing: 0.06em; color: var(--ink-bright); font-weight: 600; }
+  .map-info p { margin: 0; font-size: var(--fs-small); color: var(--ink-muted); line-height: 1.6; }
+  .map-info .hint { color: var(--gold-dim); font-style: italic; }
+
+  /* ---------------------------------------------------- картка зони */
+  .title-card {
+    position: absolute; left: 0; right: 0; top: 34%;
+    text-align: center; pointer-events: none;
+  }
+  .title-card__rule { width: 420px; height: 1px; margin: 0 auto; background: linear-gradient(90deg, transparent, var(--gold-dim), transparent); }
+  .title-card__name {
+    margin: var(--s4) 0; font-family: var(--font-display); font-size: 64px; letter-spacing: 0.32em;
+    color: var(--ink-bright); text-shadow: 0 4px 30px rgba(0,0,0,0.95), 0 0 40px rgba(138,116,52,0.2);
+    font-weight: 500;
+  }
+
+  /* --------------------------------------------- вівтар і мандри */
+  .shrine { position: absolute; inset: 0; display: grid; grid-template-columns: 520px 1fr; gap: var(--s6); padding: 120px 96px; }
+  .checkpoint-panel { border-color: var(--gold-dim); }
+  .checkpoint-panel .panel__header { background: linear-gradient(180deg, rgba(240,180,65,0.16), transparent); }
+  .checkpoint-panel .btn { width: 100%; font-family: var(--font-display); letter-spacing: 0.12em; text-transform: uppercase; }
+  .dest { display: flex; flex-direction: column; gap: var(--s2); }
+  .dest__zone { font-family: var(--font-display); font-size: var(--fs-micro); letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold-dim); margin: var(--s3) 0 var(--s1); }
+  .dest__row {
+    display: grid; grid-template-columns: 28px 1fr auto; align-items: center; gap: var(--s3);
+    padding: var(--s2) var(--s3); border: 1px solid transparent; font-size: var(--fs-body); color: var(--ink);
+  }
+  .dest__row.is-focused { border-color: var(--gold); box-shadow: var(--focus); color: var(--gold-bright); background: rgba(138,116,52,0.10); }
+  .dest__row.is-current { color: var(--ink-muted); }
+  .dest__row small { font-size: var(--fs-micro); color: var(--ink-dim); }
+  .mini-map { position: relative; border: 1px solid var(--edge-mid); background: linear-gradient(180deg, #1c1813, #120f0c); box-shadow: inset 0 0 80px rgba(0,0,0,0.8); }
+
+  .scrim { position: absolute; inset: 0; background: rgba(5,4,3,0.72); display: grid; place-items: center; }
+  .note { max-width: 1852px; margin: 0 28px 28px; color: var(--ink-muted); font-size: 14px; line-height: 1.6; }
+  .note b { color: var(--ink); }
+</style>
+</head>
+<body>
+
+<div class="note">
+  <b>PHASE 25 · Карта, мандри між вівтарями, картка зони.</b> Це пропозиція на Approval 1 за
+  пайплайном UI Toolkit, у тій самій дизайн-системі, що й PHASE 21. Кімнати, з'єднання,
+  вівтарі й секрети намальовано з тих самих координат, що лежать у <code>WorldGraph.asset</code>
+  (масштаб 1 одиниця світу = 0,1 одиниці карти). Поведінку вже реалізовано й перевірено тестами
+  (<code>WorldMapScreen</code>, <code>WorldMapBuilder</code>, <code>ShrineMenu</code>,
+  <code>FastTravelService</code>) — бракує лише малювання в Unity.
+</div>
+
+<div class="sheet">
+
+  <!-- 1. карта на початку гри -->
+  <div class="frame">
+    <div class="stage-inner">
+      <div class="map-screen" data-map="early"></div>
+    </div>
+    <div class="frame__caption">Карта — нова гра: відомий лише вхід, сусідня кімната — силует</div>
+  </div>
+
+  <!-- 2. вівтар з мандрами -->
+  <div class="frame">
+    <div class="stage-inner">
+      <div class="gameplay-backdrop"></div>
+      <div class="scrim" style="background:rgba(12,7,3,0.66)">
+        <div class="panel panel--royal checkpoint-panel" style="width:520px">
+          <div class="panel__header">
+            <h2 class="panel__title" style="font-size:var(--fs-lead)">Вівтар переходу</h2>
+            <span class="muted" style="font-size:var(--fs-micro)">Збережено</span>
+          </div>
+          <div class="panel__body">
+            <div class="col">
+              <button class="btn btn--primary">Відпочити</button>
+              <button class="btn is-focused">Мандрувати</button>
+              <button class="btn">Персонаж</button>
+              <button class="btn">Уміння</button>
+              <button class="btn">Спорядження</button>
+              <button class="btn">Відійти</button>
+            </div>
+            <p style="margin:var(--s5) 0 0; font-size:var(--fs-micro); color:var(--ink-dim); line-height:1.6">
+              Відпочинок відновлює здоров'я й повертає рядових ворогів. Мандрівка — теж відпочинок,
+              тільки біля іншого вівтаря.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="frame__caption">Вівтар — пункт «Мандрувати» з'являється після Стража</div>
+  </div>
+
+  <!-- 3. вибір місця мандрівки -->
+  <div class="frame frame--wide">
+    <div class="stage-inner">
+      <div class="gameplay-backdrop"></div>
+      <div class="scrim" style="background:rgba(8,5,3,0.8); display:block">
+        <div class="shrine">
+          <div class="panel panel--royal checkpoint-panel">
+            <div class="panel__header">
+              <h2 class="panel__title" style="font-size:var(--fs-lead)">Мандрувати</h2>
+              <span class="muted" style="font-size:var(--fs-micro)">з Придорожньої святині</span>
+            </div>
+            <div class="panel__body dest">
+              <div class="dest__zone">Забута Гробниця</div>
+              <div class="dest__row"><svg width="22" height="22" data-icon="travel"></svg><span>Вівтар входу</span><small></small></div>
+              <div class="dest__row is-focused"><svg width="22" height="22" data-icon="travel"></svg><span>Вівтар переходу</span><small>Обвалений склеп</small></div>
+              <div class="dest__zone">Зів'ялий Ліс</div>
+              <div class="dest__row"><svg width="22" height="22" data-icon="travel"></svg><span>Вівтар узлісся</span><small></small></div>
+              <div class="dest__row is-current"><svg width="22" height="22" data-icon="here"></svg><span>Придорожня святиня</span><small>ви тут</small></div>
+              <p style="margin:var(--s5) 0 0; font-size:var(--fs-micro); color:var(--ink-dim); line-height:1.6">
+                У списку лише запалені вівтарі. Незапалені сюди не потрапляють зовсім —
+                ні сірим рядком, ні знаком питання.
+              </p>
+            </div>
+          </div>
+          <div class="mini-map" data-map="travel"></div>
+        </div>
+      </div>
+    </div>
+    <div class="frame__caption">Мандри — список з бази вівтарів, поточний підсвічено, обраний показано на карті</div>
+  </div>
+
+  <!-- 4. карта пізно: обидві зони -->
+  <div class="frame frame--wide">
+    <div class="stage-inner">
+      <div class="map-screen" data-map="late"></div>
+    </div>
+    <div class="frame__caption">Карта — після Вартового: шорткат відкрито, другий — ще ні, вершина вежі досяжна, шлях на схід запечатано</div>
+  </div>
+
+  <!-- 5. картка зони -->
+  <div class="frame">
+    <div class="stage-inner">
+      <div class="gameplay-backdrop" style="background:radial-gradient(120% 90% at 50% 12%, #26301f 0%, #121810 55%, #080a07 100%)"></div>
+      <div class="title-card">
+        <div class="title-card__rule"></div>
+        <p class="title-card__name">ЗІВ'ЯЛИЙ ЛІС</p>
+        <div class="title-card__rule"></div>
+      </div>
+    </div>
+    <div class="frame__caption">Картка зони — один раз, при першому вході; жодного «LEVEL 2»</div>
+  </div>
+
+  <!-- 6. пауза з картою -->
+  <div class="frame">
+    <div class="stage-inner">
+      <div class="gameplay-backdrop"></div>
+      <div class="scrim">
+        <div class="panel panel--royal" style="width:520px">
+          <div class="panel__header"><h2 class="panel__title" style="font-size:var(--fs-lead)">Пауза</h2></div>
+          <div class="panel__body">
+            <div class="col">
+              <button class="btn btn--primary">Продовжити</button>
+              <button class="btn is-focused" style="font-family:var(--font-display);letter-spacing:0.12em;text-transform:uppercase">Карта</button>
+              <button class="btn">Спорядження</button>
+              <button class="btn">Персонаж</button>
+              <button class="btn">Уміння</button>
+              <button class="btn">Налаштування</button>
+              <button class="btn btn--danger">До головного меню</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="frame__caption">Пауза — карта доступна тут і окремою кнопкою; мандрувати звідси не можна</div>
+  </div>
+</div>
+
+<script>
+/* Ті самі дані, що в WorldGraph.asset: позиція й розмір кімнати на карті, зона,
+   секрет чи ні. Малюється з даних, а не вручну, — як і має малюватися в Unity. */
+(function () {
+  "use strict";
+  var AREAS = [
+    ["room_tomb_entrance", "tomb", "Вхід до Гробниці", -1.45, 0, 1.35, 1.2],
+    ["room_tomb_burial_hall", "tomb", "Поховальна зала", -0.05, 0, 1.15, 1.2],
+    ["room_tomb_guard_passage", "tomb", "Прохід варти", 1.325, 0, 1.3, 1.2],
+    ["room_tomb_collapsed_crypt", "tomb", "Обвалений склеп", 2.375, 0, 0.6, 1.2],
+    ["room_tomb_guardian_approach", "tomb", "Підступ до Стража", 3.275, 0, 1.0, 1.2],
+    ["room_tomb_guardian_arena", "tomb", "Арена Стража", 5.05, 0, 2.25, 1.2, "boss"],
+    ["room_tomb_royal_ossuary", "tomb", "Королівська костниця", 1.35, 1.6, 0.7, 0.6, "secret"],
+    ["room_tomb_bell_shaft", "tomb", "Дзвонова шахта", -0.48, 1.6, 0.7, 0.6, "secret"],
+    ["room_tomb_reliquary", "tomb", "Реліквіарій", 0.4, 1.6, 0.7, 0.6],
+    ["room_forest_root_tunnel", "forest", "Кореневий тунель", 7.175, 0, 1.7, 1.2],
+    ["room_forest_entrance", "forest", "Узлісся", 9.55, 0, 2.75, 1.2],
+    ["room_forest_royal_road", "forest", "Зруйнований королівський шлях", 12.2, 0, 2.25, 1.2],
+    ["room_forest_broken_arch", "forest", "Зламана арка", 14.05, 0, 1.15, 1.2],
+    ["room_forest_poison_grove", "forest", "Отруйний гай", 16.4, 0, 3.25, 1.2],
+    ["room_forest_watchtower", "forest", "Руїни сторожової вежі", 19.65, 0, 2.95, 1.2],
+    ["room_forest_watchtower_top", "forest", "Вершина вежі", 19.7, 1.9, 1.6, 0.9],
+    ["room_forest_hunters_perch", "forest", "Мисливський поміст", 20.3, 3.1, 0.7, 0.6, "secret"],
+    ["room_forest_deep", "forest", "Глибокий ліс", 23.0, 0, 3.45, 1.2],
+    ["room_forest_warden_approach", "forest", "Підступ до Вартового", 26.025, 0, 2.3, 1.2],
+    ["room_forest_warden_arena", "forest", "Галявина Вартового", 28.725, 0, 2.8, 1.2, "boss"],
+    ["room_forest_far_gate", "forest", "Край лісу", 31.0, 0, 1.45, 1.2],
+    ["room_forest_warden_overlook", "forest", "Оглядовий виступ", 30.7, 1.6, 0.7, 0.6, "secret"],
+    ["room_beyond_forest", "beyond", "", 32.4, 0, 0.8, 1.2]
+  ];
+  var LINKS = [
+    ["room_tomb_entrance", "room_tomb_burial_hall"], ["room_tomb_burial_hall", "room_tomb_guard_passage"],
+    ["room_tomb_guard_passage", "room_tomb_collapsed_crypt"],
+    ["room_tomb_guard_passage", "room_tomb_collapsed_crypt", "shortcut", "bridge"],
+    ["room_tomb_collapsed_crypt", "room_tomb_guardian_approach"], ["room_tomb_guardian_approach", "room_tomb_guardian_arena"],
+    ["room_tomb_guardian_arena", "room_forest_root_tunnel", "border"],
+    ["room_tomb_guard_passage", "room_tomb_royal_ossuary", "ability"], ["room_tomb_burial_hall", "room_tomb_bell_shaft", "ability"],
+    ["room_tomb_guard_passage", "room_tomb_reliquary", "ability"],
+    ["room_forest_root_tunnel", "room_forest_entrance"], ["room_forest_entrance", "room_forest_royal_road"],
+    ["room_forest_royal_road", "room_forest_broken_arch", "oneway"],
+    ["room_forest_royal_road", "room_forest_broken_arch", "shortcut", "road"],
+    ["room_forest_broken_arch", "room_forest_poison_grove"], ["room_forest_poison_grove", "room_forest_watchtower"],
+    ["room_forest_watchtower", "room_forest_deep"], ["room_forest_watchtower", "room_forest_watchtower_top", "ability"],
+    ["room_forest_watchtower_top", "room_forest_hunters_perch", "ability"],
+    ["room_forest_deep", "room_forest_warden_approach"], ["room_forest_warden_approach", "room_forest_warden_arena"],
+    ["room_forest_warden_arena", "room_forest_far_gate"], ["room_forest_far_gate", "room_forest_warden_overlook", "ability"],
+    ["room_forest_far_gate", "room_beyond_forest", "future"]
+  ];
+  var ALTARS = { room_tomb_entrance: 1, room_tomb_collapsed_crypt: 1, room_forest_entrance: 1,
+    room_forest_royal_road: 1, room_forest_deep: 1, room_forest_warden_approach: 1 };
+  var TINT = { tomb: "#b8a88a", forest: "#8fa878", beyond: "#6a6a70" };
+
+  var STATES = {
+    early: { known: ["room_tomb_entrance"], current: "room_tomb_entrance", lit: [], open: {}, abilities: false,
+      travel: false, beaten: [], header: "Забута Гробниця", meta: ["Досліджено", "1 / 7"], scale: 150, center: -0.5,
+      info: ["Вхід до Гробниці", "Вівтар входу — не запалено."] },
+    late: { known: "all-but-some", current: "room_tomb_guard_passage", lit: ["room_tomb_entrance", "room_tomb_collapsed_crypt",
+      "room_forest_entrance", "room_forest_royal_road", "room_forest_deep", "room_forest_warden_approach"],
+      open: { road: true }, abilities: true, travel: true, beaten: ["room_tomb_guardian_arena", "room_forest_warden_arena"],
+      header: "Забута Гробниця", meta: ["Гробниця", "6 / 7", "секрети 1 / 2", "Ліс", "12 / 12"], scale: 48, center: 15.4,
+      info: ["Прохід варти", "Над уступом варти — полиця, до якої тепер можна дострибнути."] },
+    travel: { known: "all-but-some", current: "room_forest_royal_road", selected: "room_tomb_collapsed_crypt",
+      lit: ["room_tomb_entrance", "room_tomb_collapsed_crypt", "room_forest_entrance", "room_forest_royal_road"],
+      open: {}, abilities: false, travel: true, beaten: ["room_tomb_guardian_arena"], scale: 58, center: 5.4, compact: true }
+  };
+  var HIDDEN_LATE = ["room_tomb_bell_shaft", "room_forest_hunters_perch", "room_tomb_royal_ossuary"];
+  var HIDDEN_TRAVEL = ["room_tomb_bell_shaft", "room_forest_hunters_perch", "room_tomb_royal_ossuary",
+    "room_forest_poison_grove", "room_forest_watchtower", "room_forest_watchtower_top", "room_forest_deep",
+    "room_forest_warden_approach", "room_forest_warden_arena", "room_forest_far_gate", "room_forest_warden_overlook",
+    "room_beyond_forest", "room_tomb_reliquary", "room_forest_broken_arch"];
+
+  function byId(id) { return AREAS.filter(function (a) { return a[0] === id; })[0]; }
+
+  function knownSet(state, name) {
+    if (state.known !== "all-but-some") { return state.known; }
+    var hidden = name === "travel" ? HIDDEN_TRAVEL : HIDDEN_LATE;
+    return AREAS.map(function (a) { return a[0]; }).filter(function (id) {
+      return hidden.indexOf(id) < 0 && id !== "room_beyond_forest";
+    });
+  }
+
+  function icon(kind, x, y, active) {
+    var g = "";
+    var gold = "#e8cd8a", dim = "#6f6452";
+    if (kind === "altar") {
+      g += '<path d="M' + x + ' ' + (y - 9) + ' L' + (x + 6) + ' ' + y + ' L' + x + ' ' + (y + 9) + ' L' + (x - 6) + ' ' + y + ' Z" fill="'
+        + (active ? "#f0b441" : "none") + '" stroke="' + (active ? gold : dim) + '" stroke-width="1.5"/>';
+    } else if (kind === "travel") {
+      g += '<circle cx="' + x + '" cy="' + y + '" r="9" fill="none" stroke="' + gold + '" stroke-width="1.5"/>'
+        + '<path d="M' + x + ' ' + (y - 5) + ' L' + (x + 4) + ' ' + y + ' L' + x + ' ' + (y + 5) + ' L' + (x - 4) + ' ' + y + ' Z" fill="#f0b441"/>';
+    } else if (kind === "boss") {
+      var c = active ? "#c0303f" : dim;
+      g += '<path d="M' + (x - 9) + ' ' + (y + 6) + ' L' + (x - 9) + ' ' + (y - 6) + ' L' + (x - 4) + ' ' + (y - 1) + ' L' + x + ' ' + (y - 8)
+        + ' L' + (x + 4) + ' ' + (y - 1) + ' L' + (x + 9) + ' ' + (y - 6) + ' L' + (x + 9) + ' ' + (y + 6) + ' Z" fill="none" stroke="' + c + '" stroke-width="1.6"/>';
+      if (!active) { g += '<path d="M' + (x - 10) + ' ' + (y + 8) + ' L' + (x + 10) + ' ' + (y - 8) + '" stroke="' + dim + '" stroke-width="1.4"/>'; }
+    } else if (kind === "secret") {
+      g += '<path d="M' + x + ' ' + (y - 8) + ' L' + (x + 2.5) + ' ' + (y - 2.5) + ' L' + (x + 8) + ' ' + y + ' L' + (x + 2.5) + ' ' + (y + 2.5)
+        + ' L' + x + ' ' + (y + 8) + ' L' + (x - 2.5) + ' ' + (y + 2.5) + ' L' + (x - 8) + ' ' + y + ' L' + (x - 2.5) + ' ' + (y - 2.5) + ' Z" fill="#9b8f6a"/>';
+    } else if (kind === "gate") {
+      g += '<rect x="' + (x - 7) + '" y="' + (y - 7) + '" width="14" height="14" fill="#0f0d0b" stroke="#8e8375" stroke-width="1.2"/>'
+        + '<path d="M' + (x - 3) + ' ' + (y - 7) + ' V' + (y + 7) + ' M' + (x + 3) + ' ' + (y - 7) + ' V' + (y + 7) + '" stroke="#8e8375" stroke-width="1.2"/>';
+    } else if (kind === "player") {
+      g += '<circle cx="' + x + '" cy="' + y + '" r="14" fill="none" stroke="rgba(232,205,138,0.45)" stroke-width="1"/>'
+        + '<path d="M' + x + ' ' + (y - 10) + ' L' + (x + 7) + ' ' + y + ' L' + x + ' ' + (y + 10) + ' L' + (x - 7) + ' ' + y + ' Z" fill="#e8cd8a" stroke="#0b0907" stroke-width="1.5"/>';
+    } else if (kind === "here") {
+      g += '<path d="M' + x + ' ' + (y - 8) + ' L' + (x + 6) + ' ' + y + ' L' + x + ' ' + (y + 8) + ' L' + (x - 6) + ' ' + y + ' Z" fill="#e8cd8a"/>';
+    }
+    return g;
+  }
+
+  function render(host, name) {
+    var state = STATES[name];
+    var known = knownSet(state, name);
+    var isKnown = function (id) { return known.indexOf(id) >= 0; };
+    var areaState = {};
+    AREAS.forEach(function (a) { areaState[a[0]] = isKnown(a[0]) ? "known" : "hidden"; });
+    LINKS.forEach(function (l) {
+      [[l[0], l[1]], [l[1], l[0]]].forEach(function (p) {
+        var other = byId(p[1]);
+        if (areaState[p[0]] === "known" && areaState[p[1]] === "hidden" && other[7] !== "secret") { areaState[p[1]] = "fog"; }
+      });
+    });
+
+    var width = state.compact ? host.clientWidth || 1100 : 1792;
+    var height = state.compact ? 820 : 912;
+    var s = state.scale, cx = width / 2, cy = height * 0.62;
+    var X = function (u) { return cx + (u - state.center) * s; };
+    var Y = function (u) { return cy - u * s; };
+
+    var svg = '<svg width="' + width + '" height="' + height + '" style="position:absolute;inset:0">';
+    LINKS.forEach(function (l) {
+      var a = byId(l[0]), b = byId(l[1]);
+      if (areaState[a[0]] === "hidden" || areaState[b[0]] === "hidden") { return; }
+      if (areaState[a[0]] !== "known" && areaState[b[0]] !== "known") { return; }
+      var x1 = X(a[3]), y1 = Y(a[4]), x2 = X(b[3]), y2 = Y(b[4]);
+      var kind = l[2] || "", style = 'stroke="#8a7434" stroke-width="1.4"';
+      if (kind === "border") { style = 'stroke="#c9a14a" stroke-width="3.2"'; }
+      if (kind === "shortcut" && !state.open[l[3]]) { style = 'stroke="#6b5a42" stroke-width="1.4" stroke-dasharray="4 5"'; }
+      if (kind === "shortcut" && state.open[l[3]]) { style = 'stroke="#8a7434" stroke-width="1.4"'; y1 -= 6; y2 -= 6; }
+      if (kind === "shortcut" && !state.open[l[3]]) { y1 -= 6; y2 -= 6; }
+      if (kind === "ability" && !state.abilities) { style = 'stroke="#5f574c" stroke-width="1.2" stroke-dasharray="2 4"'; }
+      if (kind === "future") { style = 'stroke="#5f574c" stroke-width="1.4" stroke-dasharray="6 6"'; }
+      svg += '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" ' + style + '/>';
+      if (kind === "oneway") {
+        var mx = (x1 + x2) / 2, my = y1 - 10;
+        svg += '<path d="M' + (mx - 5) + ' ' + (my - 4) + ' L' + (mx + 3) + ' ' + my + ' L' + (mx - 5) + ' ' + (my + 4) + '" fill="none" stroke="#8a7434" stroke-width="1.3"/>';
+      }
+      if ((kind === "ability" && !state.abilities) || kind === "future") {
+        svg += icon("gate", (x1 + x2) / 2, (y1 + y2) / 2);
+      }
+    });
+    AREAS.forEach(function (a) {
+      var st = areaState[a[0]];
+      if (st === "hidden") { return; }
+      var w = a[5] * s, h = a[6] * s, x = X(a[3]) - w / 2, y = Y(a[4]) - h / 2;
+      var tint = TINT[a[1]];
+      if (st === "fog") {
+        svg += '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" fill="rgba(90,80,64,0.10)" stroke="rgba(142,131,117,0.35)" stroke-width="1" stroke-dasharray="3 5"/>';
+        return;
+      }
+      svg += '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" fill="' + tint + '" fill-opacity="0.16" stroke="' + tint + '" stroke-opacity="0.75" stroke-width="1.2"/>';
+      // A name that does not fit is not squeezed in: the selected room's panel carries it.
+      if (!state.compact && a[2].length * 7.4 < w - 16) {
+        svg += '<text x="' + (x + 8) + '" y="' + (y + 18) + '" fill="#d8cbb4" font-size="13" font-family="Inter,Segoe UI,sans-serif">' + a[2] + '</text>';
+      }
+      var ix = x + w - 16, iy = y + h - 16;
+      if (ALTARS[a[0]]) {
+        var lit = state.lit.indexOf(a[0]) >= 0;
+        svg += icon(lit && state.travel ? "travel" : "altar", ix, iy, lit);
+        ix -= 26;
+      }
+      if (a[7] === "boss") { svg += icon("boss", ix, iy, state.beaten.indexOf(a[0]) < 0); ix -= 26; }
+      if (a[7] === "secret") { svg += icon("secret", ix, iy); }
+      if (a[0] === state.current) { svg += icon("player", X(a[3]), Y(a[4]) + 4); }
+      if (a[0] === state.selected) {
+        svg += '<rect x="' + (x - 4) + '" y="' + (y - 4) + '" width="' + (w + 8) + '" height="' + (h + 8) + '" fill="none" stroke="#e8cd8a" stroke-width="2"/>';
+      }
+    });
+    svg += "</svg>";
+
+    if (state.compact) { host.innerHTML = svg; return; }
+
+    var meta = "";
+    for (var i = 0; i < state.meta.length; i += 2) {
+      meta += "<span>" + state.meta[i] + " <b>" + state.meta[i + 1] + "</b></span>";
+    }
+    host.innerHTML =
+      '<div class="map-header"><h1 class="map-header__zone">' + state.header + '</h1><div class="map-header__meta">' + meta + '</div></div>'
+      + '<div class="map-screen__sheet">' + svg + '</div>'
+      + '<div class="map-info"><h3>' + state.info[0] + '</h3><p class="' + (name === "late" ? "hint" : "") + '">' + state.info[1] + '</p></div>'
+      + '<div class="map-legend">'
+      + '<svg width="22" height="22">' + icon("player", 11, 11) + '</svg><span>Ви тут</span>'
+      + '<svg width="22" height="22">' + icon(state.travel ? "travel" : "altar", 11, 11, true) + '</svg><span>' + (state.travel ? "Вівтар · мандри" : "Вівтар") + '</span>'
+      + '<svg width="22" height="22">' + icon("boss", 11, 11, true) + '</svg><span>Страж місця</span>'
+      + '<svg width="22" height="22">' + icon("gate", 11, 11) + '</svg><span>Поки що не пройти</span>'
+      + (name === "late" ? '<svg width="22" height="22">' + icon("secret", 11, 11) + '</svg><span>Таємне місце</span>' : '')
+      + '</div>'
+      + '<div class="map-footer"><span><i class="glyph">←↑→↓</i> Кімнати</span><span><i class="glyph">ПКМ</i> Тягнути</span>'
+      + '<span><i class="glyph">Коліщатко</i> Масштаб</span><span><i class="glyph">M</i> Закрити</span></div>';
+  }
+
+  window.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll("[data-map]").forEach(function (host) { render(host, host.getAttribute("data-map")); });
+    document.querySelectorAll("svg[data-icon]").forEach(function (el) { el.innerHTML = icon(el.getAttribute("data-icon"), 11, 11, true); });
+  });
+})();
+</script>
+</body>
+</html>

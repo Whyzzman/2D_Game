@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f262bfdbc3db1d1448a3cf59cba06016, type: 3}
+  m_Name: audio_zombiestep
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.AudioEvent
+  _id: 45
+  _clips:
+  - {fileID: 8300000, guid: ba80036acab2b1f4889e9e2d1b3f2ecd, type: 3}
+  - {fileID: 8300000, guid: a59596a01874c244e9af060cdff69633, type: 3}
+  - {fileID: 8300000, guid: 26069fe9162915043963a23578a892a5, type: 3}
+  - {fileID: 8300000, guid: 72112155e6213ee40951927d5c72b734, type: 3}
+  _bus: 2
+  _volume: 0.3
+  _volumeJitter: 0.06
+  _pitchJitter: 0.045
+  _spatialBlend: 0.55
+  _maxDistance: 26
+  _maxVoices: 3
+  _minimumInterval: 0.12
+  _priority: 12
+  _loop: 0

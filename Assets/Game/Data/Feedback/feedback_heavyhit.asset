@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1948b099c584578408b2536d2dd0cc7d, type: 3}
+  m_Name: feedback_heavyhit
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.FeedbackProfile
+  _burst:
+    _clipName: vfx_hit_heavy
+    _frames:
+    - {fileID: 21300000, guid: 86c6f504225990e49a7799c2ff69dc45, type: 3}
+    - {fileID: 21300000, guid: 692dd152e3fac254f8452e1b36d09217, type: 3}
+    - {fileID: 21300000, guid: 2021d44b967756d4a86be42566191145, type: 3}
+    - {fileID: 21300000, guid: 2b50ba6c0d592684ba77fe1670409ba7, type: 3}
+    - {fileID: 21300000, guid: 9061d3de86ead444fafcd27e5a051673, type: 3}
+    - {fileID: 21300000, guid: 39af1c2df58dc0f4da83023d76122830, type: 3}
+    _framesPerSecond: 24
+    _isLooping: 0
+  _tint: {r: 1, g: 1, b: 1, a: 1}
+  _scale: 1
+  _facesHitDirection: 1
+  _sortingLayer: VFXFront
+  _sortingOrder: 0
+  _hitStop: 0.065
+  _shake: 2
+  _shakeScale: 1.1
+  _shakeVerticalBias: 1.3
+  _screenFlash: 0
+  _flashColor: {r: 1, g: 1, b: 1, a: 1}
+  _lightColor: {r: 0, g: 0, b: 0, a: 0}
+  _lightRadius: 2
+  _lightDuration: 0.18
+  _priority: 20
+  _soundEvent: 
+  _haptic: 0

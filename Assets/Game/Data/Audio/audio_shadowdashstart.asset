@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f262bfdbc3db1d1448a3cf59cba06016, type: 3}
+  m_Name: audio_shadowdashstart
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.AudioEvent
+  _id: 37
+  _clips:
+  - {fileID: 8300000, guid: 733686a663b34e04f994acd3155f0f44, type: 3}
+  - {fileID: 8300000, guid: c8cbef96bacac2a4d9de14aa9be985a2, type: 3}
+  - {fileID: 8300000, guid: 5c62131f59a98e14791eb892169016af, type: 3}
+  _bus: 2
+  _volume: 0.62
+  _volumeJitter: 0.06
+  _pitchJitter: 0.045
+  _spatialBlend: 0.55
+  _maxDistance: 26
+  _maxVoices: 2
+  _minimumInterval: 0
+  _priority: 65
+  _loop: 0

@@ -1,0 +1,249 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 649169c22105a06499c9bc0695fd8d1d, type: 3}
+  m_Name: ShieldGuardAnimations
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.EnemyAnimationSet
+  _clips:
+  - state: 1
+    clip:
+      _clipName: enemy_shieldguard_idle
+      _frames:
+      - {fileID: 21300000, guid: f96735c812f761847aa93f34937f1f38, type: 3}
+      - {fileID: 21300000, guid: 777c3488e77dff842b0e478eae3b38ed, type: 3}
+      - {fileID: 21300000, guid: 561d1fbc64b85384688bc241e771259b, type: 3}
+      - {fileID: 21300000, guid: df36742dc6ed9dc4db9267946136e6b6, type: 3}
+      - {fileID: 21300000, guid: 4d2d99964603c6a4c8609da54908584b, type: 3}
+      - {fileID: 21300000, guid: c3009dcedfc6b7348968ba0a10ab0c16, type: 3}
+      _framesPerSecond: 8
+      _isLooping: 1
+  - state: 2
+    clip:
+      _clipName: enemy_shieldguard_patrol
+      _frames:
+      - {fileID: 21300000, guid: 283c33e110ec92e45a80b01d5c2203a4, type: 3}
+      - {fileID: 21300000, guid: ed6797a618f564e4683d62cf47488d3b, type: 3}
+      - {fileID: 21300000, guid: 54919d57fdb686740872ae03d32b6f99, type: 3}
+      - {fileID: 21300000, guid: 7c1becd2e569f9541bcf9d783b7644e1, type: 3}
+      - {fileID: 21300000, guid: 41af8de173e407444a1592fe0c8a8f39, type: 3}
+      - {fileID: 21300000, guid: ba7f1c588b8dc5e46b0a166b57fdb484, type: 3}
+      - {fileID: 21300000, guid: b7b297e326352944b8a9ed302bb4dd67, type: 3}
+      - {fileID: 21300000, guid: 1c1d80823e95605489ffb9fdc9ea4f93, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 1
+  - state: 3
+    clip:
+      _clipName: enemy_shieldguard_alert
+      _frames:
+      - {fileID: 21300000, guid: c28e6dfb302ce1b4ca2738d5050a5413, type: 3}
+      - {fileID: 21300000, guid: 4b026a2b2a945f4469393b8c2c2ab51f, type: 3}
+      - {fileID: 21300000, guid: e65c2eb5fe0cd9d409f1fa101db48bd6, type: 3}
+      - {fileID: 21300000, guid: 416d10f6dc878534281f8a05e11aac9e, type: 3}
+      - {fileID: 21300000, guid: 9fb05543e298f8f469de0b264192680b, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 0
+  - state: 4
+    clip:
+      _clipName: enemy_shieldguard_chase
+      _frames:
+      - {fileID: 21300000, guid: 239027afdd2d6a74a89a139567e9bd3d, type: 3}
+      - {fileID: 21300000, guid: 0a164ed53ee02174991cff15e79d4110, type: 3}
+      - {fileID: 21300000, guid: 5f08c3f2cdef4b94ab6e457926aec903, type: 3}
+      - {fileID: 21300000, guid: b021577c2c25b0b428d5696f015ddb3e, type: 3}
+      - {fileID: 21300000, guid: 24458b96c4989004298e415f13479826, type: 3}
+      - {fileID: 21300000, guid: 28314347193f2dc4385e876260e506db, type: 3}
+      - {fileID: 21300000, guid: dc5d15375ab2ed442b821abd9e46ea81, type: 3}
+      - {fileID: 21300000, guid: d600e8d793cfb4c4ab6211311c7443af, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 1
+  - state: 5
+    clip:
+      _clipName: enemy_shieldguard_guardraise
+      _frames:
+      - {fileID: 21300000, guid: 17a1a0bd86d778c47b33eaec5974e1b4, type: 3}
+      - {fileID: 21300000, guid: 9731c041137149b4ead89f7215a3b441, type: 3}
+      - {fileID: 21300000, guid: fd9df7400b891d34ea5f88f5371615c9, type: 3}
+      - {fileID: 21300000, guid: 78128fc6b37e0d7429e2164f4faa888f, type: 3}
+      - {fileID: 21300000, guid: da0c4ff655f525d4b867fae052ed3753, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 6
+    clip:
+      _clipName: enemy_shieldguard_guardidle
+      _frames:
+      - {fileID: 21300000, guid: cc08147e2a880354fb8b299757cb463f, type: 3}
+      - {fileID: 21300000, guid: 0ed9415391643ad4783fe7fcb65ba2a4, type: 3}
+      - {fileID: 21300000, guid: 952c18fbd6b5beb43bfaa6f3c19e96ba, type: 3}
+      - {fileID: 21300000, guid: fb518f4fa047b4a4f8c508bd40aebf10, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 1
+  - state: 7
+    clip:
+      _clipName: enemy_shieldguard_guardimpact
+      _frames:
+      - {fileID: 21300000, guid: ec17626aa9cc13e4f923ef7796cb649e, type: 3}
+      - {fileID: 21300000, guid: d5433f4323471374997f459d4fd99fd3, type: 3}
+      - {fileID: 21300000, guid: ff983f21c3d54a2448505962be466be7, type: 3}
+      - {fileID: 21300000, guid: 19f178152f11c31479f641e2e54c112d, type: 3}
+      - {fileID: 21300000, guid: 7dc8c71d42945b7449195ac013febd59, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 8
+    clip:
+      _clipName: enemy_shieldguard_guardbreak
+      _frames:
+      - {fileID: 21300000, guid: 367ed9d1bc6b8424da95dae47ae8df7f, type: 3}
+      - {fileID: 21300000, guid: 0b557491ba88d114f8c5730a39357e9c, type: 3}
+      - {fileID: 21300000, guid: e1bdd5d284338e241b302f48d6d64e57, type: 3}
+      - {fileID: 21300000, guid: 20fdad0de20277b4a8c0bce027666388, type: 3}
+      - {fileID: 21300000, guid: 97dc87b60ea66ce4987352836134e8ee, type: 3}
+      - {fileID: 21300000, guid: 26eb7010aa388644da100bf3f5c2311c, type: 3}
+      - {fileID: 21300000, guid: 69b5c1ae91340b442a50e4f2dfb8e70f, type: 3}
+      - {fileID: 21300000, guid: 25decec73f3ed9b4c9137c59eb202b67, type: 3}
+      - {fileID: 21300000, guid: 16bb38dcfaac8c844b5a01760554bf2c, type: 3}
+      - {fileID: 21300000, guid: 44a698abd9d78e84aa9f104e653b3919, type: 3}
+      - {fileID: 21300000, guid: 4038f954ac95212498fa0dc66f0fd8ef, type: 3}
+      - {fileID: 21300000, guid: fa26380944b057c43bb5841676d02a99, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 0
+  - state: 0
+    clip:
+      _clipName: enemy_shieldguard_attacklight
+      _frames:
+      - {fileID: 21300000, guid: de218d32ed9781b4599d522efa2aeb1c, type: 3}
+      - {fileID: 21300000, guid: a5f048b724e7a4348b55d682ca019639, type: 3}
+      - {fileID: 21300000, guid: d9067b175c1182247826d253f537d623, type: 3}
+      - {fileID: 21300000, guid: 8fccdc71d0406e74f98335a8055f2ebe, type: 3}
+      - {fileID: 21300000, guid: bef376b969e4d61488d3ac13162133f8, type: 3}
+      - {fileID: 21300000, guid: 821dc3e3eb2232143845d54404e5ea70, type: 3}
+      - {fileID: 21300000, guid: 76e479af12999d84bbd28d457305f353, type: 3}
+      - {fileID: 21300000, guid: d1b461716589bb94587af7404a8b8457, type: 3}
+      - {fileID: 21300000, guid: 745080074ec6b55468583b2684a258d6, type: 3}
+      - {fileID: 21300000, guid: 369099e9ba851de4abf365cff7e3bda5, type: 3}
+      - {fileID: 21300000, guid: eaed84a5703c67b40a89d648fcd3fd4b, type: 3}
+      - {fileID: 21300000, guid: 175c28b283a970b43836ccca8304f0fc, type: 3}
+      - {fileID: 21300000, guid: b09630eed0f63c949a3097a3bb811ec6, type: 3}
+      - {fileID: 21300000, guid: 1b6822ef81272ed4fac10c532fea5cb3, type: 3}
+      - {fileID: 21300000, guid: 7f72344d56e292846be75add185e6160, type: 3}
+      - {fileID: 21300000, guid: c35245afa4a379a4ab3e64a24f19fc70, type: 3}
+      - {fileID: 21300000, guid: 6105510df4342f344bcf48b434e3c9a4, type: 3}
+      - {fileID: 21300000, guid: c7bb627bcf2459e4bb56462f0af702cd, type: 3}
+      - {fileID: 21300000, guid: 1e6009780f9bde84c950496508fe09e8, type: 3}
+      - {fileID: 21300000, guid: 2bb8466c3a9d3ba4393baae9817c00c1, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 10
+    clip:
+      _clipName: enemy_shieldguard_shieldbash
+      _frames:
+      - {fileID: 21300000, guid: f81835d7539ba174581b3634b08349ef, type: 3}
+      - {fileID: 21300000, guid: 802fe4b7ae0f99943b964d9ea747d38d, type: 3}
+      - {fileID: 21300000, guid: b5f89a9efd8b54a4e8edf44e2307200b, type: 3}
+      - {fileID: 21300000, guid: 0885fd600a806f5458c718986676a464, type: 3}
+      - {fileID: 21300000, guid: c18c9fb36ae962e4ca790523ad925fa1, type: 3}
+      - {fileID: 21300000, guid: 5b14492692502c440b679f9e07dedce2, type: 3}
+      - {fileID: 21300000, guid: b4631acc775bd0b4a834dd5e6bbf2f50, type: 3}
+      - {fileID: 21300000, guid: 87715e92242b39c46a98ea38947aafac, type: 3}
+      - {fileID: 21300000, guid: 79f376c072bea0346acfe6c6d000109e, type: 3}
+      - {fileID: 21300000, guid: eeffc7733be3ab24bb77cba5ca5a11e9, type: 3}
+      - {fileID: 21300000, guid: 057fc8a14e77c5a438a30a28960e6584, type: 3}
+      - {fileID: 21300000, guid: 36dcfe4e4f5df454f98f150d964d4454, type: 3}
+      - {fileID: 21300000, guid: 53dd8294a33fc3d4bb2357eda65b7689, type: 3}
+      - {fileID: 21300000, guid: f9c891fb368939d438df8cfa661e2a0b, type: 3}
+      - {fileID: 21300000, guid: 9b484bf07d0bf4d4da105e4f8de52c3a, type: 3}
+      - {fileID: 21300000, guid: ed9286646fcce70499e5121b737eb112, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 9
+    clip:
+      _clipName: enemy_shieldguard_attackheavy
+      _frames:
+      - {fileID: 21300000, guid: 794a631769005034a83a06bacb794f96, type: 3}
+      - {fileID: 21300000, guid: f22ff40e2cb3680459f3f7e1d8fb237d, type: 3}
+      - {fileID: 21300000, guid: a8c839a1be2cb7f469844462bd68e4c2, type: 3}
+      - {fileID: 21300000, guid: 9aebf8aa4370dcc42be58bb2f8150169, type: 3}
+      - {fileID: 21300000, guid: 53fb104c39ed4a54895ed349c61e0df3, type: 3}
+      - {fileID: 21300000, guid: b1e400072e52b8045b7a907ca35e185c, type: 3}
+      - {fileID: 21300000, guid: ef2d2ca43b9712e4db06606c24aef177, type: 3}
+      - {fileID: 21300000, guid: 6f12a264c0f430648ad2da5a3554b031, type: 3}
+      - {fileID: 21300000, guid: 49d27cc8b6f9c284ea6997dcff59222c, type: 3}
+      - {fileID: 21300000, guid: 9d33ad7dd14d996498170a6e7e7c7f06, type: 3}
+      - {fileID: 21300000, guid: bf0c3e72a9743314389e10b1b1ebbe76, type: 3}
+      - {fileID: 21300000, guid: 2af63afc28e2ca048af56bb66a81faf8, type: 3}
+      - {fileID: 21300000, guid: b688bcaca93c3fa4c93af456ffc0db1a, type: 3}
+      - {fileID: 21300000, guid: 2cd0b7e05f928a349acc78128f8273a4, type: 3}
+      - {fileID: 21300000, guid: a562b714a24ccf14394f65c588b7dcba, type: 3}
+      - {fileID: 21300000, guid: 7c2d76463c8f06749848b93822851b85, type: 3}
+      - {fileID: 21300000, guid: 793bdf7c3fa884c4ab7ff125ba925940, type: 3}
+      - {fileID: 21300000, guid: 300fdcc13306c0744a57e0691fa6c4d1, type: 3}
+      - {fileID: 21300000, guid: 4b41db439363ff442b6078f8293db30b, type: 3}
+      - {fileID: 21300000, guid: bd395c17595ab2042a3e5b88533d8c4f, type: 3}
+      - {fileID: 21300000, guid: 6131f940f009a7c4394b9bba2e51909f, type: 3}
+      - {fileID: 21300000, guid: 73f6df1a8d9d5c346958ced4cf6b8869, type: 3}
+      - {fileID: 21300000, guid: e5ca692e36febc14caee1df3af8e3d4f, type: 3}
+      - {fileID: 21300000, guid: 32a1931731431284e814124ba1883a01, type: 3}
+      - {fileID: 21300000, guid: 7d6bfca4d928dc8459b01b7e02e47a10, type: 3}
+      - {fileID: 21300000, guid: 91925a4129daf004d976303063766056, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 11
+    clip:
+      _clipName: enemy_shieldguard_hurt
+      _frames:
+      - {fileID: 21300000, guid: 8c7f103258fe0154b8ce31c7edcd41cc, type: 3}
+      - {fileID: 21300000, guid: 18d508d2cc4cc814b9e546df4d149d8d, type: 3}
+      - {fileID: 21300000, guid: 842c042344d6449488755dad19dfc9ad, type: 3}
+      - {fileID: 21300000, guid: 812ddd1ce4b4fdf49be2d37457507657, type: 3}
+      - {fileID: 21300000, guid: 6f9b598a25a598340be0b6d5542f283c, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 12
+    clip:
+      _clipName: enemy_shieldguard_stunned
+      _frames:
+      - {fileID: 21300000, guid: e73159fc7161a2c4095031096b59f11a, type: 3}
+      - {fileID: 21300000, guid: a3a12d1a24128a04dae877bb3dba891b, type: 3}
+      - {fileID: 21300000, guid: 01d36d7edf23eab4a94bcaf767d33cdb, type: 3}
+      - {fileID: 21300000, guid: a3435605ead85214a9d2635dffb1c48a, type: 3}
+      - {fileID: 21300000, guid: 95fa88ee8f53a4348b05d3117b04d8ed, type: 3}
+      - {fileID: 21300000, guid: 8c3ecb8b902fa8748bf1233ad23e78dd, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 1
+  - state: 13
+    clip:
+      _clipName: enemy_shieldguard_death
+      _frames:
+      - {fileID: 21300000, guid: f1daa6ac7249ac14db4cb9d5dae21fcb, type: 3}
+      - {fileID: 21300000, guid: 28b4dbd7b781fc54aaaf15998094e1e6, type: 3}
+      - {fileID: 21300000, guid: 6e8f0c7f4b00e9140beb6805891796a5, type: 3}
+      - {fileID: 21300000, guid: 399bb6b2712d9c4449455e815e03cf85, type: 3}
+      - {fileID: 21300000, guid: 5d3c4752d4241b14db9ecead1012d4ad, type: 3}
+      - {fileID: 21300000, guid: 64fdd5e2ab7b6a54983231cbcef1c5d9, type: 3}
+      - {fileID: 21300000, guid: 2f7a08f8da676394db3b6abbdd195e9d, type: 3}
+      - {fileID: 21300000, guid: 046ed157428accc4da0407515153018a, type: 3}
+      - {fileID: 21300000, guid: 84d9fb22df51d9f4498d4f7087009bae, type: 3}
+      - {fileID: 21300000, guid: 6bb24a9bc52f36143a70e8c156a61ad1, type: 3}
+      - {fileID: 21300000, guid: b2b1a55920656f245ab1008e165fc815, type: 3}
+      - {fileID: 21300000, guid: 8f4f468d0ff80c248b930bf6d7a4baa2, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 0
+  _fallback:
+    _clipName: enemy_shieldguard_idle
+    _frames:
+    - {fileID: 21300000, guid: f96735c812f761847aa93f34937f1f38, type: 3}
+    - {fileID: 21300000, guid: 777c3488e77dff842b0e478eae3b38ed, type: 3}
+    - {fileID: 21300000, guid: 561d1fbc64b85384688bc241e771259b, type: 3}
+    - {fileID: 21300000, guid: df36742dc6ed9dc4db9267946136e6b6, type: 3}
+    - {fileID: 21300000, guid: 4d2d99964603c6a4c8609da54908584b, type: 3}
+    - {fileID: 21300000, guid: c3009dcedfc6b7348968ba0a10ab0c16, type: 3}
+    _framesPerSecond: 8
+    _isLooping: 1
+  _carriesShield: 1

@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1948b099c584578408b2536d2dd0cc7d, type: 3}
+  m_Name: feedback_airdash
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.FeedbackProfile
+  _burst:
+    _clipName: vfx_air_dash
+    _frames:
+    - {fileID: 21300000, guid: a6bd32f50a9e68b4a8d113b4141980f0, type: 3}
+    - {fileID: 21300000, guid: 20fbe369cd41c63489a8e267285ae896, type: 3}
+    - {fileID: 21300000, guid: 4e20aa20e45c48f47a61f3b27a6fc505, type: 3}
+    - {fileID: 21300000, guid: f2a2f034bdae58c4d83c34d608c7f28f, type: 3}
+    - {fileID: 21300000, guid: b66d486f5934d8b4783ec3595e3b5654, type: 3}
+    _framesPerSecond: 26
+    _isLooping: 0
+  _tint: {r: 1, g: 1, b: 1, a: 1}
+  _scale: 1
+  _facesHitDirection: 1
+  _sortingLayer: VFXBack
+  _sortingOrder: 0
+  _hitStop: 0
+  _shake: 0
+  _shakeScale: 1
+  _shakeVerticalBias: 1
+  _screenFlash: 0
+  _flashColor: {r: 1, g: 1, b: 1, a: 1}
+  _lightColor: {r: 0, g: 0, b: 0, a: 0}
+  _lightRadius: 2
+  _lightDuration: 0.18
+  _priority: 5
+  _soundEvent: 
+  _haptic: 0

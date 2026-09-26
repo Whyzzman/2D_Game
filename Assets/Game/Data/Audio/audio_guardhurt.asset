@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f262bfdbc3db1d1448a3cf59cba06016, type: 3}
+  m_Name: audio_guardhurt
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.AudioEvent
+  _id: 54
+  _clips:
+  - {fileID: 8300000, guid: c80d24cb50974ac4a8e5161dfa6453e9, type: 3}
+  - {fileID: 8300000, guid: cfa9c2a3d97d4214e9a2751a306df238, type: 3}
+  - {fileID: 8300000, guid: c8fa4f31e0f80434ebc11d66b4fca949, type: 3}
+  _bus: 2
+  _volume: 0.52
+  _volumeJitter: 0.06
+  _pitchJitter: 0.045
+  _spatialBlend: 0.55
+  _maxDistance: 26
+  _maxVoices: 3
+  _minimumInterval: 0
+  _priority: 50
+  _loop: 0
