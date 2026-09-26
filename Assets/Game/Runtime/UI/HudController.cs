@@ -700,8 +700,10 @@ namespace ForgottenKingdom
             {
                 _display = Font.CreateDynamicFontFromOSFont(
                     new[] { "Georgia", "Palatino Linotype", "Times New Roman" }, 32);
+                // Arial first: it ships with both Windows and macOS. A face missing on this OS at
+                // the head of the list makes UI Toolkit warn on every panel update.
                 _body = Font.CreateDynamicFontFromOSFont(
-                    new[] { "Segoe UI", "Arial", "Liberation Sans" }, 24);
+                    new[] { "Arial", "Segoe UI", "Liberation Sans" }, 24);
             }
             catch (Exception)
             {
