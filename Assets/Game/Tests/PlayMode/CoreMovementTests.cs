@@ -294,6 +294,63 @@ namespace ForgottenKingdom.Tests
                 "Could not land on the platform at " + x);
         }
 
+        [UnityTest]
+        public IEnumerator AJumpThatClipsALedgeCornerSlidesPastIt()
+        {
+            yield return NeutralFrames(5);
+            var start = _body.position;
+            // The ledge's left edge overlaps the right of the head by 0.15, inside the correction.
+            var ledge = CeilingLedge(start, leftEdgeOffset: 0.25f);
+            var (peak, endX) = default((float, float));
+            yield return JumpAndMeasure(start, result => (peak, endX) = result);
+            Object.Destroy(ledge);
+
+            Assert.That(peak, Is.GreaterThan(1.4f), "The jump died on the corner.");
+            Assert.That(endX, Is.LessThan(start.x - 0.1f), "Nudged away from the ledge.");
+            Assert.That(endX, Is.GreaterThan(start.x - 0.21f), "No more than the correction.");
+        }
+
+        [UnityTest]
+        public IEnumerator AJumpIntoARealCeilingIsStillStopped()
+        {
+            yield return NeutralFrames(5);
+            var start = _body.position;
+            // Overlapping by 0.35, past the 0.2 correction: this is a ceiling, not a corner.
+            var ledge = CeilingLedge(start, leftEdgeOffset: 0.05f);
+            var peak = 0f;
+            yield return JumpAndMeasure(start, result => peak = result.Item1);
+            Object.Destroy(ledge);
+
+            Assert.That(peak, Is.LessThan(0.7f));
+        }
+
+        /// <summary>A ledge whose underside sits 0.5 above the standing player's head.</summary>
+        private static GameObject CeilingLedge(Vector2 start, float leftEdgeOffset)
+        {
+            // Layer 9 is Ground; the project's layers are used by index and have no names.
+            var ledge = new GameObject("CornerLedge") { layer = 9 };
+            var box = ledge.AddComponent<BoxCollider2D>();
+            box.size = new Vector2(3f, 0.5f);
+            ledge.transform.position = new Vector3(start.x + leftEdgeOffset + 1.5f,
+                start.y + 0.8f + 0.5f + 0.25f, 0f);
+            Physics2D.SyncTransforms();
+            return ledge;
+        }
+
+        private IEnumerator JumpAndMeasure(Vector2 start, System.Action<(float, float)> report)
+        {
+            InputSystem.QueueStateEvent(_keyboard, new KeyboardState(Key.Space));
+            var peak = 0f;
+            for (var i = 0; i < 45; i++)
+            {
+                yield return Frames(1);
+                peak = Mathf.Max(peak, _body.position.y - start.y);
+            }
+
+            report((peak, _body.position.x));
+            yield return NeutralFrames(40);
+        }
+
         private IEnumerator NeutralFrames(int count)
         {
             InputSystem.QueueStateEvent(_keyboard, new KeyboardState());

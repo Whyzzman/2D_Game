@@ -25,7 +25,13 @@ namespace ForgottenKingdom
         [SerializeField] private DashSettings _dashSettings = new DashSettings();
         [SerializeField] private LayerMask _groundMask;
         [SerializeField] private Transform _visual;
+        [Tooltip("How far sideways a rising jump may be nudged when only the corner of a ledge "
+            + "catches the head. About a quarter of the body's width.")]
+        [SerializeField, Min(0f)] private float _cornerCorrection = 0.2f;
+        private const int CornerCorrectionSteps = 4;
         private readonly RaycastHit2D[] _groundHits = new RaycastHit2D[8];
+        private readonly Collider2D[] _cornerOverlaps = new Collider2D[4];
+        private float _cornerShiftUsed;
         private Rigidbody2D _body;
         private CapsuleCollider2D _capsule;
         private PlayerInputReader _input;
@@ -147,7 +153,19 @@ namespace ForgottenKingdom
             {
                 nextVelocity.x *= _statuses.MovementMultiplier;
             }
-            _body.linearVelocity = ConstrainVelocity(nextVelocity, Time.fixedDeltaTime);
+            if (IsGrounded)
+            {
+                _cornerShiftUsed = 0f;
+            }
+
+            var constrained = ConstrainVelocity(nextVelocity, Time.fixedDeltaTime);
+            if (nextVelocity.y > 0f && constrained.y < nextVelocity.y - 0.001f
+                && TryCornerCorrect(nextVelocity.y * Time.fixedDeltaTime, input.Horizontal))
+            {
+                constrained.y = nextVelocity.y;
+            }
+
+            _body.linearVelocity = constrained;
             if (_visual != null)
             {
                 _visual.localScale = new Vector3(
@@ -202,6 +220,7 @@ namespace ForgottenKingdom
             transform.position = new Vector3(position.x, position.y, transform.position.z);
             _body.interpolation = interpolation;
             _logic.Reset();
+            _cornerShiftUsed = 0f;
             _skillVelocity = null;
             _wallMovement?.ResetMovement();
             _input.ClearInput();
@@ -241,6 +260,62 @@ namespace ForgottenKingdom
                 }
             }
             return velocity * (allowed / distance);
+        }
+
+        /// <summary>
+        /// A jump that clips a ledge with only the edge of the head slides past it instead of
+        /// dying on the spot. The body is nudged sideways by the smallest step that clears the
+        /// rise — never more than <see cref="_cornerCorrection"/> over the whole jump, so a real
+        /// ceiling still stops it rather than being crept past one step at a time. The side the
+        /// player is steering toward is tried first.
+        /// </summary>
+        private bool TryCornerCorrect(float rise, float steering)
+        {
+            var available = _cornerCorrection - _cornerShiftUsed;
+            if (available <= 0.0001f)
+            {
+                return false;
+            }
+
+            var first = steering < -0.1f ? -1 : 1;
+            var step = _cornerCorrection / CornerCorrectionSteps;
+            for (var i = 1; i <= CornerCorrectionSteps && step * i <= available + 0.0001f; i++)
+            {
+                for (var side = 0; side < 2; side++)
+                {
+                    var shift = new Vector2((side == 0 ? first : -first) * step * i, 0f);
+                    if (IsRiseClearFrom(_body.position + shift, rise))
+                    {
+                        _body.position += shift;
+                        _cornerShiftUsed += step * i;
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private bool IsRiseClearFrom(Vector2 position, float rise)
+        {
+            var center = position + _capsule.offset;
+            if (Physics2D.OverlapCapsule(center, _capsule.size, _capsule.direction, 0f,
+                    _groundFilter, _cornerOverlaps) > 0)
+            {
+                return false;
+            }
+
+            var count = Physics2D.CapsuleCast(center, _capsule.size, _capsule.direction, 0f,
+                Vector2.up, _groundFilter, _groundHits, rise + 0.01f);
+            for (var i = 0; i < count; i++)
+            {
+                if (_groundHits[i].normal.y < -0.1f)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         public bool TryDisplace(Vector2 destination)
