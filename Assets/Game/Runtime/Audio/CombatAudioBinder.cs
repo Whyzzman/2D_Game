@@ -152,6 +152,8 @@ namespace ForgottenKingdom
             {
                 _animation.FrameChanged += OnPlayerFrame;
                 _animation.StateChanged += OnPlayerState;
+                // Every landing is heard, including the running ones that skip the Land pose.
+                _animation.Landed += () => AudioManager.Play(AudioId.Land, _player.transform.position);
             }
 
             var equipment = _player.GetComponent<PlayerEquipment>();
@@ -215,9 +217,6 @@ namespace ForgottenKingdom
             var at = (Vector2)_player.transform.position;
             switch (to)
             {
-                case PlayerAnimationState.Land:
-                    AudioManager.Play(AudioId.Land, at);
-                    break;
                 case PlayerAnimationState.JumpStart:
                     AudioManager.Play(AudioId.Jump, at, 0.6f);
                     break;

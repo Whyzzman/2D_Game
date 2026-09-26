@@ -208,6 +208,40 @@ namespace ForgottenKingdom.Tests
         }
 
         [UnityTest]
+        public IEnumerator ALandingOnTheRunGoesStraightIntoTheRun()
+        {
+            var landings = 0;
+            var speedAtLanding = 0f;
+            var landedAt = -1f;
+            _animation.Landed += () =>
+            {
+                landings++;
+                speedAtLanding = Mathf.Abs(_motor.Velocity.x);
+                landedAt = Time.realtimeSinceStartup;
+            };
+
+            InputSystem.QueueStateEvent(_keyboard, new KeyboardState(Key.D));
+            yield return WaitForSecondsRealtime(0.25f);
+            InputSystem.QueueStateEvent(_keyboard, new KeyboardState(Key.D, Key.Space));
+            yield return WaitForSecondsRealtime(0.08f);
+            InputSystem.QueueStateEvent(_keyboard, new KeyboardState(Key.D));
+
+            var sawLand = false;
+            var deadline = Time.realtimeSinceStartup + 3f;
+            while (Time.realtimeSinceStartup < deadline
+                   && (landedAt < 0f || Time.realtimeSinceStartup < landedAt + 0.3f))
+            {
+                sawLand |= _animation.State == PlayerAnimationState.Land;
+                yield return null;
+            }
+
+            InputSystem.QueueStateEvent(_keyboard, new KeyboardState());
+            Assert.That(landings, Is.GreaterThanOrEqualTo(1), "The landing is still announced, for its sound.");
+            Assume.That(speedAtLanding, Is.GreaterThan(0.5f), "Landed on the run, not against a wall.");
+            Assert.That(sawLand, Is.False, "A running landing must not slide along in the Land pose.");
+        }
+
+        [UnityTest]
         public IEnumerator TheRunClipIsPacedByTheRealGroundSpeed()
         {
             var pad = InputSystem.AddDevice<Gamepad>("AnimationTestGamepad");

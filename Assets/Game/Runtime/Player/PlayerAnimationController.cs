@@ -19,6 +19,8 @@ namespace ForgottenKingdom
     [DisallowMultipleComponent]
     public sealed class PlayerAnimationController : MonoBehaviour
     {
+        /// <summary>Faster than this sideways at touchdown counts as landing on the run.</summary>
+        private const float LandSkipSpeed = 0.5f;
         /// <summary>The slowest the run clip is played, as a share of its authored pace.</summary>
         private const float MinRunRate = 0.35f;
         [SerializeField] private PlayerAnimationSet _set;
@@ -58,6 +60,12 @@ namespace ForgottenKingdom
 
         /// <summary>Raised as each new frame is shown; footstep and trail effects hang off this.</summary>
         public event Action<PlayerAnimationState, int> FrameChanged;
+
+        /// <summary>
+        /// The feet touched down. Raised for every landing, including the running ones that go
+        /// straight into the run without the Land pose, so the landing is always heard.
+        /// </summary>
+        public event Action Landed;
 
         public PlayerAnimationState State => _state;
         public AnimationClipDefinition Clip => _clip;
@@ -194,6 +202,7 @@ namespace ForgottenKingdom
         /// </summary>
         public void Tick(float deltaTime)
         {
+            TrackLanding();
             var next = ForcedState ?? Resolve();
             if (next != _state)
             {
@@ -361,6 +370,30 @@ namespace ForgottenKingdom
         }
 
         /// <summary>
+        /// Landing is a moment, not a state the motor reports, so it is caught on the edge — every
+        /// frame, whatever the body is doing. Catching it only while in locomotion left the edge
+        /// stale through an attack or a dash, and the Land pose then played late, on the ground.
+        /// The pose is held only for a landing on the spot that nothing else is using the body
+        /// for: landing on the run goes straight into the run instead of sliding in the pose.
+        /// </summary>
+        private void TrackLanding()
+        {
+            var grounded = _motor == null || _motor.IsGrounded;
+            if (grounded && !_wasGrounded)
+            {
+                Landed?.Invoke();
+                var isRunning = _motor != null && Mathf.Abs(_motor.Velocity.x) > LandSkipSpeed;
+                var isFree = _character == null || _character.Action == PlayerAction.None;
+                if (!isRunning && isFree)
+                {
+                    Flash(PlayerAnimationState.Land);
+                }
+            }
+
+            _wasGrounded = grounded;
+        }
+
+        /// <summary>
         /// The run clip's pace follows the real ground speed, so a half-tilted stick or a slow
         /// drift does not slide the feet under a full-speed stride. Never below a third: a crawl
         /// at a tenth of the stride reads as frozen rather than slow.
@@ -377,13 +410,6 @@ namespace ForgottenKingdom
 
         private PlayerAnimationState LocomotionState(bool grounded)
         {
-            // Landing is a moment, not a state the motor reports, so it is caught on the edge.
-            if (grounded && !_wasGrounded)
-            {
-                Flash(PlayerAnimationState.Land);
-            }
-
-            _wasGrounded = grounded;
             if (Held(PlayerAnimationState.Land))
             {
                 return PlayerAnimationState.Land;
