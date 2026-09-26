@@ -1141,6 +1141,9 @@ namespace ForgottenKingdom.EditorTools
             var body = Ensure<Rigidbody2D>(root);
             body.gravityScale = 3.5f;
             body.freezeRotation = true;
+            // Physics runs at 50 Hz; without interpolation the body jumps between steps on a
+            // 60 or 120 Hz screen while the smoothly interpolated player moves past it.
+            body.interpolation = RigidbodyInterpolation2D.Interpolate;
             body.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
             body.excludeLayers = (1 << PlayerLayer) | (1 << EnemyLayer);
 
@@ -1317,6 +1320,9 @@ namespace ForgottenKingdom.EditorTools
             var body = Ensure<Rigidbody2D>(root);
             body.gravityScale = 3.5f;
             body.freezeRotation = true;
+            // Physics runs at 50 Hz; without interpolation the body jumps between steps on a
+            // 60 or 120 Hz screen while the smoothly interpolated player moves past it.
+            body.interpolation = RigidbodyInterpolation2D.Interpolate;
             body.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
             body.excludeLayers = (1 << PlayerLayer) | (1 << EnemyLayer);
 
@@ -1506,6 +1512,9 @@ namespace ForgottenKingdom.EditorTools
             var body = Ensure<Rigidbody2D>(root);
             body.gravityScale = 3.5f;
             body.freezeRotation = true;
+            // Physics runs at 50 Hz; without interpolation the body jumps between steps on a
+            // 60 or 120 Hz screen while the smoothly interpolated player moves past it.
+            body.interpolation = RigidbodyInterpolation2D.Interpolate;
             body.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
             body.excludeLayers = (1 << PlayerLayer) | (1 << EnemyLayer);
 
@@ -1566,6 +1575,9 @@ namespace ForgottenKingdom.EditorTools
             var body = Ensure<Rigidbody2D>(root);
             body.gravityScale = 3.5f;
             body.freezeRotation = true;
+            // Physics runs at 50 Hz; without interpolation the body jumps between steps on a
+            // 60 or 120 Hz screen while the smoothly interpolated player moves past it.
+            body.interpolation = RigidbodyInterpolation2D.Interpolate;
             body.constraints |= RigidbodyConstraints2D.FreezePositionX;
             body.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
             body.excludeLayers = (1 << PlayerLayer) | (1 << EnemyLayer);

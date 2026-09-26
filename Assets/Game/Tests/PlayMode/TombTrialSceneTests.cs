@@ -40,6 +40,42 @@ namespace ForgottenKingdom.Tests
             Time.timeScale = 1f;
         }
 
+        [Test]
+        public void EveryMovingBodyIsInterpolated()
+        {
+            // Physics steps at 50 Hz; a body without interpolation stutters on a 60 or 120 Hz
+            // screen next to the smoothly interpolated player and camera.
+            var bodies = new System.Collections.Generic.List<Rigidbody2D>();
+            foreach (var enemy in Object.FindObjectsByType<EnemyController>(FindObjectsInactive.Include))
+            {
+                bodies.Add(enemy.GetComponent<Rigidbody2D>());
+            }
+
+            foreach (var boss in Object.FindObjectsByType<BossController>(FindObjectsInactive.Include))
+            {
+                bodies.Add(boss.GetComponent<Rigidbody2D>());
+            }
+
+            foreach (var dummy in Object.FindObjectsByType<TrainingDummy>(FindObjectsInactive.Include))
+            {
+                bodies.Add(dummy.GetComponent<Rigidbody2D>());
+            }
+
+            foreach (var attacker in Object.FindObjectsByType<TrainingAttacker>(FindObjectsInactive.Include))
+            {
+                bodies.Add(attacker.GetComponent<Rigidbody2D>());
+            }
+
+            bodies.Add(_player.GetComponent<Rigidbody2D>());
+            Assert.That(bodies, Has.Count.GreaterThan(5));
+            foreach (var body in bodies)
+            {
+                Assert.That(body, Is.Not.Null);
+                Assert.That(body.interpolation, Is.EqualTo(RigidbodyInterpolation2D.Interpolate),
+                    body.name);
+            }
+        }
+
         [UnityTest]
         public IEnumerator TheLevelContainsEveryPieceOfTheSlice()
         {
