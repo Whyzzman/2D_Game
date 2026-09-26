@@ -61,6 +61,7 @@ namespace ForgottenKingdom
         private float _guardImpactUntil;
         private float _decisionReadyAt;
         private float[] _attackReadyPerOption = Array.Empty<float>();
+        private EnemySenses _senses;
 
         public event Action<EnemyState> StateChanged;
         public event Action Alerted;
@@ -119,6 +120,7 @@ namespace ForgottenKingdom
                 return;
             }
 
+            _senses = new EnemySenses(_definition, _motor, transform);
             _spawnPosition = transform.position;
             _spawnFacing = _motor.FacingDirection;
             _idleDuration = RollIdleTime();
@@ -739,23 +741,10 @@ namespace ForgottenKingdom
 
         private bool HasTarget => _target != null;
 
+        /// <summary>Sight, and a sighting refreshes where the target was last seen.</summary>
         private bool CanSeeTarget()
         {
-            if (!HasTarget || !_target.IsAlive)
-            {
-                return false;
-            }
-
-            var delta = (Vector2)_target.transform.position - (Vector2)transform.position;
-            if (Mathf.Abs(delta.y) > _definition.VerticalDetectionRange)
-            {
-                return false;
-            }
-
-            var isInFront = Mathf.Sign(delta.x) == _motor.FacingDirection
-                || Mathf.Abs(delta.x) < _definition.FacingDeadZone;
-            var range = isInFront ? _definition.DetectionRange : _definition.BehindDetectionRange;
-            if (delta.magnitude > range || !HasLineOfSightToTarget())
+            if (!_senses.CanSee(_target))
             {
                 return false;
             }
@@ -764,28 +753,11 @@ namespace ForgottenKingdom
             return true;
         }
 
-        private bool HasLineOfSightToTarget()
-        {
-            return HasTarget && _motor.HasLineOfSight(_target.transform.position);
-        }
+        private bool HasLineOfSightToTarget() => _senses.HasLineOfSight(_target);
 
-        private bool IsTargetInStrikingRange()
-        {
-            if (!HasTarget || !_target.IsAlive)
-            {
-                return false;
-            }
+        private bool IsTargetInStrikingRange() => _senses.IsInStrikingRange(_target);
 
-            var delta = (Vector2)_target.transform.position - (Vector2)transform.position;
-            // A target on the floor above must not be hit through the ceiling.
-            return Mathf.Abs(delta.x) <= _definition.AttackRange
-                && Mathf.Abs(delta.y) <= _definition.VerticalAttackRange;
-        }
-
-        private bool IsBlockedAhead()
-        {
-            return !_motor.HasGroundAhead() || _motor.HasWallAhead();
-        }
+        private bool IsBlockedAhead() => _senses.IsBlockedAhead();
 
         private bool IsOutsidePatrolArea()
         {

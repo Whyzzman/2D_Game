@@ -816,8 +816,11 @@ x≈36,5) с местом для рывка за спину → вход в ар
   префабы ссылаются на них как прежде): `CombatDebugOverlay`, `WorldDebugTools`,
   `AnimationDebugTools`, `EnemyAnimationDebugTools`, `EnvironmentDebugTools`,
   `FeedbackDebugTools`. Легко · мало.
-- [ ] **26. Крупные классы** (`EnemyController` 962 строки, `PlayerCharacter` 752,
-  `BossController` 660). → выносить части постепенно по мере правок. Средне · мало.
+- [x] **26. Крупные классы** (`EnemyController` 962 строки, `PlayerCharacter` 752,
+  `BossController` 660). Сделано 2026-09-26 по выбору пользователя: правило в `AGENTS.md` —
+  при правке большого класса выносить затронутую часть; первое вынесение — «органы
+  чувств» врага (`EnemySenses`: видимость, прямая линия, зона удара, препятствие
+  впереди) без изменения поведения. Средне · мало.
 
 ### Геймплей
 
