@@ -100,6 +100,17 @@ namespace ForgottenKingdom.Tests
         }
 
         /// <summary>
+        /// The map holds what the game reads and nothing else. The template's Attack, Look,
+        /// Crouch, Previous and Next shared 1, 2, B and the d-pad with real actions.
+        /// </summary>
+        [Test]
+        public void ThePlayerMapHoldsOnlyGameActions()
+        {
+            var names = _player.actions.Select(action => action.name).ToList();
+            Assert.That(names, Is.EquivalentTo(GameActions));
+        }
+
+        /// <summary>
         /// One keyboard preset: WASD and the left hand's keys, J/K/L under the right. Arrows
         /// moving the player put movement and the attacks under the same hand.
         /// </summary>
