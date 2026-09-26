@@ -61,7 +61,7 @@ namespace ForgottenKingdom.Tests
             InputSystem.settings = _previousSettings;
             Object.Destroy(_testSettings);
             Application.runInBackground = _wasRunningInBackground;
-            Time.timeScale = 1f;
+            GameTimeScale.Reset();
             SaveSystem.Delete();
             yield return null;
         }
@@ -351,6 +351,35 @@ namespace ForgottenKingdom.Tests
             Assert.That(zombie.State, OneOf(EnemyState.ReturnToPatrol, EnemyState.Idle,
                 EnemyState.Patrol, EnemyState.Search),
                 "The zombie must not keep swinging at a corpse.");
+        }
+
+        [UnityTest]
+        public IEnumerator ALongFightInReachNeverRunsOutOfChaseTime()
+        {
+            // The chase limit used to keep counting through the whole fight: after 12–16 s the
+            // zombie gave up mid-swing, searched, re-acquired the player and stood for its alert
+            // time — a free opening every few exchanges. Standing in reach, that must not happen.
+            var zombie = _zombies[0];
+            _player.Actor.SetInvulnerable(ImmunitySource.Script, 1000f);
+            yield return StandNextTo(zombie, 1.2f);
+            yield return WaitUntil(() => zombie.State == EnemyState.Chase
+                || zombie.State == EnemyState.Attack, 6f);
+            Assume.That(zombie.State, OneOf(EnemyState.Chase, EnemyState.Attack));
+
+            var alerts = 0;
+            zombie.Alerted += () => alerts++;
+            GameTimeScale.SetBaseScale(4f);
+            var end = Time.time + zombie.Definition.MaxChaseTime * 3f;
+            while (Time.time < end)
+            {
+                Assert.That(zombie.State, Is.Not.EqualTo(EnemyState.Search),
+                    "The zombie lost interest in a player standing in reach.");
+                yield return null;
+            }
+
+            GameTimeScale.SetBaseScale(1f);
+            Assert.That(alerts, Is.Zero, "The zombie had to find the player again mid-fight.");
+            _player.Actor.ClearInvulnerability();
         }
 
         /// <summary>Accepts any of several states, for checks where the exact tick does not matter.</summary>

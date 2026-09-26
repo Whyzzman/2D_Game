@@ -414,6 +414,14 @@ namespace ForgottenKingdom
             }
 
             _lastKnownTargetPosition = _target.transform.position;
+            if (IsTargetInStrikingRange())
+            {
+                // The limit is for a chase that never reaches its target. Once the target is in
+                // reach this is a fight, and a fight must not run out of time and hand the
+                // player a free opening while the enemy stands searching for them.
+                _chaseTime = 0f;
+            }
+
             FaceTarget();
             if (CanAttack() && TryBeginAttack(horizontal))
             {
@@ -706,6 +714,7 @@ namespace ForgottenKingdom
                 return false;
             }
 
+            _chaseTime = 0f;
             _attackReadyPerOption[index] = Time.time + option.Cooldown;
             _decisionReadyAt = Time.time + _definition.DecisionCooldown;
             CurrentAttackKind = option.Kind;
@@ -825,6 +834,8 @@ namespace ForgottenKingdom
                 _lastKnownTargetPosition = info.Attacker.transform.position;
             }
 
+            // Being hit is being fought, not chasing in vain.
+            _chaseTime = 0f;
             Hurt?.Invoke(info);
             if (_state == EnemyState.Stunned || _state == EnemyState.GuardBroken
                 || Time.time < _hurtReadyAt)
