@@ -9,7 +9,8 @@ using UnityEngine.TestTools;
 namespace ForgottenKingdom.Tests
 {
     /// <summary>
-    /// The Tomb camera's framing: a jump does not rock the view.
+    /// The Tomb camera's framing: a jump does not rock the view, and the view never shows past
+    /// the world's ends.
     /// </summary>
     public sealed class CameraFramingTests
     {
@@ -83,6 +84,22 @@ namespace ForgottenKingdom.Tests
             yield return Keys();
             Assume.That(rise, Is.GreaterThan(1.5f), "The jump has to happen for this to mean anything.");
             Assert.That(drift, Is.LessThan(0.05f), "A plain jump moved the view.");
+        }
+
+        [UnityTest]
+        public IEnumerator TheViewStopsAtTheWorldsWestEnd()
+        {
+            var bounds = _follow.ActiveBounds;
+            Assert.That(bounds.HasValue, Is.True, "The world graph gives the camera its extent.");
+
+            _motor.ResetTo(new Vector2(bounds.Value.xMin + 1f, _motor.transform.position.y));
+            yield return Realtime(1f);
+
+            var halfWidth = _camera.orthographicSize * _camera.aspect;
+            Assert.That(_follow.TargetPosition.x - halfWidth,
+                Is.GreaterThanOrEqualTo(bounds.Value.xMin - 0.01f));
+            Assert.That(_camera.transform.position.x - halfWidth,
+                Is.GreaterThanOrEqualTo(bounds.Value.xMin - 0.1f), "Nothing past the end is shown.");
         }
 
         private IEnumerator Keys(params Key[] keys)

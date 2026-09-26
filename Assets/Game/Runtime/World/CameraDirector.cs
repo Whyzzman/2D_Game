@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace ForgottenKingdom
 {
@@ -9,6 +10,10 @@ namespace ForgottenKingdom
     ///
     /// Restrained on purpose: a slow widen over a second, a punch of a few percent for a tenth of
     /// a second, and the reduced-motion setting turns the punch off.
+    ///
+    /// It also gives the follow its limits from the world graph: the extent of this scene's
+    /// areas, so the view never shows past the world's ends. The areas are coarse slabs today; tighter per-room
+    /// rectangles can replace them later without touching the camera.
     /// </summary>
     [DisallowMultipleComponent]
     [RequireComponent(typeof(CameraFollow2D))]
@@ -22,12 +27,19 @@ namespace ForgottenKingdom
         private CameraFollow2D _follow;
         private BossEncounter[] _encounters = System.Array.Empty<BossEncounter>();
         private PlayerCharacter _player;
+        private GameProgress _progress;
 
         private void Awake()
         {
             _follow = GetComponent<CameraFollow2D>();
             _encounters = FindObjectsByType<BossEncounter>(FindObjectsInactive.Include);
             _player = FindAnyObjectByType<PlayerCharacter>();
+            _progress = FindAnyObjectByType<GameProgress>();
+        }
+
+        private void Start()
+        {
+            _follow.SetWorldBounds(SceneExtent());
         }
 
         private void OnEnable()
@@ -64,6 +76,38 @@ namespace ForgottenKingdom
         private void OnFightStarted(BossController boss) => _follow.SetZoom(_bossZoom, _bossZoomTime);
 
         private void OnFightEnded(BossController boss) => _follow.SetZoom(1f, _bossZoomTime * 1.5f);
+
+        /// <summary>Every area of this scene put together, or nothing when there is no graph.</summary>
+        private Rect? SceneExtent()
+        {
+            var graph = _progress != null ? _progress.World : null;
+            if (graph == null)
+            {
+                return null;
+            }
+
+            var scene = SceneManager.GetActiveScene().name;
+            Rect? extent = null;
+            foreach (var area in graph.Areas)
+            {
+                var zone = area != null ? graph.Zone(area.ZoneId) : null;
+                if (area == null || (zone != null && !string.IsNullOrEmpty(zone.SceneName)
+                    && zone.SceneName != scene))
+                {
+                    continue;
+                }
+
+                var bounds = area.WorldBounds;
+                extent = extent.HasValue
+                    ? Rect.MinMaxRect(Mathf.Min(extent.Value.xMin, bounds.xMin),
+                        Mathf.Min(extent.Value.yMin, bounds.yMin),
+                        Mathf.Max(extent.Value.xMax, bounds.xMax),
+                        Mathf.Max(extent.Value.yMax, bounds.yMax))
+                    : bounds;
+            }
+
+            return extent;
+        }
 
         private void OnParried(DamageInfo info)
         {

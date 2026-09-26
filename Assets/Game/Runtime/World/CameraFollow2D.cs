@@ -40,6 +40,7 @@ namespace ForgottenKingdom
         private float _anchorY;
         private float _fallLead;
         private float _fallLeadVelocity;
+        private Rect? _worldBounds;
         private float _lead;
         private float _leadVelocity;
         private float _depth;
@@ -54,9 +55,12 @@ namespace ForgottenKingdom
 
         /// <summary>Where the camera is heading, before shake; tests measure framing against this.</summary>
         public Vector2 TargetPosition => _target != null
-            ? new Vector2(_target.transform.position.x + _lead, _anchorY + _fallLead)
-                + _framingOffset
+            ? Clamp(new Vector2(_target.transform.position.x + _lead, _anchorY + _fallLead)
+                + _framingOffset)
             : (Vector2)transform.position;
+
+        /// <summary>The rectangle the view is kept inside right now, if any.</summary>
+        public Rect? ActiveBounds => _worldBounds;
 
         private bool HasVerticalDeadZone => _verticalDeadZoneAbove > 0f;
 
@@ -135,6 +139,11 @@ namespace ForgottenKingdom
         }
 
         /// <summary>
+        /// The whole world's extent: the view never shows past it. Null lifts the limit.
+        /// </summary>
+        public void SetWorldBounds(Rect? bounds) => _worldBounds = bounds;
+
+        /// <summary>
         /// Keeps the vertical anchor at the last footing, the way Hollow Knight's camera does: a
         /// jump alone does not move the view. It follows on landing, when the player climbs past
         /// the dead zone (a wall run, a tall drop), and runs ahead of a long fall.
@@ -163,6 +172,33 @@ namespace ForgottenKingdom
             var falling = _fallLookAhead > 0f && _target.Velocity.y < -_fallLookAheadSpeed;
             _fallLead = Mathf.SmoothDamp(_fallLead, falling ? -_fallLookAhead : 0f,
                 ref _fallLeadVelocity, _fallLookAheadSmoothTime, Mathf.Infinity, Time.deltaTime);
+        }
+
+        /// <summary>
+        /// Moves a view centre so the whole view stays inside the active bounds. A rectangle
+        /// narrower than the view centres it instead.
+        /// </summary>
+        private Vector2 Clamp(Vector2 center)
+        {
+            var bounds = ActiveBounds;
+            if (!bounds.HasValue || _camera == null)
+            {
+                return center;
+            }
+
+            var rect = bounds.Value;
+            var halfHeight = _camera.orthographicSize;
+            var halfWidth = halfHeight * _camera.aspect;
+            center.x = ClampAxis(center.x, rect.xMin, rect.xMax, halfWidth);
+            center.y = ClampAxis(center.y, rect.yMin, rect.yMax, halfHeight);
+            return center;
+        }
+
+        private static float ClampAxis(float value, float min, float max, float half)
+        {
+            return max - min <= half * 2f
+                ? (min + max) * 0.5f
+                : Mathf.Clamp(value, min + half, max - half);
         }
 
         /// <summary>Eases the view to a size relative to its normal one (1 = normal).</summary>
