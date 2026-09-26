@@ -99,6 +99,22 @@ namespace ForgottenKingdom.Tests
             }
         }
 
+        /// <summary>
+        /// One keyboard preset: WASD and the left hand's keys, J/K/L under the right. Arrows
+        /// moving the player put movement and the attacks under the same hand.
+        /// </summary>
+        [Test]
+        public void TheArrowKeysAreNotPartOfThePreset()
+        {
+            foreach (var name in GameActions)
+            {
+                foreach (var trigger in Triggers(_player.FindAction(name, true)))
+                {
+                    Assert.That(trigger, Does.Not.Contain("Arrow"), name);
+                }
+            }
+        }
+
         [Test]
         public void EveryPadSkillAndSpellIsUnderTheModifier()
         {
