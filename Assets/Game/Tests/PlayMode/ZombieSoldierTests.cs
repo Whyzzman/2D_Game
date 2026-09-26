@@ -418,6 +418,41 @@ namespace ForgottenKingdom.Tests
                 "More zombies swung at once than the tokens allow.");
         }
 
+        [UnityTest]
+        public IEnumerator AZombieStruckFromOutOfSightGoesAfterTheAttacker()
+        {
+            // Spells reach 12 to 13; a zombie sees 8. Hit from past that, it used to flinch and
+            // walk home, so it could be shot down for free.
+            var zombie = _zombies[0];
+            var origin = (Vector2)zombie.transform.position;
+            var spot = Vector2.zero;
+            foreach (var side in new[] { -1f, 1f })
+            {
+                var candidate = origin + new Vector2(side * 10.5f, 0.5f);
+                if (Physics2D.Raycast(candidate, Vector2.down, 3f, 1 << 9))
+                {
+                    spot = candidate;
+                    break;
+                }
+            }
+
+            Assume.That(spot, Is.Not.EqualTo(Vector2.zero), "Needs floor 10.5 away from the zombie.");
+            _player.Actor.SetInvulnerable(ImmunitySource.Script, 1000f);
+            _motor.ResetTo(spot);
+            yield return Realtime(0.3f);
+            Assume.That(zombie.State, OneOf(EnemyState.Idle, EnemyState.Patrol));
+            var towardPlayer = spot.x > zombie.transform.position.x ? 1 : -1;
+
+            zombie.Actor.ApplyDamage(new DamageInfo(5f, new Vector2(-towardPlayer, 0f),
+                attacker: _player.gameObject, hitPoint: zombie.transform.position));
+            yield return Realtime(1f);
+
+            Assert.That(zombie.State, OneOf(EnemyState.Search, EnemyState.Alert,
+                EnemyState.Chase, EnemyState.Attack), "It went home instead of after the attacker.");
+            Assert.That(zombie.FacingDirection, Is.EqualTo(towardPlayer), "It turned toward the blow.");
+            _player.Actor.ClearInvulnerability();
+        }
+
         /// <summary>Accepts any of several states, for checks where the exact tick does not matter.</summary>
         private static NUnit.Framework.Constraints.EqualConstraint OneOf(params EnemyState[] states)
         {

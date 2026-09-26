@@ -62,6 +62,12 @@ namespace ForgottenKingdom
         private float _decisionReadyAt;
         private float[] _attackReadyPerOption = Array.Empty<float>();
         private EnemySenses _senses;
+        /// <summary>
+        /// Hit by an attacker it could not see. Instead of shrugging it off and walking home, the
+        /// enemy goes after where the blow came from, at chase speed — as Hollow Knight's enemies
+        /// turn on whatever struck them. Cleared once it finds the target or gives up.
+        /// </summary>
+        private bool _isProvoked;
 
         public event Action<EnemyState> StateChanged;
         public event Action Alerted;
@@ -229,6 +235,7 @@ namespace ForgottenKingdom
 
         public void ClearTarget()
         {
+            _isProvoked = false;
             _lastKnownTargetPosition = transform.position;
             if (_state == EnemyState.Chase || _state == EnemyState.Attack
                 || _state == EnemyState.Alert || _state == EnemyState.Search)
@@ -243,6 +250,7 @@ namespace ForgottenKingdom
         /// </summary>
         public void ResetEnemy()
         {
+            _isProvoked = false;
             _actor.Statuses?.Clear();
             _combat.Cancel();
             _actor.ClearInvulnerability();
@@ -597,6 +605,7 @@ namespace ForgottenKingdom
 
             if (_stateTimer >= _definition.SearchTime)
             {
+                _isProvoked = false;
                 Enter(EnemyState.ReturnToPatrol);
                 return;
             }
@@ -609,7 +618,7 @@ namespace ForgottenKingdom
             }
 
             _motor.Face(delta > 0f ? 1 : -1);
-            _motor.Drive(_definition.PatrolSpeed);
+            _motor.Drive(_isProvoked ? _definition.ChaseSpeed : _definition.PatrolSpeed);
         }
 
         private void TickReturn()
@@ -647,7 +656,20 @@ namespace ForgottenKingdom
 
             // Leaving a stun never comes with a free swing.
             _attackReadyAt = Mathf.Max(_attackReadyAt, Time.time + _definition.AlertTime);
-            Enter(CanSeeTarget() ? EnemyState.Chase : EnemyState.ReturnToPatrol);
+            if (CanSeeTarget())
+            {
+                Enter(EnemyState.Chase);
+            }
+            else if (_isProvoked)
+            {
+                // Struck from out of sight: go after where the blow came from, not back home.
+                FaceTowardLastKnown();
+                Enter(EnemyState.Search, force: true);
+            }
+            else
+            {
+                Enter(EnemyState.ReturnToPatrol);
+            }
         }
 
         /// <summary>
@@ -766,6 +788,11 @@ namespace ForgottenKingdom
                 && Mathf.Sign(offset) == _motor.FacingDirection;
         }
 
+        private void FaceTowardLastKnown()
+        {
+            _motor.FaceTowards(_lastKnownTargetPosition.x);
+        }
+
         private void FaceTarget()
         {
             var delta = _target.transform.position.x - transform.position.x;
@@ -811,6 +838,7 @@ namespace ForgottenKingdom
             if (info.Attacker != null)
             {
                 _lastKnownTargetPosition = info.Attacker.transform.position;
+                _isProvoked = true;
             }
 
             // Being hit is being fought, not chasing in vain.
@@ -820,7 +848,15 @@ namespace ForgottenKingdom
                 || Time.time < _hurtReadyAt)
             {
                 // Flinch has a cooldown, so a flurry of light hits cannot freeze the enemy, and a
-                // broken guard is already a long opening that must not be extended.
+                // broken guard is already a long opening that must not be extended. An enemy that
+                // was wandering still turns on the blow instead of walking on.
+                if (_isProvoked && (_state == EnemyState.Idle || _state == EnemyState.Patrol
+                    || _state == EnemyState.ReturnToPatrol || _state == EnemyState.Search))
+                {
+                    FaceTowardLastKnown();
+                    Enter(EnemyState.Search, force: true);
+                }
+
                 return;
             }
 
@@ -928,6 +964,8 @@ namespace ForgottenKingdom
             _decisionTimer = 0f;
             if (next == EnemyState.Alert)
             {
+                // Found what it was looking for.
+                _isProvoked = false;
                 Alerted?.Invoke();
             }
         }
