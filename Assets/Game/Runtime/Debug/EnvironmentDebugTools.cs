@@ -50,10 +50,16 @@ namespace ForgottenKingdom
                 return;
             }
 
-            if (keyboard.f9Key.wasPressedThisFrame)
+            if (keyboard.f9Key.wasPressedThisFrame && DebugPanels.MayToggle(this))
             {
                 _isVisible = !_isVisible;
+                DebugPanels.Report(this, _isVisible);
                 if (_isVisible) { Rescan(); }
+            }
+
+            if (!_isVisible)
+            {
+                return;
             }
 
             if (keyboard.f10Key.wasPressedThisFrame) { SetForeground(!_showForeground); }
@@ -91,6 +97,7 @@ namespace ForgottenKingdom
 
         private void OnDisable()
         {
+            DebugPanels.Report(this, false);
             SetForeground(true);
             SetParallax(true);
         }

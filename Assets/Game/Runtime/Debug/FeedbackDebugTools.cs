@@ -37,6 +37,8 @@ namespace ForgottenKingdom
             if (_player == null) { _player = FindAnyObjectByType<PlayerCharacter>(); }
         }
 
+        private void OnDisable() => DebugPanels.Report(this, false);
+
         private void Update()
         {
             var keyboard = Keyboard.current;
@@ -46,9 +48,10 @@ namespace ForgottenKingdom
             }
 
             var control = keyboard.leftCtrlKey.isPressed || keyboard.rightCtrlKey.isPressed;
-            if (control && keyboard.fKey.wasPressedThisFrame)
+            if (control && keyboard.fKey.wasPressedThisFrame && DebugPanels.MayToggle(this))
             {
                 _isVisible = !_isVisible;
+                DebugPanels.Report(this, _isVisible);
             }
 
             if (!_isVisible)

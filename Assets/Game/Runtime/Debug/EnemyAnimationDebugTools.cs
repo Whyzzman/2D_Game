@@ -49,9 +49,10 @@ namespace ForgottenKingdom
                 return;
             }
 
-            if (keyboard.f6Key.wasPressedThisFrame)
+            if (keyboard.f6Key.wasPressedThisFrame && DebugPanels.MayToggle(this))
             {
                 _isVisible = !_isVisible;
+                DebugPanels.Report(this, _isVisible);
                 if (_isVisible)
                 {
                     Rescan();
@@ -125,7 +126,11 @@ namespace ForgottenKingdom
             _boss.ForcedState = states[(current + direction + states.Length) % states.Length];
         }
 
-        private void OnDisable() => Release();
+        private void OnDisable()
+        {
+            Release();
+            DebugPanels.Report(this, false);
+        }
 
         private void OnGUI()
         {

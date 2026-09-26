@@ -76,6 +76,7 @@ namespace ForgottenKingdom
 
         private void OnDisable()
         {
+            DebugPanels.Report(this, false);
             _screen?.RemovePresenter(this);
         }
 
@@ -95,9 +96,17 @@ namespace ForgottenKingdom
                 return;
             }
 
-            if (keyboard.f1Key.wasPressedThisFrame)
+            if (keyboard.f1Key.wasPressedThisFrame && DebugPanels.MayToggle(this))
             {
                 _isVisible = !_isVisible;
+                DebugPanels.Report(this, _isVisible);
+            }
+
+            // Every action below — F2 to F12, the digits and the rest — works only while this
+            // panel is open, so none of them can go off from a gameplay key.
+            if (!_isVisible)
+            {
+                return;
             }
 
             if (keyboard.f5Key.wasPressedThisFrame)

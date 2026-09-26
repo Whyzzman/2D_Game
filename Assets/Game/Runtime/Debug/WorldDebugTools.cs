@@ -58,11 +58,13 @@ namespace ForgottenKingdom
             if (_world != null) { _world.ZoneTitleRequested -= ShowTitleCard; }
             _shrine?.RemovePresenter(this);
             _map?.RemovePresenter(this);
+            DebugPanels.Report(this, false);
         }
 
         public void SetVisible(bool isVisible)
         {
             _isVisible = isVisible;
+            DebugPanels.Report(this, isVisible);
             // Only while the panel is up does an altar open its menu; otherwise it rests at once,
             // exactly as a player without an interface would expect.
             if (_shrine == null)
@@ -88,7 +90,7 @@ namespace ForgottenKingdom
                 return;
             }
 
-            if (keyboard.backquoteKey.wasPressedThisFrame)
+            if (keyboard.backquoteKey.wasPressedThisFrame && DebugPanels.MayToggle(this))
             {
                 SetVisible(!_isVisible);
             }

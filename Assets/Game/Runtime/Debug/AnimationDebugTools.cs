@@ -45,7 +45,11 @@ namespace ForgottenKingdom
             }
         }
 
-        private void OnDisable() => RestoreTimeScale();
+        private void OnDisable()
+        {
+            RestoreTimeScale();
+            DebugPanels.Report(this, false);
+        }
 
         private void Update()
         {
@@ -55,7 +59,17 @@ namespace ForgottenKingdom
                 return;
             }
 
-            if (keyboard.f2Key.wasPressedThisFrame) { _isVisible = !_isVisible; }
+            if (keyboard.f2Key.wasPressedThisFrame && DebugPanels.MayToggle(this))
+            {
+                _isVisible = !_isVisible;
+                DebugPanels.Report(this, _isVisible);
+            }
+
+            if (!_isVisible)
+            {
+                return;
+            }
+
             if (keyboard.f3Key.wasPressedThisFrame) { ToggleSlowMotion(); }
             if (keyboard.f4Key.wasPressedThisFrame && _animation != null)
             {
