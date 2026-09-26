@@ -142,15 +142,27 @@ namespace ForgottenKingdom
             // Re-read every step rather than cached at start: the ability is granted mid-session,
             // by a boss reward, and the player should have it the moment it is handed over.
             _logic.AirJumpsAllowed = CanDoubleJump ? _settings.AirJumps : 0;
-            var nextVelocity = _logic.Step(velocity, hasGround, input,
-                Time.fixedDeltaTime, mode, movementScale);
-            if (_skillVelocity.HasValue) { nextVelocity = _skillVelocity.Value; }
             var canWall = mode == LocomotionMode.Normal && !IsDashing
                 && (_progress == null || _progress.HasAbility(AbilityIds.WallRun));
+            var wall = _wallMovement != null && canWall ? ProbeWall() : 0;
+            // A press while pushing into a wall in the air is the wall's jump, not the second one.
+            _logic.IsWallJumpPending = wall != 0 && !IsGrounded && input.IsJumpPressed
+                && input.Horizontal * wall > 0.1f;
+            var nextVelocity = _logic.Step(velocity, hasGround, input,
+                Time.fixedDeltaTime, mode, movementScale);
+            _logic.IsWallJumpPending = false;
+            if (_skillVelocity.HasValue) { nextVelocity = _skillVelocity.Value; }
             if (_wallMovement != null)
             {
-                nextVelocity = _wallMovement.Step(nextVelocity, input, ProbeWall(),
+                nextVelocity = _wallMovement.Step(nextVelocity, input, wall,
                     IsGrounded, canWall, Time.fixedDeltaTime);
+                // Hollow Knight's rule: a wall gives the air jump and the air dash back.
+                var wallState = _wallMovement.State;
+                if (wallState == WallMovementState.Slide || wallState == WallMovementState.Run
+                    || (wallState == WallMovementState.Jump && input.IsJumpPressed))
+                {
+                    _logic.RefreshAirMoves();
+                }
             }
             if (!IsDashing && mode != LocomotionMode.Knockback && _statuses != null)
             {

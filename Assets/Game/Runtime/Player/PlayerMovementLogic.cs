@@ -62,6 +62,22 @@ namespace ForgottenKingdom
         /// </summary>
         public int AirJumpsAllowed { get; set; }
 
+        /// <summary>
+        /// Set by the motor for one step when a press against a wall is going to be a wall jump:
+        /// the same press must not also spend the second jump (and play its puff and sound).
+        /// </summary>
+        public bool IsWallJumpPending { get; set; }
+
+        /// <summary>
+        /// Gives the air jump and air dash back, as touching a wall does in Hollow Knight: slide or
+        /// run on a wall and both are ready again for the leap off it.
+        /// </summary>
+        public void RefreshAirMoves()
+        {
+            _airDashesUsed = 0;
+            _airJumpsUsed = 0;
+        }
+
         /// <summary>True when a second jump is available right now.</summary>
         public bool IsAirJumpReady => !IsGrounded && !IsDashing && _airJumpsUsed < AirJumpsAllowed;
 
@@ -125,8 +141,9 @@ namespace ForgottenKingdom
             IsGrounded = hasGround && !_awaitingGroundExit && velocity.y <= MotionThreshold;
             if (IsGrounded)
             {
-                // Air dashes and air jumps come back only on a confirmed landing, never on a wall
-                // or a slope. Refreshing them on wall contact is what turns a wall into a ladder.
+                // Air dashes and air jumps come back on a confirmed landing — never on a slope.
+                // Walls give them back too, as in Hollow Knight, but that is the motor's call
+                // through RefreshAirMoves, since only it knows the wall is there.
                 _airDashesUsed = 0;
                 _airJumpsUsed = 0;
             }
@@ -180,7 +197,7 @@ namespace ForgottenKingdom
                 _awaitingGroundExit = true;
                 IsGrounded = false;
             }
-            else if (input.IsJumpPressed && IsAirJumpReady)
+            else if (input.IsJumpPressed && IsAirJumpReady && !IsWallJumpPending)
             {
                 // Deliberately a fresh press rather than the buffer: a press made just before
                 // landing is meant for the landing, and spending the second jump on it would feel

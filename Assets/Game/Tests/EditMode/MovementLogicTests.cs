@@ -182,6 +182,36 @@ namespace ForgottenKingdom.Tests
         }
 
         [Test]
+        public void AWallJumpPressDoesNotSpendTheSecondJump()
+        {
+            _logic.AirJumpsAllowed = 1;
+            var airborne = _logic.Step(Vector2.zero, false, default, StepTime);
+            Assume.That(_logic.IsAirJumpReady, Is.True);
+            var jumped = false;
+            _logic.AirJumped += () => jumped = true;
+
+            _logic.IsWallJumpPending = true;
+            _logic.Step(airborne, false, new MovementInput(1f, true, true), StepTime);
+            _logic.IsWallJumpPending = false;
+
+            Assert.That(jumped, Is.False, "The press belonged to the wall, not the second jump.");
+            Assert.That(_logic.AirJumpsUsed, Is.Zero);
+        }
+
+        [Test]
+        public void TouchingAWallGivesTheSecondJumpBack()
+        {
+            _logic.AirJumpsAllowed = 1;
+            var velocity = _logic.Step(Vector2.zero, false, default, StepTime);
+            velocity = _logic.Step(velocity, false, new MovementInput(0f, true, true), StepTime);
+            Assume.That(_logic.AirJumpsUsed, Is.EqualTo(1));
+            Assert.That(_logic.IsAirJumpReady, Is.False);
+
+            _logic.RefreshAirMoves();
+            Assert.That(_logic.IsAirJumpReady, Is.True, "As in Hollow Knight: the wall gives it back.");
+        }
+
+        [Test]
         public void ReleasingAJumpSlowsItOverTwoStepsRatherThanCuttingIt()
         {
             var velocity = _logic.Step(Vector2.zero, true,
