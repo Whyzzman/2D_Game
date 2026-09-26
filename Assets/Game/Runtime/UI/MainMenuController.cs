@@ -49,7 +49,7 @@ namespace ForgottenKingdom
                 return;
             }
 
-            Time.timeScale = 1f;
+            GameTimeScale.Reset();
             _fade = _root.Q("fade");
             _options = _root.Q("options-panel");
             _continue = _root.Q<Button>("continue");

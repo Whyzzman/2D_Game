@@ -102,7 +102,7 @@ namespace ForgottenKingdom
 
             if (keyboard.f5Key.wasPressedThisFrame)
             {
-                Time.timeScale = 1f;
+                GameTimeScale.Reset();
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             }
 

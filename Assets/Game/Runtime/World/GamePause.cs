@@ -13,7 +13,6 @@ namespace ForgottenKingdom
     public sealed class GamePause : MonoBehaviour
     {
         private static GamePause _instance;
-        private float _resumeTimeScale = 1f;
         private int _holds;
 
         public static event Action<bool> PauseChanged;
@@ -42,7 +41,7 @@ namespace ForgottenKingdom
             // Leaving the scene paused would freeze the next one before it started.
             if (_holds > 0)
             {
-                Time.timeScale = _resumeTimeScale;
+                GameTimeScale.SetPaused(false);
             }
 
             _instance = null;
@@ -64,8 +63,7 @@ namespace ForgottenKingdom
                 return;
             }
 
-            _instance._resumeTimeScale = Time.timeScale > 0f ? Time.timeScale : 1f;
-            Time.timeScale = 0f;
+            GameTimeScale.SetPaused(true);
             PauseChanged?.Invoke(true);
         }
 
@@ -82,7 +80,7 @@ namespace ForgottenKingdom
                 return;
             }
 
-            Time.timeScale = _instance._resumeTimeScale;
+            GameTimeScale.SetPaused(false);
             PauseChanged?.Invoke(false);
         }
 
@@ -95,7 +93,7 @@ namespace ForgottenKingdom
             }
 
             _instance._holds = 0;
-            Time.timeScale = _instance._resumeTimeScale;
+            GameTimeScale.SetPaused(false);
             PauseChanged?.Invoke(false);
         }
     }

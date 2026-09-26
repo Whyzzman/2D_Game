@@ -62,7 +62,7 @@ namespace ForgottenKingdom.Tests
         [UnityTearDown]
         public IEnumerator TearDown()
         {
-            Time.timeScale = 1f;
+            GameTimeScale.Reset();
             if (_keyboard != null) { InputSystem.RemoveDevice(_keyboard); }
             InputSystem.settings = _previousSettings;
             Object.Destroy(_testSettings);
@@ -85,7 +85,7 @@ namespace ForgottenKingdom.Tests
             Assume.That(_progress.HasAbility(AbilityIds.DoubleJump), Is.False);
             yield return null;
 
-            Time.timeScale = 4f;
+            GameTimeScale.SetBaseScale(4f);
             yield return Walk(+1, 312f, "east to the sealed road beyond the Warden",
                 pullWinches: false);
             Assert.That(_world.CurrentAreaId, Is.EqualTo("room_forest_far_gate"));

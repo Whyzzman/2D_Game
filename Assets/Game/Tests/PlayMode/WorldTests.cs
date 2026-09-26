@@ -35,7 +35,7 @@ namespace ForgottenKingdom.Tests
         public void TearDown()
         {
             SaveSystem.Delete();
-            Time.timeScale = 1f;
+            GameTimeScale.Reset();
         }
 
         // ---------- the graph and the level agree ----------
@@ -390,7 +390,7 @@ namespace ForgottenKingdom.Tests
             _progress.MarkBossDefeated(TombScene.GuardianId);
             var from = "tomb-altar-01";
             var to = "forest-entrance";
-            Time.timeScale = 4f;
+            GameTimeScale.SetBaseScale(4f);
             for (var i = 0; i < 20; i++)
             {
                 yield return StandAt(from);
@@ -399,7 +399,7 @@ namespace ForgottenKingdom.Tests
                 (from, to) = (to, from);
             }
 
-            Time.timeScale = 1f;
+            GameTimeScale.SetBaseScale(1f);
             Assert.That(Object.FindObjectsByType<PlayerCharacter>().Length, Is.EqualTo(1));
             Assert.That(Object.FindObjectsByType<AudioManager>().Length, Is.EqualTo(1));
             Assert.That(Object.FindObjectsByType<MusicDirector>().Length, Is.EqualTo(1));

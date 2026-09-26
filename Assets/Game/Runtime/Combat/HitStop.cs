@@ -11,7 +11,6 @@ namespace ForgottenKingdom
     {
         private static HitStop _runner;
         private float _remaining;
-        private float _restoreTimeScale = 1f;
 
         public static bool IsActive => _runner != null && _runner._remaining > 0f;
 
@@ -35,13 +34,8 @@ namespace ForgottenKingdom
         private void Begin(float duration)
         {
             // A longer freeze wins; overlapping hits must not stack into a noticeable pause.
-            if (_remaining <= 0f)
-            {
-                _restoreTimeScale = Time.timeScale;
-            }
-
             _remaining = Mathf.Max(_remaining, duration);
-            Time.timeScale = 0f;
+            GameTimeScale.SetFrozen(true);
         }
 
         private void Update()
@@ -54,7 +48,8 @@ namespace ForgottenKingdom
             _remaining -= Time.unscaledDeltaTime;
             if (_remaining <= 0f)
             {
-                Time.timeScale = _restoreTimeScale;
+                // Only the freeze ends here; a pause opened meanwhile keeps the world still.
+                GameTimeScale.SetFrozen(false);
             }
         }
 
@@ -62,7 +57,7 @@ namespace ForgottenKingdom
         {
             if (_remaining > 0f)
             {
-                Time.timeScale = _restoreTimeScale;
+                GameTimeScale.SetFrozen(false);
             }
 
             if (_runner == this)

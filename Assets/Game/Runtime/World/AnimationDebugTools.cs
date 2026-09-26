@@ -78,7 +78,7 @@ namespace ForgottenKingdom
         public void ToggleSlowMotion()
         {
             _isSlow = !_isSlow;
-            Time.timeScale = _isSlow ? _slowMotionScale : 1f;
+            GameTimeScale.SetBaseScale(_isSlow ? _slowMotionScale : 1f);
         }
 
         private void RestoreTimeScale()
@@ -86,7 +86,7 @@ namespace ForgottenKingdom
             if (_isSlow)
             {
                 _isSlow = false;
-                Time.timeScale = 1f;
+                GameTimeScale.SetBaseScale(1f);
             }
         }
 

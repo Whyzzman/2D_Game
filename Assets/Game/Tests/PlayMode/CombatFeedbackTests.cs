@@ -50,7 +50,7 @@ namespace ForgottenKingdom.Tests
             FeedbackSettings.ResetToDefaults();
             GamePause.Clear();
             SaveSystem.Delete();
-            Time.timeScale = 1f;
+            GameTimeScale.Reset();
         }
 
         private void OnPlayed(FeedbackKind kind, Vector2 position) => _played.Add(kind);
@@ -149,6 +149,56 @@ namespace ForgottenKingdom.Tests
         }
 
         // ---------- the screen is taken once ----------
+
+        [UnityTest]
+        public IEnumerator AMenuOpenedDuringAHitStopKeepsTheWorldStill()
+        {
+            // The freeze used to put back the scale it found when it started, so a menu opened
+            // inside those few hundredths of a second was undone and the world ran behind it.
+            HitStop.Request(0.1f);
+            Assert.That(Time.timeScale, Is.Zero);
+            GamePause.Push();
+            yield return WaitForHitStopToEnd();
+
+            Assert.That(GamePause.IsPaused, Is.True);
+            Assert.That(Time.timeScale, Is.Zero, "The open menu must keep the world still.");
+            GamePause.Pop();
+            Assert.That(Time.timeScale, Is.EqualTo(1f));
+        }
+
+        [UnityTest]
+        public IEnumerator AHitStopEndsBackAtTheSlowMotionScale()
+        {
+            GameTimeScale.SetBaseScale(0.5f);
+            HitStop.Request(0.05f);
+            Assert.That(Time.timeScale, Is.Zero);
+            yield return WaitForHitStopToEnd();
+
+            Assert.That(Time.timeScale, Is.EqualTo(0.5f).Within(0.001f));
+        }
+
+        [UnityTest]
+        public IEnumerator ClosingAMenuDuringAHitStopLeavesTheFreezeRunning()
+        {
+            GamePause.Push();
+            HitStop.Request(0.2f);
+            GamePause.Pop();
+            Assert.That(Time.timeScale, Is.Zero, "The freeze is still running.");
+            yield return WaitForHitStopToEnd();
+
+            Assert.That(Time.timeScale, Is.EqualTo(1f));
+        }
+
+        private static IEnumerator WaitForHitStopToEnd()
+        {
+            var deadline = Time.realtimeSinceStartup + 1.5f;
+            while (HitStop.IsActive && Time.realtimeSinceStartup < deadline)
+            {
+                yield return null;
+            }
+
+            Assert.That(HitStop.IsActive, Is.False, "The freeze never ended.");
+        }
 
         [UnityTest]
         public IEnumerator ManyHitsInOneFrameOnlyFreezeTheGameOnce()
