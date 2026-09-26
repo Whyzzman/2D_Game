@@ -66,6 +66,14 @@ namespace ForgottenKingdom.Tests
         {
             foreach (PlayerAnimationState state in Enum.GetValues(typeof(PlayerAnimationState)))
             {
+                if (state == PlayerAnimationState.Heal)
+                {
+                    // Drinking a flask has no art yet and borrows the cast's opening on purpose
+                    // (ANIMATION_LIST.md); it must still never come up empty.
+                    Assert.That(_set.Clip(state, null).HasFrames, Is.True);
+                    continue;
+                }
+
                 Assert.That(_set.Has(state), Is.True,
                     $"{state} has no clip; the pipeline expects one for every state.");
             }

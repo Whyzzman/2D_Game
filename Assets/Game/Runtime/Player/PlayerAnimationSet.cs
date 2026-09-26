@@ -47,7 +47,12 @@ namespace ForgottenKingdom
         ShadowDashLoop,
         ShadowDashEnd,
         ShadowStrike,
-        WeaponSwitch
+        WeaponSwitch,
+        /// <summary>
+        /// Drinking a flask. Added last so saved states keep their numbers; until it has frames
+        /// of its own it borrows the cast's opening, the closest pose the placeholders have.
+        /// </summary>
+        Heal
     }
 
     /// <summary>
@@ -79,6 +84,11 @@ namespace ForgottenKingdom
         /// </summary>
         public AnimationClipDefinition Clip(PlayerAnimationState state, WeaponAnimationSet weapon)
         {
+            if (state == PlayerAnimationState.Heal && !Has(state, weapon))
+            {
+                return Clip(PlayerAnimationState.CastStart, weapon);
+            }
+
             var fromWeapon = weapon != null ? weapon.Clip(state) : null;
             if (fromWeapon != null)
             {

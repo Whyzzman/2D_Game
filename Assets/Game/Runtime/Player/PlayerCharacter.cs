@@ -45,6 +45,8 @@ namespace ForgottenKingdom
         [SerializeField, Min(0f)] private float _deathDelay = 1.2f;
         [Tooltip("Share of normal speed kept while the guard is up.")]
         [SerializeField, Range(0f, 1f)] private float _blockMovementScale = 0.28f;
+        [Tooltip("Estus-style flasks: charges, heal, drink time. Refilled at altars and on respawn.")]
+        [SerializeField] private HealingFlasks _flasks = new HealingFlasks();
         private readonly PlayerStateMachine _state = new PlayerStateMachine();
         private float _bufferedLightUntil;
         private float _bufferedHeavyUntil;
@@ -85,6 +87,7 @@ namespace ForgottenKingdom
         public Stamina Stamina => _stamina;
         public StaggerMeter Stagger => _stagger;
         public bool IsAlive => _actor != null && _actor.IsAlive;
+        public HealingFlasks Flasks => _flasks;
 
         public LocomotionMode LocomotionMode
         {
@@ -159,6 +162,7 @@ namespace ForgottenKingdom
             if (_caster == null) { _caster = GetComponent<SpellCaster>(); }
             if (_mana == null) { _mana = GetComponent<Mana>(); }
             if (_skills == null) { _skills = FindAnyObjectByType<PlayerSkills>(); }
+            _flasks.Bind(_actor != null ? _actor.Health : null);
         }
 
         private void OnEnable()
@@ -213,6 +217,7 @@ namespace ForgottenKingdom
             _combat?.Tick(deltaTime);
             _activeSkills?.Tick(deltaTime);
             _caster?.Tick(deltaTime);
+            _flasks.Tick(deltaTime);
             _state.IsAttackCancelable = _combat != null && _combat.IsCancelable;
             UpdateDashImmunity();
 
@@ -252,6 +257,7 @@ namespace ForgottenKingdom
                 // Progression is only the base: equipment is layered on top, and the bars end up
                 // at the derived maximum rather than at the raw saved one.
                 _stats.SetBaseProgression(progression);
+                _flasks.Refill();
                 _actor.Health.RestoreToFull();
                 _stamina?.RestoreToFull();
                 _mana?.RestoreToFull();
@@ -277,6 +283,8 @@ namespace ForgottenKingdom
             _activeSkills?.ResetCooldowns();
             _caster?.ResetCasting();
             _buffs?.Clear();
+            // Resting and respawning both come through here, and both fill the flasks.
+            _flasks.Refill();
             _motor.CancelDash();
             _stagger?.ResetStagger();
             _actor.ClearInvulnerability();
@@ -366,6 +374,12 @@ namespace ForgottenKingdom
                         _state.ExitTo();
                     }
                     break;
+                case PlayerAction.Heal:
+                    if (!_flasks.IsDrinking)
+                    {
+                        _state.ExitTo();
+                    }
+                    break;
                 case PlayerAction.Stunned:
                 case PlayerAction.GuardBroken:
                     if (Time.time >= _incapacitatedUntil
@@ -415,6 +429,11 @@ namespace ForgottenKingdom
                 return;
             }
 
+            if (input.IsHealPressed && TryHeal())
+            {
+                return;
+            }
+
             if (TryAttack(ref _bufferedHeavyUntil, PlayerAction.HeavyAttack))
             {
                 return;
@@ -436,6 +455,23 @@ namespace ForgottenKingdom
                 _defense?.EndBlock();
                 _state.ExitTo();
             }
+        }
+
+        /// <summary>
+        /// Drinks a flask, if the player may commit to it: standing still for the drink, with no
+        /// swing or dodge out of it once started — the price of healing mid-fight.
+        /// </summary>
+        public bool TryHeal()
+        {
+            if (!_state.CanEnter(PlayerAction.Heal) || _motor.IsDashing || !_motor.IsGrounded
+                || (_combat != null && _combat.IsAttacking) || !_flasks.TryBegin())
+            {
+                return false;
+            }
+
+            _defense?.EndBlock();
+            _state.ExitTo(PlayerAction.Heal);
+            return true;
         }
 
         /// <summary>
@@ -622,6 +658,8 @@ namespace ForgottenKingdom
                     // A real hit takes the spell away. Nothing was paid for it yet, which is why
                     // reaching across the room is a risk rather than a free option.
                     _caster?.Interrupt();
+                    // And a flask not yet swallowed is spilled.
+                    _flasks.Interrupt();
                     _state.TryEnter(PlayerAction.Hurt);
                     TrySecondWind();
                     return;
@@ -704,6 +742,7 @@ namespace ForgottenKingdom
             }
 
             _incapacitatedUntil = Mathf.Max(_incapacitatedUntil, Time.time + duration);
+            _flasks.Interrupt();
             _combat?.Cancel();
             _defense?.EndBlock();
             _motor.CancelDash();
@@ -713,6 +752,7 @@ namespace ForgottenKingdom
 
         private void OnKilled(DamageInfo info)
         {
+            _flasks.Interrupt();
             _activeSkills?.Cancel();
             _caster?.ResetCasting();
             _actor.ClearInvulnerability();

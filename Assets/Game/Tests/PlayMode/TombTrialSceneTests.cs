@@ -41,6 +41,27 @@ namespace ForgottenKingdom.Tests
         }
 
         [UnityTest]
+        public IEnumerator AFlaskHealsTheStandingPlayerAndAnAltarRefillsIt()
+        {
+            yield return new WaitForSeconds(0.3f);
+            Assume.That(_motor.IsGrounded, Is.True);
+            _player.Actor.Health.SetCurrent(40f);
+            var flasks = _player.Flasks;
+            var charges = flasks.Charges;
+
+            Assert.That(_player.TryHeal(), Is.True);
+            Assert.That(_player.Action, Is.EqualTo(PlayerAction.Heal), "The drink holds the player.");
+            yield return new WaitForSeconds(flasks.DrinkTime + 0.2f);
+
+            Assert.That(_player.Health.Current, Is.EqualTo(40f + flasks.HealAmount).Within(0.01f));
+            Assert.That(flasks.Charges, Is.EqualTo(charges - 1));
+            Assert.That(_player.Action, Is.EqualTo(PlayerAction.None), "Free again after the drink.");
+
+            _player.ResetCombatState();
+            Assert.That(flasks.Charges, Is.EqualTo(flasks.MaxCharges), "Resting fills the flasks.");
+        }
+
+        [UnityTest]
         public IEnumerator ADebouncedSaveDoesNotBringBackADeletedFile()
         {
             // The old session's debounced write used to land after a delete: a new game started

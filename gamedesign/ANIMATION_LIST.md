@@ -109,6 +109,7 @@
 | `player_ground_breaker_impact` | 0.14 с + 0.70 с відновлення | 3 + 17 | P1 |
 | `player_dash_strike` | 0.10 / 0.12 / 0.34 с | 2 / 3 / 8 | P1 |
 | `player_cast_start` | 0.30 с (Спалах) | 7 | P1 |
+| `player_heal` | 0.80 с (пиття фляги, підлаштовується під `HealingFlasks.DrinkTime`) | 8 | P1 — поки кадрів немає, стан `Heal` позичає `player_cast_start` |
 | `player_cast_loop` | — | 4 (цикл) | P1 | для довгого читання |
 | `player_cast_release` | 0.18 с | 4 | P1 |
 | `player_arcane_burst` | 0.75 / 0.40 с | 18 / 10 | P1 |

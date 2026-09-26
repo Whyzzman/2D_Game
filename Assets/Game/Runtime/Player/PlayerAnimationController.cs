@@ -243,6 +243,8 @@ namespace ForgottenKingdom
                 case PlayerAnimationState.Heavy:
                     var attack = _combat != null ? _combat.CurrentAttack : null;
                     return attack != null ? attack.Duration : 0f;
+                case PlayerAnimationState.Heal:
+                    return _character != null ? _character.Flasks.DrinkTime : 0f;
                 case PlayerAnimationState.CastStart:
                     return _caster != null && _caster.CastingSpell != null
                         ? _caster.CastTimeOf(_caster.CastingSpell)
@@ -339,6 +341,8 @@ namespace ForgottenKingdom
             {
                 return PlayerAnimationState.CastRelease;
             }
+
+            if (action == PlayerAction.Heal) { return PlayerAnimationState.Heal; }
 
             if (action == PlayerAction.Parry) { return PlayerAnimationState.Parry; }
             if (action == PlayerAction.Block)
