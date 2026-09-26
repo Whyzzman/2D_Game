@@ -132,6 +132,16 @@ namespace ForgottenKingdom.Tests
         }
 
         [UnityTest]
+        public IEnumerator AQuickTapOfTheNorthButtonInteracts()
+        {
+            // One frame down, then up: no hold is needed to use an altar or a door.
+            yield return Pad(Buttons(GamepadButton.North));
+            yield return Pad(new GamepadState());
+            Assert.That(_input.ConsumeCombat().IsInteractPressed, Is.True);
+            LogAssert.NoUnexpectedReceived();
+        }
+
+        [UnityTest]
         public IEnumerator AGuardAlreadyUpStaysUpWhenTheTriggerIsPulled()
         {
             yield return Pad(Buttons(GamepadButton.LeftShoulder));

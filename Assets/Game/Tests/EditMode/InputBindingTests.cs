@@ -80,6 +80,25 @@ namespace ForgottenKingdom.Tests
             }
         }
 
+        /// <summary>
+        /// Every action fires on the press itself. A leftover Hold on Interact from the template
+        /// made the player hold E for 0.4 s at every altar and door, which nothing asked for.
+        /// The guard is held by reading the button, not by a Hold interaction.
+        /// </summary>
+        [Test]
+        public void NoGameActionWaitsForAHold()
+        {
+            foreach (var name in GameActions)
+            {
+                var action = _player.FindAction(name, true);
+                Assert.That(action.interactions, Does.Not.Contain("Hold"), name);
+                foreach (var binding in action.bindings)
+                {
+                    Assert.That(binding.interactions ?? string.Empty, Does.Not.Contain("Hold"), name);
+                }
+            }
+        }
+
         [Test]
         public void EveryPadSkillAndSpellIsUnderTheModifier()
         {
