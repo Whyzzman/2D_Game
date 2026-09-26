@@ -702,6 +702,13 @@ namespace ForgottenKingdom
 
         private bool StartOption(int index, EnemyAttackOption option)
         {
+            // A group takes turns: with every token out, this enemy keeps its guard and its
+            // ground, and asks again on its next decision instead of piling on another attack.
+            if (_registry != null && !_registry.TryTakeAttackToken(this))
+            {
+                return false;
+            }
+
             _motor.Stop();
             _guard?.LowerGuard();
             var lockTime = option.FacingLockTime > 0f

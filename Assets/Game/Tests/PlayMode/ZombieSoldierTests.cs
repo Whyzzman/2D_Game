@@ -382,6 +382,42 @@ namespace ForgottenKingdom.Tests
             _player.Actor.ClearInvulnerability();
         }
 
+        [UnityTest]
+        public IEnumerator AGroupTakesTurnsRatherThanAllSwingingAtOnce()
+        {
+            // Three zombies around one player: without tokens every telegraph lands together.
+            var registry = Object.FindAnyObjectByType<EnemyRegistry>();
+            Assume.That(registry, Is.Not.Null);
+            Assume.That(_zombies.Length, Is.GreaterThanOrEqualTo(3));
+            _player.Actor.SetInvulnerable(ImmunitySource.Script, 1000f);
+            var at = (Vector2)_player.transform.position;
+            var offsets = new[] { 1.1f, -1.1f, 1.4f };
+            var attacks = 0;
+            for (var i = 0; i < 3; i++)
+            {
+                var motor = _zombies[i].GetComponent<EnemyMotor2D>();
+                motor.Teleport(at + new Vector2(offsets[i], 0.1f));
+                motor.Face(offsets[i] > 0f ? -1 : 1);
+                _zombies[i].AttackTelegraphed += _ => attacks++;
+            }
+
+            GameTimeScale.SetBaseScale(2f);
+            var most = 0;
+            var end = Time.realtimeSinceStartup + 6f;
+            while (Time.realtimeSinceStartup < end)
+            {
+                var swinging = _zombies.Take(3).Count(zombie => zombie.Combat.IsAttacking);
+                most = Mathf.Max(most, swinging);
+                yield return null;
+            }
+
+            GameTimeScale.SetBaseScale(1f);
+            _player.Actor.ClearInvulnerability();
+            Assume.That(attacks, Is.GreaterThanOrEqualTo(3), "The group has to actually fight.");
+            Assert.That(most, Is.LessThanOrEqualTo(registry.MaxSimultaneousAttackers),
+                "More zombies swung at once than the tokens allow.");
+        }
+
         /// <summary>Accepts any of several states, for checks where the exact tick does not matter.</summary>
         private static NUnit.Framework.Constraints.EqualConstraint OneOf(params EnemyState[] states)
         {

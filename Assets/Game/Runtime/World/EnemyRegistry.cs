@@ -26,15 +26,75 @@ namespace ForgottenKingdom
     /// <summary>
     /// Keeps the list of enemies that can be put back. Enemies add themselves when they wake up, so
     /// a reset never has to search the scene, and runtime-spawned enemies work the same way.
+    ///
+    /// It also hands out attack tokens: only so many ordinary enemies may be swinging or shooting
+    /// at once, so a group takes turns instead of landing every telegraph in the same instant.
+    /// A token is held for as long as its enemy is attacking and frees itself the moment it is
+    /// not, whatever ended the attack — a finished swing, a parry, a stagger, a death, a reset.
+    /// Bosses run their own fights and take no tokens.
     /// </summary>
     [DisallowMultipleComponent]
     public sealed class EnemyRegistry : MonoBehaviour
     {
+        [Tooltip("How many ordinary enemies may attack at the same time, ranged ones included.")]
+        [SerializeField, Min(1)] private int _maxSimultaneousAttackers = 2;
         private readonly List<EnemyController> _enemies = new List<EnemyController>();
+        private readonly List<EnemyController> _attackers = new List<EnemyController>();
 
         public event Action<WorldResetReason> WorldReset;
 
         public int Count => _enemies.Count;
+
+        public int MaxSimultaneousAttackers => _maxSimultaneousAttackers;
+
+        /// <summary>How many tokens are out right now, after freeing those no longer attacking.</summary>
+        public int ActiveAttackers
+        {
+            get
+            {
+                ReleaseIdleTokens();
+                return _attackers.Count;
+            }
+        }
+
+        /// <summary>
+        /// Asks to start an attack. True when the enemy already holds a token or one is free;
+        /// the enemy must then begin the attack at once, or the token frees itself next time.
+        /// </summary>
+        public bool TryTakeAttackToken(EnemyController enemy)
+        {
+            if (enemy == null)
+            {
+                return false;
+            }
+
+            ReleaseIdleTokens();
+            if (_attackers.Contains(enemy))
+            {
+                return true;
+            }
+
+            if (_attackers.Count >= _maxSimultaneousAttackers)
+            {
+                return false;
+            }
+
+            _attackers.Add(enemy);
+            return true;
+        }
+
+        private void ReleaseIdleTokens()
+        {
+            for (var i = _attackers.Count - 1; i >= 0; i--)
+            {
+                var attacker = _attackers[i];
+                if (attacker == null || !attacker.IsAlive || !attacker.isActiveAndEnabled
+                    || attacker.Combat == null || !attacker.Combat.IsAttacking)
+                {
+                    _attackers.RemoveAt(i);
+                }
+            }
+        }
 
         public void Register(EnemyController enemy)
         {
@@ -47,6 +107,7 @@ namespace ForgottenKingdom
         public void Unregister(EnemyController enemy)
         {
             _enemies.Remove(enemy);
+            _attackers.Remove(enemy);
         }
 
         /// <summary>
