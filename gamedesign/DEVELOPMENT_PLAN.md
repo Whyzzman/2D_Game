@@ -442,8 +442,12 @@ Charge и Jump Slam парированию не поддаются — от ни
 ## Управление
 
 Inventory — I, Tab, Select. SwitchWeapon — F, крестовина влево.
-ActiveSkill1 — 1, LB. ActiveSkill2 — 2, B.
-CastSpell1 — 3, RB. CastSpell2 — 4, крестовина вправо. CastSpell3 — 5.
+ActiveSkill1 — 1, LT+LB. ActiveSkill2 — 2, LT+RB.
+CastSpell1 — 3, LT+X. CastSpell2 — 4, LT+Y. CastSpell3 — 5, LT+B.
+На геймпаде умения и заклинания — под модификатором `LT` (действие `AbilityModifier`):
+сначала зажать `LT`, потом кнопку. Пока `LT` зажат, `X`/`Y`/`RB`/`LB` не атакуют, не
+взаимодействуют и не поднимают блок (`PlayerInputReader`); блок, поднятый до `LT`,
+остаётся. Уникальность привязок держат `InputBindingTests`.
 Move — A/D, стрелки, левый стик. Sprint — Shift, нажатие левого стика.
 Jump — Space, нижняя кнопка. LightAttack — ЛКМ, J, X(west). HeavyAttack — ПКМ,
 K, RB. Dash — Left Ctrl, RT. Block — Q, LB (удержание). Interact — E,
@@ -644,10 +648,14 @@ x≈36,5) с местом для рывка за спину → вход в ар
   Попутно: шрифт HUD — `Arial` первым (`Segoe UI` нет на macOS, предупреждения
   валили PlayMode-тесты). Проверка: PlayMode 151/151 в шести связанных наборах;
   полный прогон не запускался.
-- [ ] **2. Геймпад: одна кнопка — два действия.** В `Assets/Settings/InputSystem_Actions.inputactions`
-  `LB` = Block и ActiveSkill1, `RB` = HeavyAttack и CastSpell1. → развести раскладку
-  (например, умения с модификатором, заклинания на крестовину) и тест на
-  уникальность привязок. Легко · сильно. **Решение пользователя:** новая раскладка.
+- [x] **2. Геймпад: одна кнопка — два действия.** В `Assets/Settings/InputSystem_Actions.inputactions`
+  `LB` = Block и ActiveSkill1, `RB` = HeavyAttack и CastSpell1. Сделано 2026-09-26 по
+  выбору пользователя: модификатор `LT` — `LT+LB`/`LT+RB` умения, `LT+X`/`LT+Y`/`LT+B`
+  заклинания (у третьего раньше не было кнопки на геймпаде); крестовина вправо и `B`
+  освобождены. Под `LT` обычные атака, блок и взаимодействие глушатся в
+  `PlayerInputReader`. Тесты: `InputBindingTests` (EditMode, уникальность привязок),
+  `GamepadModifierTests` (PlayMode, виртуальный геймпад). На физическом геймпаде не
+  проверялось.
 - [ ] **3. Рывок на `Left Ctrl` конфликтует с macOS.** `Ctrl+←/→` переключает рабочие
   столы, `Ctrl+↑` — Mission Control, а движение есть на стрелках. → перенести рывок.
   Легко · сильно (на Mac). **Решение пользователя:** какая клавиша.

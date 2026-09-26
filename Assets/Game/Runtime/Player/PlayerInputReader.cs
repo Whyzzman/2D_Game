@@ -20,6 +20,7 @@ namespace ForgottenKingdom
         private InputAction _inventory;
         private InputAction _map;
         private InputAction _switchWeapon;
+        private InputAction _abilityModifier;
         private readonly InputAction[] _activeSkills = new InputAction[2];
         private readonly InputAction[] _spells = new InputAction[3];
         private int _pressedSkillSlot = -1;
@@ -36,6 +37,7 @@ namespace ForgottenKingdom
         private bool _hasFocus = true;
         private bool _isPaused;
         private bool _waitingForRelease;
+        private bool _isBlockUnderModifier;
 
         private void Awake()
         {
@@ -65,6 +67,7 @@ namespace ForgottenKingdom
             _spells[0] = _runtimeActions.FindAction("Player/CastSpell1", true);
             _spells[1] = _runtimeActions.FindAction("Player/CastSpell2", true);
             _spells[2] = _runtimeActions.FindAction("Player/CastSpell3", true);
+            _abilityModifier = _runtimeActions.FindAction("Player/AbilityModifier", true);
         }
 
         private void OnEnable()
@@ -85,6 +88,9 @@ namespace ForgottenKingdom
             _inventory.performed += OnInventoryPerformed;
             _map.performed += OnMapPerformed;
             _switchWeapon.performed += OnSwitchWeaponPerformed;
+            _block.performed += OnBlockPerformed;
+            _block.canceled += OnBlockCanceled;
+            _abilityModifier.Enable();
             _activeSkills[0].performed += OnActiveSkill1;
             _activeSkills[1].performed += OnActiveSkill2;
             _activeSkills[0].Enable();
@@ -125,6 +131,9 @@ namespace ForgottenKingdom
             _inventory.performed -= OnInventoryPerformed;
             _map.performed -= OnMapPerformed;
             _switchWeapon.performed -= OnSwitchWeaponPerformed;
+            _block.performed -= OnBlockPerformed;
+            _block.canceled -= OnBlockCanceled;
+            _abilityModifier.Disable();
             _activeSkills[0].performed -= OnActiveSkill1;
             _activeSkills[1].performed -= OnActiveSkill2;
             _activeSkills[0].Disable();
@@ -189,7 +198,7 @@ namespace ForgottenKingdom
             }
 
             var input = new CombatInput(_hasLightAttackPress, _hasHeavyAttackPress, _hasDashPress,
-                _block.IsPressed(), _hasHealPress, _hasInteractPress, _hasSwitchWeaponPress,
+                _block.IsPressed() && !_isBlockUnderModifier, _hasHealPress, _hasInteractPress, _hasSwitchWeaponPress,
                 _pressedSkillSlot, _pressedSpellSlot);
             _pressedSkillSlot = -1;
             _pressedSpellSlot = -1;
@@ -254,6 +263,31 @@ namespace ForgottenKingdom
         private bool IsPressAccepted => _hasFocus && !_isPaused && !_waitingForRelease
             && !_isGameplaySuspended;
 
+        /// <summary>
+        /// True while the pad's ability modifier (LT) is held. Skills and spells share their face
+        /// and shoulder buttons with attacks, the guard and interaction, and the modifier is what
+        /// tells them apart — so under it those buttons belong to the ability bar alone.
+        /// </summary>
+        private bool IsModifierHeld => _abilityModifier != null && _abilityModifier.IsPressed();
+
+        /// <summary>A press of a button the ability bar also uses; void while the modifier is held.</summary>
+        private bool IsPlainPressAccepted => IsPressAccepted && !IsModifierHeld;
+
+        /// <summary>
+        /// A guard raised with the modifier held was the first skill's button, not a block. It
+        /// stays ignored until the button is released, so letting go of LT first does not turn
+        /// the skill press into a guard. A guard already up when LT is pulled is left alone.
+        /// </summary>
+        private void OnBlockPerformed(InputAction.CallbackContext context)
+        {
+            _isBlockUnderModifier = IsModifierHeld;
+        }
+
+        private void OnBlockCanceled(InputAction.CallbackContext context)
+        {
+            _isBlockUnderModifier = false;
+        }
+
         private void OnJumpPerformed(InputAction.CallbackContext context)
         {
             if (!IsPressAccepted)
@@ -267,12 +301,12 @@ namespace ForgottenKingdom
 
         private void OnLightAttackPerformed(InputAction.CallbackContext context)
         {
-            _hasLightAttackPress |= IsPressAccepted;
+            _hasLightAttackPress |= IsPlainPressAccepted;
         }
 
         private void OnHeavyAttackPerformed(InputAction.CallbackContext context)
         {
-            _hasHeavyAttackPress |= IsPressAccepted;
+            _hasHeavyAttackPress |= IsPlainPressAccepted;
         }
 
         private void OnDashPerformed(InputAction.CallbackContext context)
@@ -287,7 +321,7 @@ namespace ForgottenKingdom
 
         private void OnInteractPerformed(InputAction.CallbackContext context)
         {
-            _hasInteractPress |= IsPressAccepted;
+            _hasInteractPress |= IsPlainPressAccepted;
         }
 
         private void OnSwitchWeaponPerformed(InputAction.CallbackContext context)
