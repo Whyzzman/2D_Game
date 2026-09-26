@@ -1,5 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
     <Style src="Hud.uss" />
+    <Style src="../Menu/Options.uss" />
+    <Style src="Pause.uss" />
     <ui:VisualElement name="hud" class="hud" picking-mode="Ignore">
         <ui:VisualElement name="vignette" class="vignette" picking-mode="Ignore" />
 
@@ -145,6 +147,35 @@
             <ui:Label class="death__text display" text="ВИ ЗАГИНУЛИ" picking-mode="Ignore" />
             <ui:VisualElement class="death__rule ornament" picking-mode="Ignore" />
             <ui:Label class="death__sub" text="Повернення до вівтаря" picking-mode="Ignore" />
+        </ui:VisualElement>
+
+        <!-- design/ui/menus/menus.html, frame 4: the pause over the live, frozen game. -->
+        <ui:VisualElement name="pause" class="pause">
+            <ui:VisualElement name="pause-panel" class="pause__panel">
+                <ui:VisualElement class="pause__inset" picking-mode="Ignore" />
+                <ui:VisualElement class="pause__header" picking-mode="Ignore">
+                    <ui:Label class="pause__title display" text="ПАУЗА" picking-mode="Ignore" />
+                </ui:VisualElement>
+                <ui:VisualElement class="pause__body">
+                    <ui:Button name="pause-resume" class="btn btn--primary"><ui:Label class="btn__text display" text="ПРОДОВЖИТИ" picking-mode="Ignore" /></ui:Button>
+                    <ui:Button name="pause-equipment" class="btn"><ui:Label class="btn__text display" text="СПОРЯДЖЕННЯ" picking-mode="Ignore" /></ui:Button>
+                    <ui:Button name="pause-character" class="btn"><ui:Label class="btn__text display" text="ПЕРСОНАЖ" picking-mode="Ignore" /><ui:VisualElement name="pause-character-pip" class="pip" picking-mode="Ignore" /></ui:Button>
+                    <ui:Button name="pause-skills" class="btn"><ui:Label class="btn__text display" text="УМІННЯ" picking-mode="Ignore" /><ui:VisualElement name="pause-skills-pip" class="pip" picking-mode="Ignore" /></ui:Button>
+                    <ui:Button name="pause-options" class="btn"><ui:Label class="btn__text display" text="НАЛАШТУВАННЯ" picking-mode="Ignore" /></ui:Button>
+                    <ui:Button name="pause-main-menu" class="btn btn--danger btn--last"><ui:Label class="btn__text display" text="ДО ГОЛОВНОГО МЕНЮ" picking-mode="Ignore" /></ui:Button>
+                </ui:VisualElement>
+            </ui:VisualElement>
+
+            <ui:VisualElement name="options-panel" class="options">
+                <ui:Label class="options__title display" text="Налаштування" />
+                <ui:VisualElement class="options__rule ornament" picking-mode="Ignore" />
+                <ui:Slider name="opt-master" class="option" label="Гучність" low-value="0" high-value="1" />
+                <ui:Slider name="opt-effects" class="option" label="Ефекти" low-value="0" high-value="1" />
+                <ui:Slider name="opt-shake" class="option" label="Тремтіння камери" low-value="0" high-value="1" />
+                <ui:Slider name="opt-flash" class="option" label="Спалахи" low-value="0" high-value="1" />
+                <ui:Slider name="opt-hitstop" class="option" label="Зупинка при ударі" low-value="0" high-value="1" />
+                <ui:Button name="options-back" class="menu-button menu-button--small display" text="Назад" />
+            </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

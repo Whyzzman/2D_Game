@@ -1,0 +1,161 @@
+/*
+ * The pause menu, from design/ui/menus/menus.html (frame 4) and design/ui/_shared/ui.css:
+ * a scrim over the frozen game, one royal panel 520 px wide, a column of buttons.
+ * USS has no gradients, box shadows or text-transform, so the button gradient is its middle
+ * tone, the focus glow is a gold border on a faint gold wash, and the labels are upper case
+ * in the markup.
+ */
+
+.pause {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(4, 3, 3, 0.72);
+    align-items: center;
+    justify-content: center;
+    display: none;
+}
+
+.pause--open {
+    display: flex;
+}
+
+/* The settings take the place of the list rather than stacking over it. */
+.pause--options > .pause__panel {
+    display: none;
+}
+
+.pause__panel {
+    width: 520px;
+    background-color: rgb(23, 19, 15);
+    border-width: 1px;
+    border-color: rgb(107, 90, 66);
+    border-radius: 2px;
+}
+
+.pause__inset {
+    position: absolute;
+    left: 5px;
+    top: 5px;
+    right: 5px;
+    bottom: 5px;
+    border-width: 1px;
+    border-color: rgba(138, 116, 52, 0.35);
+}
+
+.pause__header {
+    padding: 12px 24px;
+    border-bottom-width: 1px;
+    border-bottom-color: rgb(58, 47, 37);
+    background-color: rgba(138, 116, 52, 0.1);
+}
+
+.pause__title {
+    font-size: 20px;
+    letter-spacing: 1px;
+    color: rgb(240, 230, 210);
+    margin: 0;
+    padding: 0;
+}
+
+.pause__body {
+    padding: 24px;
+}
+
+/* ---------- .btn from ui.css ---------- */
+
+.btn {
+    min-height: 44px;
+    margin: 0 0 12px 0;
+    padding: 8px 24px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(22, 18, 15);
+    border-width: 1px;
+    border-color: rgb(107, 90, 66);
+    border-radius: 2px;
+    transition-property: background-color, border-color;
+    transition-duration: 0.12s;
+}
+
+.btn--last {
+    margin-bottom: 0;
+}
+
+.btn__text {
+    font-size: 17px;
+    letter-spacing: 2px;
+    color: rgb(216, 203, 180);
+    -unity-text-align: middle-center;
+    margin: 0;
+    padding: 0;
+}
+
+.btn:hover {
+    background-color: rgb(22, 18, 15);
+    border-color: rgb(138, 116, 52);
+}
+
+.btn:hover > .btn__text {
+    color: rgb(240, 230, 210);
+}
+
+.btn:active {
+    background-color: rgb(34, 28, 23);
+}
+
+.btn--primary {
+    border-color: rgb(138, 116, 52);
+}
+
+.btn--primary > .btn__text {
+    color: rgb(232, 205, 138);
+}
+
+.btn--focused,
+.btn--focused:hover {
+    border-color: rgb(201, 161, 74);
+    background-color: rgb(40, 32, 20);
+}
+
+.btn--focused > .btn__text {
+    color: rgb(232, 205, 138);
+}
+
+.btn--danger:hover,
+.btn--danger.btn--focused {
+    border-color: rgb(196, 85, 47);
+}
+
+.btn--danger:hover > .btn__text,
+.btn--danger.btn--focused > .btn__text {
+    color: rgb(240, 185, 164);
+}
+
+/* Disabled until its screen reaches the game: legible, but plainly not a way forward. */
+.btn:disabled {
+    opacity: 0.6;
+    background-color: rgb(11, 9, 7);
+    border-color: rgb(58, 47, 37);
+}
+
+.btn:disabled > .btn__text {
+    color: rgb(95, 87, 76);
+}
+
+/* Unspent points waiting on that screen. */
+.pip {
+    width: 9px;
+    height: 9px;
+    margin-left: 10px;
+    background-color: rgb(201, 161, 74);
+    rotate: 45deg;
+    display: none;
+}
+
+.pip--visible {
+    display: flex;
+}

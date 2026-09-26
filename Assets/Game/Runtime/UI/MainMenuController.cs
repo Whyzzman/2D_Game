@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
@@ -28,17 +27,15 @@ namespace ForgottenKingdom
 
         private readonly List<VisualElement> _items = new List<VisualElement>();
         private readonly List<System.Action> _actions = new List<System.Action>();
-        private readonly List<VisualElement> _optionItems = new List<VisualElement>();
         private VisualElement _root;
         private VisualElement _fade;
-        private VisualElement _options;
+        private OptionsPanel _options;
         private Button _continue;
         private int _focus;
-        private int _optionFocus;
         private bool _isLeaving;
-        private float _navigationCooldown;
+        private MenuInput.Repeater _repeater;
 
-        public bool IsOptionsOpen => _options != null && _options.ClassListContains("options--open");
+        public bool IsOptionsOpen => _options != null && _options.IsOpen;
         public bool CanContinue => _continue != null && _continue.enabledSelf;
 
         private void OnEnable()
@@ -51,11 +48,10 @@ namespace ForgottenKingdom
 
             GameTimeScale.Reset();
             _fade = _root.Q("fade");
-            _options = _root.Q("options-panel");
             _continue = _root.Q<Button>("continue");
             Dress();
             BindButtons();
-            BindOptions();
+            _options = new OptionsPanel(_root, OnOptionsClosed);
             Refresh();
             // Opened by the next frame's layout, so the transition actually runs.
             _root.schedule.Execute(() => _fade?.AddToClassList("menu__fade--open")).ExecuteLater(50);
@@ -96,8 +92,6 @@ namespace ForgottenKingdom
             Bind("new-game", NewGame);
             Bind("options", OpenOptions);
             Bind("quit", Quit);
-            var back = _root.Q<Button>("options-back");
-            if (back != null) { back.clicked += CloseOptions; }
         }
 
         private void Bind(string name, System.Action action)
@@ -113,31 +107,6 @@ namespace ForgottenKingdom
             _items.Add(button);
             _actions.Add(action);
             button.RegisterCallback<PointerEnterEvent>(_ => { if (button.enabledSelf) { SetFocus(index); } });
-        }
-
-        private void BindOptions()
-        {
-            var settings = GameSettings.Current;
-            BindSlider("opt-master", settings.masterVolume, v => GameSettings.Set(d => d.masterVolume = v));
-            BindSlider("opt-effects", settings.effectsVolume, v => GameSettings.Set(d => d.effectsVolume = v));
-            BindSlider("opt-shake", settings.screenShake, v => GameSettings.Set(d => d.screenShake = v));
-            BindSlider("opt-flash", settings.flashIntensity, v => GameSettings.Set(d => d.flashIntensity = v));
-            BindSlider("opt-hitstop", settings.hitStop, v => GameSettings.Set(d => d.hitStop = v));
-            var back = _root.Q("options-back");
-            if (back != null) { _optionItems.Add(back); }
-        }
-
-        private void BindSlider(string name, float value, System.Action<float> write)
-        {
-            var slider = _root.Q<Slider>(name);
-            if (slider == null)
-            {
-                return;
-            }
-
-            slider.SetValueWithoutNotify(value);
-            slider.RegisterValueChangedCallback(e => write(e.newValue));
-            _optionItems.Add(slider);
         }
 
         /// <summary>Re-reads the save; Continue follows whether there is anything to continue.</summary>
@@ -175,102 +144,29 @@ namespace ForgottenKingdom
                 return;
             }
 
-            _navigationCooldown -= Time.unscaledDeltaTime;
-            var move = ReadVertical();
-            if (move != 0 && _navigationCooldown <= 0f)
-            {
-                _navigationCooldown = 0.18f;
-                if (IsOptionsOpen) { MoveOptionFocus(move); }
-                else { MoveFocus(move); }
-            }
-            else if (move == 0)
-            {
-                _navigationCooldown = 0f;
-            }
-
             if (IsOptionsOpen)
             {
-                UpdateOptionKeys();
+                if (MenuInput.Cancelled())
+                {
+                    CloseOptions();
+                    return;
+                }
+
+                _options.Tick();
                 return;
             }
 
-            if (Confirmed() && _focus >= 0 && _focus < _items.Count && _items[_focus].enabledSelf)
+            var step = _repeater.Step(MenuInput.ReadVertical());
+            if (step != 0)
+            {
+                MoveFocus(step);
+            }
+
+            if (MenuInput.Confirmed() && _focus >= 0 && _focus < _items.Count
+                && _items[_focus].enabledSelf)
             {
                 _actions[_focus]();
             }
-        }
-
-        private void UpdateOptionKeys()
-        {
-            if (Cancelled())
-            {
-                CloseOptions();
-                return;
-            }
-
-            var focused = _optionFocus >= 0 && _optionFocus < _optionItems.Count
-                ? _optionItems[_optionFocus] : null;
-            if (focused is Slider slider)
-            {
-                var horizontal = ReadHorizontal();
-                if (horizontal != 0)
-                {
-                    slider.value = Mathf.Clamp01(slider.value + horizontal * 0.6f * Time.unscaledDeltaTime);
-                }
-            }
-            else if (focused is Button && Confirmed())
-            {
-                CloseOptions();
-            }
-        }
-
-        private static int ReadVertical()
-        {
-            var keyboard = Keyboard.current;
-            var pad = Gamepad.current;
-            var up = keyboard != null && (keyboard.upArrowKey.isPressed || keyboard.wKey.isPressed);
-            var down = keyboard != null && (keyboard.downArrowKey.isPressed || keyboard.sKey.isPressed);
-            if (pad != null)
-            {
-                var y = pad.leftStick.ReadValue().y + pad.dpad.ReadValue().y;
-                up |= y > 0.5f;
-                down |= y < -0.5f;
-            }
-
-            return up == down ? 0 : up ? -1 : 1;
-        }
-
-        private static int ReadHorizontal()
-        {
-            var keyboard = Keyboard.current;
-            var pad = Gamepad.current;
-            var left = keyboard != null && (keyboard.leftArrowKey.isPressed || keyboard.aKey.isPressed);
-            var right = keyboard != null && (keyboard.rightArrowKey.isPressed || keyboard.dKey.isPressed);
-            if (pad != null)
-            {
-                var x = pad.leftStick.ReadValue().x + pad.dpad.ReadValue().x;
-                left |= x < -0.5f;
-                right |= x > 0.5f;
-            }
-
-            return left == right ? 0 : left ? -1 : 1;
-        }
-
-        private static bool Confirmed()
-        {
-            var keyboard = Keyboard.current;
-            var pad = Gamepad.current;
-            return (keyboard != null && (keyboard.enterKey.wasPressedThisFrame
-                    || keyboard.spaceKey.wasPressedThisFrame || keyboard.numpadEnterKey.wasPressedThisFrame))
-                || (pad != null && pad.buttonSouth.wasPressedThisFrame);
-        }
-
-        private static bool Cancelled()
-        {
-            var keyboard = Keyboard.current;
-            var pad = Gamepad.current;
-            return (keyboard != null && keyboard.escapeKey.wasPressedThisFrame)
-                || (pad != null && pad.buttonEast.wasPressedThisFrame);
         }
 
         private void MoveFocus(int step)
@@ -296,22 +192,6 @@ namespace ForgottenKingdom
             }
         }
 
-        private void MoveOptionFocus(int step)
-        {
-            if (_optionItems.Count == 0)
-            {
-                return;
-            }
-
-            _optionFocus = (_optionFocus + step + _optionItems.Count) % _optionItems.Count;
-            for (var i = 0; i < _optionItems.Count; i++)
-            {
-                var focused = i == _optionFocus;
-                _optionItems[i].EnableInClassList("option--focused", focused);
-                _optionItems[i].EnableInClassList("menu-button--focused", focused);
-            }
-        }
-
         public void Continue()
         {
             if (!SaveSystem.HasValidSave())
@@ -329,16 +209,18 @@ namespace ForgottenKingdom
 
         public void OpenOptions()
         {
-            _options?.AddToClassList("options--open");
+            _options?.Open();
             _root.Q("front")?.style.SetOpacity(0.15f);
-            _optionFocus = -1;
-            MoveOptionFocus(1);
         }
 
         public void CloseOptions()
         {
-            GameSettings.Save();
-            _options?.RemoveFromClassList("options--open");
+            _options?.Close();
+        }
+
+        /// <summary>The panel saved the settings on its way out; bring the title list back.</summary>
+        private void OnOptionsClosed()
+        {
             _root.Q("front")?.style.SetOpacity(1f);
         }
 

@@ -18,6 +18,7 @@ namespace ForgottenKingdom
         private InputAction _interact;
         private InputAction _inventory;
         private InputAction _map;
+        private InputAction _pause;
         private InputAction _switchWeapon;
         private InputAction _abilityModifier;
         private readonly InputAction[] _activeSkills = new InputAction[2];
@@ -59,6 +60,7 @@ namespace ForgottenKingdom
             _interact = _runtimeActions.FindAction("Player/Interact", true);
             _inventory = _runtimeActions.FindAction("Player/Inventory", true);
             _map = _runtimeActions.FindAction("Player/Map", true);
+            _pause = _runtimeActions.FindAction("Player/Pause", true);
             _switchWeapon = _runtimeActions.FindAction("Player/SwitchWeapon", true);
             _activeSkills[0] = _runtimeActions.FindAction("Player/ActiveSkill1", true);
             _activeSkills[1] = _runtimeActions.FindAction("Player/ActiveSkill2", true);
@@ -85,6 +87,7 @@ namespace ForgottenKingdom
             _interact.performed += OnInteractPerformed;
             _inventory.performed += OnInventoryPerformed;
             _map.performed += OnMapPerformed;
+            _pause.performed += OnPausePerformed;
             _switchWeapon.performed += OnSwitchWeaponPerformed;
             _block.performed += OnBlockPerformed;
             _block.canceled += OnBlockCanceled;
@@ -101,6 +104,7 @@ namespace ForgottenKingdom
             _spells[2].Enable();
             _inventory.Enable();
             _map.Enable();
+            _pause.Enable();
             _switchWeapon.Enable();
             _move.Enable();
             _jump.Enable();
@@ -127,6 +131,7 @@ namespace ForgottenKingdom
             _interact.performed -= OnInteractPerformed;
             _inventory.performed -= OnInventoryPerformed;
             _map.performed -= OnMapPerformed;
+            _pause.performed -= OnPausePerformed;
             _switchWeapon.performed -= OnSwitchWeaponPerformed;
             _block.performed -= OnBlockPerformed;
             _block.canceled -= OnBlockCanceled;
@@ -143,6 +148,7 @@ namespace ForgottenKingdom
             _spells[2].Disable();
             _inventory.Disable();
             _map.Disable();
+            _pause.Disable();
             _switchWeapon.Disable();
             _move.Disable();
             _jump.Disable();
@@ -215,6 +221,9 @@ namespace ForgottenKingdom
 
         /// <summary>The map button; like the inventory's, it is heard while the map is open.</summary>
         public event System.Action MapToggled;
+
+        /// <summary>Escape or Start. Heard while gameplay is suspended: it is also what closes the pause.</summary>
+        public event System.Action PauseToggled;
 
         /// <summary>
         /// Silences movement and combat without disabling the component, so the menu keeps its own
@@ -362,6 +371,14 @@ namespace ForgottenKingdom
             if (_hasFocus && !_isPaused)
             {
                 InventoryToggled?.Invoke();
+            }
+        }
+
+        private void OnPausePerformed(InputAction.CallbackContext context)
+        {
+            if (_hasFocus && !_isPaused)
+            {
+                PauseToggled?.Invoke();
             }
         }
 

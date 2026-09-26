@@ -102,6 +102,11 @@ namespace ForgottenKingdom
         private readonly float[] _shownChipFill = { -1f, -1f, -1f, -1f };
         private string _shownPrompt;
 
+        private PauseMenu _pause;
+
+        /// <summary>The pause over the game; it shares this document.</summary>
+        public PauseMenu Pause => _pause;
+
         /// <summary>For tests and tools: whether the boss bar is currently up.</summary>
         public bool IsBossBarVisible => _boss != null && _boss.ClassListContains("boss--visible");
         public bool IsDeathShown => _death != null && _death.ClassListContains("death--visible");
@@ -118,6 +123,8 @@ namespace ForgottenKingdom
 
             ResolveMissingReferences();
             Bind();
+            _pause = new PauseMenu(_root);
+            _pause.Attach(_player, _progress);
             Dress();
             Subscribe(true);
         }
@@ -125,6 +132,7 @@ namespace ForgottenKingdom
         private void OnDisable()
         {
             Subscribe(false);
+            _pause?.Detach();
         }
 
         private void Start()
@@ -254,6 +262,7 @@ namespace ForgottenKingdom
                 return;
             }
 
+            _pause?.Tick();
             var dt = Time.unscaledDeltaTime;
             UpdateResources(dt);
             UpdateBoss(dt);

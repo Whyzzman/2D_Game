@@ -44,8 +44,11 @@
   пользователя (визуальный overhaul 2026-09-25: «заміни prototype HUD») перенесены
   **HUD и главное меню** — `Assets/Game/UI/` (UXML/USS, `GamePanelSettings`,
   тема `GameTheme.tss`), `HudController`, `MainMenuController`. Они ждут
-  согласования в Unity (Approval 2). Остальные экраны (инвентарь, умения, карта,
-  вівтар) по-прежнему не переносить без согласования HTML.
+  согласования в Unity (Approval 2). **2026-09-26 пользователь утвердил весь HTML
+  `design/ui` (Approval 1)** и перенесена пауза (`PauseMenu` в документе HUD, `Esc`/`Start`,
+  общие `OptionsPanel`/`MenuInput`/`Options.uss`) — тоже ждёт Approval 2. Остальные
+  экраны (инвентарь, умения, карта, вівтар) переносить только по отдельной команде
+  пользователя, по одному.
 - Звук централизован в `AudioManager` (PHASE 22, `gamedesign/AUDIO_DESIGN.md`).
   Геймплей называет момент (`AudioManager.Play(AudioId.Parry, …)`), а не файл;
   играть звук напрямую из боевого кода не нужно и не следует. Клипы — 224
