@@ -19,7 +19,16 @@ namespace ForgottenKingdom
         [SerializeField, Min(0f)] private float _riseGravity = 30f;
         [SerializeField, Min(0f)] private float _fallGravity = 48f;
         [SerializeField, Min(0f)] private float _maxFallSpeed = 20f;
+        [Tooltip("Upward speed a released jump is brought down to.")]
         [SerializeField, Min(0f)] private float _releasedJumpSpeed = 4.5f;
+        [Tooltip("How fast a released jump sheds speed down to the released speed. The cut used "
+            + "to be instant, a jolt; 200 takes two physics steps and adds ~0.12 to a tap.")]
+        [SerializeField, Min(0f)] private float _releasedJumpDeceleration = 200f;
+        [Tooltip("Below this vertical speed a held jump is at its apex and floats.")]
+        [SerializeField, Min(0f)] private float _apexSpeedThreshold = 2f;
+        [Tooltip("Share of gravity near the apex while jump is held. 0.5 nearly doubles the hang "
+            + "(about 0.1 to 0.2 s) and raises a full jump from 1.91 to 1.97 at 50 Hz.")]
+        [SerializeField, Range(0.1f, 1f)] private float _apexGravityMultiplier = 0.5f;
         [SerializeField, Min(0f)] private float _coyoteTime = 0.10f;
         [SerializeField, Min(0f)] private float _jumpBuffer = 0.12f;
         [Tooltip("Extra jumps in the air, once the ability is owned. Gated by progression, not here.")]
@@ -38,6 +47,9 @@ namespace ForgottenKingdom
         public float FallGravity => _fallGravity;
         public float MaxFallSpeed => _maxFallSpeed;
         public float ReleasedJumpSpeed => _releasedJumpSpeed;
+        public float ReleasedJumpDeceleration => _releasedJumpDeceleration;
+        public float ApexSpeedThreshold => _apexSpeedThreshold;
+        public float ApexGravityMultiplier => _apexGravityMultiplier;
         public float CoyoteTime => _coyoteTime;
         public float JumpBuffer => _jumpBuffer;
         public int AirJumps => _airJumps;

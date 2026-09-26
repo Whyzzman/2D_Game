@@ -200,10 +200,18 @@ namespace ForgottenKingdom
             {
                 if (!input.IsJumpHeld && velocity.y > _settings.ReleasedJumpSpeed)
                 {
-                    velocity.y = _settings.ReleasedJumpSpeed;
+                    // Brought down quickly but not in one step: the old instant cut was a jolt.
+                    velocity.y = Mathf.Max(_settings.ReleasedJumpSpeed,
+                        velocity.y - _settings.ReleasedJumpDeceleration * deltaTime);
                 }
 
                 var gravity = velocity.y > 0f ? _settings.RiseGravity : _settings.FallGravity;
+                if (input.IsJumpHeld && Mathf.Abs(velocity.y) < _settings.ApexSpeedThreshold)
+                {
+                    // A held jump floats a moment at the top, which is where aiming happens.
+                    gravity *= _settings.ApexGravityMultiplier;
+                }
+
                 velocity.y = Mathf.Max(velocity.y - gravity * deltaTime, -_settings.MaxFallSpeed);
             }
 

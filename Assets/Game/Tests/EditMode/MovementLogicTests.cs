@@ -159,6 +159,40 @@ namespace ForgottenKingdom.Tests
             Assert.That(_logic.Step(Vector2.zero, true, default, StepTime).y, Is.Zero);
         }
 
+        [Test]
+        public void AHeldJumpFloatsAtItsApexWithoutGainingMuchHeight()
+        {
+            // Level heights are measured from the 50 Hz jump (AGENTS.md): the float may add a
+            // few centimetres, never enough to change which ledges are reachable.
+            var velocity = _logic.Step(Vector2.zero, true,
+                new MovementInput(0f, true, true), StepTime);
+            var height = velocity.y * StepTime;
+            var peak = height;
+            var hang = 0f;
+            for (var i = 0; i < 100; i++)
+            {
+                velocity = _logic.Step(velocity, false, new MovementInput(0f, false, true), StepTime);
+                height += velocity.y * StepTime;
+                peak = Mathf.Max(peak, height);
+                if (Mathf.Abs(velocity.y) < 2f && height > 1f) { hang += StepTime; }
+            }
+
+            Assert.That(peak, Is.EqualTo(1.97f).Within(0.02f));
+            Assert.That(hang, Is.GreaterThan(0.15f), "The top of the jump should linger.");
+        }
+
+        [Test]
+        public void ReleasingAJumpSlowsItOverTwoStepsRatherThanCuttingIt()
+        {
+            var velocity = _logic.Step(Vector2.zero, true,
+                new MovementInput(0f, true, true), StepTime);
+            velocity = _logic.Step(velocity, false, default, StepTime);
+            Assert.That(velocity.y, Is.GreaterThan(_settings.ReleasedJumpSpeed),
+                "One step after letting go the jump is still slowing, not cut dead.");
+            velocity = _logic.Step(velocity, false, default, StepTime);
+            Assert.That(velocity.y, Is.LessThanOrEqualTo(_settings.ReleasedJumpSpeed));
+        }
+
         private float SimulateJump(bool hold)
         {
             var velocity = _logic.Step(Vector2.zero, true,
