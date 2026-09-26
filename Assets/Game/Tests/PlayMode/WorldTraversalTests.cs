@@ -165,7 +165,7 @@ namespace ForgottenKingdom.Tests
             yield return Hold(0.35f, Key.A, Key.LeftShift);
             yield return Keys(Key.A, Key.LeftShift, Key.Space);
             yield return UntilApex(0.5f);
-            yield return Keys(Key.A, Key.LeftShift, Key.Space, Key.LeftCtrl);
+            yield return Keys(Key.A, Key.LeftShift, Key.Space, Key.L);
             yield return Hold(0.8f, Key.A, Key.LeftShift);
             yield return Keys();
             yield return new WaitForSeconds(0.6f);

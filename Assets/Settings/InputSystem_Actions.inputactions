@@ -668,7 +668,7 @@
                 {
                     "name": "",
                     "id": "2b4e1f75-3d62-4c1b-8042-63fab1e29d07",
-                    "path": "<Keyboard>/leftCtrl",
+                    "path": "<Keyboard>/l",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",

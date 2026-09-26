@@ -64,6 +64,22 @@ namespace ForgottenKingdom.Tests
             Assert.That(clashes, Is.Empty);
         }
 
+        /// <summary>
+        /// Control is left alone on the keyboard: on macOS Ctrl with the arrows — which also
+        /// move the player — switches desktops and opens Mission Control mid-fight.
+        /// </summary>
+        [Test]
+        public void NoGameActionIsBoundToControl()
+        {
+            foreach (var name in GameActions)
+            {
+                foreach (var trigger in Triggers(_player.FindAction(name, true)))
+                {
+                    Assert.That(trigger, Does.Not.Contain("Ctrl").IgnoreCase, name);
+                }
+            }
+        }
+
         [Test]
         public void EveryPadSkillAndSpellIsUnderTheModifier()
         {

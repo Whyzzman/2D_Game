@@ -120,7 +120,7 @@ namespace ForgottenKingdom.Tests
         {
             InputSystem.QueueStateEvent(_keyboard, new KeyboardState(Key.J));
             yield return Realtime(0.04f);
-            InputSystem.QueueStateEvent(_keyboard, new KeyboardState(Key.J, Key.LeftCtrl));
+            InputSystem.QueueStateEvent(_keyboard, new KeyboardState(Key.J, Key.L));
             yield return Realtime(0.05f);
 
             // Light 1 becomes cancelable 0.16 s in; this is still its startup.
@@ -139,7 +139,7 @@ namespace ForgottenKingdom.Tests
             yield return Neutral(4);
             InputSystem.QueueStateEvent(_keyboard, new KeyboardState(Key.A));
             yield return Realtime(0.1f);
-            InputSystem.QueueStateEvent(_keyboard, new KeyboardState(Key.A, Key.LeftCtrl));
+            InputSystem.QueueStateEvent(_keyboard, new KeyboardState(Key.A, Key.L));
             yield return Realtime(0.4f);
             yield return Neutral(4);
 
@@ -211,7 +211,7 @@ namespace ForgottenKingdom.Tests
             Assert.That(_stamina.Current, Is.Zero);
 
             // Nothing may be started while the guard is broken.
-            InputSystem.QueueStateEvent(_keyboard, new KeyboardState(Key.LeftCtrl, Key.J));
+            InputSystem.QueueStateEvent(_keyboard, new KeyboardState(Key.L, Key.J));
             yield return Realtime(0.12f);
             Assert.That(_player.Action, Is.EqualTo(PlayerAction.GuardBroken));
             Assert.That(_motor.IsDashing, Is.False);
@@ -233,7 +233,7 @@ namespace ForgottenKingdom.Tests
             Assert.That(_player.Stagger.IsStunned, Is.True);
             Assert.That(_player.Stagger.Current, Is.Zero, "A break empties the meter.");
 
-            InputSystem.QueueStateEvent(_keyboard, new KeyboardState(Key.Q, Key.LeftCtrl));
+            InputSystem.QueueStateEvent(_keyboard, new KeyboardState(Key.Q, Key.L));
             yield return Realtime(0.15f);
             Assert.That(_player.Action, Is.EqualTo(PlayerAction.Stunned));
             Assert.That(_player.Defense.IsBlocking, Is.False);
@@ -295,7 +295,7 @@ namespace ForgottenKingdom.Tests
 
         private IEnumerator PressDash()
         {
-            InputSystem.QueueStateEvent(_keyboard, new KeyboardState(Key.LeftCtrl));
+            InputSystem.QueueStateEvent(_keyboard, new KeyboardState(Key.L));
             yield return Realtime(0.05f);
             InputSystem.QueueStateEvent(_keyboard, new KeyboardState());
             yield return new WaitForFixedUpdate();
