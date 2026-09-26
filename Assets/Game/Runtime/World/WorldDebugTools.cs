@@ -48,6 +48,8 @@ namespace ForgottenKingdom
         private void OnEnable()
         {
             if (_world != null) { _world.ZoneTitleRequested += ShowTitleCard; }
+            // Until the real map is drawn, this readout is how a developer build shows it.
+            _map?.AddPresenter(this);
             SetVisible(_isVisible);
         }
 
@@ -55,6 +57,7 @@ namespace ForgottenKingdom
         {
             if (_world != null) { _world.ZoneTitleRequested -= ShowTitleCard; }
             _shrine?.RemovePresenter(this);
+            _map?.RemovePresenter(this);
         }
 
         public void SetVisible(bool isVisible)

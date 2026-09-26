@@ -57,6 +57,7 @@ namespace ForgottenKingdom
         [Tooltip("Pauses the world while the screen is open; recommended for single player.")]
         [SerializeField] private bool _pausesGame = true;
         private readonly List<InventoryEntry> _entries = new List<InventoryEntry>();
+        private readonly HashSet<object> _presenters = new HashSet<object>();
         private EquipmentLoadout _loadoutOnOpen;
         private int _tabIndex;
         private string _selectedItemId = string.Empty;
@@ -102,20 +103,50 @@ namespace ForgottenKingdom
 
         private void OnEnable()
         {
-            if (_input != null) { _input.InventoryToggled += Toggle; }
+            if (_input != null) { _input.InventoryToggled += OnTogglePressed; }
             if (_progress != null) { _progress.ItemAdded += OnItemChanged; }
             if (_equipment != null) { _equipment.EquipmentChanged += Rebuild; }
         }
 
         private void OnDisable()
         {
-            if (_input != null) { _input.InventoryToggled -= Toggle; }
+            if (_input != null) { _input.InventoryToggled -= OnTogglePressed; }
             if (_progress != null) { _progress.ItemAdded -= OnItemChanged; }
             if (_equipment != null) { _equipment.EquipmentChanged -= Rebuild; }
             // Leaving with the screen up would strand the world paused and the player deaf.
             if (IsOpen)
             {
                 Close();
+            }
+        }
+
+        /// <summary>
+        /// True when something draws this screen. The key opens it only then: with nothing on
+        /// screen a keypress would freeze the world behind an invisible menu. A release build has
+        /// no drawing yet, so the key does nothing there until the real screen registers itself.
+        /// </summary>
+        public bool HasPresenter => _presenters.Count > 0;
+
+        public void AddPresenter(object presenter)
+        {
+            if (presenter != null) { _presenters.Add(presenter); }
+        }
+
+        public void RemovePresenter(object presenter)
+        {
+            _presenters.Remove(presenter);
+            if (!HasPresenter)
+            {
+                Close();
+            }
+        }
+
+        /// <summary>The player's key. Closing always works; opening needs something to draw it.</summary>
+        private void OnTogglePressed()
+        {
+            if (IsOpen || HasPresenter)
+            {
+                Toggle();
             }
         }
 

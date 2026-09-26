@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace ForgottenKingdom
@@ -28,6 +29,7 @@ namespace ForgottenKingdom
         [SerializeField, Min(0.1f)] private float _minZoom = 0.5f;
         [SerializeField, Min(0.1f)] private float _maxZoom = 3f;
 
+        private readonly HashSet<object> _presenters = new HashSet<object>();
         private PlayerInputReader _input;
         private WorldMapViewport _viewport;
         private bool _isDirty;
@@ -63,7 +65,7 @@ namespace ForgottenKingdom
 
         private void OnEnable()
         {
-            if (_input != null) { _input.MapToggled += Toggle; }
+            if (_input != null) { _input.MapToggled += OnTogglePressed; }
             if (_world != null)
             {
                 _world.Changed += OnWorldChanged;
@@ -74,7 +76,7 @@ namespace ForgottenKingdom
 
         private void OnDisable()
         {
-            if (_input != null) { _input.MapToggled -= Toggle; }
+            if (_input != null) { _input.MapToggled -= OnTogglePressed; }
             if (_world != null)
             {
                 _world.Changed -= OnWorldChanged;
@@ -106,6 +108,36 @@ namespace ForgottenKingdom
             && (_respawner == null || !_respawner.IsSequenceRunning)
             && (_travel == null || !_travel.IsTraveling)
             && !GamePause.IsPaused;
+
+        /// <summary>
+        /// True when something draws this screen. The key opens it only then: with nothing on
+        /// screen a keypress would freeze the world behind an invisible menu. A release build has
+        /// no drawing yet, so the key does nothing there until the real screen registers itself.
+        /// </summary>
+        public bool HasPresenter => _presenters.Count > 0;
+
+        public void AddPresenter(object presenter)
+        {
+            if (presenter != null) { _presenters.Add(presenter); }
+        }
+
+        public void RemovePresenter(object presenter)
+        {
+            _presenters.Remove(presenter);
+            if (!HasPresenter)
+            {
+                Close();
+            }
+        }
+
+        /// <summary>The player's key. Closing always works; opening needs something to draw it.</summary>
+        private void OnTogglePressed()
+        {
+            if (IsOpen || HasPresenter)
+            {
+                Toggle();
+            }
+        }
 
         public void Toggle()
         {

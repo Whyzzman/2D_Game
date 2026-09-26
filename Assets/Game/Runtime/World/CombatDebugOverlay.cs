@@ -68,6 +68,17 @@ namespace ForgottenKingdom
             }
         }
 
+        private void OnEnable()
+        {
+            // Until the real inventory is drawn, this readout is how a developer build shows it.
+            _screen?.AddPresenter(this);
+        }
+
+        private void OnDisable()
+        {
+            _screen?.RemovePresenter(this);
+        }
+
         private void OnDestroy()
         {
             if (_player != null)
