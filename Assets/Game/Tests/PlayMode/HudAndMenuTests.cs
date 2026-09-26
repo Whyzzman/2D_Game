@@ -49,6 +49,32 @@ namespace ForgottenKingdom.Tests
         }
 
         [UnityTest]
+        public IEnumerator TheHudRewritesALabelOnlyWhenItsValueChanges()
+        {
+            // Every text or style write makes UI Toolkit lay the panel out again; a HUD that
+            // rebuilt the HP string each frame paid that cost for nothing.
+            yield return LoadGame();
+            var root = Object.FindAnyObjectByType<HudController>()
+                .GetComponent<UIDocument>().rootVisualElement;
+            var label = root.Q<Label>("hp-value");
+            var shown = label.text;
+            for (var i = 0; i < 10; i++)
+            {
+                yield return null;
+            }
+
+            Assert.That(ReferenceEquals(label.text, shown), Is.True,
+                "Unchanged health must not produce a new HP string.");
+
+            var player = Object.FindAnyObjectByType<PlayerCharacter>();
+            player.Actor.Health.SetCurrent(player.Health.Max - 10f);
+            yield return null;
+            yield return null;
+            Assert.That(label.text, Does.StartWith(
+                Mathf.CeilToInt(player.Health.Current).ToString()));
+        }
+
+        [UnityTest]
         public IEnumerator TheBossBarAppearsWithTheFightAndNamesTheBoss()
         {
             yield return LoadGame();

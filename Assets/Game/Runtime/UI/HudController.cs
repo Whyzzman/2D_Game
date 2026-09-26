@@ -43,6 +43,8 @@ namespace ForgottenKingdom
         private const float LossDelay = 0.45f;
         private const float LossSpeed = 0.9f;
         private const float LowShare = 0.3f;
+        /// <summary>A change smaller than this (a twentieth of a percent) is not worth a relayout.</summary>
+        private const float ShownEpsilon = 0.0005f;
         private const float TitleIn = 0.9f;
         private const float TitleHold = 2.6f;
         private const float TitleOut = 1.1f;
@@ -89,6 +91,15 @@ namespace ForgottenKingdom
         private float _fadeSpeed = 1f;
         private float _titleClock = -1f;
         private int _shownCurrency = -1;
+        // What the labels and fills last showed. UI Toolkit re-lays out on every style or text
+        // write, so the HUD writes only when a shown value actually changes.
+        private int _shownHp = -1;
+        private int _shownHpMax = -1;
+        private int _shownBossHp = -1;
+        private int _shownBossHpMax = -1;
+        private int _shownBossPhase = -1;
+        private float _shownFade = -1f;
+        private readonly float[] _shownChipFill = { -1f, -1f, -1f, -1f };
         private string _shownPrompt;
 
         /// <summary>For tests and tools: whether the boss bar is currently up.</summary>
@@ -264,9 +275,13 @@ namespace ForgottenKingdom
             var share = Share(health.Current, health.Max);
             _health.Set(share, dt);
             _health.Fill?.EnableInClassList("bar__fill--low", share < LowShare);
-            if (_hpValue != null)
+            var hp = Mathf.CeilToInt(health.Current);
+            var hpMax = Mathf.CeilToInt(health.Max);
+            if (_hpValue != null && (hp != _shownHp || hpMax != _shownHpMax))
             {
-                _hpValue.text = $"{Mathf.CeilToInt(health.Current)} / {Mathf.CeilToInt(health.Max)}";
+                _shownHp = hp;
+                _shownHpMax = hpMax;
+                _hpValue.text = $"{hp} / {hpMax}";
             }
 
             if (_mana != null)
@@ -299,6 +314,8 @@ namespace ForgottenKingdom
             {
                 // A new fight starts full, not sliding in from the last boss's value.
                 _shownBoss = boss;
+                _shownBossHp = -1;
+                _shownBossPhase = -1;
                 _bossMeter.Snap(share);
                 if (_bossName != null) { _bossName.text = boss.DisplayName; }
                 if (_bossMark != null)
@@ -310,15 +327,20 @@ namespace ForgottenKingdom
 
             _bossMeter.Set(share, dt);
             _bossMark?.EnableInClassList("boss__mark--passed", boss.Phase > 1);
-            if (_bossPhase != null)
+            if (_bossPhase != null && boss.Phase != _shownBossPhase)
             {
+                _shownBossPhase = boss.Phase;
                 _bossPhase.text = $"Фаза {Roman(boss.Phase)}";
                 _bossPhase.EnableInClassList("boss__phase--two", boss.Phase > 1);
             }
 
-            if (_bossValue != null)
+            var bossHp = Mathf.CeilToInt(health.Current);
+            var bossHpMax = Mathf.CeilToInt(health.Max);
+            if (_bossValue != null && (bossHp != _shownBossHp || bossHpMax != _shownBossHpMax))
             {
-                _bossValue.text = $"{Mathf.CeilToInt(health.Current)} / {Mathf.CeilToInt(health.Max)}";
+                _shownBossHp = bossHp;
+                _shownBossHpMax = bossHpMax;
+                _bossValue.text = $"{bossHp} / {bossHpMax}";
             }
         }
 
@@ -387,7 +409,12 @@ namespace ForgottenKingdom
                     var meter = active && rule.duration > 0f
                         ? remaining / rule.duration
                         : buildup / Mathf.Max(1f, rule.threshold);
-                    _chipFills[i].style.width = Length.Percent(Mathf.Clamp01(meter) * 100f);
+                    var fill = Mathf.Clamp01(meter);
+                    if (Mathf.Abs(fill - _shownChipFill[i]) > ShownEpsilon)
+                    {
+                        _shownChipFill[i] = fill;
+                        _chipFills[i].style.width = Length.Percent(fill * 100f);
+                    }
                 }
             }
         }
@@ -424,8 +451,9 @@ namespace ForgottenKingdom
         private void UpdateFade(float dt)
         {
             _fadeValue = Mathf.MoveTowards(_fadeValue, _fadeTarget, _fadeSpeed * dt);
-            if (_fade != null)
+            if (_fade != null && !Mathf.Approximately(_fadeValue, _shownFade))
             {
+                _shownFade = _fadeValue;
                 _fade.style.opacity = _fadeValue;
             }
         }
@@ -552,6 +580,8 @@ namespace ForgottenKingdom
             private float _shown = -1f;
             private float _trail;
             private float _trailWait;
+            private float _writtenShown = -1f;
+            private float _writtenTrail = -1f;
 
             public VisualElement Fill { get; private set; }
 
@@ -601,14 +631,16 @@ namespace ForgottenKingdom
 
             private void Write()
             {
-                if (Fill != null)
+                if (Fill != null && Mathf.Abs(_shown - _writtenShown) > ShownEpsilon)
                 {
+                    _writtenShown = _shown;
                     Fill.style.width = Length.Percent(_shown * 99f);
                     Fill.style.borderRightWidth = _shown > 0.005f && _shown < 0.995f ? 2f : 0f;
                 }
 
-                if (_loss != null)
+                if (_loss != null && Mathf.Abs(_trail - _writtenTrail) > ShownEpsilon)
                 {
+                    _writtenTrail = _trail;
                     _loss.style.width = Length.Percent(_trail * 99f);
                 }
             }
@@ -623,6 +655,7 @@ namespace ForgottenKingdom
             private Sprite _sprite;
             private bool _initialised;
             private int _shownTenths = -1;
+            private float _shownCooldown = -1f;
 
             public Slot(VisualElement root)
             {
@@ -651,9 +684,11 @@ namespace ForgottenKingdom
                     }
                 }
 
-                if (_cooldown != null)
+                var cooldown = Mathf.Clamp01(cooldownShare);
+                if (_cooldown != null && Mathf.Abs(cooldown - _shownCooldown) > ShownEpsilon)
                 {
-                    _cooldown.style.height = Length.Percent(Mathf.Clamp01(cooldownShare) * 100f);
+                    _shownCooldown = cooldown;
+                    _cooldown.style.height = Length.Percent(cooldown * 100f);
                 }
 
                 var tenths = remaining > 0.05f ? Mathf.CeilToInt(remaining * 10f) : 0;
