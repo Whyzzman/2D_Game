@@ -12,7 +12,8 @@ namespace ForgottenKingdom
     /// a second, and the reduced-motion setting turns the punch off.
     ///
     /// It also gives the follow its limits from the world graph: the extent of this scene's
-    /// areas, so the view never shows past the world's ends. The areas are coarse slabs today; tighter per-room
+    /// areas, so the view never shows past the world's ends, and for a boss fight the arena's
+    /// area, so the fight stays framed. The areas are coarse slabs today; tighter per-room
     /// rectangles can replace them later without touching the camera.
     /// </summary>
     [DisallowMultipleComponent]
@@ -73,9 +74,21 @@ namespace ForgottenKingdom
             }
         }
 
-        private void OnFightStarted(BossController boss) => _follow.SetZoom(_bossZoom, _bossZoomTime);
+        private void OnFightStarted(BossController boss)
+        {
+            _follow.SetZoom(_bossZoom, _bossZoomTime);
+            var graph = _progress != null ? _progress.World : null;
+            var arena = graph != null && boss != null
+                ? graph.AreaAt(SceneManager.GetActiveScene().name, boss.transform.position)
+                : null;
+            _follow.SetFightBounds(arena != null ? arena.WorldBounds : (Rect?)null);
+        }
 
-        private void OnFightEnded(BossController boss) => _follow.SetZoom(1f, _bossZoomTime * 1.5f);
+        private void OnFightEnded(BossController boss)
+        {
+            _follow.SetZoom(1f, _bossZoomTime * 1.5f);
+            _follow.SetFightBounds(null);
+        }
 
         /// <summary>Every area of this scene put together, or nothing when there is no graph.</summary>
         private Rect? SceneExtent()

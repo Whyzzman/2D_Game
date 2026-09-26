@@ -41,6 +41,7 @@ namespace ForgottenKingdom
         private float _fallLead;
         private float _fallLeadVelocity;
         private Rect? _worldBounds;
+        private Rect? _fightBounds;
         private float _lead;
         private float _leadVelocity;
         private float _depth;
@@ -60,7 +61,7 @@ namespace ForgottenKingdom
             : (Vector2)transform.position;
 
         /// <summary>The rectangle the view is kept inside right now, if any.</summary>
-        public Rect? ActiveBounds => _worldBounds;
+        public Rect? ActiveBounds => _fightBounds ?? _worldBounds;
 
         private bool HasVerticalDeadZone => _verticalDeadZoneAbove > 0f;
 
@@ -144,6 +145,12 @@ namespace ForgottenKingdom
         public void SetWorldBounds(Rect? bounds) => _worldBounds = bounds;
 
         /// <summary>
+        /// A boss arena for the length of the fight; it replaces the world's limit until cleared,
+        /// so the camera stays on the arena instead of drifting past its walls.
+        /// </summary>
+        public void SetFightBounds(Rect? bounds) => _fightBounds = bounds;
+
+        /// <summary>
         /// Keeps the vertical anchor at the last footing, the way Hollow Knight's camera does: a
         /// jump alone does not move the view. It follows on landing, when the player climbs past
         /// the dead zone (a wall run, a tall drop), and runs ahead of a long fall.
@@ -176,7 +183,7 @@ namespace ForgottenKingdom
 
         /// <summary>
         /// Moves a view centre so the whole view stays inside the active bounds. A rectangle
-        /// narrower than the view centres it instead.
+        /// narrower than the view centres it instead, which is what holds a small arena still.
         /// </summary>
         private Vector2 Clamp(Vector2 center)
         {

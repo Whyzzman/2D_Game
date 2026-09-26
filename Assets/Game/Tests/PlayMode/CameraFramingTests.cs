@@ -9,8 +9,8 @@ using UnityEngine.TestTools;
 namespace ForgottenKingdom.Tests
 {
     /// <summary>
-    /// The Tomb camera's framing: a jump does not rock the view, and the view never shows past
-    /// the world's ends.
+    /// The Tomb camera's framing: a jump does not rock the view, the view never shows past the
+    /// world's ends, and a boss fight keeps it on the arena.
     /// </summary>
     public sealed class CameraFramingTests
     {
@@ -100,6 +100,37 @@ namespace ForgottenKingdom.Tests
                 Is.GreaterThanOrEqualTo(bounds.Value.xMin - 0.01f));
             Assert.That(_camera.transform.position.x - halfWidth,
                 Is.GreaterThanOrEqualTo(bounds.Value.xMin - 0.1f), "Nothing past the end is shown.");
+        }
+
+        [UnityTest]
+        public IEnumerator ABossFightKeepsTheViewOnTheArena()
+        {
+            var world = _follow.ActiveBounds;
+            _motor.ResetTo(new Vector2(42f, 1f));
+            var end = Time.realtimeSinceStartup + 3f;
+            while (Time.realtimeSinceStartup < end && _follow.ActiveBounds == world)
+            {
+                yield return null;
+            }
+
+            var arena = _follow.ActiveBounds;
+            Assert.That(arena.HasValue && arena != world, Is.True, "The fight gave the camera its arena.");
+            // Let the zoom settle before measuring the view against the arena.
+            yield return Realtime(2f);
+
+            var rect = arena.Value;
+            var target = _follow.TargetPosition;
+            var halfWidth = _camera.orthographicSize * _camera.aspect;
+            if (rect.width <= halfWidth * 2f)
+            {
+                Assert.That(target.x, Is.EqualTo(rect.center.x).Within(0.01f),
+                    "An arena narrower than the view is held centred.");
+            }
+            else
+            {
+                Assert.That(target.x - halfWidth, Is.GreaterThanOrEqualTo(rect.xMin - 0.01f));
+                Assert.That(target.x + halfWidth, Is.LessThanOrEqualTo(rect.xMax + 0.01f));
+            }
         }
 
         private IEnumerator Keys(params Key[] keys)
