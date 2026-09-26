@@ -223,6 +223,31 @@ namespace ForgottenKingdom.Tests
         }
 
         [UnityTest]
+        public IEnumerator AHeldDirectionMovesOnAtOnceWhenControlComesBack()
+        {
+            _player.enabled = false;
+            InputSystem.QueueStateEvent(_keyboard, new KeyboardState(Key.D, Key.Space));
+            yield return null;
+            // Closing a menu hands control back with the keys still held.
+            _input.SetGameplayEnabled(false);
+            _input.SetGameplayEnabled(true);
+
+            var input = _input.Consume();
+            Assert.That(input.Horizontal, Is.EqualTo(1f), "The held direction must not be ignored.");
+            Assert.That(input.IsJumpPressed, Is.False, "A held jump must not fire a new one.");
+            Assert.That(input.IsJumpHeld, Is.False, "Nor extend a jump it did not start.");
+
+            InputSystem.QueueStateEvent(_keyboard, new KeyboardState(Key.D));
+            yield return null;
+            _input.Consume();
+            InputSystem.QueueStateEvent(_keyboard, new KeyboardState(Key.D, Key.Space));
+            yield return null;
+            Assert.That(_input.Consume().IsJumpPressed, Is.True, "Released once, jump works again.");
+            yield return NeutralFrames(2);
+            _player.enabled = true;
+        }
+
+        [UnityTest]
         public IEnumerator FullCourseIsTraversableWithMappedInput()
         {
             yield return CaptureFrame("start");

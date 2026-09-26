@@ -37,6 +37,7 @@ namespace ForgottenKingdom
         private bool _hasFocus = true;
         private bool _isPaused;
         private bool _waitingForRelease;
+        private bool _isReleaseForJumpOnly;
         private bool _isBlockUnderModifier;
 
         private void Awake()
@@ -180,8 +181,19 @@ namespace ForgottenKingdom
             var isJumpHeld = _jump.IsPressed();
             if (_waitingForRelease)
             {
-                _waitingForRelease = Mathf.Abs(horizontal) > 0.01f || isJumpHeld;
                 ClearPresses();
+                if (_isReleaseForJumpOnly)
+                {
+                    // Back from a menu: a direction held through it carries straight on —
+                    // standing still until the key was let go read as the game ignoring the
+                    // player. Only jump waits for its release, so a held button cannot become a
+                    // leap the moment control comes back.
+                    _waitingForRelease = isJumpHeld;
+                    return new MovementInput(horizontal);
+                }
+
+                // After a teleport, a respawn or a focus change the player arrives standing.
+                _waitingForRelease = Mathf.Abs(horizontal) > 0.01f || isJumpHeld;
                 return default;
             }
 
@@ -238,6 +250,8 @@ namespace ForgottenKingdom
 
             _isGameplaySuspended = !isEnabled;
             ClearInput();
+            // A menu closing is not a teleport: the held direction may carry on (Consume).
+            _isReleaseForJumpOnly = isEnabled;
         }
 
         public void ClearInput()
@@ -246,6 +260,7 @@ namespace ForgottenKingdom
             _jumpPressedAt = 0d;
             // Teleport/focus regain must not turn a stale held button into another action.
             _waitingForRelease = true;
+            _isReleaseForJumpOnly = false;
         }
 
         private bool IsReceivingInput => isActiveAndEnabled && _hasFocus && !_isPaused
