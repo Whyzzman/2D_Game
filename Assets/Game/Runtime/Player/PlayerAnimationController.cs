@@ -19,6 +19,8 @@ namespace ForgottenKingdom
     [DisallowMultipleComponent]
     public sealed class PlayerAnimationController : MonoBehaviour
     {
+        /// <summary>The slowest the run clip is played, as a share of its authored pace.</summary>
+        private const float MinRunRate = 0.35f;
         [SerializeField] private PlayerAnimationSet _set;
         [Tooltip("The renderer showing the character; frames are written here.")]
         [SerializeField] private SpriteRenderer _body;
@@ -71,7 +73,7 @@ namespace ForgottenKingdom
         /// authored length disagrees with the real action; the debug tools surface it so an
         /// animator can see it rather than guess.
         /// </summary>
-        public float PlaybackSpeed => _speed;
+        public float PlaybackSpeed => _speed * LocomotionRate();
 
         /// <summary>Set by the debug tools to pin a state; ignored in a normal build path.</summary>
         public PlayerAnimationState? ForcedState { get; set; }
@@ -198,7 +200,7 @@ namespace ForgottenKingdom
                 Enter(next);
             }
 
-            _elapsed += Mathf.Max(0f, deltaTime) * _speed;
+            _elapsed += Mathf.Max(0f, deltaTime) * _speed * LocomotionRate();
             Draw();
         }
 
@@ -356,6 +358,21 @@ namespace ForgottenKingdom
             }
 
             return LocomotionState(grounded);
+        }
+
+        /// <summary>
+        /// The run clip's pace follows the real ground speed, so a half-tilted stick or a slow
+        /// drift does not slide the feet under a full-speed stride. Never below a third: a crawl
+        /// at a tenth of the stride reads as frozen rather than slow.
+        /// </summary>
+        private float LocomotionRate()
+        {
+            if (_state != PlayerAnimationState.Run || _motor == null || _motor.RunSpeed <= 0f)
+            {
+                return 1f;
+            }
+
+            return Mathf.Clamp(Mathf.Abs(_motor.Velocity.x) / _motor.RunSpeed, MinRunRate, 1f);
         }
 
         private PlayerAnimationState LocomotionState(bool grounded)

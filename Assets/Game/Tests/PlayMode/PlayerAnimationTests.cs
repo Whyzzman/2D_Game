@@ -208,6 +208,28 @@ namespace ForgottenKingdom.Tests
         }
 
         [UnityTest]
+        public IEnumerator TheRunClipIsPacedByTheRealGroundSpeed()
+        {
+            var pad = InputSystem.AddDevice<Gamepad>("AnimationTestGamepad");
+            try
+            {
+                InputSystem.QueueStateEvent(pad, new GamepadState { leftStick = new Vector2(0.5f, 0f) });
+                yield return WaitForSecondsRealtime(0.3f);
+                Assume.That(_animation.State, Is.EqualTo(PlayerAnimationState.Run));
+                var share = Mathf.Abs(_motor.Velocity.x) / _motor.RunSpeed;
+                Assume.That(share, Is.LessThan(0.8f), "A half-tilted stick has to move slower.");
+                Assert.That(_animation.PlaybackSpeed, Is.EqualTo(share).Within(0.05f),
+                    "The stride follows the ground speed, so the feet do not slide.");
+                InputSystem.QueueStateEvent(pad, new GamepadState());
+                yield return null;
+            }
+            finally
+            {
+                InputSystem.RemoveDevice(pad);
+            }
+        }
+
+        [UnityTest]
         public IEnumerator LandingIsShownBeforeLocomotionResumes()
         {
             // A real jump rather than a teleport: teleporting upwards drops the player away from

@@ -74,6 +74,9 @@ namespace ForgottenKingdom
         public int AirDashesUsed => _logic?.AirDashesUsed ?? 0;
         public DashSettings DashSettings => _dashSettings;
 
+        /// <summary>Full ground speed; the run clip is paced against it.</summary>
+        public float RunSpeed => _settings.RunSpeed;
+
         /// <summary>
         /// Where a dash would go right now: the direction being steered, or the facing direction
         /// when the stick is neutral.
