@@ -811,8 +811,11 @@ x≈36,5) с местом для рывка за спину → вход в ар
   существующие сцены не трогает (строит лишь отсутствующую); полная пересборка —
   отдельный `BuildWithScenes` с предупреждением, что ручные правки пропадут. Правило
   записано в `AGENTS.md`. Средне · сильно (для разработки).
-- [ ] **25. Шесть отладочных OnGUI-инструментов (~2500 строк) в `Runtime/World`.** →
-  вынести в `Runtime/Debug`, сохранив `.meta`. Легко · мало.
+- [x] **25. Шесть отладочных OnGUI-инструментов лежали в `Runtime/World`.** Перенесены
+  2026-09-26 в `Runtime/Debug` через `git mv` вместе с `.meta` (GUID сохранены, сцена и
+  префабы ссылаются на них как прежде): `CombatDebugOverlay`, `WorldDebugTools`,
+  `AnimationDebugTools`, `EnemyAnimationDebugTools`, `EnvironmentDebugTools`,
+  `FeedbackDebugTools`. Легко · мало.
 - [ ] **26. Крупные классы** (`EnemyController` 962 строки, `PlayerCharacter` 752,
   `BossController` 660). → выносить части постепенно по мере правок. Средне · мало.
 

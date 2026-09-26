@@ -32,7 +32,7 @@
 | `Runtime/Player/WeaponAnimationSet.cs` | набір кліпів окремої зброї |
 | `Runtime/Player/PlayerAnimationController.cs` | єдине місце, що вирішує, як виглядає гравець |
 | `Runtime/Player/PlayerVisualSockets.cs` | точки кріплення ефектів |
-| `Runtime/World/AnimationDebugTools.cs` | інструменти перевірки |
+| `Runtime/Debug/AnimationDebugTools.cs` | інструменти перевірки |
 | `Editor/PlaceholderPlayerArt.cs` | генератор тимчасових силуетів |
 
 **Жоден геймплейний скрипт не називає кліп.** Системи змінюють свій стан;
