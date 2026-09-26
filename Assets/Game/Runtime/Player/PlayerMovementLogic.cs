@@ -21,6 +21,8 @@ namespace ForgottenKingdom
     public sealed class PlayerMovementLogic
     {
         private const float MotionThreshold = 0.01f;
+        /// <summary>Below this share of a full push the stick reads as a walk, for animation.</summary>
+        private const float HalfTilt = 0.5f;
         /// <summary>Keeps accumulated float error from stretching a timer by one physics step.</summary>
         private const float TimerEpsilon = 0.0001f;
         private readonly MovementSettings _settings;
@@ -138,7 +140,7 @@ namespace ForgottenKingdom
             if (mode == LocomotionMode.Restricted)
             {
                 // Keep steering, drop the jump: an attack must not be turned into a leap.
-                input = new MovementInput(input.Horizontal, input.IsRunning);
+                input = new MovementInput(input.Horizontal);
             }
             else if (mode != LocomotionMode.Normal)
             {
@@ -158,8 +160,12 @@ namespace ForgottenKingdom
 
             if (mode != LocomotionMode.Knockback)
             {
-                var scale = mode == LocomotionMode.Restricted ? Mathf.Clamp01(movementScale) : 1f;
-                var speed = (input.IsRunning ? _settings.RunSpeed : _settings.WalkSpeed) * scale;
+                // The player always runs; how far the stick is pushed still sets the pace. A
+                // restricted action drifts from the old walking pace, so an attack or a raised
+                // guard keeps the slow creep it was tuned for rather than twice that.
+                var speed = mode == LocomotionMode.Restricted
+                    ? _settings.WalkSpeed * Mathf.Clamp01(movementScale)
+                    : _settings.RunSpeed;
                 var acceleration = IsGrounded
                     ? (hasDirection ? _settings.GroundAcceleration : _settings.GroundDeceleration)
                     : (hasDirection ? _settings.AirAcceleration : _settings.AirDeceleration);
@@ -204,7 +210,7 @@ namespace ForgottenKingdom
             State = IsGrounded
                 ? (Mathf.Abs(velocity.x) <= MotionThreshold
                     ? MovementState.Idle
-                    : (input.IsRunning ? MovementState.Run : MovementState.Walk))
+                    : (Mathf.Abs(horizontal) < HalfTilt ? MovementState.Walk : MovementState.Run))
                 : (velocity.y > 0f ? MovementState.Jump : MovementState.Fall);
             return velocity;
         }

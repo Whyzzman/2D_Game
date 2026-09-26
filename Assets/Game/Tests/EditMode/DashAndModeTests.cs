@@ -63,10 +63,10 @@ namespace ForgottenKingdom.Tests
             _logic.Step(Vector2.zero, true, default, Step);
             _logic.TryBeginDash(1);
             var velocity = _logic.Step(Vector2.zero, true,
-                new MovementInput(0f, false, true, true), Step);
+                new MovementInput(0f, true, true), Step);
             Assert.That(velocity.y, Is.Zero, "The dash suspends vertical motion.");
             RunSteps(_dash.DashDuration);
-            var afterDash = _logic.Step(Vector2.zero, true, new MovementInput(0f, false, false, true), Step);
+            var afterDash = _logic.Step(Vector2.zero, true, new MovementInput(0f, false, true), Step);
             Assert.That(afterDash.y, Is.Zero, "The stale buffered press must have expired.");
         }
 
@@ -74,7 +74,7 @@ namespace ForgottenKingdom.Tests
         public void NoInputModeBrakesTheCharacterAndRefusesJumps()
         {
             var velocity = new Vector2(6f, 0f);
-            velocity = _logic.Step(velocity, true, new MovementInput(1f, true, true, true), Step,
+            velocity = _logic.Step(velocity, true, new MovementInput(1f, true, true), Step,
                 LocomotionMode.NoInput);
             Assert.That(velocity.x, Is.LessThan(6f));
             Assert.That(velocity.y, Is.Zero);
@@ -115,7 +115,7 @@ namespace ForgottenKingdom.Tests
             var velocity = Vector2.zero;
             for (var i = 0; i < 40; i++)
             {
-                velocity = _logic.Step(velocity, true, new MovementInput(1f, false, true, true),
+                velocity = _logic.Step(velocity, true, new MovementInput(1f, true, true),
                     Step, LocomotionMode.Restricted, 0.3f);
             }
 

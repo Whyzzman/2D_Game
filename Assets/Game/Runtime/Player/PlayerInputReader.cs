@@ -9,7 +9,6 @@ namespace ForgottenKingdom
         [SerializeField] private InputActionAsset _inputActions;
         private InputActionAsset _runtimeActions;
         private InputAction _move;
-        private InputAction _sprint;
         private InputAction _jump;
         private InputAction _lightAttack;
         private InputAction _heavyAttack;
@@ -51,7 +50,6 @@ namespace ForgottenKingdom
             // Own only our actions; never disable the project-wide UI or another player's input.
             _runtimeActions = Instantiate(_inputActions);
             _move = _runtimeActions.FindAction("Player/Move", true);
-            _sprint = _runtimeActions.FindAction("Player/Sprint", true);
             _jump = _runtimeActions.FindAction("Player/Jump", true);
             _lightAttack = _runtimeActions.FindAction("Player/LightAttack", true);
             _heavyAttack = _runtimeActions.FindAction("Player/HeavyAttack", true);
@@ -105,7 +103,6 @@ namespace ForgottenKingdom
             _map.Enable();
             _switchWeapon.Enable();
             _move.Enable();
-            _sprint.Enable();
             _jump.Enable();
             _lightAttack.Enable();
             _heavyAttack.Enable();
@@ -148,7 +145,6 @@ namespace ForgottenKingdom
             _map.Disable();
             _switchWeapon.Disable();
             _move.Disable();
-            _sprint.Disable();
             _jump.Disable();
             _lightAttack.Disable();
             _heavyAttack.Disable();
@@ -175,16 +171,15 @@ namespace ForgottenKingdom
             }
 
             var horizontal = _move.ReadValue<Vector2>().x;
-            var isRunning = _sprint.IsPressed();
             var isJumpHeld = _jump.IsPressed();
             if (_waitingForRelease)
             {
-                _waitingForRelease = Mathf.Abs(horizontal) > 0.01f || isRunning || isJumpHeld;
+                _waitingForRelease = Mathf.Abs(horizontal) > 0.01f || isJumpHeld;
                 ClearPresses();
                 return default;
             }
 
-            var input = new MovementInput(horizontal, isRunning, _hasJumpPress, isJumpHeld,
+            var input = new MovementInput(horizontal, _hasJumpPress, isJumpHeld,
                 (float)System.Math.Max(0d, Time.timeAsDouble - _jumpPressedAt));
             _hasJumpPress = false;
             return input;

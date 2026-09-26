@@ -20,7 +20,7 @@ namespace ForgottenKingdom.Tests
         /// <summary>Every action <see cref="PlayerInputReader"/> reads; template leftovers are not played.</summary>
         private static readonly string[] GameActions =
         {
-            "Move", "Sprint", "Jump", "LightAttack", "HeavyAttack", "Dash", "Block", "Heal",
+            "Move", "Jump", "LightAttack", "HeavyAttack", "Dash", "Block", "Heal",
             "Interact", "Inventory", "Map", "SwitchWeapon", "ActiveSkill1", "ActiveSkill2",
             "CastSpell1", "CastSpell2", "CastSpell3", "AbilityModifier"
         };

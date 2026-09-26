@@ -77,13 +77,11 @@ namespace ForgottenKingdom.Tests
         }
 
         [UnityTest]
-        public IEnumerator KeyboardWalkSprintReleaseAndReenableWork()
+        public IEnumerator KeyboardRunReleaseAndReenableWork()
         {
+            // No key is held to run: the keyboard always moves at the running pace.
             InputSystem.QueueStateEvent(_keyboard, new KeyboardState(Key.D));
             yield return Frames(15);
-            Assert.That(_body.linearVelocity.x, Is.EqualTo(3f).Within(0.05f));
-            InputSystem.QueueStateEvent(_keyboard, new KeyboardState(Key.D, Key.LeftShift));
-            yield return Frames(10);
             Assert.That(_body.linearVelocity.x, Is.EqualTo(6.5f).Within(0.05f));
             yield return NeutralFrames(5);
             Assert.That(Mathf.Abs(_body.linearVelocity.x), Is.LessThan(0.05f));
@@ -92,18 +90,14 @@ namespace ForgottenKingdom.Tests
             yield return NeutralFrames(3);
             InputSystem.QueueStateEvent(_keyboard, new KeyboardState(Key.A));
             yield return Frames(10);
-            Assert.That(_body.linearVelocity.x, Is.LessThan(-2.9f));
+            Assert.That(_body.linearVelocity.x, Is.LessThan(-6.4f));
             Assert.That(_player.FacingDirection, Is.EqualTo(-1));
         }
 
         [UnityTest]
-        public IEnumerator VirtualGamepadWalkRunAndJumpUseExistingBindings()
+        public IEnumerator VirtualGamepadRunAndJumpUseExistingBindings()
         {
             InputSystem.QueueStateEvent(_gamepad, new GamepadState { leftStick = Vector2.right });
-            yield return Frames(8);
-            Assert.That(_body.linearVelocity.x, Is.EqualTo(3f).Within(0.05f));
-            InputSystem.QueueStateEvent(_gamepad,
-                new GamepadState { leftStick = Vector2.right }.WithButton(GamepadButton.LeftStick));
             yield return Frames(8);
             Assert.That(_body.linearVelocity.x, Is.EqualTo(6.5f).Within(0.05f));
             InputSystem.QueueStateEvent(_gamepad, new GamepadState().WithButton(GamepadButton.South));
@@ -263,7 +257,7 @@ namespace ForgottenKingdom.Tests
 
         private IEnumerator RunTo(float x)
         {
-            InputSystem.QueueStateEvent(_keyboard, new KeyboardState(Key.D, Key.LeftShift));
+            InputSystem.QueueStateEvent(_keyboard, new KeyboardState(Key.D));
             for (var i = 0; i < 300 && _body.position.x < x; i++)
             {
                 yield return Frames(1);
@@ -276,7 +270,7 @@ namespace ForgottenKingdom.Tests
         private IEnumerator JumpTo(float x, float surfaceY)
         {
             yield return NeutralFrames(3);
-            InputSystem.QueueStateEvent(_keyboard, new KeyboardState(Key.D, Key.LeftShift, Key.Space));
+            InputSystem.QueueStateEvent(_keyboard, new KeyboardState(Key.D, Key.Space));
             var hasLeftGround = false;
             var braking = false;
             for (var i = 0; i < 100; i++)

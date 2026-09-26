@@ -162,11 +162,11 @@ namespace ForgottenKingdom.Tests
             yield return Place(new Vector2(13.6f, 4.1f));
 
             // A run west along the second step, a jump off its end, a dash at the top.
-            yield return Hold(0.35f, Key.A, Key.LeftShift);
-            yield return Keys(Key.A, Key.LeftShift, Key.Space);
+            yield return Hold(0.35f, Key.A);
+            yield return Keys(Key.A, Key.Space);
             yield return UntilApex(0.5f);
-            yield return Keys(Key.A, Key.LeftShift, Key.Space, Key.L);
-            yield return Hold(0.8f, Key.A, Key.LeftShift);
+            yield return Keys(Key.A, Key.Space, Key.L);
+            yield return Hold(0.8f, Key.A);
             yield return Keys();
             yield return new WaitForSeconds(0.6f);
         }
@@ -208,7 +208,7 @@ namespace ForgottenKingdom.Tests
                     continue;
                 }
 
-                yield return Keys(run, Key.LeftShift);
+                yield return Keys(run);
             }
 
             yield return Keys();
@@ -216,18 +216,18 @@ namespace ForgottenKingdom.Tests
 
         private IEnumerator Jump(Key run)
         {
-            yield return Keys(run, Key.LeftShift, Key.Space);
+            yield return Keys(run, Key.Space);
             var deadline = Time.time + 1.2f;
             while (Time.time < deadline && (_motor.Velocity.y > 0f || _motor.IsGrounded))
             {
-                yield return Keys(run, Key.LeftShift, Key.Space);
+                yield return Keys(run, Key.Space);
                 if (_motor.IsGrounded && Time.time > deadline - 1.1f)
                 {
                     break;
                 }
             }
 
-            yield return Keys(run, Key.LeftShift);
+            yield return Keys(run);
         }
 
         /// <summary>

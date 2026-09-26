@@ -6,7 +6,10 @@ namespace ForgottenKingdom
     [Serializable]
     public sealed class MovementSettings
     {
+        [Tooltip("Base for the slow drift allowed during attacks, blocks, casts and weapon swaps. "
+            + "There is no walking gait: on the ground the player always runs.")]
         [SerializeField, Min(0f)] private float _walkSpeed = 3f;
+        [Tooltip("Ground speed at full stick or a held key; a half-tilted stick moves at half of it.")]
         [SerializeField, Min(0f)] private float _runSpeed = 6.5f;
         [SerializeField, Min(0f)] private float _groundAcceleration = 60f;
         [SerializeField, Min(0f)] private float _groundDeceleration = 80f;

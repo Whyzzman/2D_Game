@@ -17,7 +17,7 @@ namespace ForgottenKingdom.Tests
         }
 
         [Test]
-        public void WalkAcceleratesToLimitAndBrakesToZero()
+        public void RunAcceleratesToLimitAndBrakesToZero()
         {
             var velocity = _logic.Step(Vector2.zero, true, new MovementInput(1f), StepTime);
             Assert.That(velocity.x, Is.EqualTo(1.2f).Within(0.001f));
@@ -25,8 +25,10 @@ namespace ForgottenKingdom.Tests
             {
                 velocity = _logic.Step(velocity, true, new MovementInput(1f), StepTime);
             }
-            Assert.That(velocity.x, Is.EqualTo(3f).Within(0.001f));
-            for (var i = 0; i < 3; i++)
+            Assert.That(velocity.x, Is.EqualTo(6.5f).Within(0.001f),
+                "There is no walking gait: a full push always runs.");
+            Assert.That(_logic.State, Is.EqualTo(MovementState.Run));
+            for (var i = 0; i < 5; i++)
             {
                 velocity = _logic.Step(velocity, true, default, StepTime);
             }
@@ -35,20 +37,22 @@ namespace ForgottenKingdom.Tests
         }
 
         [Test]
-        public void SprintAndAnalogInputUseDifferentTargetSpeeds()
+        public void AHalfTiltedStickMovesAtHalfTheRunningPace()
         {
             var velocity = Vector2.zero;
             for (var i = 0; i < 20; i++)
             {
-                velocity = _logic.Step(velocity, true, new MovementInput(1f, true), StepTime);
+                velocity = _logic.Step(velocity, true, new MovementInput(0.5f), StepTime);
             }
-            Assert.That(velocity.x, Is.EqualTo(6.5f).Within(0.001f));
+            Assert.That(velocity.x, Is.EqualTo(3.25f).Within(0.001f));
             Assert.That(_logic.State, Is.EqualTo(MovementState.Run));
             for (var i = 0; i < 20; i++)
             {
-                velocity = _logic.Step(velocity, true, new MovementInput(0.5f), StepTime);
+                velocity = _logic.Step(velocity, true, new MovementInput(0.3f), StepTime);
             }
-            Assert.That(velocity.x, Is.EqualTo(1.5f).Within(0.001f));
+            Assert.That(velocity.x, Is.EqualTo(1.95f).Within(0.001f));
+            Assert.That(_logic.State, Is.EqualTo(MovementState.Walk),
+                "A light tilt still reads as a walk for the animation.");
         }
 
         [Test]
@@ -57,11 +61,11 @@ namespace ForgottenKingdom.Tests
             var velocity = _logic.Step(new Vector2(3f, 0f), false, new MovementInput(-1f), StepTime);
             Assert.That(velocity.x, Is.EqualTo(2.4f).Within(0.001f));
             Assert.That(_logic.FacingDirection, Is.EqualTo(-1));
-            for (var i = 0; i < 12; i++)
+            for (var i = 0; i < 16; i++)
             {
                 velocity = _logic.Step(velocity, false, new MovementInput(-1f), StepTime);
             }
-            Assert.That(velocity.x, Is.EqualTo(-3f).Within(0.001f));
+            Assert.That(velocity.x, Is.EqualTo(-6.5f).Within(0.001f));
         }
 
         [Test]
@@ -70,14 +74,14 @@ namespace ForgottenKingdom.Tests
             _logic.Step(Vector2.zero, true, default, StepTime);
             _logic.Step(Vector2.zero, false, default, 0.06f);
             var jumped = _logic.Step(Vector2.zero, false,
-                new MovementInput(0f, false, true, true), StepTime);
+                new MovementInput(0f, true, true), StepTime);
             Assert.That(jumped.y, Is.GreaterThan(9f));
 
             _logic.Reset();
             _logic.Step(Vector2.zero, true, default, StepTime);
             _logic.Step(Vector2.zero, false, default, 0.12f);
             var missed = _logic.Step(Vector2.zero, false,
-                new MovementInput(0f, false, true, true), StepTime);
+                new MovementInput(0f, true, true), StepTime);
             Assert.That(missed.y, Is.LessThan(0f));
         }
 
@@ -85,22 +89,22 @@ namespace ForgottenKingdom.Tests
         public void BufferedPressFiresOnLandingAndOnlyOnce()
         {
             _logic.Step(new Vector2(0f, -2f), false,
-                new MovementInput(0f, false, true, true), StepTime);
+                new MovementInput(0f, true, true), StepTime);
             var velocity = _logic.Step(Vector2.zero, true,
-                new MovementInput(0f, false, false, true), 0.06f);
+                new MovementInput(0f, false, true), 0.06f);
             Assert.That(velocity.y, Is.GreaterThan(9f));
-            _logic.Step(velocity, false, new MovementInput(0f, false, false, true), StepTime);
+            _logic.Step(velocity, false, new MovementInput(0f, false, true), StepTime);
             velocity = _logic.Step(Vector2.zero, true,
-                new MovementInput(0f, false, false, true), StepTime);
+                new MovementInput(0f, false, true), StepTime);
             Assert.That(velocity.y, Is.Zero);
         }
 
         [Test]
         public void ExpiredBufferDoesNotJumpOnLanding()
         {
-            _logic.Step(Vector2.down, false, new MovementInput(0f, false, true, true), StepTime);
+            _logic.Step(Vector2.down, false, new MovementInput(0f, true, true), StepTime);
             var velocity = _logic.Step(Vector2.zero, true,
-                new MovementInput(0f, false, false, true), 0.15f);
+                new MovementInput(0f, false, true), 0.15f);
             Assert.That(velocity.y, Is.Zero);
         }
 
@@ -108,7 +112,7 @@ namespace ForgottenKingdom.Tests
         public void OldInputBetweenPhysicsTicksCannotRenewBuffer()
         {
             var velocity = _logic.Step(Vector2.zero, true,
-                new MovementInput(0f, false, true, true, 0.2f), StepTime);
+                new MovementInput(0f, true, true, 0.2f), StepTime);
             Assert.That(velocity.y, Is.Zero);
         }
 
@@ -116,12 +120,12 @@ namespace ForgottenKingdom.Tests
         public void JumpConsumesCoyoteAndIgnoresLingeringGroundContact()
         {
             var velocity = _logic.Step(Vector2.zero, true,
-                new MovementInput(0f, false, true, true), StepTime);
+                new MovementInput(0f, true, true), StepTime);
             var next = _logic.Step(velocity, true,
-                new MovementInput(0f, false, true, true), StepTime);
+                new MovementInput(0f, true, true), StepTime);
             Assert.That(next.y, Is.LessThan(velocity.y));
             var airborne = _logic.Step(next, false,
-                new MovementInput(0f, false, true, true), StepTime);
+                new MovementInput(0f, true, true), StepTime);
             Assert.That(airborne.y, Is.LessThan(next.y));
         }
 
@@ -145,12 +149,12 @@ namespace ForgottenKingdom.Tests
         public void ResetRemovesBufferedPressAndCoyotePermission()
         {
             _logic.Step(Vector2.zero, true, default, StepTime);
-            _logic.Step(Vector2.down, false, new MovementInput(-1f, false, true, true, 0.2f), StepTime);
+            _logic.Step(Vector2.down, false, new MovementInput(-1f, true, true, 0.2f), StepTime);
             _logic.Reset();
             Assert.That(_logic.State, Is.EqualTo(MovementState.Idle));
             Assert.That(_logic.FacingDirection, Is.EqualTo(1));
             Assert.That(_logic.Step(Vector2.zero, false,
-                new MovementInput(0f, false, true, true), StepTime).y, Is.LessThan(0f));
+                new MovementInput(0f, true, true), StepTime).y, Is.LessThan(0f));
             _logic.Reset();
             Assert.That(_logic.Step(Vector2.zero, true, default, StepTime).y, Is.Zero);
         }
@@ -158,13 +162,13 @@ namespace ForgottenKingdom.Tests
         private float SimulateJump(bool hold)
         {
             var velocity = _logic.Step(Vector2.zero, true,
-                new MovementInput(0f, false, true, true), StepTime);
+                new MovementInput(0f, true, true), StepTime);
             var height = velocity.y * StepTime;
             var peak = height;
             for (var i = 0; i < 100; i++)
             {
                 velocity = _logic.Step(velocity, false,
-                    new MovementInput(0f, false, false, hold), StepTime);
+                    new MovementInput(0f, false, hold), StepTime);
                 height += velocity.y * StepTime;
                 peak = Mathf.Max(peak, height);
             }

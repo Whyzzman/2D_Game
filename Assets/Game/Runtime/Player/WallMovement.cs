@@ -46,7 +46,8 @@ namespace ForgottenKingdom
                         _regrabRemaining = _regrabDelay;
                         State = WallMovementState.Jump;
                     }
-                    else if (input.IsRunning && _runUsed < _runDuration
+                    // Holding jump against the wall runs up it; a fresh press above leaps off.
+                    else if (input.IsJumpHeld && _runUsed < _runDuration
                         && _stamina != null && _stamina.TrySpend(_runStaminaPerSecond * deltaTime))
                     {
                         _runUsed += deltaTime;

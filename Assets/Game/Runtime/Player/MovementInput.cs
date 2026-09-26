@@ -3,16 +3,14 @@ namespace ForgottenKingdom
     public readonly struct MovementInput
     {
         public readonly float Horizontal;
-        public readonly bool IsRunning;
         public readonly bool IsJumpPressed;
         public readonly bool IsJumpHeld;
         public readonly float JumpPressAge;
 
-        public MovementInput(float horizontal, bool isRunning = false,
-            bool isJumpPressed = false, bool isJumpHeld = false, float jumpPressAge = 0f)
+        public MovementInput(float horizontal, bool isJumpPressed = false,
+            bool isJumpHeld = false, float jumpPressAge = 0f)
         {
             Horizontal = horizontal;
-            IsRunning = isRunning;
             IsJumpPressed = isJumpPressed;
             IsJumpHeld = isJumpHeld;
             JumpPressAge = jumpPressAge;
