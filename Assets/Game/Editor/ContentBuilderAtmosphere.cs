@@ -401,6 +401,12 @@ namespace ForgottenKingdom.EditorTools
             SetVector(follow, "_framingOffset", new Vector2(0f, 1.55f));
             SetFloat(follow, "_lookAhead", 1.3f);
             SetFloat(follow, "_smoothTime", 0.14f);
+            // Hollow Knight's vertical: a jump does not move the view, landing and long drops do.
+            SetFloat(follow, "_verticalDeadZoneAbove", 3f);
+            SetFloat(follow, "_verticalDeadZoneBelow", 1f);
+            SetFloat(follow, "_fallLookAhead", 2.5f);
+            SetFloat(follow, "_fallLookAheadSpeed", 15f);
+            SetFloat(follow, "_fallLookAheadSmoothTime", 0.5f);
             Ensure<CameraDirector>(camera);
             camera.GetComponent<Camera>().backgroundColor = new Color(0.04f, 0.045f, 0.065f);
         }

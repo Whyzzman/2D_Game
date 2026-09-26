@@ -25,7 +25,21 @@ namespace ForgottenKingdom
         [SerializeField, Min(0.01f)] private float _lookAheadSmoothTime = 0.45f;
         [Tooltip("Speed at which the lead reaches its full distance.")]
         [SerializeField, Min(0.1f)] private float _lookAheadFullSpeed = 6.5f;
+        [Header("Vertical dead zone")]
+        [Tooltip("How far above the last footing the player may rise before the view follows. "
+            + "Zero turns the dead zone off and the view tracks every jump.")]
+        [SerializeField, Min(0f)] private float _verticalDeadZoneAbove;
+        [Tooltip("How far below the last footing the player may drop before the view follows.")]
+        [SerializeField, Min(0f)] private float _verticalDeadZoneBelow;
+        [Tooltip("How far the view runs ahead of a long fall, so the landing is seen in time.")]
+        [SerializeField, Min(0f)] private float _fallLookAhead;
+        [Tooltip("Falling faster than this counts as a long fall. An ordinary jump lands at ~14.")]
+        [SerializeField, Min(0f)] private float _fallLookAheadSpeed = 15f;
+        [SerializeField, Min(0.01f)] private float _fallLookAheadSmoothTime = 0.5f;
         private Vector2 _smoothingVelocity;
+        private float _anchorY;
+        private float _fallLead;
+        private float _fallLeadVelocity;
         private float _lead;
         private float _leadVelocity;
         private float _depth;
@@ -40,8 +54,11 @@ namespace ForgottenKingdom
 
         /// <summary>Where the camera is heading, before shake; tests measure framing against this.</summary>
         public Vector2 TargetPosition => _target != null
-            ? (Vector2)_target.transform.position + _framingOffset + new Vector2(_lead, 0f)
+            ? new Vector2(_target.transform.position.x + _lead, _anchorY + _fallLead)
+                + _framingOffset
             : (Vector2)transform.position;
+
+        private bool HasVerticalDeadZone => _verticalDeadZoneAbove > 0f;
 
         public Vector2 FramingOffset => _framingOffset;
 
@@ -79,6 +96,7 @@ namespace ForgottenKingdom
 
         private void LateUpdate()
         {
+            UpdateVertical();
             if (_lookAhead > 0f)
             {
                 // Led by speed, not by facing: a player standing still is centred, and turning on
@@ -106,11 +124,45 @@ namespace ForgottenKingdom
             _smoothingVelocity = Vector2.zero;
             _lead = 0f;
             _leadVelocity = 0f;
+            _fallLead = 0f;
+            _fallLeadVelocity = 0f;
             if (_target != null)
             {
+                _anchorY = _target.transform.position.y;
                 var position = TargetPosition;
                 transform.position = new Vector3(position.x, position.y, _depth);
             }
+        }
+
+        /// <summary>
+        /// Keeps the vertical anchor at the last footing, the way Hollow Knight's camera does: a
+        /// jump alone does not move the view. It follows on landing, when the player climbs past
+        /// the dead zone (a wall run, a tall drop), and runs ahead of a long fall.
+        /// </summary>
+        private void UpdateVertical()
+        {
+            if (_target == null)
+            {
+                return;
+            }
+
+            var y = _target.transform.position.y;
+            if (!HasVerticalDeadZone || _target.IsGrounded)
+            {
+                _anchorY = y;
+            }
+            else if (y > _anchorY + _verticalDeadZoneAbove)
+            {
+                _anchorY = y - _verticalDeadZoneAbove;
+            }
+            else if (y < _anchorY - _verticalDeadZoneBelow)
+            {
+                _anchorY = y + _verticalDeadZoneBelow;
+            }
+
+            var falling = _fallLookAhead > 0f && _target.Velocity.y < -_fallLookAheadSpeed;
+            _fallLead = Mathf.SmoothDamp(_fallLead, falling ? -_fallLookAhead : 0f,
+                ref _fallLeadVelocity, _fallLookAheadSmoothTime, Mathf.Infinity, Time.deltaTime);
         }
 
         /// <summary>Eases the view to a size relative to its normal one (1 = normal).</summary>

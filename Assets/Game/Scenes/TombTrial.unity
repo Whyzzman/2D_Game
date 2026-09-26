@@ -20597,6 +20597,11 @@ MonoBehaviour:
   _lookAhead: 1.3
   _lookAheadSmoothTime: 0.45
   _lookAheadFullSpeed: 6.5
+  _verticalDeadZoneAbove: 3
+  _verticalDeadZoneBelow: 1
+  _fallLookAhead: 2.5
+  _fallLookAheadSpeed: 15
+  _fallLookAheadSmoothTime: 0.5
 --- !u!20 &980369205
 Camera:
   m_ObjectHideFlags: 0
