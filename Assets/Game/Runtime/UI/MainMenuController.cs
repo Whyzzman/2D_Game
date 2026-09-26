@@ -34,9 +34,15 @@ namespace ForgottenKingdom
         private int _focus;
         private bool _isLeaving;
         private MenuInput.Repeater _repeater;
+        private VisualElement _confirm;
+        private readonly List<Button> _confirmButtons = new List<Button>();
+        private int _confirmFocus;
 
         public bool IsOptionsOpen => _options != null && _options.IsOpen;
         public bool CanContinue => _continue != null && _continue.enabledSelf;
+
+        /// <summary>The "erase the save?" window over the title is up.</summary>
+        public bool IsConfirmOpen => _confirm != null && _confirm.ClassListContains("confirm--open");
 
         private void OnEnable()
         {
@@ -52,6 +58,7 @@ namespace ForgottenKingdom
             Dress();
             BindButtons();
             _options = new OptionsPanel(_root, OnOptionsClosed);
+            BindConfirm();
             Refresh();
             // Opened by the next frame's layout, so the transition actually runs.
             _root.schedule.Execute(() => _fade?.AddToClassList("menu__fade--open")).ExecuteLater(50);
@@ -144,6 +151,12 @@ namespace ForgottenKingdom
                 return;
             }
 
+            if (IsConfirmOpen)
+            {
+                UpdateConfirmKeys();
+                return;
+            }
+
             if (IsOptionsOpen)
             {
                 if (MenuInput.Cancelled())
@@ -202,9 +215,105 @@ namespace ForgottenKingdom
             StartCoroutine(Leave(false));
         }
 
+        /// <summary>
+        /// Starts over. With a save on disk it asks first (menus.html, frame 3): the save is
+        /// erased for good, so a single stray press must not do it. Without one there is nothing
+        /// to lose and it goes straight in.
+        /// </summary>
         public void NewGame()
         {
+            if (SaveSystem.HasValidSave())
+            {
+                OpenConfirm();
+                return;
+            }
+
             StartCoroutine(Leave(true));
+        }
+
+        /// <summary>The window's "erase and start" — the only way a save is deleted from here.</summary>
+        public void ConfirmNewGame()
+        {
+            CloseConfirm();
+            StartCoroutine(Leave(true));
+        }
+
+        public void CancelNewGame() => CloseConfirm();
+
+        private void BindConfirm()
+        {
+            _confirm = _root.Q("confirm-new");
+            if (_confirm == null)
+            {
+                return;
+            }
+
+            BindConfirmButton("confirm-cancel", CancelNewGame);
+            BindConfirmButton("confirm-erase", ConfirmNewGame);
+        }
+
+        private void BindConfirmButton(string name, System.Action action)
+        {
+            var button = _confirm.Q<Button>(name);
+            if (button == null)
+            {
+                return;
+            }
+
+            button.clicked += action;
+            var index = _confirmButtons.Count;
+            _confirmButtons.Add(button);
+            button.RegisterCallback<PointerEnterEvent>(_ => SetConfirmFocus(index));
+        }
+
+        private void OpenConfirm()
+        {
+            if (_confirm == null)
+            {
+                StartCoroutine(Leave(true));
+                return;
+            }
+
+            var save = _confirm.Q<Label>("confirm-save");
+            if (save != null) { save.text = DescribeSave(); }
+            _confirm.AddToClassList("confirm--open");
+            // Cancel first, as in the mock-up: confirming by reflex keeps the save.
+            SetConfirmFocus(0);
+        }
+
+        private void CloseConfirm()
+        {
+            _confirm?.RemoveFromClassList("confirm--open");
+        }
+
+        private void UpdateConfirmKeys()
+        {
+            if (MenuInput.Cancelled())
+            {
+                CloseConfirm();
+                return;
+            }
+
+            var step = _repeater.Step(MenuInput.ReadHorizontal() + MenuInput.ReadVertical());
+            if (step != 0 && _confirmButtons.Count > 0)
+            {
+                SetConfirmFocus((_confirmFocus + 1) % _confirmButtons.Count);
+            }
+
+            if (MenuInput.Confirmed() && _confirmFocus >= 0 && _confirmFocus < _confirmButtons.Count)
+            {
+                if (_confirmFocus == 0) { CancelNewGame(); }
+                else { ConfirmNewGame(); }
+            }
+        }
+
+        private void SetConfirmFocus(int index)
+        {
+            _confirmFocus = index;
+            for (var i = 0; i < _confirmButtons.Count; i++)
+            {
+                _confirmButtons[i].EnableInClassList("btn--focused", i == index);
+            }
         }
 
         public void OpenOptions()

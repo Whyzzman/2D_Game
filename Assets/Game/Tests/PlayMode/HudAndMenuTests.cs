@@ -113,6 +113,37 @@ namespace ForgottenKingdom.Tests
         }
 
         [UnityTest]
+        public IEnumerator NewGameOverASaveAsksBeforeErasingIt()
+        {
+            SaveSystem.Write(GameProgressData.CreateNew());
+            Assume.That(SaveSystem.HasValidSave(), Is.True);
+            yield return SceneManager.LoadSceneAsync(MainMenuController.SceneName);
+            yield return null;
+            var menu = Object.FindAnyObjectByType<MainMenuController>();
+
+            menu.NewGame();
+            Assert.That(menu.IsConfirmOpen, Is.True, "A save is at stake: ask first.");
+            Assert.That(SaveSystem.HasValidSave(), Is.True, "Nothing is erased by asking.");
+
+            menu.CancelNewGame();
+            Assert.That(menu.IsConfirmOpen, Is.False);
+            yield return new WaitForSeconds(1.2f);
+            Assert.That(SaveSystem.HasValidSave(), Is.True, "Cancel keeps the save.");
+            Assert.That(SceneManager.GetActiveScene().name, Is.EqualTo(MainMenuController.SceneName));
+
+            menu.NewGame();
+            menu.ConfirmNewGame();
+            var deadline = Time.realtimeSinceStartup + 5f;
+            while (SceneManager.GetActiveScene().name != MainMenuController.GameSceneName
+                && Time.realtimeSinceStartup < deadline)
+            {
+                yield return null;
+            }
+
+            Assert.That(SceneManager.GetActiveScene().name, Is.EqualTo(MainMenuController.GameSceneName));
+        }
+
+        [UnityTest]
         public IEnumerator TheTitleScreenOffersNewGameAndDisablesContinueWithoutASave()
         {
             SaveSystem.Delete();
