@@ -37,6 +37,8 @@ namespace ForgottenKingdom.EditorTools
             BuildCheckpointLights();
             BuildBossLights();
             FrameCamera(camera);
+            // The zones' air and the foreground; the live scene gets them from SceneAmbience.Apply.
+            SceneAmbience.Build(new GameObject(SceneAmbience.RootName).transform);
         }
 
         // ---------- lights ----------
