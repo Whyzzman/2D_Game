@@ -282,6 +282,38 @@ namespace ForgottenKingdom.Tests
             }
         }
 
+        // ---------- mana from the blade ----------
+
+        [Test]
+        public void ASwingPaysInFullOnFleshHalfOnAShieldAndNothingWhenTurned()
+        {
+            Assert.That(WeaponManaGain.Evaluate(DamageOutcome.Hit, Faction.Enemy, 10f), Is.EqualTo(10f));
+            Assert.That(WeaponManaGain.Evaluate(DamageOutcome.Hit, Faction.Neutral, 10f), Is.EqualTo(10f),
+                "The training dummy pays too, so the rhythm can be practised.");
+            Assert.That(WeaponManaGain.Evaluate(DamageOutcome.Blocked, Faction.Enemy, 10f), Is.EqualTo(5f));
+            Assert.That(WeaponManaGain.Evaluate(DamageOutcome.Ignored, Faction.Enemy, 10f), Is.Zero,
+                "A hit the target ignored earns nothing.");
+            Assert.That(WeaponManaGain.Evaluate(DamageOutcome.Parried, Faction.Enemy, 10f), Is.Zero);
+            Assert.That(WeaponManaGain.Evaluate(DamageOutcome.Hit, Faction.Player, 10f), Is.Zero);
+        }
+
+        [Test]
+        public void TwoSwingsBuyTheCheapestSpell()
+        {
+            var cheapest = float.MaxValue;
+            foreach (var spell in _spells.Spells)
+            {
+                cheapest = Mathf.Min(cheapest, spell.ManaCost);
+            }
+
+            var player = UnityEditor.AssetDatabase.LoadAssetAtPath<GameObject>(
+                "Assets/Game/Prefabs/Player.prefab");
+            var gain = player.GetComponent<WeaponManaGain>();
+            Assert.That(gain, Is.Not.Null, "The content build puts mana from the blade on the player.");
+            Assert.That(gain.PerHit * 2f, Is.GreaterThanOrEqualTo(cheapest),
+                "The blade has to keep a caster casting, as the nail does in Hollow Knight.");
+        }
+
         // ---------- mana from intelligence ----------
 
         [Test]

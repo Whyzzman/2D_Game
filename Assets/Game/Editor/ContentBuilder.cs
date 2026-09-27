@@ -1091,9 +1091,13 @@ namespace ForgottenKingdom.EditorTools
             // skill bar and what is temporarily true.
             var mana = Ensure<Mana>(root);
             SetFloat(mana, "_maxMana", 100f);
-            SetFloat(mana, "_regenerationPerSecond", 14f);
-            SetFloat(mana, "_regenerationDelay", 2f);
             SetReference(stats, "_mana", mana);
+            // Mana does not come back on its own; the blade earns it (the user's choice, 2026-09-28).
+            var manaGain = Ensure<WeaponManaGain>(root);
+            SetReference(manaGain, "_combat", combat);
+            SetReference(manaGain, "_mana", mana);
+            SetFloat(manaGain, "_perHit", 10f);
+            SetFloat(manaGain, "_perHeavyHit", 15f);
 
             var buffs = Ensure<TemporaryBuffs>(root);
             var offense = Ensure<PlayerOffense>(root);

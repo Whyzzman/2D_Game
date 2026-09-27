@@ -76,17 +76,45 @@ namespace ForgottenKingdom.Tests
         }
 
         [UnityTest]
-        public IEnumerator ManaWaitsOutItsPauseAndThenComesBack()
+        public IEnumerator ManaNeverComesBackOnItsOwn()
         {
             _mana.TrySpend(40f);
             var afterSpend = _mana.Current;
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(3.5f);
 
-            Assert.That(_mana.Current, Is.EqualTo(afterSpend).Within(0.5f),
-                "Nothing comes back during the pause.");
+            Assert.That(_mana.Current, Is.EqualTo(afterSpend).Within(0.01f),
+                "Waiting pays nothing; the blade does (Hollow Knight's soul).");
+        }
 
-            yield return new WaitForSeconds(3f);
-            Assert.That(_mana.Current, Is.GreaterThan(afterSpend + 5f));
+        [UnityTest]
+        public IEnumerator ALandedSwingPaysManaAndAHeavyOneMore()
+        {
+            var gain = _player.GetComponent<WeaponManaGain>();
+            Assert.That(gain, Is.Not.Null, "The player ships with mana from the blade.");
+            var dummy = Object.FindAnyObjectByType<TrainingDummy>();
+            Assume.That(dummy, Is.Not.Null);
+            var facing = _motor.FacingDirection;
+            _motor.ResetTo(new Vector2(dummy.transform.position.x - facing * 1.1f,
+                dummy.transform.position.y));
+            yield return Land();
+            yield return new WaitForSeconds(0.3f);
+            _mana.TrySpend(60f);
+            var before = _mana.Current;
+
+            var hits = dummy.HitCount;
+            Assert.That(_player.Combat.TryStartLight(), Is.True);
+            yield return WaitForHit(dummy, hits);
+            Assert.That(_mana.Current, Is.EqualTo(before + gain.PerHit).Within(0.01f),
+                "One landed swing, one payment.");
+
+            yield return new WaitForSeconds(0.8f);
+            before = _mana.Current;
+            hits = dummy.HitCount;
+            Assert.That(_player.Combat.TryStartHeavy(), Is.True);
+            yield return WaitForHit(dummy, hits);
+            Assert.That(_mana.Current, Is.EqualTo(before + gain.PerHeavyHit).Within(0.01f),
+                "A heavy swing pays more.");
+            Assert.That(gain.PerHeavyHit, Is.GreaterThan(gain.PerHit));
         }
 
         [UnityTest]
@@ -659,6 +687,18 @@ namespace ForgottenKingdom.Tests
             }
 
             Assert.That(_motor.IsGrounded, Is.True, "The player never landed.");
+        }
+
+        /// <summary>Waits until the dummy has taken a hit it had not before.</summary>
+        private static IEnumerator WaitForHit(TrainingDummy dummy, int hits)
+        {
+            var started = Time.realtimeSinceStartup;
+            while (dummy.HitCount <= hits && Time.realtimeSinceStartup - started < 2f)
+            {
+                yield return null;
+            }
+
+            Assume.That(dummy.HitCount, Is.GreaterThan(hits), "The swing has to land.");
         }
 
         /// <summary>Waits out a flinch, so the next action is not refused for being mid-hurt.</summary>

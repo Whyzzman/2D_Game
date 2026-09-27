@@ -259,7 +259,6 @@ namespace ForgottenKingdom
             _castTime = castTime;
             _releaseAt = Time.time + castTime;
             _endsAt = _releaseAt + spell.RecoveryTime;
-            _mana?.SetCasting(true);
             CastStarted?.Invoke(spell);
             return CastResult.Casting;
         }
@@ -418,7 +417,6 @@ namespace ForgottenKingdom
             _casting = null;
             _castingSlot = -1;
             _hasReleased = false;
-            _mana?.SetCasting(false);
         }
 
         /// <summary>Death and resting clear cooldowns and anything still in the air.</summary>
