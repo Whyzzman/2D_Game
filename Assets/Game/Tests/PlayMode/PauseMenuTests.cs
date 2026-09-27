@@ -112,7 +112,7 @@ namespace ForgottenKingdom.Tests
             yield return Tap(Key.Escape);
             Assert.That(_pause.EnabledButtons.ToArray(), Is.EqualTo(new[]
             {
-                "pause-resume", "pause-equipment", "pause-character", "pause-skills", "pause-options",
+                "pause-resume", "pause-map", "pause-equipment", "pause-character", "pause-skills", "pause-options",
                 "pause-controls", "pause-main-menu"
             }));
         }

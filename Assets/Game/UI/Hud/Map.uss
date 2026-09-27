@@ -1,0 +1,304 @@
+/*
+ * The world map, the altar's menu and the travel list, from design/ui/map/map.html.
+ * Reference 1920x1080. The map sheet itself (rooms, routes, symbols) is drawn by MapCanvas;
+ * USS has no gradients or shadows, so the parchment is its darker middle tone.
+ */
+
+/* ---------- map (frames 1 and 4) ---------- */
+
+.map {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgb(11, 9, 7);
+    display: none;
+}
+
+.map--open {
+    display: flex;
+}
+
+.map__header {
+    position: absolute;
+    left: 64px;
+    right: 64px;
+    top: 18px;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+}
+
+.map__zone {
+    font-size: 28px;
+    letter-spacing: 4px;
+    color: rgb(240, 230, 210);
+    margin: 0;
+    padding: 0;
+}
+
+.map__meta {
+    flex-direction: row;
+    padding-bottom: 4px;
+}
+
+.map__meta-item {
+    flex-direction: row;
+    margin-left: 24px;
+}
+
+.map__meta-name {
+    font-size: 15px;
+    color: rgb(142, 131, 117);
+    margin: 0 6px 0 0;
+    padding: 0;
+}
+
+.map__meta-value {
+    font-size: 15px;
+    color: rgb(201, 161, 74);
+    margin: 0;
+    padding: 0;
+}
+
+.map__sheet {
+    position: absolute;
+    left: 64px;
+    top: 72px;
+    right: 64px;
+    bottom: 96px;
+    background-color: rgb(23, 19, 15);
+    border-width: 1px;
+    border-color: rgb(58, 47, 37);
+    overflow: hidden;
+}
+
+.map-canvas {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.map-canvas__label {
+    position: absolute;
+    font-size: 13px;
+    color: rgb(216, 203, 180);
+    margin: 0;
+    padding: 0;
+}
+
+.map__info {
+    position: absolute;
+    left: 88px;
+    bottom: 120px;
+    width: 420px;
+    padding: 16px 24px;
+    background-color: rgba(11, 9, 7, 0.86);
+    border-width: 1px;
+    border-color: rgb(107, 90, 66);
+}
+
+.map__info-name {
+    font-size: 20px;
+    letter-spacing: 1px;
+    color: rgb(240, 230, 210);
+    margin: 0 0 8px 0;
+    padding: 0;
+    white-space: normal;
+}
+
+.map__info-line {
+    font-size: 15px;
+    color: rgb(142, 131, 117);
+    white-space: normal;
+    margin: 0 0 2px 0;
+    padding: 0;
+}
+
+.map__legend {
+    position: absolute;
+    right: 88px;
+    bottom: 120px;
+    padding: 12px 16px;
+    background-color: rgba(11, 9, 7, 0.82);
+    border-width: 1px;
+    border-color: rgb(58, 47, 37);
+}
+
+.map__legend-row {
+    flex-direction: row;
+    align-items: center;
+    margin: 3px 0;
+}
+
+.map__legend-text {
+    font-size: 13px;
+    color: rgb(142, 131, 117);
+    margin: 0 0 0 12px;
+    padding: 0;
+}
+
+.map-glyph {
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+}
+
+.map__footer {
+    position: absolute;
+    left: 64px;
+    right: 64px;
+    bottom: 30px;
+    flex-direction: row;
+    align-items: center;
+}
+
+/* ---------- altar's menu and travel (frames 2 and 3) ---------- */
+
+.shrine {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(12, 7, 3, 0.66);
+    align-items: center;
+    justify-content: center;
+    display: none;
+}
+
+.shrine--open {
+    display: flex;
+}
+
+.shrine__panel {
+    background-color: rgb(23, 19, 15);
+    border-width: 1px;
+    border-color: rgb(138, 116, 52);
+    border-radius: 2px;
+}
+
+.shrine__menu {
+    width: 520px;
+}
+
+.shrine--travel > .shrine__menu {
+    display: none;
+}
+
+.shrine__header {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding: 12px 24px;
+    border-bottom-width: 1px;
+    border-bottom-color: rgb(58, 47, 37);
+    background-color: rgba(240, 180, 65, 0.1);
+}
+
+.shrine__title {
+    font-size: 20px;
+    color: rgb(240, 230, 210);
+    margin: 0;
+    padding: 0;
+}
+
+.shrine__sub {
+    font-size: 13px;
+    color: rgb(142, 131, 117);
+    margin: 0;
+    padding: 0;
+}
+
+.shrine__note {
+    font-size: 13px;
+    color: rgb(95, 87, 76);
+    white-space: normal;
+    margin: 24px 0 0 0;
+    padding: 0;
+}
+
+.travel {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    flex-direction: row;
+    padding: 120px 96px;
+    background-color: rgba(8, 5, 3, 0.5);
+    display: none;
+}
+
+.shrine--travel > .travel {
+    display: flex;
+}
+
+.travel__panel {
+    width: 520px;
+    margin-right: 32px;
+}
+
+.travel__map {
+    flex-grow: 1;
+    background-color: rgb(23, 19, 15);
+    border-width: 1px;
+    border-color: rgb(58, 47, 37);
+    overflow: hidden;
+}
+
+.travel__zone {
+    font-size: 13px;
+    letter-spacing: 3px;
+    color: rgb(138, 116, 52);
+    margin: 12px 0 4px 0;
+    padding: 0;
+}
+
+.travel__row,
+.travel__row:hover,
+.travel__row:active {
+    flex-direction: row;
+    align-items: center;
+    margin: 0 0 8px 0;
+    padding: 8px 12px;
+    background-color: rgba(0, 0, 0, 0);
+    border-width: 1px;
+    border-color: rgba(0, 0, 0, 0);
+    border-radius: 0;
+}
+
+.travel__row--focused,
+.travel__row--focused:hover,
+.travel__row--focused:active {
+    border-color: rgb(201, 161, 74);
+    background-color: rgba(138, 116, 52, 0.1);
+}
+
+.travel__name {
+    flex-grow: 1;
+    font-size: 17px;
+    color: rgb(216, 203, 180);
+    -unity-text-align: middle-left;
+    margin: 0 0 0 12px;
+    padding: 0;
+}
+
+.travel__row--focused > .travel__name {
+    color: rgb(232, 205, 138);
+}
+
+.travel__row--current > .travel__name,
+.travel__row--shut > .travel__name {
+    color: rgb(142, 131, 117);
+}
+
+.travel__note {
+    font-size: 13px;
+    color: rgb(95, 87, 76);
+    margin: 0;
+    padding: 0;
+}

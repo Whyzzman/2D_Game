@@ -6,11 +6,12 @@ using UnityEngine.UIElements;
 namespace ForgottenKingdom
 {
     /// <summary>
-    /// The pause over the game, from design/ui/menus/menus.html: Continue, Equipment, Character,
+    /// The pause over the game, from design/ui/menus/menus.html and map.html (frame 6): Continue, Map, Equipment, Character,
     /// Skills, Settings, Back to the title. Escape or Start opens and closes it; the pad's back
     /// button closes it too.
     ///
-    /// Equipment, Character and Skills open the inventory window (<see cref="InventoryView"/>) on
+    /// Map opens the map (<see cref="MapView"/>). Equipment, Character and Skills open the
+    /// inventory window (<see cref="InventoryView"/>) on
     /// their page; it hands back to the pause when it closes. The diamond beside Character and
     /// Skills tells the player there are points to spend.
     /// Settings are the title screen's own panel. Leaving for the title saves first, the same as
@@ -31,6 +32,8 @@ namespace ForgottenKingdom
         private readonly VisualElement _controls;
         private readonly VisualElement _skillsPip;
         private readonly InventoryView _inventory;
+        private readonly MapView _map;
+        private readonly IHudOverlay[] _overlays;
         private PlayerCharacter _player;
         private PlayerInputReader _input;
         private GameProgress _progress;
@@ -39,9 +42,10 @@ namespace ForgottenKingdom
         private MenuInput.Repeater _repeater;
         private int _focus;
         private bool _isLeaving;
-        private string _returnFocus = "pause-equipment";
 
-        public PauseMenu(VisualElement root, InventoryView inventory = null)
+        /// <param name="overlays">Every other window of the document; Escape backs out of these first.</param>
+        public PauseMenu(VisualElement root, InventoryView inventory = null, MapView map = null,
+            params IHudOverlay[] overlays)
         {
             _overlay = root?.Q("pause");
             if (_overlay == null)
@@ -50,12 +54,18 @@ namespace ForgottenKingdom
             }
 
             _inventory = inventory;
-            if (_inventory != null) { _inventory.ClosedToPause += OnInventoryClosed; }
+            _map = map;
+            var all = new List<IHudOverlay>();
+            if (inventory != null) { all.Add(inventory); }
+            if (map != null) { all.Add(map); }
+            all.AddRange(overlays ?? System.Array.Empty<IHudOverlay>());
+            _overlays = all.ToArray();
 
             _options = new OptionsPanel(_overlay, OnOptionsClosed);
             _characterPip = _overlay.Q("pause-character-pip");
             _skillsPip = _overlay.Q("pause-skills-pip");
             Bind("pause-resume", Resume, true);
+            Bind("pause-map", OpenMap, _map != null);
             Bind("pause-equipment", OpenEquipment, _inventory != null);
             Bind("pause-character", () => OpenWindow(InventoryView.Page.Character, "pause-character"),
                 _inventory != null);
@@ -113,7 +123,6 @@ namespace ForgottenKingdom
                 _input.PauseToggled -= Toggle;
             }
 
-            if (_inventory != null) { _inventory.ClosedToPause -= OnInventoryClosed; }
             if (IsOpen)
             {
                 Resume();
@@ -128,10 +137,11 @@ namespace ForgottenKingdom
                 return;
             }
 
-            if (_inventory != null && _inventory.IsOpen)
+            var overlay = System.Array.Find(_overlays ?? System.Array.Empty<IHudOverlay>(), o => o.IsOpen);
+            if (overlay != null)
             {
-                // The window hands back to the pause itself when it was opened from here.
-                _inventory.Close();
+                // A window opened from here hands back to the pause itself when it closes.
+                overlay.Back();
             }
             else if (IsOptionsOpen)
             {
@@ -286,18 +296,32 @@ namespace ForgottenKingdom
                 return;
             }
 
-            _returnFocus = button;
             Resume();
-            if (!_inventory.Open(page, fromPause: true))
+            if (!_inventory.Open(page, () => ReturnTo(button)))
             {
                 Open();
             }
         }
 
-        private void OnInventoryClosed()
+        /// <summary>The map over the frozen game; closing it comes back to the pause.</summary>
+        public void OpenMap()
+        {
+            if (_map == null || !IsOpen)
+            {
+                return;
+            }
+
+            Resume();
+            if (!_map.Open(() => ReturnTo("pause-map")))
+            {
+                Open();
+            }
+        }
+
+        private void ReturnTo(string button)
         {
             Open();
-            SetFocus(_items.FindIndex(item => item.name == _returnFocus));
+            SetFocus(_items.FindIndex(item => item.name == button));
         }
 
         public void OpenControls()

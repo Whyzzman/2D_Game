@@ -10,8 +10,8 @@ namespace ForgottenKingdom.Tests
 {
     /// <summary>
     /// The inventory and map keys, pressed for real. A screen opens from its key only while
-    /// something draws it: in a release build nothing does yet, and a key that paused the world
-    /// behind an invisible menu looked exactly like a frozen game.
+    /// something draws it — the HUD does now — because a key that paused the world behind an
+    /// invisible menu looked exactly like a frozen game.
     /// </summary>
     public sealed class MenuKeyTests
     {
@@ -66,10 +66,9 @@ namespace ForgottenKingdom.Tests
         }
 
         [UnityTest]
-        public IEnumerator InADeveloperBuildTheInventoryKeyOpensAndClosesTheReadout()
+        public IEnumerator TheInventoryKeyOpensAndClosesTheWindow()
         {
-            Assert.That(_inventory.HasPresenter, Is.True,
-                "The debug overlay stands in for the inventory until the real screen exists.");
+            Assert.That(_inventory.HasPresenter, Is.True, "The HUD draws the inventory.");
 
             yield return Tap(Key.I);
             Assert.That(_inventory.IsOpen, Is.True);
@@ -85,6 +84,7 @@ namespace ForgottenKingdom.Tests
         public IEnumerator WithNothingToDrawItTheInventoryKeyDoesNotFreezeTheGame()
         {
             Object.FindAnyObjectByType<CombatDebugOverlay>().enabled = false;
+            Object.FindAnyObjectByType<HudController>().enabled = false;
             Assert.That(_inventory.HasPresenter, Is.False);
 
             yield return Tap(Key.I);
@@ -96,10 +96,9 @@ namespace ForgottenKingdom.Tests
         }
 
         [UnityTest]
-        public IEnumerator InADeveloperBuildTheMapKeyOpensAndClosesTheReadout()
+        public IEnumerator TheMapKeyOpensAndClosesTheMap()
         {
-            Assert.That(_map.HasPresenter, Is.True,
-                "The world debug tools stand in for the map until the real screen exists.");
+            Assert.That(_map.HasPresenter, Is.True, "The HUD draws the map.");
 
             yield return Tap(Key.M);
             Assert.That(_map.IsOpen, Is.True);
@@ -114,7 +113,7 @@ namespace ForgottenKingdom.Tests
         [UnityTest]
         public IEnumerator WithNothingToDrawItTheMapKeyDoesNotFreezeTheGame()
         {
-            Object.FindAnyObjectByType<WorldDebugTools>().enabled = false;
+            Object.FindAnyObjectByType<HudController>().enabled = false;
             Assert.That(_map.HasPresenter, Is.False);
 
             yield return Tap(Key.M);
@@ -131,6 +130,8 @@ namespace ForgottenKingdom.Tests
             Assert.That(_inventory.IsOpen, Is.True);
 
             Object.FindAnyObjectByType<CombatDebugOverlay>().enabled = false;
+            Assert.That(_inventory.IsOpen, Is.True, "The HUD still draws it.");
+            Object.FindAnyObjectByType<HudController>().enabled = false;
             Assert.That(_inventory.IsOpen, Is.False, "Nothing on screen must not hold the world paused.");
             Assert.That(GamePause.IsPaused, Is.False);
             yield return null;

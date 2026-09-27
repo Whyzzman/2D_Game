@@ -35,6 +35,7 @@ namespace ForgottenKingdom.Tests
         public void TearDown()
         {
             SaveSystem.Delete();
+            GamePause.Clear();
             GameTimeScale.Reset();
         }
 
@@ -458,11 +459,15 @@ namespace ForgottenKingdom.Tests
             var altar = _respawner.FindCheckpoint("tomb-altar-01");
 
             // Nothing presents it: interacting rests at once, as it always did.
+            var hud = Object.FindAnyObjectByType<HudController>();
+            hud.enabled = false;
+            Assert.That(_shrine.HasPresenter, Is.False);
             altar.Interact(_player);
             Assert.That(_shrine.IsOpen, Is.False);
             yield return new WaitForSeconds(2f);
 
-            _shrine.AddPresenter(this);
+            // The HUD draws it: the altar opens its menu.
+            hud.enabled = true;
             altar.Interact(_player);
             Assert.That(_shrine.IsOpen, Is.True);
             Assert.That(GamePause.IsPaused, Is.True);
@@ -473,7 +478,74 @@ namespace ForgottenKingdom.Tests
             Assert.That(GamePause.IsPaused, Is.False);
             yield return WaitForTravel();
             Assert.That(_respawner.ActiveCheckpointId, Is.EqualTo("tomb-altar-02"));
-            _shrine.RemovePresenter(this);
+        }
+
+        [UnityTest]
+        public IEnumerator TheAltarMenuDrawnByTheHudLeadsToTravelAndBack()
+        {
+            var view = Object.FindAnyObjectByType<HudController>().Shrine;
+            yield return LightAll("tomb-altar-01", "tomb-altar-02");
+            yield return StandAt("tomb-altar-01");
+            var altar = _respawner.FindCheckpoint("tomb-altar-01");
+
+            // Before the Guardian: no travel entry at all.
+            altar.Interact(_player);
+            Assert.That(view.IsOpen, Is.True);
+            Assert.That(view.VisibleItems, Has.None.EqualTo("shrine-travel"));
+
+            // The character's screens from the altar come back to it.
+            view.OpenWindow(InventoryView.Page.Character);
+            Assert.That(_shrine.IsOpen, Is.False);
+            var inventory = Object.FindAnyObjectByType<InventoryScreen>();
+            Assert.That(inventory.IsOpen, Is.True);
+            inventory.Close();
+            Assert.That(_shrine.IsOpen, Is.True, "Closing the window returns to the altar.");
+            view.Back();
+            Assert.That(_shrine.IsOpen, Is.False);
+            Assert.That(GamePause.IsPaused, Is.False);
+
+            _progress.MarkBossDefeated(TombScene.GuardianId);
+            altar.Interact(_player);
+            Assert.That(view.VisibleItems, Does.Contain("shrine-travel"));
+            view.ShowTravel();
+            Assert.That(view.IsTravelShown, Is.True);
+            var index = -1;
+            for (var i = 0; i < view.Destinations.Count; i++)
+            {
+                if (view.Destinations[i].CheckpointId == "tomb-altar-02") { index = i; }
+            }
+
+            Assert.That(index, Is.GreaterThanOrEqualTo(0), "Every lit altar is listed.");
+            view.Back();
+            Assert.That(view.IsTravelShown, Is.False, "Back from the list is the menu, not away.");
+            view.ShowTravel();
+            Assert.That(view.TravelTo(index), Is.EqualTo(TravelResult.Started));
+            Assert.That(view.IsOpen, Is.False);
+            yield return WaitForTravel();
+            Assert.That(_respawner.ActiveCheckpointId, Is.EqualTo("tomb-altar-02"));
+        }
+
+        [UnityTest]
+        public IEnumerator ThePauseOpensTheMapAndTheMapShowsWhereThePlayerIs()
+        {
+            var hud = Object.FindAnyObjectByType<HudController>();
+            yield return null;
+            hud.Pause.Open();
+            hud.Pause.OpenMap();
+            Assert.That(hud.Map.IsOpen, Is.True);
+            Assert.That(_map.IsOpen, Is.True);
+            yield return null;
+
+            var root = hud.GetComponent<UnityEngine.UIElements.UIDocument>().rootVisualElement;
+            var current = _map.View.Node(_map.SelectedAreaId);
+            Assert.That(current, Is.Not.Null);
+            Assert.That(current.IsCurrent, Is.True, "The cursor starts on the player.");
+            Assert.That(UnityEngine.UIElements.UQueryExtensions.Q<UnityEngine.UIElements.Label>(root, "map-info-name").text, Is.EqualTo(current.Label));
+
+            hud.Pause.Toggle(); // Escape
+            Assert.That(_map.IsOpen, Is.False);
+            Assert.That(hud.Pause.IsOpen, Is.True, "Opened from the pause, the map returns there.");
+            hud.Pause.Resume();
         }
 
         // ---------- shortcuts ----------
@@ -636,6 +708,7 @@ namespace ForgottenKingdom.Tests
 
             yield return StandAt(ids[0]);
             _respawner.FindCheckpoint(ids[0]).Interact(_player);
+            if (_shrine.IsOpen) { _shrine.Rest(); }
             yield return new WaitForSeconds(2f);
         }
 

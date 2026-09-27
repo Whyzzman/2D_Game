@@ -104,6 +104,8 @@ namespace ForgottenKingdom
 
         private PauseMenu _pause;
         private InventoryView _inventory;
+        private MapView _map;
+        private ShrineView _shrine;
         private AbilityCard _abilityCard;
         private VisualElement _flasks;
         private VisualElement _flaskRow;
@@ -117,6 +119,10 @@ namespace ForgottenKingdom
 
         /// <summary>The inventory and equipment window; it shares this document.</summary>
         public InventoryView Inventory => _inventory;
+
+        /// <summary>The world map and the altar's menu; they share this document.</summary>
+        public MapView Map => _map;
+        public ShrineView Shrine => _shrine;
 
         /// <summary>The "ability gained" card; it shares this document.</summary>
         public AbilityCard AbilityCard => _abilityCard;
@@ -142,7 +148,11 @@ namespace ForgottenKingdom
             Bind();
             _inventory = new InventoryView(_root);
             _inventory.Attach(_player, _progress);
-            _pause = new PauseMenu(_root, _inventory);
+            _map = new MapView(_root);
+            _map.Attach(FindAnyObjectByType<WorldMapScreen>(), _world);
+            _shrine = new ShrineView(_root, _inventory);
+            _shrine.Attach(FindAnyObjectByType<ShrineMenu>(), _world);
+            _pause = new PauseMenu(_root, _inventory, _map, _shrine);
             _pause.Attach(_player, _progress);
             _abilityCard = new AbilityCard(_root);
             _abilityCard.Attach(_player, _progress);
@@ -157,6 +167,8 @@ namespace ForgottenKingdom
             Subscribe(false);
             _pause?.Detach();
             _inventory?.Detach();
+            _map?.Detach();
+            _shrine?.Detach();
             _abilityCard?.Detach();
         }
 
@@ -289,6 +301,8 @@ namespace ForgottenKingdom
 
             _pause?.Tick();
             _inventory?.Tick();
+            _map?.Tick();
+            _shrine?.Tick();
             _abilityCard?.Tick();
             var dt = Time.unscaledDeltaTime;
             UpdateResources(dt);

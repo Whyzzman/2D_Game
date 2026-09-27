@@ -214,7 +214,11 @@ namespace ForgottenKingdom.Tests
             _combatStatus.Clear();
             yield return new WaitForFixedUpdate();
 
+            // A lit altar opens its menu; resting is its first entry.
             altar.Interact(_player);
+            var menu = Object.FindAnyObjectByType<ShrineMenu>();
+            Assert.That(menu.IsOpen, Is.True, "A lit altar offers its menu.");
+            menu.Rest();
             yield return WaitUntil(() => !_respawner.IsSequenceRunning, 6f);
 
             Assert.That(_player.Health.Current, Is.EqualTo(_player.Health.Max));

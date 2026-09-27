@@ -3,6 +3,7 @@
     <Style src="../Menu/Options.uss" />
     <Style src="Pause.uss" />
     <Style src="Inventory.uss" />
+    <Style src="Map.uss" />
     <ui:VisualElement name="hud" class="hud" picking-mode="Ignore">
         <ui:VisualElement name="vignette" class="vignette" picking-mode="Ignore" />
 
@@ -375,6 +376,60 @@
             </ui:VisualElement>
         </ui:VisualElement>
 
+        <!-- design/ui/map/map.html, frames 1 and 4: the world map over the frozen game. -->
+        <ui:VisualElement name="map" class="map">
+            <ui:VisualElement class="map__header" picking-mode="Ignore">
+                <ui:Label name="map-zone" class="map__zone display" text="" picking-mode="Ignore" />
+                <ui:VisualElement name="map-meta" class="map__meta" picking-mode="Ignore" />
+            </ui:VisualElement>
+            <ui:VisualElement name="map-sheet" class="map__sheet" />
+            <ui:VisualElement name="map-info" class="map__info" picking-mode="Ignore">
+                <ui:Label name="map-info-name" class="map__info-name display" text="" picking-mode="Ignore" />
+                <ui:VisualElement name="map-info-lines" picking-mode="Ignore" />
+            </ui:VisualElement>
+            <ui:VisualElement name="map-legend" class="map__legend" picking-mode="Ignore" />
+            <ui:VisualElement class="map__footer" picking-mode="Ignore">
+                <ui:VisualElement class="hint" picking-mode="Ignore"><ui:Label class="key" text="←↑→↓" picking-mode="Ignore" /><ui:Label class="key key--pad" text="L" picking-mode="Ignore" /><ui:Label class="hint__text" text="Кімнати" picking-mode="Ignore" /></ui:VisualElement>
+                <ui:VisualElement class="hint" picking-mode="Ignore"><ui:Label class="key" text="ПКМ" picking-mode="Ignore" /><ui:Label class="key key--pad" text="R" picking-mode="Ignore" /><ui:Label class="hint__text" text="Тягнути" picking-mode="Ignore" /></ui:VisualElement>
+                <ui:VisualElement class="hint" picking-mode="Ignore"><ui:Label class="key" text="Коліщатко" picking-mode="Ignore" /><ui:Label class="key key--pad" text="LT" picking-mode="Ignore" /><ui:Label class="key key--pad" text="RT" picking-mode="Ignore" /><ui:Label class="hint__text" text="Масштаб" picking-mode="Ignore" /></ui:VisualElement>
+                <ui:VisualElement class="hint" picking-mode="Ignore"><ui:Label class="key" text="M" picking-mode="Ignore" /><ui:Label class="key key--pad" text="B" picking-mode="Ignore" /><ui:Label class="hint__text" text="Закрити" picking-mode="Ignore" /></ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+
+        <!-- design/ui/map/map.html, frames 2 and 3: the altar's menu and the travel list. -->
+        <ui:VisualElement name="shrine" class="shrine">
+            <ui:VisualElement class="shrine__panel shrine__menu">
+                <ui:VisualElement class="pause__inset" picking-mode="Ignore" />
+                <ui:VisualElement class="shrine__header" picking-mode="Ignore">
+                    <ui:Label name="shrine-title" class="shrine__title display" text="" picking-mode="Ignore" />
+                </ui:VisualElement>
+                <ui:VisualElement class="pause__body">
+                    <ui:Button name="shrine-rest" class="btn btn--primary"><ui:Label class="btn__text display" text="ВІДПОЧИТИ" picking-mode="Ignore" /></ui:Button>
+                    <ui:Button name="shrine-travel" class="btn"><ui:Label class="btn__text display" text="МАНДРУВАТИ" picking-mode="Ignore" /></ui:Button>
+                    <ui:Button name="shrine-character" class="btn"><ui:Label class="btn__text display" text="ПЕРСОНАЖ" picking-mode="Ignore" /></ui:Button>
+                    <ui:Button name="shrine-skills" class="btn"><ui:Label class="btn__text display" text="УМІННЯ" picking-mode="Ignore" /></ui:Button>
+                    <ui:Button name="shrine-equipment" class="btn"><ui:Label class="btn__text display" text="СПОРЯДЖЕННЯ" picking-mode="Ignore" /></ui:Button>
+                    <ui:Button name="shrine-leave" class="btn btn--last"><ui:Label class="btn__text display" text="ВІДІЙТИ" picking-mode="Ignore" /></ui:Button>
+                    <ui:Label class="shrine__note" text="Відпочинок відновлює здоров'я й повертає рядових ворогів. Мандрівка — теж відпочинок, тільки біля іншого вівтаря." picking-mode="Ignore" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement class="travel">
+                <ui:VisualElement class="shrine__panel travel__panel">
+                    <ui:VisualElement class="pause__inset" picking-mode="Ignore" />
+                    <ui:VisualElement class="shrine__header" picking-mode="Ignore">
+                        <ui:Label class="shrine__title display" text="МАНДРУВАТИ" picking-mode="Ignore" />
+                        <ui:Label name="travel-from" class="shrine__sub" text="" picking-mode="Ignore" />
+                    </ui:VisualElement>
+                    <ui:VisualElement class="pause__body">
+                        <ui:VisualElement name="travel-list" />
+                        <ui:Label name="travel-problem" class="detail__problem" text="" picking-mode="Ignore" />
+                        <ui:Label class="shrine__note" text="У списку лише запалені вівтарі." picking-mode="Ignore" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                <ui:VisualElement name="travel-map" class="travel__map" picking-mode="Ignore" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+
         <!-- design/ui/menus/menus.html, frame 4: the pause over the live, frozen game. -->
         <ui:VisualElement name="pause" class="pause">
             <ui:VisualElement name="pause-panel" class="pause__panel">
@@ -384,6 +439,7 @@
                 </ui:VisualElement>
                 <ui:VisualElement class="pause__body">
                     <ui:Button name="pause-resume" class="btn btn--primary"><ui:Label class="btn__text display" text="ПРОДОВЖИТИ" picking-mode="Ignore" /></ui:Button>
+                    <ui:Button name="pause-map" class="btn"><ui:Label class="btn__text display" text="КАРТА" picking-mode="Ignore" /></ui:Button>
                     <ui:Button name="pause-equipment" class="btn"><ui:Label class="btn__text display" text="СПОРЯДЖЕННЯ" picking-mode="Ignore" /></ui:Button>
                     <ui:Button name="pause-character" class="btn"><ui:Label class="btn__text display" text="ПЕРСОНАЖ" picking-mode="Ignore" /><ui:VisualElement name="pause-character-pip" class="pip" picking-mode="Ignore" /></ui:Button>
                     <ui:Button name="pause-skills" class="btn"><ui:Label class="btn__text display" text="УМІННЯ" picking-mode="Ignore" /><ui:VisualElement name="pause-skills-pip" class="pip" picking-mode="Ignore" /></ui:Button>

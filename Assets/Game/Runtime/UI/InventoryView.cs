@@ -20,7 +20,7 @@ namespace ForgottenKingdom
     /// categories or branches, arrows or the stick move, Enter or A acts, X unequips or assigns;
     /// Escape, B or the inventory key close it. Opened from the pause, it returns there.
     /// </summary>
-    public sealed class InventoryView
+    public sealed class InventoryView : IHudOverlay
     {
         public enum Page
         {
@@ -95,16 +95,13 @@ namespace ForgottenKingdom
         private PlayerProgressionService _progression;
         private PlayerSkills _skills;
         private Page _page;
-        private bool _returnToPause;
+        private Action _onClosed;
         private int _slotIndex;
         private bool _inList;
         private string _candidateId = string.Empty;
         private int _openedFrame = -1;
         private MenuInput.Repeater _vertical;
         private MenuInput.Repeater _horizontal;
-
-        /// <summary>Raised when a window opened from the pause closes; the pause takes over again.</summary>
-        public event Action ClosedToPause;
 
         public InventoryView(VisualElement root)
         {
@@ -227,12 +224,15 @@ namespace ForgottenKingdom
 
             if (_playerStats != null) { _playerStats.StatsChanged -= Redraw; }
             _screen = null;
-            _returnToPause = false;
+            _onClosed = null;
             _overlay?.RemoveFromClassList(OpenClass);
         }
 
-        /// <summary>Opens on a page; from the pause the window hands back to it on closing.</summary>
-        public bool Open(Page page, bool fromPause = false)
+        /// <summary>
+        /// Opens on a page. <paramref name="onClosed"/> runs when it closes: how the pause and the
+        /// altar take over again after a window they opened.
+        /// </summary>
+        public bool Open(Page page, Action onClosed = null)
         {
             if (_screen == null)
             {
@@ -240,11 +240,11 @@ namespace ForgottenKingdom
             }
 
             _page = page;
-            _returnToPause = fromPause;
+            _onClosed = onClosed;
             _screen.Open();
             if (!_screen.IsOpen)
             {
-                _returnToPause = false;
+                _onClosed = null;
             }
 
             return _screen.IsOpen;
@@ -254,6 +254,8 @@ namespace ForgottenKingdom
         {
             _screen?.Close();
         }
+
+        public void Back() => Close();
 
         private void OnOpened()
         {
@@ -267,11 +269,9 @@ namespace ForgottenKingdom
         {
             _overlay.RemoveFromClassList(OpenClass);
             _page = Page.Items;
-            if (_returnToPause)
-            {
-                _returnToPause = false;
-                ClosedToPause?.Invoke();
-            }
+            var onClosed = _onClosed;
+            _onClosed = null;
+            onClosed?.Invoke();
         }
 
         public void ShowPage(Page page)
