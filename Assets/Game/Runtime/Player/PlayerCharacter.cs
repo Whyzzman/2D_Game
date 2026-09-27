@@ -616,7 +616,7 @@ namespace ForgottenKingdom
                 : SwingKind.Light);
             var started = action == PlayerAction.HeavyAttack
                 ? _combat.TryStartHeavy()
-                : _combat.TryStartLight();
+                : _combat.TryStartLight(AimOfSwing());
             if (!started)
             {
                 return false;
@@ -626,6 +626,23 @@ namespace ForgottenKingdom
             _defense?.EndBlock();
             _state.ExitTo(action);
             return true;
+        }
+
+        /// <summary>
+        /// Up on the stick or W aims a light swing up; down, only in the air, aims it down — the
+        /// pogo. On the ground, down with attack is an ordinary swing, as in Hollow Knight.
+        /// </summary>
+        private AttackDirection AimOfSwing()
+        {
+            var aim = _input != null ? _input.AimVertical : 0f;
+            if (aim > 0.5f)
+            {
+                return AttackDirection.Up;
+            }
+
+            return aim < -0.5f && _motor != null && !_motor.IsGrounded
+                ? AttackDirection.Down
+                : AttackDirection.Side;
         }
 
         private void TryBlock()

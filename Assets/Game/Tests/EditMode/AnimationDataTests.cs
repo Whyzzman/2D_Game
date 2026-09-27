@@ -66,7 +66,8 @@ namespace ForgottenKingdom.Tests
         {
             foreach (PlayerAnimationState state in Enum.GetValues(typeof(PlayerAnimationState)))
             {
-                if (state == PlayerAnimationState.Heal)
+                if (state == PlayerAnimationState.Heal || state == PlayerAnimationState.AttackUp
+                    || state == PlayerAnimationState.AttackDown)
                 {
                     // Drinking a flask has no art yet and borrows the cast's opening on purpose
                     // (ANIMATION_LIST.md); it must still never come up empty.

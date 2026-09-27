@@ -352,6 +352,44 @@ namespace ForgottenKingdom
         }
 
         /// <summary>
+        /// Spikes: a short fade, the player back on the last safe ground, and a moment of grace —
+        /// Hollow Knight's hazard respawn. No rest, no world reset; the fight around carries on.
+        /// </summary>
+        public bool BeginHazardReturn(Vector2 position)
+        {
+            if (_isSequenceRunning || _player == null || !_player.IsAlive)
+            {
+                return false;
+            }
+
+            StartCoroutine(HazardReturnRoutine(position));
+            return true;
+        }
+
+        private IEnumerator HazardReturnRoutine(Vector2 position)
+        {
+            _isSequenceRunning = true;
+            var input = _player.GetComponent<PlayerInputReader>();
+            input?.SetGameplayEnabled(false);
+            _player.Actor.SetInvulnerable(ImmunitySource.Respawn, HazardFade * 2f + _spawnProtection);
+            FadeOutRequested?.Invoke(HazardFade);
+            yield return new WaitForSecondsRealtime(HazardFade);
+
+            if (_player.IsAlive)
+            {
+                var motor = _player.GetComponent<PlayerMotor2D>();
+                if (motor != null) { motor.ResetTo(position); }
+            }
+
+            FadeInRequested?.Invoke(HazardFade);
+            yield return new WaitForSecondsRealtime(HazardFade);
+            input?.SetGameplayEnabled(true);
+            _isSequenceRunning = false;
+        }
+
+        private const float HazardFade = 0.2f;
+
+        /// <summary>
         /// Everything the player gets back. Health, stamina and poise go through their own APIs so
         /// their change events still fire for the bars.
         /// </summary>

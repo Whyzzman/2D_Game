@@ -36,6 +36,8 @@ namespace ForgottenKingdom
         private int _dashDirection = 1;
         private int _airDashesUsed;
         private int _airJumpsUsed;
+        private float _pendingBounce;
+        private bool _isBouncing;
 
         public PlayerMovementLogic(MovementSettings settings, DashSettings dash = null)
         {
@@ -77,6 +79,20 @@ namespace ForgottenKingdom
             _airDashesUsed = 0;
             _airJumpsUsed = 0;
         }
+
+        /// <summary>
+        /// A pogo: the swing down struck something and throws the player up at a fixed speed on
+        /// the next step. The air jump and air dash come back, and the rise is not cut short by a
+        /// released jump button — the height is the bounce's, not the player's hold.
+        /// </summary>
+        public void Bounce(float speed)
+        {
+            _pendingBounce = Mathf.Max(0f, speed);
+            RefreshAirMoves();
+        }
+
+        /// <summary>True while a pogo's rise is running.</summary>
+        public bool IsBouncing => _isBouncing;
 
         /// <summary>True when a second jump is available right now.</summary>
         public bool IsAirJumpReady => !IsGrounded && !IsDashing && _airJumpsUsed < AirJumpsAllowed;
@@ -191,7 +207,16 @@ namespace ForgottenKingdom
                 velocity.x = Mathf.MoveTowards(velocity.x, horizontal * speed, acceleration * deltaTime);
             }
 
-            if (_bufferRemaining >= 0f && _coyoteRemaining >= 0f && !_awaitingGroundExit)
+            if (_pendingBounce > 0f)
+            {
+                velocity.y = _pendingBounce;
+                _pendingBounce = 0f;
+                _isBouncing = true;
+                _bufferRemaining = -1f;
+                _awaitingGroundExit = true;
+                IsGrounded = false;
+            }
+            else if (_bufferRemaining >= 0f && _coyoteRemaining >= 0f && !_awaitingGroundExit)
             {
                 velocity.y = _settings.JumpSpeed;
                 _bufferRemaining = -1f;
@@ -217,7 +242,12 @@ namespace ForgottenKingdom
             }
             else
             {
-                if (!input.IsJumpHeld && velocity.y > _settings.ReleasedJumpSpeed)
+                if (_isBouncing && velocity.y <= 0f)
+                {
+                    _isBouncing = false;
+                }
+
+                if (!input.IsJumpHeld && !_isBouncing && velocity.y > _settings.ReleasedJumpSpeed)
                 {
                     // Brought down quickly but not in one step: the old instant cut was a jolt.
                     velocity.y = Mathf.Max(_settings.ReleasedJumpSpeed,
@@ -253,6 +283,8 @@ namespace ForgottenKingdom
             _dashDirection = 1;
             _airDashesUsed = 0;
             _airJumpsUsed = 0;
+            _pendingBounce = 0f;
+            _isBouncing = false;
             IsGrounded = false;
             State = MovementState.Idle;
             FacingDirection = 1;

@@ -35,6 +35,9 @@ namespace ForgottenKingdom
         [SerializeField, Min(0)] private int _airJumps = 1;
         [Tooltip("A shade weaker than the ground jump, so the second one reads as a recovery.")]
         [SerializeField, Min(0f)] private float _airJumpSpeed = 9.5f;
+        [Tooltip("Upward speed of a pogo off an enemy or spikes. Fixed height: letting go of jump "
+            + "does not cut it, as in Hollow Knight.")]
+        [SerializeField, Min(0f)] private float _pogoSpeed = 9.5f;
 
         public float WalkSpeed => _walkSpeed;
         public float RunSpeed => _runSpeed;
@@ -54,5 +57,6 @@ namespace ForgottenKingdom
         public float JumpBuffer => _jumpBuffer;
         public int AirJumps => _airJumps;
         public float AirJumpSpeed => _airJumpSpeed;
+        public float PogoSpeed => _pogoSpeed;
     }
 }

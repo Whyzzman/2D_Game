@@ -3,6 +3,15 @@ using UnityEngine;
 
 namespace ForgottenKingdom
 {
+    /// <summary>Which way a light swing goes. Up and down never join the combo.</summary>
+    public enum AttackDirection
+    {
+        Side,
+        Up,
+        /// <summary>Only in the air; striking an enemy or spikes with it bounces the player up.</summary>
+        Down
+    }
+
     /// <summary>
     /// Executes the active weapon's attacks: combo order, stamina cost and the active hitbox
     /// window. It does not decide when attacking is allowed (<see cref="PlayerCharacter"/> does),
@@ -19,6 +28,16 @@ namespace ForgottenKingdom
         [SerializeField] private Stamina _stamina;
         [SerializeField] private PlayerStats _stats;
         [SerializeField] private WeaponVisual _weaponVisual;
+
+        [Header("Swings up and down (pogo)")]
+        [Tooltip("Hitbox of the swing up, from the player's centre; the side swing's timing and damage.")]
+        [SerializeField] private Vector2 _upHitboxOffset = new Vector2(0f, 1.35f);
+        [SerializeField] private Vector2 _upHitboxSize = new Vector2(1.4f, 1.3f);
+        [Tooltip("Hitbox of the swing down, below the feet; only in the air.")]
+        [SerializeField] private Vector2 _downHitboxOffset = new Vector2(0f, -1.3f);
+        [SerializeField] private Vector2 _downHitboxSize = new Vector2(1.3f, 1.3f);
+        private PlayerMotor2D _motor;
+        private bool _hasBounced;
         private readonly AttackRunner _runner = new AttackRunner();
         private IFacing _facing;
         private int _comboIndex;
@@ -27,6 +46,9 @@ namespace ForgottenKingdom
         public event Action<AttackDefinition> AttackStarted;
         public event Action<AttackDefinition> AttackEnded;
         public event Action<CombatActor, DamageResult> HitLanded;
+
+        /// <summary>A swing down struck something and threw the player up.</summary>
+        public event Action Pogoed;
 
         /// <summary>
         /// The weapon the next swing will use. It comes from the equipment loadout; the serialized
@@ -43,9 +65,13 @@ namespace ForgottenKingdom
         public AttackDefinition CurrentAttack => _runner.Current;
         public int ComboIndex => _comboIndex;
 
+        /// <summary>The direction of the swing in progress; Side when none is.</summary>
+        public AttackDirection CurrentDirection { get; private set; }
+
         private void Awake()
         {
             _facing = GetComponent<IFacing>();
+            _motor = GetComponent<PlayerMotor2D>();
             if (_equipment == null) { _equipment = GetComponent<PlayerEquipment>(); }
             if (_stats == null) { _stats = GetComponent<PlayerStats>(); }
             if (_hitbox == null)
@@ -91,12 +117,36 @@ namespace ForgottenKingdom
             OnActiveWeaponChanged(_equipment?.ActiveWeapon);
         }
 
-        public bool TryStartLight()
+        /// <summary>
+        /// A light swing. Up and down are the weapon's first swing aimed that way — the same
+        /// damage, cost and timing, as in Hollow Knight — and leave the combo where it was.
+        /// </summary>
+        public bool TryStartLight(AttackDirection direction = AttackDirection.Side)
         {
             var weapon = Weapon;
             if (weapon == null)
             {
                 return false;
+            }
+
+            if (direction != AttackDirection.Side)
+            {
+                var first = weapon.LightAttack(0);
+                if (first == null)
+                {
+                    return false;
+                }
+
+                var aimed = direction == AttackDirection.Up
+                    ? first.Aimed(_upHitboxOffset, _upHitboxSize, "AttackUp")
+                    : first.Aimed(_downHitboxOffset, _downHitboxSize, "AttackDown");
+                if (!TryBegin(aimed, weapon))
+                {
+                    return false;
+                }
+
+                CurrentDirection = direction;
+                return true;
             }
 
             var next = _runner.IsBusy || Time.time <= _comboExpiresAt
@@ -108,6 +158,7 @@ namespace ForgottenKingdom
             }
 
             _comboIndex = next;
+            CurrentDirection = AttackDirection.Side;
             return true;
         }
 
@@ -121,18 +172,36 @@ namespace ForgottenKingdom
             }
 
             _comboIndex = 0;
+            CurrentDirection = AttackDirection.Side;
             return true;
         }
 
         public void Tick(float deltaTime)
         {
             _runner.Tick(deltaTime);
+            // Spikes have no hurtbox; the swing down finds them itself while its hitbox is out.
+            if (_hitbox.IsActive && CurrentDirection == AttackDirection.Down && !_hasBounced
+                && Spikes.Overlap(DownHitboxCentre, _downHitboxSize))
+            {
+                Bounce();
+            }
+        }
+
+        private Vector2 DownHitboxCentre => (Vector2)transform.position + _downHitboxOffset;
+
+        /// <summary>One bounce per swing: the rise, and the dash and second jump back.</summary>
+        private void Bounce()
+        {
+            _hasBounced = true;
+            _motor?.Bounce();
+            Pogoed?.Invoke();
         }
 
         public void Cancel()
         {
             _runner.Cancel();
             _hitbox?.End();
+            CurrentDirection = AttackDirection.Side;
         }
 
         /// <summary>Drops the combo so a fresh weapon always starts from its first swing.</summary>
@@ -155,6 +224,7 @@ namespace ForgottenKingdom
             }
 
             _hitbox.End();
+            _hasBounced = false;
             _runner.Begin(attack, weapon.AttackSpeed);
             _comboExpiresAt = Time.time + attack.Duration / weapon.AttackSpeed
                 + weapon.ComboResetTime;
@@ -185,11 +255,16 @@ namespace ForgottenKingdom
         private void OnAttackFinished(AttackDefinition attack)
         {
             AttackEnded?.Invoke(attack);
+            CurrentDirection = AttackDirection.Side;
         }
 
         private void OnHit(CombatActor target, DamageResult result)
         {
             HitLanded?.Invoke(target, result);
+            if (CurrentDirection == AttackDirection.Down && !_hasBounced)
+            {
+                Bounce();
+            }
         }
 
         /// <summary>A new weapon never inherits the old one's combo position or swing.</summary>

@@ -52,7 +52,13 @@ namespace ForgottenKingdom
         /// Drinking a flask. Added last so saved states keep their numbers; until it has frames
         /// of its own it borrows the cast's opening, the closest pose the placeholders have.
         /// </summary>
-        Heal
+        Heal,
+        /// <summary>
+        /// The swings up and down (pogo). Added last, like Heal; until they have frames of their
+        /// own they borrow the first swing, so they are never shown empty.
+        /// </summary>
+        AttackUp,
+        AttackDown
     }
 
     /// <summary>
@@ -87,6 +93,12 @@ namespace ForgottenKingdom
             if (state == PlayerAnimationState.Heal && !Has(state, weapon))
             {
                 return Clip(PlayerAnimationState.CastStart, weapon);
+            }
+
+            if ((state == PlayerAnimationState.AttackUp || state == PlayerAnimationState.AttackDown)
+                && !Has(state, weapon))
+            {
+                return Clip(PlayerAnimationState.Attack1, weapon);
             }
 
             var fromWeapon = weapon != null ? weapon.Clip(state) : null;

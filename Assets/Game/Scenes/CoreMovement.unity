@@ -380,6 +380,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.CameraFollow2D
   _target: {fileID: 375509943}
   _smoothTime: 0.12
+  _shaker: {fileID: 0}
+  _framingOffset: {x: 0, y: 0}
+  _lookAhead: 0
+  _lookAheadSmoothTime: 0.45
+  _lookAheadFullSpeed: 6.5
+  _verticalDeadZoneAbove: 0
+  _verticalDeadZoneBelow: 0
+  _fallLookAhead: 0
+  _fallLookAheadSpeed: 15
+  _fallLookAheadSmoothTime: 0.5
 --- !u!1 &534764390
 GameObject:
   m_ObjectHideFlags: 0
@@ -1272,6 +1282,53 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!1 &980997959
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 980997961}
+  - component: {fileID: 980997960}
+  m_Layer: 0
+  m_Name: Spikes
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &980997960
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 980997959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cf6ff2f369854512898f20a202e0fd1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.Spikes
+  _size: {x: 2.4, y: 0.4}
+  _damage: 20
+  _color: {r: 0.5568628, g: 0.5137255, b: 0.45882353, a: 1}
+--- !u!4 &980997961
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 980997959}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -8, y: 0.2, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1051039372
 GameObject:
   m_ObjectHideFlags: 0
@@ -2609,3 +2666,4 @@ SceneRoots:
   - {fileID: 1949271959}
   - {fileID: 303462848}
   - {fileID: 601467414}
+  - {fileID: 980997961}

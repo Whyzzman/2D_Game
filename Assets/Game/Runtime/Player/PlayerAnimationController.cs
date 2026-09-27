@@ -240,6 +240,8 @@ namespace ForgottenKingdom
                 case PlayerAnimationState.Attack1:
                 case PlayerAnimationState.Attack2:
                 case PlayerAnimationState.Attack3:
+                case PlayerAnimationState.AttackUp:
+                case PlayerAnimationState.AttackDown:
                 case PlayerAnimationState.Heavy:
                     var attack = _combat != null ? _combat.CurrentAttack : null;
                     return attack != null ? attack.Duration : 0f;
@@ -455,6 +457,16 @@ namespace ForgottenKingdom
             if (action == PlayerAction.HeavyAttack)
             {
                 return PlayerAnimationState.Heavy;
+            }
+
+            if (_combat != null && _combat.CurrentDirection == AttackDirection.Up)
+            {
+                return PlayerAnimationState.AttackUp;
+            }
+
+            if (_combat != null && _combat.CurrentDirection == AttackDirection.Down)
+            {
+                return PlayerAnimationState.AttackDown;
             }
 
             var index = _combat != null ? _combat.ComboIndex : 0;

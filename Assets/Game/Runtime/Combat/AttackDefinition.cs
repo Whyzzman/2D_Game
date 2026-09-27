@@ -65,6 +65,20 @@ namespace ForgottenKingdom
         public float MovementScale => _movementScale;
         public float Duration => _windup + _activeTime + _recovery;
 
+        /// <summary>
+        /// The same swing aimed another way: its damage, cost and timing, with its own hitbox and
+        /// animation. How the swings up and down are made from a weapon's first swing.
+        /// </summary>
+        public AttackDefinition Aimed(Vector2 hitboxOffset, Vector2 hitboxSize, string animationState)
+        {
+            var aimed = (AttackDefinition)MemberwiseClone();
+            aimed._hitboxOffset = hitboxOffset;
+            aimed._hitboxSize = hitboxSize;
+            aimed._animationState = animationState;
+            aimed._displayName = _displayName + " (" + animationState + ")";
+            return aimed;
+        }
+
         public DamageInfo BuildDamage(GameObject attacker, UnityEngine.Object source, int facing)
         {
             return new DamageInfo(_damage, new Vector2(facing, 0f), _damageType, attacker, source,

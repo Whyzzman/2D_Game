@@ -171,6 +171,12 @@ namespace ForgottenKingdom
             if (IsGrounded)
             {
                 _cornerShiftUsed = 0f;
+                // Where spikes send the player back to: the last ground stood on clear of them.
+                if (_capsule != null && !Spikes.Overlap(_capsule.bounds.center, _capsule.bounds.size))
+                {
+                    LastSafeGround = _body.position;
+                    HasSafeGround = true;
+                }
             }
 
             var constrained = ConstrainVelocity(nextVelocity, Time.fixedDeltaTime);
@@ -202,6 +208,18 @@ namespace ForgottenKingdom
         {
             _logic?.CancelDash();
         }
+
+        /// <summary>A pogo off an enemy or spikes: up at the settings' speed, air moves back.</summary>
+        public void Bounce()
+        {
+            _logic?.Bounce(_settings.PogoSpeed);
+        }
+
+        public bool IsBouncing => _logic != null && _logic.IsBouncing;
+
+        /// <summary>The last spot on the ground clear of spikes; spikes return the player here.</summary>
+        public Vector2 LastSafeGround { get; private set; }
+        public bool HasSafeGround { get; private set; }
 
         /// <summary>Scales the dash cooldown; the skill tree's footwork passives use it.</summary>
         public void SetDashCooldownScale(float scale)

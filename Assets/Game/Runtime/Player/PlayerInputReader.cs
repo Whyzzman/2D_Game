@@ -183,6 +183,12 @@ namespace ForgottenKingdom
             KeyBindings.ApplyTo(_runtimeActions);
         }
 
+        /// <summary>
+        /// Up or down on the stick or W/S right now, -1..1: which way a swing is aimed. Zero while
+        /// gameplay input is suspended.
+        /// </summary>
+        public float AimVertical => IsReceivingInput && _move != null ? _move.ReadValue<Vector2>().y : 0f;
+
         public MovementInput Consume()
         {
             if (!IsReceivingInput)
