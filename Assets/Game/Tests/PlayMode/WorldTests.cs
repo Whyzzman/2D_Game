@@ -354,8 +354,12 @@ namespace ForgottenKingdom.Tests
             Assert.That(_player.Health.Current, Is.EqualTo(_player.Health.Max), "Travel rests.");
             Assert.That(_world.CurrentZoneId, Is.EqualTo("zone_withered_forest"));
             Assert.That(MusicDirector.Instance.ZoneId, Is.EqualTo("zone_withered_forest"));
+            // The view may stop at the room's edge short of the player; it must not trail behind.
+            var follow = Camera.main.GetComponent<CameraFollow2D>();
             Assert.That(Camera.main.transform.position.x,
-                Is.EqualTo(_player.transform.position.x).Within(1f), "No camera lag behind a jump.");
+                Is.EqualTo(follow.TargetPosition.x).Within(0.2f), "No camera lag behind a jump.");
+            Assert.That(follow.ActiveBounds.HasValue && follow.ActiveBounds.Value.Contains(
+                (Vector2)_player.transform.position), Is.True, "The view is on the destination's room.");
             Assert.That(Object.FindObjectsByType<PlayerCharacter>().Length, Is.EqualTo(1));
             Assert.That(_player.GetComponent<PlayerInputReader>(), Is.Not.Null);
             LogAssert.NoUnexpectedReceived();
