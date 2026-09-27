@@ -10,8 +10,9 @@ namespace ForgottenKingdom
     /// Skills, Settings, Back to the title. Escape or Start opens and closes it; the pad's back
     /// button closes it too.
     ///
-    /// Equipment, Character and Skills are shown but disabled until those screens reach the game;
-    /// the diamond beside Character and Skills still tells the player there are points to spend.
+    /// Equipment opens the inventory window (<see cref="InventoryView"/>), which hands back to the
+    /// pause when it closes. Character and Skills are shown but disabled until those screens reach
+    /// the game; the diamond beside them still tells the player there are points to spend.
     /// Settings are the title screen's own panel. Leaving for the title saves first, the same as
     /// quitting the application does.
     ///
@@ -29,6 +30,7 @@ namespace ForgottenKingdom
         private readonly VisualElement _characterPip;
         private readonly VisualElement _controls;
         private readonly VisualElement _skillsPip;
+        private readonly InventoryView _inventory;
         private PlayerCharacter _player;
         private PlayerInputReader _input;
         private GameProgress _progress;
@@ -38,7 +40,7 @@ namespace ForgottenKingdom
         private int _focus;
         private bool _isLeaving;
 
-        public PauseMenu(VisualElement root)
+        public PauseMenu(VisualElement root, InventoryView inventory = null)
         {
             _overlay = root?.Q("pause");
             if (_overlay == null)
@@ -46,11 +48,14 @@ namespace ForgottenKingdom
                 return;
             }
 
+            _inventory = inventory;
+            if (_inventory != null) { _inventory.ClosedToPause += OnInventoryClosed; }
+
             _options = new OptionsPanel(_overlay, OnOptionsClosed);
             _characterPip = _overlay.Q("pause-character-pip");
             _skillsPip = _overlay.Q("pause-skills-pip");
             Bind("pause-resume", Resume, true);
-            Bind("pause-equipment", null, false);
+            Bind("pause-equipment", OpenEquipment, _inventory != null);
             Bind("pause-character", null, false);
             Bind("pause-skills", null, false);
             Bind("pause-options", OpenOptions, true);
@@ -105,6 +110,7 @@ namespace ForgottenKingdom
                 _input.PauseToggled -= Toggle;
             }
 
+            if (_inventory != null) { _inventory.ClosedToPause -= OnInventoryClosed; }
             if (IsOpen)
             {
                 Resume();
@@ -119,7 +125,12 @@ namespace ForgottenKingdom
                 return;
             }
 
-            if (IsOptionsOpen)
+            if (_inventory != null && _inventory.IsOpen)
+            {
+                // The window hands back to the pause itself when it was opened from here.
+                _inventory.Close();
+            }
+            else if (IsOptionsOpen)
             {
                 _options.Close();
             }
@@ -256,6 +267,27 @@ namespace ForgottenKingdom
             {
                 if (button.enabledSelf) { SetFocus(index); }
             });
+        }
+
+        /// <summary>The pause steps aside for the inventory window and returns when it closes.</summary>
+        public void OpenEquipment()
+        {
+            if (_inventory == null || !IsOpen)
+            {
+                return;
+            }
+
+            Resume();
+            if (!_inventory.Open(InventoryView.Page.Items, fromPause: true))
+            {
+                Open();
+            }
+        }
+
+        private void OnInventoryClosed()
+        {
+            Open();
+            SetFocus(_items.FindIndex(item => item.name == "pause-equipment"));
         }
 
         public void OpenControls()

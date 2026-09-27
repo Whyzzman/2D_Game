@@ -164,8 +164,9 @@ namespace ForgottenKingdom
 
         public void Open()
         {
-            // The menu is not an escape hatch: it cannot be opened out of a death or a stun.
-            if (IsOpen || _player == null || !_player.IsAlive)
+            // The menu is not an escape hatch: it cannot be opened out of a death or a stun, and
+            // not over another screen (the pause, the map, an ability card) that holds the game.
+            if (IsOpen || _player == null || !_player.IsAlive || GamePause.IsPaused)
             {
                 return;
             }
@@ -855,8 +856,8 @@ namespace ForgottenKingdom
             {
                 case ItemCategory.Weapon: return "Зброя";
                 case ItemCategory.Armor: return "Броня";
-                case ItemCategory.Accessory: return "Аксесуари";
-                case ItemCategory.Consumable: return "Витратні";
+                case ItemCategory.Accessory: return "Прикраси";
+                case ItemCategory.Consumable: return "Витратне";
                 case ItemCategory.Material: return "Матеріали";
                 case ItemCategory.KeyItem: return "Ключові";
                 case ItemCategory.QuestItem: return "Завдання";

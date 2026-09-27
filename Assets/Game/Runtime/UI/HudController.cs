@@ -103,6 +103,7 @@ namespace ForgottenKingdom
         private string _shownPrompt;
 
         private PauseMenu _pause;
+        private InventoryView _inventory;
         private AbilityCard _abilityCard;
         private VisualElement _flasks;
         private VisualElement _flaskRow;
@@ -113,6 +114,9 @@ namespace ForgottenKingdom
 
         /// <summary>The pause over the game; it shares this document.</summary>
         public PauseMenu Pause => _pause;
+
+        /// <summary>The inventory and equipment window; it shares this document.</summary>
+        public InventoryView Inventory => _inventory;
 
         /// <summary>The "ability gained" card; it shares this document.</summary>
         public AbilityCard AbilityCard => _abilityCard;
@@ -136,7 +140,9 @@ namespace ForgottenKingdom
 
             ResolveMissingReferences();
             Bind();
-            _pause = new PauseMenu(_root);
+            _inventory = new InventoryView(_root);
+            _inventory.Attach(_player, _progress);
+            _pause = new PauseMenu(_root, _inventory);
             _pause.Attach(_player, _progress);
             _abilityCard = new AbilityCard(_root);
             _abilityCard.Attach(_player, _progress);
@@ -150,6 +156,7 @@ namespace ForgottenKingdom
         {
             Subscribe(false);
             _pause?.Detach();
+            _inventory?.Detach();
             _abilityCard?.Detach();
         }
 
@@ -281,6 +288,7 @@ namespace ForgottenKingdom
             }
 
             _pause?.Tick();
+            _inventory?.Tick();
             _abilityCard?.Tick();
             var dt = Time.unscaledDeltaTime;
             UpdateResources(dt);

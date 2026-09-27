@@ -111,7 +111,7 @@ namespace ForgottenKingdom.Tests
         {
             yield return Tap(Key.Escape);
             Assert.That(_pause.EnabledButtons.ToArray(), Is.EqualTo(new[]
-                { "pause-resume", "pause-options", "pause-controls", "pause-main-menu" }));
+                { "pause-resume", "pause-equipment", "pause-options", "pause-controls", "pause-main-menu" }));
         }
 
         [UnityTest]

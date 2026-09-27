@@ -45,11 +45,11 @@ namespace ForgottenKingdom
                 case EquipmentSlot.MainWeapon: return "Основна зброя";
                 case EquipmentSlot.SecondaryWeapon: return "Друга зброя";
                 case EquipmentSlot.Head: return "Голова";
-                case EquipmentSlot.Chest: return "Тулуб";
+                case EquipmentSlot.Chest: return "Тіло";
                 case EquipmentSlot.Gloves: return "Рукавиці";
                 case EquipmentSlot.Boots: return "Чоботи";
-                case EquipmentSlot.Accessory1: return "Аксесуар 1";
-                case EquipmentSlot.Accessory2: return "Аксесуар 2";
+                case EquipmentSlot.Accessory1: return "Прикраса 1";
+                case EquipmentSlot.Accessory2: return "Прикраса 2";
                 default: return slot.ToString();
             }
         }

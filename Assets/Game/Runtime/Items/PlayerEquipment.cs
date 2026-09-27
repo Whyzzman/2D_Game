@@ -216,7 +216,13 @@ namespace ForgottenKingdom
 
         public bool CanEquip(string itemId, EquipmentSlot slot)
         {
-            return Check(itemId, slot, ignoreOtherSlot: false) == EquipResult.Equipped;
+            return CheckEquip(itemId, slot) == EquipResult.Equipped;
+        }
+
+        /// <summary>What equipping would answer, without equipping; the screen explains refusals.</summary>
+        public EquipResult CheckEquip(string itemId, EquipmentSlot slot)
+        {
+            return Check(itemId, slot, ignoreOtherSlot: false);
         }
 
         /// <summary>The slot this item would go into if the player just pressed "equip".</summary>
