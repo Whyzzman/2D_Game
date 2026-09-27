@@ -15,15 +15,19 @@
 
 ## 1. Що є на екрані
 
-| Екран | Файл |
-| --- | --- |
-| HUD | `design/ui/hud/hud.html` |
-| Спорядження | `design/ui/inventory/inventory.html` |
-| Екіпірування | `design/ui/equipment/equipment.html` |
-| Персонаж | `design/ui/character/character.html` |
-| Уміння | `design/ui/skills/skills.html` |
-| Закляття | `design/ui/spellbook/spellbook.html` |
-| Меню (8 станів) | `design/ui/menus/menus.html` |
+| Екран | HTML | Unity |
+| --- | --- | --- |
+| HUD | `design/ui/hud/hud.html` | `HudController` |
+| Спорядження | `design/ui/inventory/inventory.html` | `InventoryView` |
+| Екіпірування | `design/ui/equipment/equipment.html` | `InventoryView` |
+| Персонаж | `design/ui/character/character.html` | `CharacterPage` |
+| Уміння | `design/ui/skills/skills.html` | `SkillsPage` |
+| Закляття | `design/ui/spellbook/spellbook.html` | `SpellsPage` |
+| Меню (8 станів) | `design/ui/menus/menus.html` | `MainMenuController`, `PauseMenu`, `OptionsPanel` |
+| Карта, вівтар | `design/ui/map/map.html` | `MapView`, `MapCanvas`, `ShrineView` |
+| Керування | `design/ui/controls/controls.html` | `ControlsPanel` |
+| Картка здібності | `design/ui/tutorial/tutorial.html` | `AbilityCard` |
+| Картка боса | `design/ui/boss-title/` | `BossTitleCard` |
 
 ## 2. Розкладка HUD
 
@@ -122,32 +126,16 @@
 налаштування: втратити потрібні комусь опції доступності через перезапуск
 кампанії неприпустимо. Це тримає тест `DeletingTheSaveDoesNotTouchTheSettings`.
 
-## 11. Що вже готове в коді
+## 11. Перенесення в Unity
 
-| Потреба інтерфейсу | Що вже є |
-| --- | --- |
-| уся логіка екранів | `InventoryScreen` — вкладки, вибір, екіпірування, порівняння, характеристики, дерево, закляття |
-| «Продовжити» вимкнено без збереження | `SaveSystem.HasValidSave()` |
-| індикатор збереження | `SaveSystem.SaveStarted` / `SaveFinished` |
-| доступність | `FeedbackSettings` + `GameSettings` |
-| хуки звуку інтерфейсу | `CombatFeedbackService.Played`, `_soundEvent` у профілях |
+UXML/USS — `Assets/Game/UI/` (тема `GameTheme.tss`, `GamePanelSettings`), код —
+`Assets/Game/Runtime/UI/`. Пауза, інвентар, карта й інші вікна живуть у документі HUD і
+ділять один простір USS-класів — новий екран бере власний префікс. Поведінка лишається в
+ігрових службах (`InventoryScreen`, `WorldMapScreen`, `ShrineMenu`), вигляд лише читає їх.
+Новий екран — спершу HTML на погодження, потім перенесення й порівняння з HTML поруч.
 
-**Віджетів немає в жодного з них** — саме це й має додати перенесення в Unity.
+## 12. Відомі обмеження
 
-## 12. Чому інтерфейс досі не в Unity
-
-Пайплайн `unity-ui-toolkit-interface-pipeline.md`, підключений на початку
-проєкту, вимагає двох погоджень, і перше з них — HTML:
-
-> **Approval 1 — HTML.** До согласования запрещено переносить UI в Unity.
-
-Фінальний HTML зібраний цією фазою і **погоджений 2026-09-26**. Перенесення йде
-за окремою командою для кожного екрана: структура в UXML, вигляд в USS, прив'язки в C#,
-життєвий цикл на `OnEnable`/`OnDisable`, і порівняння з HTML поруч.
-
-## 13. Відомі обмеження
-
-- **Інтерфейсу в Unity немає.** Це не недогляд, а вимога пайплайну.
 - **Іконки намальовані як inline SVG** у прототипі. Вони представляють предмет
   візуально, як вимагає пайплайн, але це не фінальний набір іконок.
 - **Шрифти системні.** Акцидентний — `Cinzel` із відкатом на Georgia;
@@ -159,5 +147,4 @@
   (`design/ui/controls/controls.html`, `ControlsPanel`), прив'язки — у налаштуваннях.
 - **Числа шкоди** показані як стиль, але системи damage numbers у грі немає:
   її створення було б новою механікою, а не UI-пасом.
-- **Гучності зберігаються, але нічого не грають** — звук у PHASE 22.
 - **Ручної перевірки на геймпаді не було** — потрібен пристрій і гра.
