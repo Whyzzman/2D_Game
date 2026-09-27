@@ -98,6 +98,8 @@
   пользователя обычно открыт на основном проекте — второй Editor на нём не
   запускать. `Library` копии импортирована на Windows, первый прогон на macOS
   переимпортирует её и займёт заметно дольше.
+- Сборка игры — `BuildTools.BuildMac` (Apple Silicon, Mono; модуль Mac установлен) или
+  `BuildTools.BuildWindows` (модуля Windows на этом Mac нет), через `-executeMethod` на копии.
 - С 2026-09-26 установлен Unity CLI (`~/.unity/bin/unity`, бета) и в проект добавлен
   пакет `com.unity.pipeline` (`0.8.0-exp.1`): через `unity status` / `unity command`
   CLI управляет открытым Editor пользователя (сцена, объекты, консоль, Play Mode,
