@@ -34,6 +34,10 @@ namespace ForgottenKingdom
         private float _cornerShiftUsed;
         private Rigidbody2D _body;
         private CapsuleCollider2D _capsule;
+        private readonly SlopeWalker _slope = new SlopeWalker();
+        private const float GroundSnapDistance = 0.3f;
+        private bool _wasGrounded;
+        private Vector2 _groundNormal = Vector2.up;
         private PlayerInputReader _input;
         private PlayerMovementLogic _logic;
         private ILocomotionAuthority _authority;
@@ -133,7 +137,14 @@ namespace ForgottenKingdom
         {
             var previousState = State;
             var velocity = _body.linearVelocity;
-            var hasGround = velocity.y <= 0.01f && ProbeGround();
+            // Walking up a slope rises along it; that is still standing on the ground.
+            var hasGround = (velocity.y <= 0.01f || _slope.IsOnSlope) && ProbeGround();
+            if (!hasGround && _wasGrounded && (velocity.y <= 0.01f || _slope.IsOnSlope))
+            {
+                // Over the crest of a slope, or onto the downhill side: stay on the ground rather
+                // than being thrown off it. A real drop is deeper than this and is a fall.
+                hasGround = SnapToGround();
+            }
             var mode = _authority?.LocomotionMode ?? LocomotionMode.Normal;
             var movementScale = _authority?.MovementScale ?? 1f;
             var input = _input.Consume();
@@ -148,7 +159,7 @@ namespace ForgottenKingdom
             // A press while pushing into a wall in the air is the wall's jump, not the second one.
             _logic.IsWallJumpPending = wall != 0 && !IsGrounded && input.IsJumpPressed
                 && input.Horizontal * wall > 0.1f;
-            var nextVelocity = _logic.Step(velocity, hasGround, input,
+            var nextVelocity = _logic.Step(_slope.ToFlat(velocity), hasGround, input,
                 Time.fixedDeltaTime, mode, movementScale);
             _logic.IsWallJumpPending = false;
             if (_skillVelocity.HasValue) { nextVelocity = _skillVelocity.Value; }
@@ -168,6 +179,11 @@ namespace ForgottenKingdom
             {
                 nextVelocity.x *= _statuses.MovementMultiplier;
             }
+
+            nextVelocity = _skillVelocity.HasValue
+                ? SlopeOff(nextVelocity)
+                : _slope.FromFlat(nextVelocity, hasGround && IsGrounded,
+                    SlopeAhead(nextVelocity, _groundNormal), MinimumGroundNormal);
             if (IsGrounded)
             {
                 _cornerShiftUsed = 0f;
@@ -179,7 +195,10 @@ namespace ForgottenKingdom
                 }
             }
 
-            var constrained = ConstrainVelocity(nextVelocity, Time.fixedDeltaTime);
+            // Along a slope the move is swept as one: split into axes, the rise itself reads as a wall.
+            var constrained = _slope.IsOnSlope
+                ? ConstrainAlong(nextVelocity, Time.fixedDeltaTime)
+                : ConstrainVelocity(nextVelocity, Time.fixedDeltaTime);
             if (nextVelocity.y > 0f && constrained.y < nextVelocity.y - 0.001f
                 && TryCornerCorrect(nextVelocity.y * Time.fixedDeltaTime, input.Horizontal))
             {
@@ -187,6 +206,7 @@ namespace ForgottenKingdom
             }
 
             _body.linearVelocity = constrained;
+            _wasGrounded = IsGrounded && constrained.y <= Mathf.Max(0.01f, Mathf.Abs(constrained.x));
             if (_visual != null)
             {
                 _visual.localScale = new Vector3(
@@ -244,6 +264,8 @@ namespace ForgottenKingdom
 
         public void ResetTo(Vector2 position)
         {
+            _slope.Reset();
+            _wasGrounded = false;
             _body.linearVelocity = Vector2.zero;
             _body.angularVelocity = 0f;
             // Reset both transform and physics pose to discard interpolation across the teleport.
@@ -392,19 +414,82 @@ namespace ForgottenKingdom
             return 0;
         }
 
+        /// <summary>Standing on something; remembers the flattest surface under the feet.</summary>
         private bool ProbeGround()
         {
             var count = _capsule.Cast(Vector2.down, _groundFilter, _groundHits, GroundProbeDistance);
+            var found = false;
+            _groundNormal = Vector2.up;
             for (var i = 0; i < count; i++)
             {
                 if (_groundHits[i].collider != null
                     && _groundHits[i].rigidbody != _body
-                    && _groundHits[i].normal.y >= MinimumGroundNormal)
+                    && _groundHits[i].normal.y >= MinimumGroundNormal
+                    && (!found || _groundHits[i].normal.y > _groundNormal.y))
                 {
-                    return true;
+                    _groundNormal = _groundHits[i].normal;
+                    found = true;
                 }
             }
-            return false;
+            return found;
         }
+
+        /// <summary>
+        /// On level ground running at the foot of a rise, the rise ahead is the surface to follow;
+        /// swept sideways it would read as a wall and stop the player dead.
+        /// </summary>
+        private Vector2 SlopeAhead(Vector2 flat, Vector2 underFoot)
+        {
+            if (underFoot.y < 0.999f || Mathf.Abs(flat.x) < 0.01f || flat.y > 0f)
+            {
+                return underFoot;
+            }
+
+            var direction = new Vector2(Mathf.Sign(flat.x), 0f);
+            var count = _capsule.Cast(direction, _groundFilter, _groundHits,
+                Mathf.Abs(flat.x) * Time.fixedDeltaTime + 0.02f);
+            for (var i = 0; i < count; i++)
+            {
+                var normal = _groundHits[i].normal;
+                if (_groundHits[i].rigidbody != _body && normal.y >= MinimumGroundNormal && normal.y < 0.999f
+                    && normal.x * direction.x < 0f)
+                {
+                    return normal;
+                }
+            }
+
+            return underFoot;
+        }
+
+        private bool SnapToGround()
+        {
+            var count = _capsule.Cast(Vector2.down, _groundFilter, _groundHits, GroundSnapDistance);
+            var nearest = float.MaxValue;
+            for (var i = 0; i < count; i++)
+            {
+                if (_groundHits[i].rigidbody != _body && _groundHits[i].normal.y >= MinimumGroundNormal)
+                {
+                    nearest = Mathf.Min(nearest, _groundHits[i].distance);
+                }
+            }
+
+            if (nearest == float.MaxValue)
+            {
+                return false;
+            }
+
+            _body.position += Vector2.down * Mathf.Max(0f, nearest - 0.005f);
+            Physics2D.SyncTransforms();
+            return ProbeGround();
+        }
+
+        private Vector2 SlopeOff(Vector2 velocity)
+        {
+            _slope.Reset();
+            return velocity;
+        }
+
+        /// <summary>True while walking along a slope; for tests and the animation.</summary>
+        public bool IsOnSlope => _slope.IsOnSlope;
     }
 }

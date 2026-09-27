@@ -142,7 +142,8 @@ namespace ForgottenKingdom.Tests
         {
             yield return Load("CoreMovement");
             var spikes = Object.FindAnyObjectByType<Spikes>();
-            _motor.ResetTo(new Vector2(spikes.transform.position.x + 4f, 0.85f));
+            // Flat ground past the sandbox's ramp.
+            _motor.ResetTo(new Vector2(spikes.transform.position.x + 6.5f, 0.85f));
             yield return WaitUntil(() => _motor.IsGrounded, 2f);
             yield return new WaitForSeconds(0.2f);
             var safe = _motor.LastSafeGround;
