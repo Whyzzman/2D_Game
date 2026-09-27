@@ -48,6 +48,9 @@ namespace ForgottenKingdom
                 overlay.transform.SetParent(_sources[i].transform, false);
                 _overlays[i] = overlay.AddComponent<SpriteRenderer>();
                 _overlays[i].sharedMaterial = _material;
+                // On the source's layer from the start: a renderer left on Default, even hidden,
+                // is one the level check cannot tell from a forgotten one.
+                _overlays[i].sortingLayerID = _sources[i].sortingLayerID;
                 _overlays[i].enabled = false;
             }
         }
