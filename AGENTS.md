@@ -43,14 +43,16 @@
   Правила и ограничения — `gamedesign/UI_UX_GUIDE.md`. По прямому указанию
   пользователя (визуальный overhaul 2026-09-25: «заміни prototype HUD») перенесены
   **HUD и главное меню** — `Assets/Game/UI/` (UXML/USS, `GamePanelSettings`,
-  тема `GameTheme.tss`), `HudController`, `MainMenuController`. Они ждут
-  согласования в Unity (Approval 2). **2026-09-26 пользователь утвердил весь HTML
+  тема `GameTheme.tss`), `HudController`, `MainMenuController`. Approval 2 для них —
+  предварительный (см. ниже). **2026-09-26 пользователь утвердил весь HTML
   `design/ui` (Approval 1)** и перенесена пауза (`PauseMenu` в документе HUD, `Esc`/`Start`,
   общие `OptionsPanel`/`MenuInput`/`Options.uss`), затем окно «Почати нову гру?», счётчик фляг,
   экран «Керування» и карточка способности (`design/ui/tutorial/tutorial.html`), окно
   спорядження/екіпірування/персонаж/уміння (`InventoryView`, Approval 2 получен
   2026-09-27), карта и меню алтаря (`MapView`, `ShrineView`), «Керування» с переназначением
-  (`ControlsPanel`), книга заклинаний (`SpellsPage`) — остальное ждёт Approval 2. Все экраны
+  (`ControlsPanel`), книга заклинаний (`SpellsPage`) — для остальных Approval 2
+  предварительный (2026-09-27: «ніби все нормально»), окончательный — на финальном
+  плейтесте в конце разработки, куда пользователь перенёс и п. 27. Все экраны
   `design/ui` перенесены; новый экран — сначала HTML на согласование. Классы USS всех экранов документа HUD живут в одном
   пространстве: у HUD уже есть `.slot`, `.loadout` и др., новые экраны берут свой префикс.
 - Звук централизован в `AudioManager` (PHASE 22, `gamedesign/AUDIO_DESIGN.md`).
