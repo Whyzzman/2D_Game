@@ -11,6 +11,11 @@ namespace ForgottenKingdom
     /// nook inside a hall belongs to the hall's view). Its sides are the area's; its floor and top
     /// come from the level itself — the ground under the lowest footing and some headroom over
     /// the highest — so reshaping the level reshapes the view without anyone retyping numbers.
+    ///
+    /// Hollow Knight never has a room narrower than the screen. Ours can be, and a camera held
+    /// still in each of them would slide at every seam, so a room narrower than the view is
+    /// joined to its narrower neighbour until it is wide enough. A boss arena is never joined:
+    /// its fight is framed on the arena alone.
     /// </summary>
     public sealed class CameraRooms
     {
@@ -35,28 +40,52 @@ namespace ForgottenKingdom
         /// <summary>A room: the area it is known by in the graph and the rectangle the view keeps to.</summary>
         public readonly struct Room
         {
-            public Room(string areaId, Rect area, Rect view)
+            public Room(string areaId, Rect area, Rect view, bool keepApart = false)
+                : this(new[] { areaId }, area, view, keepApart)
             {
-                AreaId = areaId;
-                Area = area;
-                View = view;
             }
 
-            public string AreaId { get; }
+            private Room(string[] areaIds, Rect area, Rect view, bool keepApart)
+            {
+                AreaIds = areaIds;
+                Area = area;
+                View = view;
+                KeepApart = keepApart;
+            }
+
+            /// <summary>The graph areas this room is made of; more than one once joined.</summary>
+            public IReadOnlyList<string> AreaIds { get; }
+
+            /// <summary>Never joined to a neighbour (a boss arena).</summary>
+            public bool KeepApart { get; }
 
             /// <summary>The graph area: whether the player is in this room.</summary>
             public Rect Area { get; }
 
             /// <summary>What the camera may show while the player is in it.</summary>
             public Rect View { get; }
+
+            public Room JoinedWith(Room other)
+            {
+                var ids = new string[AreaIds.Count + other.AreaIds.Count];
+                for (var i = 0; i < AreaIds.Count; i++) { ids[i] = AreaIds[i]; }
+                for (var i = 0; i < other.AreaIds.Count; i++) { ids[AreaIds.Count + i] = other.AreaIds[i]; }
+                return new Room(ids, Union(Area, other.Area), Union(View, other.View), false);
+            }
+
+            private static Rect Union(Rect a, Rect b) => Rect.MinMaxRect(Mathf.Min(a.xMin, b.xMin),
+                Mathf.Min(a.yMin, b.yMin), Mathf.Max(a.xMax, b.xMax), Mathf.Max(a.yMax, b.yMax));
         }
 
         /// <summary>
         /// The rooms of one scene. Areas are given as the graph has them; <paramref name="solids"/>
-        /// answers what level geometry lies inside a rectangle.
+        /// answers what level geometry lies inside a rectangle. Rooms narrower than
+        /// <paramref name="minWidth"/> (the view's width) are joined, except those
+        /// <paramref name="keepApart"/> names.
         /// </summary>
         public static CameraRooms Build(IReadOnlyList<(string id, Rect area)> areas,
-            System.Func<Rect, IEnumerable<Bounds>> solids)
+            System.Func<Rect, IEnumerable<Bounds>> solids, float minWidth = 0f,
+            System.Func<string, bool> keepApart = null)
         {
             var rooms = new CameraRooms();
             for (var i = 0; i < areas.Count; i++)
@@ -67,10 +96,75 @@ namespace ForgottenKingdom
                     continue;
                 }
 
-                rooms._rooms.Add(new Room(id, area, ViewOf(area, solids(area))));
+                rooms._rooms.Add(new Room(id, area, ViewOf(area, solids(area)),
+                    keepApart != null && keepApart(id)));
             }
 
+            rooms.JoinNarrowRooms(minWidth);
             return rooms;
+        }
+
+        /// <summary>
+        /// Joins the narrowest room that is still narrower than the view to its narrower side
+        /// neighbour, and again, until every room is wide enough or has no one left to join.
+        /// </summary>
+        private void JoinNarrowRooms(float minWidth)
+        {
+            while (true)
+            {
+                var narrowest = -1;
+                var partner = -1;
+                for (var i = 0; i < _rooms.Count; i++)
+                {
+                    var room = _rooms[i];
+                    if (room.KeepApart || room.View.width >= minWidth
+                        || (narrowest >= 0 && room.View.width >= _rooms[narrowest].View.width))
+                    {
+                        continue;
+                    }
+
+                    var neighbour = NarrowerNeighbour(i);
+                    if (neighbour >= 0)
+                    {
+                        narrowest = i;
+                        partner = neighbour;
+                    }
+                }
+
+                if (narrowest < 0)
+                {
+                    return;
+                }
+
+                var joined = _rooms[narrowest].JoinedWith(_rooms[partner]);
+                _rooms[Mathf.Min(narrowest, partner)] = joined;
+                _rooms.RemoveAt(Mathf.Max(narrowest, partner));
+            }
+        }
+
+        private int NarrowerNeighbour(int index)
+        {
+            var room = _rooms[index].Area;
+            var best = -1;
+            for (var i = 0; i < _rooms.Count; i++)
+            {
+                var other = _rooms[i];
+                if (i == index || other.KeepApart)
+                {
+                    continue;
+                }
+
+                var sideBySide = Mathf.Abs(other.Area.xMin - room.xMax) < 0.01f
+                    || Mathf.Abs(other.Area.xMax - room.xMin) < 0.01f;
+                var overlap = Mathf.Min(other.Area.yMax, room.yMax) - Mathf.Max(other.Area.yMin, room.yMin);
+                if (sideBySide && overlap > Mathf.Min(other.Area.height, room.height) * 0.5f
+                    && (best < 0 || other.View.width < _rooms[best].View.width))
+                {
+                    best = i;
+                }
+            }
+
+            return best;
         }
 
         /// <summary>
@@ -128,9 +222,12 @@ namespace ForgottenKingdom
         {
             for (var i = 0; i < _rooms.Count; i++)
             {
-                if (_rooms[i].AreaId == areaId)
+                foreach (var id in _rooms[i].AreaIds)
                 {
-                    return i;
+                    if (id == areaId)
+                    {
+                        return i;
+                    }
                 }
             }
 

@@ -14,7 +14,8 @@ namespace ForgottenKingdom
     ///
     /// It also gives the follow its limits from the world graph: the extent of this scene's
     /// areas, so the view never shows past the world's ends; the room the player is in
-    /// (<see cref="CameraRooms"/>), sliding into the next one when the player crosses over; and
+    /// (<see cref="CameraRooms"/>, rooms narrower than the view joined together), sliding into the
+    /// next one when the player crosses over; and
     /// for a boss fight the arena's room, so the fight stays framed.
     /// </summary>
     [DisallowMultipleComponent]
@@ -153,10 +154,18 @@ namespace ForgottenKingdom
             }
 
             var areas = new List<(string, Rect)>();
+            var arenas = new HashSet<string>();
             foreach (var area in SceneAreas())
             {
                 areas.Add((area.AreaId, area.WorldBounds));
+                if (area.IsBossArena)
+                {
+                    arenas.Add(area.AreaId);
+                }
             }
+
+            var view = GetComponent<Camera>();
+            var viewWidth = view != null ? view.orthographicSize * 2f * view.aspect : 0f;
 
             var filter = new ContactFilter2D { useTriggers = false };
             filter.SetLayerMask(_motor.GroundMask);
@@ -171,7 +180,7 @@ namespace ForgottenKingdom
                 }
 
                 return solids;
-            });
+            }, viewWidth, arenas.Contains);
         }
 
         private IEnumerable<WorldAreaDefinition> SceneAreas()

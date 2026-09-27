@@ -57,6 +57,41 @@ namespace ForgottenKingdom.Tests
         }
 
         [Test]
+        public void RoomsNarrowerThanTheViewAreJoinedToTheirNarrowerNeighbour()
+        {
+            var areas = new List<(string, Rect)>
+            {
+                ("wide", Rect.MinMaxRect(-30f, -8f, 0f, 18f)),
+                ("narrow", Rect.MinMaxRect(0f, -8f, 8f, 18f)),
+                ("small", Rect.MinMaxRect(8f, -8f, 14f, 18f)),
+                ("arena", Rect.MinMaxRect(14f, -8f, 30f, 18f))
+            };
+            var rooms = CameraRooms.Build(areas, _ => new Bounds[0], 20f, id => id == "arena");
+
+            Assert.That(rooms.IndexOf("narrow"), Is.EqualTo(rooms.IndexOf("small")),
+                "Two narrow rooms side by side become one.");
+            Assert.That(rooms.Rooms[rooms.IndexOf("small")].View.width, Is.GreaterThanOrEqualTo(20f)
+                .Or.EqualTo(14f), "Joined until wide enough, or as wide as its neighbours allow.");
+            Assert.That(rooms.IndexOf("arena"), Is.Not.EqualTo(rooms.IndexOf("small")),
+                "A boss arena keeps its own frame, however narrow.");
+            Assert.That(rooms.Rooms[rooms.IndexOf("arena")].AreaIds, Is.EqualTo(new[] { "arena" }));
+            Assert.That(rooms.IndexOf("wide"), Is.EqualTo(rooms.IndexOf("small")),
+                "Still narrower than the view, the pair joins the wide room beside it.");
+        }
+
+        [Test]
+        public void RoomsWideEnoughStayApart()
+        {
+            var areas = new List<(string, Rect)>
+            {
+                ("a", Rect.MinMaxRect(0f, -8f, 25f, 18f)),
+                ("b", Rect.MinMaxRect(25f, -8f, 50f, 18f))
+            };
+            var rooms = CameraRooms.Build(areas, _ => new Bounds[0], 20f);
+            Assert.That(rooms.Count, Is.EqualTo(2));
+        }
+
+        [Test]
         public void StandingOnASharedEdgeDoesNotSwingTheView()
         {
             var areas = new List<(string, Rect)> { ("hall", Hall), ("next", Rect.MinMaxRect(20f, -8f, 40f, 18f)) };

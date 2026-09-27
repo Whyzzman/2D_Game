@@ -125,12 +125,35 @@ namespace ForgottenKingdom.Tests
         }
 
         [UnityTest]
+        public IEnumerator TheTombsNarrowRoomsShareOneFrameSoTheViewFollowsThroughThem()
+        {
+            var rooms = _follow.GetComponent<CameraDirector>().Rooms;
+            var hall = rooms.IndexOf("room_tomb_burial_hall");
+            // Both are narrower than any screen shape, so they share a frame whatever the aspect.
+            Assert.That(rooms.IndexOf("room_tomb_entrance"), Is.EqualTo(hall),
+                "Rooms narrower than the screen are joined rather than slid between.");
+            Assert.That(rooms.IndexOf("room_tomb_guardian_arena"), Is.Not.EqualTo(hall),
+                "The arena keeps its own frame.");
+            var halfWidth = _camera.orthographicSize * _camera.aspect;
+            foreach (var room in rooms.Rooms)
+            {
+                Assert.That(room.View.width >= halfWidth * 2f - 0.01f || room.KeepApart
+                    || room.AreaIds.Count > 1 || rooms.Count == 1, Is.True,
+                    $"{room.AreaIds[0]} is narrower than the view and was left alone.");
+            }
+
+            yield return null;
+        }
+
+        [UnityTest]
         public IEnumerator CrossingIntoTheNextRoomSlidesTheViewWithoutACut()
         {
-            var director = _follow.GetComponent<CameraDirector>();
-            var entrance = director.Rooms.Rooms[director.Rooms.IndexOf("room_tomb_entrance")];
-            var hall = director.Rooms.Rooms[director.Rooms.IndexOf("room_tomb_burial_hall")];
-            _motor.ResetTo(new Vector2(entrance.Area.xMax - 2f, 0.85f));
+            var rooms = _follow.GetComponent<CameraDirector>().Rooms;
+            var entrance = rooms.Rooms[rooms.IndexOf("room_forest_entrance")];
+            var road = rooms.Rooms[rooms.IndexOf("room_forest_royal_road")];
+            Assume.That(rooms.IndexOf("room_forest_entrance"),
+                Is.Not.EqualTo(rooms.IndexOf("room_forest_royal_road")));
+            _motor.ResetTo(new Vector2(entrance.Area.xMax - 0.7f, 0.85f));
             yield return Realtime(1f);
 
             var slid = false;
@@ -147,11 +170,11 @@ namespace ForgottenKingdom.Tests
             }
 
             yield return Keys();
-            Assert.That(_motor.transform.position.x, Is.GreaterThan(hall.Area.xMin + CameraRooms.SwitchMargin),
+            Assert.That(_motor.transform.position.x, Is.GreaterThan(road.Area.xMin + CameraRooms.SwitchMargin),
                 "The player has to reach the next room for this to mean anything.");
             Assert.That(slid, Is.True, "The view slid across instead of cutting.");
             Assert.That(biggestStep, Is.LessThan(0.6f), "No frame jumps the view.");
-            Assert.That(_follow.ActiveBounds, Is.EqualTo(hall.View));
+            Assert.That(_follow.ActiveBounds, Is.EqualTo(road.View));
         }
 
         [UnityTest]
