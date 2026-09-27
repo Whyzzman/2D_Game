@@ -25,6 +25,7 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 79b59ac9b10692c4a92dfb4f2f42ef1d, type: 3}
     _framesPerSecond: 16
     _isLooping: 0
+    _anchors: []
   _tint: {r: 1, g: 1, b: 1, a: 1}
   _scale: 1
   _facesHitDirection: 0

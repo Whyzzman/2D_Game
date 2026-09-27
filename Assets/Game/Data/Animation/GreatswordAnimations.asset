@@ -18,6 +18,7 @@ MonoBehaviour:
     _frames: []
     _framesPerSecond: 12
     _isLooping: 1
+    _anchors: []
   _attack1:
     _clipName: player_attack1
     _frames:
@@ -28,6 +29,12 @@ MonoBehaviour:
     - {fileID: 21300000, guid: e0e80e3ad646dc1409822f3e864028eb, type: 3}
     _framesPerSecond: 18
     _isLooping: 0
+    _anchors:
+    - {x: -0.05930954, y: 0.31717908, z: 0}
+    - {x: -0.05930954, y: 0.31717908, z: 0}
+    - {x: -0.19483261, y: 0.3741872, z: 7.720555}
+    - {x: -0.26649553, y: 0.46548522, z: 19.927856}
+    - {x: -0.26649553, y: 0.46548522, z: 19.927856}
   _attack2:
     _clipName: player_attack2
     _frames:
@@ -38,6 +45,12 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 32eab4f86916fc64fb1c6700af597a9b, type: 3}
     _framesPerSecond: 18
     _isLooping: 0
+    _anchors:
+    - {x: -0.0606044, y: 0.31215057, z: 0}
+    - {x: -0.0606044, y: 0.31215057, z: 0}
+    - {x: -0.19214065, y: 0.36928448, z: 8.419191}
+    - {x: -0.26106086, y: 0.4598953, z: 22.034544}
+    - {x: -0.26106086, y: 0.4598953, z: 22.034544}
   _attack3:
     _clipName: player_attack3
     _frames:
@@ -49,6 +62,13 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 21ef37926624a644f99af11069407695, type: 3}
     _framesPerSecond: 18
     _isLooping: 0
+    _anchors:
+    - {x: -0.062537536, y: 0.30455455, z: 0}
+    - {x: -0.062537536, y: 0.30455455, z: 0}
+    - {x: -0.1210305, y: 0.31945553, z: 0}
+    - {x: -0.23499961, y: 0.42059648, z: 20.4312}
+    - {x: -0.25128457, y: 0.45137244, z: 25.18883}
+    - {x: -0.25128457, y: 0.45137244, z: 25.18883}
   _heavy:
     _clipName: player_heavy
     _frames:
@@ -61,6 +81,14 @@ MonoBehaviour:
     - {fileID: 21300000, guid: aa6f7d6835905014a8e9db0c5a973352, type: 3}
     _framesPerSecond: 18
     _isLooping: 0
+    _anchors:
+    - {x: -0.06445793, y: 0.29689485, z: 0}
+    - {x: -0.06445793, y: 0.29689485, z: 0}
+    - {x: -0.08406456, y: 0.3002929, z: 0}
+    - {x: -0.18210709, y: 0.35452375, z: 10.513583}
+    - {x: -0.23990081, y: 0.43878204, z: 27.668484}
+    - {x: -0.24159104, y: 0.4426879, z: 28.337305}
+    - {x: -0.24159104, y: 0.4426879, z: 28.337305}
   _attackUp:
     _clipName: player_attackup
     _frames:
@@ -71,6 +99,12 @@ MonoBehaviour:
     - {fileID: 21300000, guid: d2e7ef6c56bcc48219a9984c89af9085, type: 3}
     _framesPerSecond: 18
     _isLooping: 0
+    _anchors:
+    - {x: -0.2205204, y: 0.3469554, z: 11.385703}
+    - {x: -0.2205204, y: 0.3469554, z: 11.385703}
+    - {x: -0.104228824, y: 0.34681785, z: 0}
+    - {x: -0.0153284455, y: 0.36819264, z: 0}
+    - {x: -0.0153284455, y: 0.36819264, z: 0}
   _attackDown:
     _clipName: player_attackdown
     _frames:
@@ -81,13 +115,21 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 71af96559cbad460fa12c183a4ded12a, type: 3}
     _framesPerSecond: 18
     _isLooping: 0
+    _anchors:
+    - {x: -0.29578483, y: 0.51450545, z: 7.7033386}
+    - {x: -0.29578483, y: 0.51450545, z: 7.7033386}
+    - {x: -0.34340042, y: 0.5663597, z: 18.264296}
+    - {x: -0.37203467, y: 0.6077166, z: 25.81759}
+    - {x: -0.37203467, y: 0.6077166, z: 25.81759}
   _block:
     _clipName: 
     _frames: []
     _framesPerSecond: 12
     _isLooping: 1
+    _anchors: []
   _parry:
     _clipName: 
     _frames: []
     _framesPerSecond: 12
     _isLooping: 1
+    _anchors: []

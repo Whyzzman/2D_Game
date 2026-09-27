@@ -23,6 +23,7 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 4d598b2ccc58b4e6ca6f3f5cf690b34c, type: 3}
     _framesPerSecond: 24
     _isLooping: 0
+    _anchors: []
   _tint: {r: 1, g: 1, b: 1, a: 1}
   _scale: 1
   _facesHitDirection: 0

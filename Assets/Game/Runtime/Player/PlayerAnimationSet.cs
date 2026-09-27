@@ -58,7 +58,17 @@ namespace ForgottenKingdom
         /// should a set lack them they borrow the first swing rather than showing nothing.
         /// </summary>
         AttackUp,
-        AttackDown
+        AttackDown,
+        /// <summary>
+        /// A rare flourish while standing still: the sword is settled and the hero looks back over
+        /// the shoulder. Added last to keep the numbers; a set without it simply stays in Idle.
+        /// </summary>
+        IdleVariant,
+        /// <summary>
+        /// The two frames after the facing flips on the ground. Visual only — the turn itself is
+        /// instant, as in Hollow Knight — and a set without it shows Idle for that instant.
+        /// </summary>
+        Turn
     }
 
     /// <summary>
@@ -99,6 +109,12 @@ namespace ForgottenKingdom
                 && !Has(state, weapon))
             {
                 return Clip(PlayerAnimationState.Attack1, weapon);
+            }
+
+            if ((state == PlayerAnimationState.IdleVariant || state == PlayerAnimationState.Turn)
+                && !Has(state, weapon))
+            {
+                return Clip(PlayerAnimationState.Idle, weapon);
             }
 
             var fromWeapon = weapon != null ? weapon.Clip(state) : null;

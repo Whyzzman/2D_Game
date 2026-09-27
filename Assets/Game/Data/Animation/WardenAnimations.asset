@@ -23,6 +23,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 8482e2b604ce5214ebdcf53a0b28edfd, type: 3}
       _framesPerSecond: 8
       _isLooping: 1
+      _anchors: []
   - state: 2
     clip:
       _clipName: boss_warden_intro
@@ -47,6 +48,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 0bf604d1c262d7645a9ff9e7892bea8c, type: 3}
       _framesPerSecond: 12
       _isLooping: 0
+      _anchors: []
   - state: 3
     clip:
       _clipName: boss_warden_idlep1
@@ -59,6 +61,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: aa17b48139c88c44f962522d3d08b1f5, type: 3}
       _framesPerSecond: 8
       _isLooping: 1
+      _anchors: []
   - state: 4
     clip:
       _clipName: boss_warden_walkp1
@@ -73,6 +76,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: b560ac497d8d03f4f88ad68ae6eff44c, type: 3}
       _framesPerSecond: 14
       _isLooping: 1
+      _anchors: []
   - state: 0
     clip:
       _clipName: boss_warden_slashp1
@@ -97,6 +101,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: ed6afe94765df3e42b45822742dfa6e2, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors: []
   - state: 24
     clip:
       _clipName: boss_warden_sweep
@@ -125,6 +130,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 6b5a90a493051db4a86e4859300c7869, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors: []
   - state: 6
     clip:
       _clipName: boss_warden_chargestart
@@ -147,6 +153,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: a4273610863ec814cb5c5d5a68f88220, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors: []
   - state: 7
     clip:
       _clipName: boss_warden_charge
@@ -159,6 +166,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 411c149e5cf5d1445ac17cd269e16f25, type: 3}
       _framesPerSecond: 24
       _isLooping: 1
+      _anchors: []
   - state: 8
     clip:
       _clipName: boss_warden_chargerecover
@@ -177,6 +185,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: d7d36ca4277d6294ab4f619c836a6442, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors: []
   - state: 25
     clip:
       _clipName: boss_warden_rootshot
@@ -203,6 +212,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 83e5d5537a06d2e40a8d2fb3591ce006, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors: []
   - state: 12
     clip:
       _clipName: boss_warden_stunned
@@ -217,6 +227,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 17730411ab20dc74093f926cbda20fb0, type: 3}
       _framesPerSecond: 12
       _isLooping: 1
+      _anchors: []
   - state: 13
     clip:
       _clipName: boss_warden_recoil
@@ -229,6 +240,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 36239314e8af24540a99fc325229bbca, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors: []
   - state: 14
     clip:
       _clipName: boss_warden_phasetransition
@@ -261,6 +273,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: b66b095bcc8a9db42a92ba1dfab8423e, type: 3}
       _framesPerSecond: 12
       _isLooping: 0
+      _anchors: []
   - state: 15
     clip:
       _clipName: boss_warden_idlep2
@@ -273,6 +286,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 38d61667bd7840a42abf8fe27dae599d, type: 3}
       _framesPerSecond: 8
       _isLooping: 1
+      _anchors: []
   - state: 16
     clip:
       _clipName: boss_warden_movep2
@@ -287,6 +301,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: e14f610f230f82e45aefca86fd20a38d, type: 3}
       _framesPerSecond: 14
       _isLooping: 1
+      _anchors: []
   - state: 17
     clip:
       _clipName: boss_warden_slashp2
@@ -309,6 +324,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 3fbbc0bab3120134388a9f3afd2372b4, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors: []
   - state: 18
     clip:
       _clipName: boss_warden_combop2
@@ -333,6 +349,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: e4b1e3a1f3817bc4593a3fb99be8098f, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors: []
   - state: 9
     clip:
       _clipName: boss_warden_combo1
@@ -349,6 +366,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 7cfe56c7253044d4f947b1f9cc4ab41b, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors: []
   - state: 10
     clip:
       _clipName: boss_warden_combo2
@@ -365,6 +383,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 254fd45582f331e48a6878a78ce3e7ce, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors: []
   - state: 11
     clip:
       _clipName: boss_warden_combo3
@@ -385,6 +404,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 08b54192ab212ed4dbd5dbde03d98689, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors: []
   - state: 26
     clip:
       _clipName: boss_warden_rootslam
@@ -415,6 +435,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 75956ac641923f94288fc0db54b5beb2, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors: []
   - state: 27
     clip:
       _clipName: boss_warden_poisonfieldcast
@@ -443,6 +464,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: b23b00fd63646f04985423cc07d54f14, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors: []
   - state: 19
     clip:
       _clipName: boss_warden_jumpstart
@@ -463,6 +485,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 097fa93159cc7364a97af16d21255dae, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors: []
   - state: 20
     clip:
       _clipName: boss_warden_jump
@@ -475,6 +498,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: db262667d781d5548a8c2d40984a55f2, type: 3}
       _framesPerSecond: 24
       _isLooping: 1
+      _anchors: []
   - state: 21
     clip:
       _clipName: boss_warden_slam
@@ -485,6 +509,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 654a0560228a7c44cbc68ee862251a4e, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors: []
   - state: 22
     clip:
       _clipName: boss_warden_slamrecover
@@ -505,6 +530,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 42040458ae6a4734280151dffbd9999e, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors: []
   - state: 23
     clip:
       _clipName: boss_warden_death
@@ -537,6 +563,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: d8d5d70fe22b256479ee1eaefad44b18, type: 3}
       _framesPerSecond: 12
       _isLooping: 0
+      _anchors: []
   _fallback:
     _clipName: boss_warden_idlep1
     _frames:
@@ -548,4 +575,5 @@ MonoBehaviour:
     - {fileID: 21300000, guid: aa17b48139c88c44f962522d3d08b1f5, type: 3}
     _framesPerSecond: 8
     _isLooping: 1
+    _anchors: []
   _requiredStates: 010000000200000003000000040000000000000018000000060000000700000008000000190000000c0000000d0000000e0000000f000000100000001100000012000000090000000a0000000b0000001a0000001b0000001300000014000000150000001600000017000000

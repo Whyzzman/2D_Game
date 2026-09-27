@@ -359,6 +359,121 @@ namespace ForgottenKingdom.Tests
             Assert.That(_animation.ActiveWeaponSet.WeaponType, Is.EqualTo(WeaponType.Greatsword));
         }
 
+        // ---------- secondary motion (item 2, 2026-09-27) ----------
+
+        [UnityTest]
+        public IEnumerator TurningOnTheGroundIsInstantAndDressed()
+        {
+            yield return Neutral(6);
+            Assert.That(_motor.FacingDirection, Is.EqualTo(1));
+
+            InputSystem.QueueStateEvent(_keyboard, new KeyboardState(Key.A));
+            var sawTurn = false;
+            var until = Time.realtimeSinceStartup + 0.3f;
+            while (Time.realtimeSinceStartup < until)
+            {
+                yield return null;
+                sawTurn |= _animation.State == PlayerAnimationState.Turn;
+            }
+
+            Assert.That(_motor.FacingDirection, Is.EqualTo(-1), "The turn itself is not held up.");
+            Assert.That(sawTurn, Is.True, "The facing flip on the ground shows the turn pose.");
+            Assert.That(_animation.State, Is.EqualTo(PlayerAnimationState.Run),
+                "Two frames, then the run: the pose never outstays the turn.");
+            yield return Neutral(2);
+        }
+
+        [UnityTest]
+        public IEnumerator StandingStillLongEnoughBringsTheIdleVariantOnce()
+        {
+            yield return Neutral(6);
+            Assert.That(_animation.State, Is.EqualTo(PlayerAnimationState.Idle));
+
+            _animation.Tick(PlayerAnimationController.IdleVariantDelay + 0.1f);
+            _animation.Tick(0.01f);
+            Assert.That(_animation.State, Is.EqualTo(PlayerAnimationState.IdleVariant));
+
+            _animation.Tick(_animation.Clip.Duration + 0.05f);
+            _animation.Tick(0.01f);
+            Assert.That(_animation.State, Is.EqualTo(PlayerAnimationState.Idle),
+                "It plays once and hands back to the stance.");
+
+            _animation.Tick(PlayerAnimationController.IdleVariantGapMin - 0.5f);
+            _animation.Tick(0.01f);
+            Assert.That(_animation.State, Is.EqualTo(PlayerAnimationState.Idle),
+                "The next one waits at least eight seconds.");
+        }
+
+        [UnityTest]
+        public IEnumerator MovingCutsTheIdleVariantShortAndStartsTheWaitOver()
+        {
+            yield return Neutral(6);
+            _animation.Tick(PlayerAnimationController.IdleVariantDelay + 0.1f);
+            _animation.Tick(0.01f);
+            Assert.That(_animation.State, Is.EqualTo(PlayerAnimationState.IdleVariant));
+
+            InputSystem.QueueStateEvent(_keyboard, new KeyboardState(Key.D));
+            yield return WaitForSecondsRealtime(0.25f);
+            Assert.That(_animation.State, Is.EqualTo(PlayerAnimationState.Run));
+
+            yield return Neutral(6);
+            _animation.Tick(0.01f);
+            Assert.That(_animation.State, Is.EqualTo(PlayerAnimationState.Idle),
+                "Stopping again stands still; the flourish does not resume where it left off.");
+        }
+
+        [UnityTest]
+        public IEnumerator TheCloaksEdgeHangsAtRestAndTrailsARun()
+        {
+            var tail = _player.GetComponentInChildren<CloakTail>();
+            Assert.That(tail, Is.Not.Null, "The player ships with the cloak's live edge.");
+            var line = tail.GetComponent<LineRenderer>();
+            Assert.That(line.sortingLayerID, Is.EqualTo(_body.sortingLayerID));
+            Assert.That(line.sortingOrder, Is.LessThan(_body.sortingOrder),
+                "It comes out from under the drawn cloak, behind the body.");
+
+            yield return Neutral(6);
+            yield return WaitForSecondsRealtime(0.6f);
+            var hanging = tail.Tip - tail.Root;
+            Assert.That(hanging.y, Is.LessThan(-0.15f), "At rest the edge hangs down.");
+            Assert.That(Vector2.Angle(hanging, tail.RestDirection), Is.LessThan(20f),
+                "... along the line of the cloak's back edge.");
+
+            InputSystem.QueueStateEvent(_keyboard, new KeyboardState(Key.D));
+            yield return WaitForSecondsRealtime(0.6f);
+            var running = tail.Tip - tail.Root;
+            Assert.That(running.x, Is.LessThan(hanging.x - 0.06f),
+                "Running right, the edge streams back to the left.");
+            Assert.That(running.magnitude, Is.EqualTo(hanging.magnitude).Within(0.02f),
+                "Cloth trails; it does not stretch.");
+            yield return Neutral(2);
+        }
+
+        [UnityTest]
+        public IEnumerator TheCloaksEdgeSwingsRoundAfterATurnRatherThanJumping()
+        {
+            var tail = _player.GetComponentInChildren<CloakTail>();
+            InputSystem.QueueStateEvent(_keyboard, new KeyboardState(Key.D));
+            yield return WaitForSecondsRealtime(0.5f);
+
+            InputSystem.QueueStateEvent(_keyboard, new KeyboardState(Key.A));
+            var until = Time.realtimeSinceStartup + 0.3f;
+            while (_motor.FacingDirection != -1 && Time.realtimeSinceStartup < until)
+            {
+                yield return null;
+            }
+
+            yield return null;
+            // Facing left now; the back is to the right. The edge is still where the run left it.
+            Assert.That(tail.Tip.x - tail.Root.x, Is.LessThan(0f),
+                "Just after the turn the edge is still on the old side, in front.");
+
+            yield return WaitForSecondsRealtime(0.5f);
+            Assert.That(tail.Tip.x - tail.Root.x, Is.GreaterThan(0.05f),
+                "... and it has swung round to trail the new run.");
+            yield return Neutral(2);
+        }
+
         // ---------- safety ----------
 
         [UnityTest]

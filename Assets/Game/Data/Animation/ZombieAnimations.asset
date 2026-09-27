@@ -25,6 +25,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 89e4ff20b7341574380c3c5c221e68fe, type: 3}
       _framesPerSecond: 8
       _isLooping: 1
+      _anchors: []
   - state: 2
     clip:
       _clipName: enemy_zombie_patrol
@@ -39,6 +40,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 513fd9464d6d5184483050f39ff9344f, type: 3}
       _framesPerSecond: 12
       _isLooping: 1
+      _anchors: []
   - state: 3
     clip:
       _clipName: enemy_zombie_alert
@@ -50,6 +52,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 6530ef91e68dfd94787a253eb90c23ef, type: 3}
       _framesPerSecond: 12
       _isLooping: 0
+      _anchors: []
   - state: 4
     clip:
       _clipName: enemy_zombie_chase
@@ -64,6 +67,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 14bbbc5f0bc1e2c42bc5ec01445d118b, type: 3}
       _framesPerSecond: 12
       _isLooping: 1
+      _anchors: []
   - state: 0
     clip:
       _clipName: enemy_zombie_attacklight
@@ -88,6 +92,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 5755840cea013254eaa18869f72b965c, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors: []
   - state: 11
     clip:
       _clipName: enemy_zombie_hurt
@@ -99,6 +104,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: a681933c6619dff4e8dae06b1bb86202, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors: []
   - state: 12
     clip:
       _clipName: enemy_zombie_stunned
@@ -111,6 +117,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 62b13e7607aae30489815048508f6e54, type: 3}
       _framesPerSecond: 12
       _isLooping: 1
+      _anchors: []
   - state: 13
     clip:
       _clipName: enemy_zombie_death
@@ -127,6 +134,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 4c2055e7796887f46892c507ef48fe0e, type: 3}
       _framesPerSecond: 12
       _isLooping: 0
+      _anchors: []
   _fallback:
     _clipName: enemy_zombie_idle
     _frames:
@@ -138,4 +146,5 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 89e4ff20b7341574380c3c5c221e68fe, type: 3}
     _framesPerSecond: 8
     _isLooping: 1
+    _anchors: []
   _carriesShield: 0

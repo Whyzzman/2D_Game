@@ -25,6 +25,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: c3009dcedfc6b7348968ba0a10ab0c16, type: 3}
       _framesPerSecond: 8
       _isLooping: 1
+      _anchors: []
   - state: 2
     clip:
       _clipName: enemy_shieldguard_patrol
@@ -39,6 +40,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 1c1d80823e95605489ffb9fdc9ea4f93, type: 3}
       _framesPerSecond: 12
       _isLooping: 1
+      _anchors: []
   - state: 3
     clip:
       _clipName: enemy_shieldguard_alert
@@ -50,6 +52,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 9fb05543e298f8f469de0b264192680b, type: 3}
       _framesPerSecond: 12
       _isLooping: 0
+      _anchors: []
   - state: 4
     clip:
       _clipName: enemy_shieldguard_chase
@@ -64,6 +67,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: d600e8d793cfb4c4ab6211311c7443af, type: 3}
       _framesPerSecond: 12
       _isLooping: 1
+      _anchors: []
   - state: 5
     clip:
       _clipName: enemy_shieldguard_guardraise
@@ -75,6 +79,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: da0c4ff655f525d4b867fae052ed3753, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors: []
   - state: 6
     clip:
       _clipName: enemy_shieldguard_guardidle
@@ -85,6 +90,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: fb518f4fa047b4a4f8c508bd40aebf10, type: 3}
       _framesPerSecond: 12
       _isLooping: 1
+      _anchors: []
   - state: 7
     clip:
       _clipName: enemy_shieldguard_guardimpact
@@ -96,6 +102,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 7dc8c71d42945b7449195ac013febd59, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors: []
   - state: 8
     clip:
       _clipName: enemy_shieldguard_guardbreak
@@ -114,6 +121,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: fa26380944b057c43bb5841676d02a99, type: 3}
       _framesPerSecond: 12
       _isLooping: 0
+      _anchors: []
   - state: 0
     clip:
       _clipName: enemy_shieldguard_attacklight
@@ -140,6 +148,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 2bb8466c3a9d3ba4393baae9817c00c1, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors: []
   - state: 10
     clip:
       _clipName: enemy_shieldguard_shieldbash
@@ -162,6 +171,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: ed9286646fcce70499e5121b737eb112, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors: []
   - state: 9
     clip:
       _clipName: enemy_shieldguard_attackheavy
@@ -194,6 +204,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 91925a4129daf004d976303063766056, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors: []
   - state: 11
     clip:
       _clipName: enemy_shieldguard_hurt
@@ -205,6 +216,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 6f9b598a25a598340be0b6d5542f283c, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors: []
   - state: 12
     clip:
       _clipName: enemy_shieldguard_stunned
@@ -217,6 +229,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 8c3ecb8b902fa8748bf1233ad23e78dd, type: 3}
       _framesPerSecond: 12
       _isLooping: 1
+      _anchors: []
   - state: 13
     clip:
       _clipName: enemy_shieldguard_death
@@ -235,6 +248,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 8f4f468d0ff80c248b930bf6d7a4baa2, type: 3}
       _framesPerSecond: 12
       _isLooping: 0
+      _anchors: []
   _fallback:
     _clipName: enemy_shieldguard_idle
     _frames:
@@ -246,4 +260,5 @@ MonoBehaviour:
     - {fileID: 21300000, guid: c3009dcedfc6b7348968ba0a10ab0c16, type: 3}
     _framesPerSecond: 8
     _isLooping: 1
+    _anchors: []
   _carriesShield: 1

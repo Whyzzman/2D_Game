@@ -19,15 +19,21 @@ namespace ForgottenKingdom
         [SerializeField] private Sprite[] _frames = Array.Empty<Sprite>();
         [SerializeField, Min(1f)] private float _framesPerSecond = 12f;
         [SerializeField] private bool _isLooping = true;
+        [Tooltip("Optional, one per frame: where loose cloth hangs from (x, y in units from the "
+            + "pivot, drawn facing right) and the angle it hangs at (z, degrees from straight down, "
+            + "positive towards the back).")]
+        [SerializeField] private Vector3[] _anchors = Array.Empty<Vector3>();
 
         public AnimationClipDefinition() { }
 
-        public AnimationClipDefinition(string clipName, Sprite[] frames, float fps, bool isLooping)
+        public AnimationClipDefinition(string clipName, Sprite[] frames, float fps, bool isLooping,
+            Vector3[] anchors = null)
         {
             _clipName = clipName;
             _frames = frames;
             _framesPerSecond = fps;
             _isLooping = isLooping;
+            _anchors = anchors ?? Array.Empty<Vector3>();
         }
 
         public string ClipName => _clipName;
@@ -54,6 +60,24 @@ namespace ForgottenKingdom
             var index = Mathf.FloorToInt(Mathf.Max(0f, elapsed) * _framesPerSecond);
             index = _isLooping ? index % FrameCount : Mathf.Min(index, FrameCount - 1);
             return _frames[index];
+        }
+
+        /// <summary>
+        /// The frame's hanging point for secondary motion, when the clip has one for that frame. A
+        /// clip without anchors — an enemy's, or one an artist has not annotated — says so rather
+        /// than inventing a point.
+        /// </summary>
+        public bool TryGetAnchor(int frame, out Vector3 anchor)
+        {
+            if (_anchors != null && frame >= 0 && frame < _anchors.Length
+                && _anchors.Length == FrameCount)
+            {
+                anchor = _anchors[frame];
+                return true;
+            }
+
+            anchor = default;
+            return false;
         }
 
         /// <summary>The frame index shown at that moment, for events that fire per frame.</summary>

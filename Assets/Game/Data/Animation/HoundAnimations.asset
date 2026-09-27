@@ -25,6 +25,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: d3c32186df9f2df459722c7e77e31ccf, type: 3}
       _framesPerSecond: 8
       _isLooping: 1
+      _anchors: []
   - state: 2
     clip:
       _clipName: enemy_hound_patrol
@@ -39,6 +40,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 649bd33f47daae04b8dfdd4df0ebf22f, type: 3}
       _framesPerSecond: 14
       _isLooping: 1
+      _anchors: []
   - state: 3
     clip:
       _clipName: enemy_hound_alert
@@ -50,6 +52,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 1cd92dc289b0d9a409cd31c3248d9244, type: 3}
       _framesPerSecond: 14
       _isLooping: 0
+      _anchors: []
   - state: 4
     clip:
       _clipName: enemy_hound_chase
@@ -64,6 +67,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: bdb5d1b1b6a31d84b805633493aa0557, type: 3}
       _framesPerSecond: 18
       _isLooping: 1
+      _anchors: []
   - state: 0
     clip:
       _clipName: enemy_hound_attacklight
@@ -86,6 +90,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 2b1a3b10fe16ca949ba9a026f4010aa9, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors: []
   - state: 9
     clip:
       _clipName: enemy_hound_attackheavy
@@ -114,6 +119,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 0e2f8e2ade784114e96cec11f70534b9, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors: []
   - state: 11
     clip:
       _clipName: enemy_hound_hurt
@@ -125,6 +131,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 5e6d3df8e96a813499982cc237648a45, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors: []
   - state: 12
     clip:
       _clipName: enemy_hound_stunned
@@ -137,6 +144,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 8d109913e7b9a01478fec52059a7eec8, type: 3}
       _framesPerSecond: 12
       _isLooping: 1
+      _anchors: []
   - state: 13
     clip:
       _clipName: enemy_hound_death
@@ -153,6 +161,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 14f8a0f134d8d734ca367883a6c7e263, type: 3}
       _framesPerSecond: 12
       _isLooping: 0
+      _anchors: []
   _fallback:
     _clipName: enemy_hound_idle
     _frames:
@@ -164,4 +173,5 @@ MonoBehaviour:
     - {fileID: 21300000, guid: d3c32186df9f2df459722c7e77e31ccf, type: 3}
     _framesPerSecond: 8
     _isLooping: 1
+    _anchors: []
   _carriesShield: 0

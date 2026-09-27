@@ -3404,6 +3404,7 @@ namespace ForgottenKingdom.EditorTools
             SetReference(controller, "_set", set);
             SetReference(controller, "_body", body);
             SetReference(controller, "_face", face);
+            BuildCloakTail(visual.gameObject, controller, body);
 
             BuildVisualSockets(root, visual.gameObject, bodyObject);
 
@@ -3454,6 +3455,38 @@ namespace ForgottenKingdom.EditorTools
         }
 
         /// <summary>
+        /// The live back edge of the cloak (item 2 of the 2026-09-27 list): a short chain drawn
+        /// with one strip texture, behind the body, hanging from each frame's anchor.
+        /// </summary>
+        private static void BuildCloakTail(GameObject visual, PlayerAnimationController controller,
+            SpriteRenderer body)
+        {
+            var tailObject = FindOrCreateChild(visual, "CloakTail");
+            tailObject.transform.localPosition = Vector3.zero;
+            var line = Ensure<LineRenderer>(tailObject);
+            line.useWorldSpace = true;
+            line.positionCount = CloakTail.Links + 1;
+            line.textureMode = LineTextureMode.Stretch;
+            line.alignment = LineAlignment.View;
+            line.numCornerVertices = 2;
+            line.numCapVertices = 0;
+            line.widthMultiplier = 0.19f;
+            line.widthCurve = new AnimationCurve(new Keyframe(0f, 1f), new Keyframe(1f, 0.8f));
+            line.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            line.receiveShadows = false;
+            // The body's own sprite material, so the cloth is lit by the same lights as the frames.
+            line.sharedMaterial = body.sharedMaterial != null ? body.sharedMaterial : _material;
+            line.sortingLayerName = "Characters";
+            line.sortingOrder = 2;
+
+            var tail = Ensure<CloakTail>(tailObject);
+            SetReference(tail, "_animation", controller);
+            SetReference(tail, "_body", body);
+            SetReference(tail, "_texture", AssetDatabase.LoadAssetAtPath<Texture2D>(
+                PlaceholderPlayerArt.CloakTailPath));
+        }
+
+        /// <summary>
         /// Builds the player's animation set from the placeholder frames, plus a greatsword set
         /// that overrides the swings. Sprite references cannot go through JSON, so this is the one
         /// area authored field by field.
@@ -3462,6 +3495,7 @@ namespace ForgottenKingdom.EditorTools
         {
             EnsureFolder(AnimationFolder);
             var frames = PlaceholderPlayerArt.Generate();
+            PlaceholderPlayerArt.GenerateCloakTail();
             var set = CreateAsset<PlayerAnimationSet>(PlayerAnimationSetPath);
             var serialized = new SerializedObject(set);
             var clips = serialized.FindProperty("_clips");
@@ -3471,7 +3505,7 @@ namespace ForgottenKingdom.EditorTools
                 var spec = PlaceholderPlayerArt.States[i];
                 var element = clips.GetArrayElementAtIndex(i);
                 element.FindPropertyRelative("state").enumValueIndex = (int)spec.State;
-                WriteClip(element.FindPropertyRelative("clip"), spec, frames[spec.State]);
+                WriteClip(element.FindPropertyRelative("clip"), spec, frames[spec.State], 0f);
             }
 
             // Idle doubles as the fallback: if a state ever loses its frames the character stands
@@ -3479,7 +3513,7 @@ namespace ForgottenKingdom.EditorTools
             var idle = System.Array.Find(PlaceholderPlayerArt.States,
                 s => s.State == PlayerAnimationState.Idle);
             WriteClip(serialized.FindProperty("_fallback"), idle,
-                frames[PlayerAnimationState.Idle]);
+                frames[PlayerAnimationState.Idle], 0f);
 
             var greatsword = BuildGreatswordAnimationSet();
             var weaponSets = serialized.FindProperty("_weaponSets");
@@ -3504,7 +3538,7 @@ namespace ForgottenKingdom.EditorTools
                     : spec.State == PlayerAnimationState.AttackUp ? "_attackUp"
                     : spec.State == PlayerAnimationState.AttackDown ? "_attackDown"
                     : "_attack" + ((int)spec.State - (int)PlayerAnimationState.Attack1 + 1);
-                WriteClip(serialized.FindProperty(field), spec, frames[spec.State]);
+                WriteClip(serialized.FindProperty(field), spec, frames[spec.State], 0.35f);
             }
 
             serialized.ApplyModifiedPropertiesWithoutUndo();
@@ -3513,15 +3547,23 @@ namespace ForgottenKingdom.EditorTools
         }
 
         private static void WriteClip(SerializedProperty clip, PlaceholderPlayerArt.StateSpec spec,
-            Sprite[] sprites)
+            Sprite[] sprites, float reachBonus)
         {
             WriteClip(clip, "player_" + spec.State.ToString().ToLowerInvariant(), spec.Fps,
-                spec.Loops, sprites);
+                spec.Loops, sprites, PlaceholderPlayerArt.Anchors(spec, reachBonus));
         }
 
         private static void WriteClip(SerializedProperty clip, string clipName, float fps,
-            bool loops, Sprite[] sprites)
+            bool loops, Sprite[] sprites, Vector3[] anchors = null)
         {
+            // Where the cloak's live edge hangs on each frame; enemy clips carry none.
+            var anchorList = clip.FindPropertyRelative("_anchors");
+            anchorList.arraySize = anchors != null ? anchors.Length : 0;
+            for (var i = 0; i < anchorList.arraySize; i++)
+            {
+                anchorList.GetArrayElementAtIndex(i).vector3Value = anchors[i];
+            }
+
             clip.FindPropertyRelative("_clipName").stringValue = clipName;
             clip.FindPropertyRelative("_framesPerSecond").floatValue = fps;
             clip.FindPropertyRelative("_isLooping").boolValue = loops;

@@ -25,6 +25,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 6b423e7bef4573046a64698945986e47, type: 3}
       _framesPerSecond: 8
       _isLooping: 1
+      _anchors: []
   - state: 2
     clip:
       _clipName: enemy_archer_patrol
@@ -39,6 +40,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 4b35bba6706809b43b47529b16ceed46, type: 3}
       _framesPerSecond: 12
       _isLooping: 1
+      _anchors: []
   - state: 3
     clip:
       _clipName: enemy_archer_alert
@@ -50,6 +52,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 203d0ea65bc14b041b6b89f0457507e1, type: 3}
       _framesPerSecond: 12
       _isLooping: 0
+      _anchors: []
   - state: 4
     clip:
       _clipName: enemy_archer_chase
@@ -64,6 +67,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 2b8f8c412eb81754e9106f411e46153b, type: 3}
       _framesPerSecond: 14
       _isLooping: 1
+      _anchors: []
   - state: 0
     clip:
       _clipName: enemy_archer_attacklight
@@ -92,6 +96,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: fd6889b9e08c38749a17758ac7080d25, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors: []
   - state: 10
     clip:
       _clipName: enemy_archer_shieldbash
@@ -112,6 +117,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: c897c78bf34951844b2652ac567202ba, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors: []
   - state: 11
     clip:
       _clipName: enemy_archer_hurt
@@ -123,6 +129,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 6c0fd2bd33218e54781fe329755c5981, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors: []
   - state: 12
     clip:
       _clipName: enemy_archer_stunned
@@ -135,6 +142,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 675b36fd3d8fdca438a51aeba507243f, type: 3}
       _framesPerSecond: 12
       _isLooping: 1
+      _anchors: []
   - state: 13
     clip:
       _clipName: enemy_archer_death
@@ -151,6 +159,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: c8c0499a24fc88a458f6d2f6dfa61f5b, type: 3}
       _framesPerSecond: 12
       _isLooping: 0
+      _anchors: []
   _fallback:
     _clipName: enemy_archer_idle
     _frames:
@@ -162,4 +171,5 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 6b423e7bef4573046a64698945986e47, type: 3}
     _framesPerSecond: 8
     _isLooping: 1
+    _anchors: []
   _carriesShield: 0

@@ -23,6 +23,11 @@ namespace ForgottenKingdom
         private const float LandSkipSpeed = 0.5f;
         /// <summary>The slowest the run clip is played, as a share of its authored pace.</summary>
         private const float MinRunRate = 0.35f;
+        /// <summary>Standing still this long before the first idle variant plays.</summary>
+        public const float IdleVariantDelay = 6f;
+        /// <summary>After one variant, the next waits somewhere in this range (the user's choice).</summary>
+        public const float IdleVariantGapMin = 8f;
+        public const float IdleVariantGapMax = 12f;
         [SerializeField] private PlayerAnimationSet _set;
         [Tooltip("The renderer showing the character; frames are written here.")]
         [SerializeField] private SpriteRenderer _body;
@@ -51,6 +56,10 @@ namespace ForgottenKingdom
         private float _oneShotUntil = float.NegativeInfinity;
         private bool _wasGrounded = true;
         private int _lastFrame = -1;
+        private int _lastFacing;
+        private float _calm;
+        private float _nextVariant = IdleVariantDelay;
+        private bool _variantPlaying;
 
         /// <summary>Raised on every real change, for VFX and audio that follow the visual.</summary>
         public event Action<PlayerAnimationState, PlayerAnimationState> StateChanged;
@@ -70,6 +79,20 @@ namespace ForgottenKingdom
         public PlayerAnimationState State => _state;
         public AnimationClipDefinition Clip => _clip;
         public WeaponAnimationSet ActiveWeaponSet => _weaponSet;
+
+        /// <summary>The renderer the frames are shown on; cloth that hangs off the body follows it.</summary>
+        public SpriteRenderer Body => _body;
+
+        /// <summary>
+        /// Where the cloak's loose edge hangs from on the frame now shown, from the clip's per-frame
+        /// anchors (x, y in units from the body's pivot, facing right; z the hang angle). False
+        /// when the clip carries none, and the cloth then keeps its own resting point.
+        /// </summary>
+        public bool TryGetTrailAnchor(out Vector3 anchor)
+        {
+            anchor = default;
+            return _clip != null && _lastFrame >= 0 && _clip.TryGetAnchor(_lastFrame, out anchor);
+        }
 
         /// <summary>How far through the current clip playback is, in [0, 1].</summary>
         public float NormalizedTime => _clip != null && _clip.Duration > 0f
@@ -203,6 +226,7 @@ namespace ForgottenKingdom
         public void Tick(float deltaTime)
         {
             TrackLanding();
+            TrackTurn();
             var next = ForcedState ?? Resolve();
             if (next != _state)
             {
@@ -211,6 +235,63 @@ namespace ForgottenKingdom
 
             _elapsed += Mathf.Max(0f, deltaTime) * _speed * LocomotionRate();
             Draw();
+            TrackCalm(Mathf.Max(0f, deltaTime));
+        }
+
+        /// <summary>
+        /// The facing flipped on the ground: two frames of the turn. The motor has already turned
+        /// the body and control answers the same frame — the pose only dresses the moment, so it
+        /// is never a reason for the turn to feel slower than Hollow Knight's.
+        /// </summary>
+        private void TrackTurn()
+        {
+            var facing = _motor != null ? _motor.FacingDirection : 1;
+            var grounded = _motor == null || _motor.IsGrounded;
+            if (_lastFacing != 0 && facing != _lastFacing && grounded && IsStanding(_state))
+            {
+                Flash(PlayerAnimationState.Turn);
+            }
+
+            _lastFacing = facing;
+        }
+
+        private static bool IsStanding(PlayerAnimationState state) =>
+            state == PlayerAnimationState.Idle || state == PlayerAnimationState.IdleVariant
+            || state == PlayerAnimationState.Run || state == PlayerAnimationState.Turn
+            || state == PlayerAnimationState.Land;
+
+        /// <summary>
+        /// Counts how long the hero has stood still, and now and then lets the idle variant play
+        /// once (the user's choice, 2026-09-27: after about six seconds, then every eight to
+        /// twelve). Anything but standing ends it at once and starts the count over.
+        /// </summary>
+        private void TrackCalm(float deltaTime)
+        {
+            if (_state == PlayerAnimationState.IdleVariant)
+            {
+                if (_completed)
+                {
+                    _variantPlaying = false;
+                }
+
+                return;
+            }
+
+            if (_state != PlayerAnimationState.Idle)
+            {
+                _variantPlaying = false;
+                _calm = 0f;
+                _nextVariant = IdleVariantDelay;
+                return;
+            }
+
+            _calm += deltaTime;
+            if (_calm >= _nextVariant && _set != null && _set.Has(PlayerAnimationState.IdleVariant))
+            {
+                _variantPlaying = true;
+                _calm = 0f;
+                _nextVariant = UnityEngine.Random.Range(IdleVariantGapMin, IdleVariantGapMax);
+            }
         }
 
         private void Enter(PlayerAnimationState next)
@@ -432,11 +513,20 @@ namespace ForgottenKingdom
                     return PlayerAnimationState.Fall;
                 case MovementState.Walk:
                 case MovementState.Run:
-                    return PlayerAnimationState.Run;
+                    return Held(PlayerAnimationState.Turn)
+                        ? PlayerAnimationState.Turn
+                        : PlayerAnimationState.Run;
                 case MovementState.Dash:
                     return grounded ? PlayerAnimationState.Dash : PlayerAnimationState.AirDash;
                 default:
-                    return PlayerAnimationState.Idle;
+                    if (Held(PlayerAnimationState.Turn))
+                    {
+                        return PlayerAnimationState.Turn;
+                    }
+
+                    return _variantPlaying
+                        ? PlayerAnimationState.IdleVariant
+                        : PlayerAnimationState.Idle;
             }
         }
 

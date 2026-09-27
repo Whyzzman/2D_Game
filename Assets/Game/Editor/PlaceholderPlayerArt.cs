@@ -95,7 +95,9 @@ namespace ForgottenKingdom.EditorTools
             new StateSpec(PlayerAnimationState.ActiveSkill, 4, 24f, false),
             new StateSpec(PlayerAnimationState.AttackUp, 4, 24f, false),
             new StateSpec(PlayerAnimationState.AttackDown, 4, 24f, false),
-            new StateSpec(PlayerAnimationState.Heal, 6, 12f, false)
+            new StateSpec(PlayerAnimationState.Heal, 6, 12f, false),
+            new StateSpec(PlayerAnimationState.IdleVariant, 10, 12f, false),
+            new StateSpec(PlayerAnimationState.Turn, 2, 24f, false)
         };
 
         /// <summary>
@@ -130,9 +132,7 @@ namespace ForgottenKingdom.EditorTools
                 for (var i = 0; i < spec.Frames; i++)
                 {
                     var path = $"{folder}/{Name(spec.State)}_{i:00}.png";
-                    var phase = spec.Frames <= 1 ? 0f : i / (float)(spec.Frames - 1);
-                    var loopPhase = spec.Loops ? i / (float)spec.Frames : phase;
-                    PlaceholderImport.WriteIfChanged(path, Render(spec.State, spec.Loops ? loopPhase : phase,
+                    PlaceholderImport.WriteIfChanged(path, Render(spec.State, FramePhase(spec, i),
                         reachBonus));
                     PlaceholderImport.ConfigureImporter(path);
                     sprites[i] = AssetDatabase.LoadAssetAtPath<Sprite>(path);
@@ -146,6 +146,79 @@ namespace ForgottenKingdom.EditorTools
             }
 
             return result;
+        }
+
+        /// <summary>How far through its clip a frame is: a loop never repeats its first frame.</summary>
+        private static float FramePhase(StateSpec spec, int frame)
+        {
+            if (spec.Loops)
+            {
+                return frame / (float)spec.Frames;
+            }
+
+            return spec.Frames <= 1 ? 0f : frame / (float)(spec.Frames - 1);
+        }
+
+        /// <summary>
+        /// Where the cloak's loose edge hangs from on each frame, for <see cref="CloakTail"/>: the
+        /// back corner of the drawn hem and the line of the cloak's back edge, from the same pose
+        /// the frame is drawn from, so the live edge never comes off the cloak.
+        /// </summary>
+        public static Vector3[] Anchors(StateSpec spec, float reachBonus)
+        {
+            var anchors = new Vector3[spec.Frames];
+            for (var i = 0; i < spec.Frames; i++)
+            {
+                anchors[i] = TrailAnchor(PoseFor(spec.State, FramePhase(spec, i), reachBonus));
+            }
+
+            return anchors;
+        }
+
+        // How far above the hem's back corner the live edge starts, so it grows out of the cloak.
+        private const float TrailInset = 6f;
+
+        private static Vector3 TrailAnchor(Pose pose)
+        {
+            Skeleton(pose, out var hip, out var shoulder);
+            CloakBackEdge(shoulder, hip, pose.Lean, pose.CloakSway, out var top, out var hem);
+            var along = (hem - top).normalized;
+            var point = hem - along * TrailInset;
+            var angle = Mathf.Atan2(-along.x, -along.y) * Mathf.Rad2Deg;
+            // Low poses — a crouch, a body lying in death — would hang the edge through the
+            // floor. The point stays on it and the edge swings back until its end clears it.
+            var height = Mathf.Max(point.y, TrailInset) / PlaceholderImport.PixelsPerUnit;
+            var level = Mathf.Acos(Mathf.Clamp01(height / CloakTail.DefaultLength)) * Mathf.Rad2Deg;
+            if (angle < level)
+            {
+                angle = level;
+            }
+
+            return new Vector3((point.x - Width * 0.5f) / PlaceholderImport.PixelsPerUnit,
+                height, angle);
+        }
+
+        public const string CloakTailPath = ArtFolder + "/Cloak/player_cloak_tail.png";
+
+        /// <summary>
+        /// The strip the live edge is drawn with: root on the left, where it hides under the drawn
+        /// cloak, and a torn end on the right. Same cloth, rim and outline as the frames, so the
+        /// eye reads it as the cloak going on rather than as something attached.
+        /// </summary>
+        public static Texture2D GenerateCloakTail()
+        {
+            PlaceholderImport.EnsureFolder(ArtFolder + "/Cloak");
+            var canvas = new Canvas(64, 24);
+            canvas.Thick(new Vector2(-6f, 12f), new Vector2(50f, 12f), 14f, 11f, CloakTone);
+            // Torn, not cut: two uneven tongues.
+            canvas.Triangle(new Vector2(48f, 17.5f), new Vector2(48f, 11f), new Vector2(61f, 14.5f),
+                CloakTone);
+            canvas.Triangle(new Vector2(48f, 13f), new Vector2(48f, 6.5f), new Vector2(57f, 8f),
+                CloakTone);
+            canvas.Silhouette(new Color32(8, 7, 6, 235), new Color32(170, 198, 235, 255), 0.55f, 0.1f);
+            PlaceholderImport.WriteIfChanged(CloakTailPath, canvas.EncodePng());
+            PlaceholderImport.ConfigureImporter(CloakTailPath);
+            return AssetDatabase.LoadAssetAtPath<Texture2D>(CloakTailPath);
         }
 
         private static string Name(PlayerAnimationState state) =>
@@ -199,6 +272,14 @@ namespace ForgottenKingdom.EditorTools
         }
 
         private static float Sin01(float t) => Mathf.Sin(t * Mathf.PI * 2f);
+
+        /// <summary>0 outside [from, to]; eases up over its first third, holds, eases back down.</summary>
+        private static float Plateau(float t, float from, float to)
+        {
+            var u = Mathf.Clamp01((t - from) / Mathf.Max(0.0001f, to - from));
+            var edge = u < 0.5f ? u : 1f - u;
+            return Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(edge / 0.3f));
+        }
 
         private static Pose PoseFor(PlayerAnimationState state, float t, float reachBonus)
         {
@@ -353,6 +434,37 @@ namespace ForgottenKingdom.EditorTools
                     return DownSwingPose(t, reachScale);
                 case PlayerAnimationState.Heal:
                     return DrinkPose(t);
+
+                case PlayerAnimationState.IdleVariant:
+                {
+                    // Settle the sword, then a look back over the shoulder, then the stance again:
+                    // it ends on the standing pose, so returning to Idle never jumps.
+                    var settle = Plateau(t, 0.04f, 0.42f);
+                    var look = Plateau(t, 0.34f, 0.94f);
+                    pose.FrontArm += 24f * settle;
+                    pose.FrontForearm += 34f * settle;
+                    pose.HipY -= 1.5f * settle;
+                    pose.Lean = 3f - 6f * look;
+                    pose.HeadTilt = -12f * look;
+                    pose.BackArm -= 8f * look;
+                    pose.CloakSway = 5f * look - 3f * settle;
+                    break;
+                }
+
+                case PlayerAnimationState.Turn:
+                    // Drawn facing the new way: braking back, arms drawn in, the cloak still
+                    // swinging round in front from the old side.
+                    pose.Lean = Mathf.Lerp(-7f, 1f, t);
+                    pose.HipY = Mathf.Lerp(74f, 77f, t);
+                    pose.FrontThigh = Mathf.Lerp(16f, 8f, t);
+                    pose.FrontShin = Mathf.Lerp(-20f, -8f, t);
+                    pose.BackThigh = Mathf.Lerp(-20f, -8f, t);
+                    pose.BackShin = Mathf.Lerp(-12f, -8f, t);
+                    pose.FrontArm = Mathf.Lerp(-12f, 6f, t);
+                    pose.BackArm = Mathf.Lerp(22f, -4f, t);
+                    pose.HeadTilt = Mathf.Lerp(-5f, 0f, t);
+                    pose.CloakSway = Mathf.Lerp(34f, 14f, t);
+                    break;
 
                 case PlayerAnimationState.Block:
                     pose.Lean = 12f;
@@ -657,11 +769,16 @@ namespace ForgottenKingdom.EditorTools
             return canvas.EncodePng();
         }
 
+        private static void Skeleton(Pose pose, out Vector2 hip, out Vector2 shoulder)
+        {
+            hip = new Vector2(Width * 0.5f + pose.HipX, pose.HipY * pose.Squash);
+            shoulder = hip + Canvas.Rotate(new Vector2(0f, 46f * pose.Squash), pose.Lean);
+        }
+
         private static void Draw(Canvas canvas, Pose pose, bool greatsword = false)
         {
-            var hip = new Vector2(Width * 0.5f + pose.HipX, pose.HipY * pose.Squash);
+            Skeleton(pose, out var hip, out var shoulder);
             var lean = pose.Lean;
-            var shoulder = hip + Canvas.Rotate(new Vector2(0f, 46f * pose.Squash), lean);
             var head = shoulder + Canvas.Rotate(new Vector2(0f, 17f), lean + pose.HeadTilt);
 
             // Back limbs first: depth comes from draw order, not from a z buffer.
@@ -780,15 +897,22 @@ namespace ForgottenKingdom.EditorTools
         private static void Cloak(Canvas canvas, Vector2 shoulder, Vector2 hip, float lean,
             float sway)
         {
-            var topBack = shoulder + Canvas.Rotate(new Vector2(-13f, 6f), lean);
+            CloakBackEdge(shoulder, hip, lean, sway, out var topBack, out var hemBack);
             var topFront = shoulder + Canvas.Rotate(new Vector2(3f, 4f), lean);
             // The hem hangs from the hips, so it follows the sway rather than the torso lean; the
             // shoulder anchors above have already moved with the lean. It is cut short at the front
             // and long at the back, which is the asymmetry the concept brief asks for.
-            var hemBack = hip + Canvas.Rotate(new Vector2(-17f, -46f), -sway);
             var hemFront = hip + Canvas.Rotate(new Vector2(5f, -34f), -sway * 0.7f);
             canvas.Triangle(topBack, topFront, hemFront, CloakTone);
             canvas.Triangle(topBack, hemFront, hemBack, CloakTone);
+        }
+
+        /// <summary>The cloak's back edge, from the shoulder to the long back corner of the hem.</summary>
+        private static void CloakBackEdge(Vector2 shoulder, Vector2 hip, float lean, float sway,
+            out Vector2 top, out Vector2 hem)
+        {
+            top = shoulder + Canvas.Rotate(new Vector2(-13f, 6f), lean);
+            hem = hip + Canvas.Rotate(new Vector2(-17f, -46f), -sway);
         }
     }
 }

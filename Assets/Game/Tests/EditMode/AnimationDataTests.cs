@@ -113,6 +113,55 @@ namespace ForgottenKingdom.Tests
             }
         }
 
+        [Test]
+        public void TheIdleVariantPlaysOnceAndTheTurnIsOverInAnInstant()
+        {
+            var variant = _set.Clip(PlayerAnimationState.IdleVariant, null);
+            var turn = _set.Clip(PlayerAnimationState.Turn, null);
+
+            Assert.That(variant, Is.Not.SameAs(_set.Clip(PlayerAnimationState.Idle, null)));
+            Assert.That(variant.IsLooping, Is.False, "A flourish plays once, then the stance returns.");
+            Assert.That(variant.FrameCount, Is.EqualTo(10), "ANIMATION_LIST.md budgets ten frames.");
+            Assert.That(turn.IsLooping, Is.False);
+            Assert.That(turn.Duration, Is.LessThanOrEqualTo(0.09f),
+                "The turn is a Hollow Knight turn: dressed, never slowed.");
+        }
+
+        [Test]
+        public void EveryFrameSaysWhereTheCloaksEdgeHangs()
+        {
+            foreach (PlayerAnimationState state in Enum.GetValues(typeof(PlayerAnimationState)))
+            {
+                var clip = _set.Clip(state, null);
+                for (var i = 0; i < clip.FrameCount; i++)
+                {
+                    Assert.That(clip.TryGetAnchor(i, out var anchor), Is.True, $"{state} frame {i}");
+                    // Behind the body and below the chest: on the back of the cloak, never out
+                    // in front where it would read as a second weapon.
+                    Assert.That(anchor.x, Is.LessThan(0.1f), $"{state} frame {i}");
+                    Assert.That(anchor.y, Is.InRange(0f, 1.2f), $"{state} frame {i}");
+                    // Hanging at rest, its end never goes through the floor — not even from a
+                    // body lying in death.
+                    var end = anchor.y - CloakTail.DefaultLength * Mathf.Cos(anchor.z * Mathf.Deg2Rad);
+                    Assert.That(end, Is.GreaterThanOrEqualTo(-0.001f), $"{state} frame {i}");
+                }
+            }
+        }
+
+        [Test]
+        public void AClipWithoutAnchorsSaysSoRatherThanInventingOne()
+        {
+            var bare = Clip(3, 12f, true);
+            var anchored = new AnimationClipDefinition("anchored",
+                new System.Collections.Generic.List<Sprite>(bare.Frames).ToArray(), 12f, true,
+                new[] { Vector3.one, Vector3.zero, Vector3.up });
+
+            Assert.That(bare.TryGetAnchor(0, out _), Is.False);
+            Assert.That(anchored.TryGetAnchor(2, out var anchor), Is.True);
+            Assert.That(anchor, Is.EqualTo(Vector3.up));
+            Assert.That(anchored.TryGetAnchor(3, out _), Is.False);
+        }
+
         // ---------- weapon overrides ----------
 
         [Test]

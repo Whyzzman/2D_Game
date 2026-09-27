@@ -23,6 +23,11 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 68a732bb567d8274a81b22907ab4a85a, type: 3}
       _framesPerSecond: 8
       _isLooping: 1
+      _anchors:
+      - {x: -0.16590896, y: 0.37986037, z: 3.909713}
+      - {x: -0.14309509, y: 0.3866771, z: 2.4810631}
+      - {x: -0.16590896, y: 0.37986037, z: 3.909713}
+      - {x: -0.18826042, y: 0.37426743, z: 5.337307}
   - state: 2
     clip:
       _clipName: player_run
@@ -35,6 +40,13 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 1e54cce4b5844ba42bcca3b5a9c62832, type: 3}
       _framesPerSecond: 12
       _isLooping: 1
+      _anchors:
+      - {x: -0.25935686, y: 0.412368, z: 16.337301}
+      - {x: -0.25935686, y: 0.43834877, z: 16.337305}
+      - {x: -0.25935686, y: 0.43834877, z: 16.337305}
+      - {x: -0.25935686, y: 0.412368, z: 16.337301}
+      - {x: -0.25935686, y: 0.43834877, z: 16.337305}
+      - {x: -0.25935686, y: 0.43834877, z: 16.337305}
   - state: 3
     clip:
       _clipName: player_jumpstart
@@ -43,6 +55,9 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 98ceeb7feba0bde4e8eac47ea66d728a, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors:
+      - {x: -0.16584267, y: 0.1330558, z: 59.219326}
+      - {x: -0.16593055, y: 0.4818618, z: 3.8890278}
   - state: 4
     clip:
       _clipName: player_jumprise
@@ -51,6 +66,9 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 16c10b12a5e9b4540a5dd5eae4dabc76, type: 3}
       _framesPerSecond: 12
       _isLooping: 1
+      _anchors:
+      - {x: -0.31241646, y: 0.49456245, z: 16.981611}
+      - {x: -0.31241646, y: 0.49456245, z: 16.981611}
   - state: 5
     clip:
       _clipName: player_fall
@@ -59,6 +77,9 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 12adf5141cdc0dc4f805cde6e1c22ba7, type: 3}
       _framesPerSecond: 12
       _isLooping: 1
+      _anchors:
+      - {x: 0.020145569, y: 0.36948186, z: 0}
+      - {x: 0.020145569, y: 0.36948186, z: 0}
   - state: 6
     clip:
       _clipName: player_land
@@ -67,6 +88,9 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 349dd3dd54b9ba64facba6f4b23e7809, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors:
+      - {x: -0.018575821, y: 0.06, z: 76.65764}
+      - {x: -0.017578812, y: 0.2611493, z: 1.8652538}
   - state: 7
     clip:
       _clipName: player_dash
@@ -76,6 +100,10 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 3a8a498e0be2c2340b40c36db2244c3f, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors:
+      - {x: -0.3879972, y: 0.4833975, z: 39.188828}
+      - {x: -0.3879972, y: 0.4833975, z: 39.188828}
+      - {x: -0.3879972, y: 0.4833975, z: 39.188828}
   - state: 8
     clip:
       _clipName: player_airdash
@@ -85,6 +113,10 @@ MonoBehaviour:
       - {fileID: 21300000, guid: ba1b7e8f52285ef45a0c47d32ad6241a, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors:
+      - {x: -0.3879972, y: 0.4833975, z: 39.188828}
+      - {x: -0.3879972, y: 0.4833975, z: 39.188828}
+      - {x: -0.3879972, y: 0.4833975, z: 39.188828}
   - state: 9
     clip:
       _clipName: player_wallslide
@@ -93,6 +125,9 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 383fff5ecf66435499ff870737ebf0fc, type: 3}
       _framesPerSecond: 12
       _isLooping: 1
+      _anchors:
+      - {x: -0.014256286, y: 0.3084186, z: 0}
+      - {x: -0.014256286, y: 0.3084186, z: 0}
   - state: 10
     clip:
       _clipName: player_walljump
@@ -101,6 +136,9 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 42c60bcf105ff6643961ffbe5573b6f6, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors:
+      - {x: -0.32990944, y: 0.4158316, z: 24.13811}
+      - {x: -0.32990944, y: 0.5558316, z: 24.13811}
   - state: 11
     clip:
       _clipName: player_wallrun
@@ -111,6 +149,11 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 0341b2c8bdca2d144a8f55809a79219d, type: 3}
       _framesPerSecond: 12
       _isLooping: 1
+      _anchors:
+      - {x: 0.018191986, y: 0.34971046, z: 3.3387012}
+      - {x: 0.018191986, y: 0.34971046, z: 3.3387012}
+      - {x: 0.018191986, y: 0.34971046, z: 3.3387012}
+      - {x: 0.018191986, y: 0.34971046, z: 3.3387012}
   - state: 12
     clip:
       _clipName: player_attack1
@@ -121,6 +164,11 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 23294beaf11dc0846a61c427ae4640ff, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors:
+      - {x: -0.05930954, y: 0.31717908, z: 0}
+      - {x: -0.08321228, y: 0.3200936, z: 0}
+      - {x: -0.28160027, y: 0.461412, z: 19.470247}
+      - {x: -0.2839955, y: 0.46548522, z: 19.927856}
   - state: 13
     clip:
       _clipName: player_attack2
@@ -131,6 +179,11 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 0753fc918faac0941862d88867edab6f, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors:
+      - {x: -0.0606044, y: 0.31215057, z: 0}
+      - {x: -0.08397797, y: 0.3151682, z: 0}
+      - {x: -0.277125, y: 0.455859, z: 21.523891}
+      - {x: -0.2794358, y: 0.4598953, z: 22.034544}
   - state: 14
     clip:
       _clipName: player_attack3
@@ -142,6 +195,12 @@ MonoBehaviour:
       - {fileID: 21300000, guid: c36749980d36956458d4d689424739eb, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors:
+      - {x: -0.062537536, y: 0.30455455, z: 0}
+      - {x: -0.062537536, y: 0.30455455, z: 0}
+      - {x: -0.19885467, y: 0.36191395, z: 9.466654}
+      - {x: -0.27140954, y: 0.45137244, z: 25.18883}
+      - {x: -0.27140954, y: 0.45137244, z: 25.18883}
   - state: 15
     clip:
       _clipName: player_heavy
@@ -154,6 +213,13 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 0a4668441108c8c46b6beb70a6a85bca, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors:
+      - {x: -0.06445793, y: 0.29689485, z: 0}
+      - {x: -0.06445793, y: 0.29689485, z: 0}
+      - {x: -0.12556069, y: 0.3122233, z: 0}
+      - {x: -0.24577163, y: 0.4124244, z: 22.9433}
+      - {x: -0.26346603, y: 0.4426879, z: 28.337305}
+      - {x: -0.26346603, y: 0.4426879, z: 28.337305}
   - state: 16
     clip:
       _clipName: player_block
@@ -162,6 +228,9 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 26389937df585894fa5a4381405cd44e, type: 3}
       _framesPerSecond: 12
       _isLooping: 1
+      _anchors:
+      - {x: -0.1610061, y: 0.31932208, z: 8.621078}
+      - {x: -0.1610061, y: 0.31932208, z: 8.621078}
   - state: 17
     clip:
       _clipName: player_blockimpact
@@ -170,6 +239,9 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 814eed03de66bb04fb119f4b0c25a893, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors:
+      - {x: -0.08996697, y: 0.23086792, z: 27.38279}
+      - {x: -0.049966965, y: 0.29086792, z: 0}
   - state: 18
     clip:
       _clipName: player_parry
@@ -179,6 +251,10 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 97b31b1c6b0f59742b38be5fa5c7c57e, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors:
+      - {x: -0.24495018, y: 0.38294598, z: 16.433609}
+      - {x: -0.24495018, y: 0.38294598, z: 16.433609}
+      - {x: -0.24495018, y: 0.38294598, z: 16.433609}
   - state: 19
     clip:
       _clipName: player_guardbroken
@@ -188,6 +264,10 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 0c0a62a837f9a684f8d11ed81cef2361, type: 3}
       _framesPerSecond: 12
       _isLooping: 0
+      _anchors:
+      - {x: 0.0068009947, y: 0.30783117, z: 0}
+      - {x: -0.028199006, y: 0.2578312, z: 7.405653}
+      - {x: -0.063199006, y: 0.20783117, z: 36.931858}
   - state: 20
     clip:
       _clipName: player_hurt
@@ -196,6 +276,9 @@ MonoBehaviour:
       - {fileID: 21300000, guid: e98e78ac6c58e1f4ba3e05a2a8696917, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors:
+      - {x: -0.06341087, y: 0.3270144, z: 0}
+      - {x: -0.023410873, y: 0.3270144, z: 0}
   - state: 21
     clip:
       _clipName: player_stunned
@@ -206,6 +289,11 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 32c5d63a05087204ea2f04b6b9e3e9cf, type: 3}
       _framesPerSecond: 12
       _isLooping: 1
+      _anchors:
+      - {x: -0.17414932, y: 0.29985636, z: 0}
+      - {x: -0.053904876, y: 0.27712962, z: 0}
+      - {x: -0.17414932, y: 0.29985636, z: 0}
+      - {x: -0.28926942, y: 0.33647615, z: 0}
   - state: 22
     clip:
       _clipName: player_death
@@ -218,6 +306,13 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 7cef341dd72a4a14496f3b4a3f4ff62d, type: 3}
       _framesPerSecond: 12
       _isLooping: 0
+      _anchors:
+      - {x: -0.09553963, y: 0.33693248, z: 0}
+      - {x: -0.086144716, y: 0.23810528, z: 23.681889}
+      - {x: -0.07556778, y: 0.10823788, z: 65.39882}
+      - {x: -0.06414696, y: 0.06, z: 76.65764}
+      - {x: -0.052282028, y: 0.06, z: 76.65764}
+      - {x: -0.040435866, y: 0.06, z: 76.65764}
   - state: 23
     clip:
       _clipName: player_caststart
@@ -228,6 +323,11 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 80dc8d54fe67d5043842762c08b7ddca, type: 3}
       _framesPerSecond: 12
       _isLooping: 1
+      _anchors:
+      - {x: -0.17084946, y: 0.35999396, z: 0}
+      - {x: -0.12481857, y: 0.3446275, z: 0}
+      - {x: -0.17084946, y: 0.35999396, z: 0}
+      - {x: -0.21502167, y: 0.3802519, z: 2.0345387}
   - state: 24
     clip:
       _clipName: player_castrelease
@@ -237,6 +337,10 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 4bc9532434a457b449070597c6271132, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors:
+      - {x: -0.28504866, y: 0.41203249, z: 18.238907}
+      - {x: -0.28504866, y: 0.41203249, z: 18.238907}
+      - {x: -0.28504866, y: 0.41203249, z: 18.238907}
   - state: 25
     clip:
       _clipName: player_groundbreaker
@@ -249,6 +353,13 @@ MonoBehaviour:
       - {fileID: 21300000, guid: c63d925bcd1857b43aa337cbe530eb83, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors:
+      - {x: -0.06699539, y: 0.2865834, z: 0}
+      - {x: -0.06699539, y: 0.2865834, z: 0}
+      - {x: -0.12702034, y: 0.30257064, z: 0}
+      - {x: -0.24477203, y: 0.40136558, z: 26.288235}
+      - {x: -0.26218292, y: 0.43086547, z: 32.5281}
+      - {x: -0.26218292, y: 0.43086547, z: 32.5281}
   - state: 26
     clip:
       _clipName: player_dashstrike
@@ -260,6 +371,12 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 1215d2c1a1e987d40b9065327a5e5191, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors:
+      - {x: -0.06636375, y: 0.28917181, z: 0}
+      - {x: -0.06636375, y: 0.28917181, z: 0}
+      - {x: -0.19524193, y: 0.34711403, z: 11.559999}
+      - {x: -0.26311272, y: 0.43384665, z: 31.481062}
+      - {x: -0.26311272, y: 0.43384665, z: 31.481062}
   - state: 27
     clip:
       _clipName: player_shadowdashstart
@@ -269,6 +386,10 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 4afb36ad56cd9e0429a027fd1405f1e2, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors:
+      - {x: -0.36532113, y: 0.46391776, z: 33.18883}
+      - {x: -0.36532113, y: 0.46391776, z: 33.18883}
+      - {x: -0.36532113, y: 0.46391776, z: 33.18883}
   - state: 28
     clip:
       _clipName: player_shadowdashloop
@@ -277,6 +398,9 @@ MonoBehaviour:
       - {fileID: 21300000, guid: e0da81df2b846ad42bb0c423674822a8, type: 3}
       _framesPerSecond: 24
       _isLooping: 1
+      _anchors:
+      - {x: -0.4123381, y: 0.5201099, z: 46.138103}
+      - {x: -0.4123381, y: 0.5201099, z: 46.138103}
   - state: 29
     clip:
       _clipName: player_shadowdashend
@@ -286,6 +410,10 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 8c4ea14aea67d7544a200511305a7e9d, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors:
+      - {x: -0.29529327, y: 0.4017907, z: 21.288395}
+      - {x: -0.29529327, y: 0.4017907, z: 21.288395}
+      - {x: -0.29529327, y: 0.4017907, z: 21.288395}
   - state: 30
     clip:
       _clipName: player_shadowstrike
@@ -297,6 +425,12 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 736e0959390e5514daaf7bc9f24f7fb3, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors:
+      - {x: -0.06381935, y: 0.2994552, z: 0}
+      - {x: -0.06381935, y: 0.2994552, z: 0}
+      - {x: -0.1995919, y: 0.35698935, z: 10.164659}
+      - {x: -0.27193755, y: 0.44560048, z: 27.288391}
+      - {x: -0.27193755, y: 0.44560048, z: 27.288391}
   - state: 31
     clip:
       _clipName: player_weaponswitch
@@ -306,6 +440,10 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 8e73adcad95261848bfe1b6777ddc519, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors:
+      - {x: -0.11824181, y: 0.34468728, z: 2.6210756}
+      - {x: -0.11824181, y: 0.34468728, z: 2.6210756}
+      - {x: -0.11824181, y: 0.34468728, z: 2.6210756}
   - state: 0
     clip:
       _clipName: player_activeskill
@@ -316,6 +454,11 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 301b47535881b254c9a4c50502b1328a, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors:
+      - {x: -0.061250076, y: 0.30962572, z: 0}
+      - {x: -0.08469826, y: 0.31269932, z: 0}
+      - {x: -0.27859032, y: 0.45305598, z: 22.54959}
+      - {x: -0.28091836, y: 0.45707262, z: 23.086693}
   - state: 33
     clip:
       _clipName: player_attackup
@@ -326,6 +469,11 @@ MonoBehaviour:
       - {fileID: 21300000, guid: dd52de8672ff3433d866dcf7300af200, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors:
+      - {x: -0.2205204, y: 0.3469554, z: 11.385703}
+      - {x: -0.20348068, y: 0.34475446, z: 9.2387295}
+      - {x: -0.018697051, y: 0.3670563, z: 0}
+      - {x: -0.0153284455, y: 0.36819264, z: 0}
   - state: 34
     clip:
       _clipName: player_attackdown
@@ -336,6 +484,11 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 5605c4a196d904805beda60916fbdec4, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors:
+      - {x: -0.29578483, y: 0.51450545, z: 7.7033386}
+      - {x: -0.30368972, y: 0.5220244, z: 9.337048}
+      - {x: -0.37104738, y: 0.60610807, z: 25.534184}
+      - {x: -0.37203467, y: 0.6077166, z: 25.81759}
   - state: 32
     clip:
       _clipName: player_heal
@@ -348,6 +501,51 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 625ac0905fbd04fecb4a09636d2727e4, type: 3}
       _framesPerSecond: 12
       _isLooping: 0
+      _anchors:
+      - {x: -0.16536179, y: 0.36982045, z: 4.4336066}
+      - {x: -0.13225678, y: 0.35724494, z: 0}
+      - {x: -0.11024628, y: 0.35052446, z: 0}
+      - {x: -0.11024628, y: 0.35052446, z: 0}
+      - {x: -0.116098024, y: 0.35218835, z: 0}
+      - {x: -0.16536179, y: 0.36982045, z: 4.4336066}
+  - state: 35
+    clip:
+      _clipName: player_idlevariant
+      _frames:
+      - {fileID: 21300000, guid: 555e539e80c7e4a05a3b0f3961a6e160, type: 3}
+      - {fileID: 21300000, guid: 5267f43d0f54e4c27b2ce498b32b100c, type: 3}
+      - {fileID: 21300000, guid: 4203fd76bcbcc4149b4e90e2b1303e7a, type: 3}
+      - {fileID: 21300000, guid: f839d27190c764857976e61e1c03b738, type: 3}
+      - {fileID: 21300000, guid: 7d2814c24b3bb4d4397350b33db4f771, type: 3}
+      - {fileID: 21300000, guid: bef96ea2c3b02431b83550d1268b8cc7, type: 3}
+      - {fileID: 21300000, guid: 374fd509000a24c0bb2a5585c046ea99, type: 3}
+      - {fileID: 21300000, guid: c19bc78cd72c047909b9dbd850462a8a, type: 3}
+      - {fileID: 21300000, guid: cbae699f993294099abfc83a77a60de4, type: 3}
+      - {fileID: 21300000, guid: 0cac384b0d13e45baae2a58121f2f980, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 0
+      _anchors:
+      - {x: -0.16590896, y: 0.37986037, z: 3.909713}
+      - {x: -0.18120407, y: 0.3759154, z: 4.883284}
+      - {x: -0.18826042, y: 0.37426743, z: 5.337307}
+      - {x: -0.18505287, y: 0.37500295, z: 5.1305246}
+      - {x: -0.14439057, y: 0.37148595, z: 0.48850054}
+      - {x: -0.13095176, y: 0.36691013, z: 0}
+      - {x: -0.13095176, y: 0.36691013, z: 0}
+      - {x: -0.13192184, y: 0.36722413, z: 0}
+      - {x: -0.15914506, y: 0.37708533, z: 2.826492}
+      - {x: -0.16590896, y: 0.37986037, z: 3.909713}
+  - state: 36
+    clip:
+      _clipName: player_turn
+      _frames:
+      - {fileID: 21300000, guid: 163ba149c987641fc9161e1ac45f5dbd, type: 3}
+      - {fileID: 21300000, guid: 5f802939471514e59a260b3fd0131c5e, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: 0.09821045, y: 0.3207904, z: 0}
+      - {x: -0.05765312, y: 0.34240463, z: 0}
   _fallback:
     _clipName: player_idle
     _frames:
@@ -357,5 +555,10 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 68a732bb567d8274a81b22907ab4a85a, type: 3}
     _framesPerSecond: 8
     _isLooping: 1
+    _anchors:
+    - {x: -0.16590896, y: 0.37986037, z: 3.909713}
+    - {x: -0.14309509, y: 0.3866771, z: 2.4810631}
+    - {x: -0.16590896, y: 0.37986037, z: 3.909713}
+    - {x: -0.18826042, y: 0.37426743, z: 5.337307}
   _weaponSets:
   - {fileID: 11400000, guid: 635e20c10b1651245b4acd11bdb727d5, type: 2}

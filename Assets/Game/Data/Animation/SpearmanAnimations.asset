@@ -25,6 +25,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 37ed173af84f5484f9515f37008e409b, type: 3}
       _framesPerSecond: 8
       _isLooping: 1
+      _anchors: []
   - state: 2
     clip:
       _clipName: enemy_spearman_patrol
@@ -39,6 +40,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 2f404c2c79206c24091295cb4dbf52bd, type: 3}
       _framesPerSecond: 12
       _isLooping: 1
+      _anchors: []
   - state: 3
     clip:
       _clipName: enemy_spearman_alert
@@ -50,6 +52,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: ba456009d0ba42b4e880dc1238fad72e, type: 3}
       _framesPerSecond: 12
       _isLooping: 0
+      _anchors: []
   - state: 4
     clip:
       _clipName: enemy_spearman_chase
@@ -64,6 +67,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 6ea0050874a6f9e429972f76ff0b3ef0, type: 3}
       _framesPerSecond: 12
       _isLooping: 1
+      _anchors: []
   - state: 0
     clip:
       _clipName: enemy_spearman_attacklight
@@ -90,6 +94,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: bfff41ee445b5af4abe346ca35979c1b, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors: []
   - state: 9
     clip:
       _clipName: enemy_spearman_attackheavy
@@ -120,6 +125,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 7cb7d42122543a84a9934338e13eac72, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors: []
   - state: 10
     clip:
       _clipName: enemy_spearman_shieldbash
@@ -148,6 +154,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: cc21bb4cf2fba7c439bb589a34bc6cc3, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors: []
   - state: 11
     clip:
       _clipName: enemy_spearman_hurt
@@ -159,6 +166,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: c80cec7ddaa951a4f85a5c581228a5cc, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors: []
   - state: 12
     clip:
       _clipName: enemy_spearman_stunned
@@ -171,6 +179,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: d69ac0eb24fe7464fa15f3afe647a147, type: 3}
       _framesPerSecond: 12
       _isLooping: 1
+      _anchors: []
   - state: 13
     clip:
       _clipName: enemy_spearman_death
@@ -189,6 +198,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 8bd883a7c19d10e4bb39d4e2493e4280, type: 3}
       _framesPerSecond: 12
       _isLooping: 0
+      _anchors: []
   _fallback:
     _clipName: enemy_spearman_idle
     _frames:
@@ -200,4 +210,5 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 37ed173af84f5484f9515f37008e409b, type: 3}
     _framesPerSecond: 8
     _isLooping: 1
+    _anchors: []
   _carriesShield: 0

@@ -25,6 +25,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 30e05e255a2e45544a7585a47633535c, type: 3}
       _framesPerSecond: 8
       _isLooping: 1
+      _anchors: []
   - state: 2
     clip:
       _clipName: enemy_shaman_patrol
@@ -39,6 +40,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: af3de6caef23f5d438b08696801770ac, type: 3}
       _framesPerSecond: 10
       _isLooping: 1
+      _anchors: []
   - state: 3
     clip:
       _clipName: enemy_shaman_alert
@@ -50,6 +52,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 444619b99bc023c49a7eee70144ad48d, type: 3}
       _framesPerSecond: 12
       _isLooping: 0
+      _anchors: []
   - state: 4
     clip:
       _clipName: enemy_shaman_chase
@@ -64,6 +67,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 4f3ac17fff5c3ec4ca916f574fc7001d, type: 3}
       _framesPerSecond: 12
       _isLooping: 1
+      _anchors: []
   - state: 0
     clip:
       _clipName: enemy_shaman_attacklight
@@ -94,6 +98,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 935402ab957eeb248aed5cc26e44b6ce, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors: []
   - state: 9
     clip:
       _clipName: enemy_shaman_attackheavy
@@ -128,6 +133,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 6e096560c5e45ea438abae64a9ff3947, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors: []
   - state: 11
     clip:
       _clipName: enemy_shaman_hurt
@@ -139,6 +145,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 24f13cd8416849543a2dbdf4e337ebe3, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+      _anchors: []
   - state: 12
     clip:
       _clipName: enemy_shaman_stunned
@@ -151,6 +158,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: d076e21509396ec41b7ac8c9de8f3f52, type: 3}
       _framesPerSecond: 12
       _isLooping: 1
+      _anchors: []
   - state: 13
     clip:
       _clipName: enemy_shaman_death
@@ -168,6 +176,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: d2c28a6951bdf63448a8155ffd3da6f3, type: 3}
       _framesPerSecond: 12
       _isLooping: 0
+      _anchors: []
   _fallback:
     _clipName: enemy_shaman_idle
     _frames:
@@ -179,4 +188,5 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 30e05e255a2e45544a7585a47633535c, type: 3}
     _framesPerSecond: 8
     _isLooping: 1
+    _anchors: []
   _carriesShield: 0
