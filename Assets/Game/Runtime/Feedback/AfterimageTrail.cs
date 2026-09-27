@@ -34,6 +34,7 @@ namespace ForgottenKingdom
         private float _emitUntil;
         private float _nextEmit;
         private bool _isShadow;
+        private bool _isDissolved;
         private float _dissolveUntil;
         private Transform _root;
 
@@ -132,14 +133,18 @@ namespace ForgottenKingdom
                 ghost.color = new Color(tint.r, tint.g, tint.b, tint.a * (1f - age) * (1f - age));
             }
 
-            // The body thins while the Shadow carries it, then re-forms.
+            // The body thins while the Shadow carries it, then re-forms — once, as the dissolve
+            // ends: restoring it every frame would undo anything else that dims the body, such as
+            // the blink after a hit.
             if (Time.time < _dissolveUntil)
             {
                 var c = _body.color;
                 _body.color = new Color(c.r, c.g, c.b, 0.28f);
+                _isDissolved = true;
             }
-            else
+            else if (_isDissolved)
             {
+                _isDissolved = false;
                 RestoreBody();
             }
         }

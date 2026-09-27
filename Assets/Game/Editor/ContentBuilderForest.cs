@@ -670,6 +670,7 @@ namespace ForgottenKingdom.EditorTools
             BuildStatusBars(root, actor, 1.5f, isBoss: true);
             BuildBossVisual(root, null, WardenAnimationSetPath, 2.2f);
             BuildStatusVfx(root, 1.2f);
+            BuildHitFlash(root);
             StripMissingScripts(root);
             return SavePrefab(root, $"{PrefabFolder}/HollowWarden.prefab");
         }

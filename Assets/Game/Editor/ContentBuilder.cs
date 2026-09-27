@@ -1155,6 +1155,7 @@ namespace ForgottenKingdom.EditorTools
             Ensure<PlayerInteractor>(interact);
             BuildPlayerVisual(root);
             BuildStatusVfx(root, 0.85f);
+            BuildInvulnerabilityBlink(root);
             BuildWeaponTrail(root, combat);
             StripMissingScripts(root);
 
@@ -1285,6 +1286,7 @@ namespace ForgottenKingdom.EditorTools
                 animationSetPath ?? (hasShield ? GuardAnimationSetPath : ZombieAnimationSetPath),
                 size.y, hasShield);
             BuildStatusVfx(root, size.y * 0.53f);
+            BuildHitFlash(root);
             // Anything one kind needs and the others do not — a voice, for now — goes on before
             // the prefab is written, so it is part of the asset rather than patched into it.
             configure?.Invoke(root);
@@ -1444,6 +1446,7 @@ namespace ForgottenKingdom.EditorTools
             BuildStatusBars(root, actor, 1.8f, isBoss: true);
             BuildBossVisual(root, shieldObject);
             BuildStatusVfx(root, 1.5f);
+            BuildHitFlash(root);
             StripMissingScripts(root);
             return SavePrefab(root, $"{PrefabFolder}/GuardianOfTheTomb.prefab");
         }
@@ -2392,6 +2395,112 @@ namespace ForgottenKingdom.EditorTools
         /// Puts the status overlays on a creature. They read <see cref="StatusEffects"/> and change
         /// nothing about it; a creature with no statuses shows nothing and costs nothing.
         /// </summary>
+        private const string HitFlashMaterialPath = "Assets/Game/Art/VFX/HitFlash.mat";
+
+        /// <summary>
+        /// The flash of a landed hit on an enemy or boss (<see cref="HitFlash"/>): it copies the
+        /// shape of the body the animation drives.
+        /// </summary>
+        private static void BuildHitFlash(GameObject root)
+        {
+            var flash = Ensure<HitFlash>(root);
+            var serialized = new SerializedObject(flash);
+            serialized.FindProperty("_actor").objectReferenceValue = root.GetComponent<CombatActor>();
+            serialized.FindProperty("_material").objectReferenceValue = HitFlashMaterial();
+            var parts = FlashParts(root);
+            var list = serialized.FindProperty("_sources");
+            list.arraySize = parts.Count;
+            for (var i = 0; i < parts.Count; i++)
+            {
+                list.GetArrayElementAtIndex(i).objectReferenceValue = parts[i];
+            }
+
+            serialized.ApplyModifiedPropertiesWithoutUndo();
+        }
+
+        /// <summary>The player's blink while untouchable after a hit (<see cref="InvulnerabilityBlink"/>).</summary>
+        private static void BuildInvulnerabilityBlink(GameObject root)
+        {
+            var animation = root.GetComponentInChildren<PlayerAnimationController>(true);
+            var renderers = new System.Collections.Generic.List<SpriteRenderer>();
+            if (animation != null)
+            {
+                var data = new SerializedObject(animation);
+                foreach (var field in new[] { "_body", "_face" })
+                {
+                    if (data.FindProperty(field)?.objectReferenceValue is SpriteRenderer renderer)
+                    {
+                        renderers.Add(renderer);
+                    }
+                }
+            }
+
+            var blink = Ensure<InvulnerabilityBlink>(root);
+            var serialized = new SerializedObject(blink);
+            serialized.FindProperty("_invulnerability").objectReferenceValue =
+                root.GetComponent<Invulnerability>();
+            var list = serialized.FindProperty("_renderers");
+            list.arraySize = renderers.Count;
+            for (var i = 0; i < renderers.Count; i++)
+            {
+                list.GetArrayElementAtIndex(i).objectReferenceValue = renderers[i];
+            }
+
+            serialized.ApplyModifiedPropertiesWithoutUndo();
+        }
+
+        /// <summary>The sprites an enemy's or a boss's animation draws: its body and its face.</summary>
+        private static System.Collections.Generic.List<SpriteRenderer> FlashParts(GameObject root)
+        {
+            MonoBehaviour animation = root.GetComponentInChildren<EnemyAnimationController>(true);
+            if (animation == null)
+            {
+                animation = root.GetComponentInChildren<BossAnimationController>(true);
+            }
+
+            var parts = new System.Collections.Generic.List<SpriteRenderer>();
+            if (animation != null)
+            {
+                var data = new SerializedObject(animation);
+                foreach (var field in new[] { "_body", "_face" })
+                {
+                    if (data.FindProperty(field)?.objectReferenceValue is SpriteRenderer part)
+                    {
+                        parts.Add(part);
+                    }
+                }
+            }
+
+            if (parts.Count == 0 && root.transform.Find("Visual")?.GetComponentInChildren<SpriteRenderer>(true)
+                is SpriteRenderer fallback)
+            {
+                parts.Add(fallback);
+            }
+
+            return parts;
+        }
+
+        private static Material HitFlashMaterial()
+        {
+            var existing = AssetDatabase.LoadAssetAtPath<Material>(HitFlashMaterialPath);
+            if (existing != null)
+            {
+                return existing;
+            }
+
+            var shader = Shader.Find("ForgottenKingdom/SpriteSilhouette");
+            if (shader == null)
+            {
+                Debug.LogError("The sprite silhouette shader is missing; enemies will not flash.");
+                return null;
+            }
+
+            var material = new Material(shader) { name = "HitFlash" };
+            EnsureFolder("Assets/Game/Art/VFX");
+            AssetDatabase.CreateAsset(material, HitFlashMaterialPath);
+            return material;
+        }
+
         private static void BuildStatusVfx(GameObject root, float scale)
         {
             if (root.GetComponent<StatusEffects>() == null)

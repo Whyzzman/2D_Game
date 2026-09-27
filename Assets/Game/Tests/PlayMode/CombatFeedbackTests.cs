@@ -84,6 +84,59 @@ namespace ForgottenKingdom.Tests
         }
 
         [UnityTest]
+        public IEnumerator ALandedHitFlashesTheEnemyAndEveryBossCanFlash()
+        {
+            var zombie = Enemy();
+            var flash = zombie.GetComponent<HitFlash>();
+            Assert.That(flash, Is.Not.Null, "Every enemy is built with a hit flash.");
+            foreach (var boss in Object.FindObjectsByType<BossController>(FindObjectsInactive.Include))
+            {
+                Assert.That(boss.GetComponent<HitFlash>(), Is.Not.Null, $"{boss.name} can flash too.");
+            }
+
+            zombie.Actor.ApplyDamage(new DamageInfo(12f, Vector2.right, staggerDamage: 10f,
+                hitPoint: zombie.transform.position));
+            yield return null;
+            Assert.That(flash.IsFlashing, Is.True);
+            var overlay = zombie.GetComponentsInChildren<SpriteRenderer>()
+                .FirstOrDefault(r => r.name == "HitFlash");
+            Assert.That(overlay != null && overlay.enabled && overlay.sprite != null, Is.True,
+                "A silhouette of the body is drawn over it.");
+
+            var end = Time.realtimeSinceStartup + 0.4f;
+            while (Time.realtimeSinceStartup < end) { yield return null; }
+            Assert.That(flash.IsFlashing, Is.False);
+            Assert.That(overlay.enabled, Is.False, "And gone a moment later.");
+        }
+
+        [UnityTest]
+        public IEnumerator ThePlayerBlinksWhileUntouchableAfterAHitAndNotAfter()
+        {
+            var player = Object.FindAnyObjectByType<PlayerCharacter>();
+            var blink = player.GetComponent<InvulnerabilityBlink>();
+            Assert.That(blink, Is.Not.Null);
+            Assert.That(blink.Renderers.Count, Is.GreaterThan(0), "It knows what to blink.");
+            var body = blink.Renderers[0];
+            var alpha = body.color.a;
+
+            player.Actor.ApplyDamage(new DamageInfo(10f, Vector2.right, staggerDamage: 5f));
+            var dimmed = false;
+            var end = Time.realtimeSinceStartup + 0.5f;
+            while (Time.realtimeSinceStartup < end)
+            {
+                yield return null;
+                dimmed |= blink.IsBlinking && body.color.a < alpha - 0.1f;
+            }
+
+            Assert.That(dimmed, Is.True, "Blinking while untouchable.");
+            end = Time.realtimeSinceStartup + 3f;
+            while (Time.realtimeSinceStartup < end && blink.IsBlinking) { yield return null; }
+            yield return null;
+            Assert.That(blink.IsBlinking, Is.False);
+            Assert.That(body.color.a, Is.EqualTo(alpha).Within(0.001f), "Solid again once it ends.");
+        }
+
+        [UnityTest]
         public IEnumerator AHeavyBlowReadsAsHeavyRatherThanLight()
         {
             var zombie = Enemy();
