@@ -77,6 +77,42 @@ namespace ForgottenKingdom.Tests
         }
 
         [UnityTest]
+        public IEnumerator AHerbIsEatenInTheOpenNotOnThePausedScreen()
+        {
+            var player = Object.FindAnyObjectByType<PlayerCharacter>();
+            _progress.AddItem("healing_herb", 2);
+            var pause = _hud.Pause;
+            pause.Open();
+            pause.OpenEquipment();
+            _screen.SelectTab(ItemCategory.Consumable);
+            _screen.Select("healing_herb");
+            yield return null;
+
+            Assert.That(_screen.WhyCannotUseSelected(), Is.EqualTo("Здоров'я повне"));
+            _hud.Inventory.ActOnSelectedItem();
+            Assert.That(_hud.Inventory.IsOpen, Is.True, "Nothing to heal: the herb stays in the bag.");
+            Assert.That(_progress.GetItemAmount("healing_herb"), Is.EqualTo(2));
+
+            player.Health.SetCurrent(50f);
+            _hud.Inventory.ActOnSelectedItem();
+            Assert.That(_hud.Inventory.IsOpen, Is.False);
+            Assert.That(pause.IsOpen, Is.False, "Straight to the game, not back to the pause.");
+            Assert.That(GamePause.IsPaused, Is.False);
+            Assert.That(player.Action, Is.EqualTo(PlayerAction.Heal), "Eaten standing, in the open.");
+            Assert.That(player.Flasks.IsDrinkingFlask, Is.False);
+            Assert.That(_progress.GetItemAmount("healing_herb"), Is.EqualTo(1));
+            Assert.That(player.Flasks.Charges, Is.EqualTo(player.Flasks.MaxCharges));
+
+            var end = Time.realtimeSinceStartup + 2f;
+            while (Time.realtimeSinceStartup < end && player.Action == PlayerAction.Heal)
+            {
+                yield return null;
+            }
+
+            Assert.That(player.Health.Current, Is.EqualTo(70f).Within(0.01f), "Twenty back.");
+        }
+
+        [UnityTest]
         public IEnumerator TheWindowDoesNotOpenOverThePause()
         {
             _hud.Pause.Open();

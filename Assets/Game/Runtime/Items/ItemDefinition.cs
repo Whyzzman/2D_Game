@@ -47,6 +47,8 @@ namespace ForgottenKingdom
         [Tooltip("Set for items that can be worn or wielded; empty for everything else.")]
         [SerializeField] private EquipmentDefinition _equipment;
         [SerializeField, Min(0)] private int _baseValue = 0;
+        [Tooltip("For a consumable: health it restores when eaten or drunk. Zero — not usable.")]
+        [SerializeField, Min(0f)] private float _healAmount = 0f;
         [Tooltip("Placeholder tint for the world pickup until real art exists.")]
         [SerializeField] private Color _pickupColor = new Color(0.8f, 0.78f, 0.6f);
 
@@ -64,6 +66,10 @@ namespace ForgottenKingdom
         public bool IsEquippable => _equipment != null;
         public WeaponDefinition Weapon => _equipment as WeaponDefinition;
         public int BaseValue => _baseValue;
+        public float HealAmount => _healAmount;
+
+        /// <summary>Can be used from the bag: a consumable that does something.</summary>
+        public bool IsUsable => _category == ItemCategory.Consumable && _healAmount > 0f;
         public Color PickupColor => _pickupColor;
 
         private void OnValidate()

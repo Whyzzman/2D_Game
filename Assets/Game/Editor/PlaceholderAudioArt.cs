@@ -246,7 +246,11 @@ namespace ForgottenKingdom.EditorTools
             new Spec(AudioId.AmbienceBranch, "Ambience/Forest", "amb_forest_branch", Recipe.Crack, 3, 0.6f, 0.75f),
             new Spec(AudioId.AmbienceInsects, "Ambience/Forest", "amb_forest_insects", Recipe.Tick, 3, 0.8f, 2.2f),
             new Spec(AudioId.AmbienceDistantBeast, "Ambience/Forest", "amb_forest_beast", Recipe.Shadow, 2, 1.8f, 0.48f),
-            new Spec(AudioId.AmbienceCorruptionHum, "Ambience/Forest", "amb_forest_corruption", Recipe.Drone, 1, 6f, 0.62f)
+            new Spec(AudioId.AmbienceCorruptionHum, "Ambience/Forest", "amb_forest_corruption", Recipe.Drone, 1, 6f, 0.62f),
+
+            // ---- healing ----
+            new Spec(AudioId.FlaskDrink, "SFX/Player", "sfx_player_flask_drink", Recipe.Chime, 2, 0.35f, 1.5f),
+            new Spec(AudioId.HerbEat, "SFX/Player", "sfx_player_herb_eat", Recipe.Rustle, 2, 0.4f, 0.9f)
         };
 
         /// <summary>Writes every missing or changed clip and returns them, by sound.</summary>

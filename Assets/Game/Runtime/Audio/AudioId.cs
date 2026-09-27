@@ -198,6 +198,10 @@ namespace ForgottenKingdom
         AmbienceBranch,
         AmbienceInsects,
         AmbienceDistantBeast,
-        AmbienceCorruptionHum
+        AmbienceCorruptionHum,
+
+        // ---- healing (appended: ids are stored as numbers) ----
+        FlaskDrink,
+        HerbEat
     }
 }

@@ -15,6 +15,9 @@ namespace ForgottenKingdom
     ///
     /// A plain class owned by <see cref="PlayerCharacter"/>, so the player prefab needs no new
     /// component and PlayerCharacter does not grow by the whole mechanic.
+    ///
+    /// A healing item from the bag (<see cref="TryBeginItem"/>) is taken the same way — the same
+    /// pose, the same commitment and the same spill — only it spends the item, not a charge.
     /// </summary>
     [Serializable]
     public sealed class HealingFlasks
@@ -27,6 +30,7 @@ namespace ForgottenKingdom
         [SerializeField, Min(0f)] private float _healPoint = 0.5f;
 
         private int _charges = -1;
+        private float _amount;
         private float _elapsed;
         private bool _hasHealed;
         private Health _health;
@@ -44,6 +48,13 @@ namespace ForgottenKingdom
         public float DrinkTime => _drinkTime;
         public bool IsDrinking { get; private set; }
 
+        /// <summary>While drinking: a flask rather than an item from the bag.</summary>
+        public bool IsDrinkingFlask { get; private set; }
+
+        /// <summary>Whether a drink could start now: not already drinking, alive and hurt.</summary>
+        public bool CanHeal => !IsDrinking && _health != null && _health.IsAlive
+            && _health.Current < _health.Max;
+
         public void Bind(Health health)
         {
             _health = health;
@@ -59,19 +70,37 @@ namespace ForgottenKingdom
         /// </summary>
         public bool TryBegin()
         {
-            if (IsDrinking || Charges <= 0 || _health == null || !_health.IsAlive
-                || _health.Current >= _health.Max)
+            if (Charges <= 0 || !CanHeal)
             {
                 return false;
             }
 
             _charges = Charges - 1;
+            Begin(_healAmount, true);
+            ChargesChanged?.Invoke(_charges, _maxCharges);
+            return true;
+        }
+
+        /// <summary>Starts eating or drinking a healing item; the caller spends the item.</summary>
+        public bool TryBeginItem(float amount)
+        {
+            if (amount <= 0f || !CanHeal)
+            {
+                return false;
+            }
+
+            Begin(amount, false);
+            return true;
+        }
+
+        private void Begin(float amount, bool flask)
+        {
+            _amount = amount;
             _elapsed = 0f;
             _hasHealed = false;
             IsDrinking = true;
+            IsDrinkingFlask = flask;
             DrinkStarted?.Invoke();
-            ChargesChanged?.Invoke(_charges, _maxCharges);
-            return true;
         }
 
         public void Tick(float deltaTime)
@@ -85,7 +114,7 @@ namespace ForgottenKingdom
             if (!_hasHealed && _elapsed >= _healPoint)
             {
                 _hasHealed = true;
-                var healed = _health != null ? _health.Heal(_healAmount) : 0f;
+                var healed = _health != null ? _health.Heal(_amount) : 0f;
                 Healed?.Invoke(healed);
             }
 

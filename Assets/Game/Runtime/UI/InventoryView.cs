@@ -160,7 +160,7 @@ namespace ForgottenKingdom
             _requirements = _overlay.Q("inv-req");
             _equip = _overlay.Q<Button>("inv-equip");
             _equipText = _equip?.Q<Label>();
-            if (_equip != null) { _equip.clicked += EquipSelectedItem; }
+            if (_equip != null) { _equip.clicked += ActOnSelectedItem; }
             _problem = _overlay.Q<Label>("inv-problem");
             _count = _overlay.Q<Label>("inv-count");
 
@@ -358,7 +358,7 @@ namespace ForgottenKingdom
 
             if (MenuInput.Confirmed())
             {
-                EquipSelectedItem();
+                ActOnSelectedItem();
             }
         }
 
@@ -434,6 +434,34 @@ namespace ForgottenKingdom
         }
 
         // ---------- actions ----------
+
+        /// <summary>The detail panel's one action: equip what can be worn, use what can be eaten.</summary>
+        public void ActOnSelectedItem()
+        {
+            if (_screen?.SelectedEntry?.Definition?.IsUsable == true)
+            {
+                UseSelectedItem();
+            }
+            else
+            {
+                EquipSelectedItem();
+            }
+        }
+
+        /// <summary>
+        /// Uses a healing item. The window closes straight to the game, not back to the pause or
+        /// the altar it came from: the player is about to stand there eating.
+        /// </summary>
+        public void UseSelectedItem()
+        {
+            if (_screen == null || _screen.WhyCannotUseSelected() != null)
+            {
+                return;
+            }
+
+            _onClosed = null;
+            _screen.UseSelected();
+        }
 
         public void EquipSelectedItem()
         {
@@ -592,12 +620,22 @@ namespace ForgottenKingdom
             DrawEffects(item);
             DrawRequirements(item.Weapon, _requirements, _requirementsSection);
 
-            Show(_equip, item.IsEquippable);
-            _equip.SetEnabled(entry.CanEquip && !entry.IsEquipped);
-            _equipText.text = entry.IsEquipped ? "ЕКІПІРОВАНО" : "ЕКІПІРУВАТИ";
-            _problem.text = item.IsEquippable && !entry.IsEquipped && !entry.CanEquip
-                ? Problem(entry.ItemId, _equipment.DefaultSlotFor(entry.ItemId))
-                : string.Empty;
+            Show(_equip, item.IsEquippable || item.IsUsable);
+            if (item.IsUsable)
+            {
+                var why = _screen.WhyCannotUseSelected();
+                _equip.SetEnabled(why == null);
+                _equipText.text = "ВИКОРИСТАТИ";
+                _problem.text = why ?? string.Empty;
+            }
+            else
+            {
+                _equip.SetEnabled(entry.CanEquip && !entry.IsEquipped);
+                _equipText.text = entry.IsEquipped ? "ЕКІПІРОВАНО" : "ЕКІПІРУВАТИ";
+                _problem.text = item.IsEquippable && !entry.IsEquipped && !entry.CanEquip
+                    ? Problem(entry.ItemId, _equipment.DefaultSlotFor(entry.ItemId))
+                    : string.Empty;
+            }
             Show(_problem, !string.IsNullOrEmpty(_problem.text));
         }
 

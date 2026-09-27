@@ -41,6 +41,32 @@ namespace ForgottenKingdom.Tests
         }
 
         [Test]
+        public void AHealingItemIsTakenLikeAFlaskButSpendsNoCharge()
+        {
+            _health.SetCurrent(_health.Max * 0.3f);
+            var before = _health.Current;
+            Assert.That(_flasks.TryBeginItem(20f), Is.True);
+            Assert.That(_flasks.IsDrinkingFlask, Is.False);
+            Assert.That(_flasks.Charges, Is.EqualTo(_flasks.MaxCharges), "The flasks are untouched.");
+            _flasks.Tick(0.6f);
+            Assert.That(_health.Current, Is.EqualTo(before + 20f).Within(0.01f), "Its own amount.");
+
+            _flasks.Tick(1f);
+            Assert.That(_flasks.TryBegin(), Is.True);
+            Assert.That(_flasks.IsDrinkingFlask, Is.True);
+            _flasks.Tick(0.6f);
+            Assert.That(_health.Current, Is.EqualTo(before + 20f + _flasks.HealAmount).Within(0.01f),
+                "A flask after it still heals a flask's worth.");
+        }
+
+        [Test]
+        public void NothingIsEatenAtFullHealth()
+        {
+            Assert.That(_flasks.CanHeal, Is.False);
+            Assert.That(_flasks.TryBeginItem(20f), Is.False);
+        }
+
+        [Test]
         public void AHitBeforeTheHealPointSpillsTheFlask()
         {
             _health.SetCurrent(_health.Max * 0.5f);

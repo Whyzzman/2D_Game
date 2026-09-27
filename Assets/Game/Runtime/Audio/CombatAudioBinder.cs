@@ -164,6 +164,9 @@ namespace ForgottenKingdom
             }
 
             _player.Died += () => AudioManager.Play(AudioId.PlayerDeath, _player.transform.position);
+            _player.Flasks.DrinkStarted += () => AudioManager.Play(
+                _player.Flasks.IsDrinkingFlask ? AudioId.FlaskDrink : AudioId.HerbEat,
+                _player.transform.position);
         }
 
         /// <summary>

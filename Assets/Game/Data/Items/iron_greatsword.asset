@@ -26,4 +26,5 @@ MonoBehaviour:
   _autosaveOnAcquire: 1
   _equipment: {fileID: 11400000, guid: 36d08c761a056584db2308f563f6807f, type: 2}
   _baseValue: 180
+  _healAmount: 0
   _pickupColor: {r: 0.7, g: 0.72, b: 0.8, a: 1}

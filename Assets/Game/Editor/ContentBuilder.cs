@@ -599,10 +599,12 @@ namespace ForgottenKingdom.EditorTools
                     "Уламок старого металу. Використовується для покращення спорядження.",
                     ItemCategory.Material, ItemRarity.Common, 99, false, false, 4,
                     new Color(0.62f, 0.64f, 0.68f)),
+                // Half a flask (user's choice, 2026-09-27): eaten from the bag like a flask is drunk.
                 BuildItem("healing_herb", "Лікувальна трава",
-                    "Лікувальна рослина. Пізніше може використовуватися в алхімії.",
+                    "Гірке листя, що затягує рани. Відновлює 20 здоров'я. Їсти треба стоячи, "
+                    + "і удар до кінця ковтка його зводить нанівець.",
                     ItemCategory.Consumable, ItemRarity.Common, 20, false, false, 8,
-                    new Color(0.45f, 0.75f, 0.42f)),
+                    new Color(0.45f, 0.75f, 0.42f), healAmount: 20f),
                 BuildItem("guard_emblem", "Емблема варти",
                     "Знак старої королівської варти.",
                     ItemCategory.Material, ItemRarity.Uncommon, 99, false, false, 25,
@@ -707,7 +709,8 @@ namespace ForgottenKingdom.EditorTools
 
         private static ItemDefinition BuildItem(string id, string displayName, string description,
             ItemCategory category, ItemRarity rarity, int maxStack, bool isUnique,
-            bool autosave, int value, Color color, EquipmentDefinition equipment = null)
+            bool autosave, int value, Color color, EquipmentDefinition equipment = null,
+            float healAmount = 0f)
         {
             var item = CreateAsset<ItemDefinition>($"{ItemFolder}/{id}.asset");
             var serialized = new SerializedObject(item);
@@ -722,6 +725,7 @@ namespace ForgottenKingdom.EditorTools
             serialized.FindProperty("_baseValue").intValue = value;
             serialized.FindProperty("_pickupColor").colorValue = color;
             serialized.FindProperty("_equipment").objectReferenceValue = equipment;
+            serialized.FindProperty("_healAmount").floatValue = healAmount;
             serialized.ApplyModifiedPropertiesWithoutUndo();
             EditorUtility.SetDirty(item);
             return item;
@@ -2627,6 +2631,9 @@ namespace ForgottenKingdom.EditorTools
             events.Add(Sound(AudioId.LevelUp, clips, 0.7f, voices: 1, priority: 90, spatial: 0f));
             events.Add(Sound(AudioId.SkillUnlock, clips, 0.6f, voices: 1, priority: 70,
                 spatial: 0f));
+            // Healing is heard by the player only as a cue that the commitment started.
+            events.Add(Sound(AudioId.FlaskDrink, clips, 0.55f, voices: 1, priority: 60));
+            events.Add(Sound(AudioId.HerbEat, clips, 0.5f, voices: 1, priority: 55));
 
             // Interface. Quiet, flat, and spaced so fast navigation does not chatter.
             events.Add(Sound(AudioId.UiNavigate, clips, 0.3f, AudioBus.Ui, voices: 1, priority: 25,

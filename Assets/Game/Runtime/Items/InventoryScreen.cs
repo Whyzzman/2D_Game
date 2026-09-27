@@ -296,6 +296,47 @@ namespace ForgottenKingdom
 
         // ---------- acting on the selection ----------
 
+        /// <summary>Why the selected item cannot be used right now, or null when it can.</summary>
+        public string WhyCannotUseSelected()
+        {
+            var item = SelectedEntry?.Definition;
+            if (item == null || !item.IsUsable)
+            {
+                return "Цей предмет не використовується";
+            }
+
+            return _player != null ? _player.WhyCannotHeal() : "Немає гравця";
+        }
+
+        /// <summary>
+        /// Uses the selected healing item: the screen closes and the player eats it in the open,
+        /// as a flask is drunk — no healing on a paused screen. The item is spent once the player
+        /// has committed to it.
+        /// </summary>
+        public bool UseSelected()
+        {
+            var entry = SelectedEntry;
+            if (entry == null || WhyCannotUseSelected() != null)
+            {
+                return false;
+            }
+
+            var itemId = entry.Value.ItemId;
+            var amount = entry.Value.Definition.HealAmount;
+            Close();
+            if (!_player.TryUseHealingItem(amount))
+            {
+                return false;
+            }
+
+            if (_progress != null && !_progress.TryRemoveItem(itemId))
+            {
+                Debug.LogWarning($"Used '{itemId}' but it was no longer in the bag.");
+            }
+
+            return true;
+        }
+
         public EquipResult EquipSelected()
         {
             return Equip(_selectedItemId);

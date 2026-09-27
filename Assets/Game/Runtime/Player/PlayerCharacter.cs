@@ -463,8 +463,7 @@ namespace ForgottenKingdom
         /// </summary>
         public bool TryHeal()
         {
-            if (!_state.CanEnter(PlayerAction.Heal) || _motor.IsDashing || !_motor.IsGrounded
-                || (_combat != null && _combat.IsAttacking) || !_flasks.TryBegin())
+            if (!CanStartHealing || !_flasks.TryBegin())
             {
                 return false;
             }
@@ -473,6 +472,36 @@ namespace ForgottenKingdom
             _state.ExitTo(PlayerAction.Heal);
             return true;
         }
+
+        /// <summary>
+        /// Eats or drinks a healing item from the bag, exactly as a flask is drunk: standing, in
+        /// the open, spilled by a hit before it lands. The caller spends the item once this starts.
+        /// </summary>
+        public bool TryUseHealingItem(float amount)
+        {
+            if (!CanStartHealing || !_flasks.TryBeginItem(amount))
+            {
+                return false;
+            }
+
+            _defense?.EndBlock();
+            _state.ExitTo(PlayerAction.Heal);
+            return true;
+        }
+
+        /// <summary>Why a drink cannot start now, or null when it can.</summary>
+        public string WhyCannotHeal()
+        {
+            if (!_flasks.CanHeal)
+            {
+                return _flasks.IsDrinking ? "Ви вже лікуєтеся" : "Здоров'я повне";
+            }
+
+            return CanStartHealing ? null : "Лише стоячи на землі";
+        }
+
+        private bool CanStartHealing => _state.CanEnter(PlayerAction.Heal) && !_motor.IsDashing
+            && _motor.IsGrounded && (_combat == null || !_combat.IsAttacking);
 
         /// <summary>
         /// Swaps to the other weapon. The press is not buffered: unlike an attack, a swap the
