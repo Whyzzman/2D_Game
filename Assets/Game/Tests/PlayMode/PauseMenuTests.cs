@@ -107,11 +107,14 @@ namespace ForgottenKingdom.Tests
         }
 
         [UnityTest]
-        public IEnumerator ScreensNotYetInTheGameAreShownButDisabled()
+        public IEnumerator EveryEntryOfThePauseLeadsSomewhere()
         {
             yield return Tap(Key.Escape);
             Assert.That(_pause.EnabledButtons.ToArray(), Is.EqualTo(new[]
-                { "pause-resume", "pause-equipment", "pause-options", "pause-controls", "pause-main-menu" }));
+            {
+                "pause-resume", "pause-equipment", "pause-character", "pause-skills", "pause-options",
+                "pause-controls", "pause-main-menu"
+            }));
         }
 
         [UnityTest]

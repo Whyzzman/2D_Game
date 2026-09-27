@@ -59,6 +59,7 @@ namespace ForgottenKingdom
         private readonly List<InventoryEntry> _entries = new List<InventoryEntry>();
         private readonly HashSet<object> _presenters = new HashSet<object>();
         private EquipmentLoadout _loadoutOnOpen;
+        private int _statPointsOnOpen;
         private int _tabIndex;
         private string _selectedItemId = string.Empty;
 
@@ -173,6 +174,7 @@ namespace ForgottenKingdom
 
             IsOpen = true;
             _loadoutOnOpen = _equipment != null ? _equipment.Loadout.Clone() : null;
+            _statPointsOnOpen = _progression != null ? _progression.StatPoints : 0;
             _input?.SetGameplayEnabled(false);
             if (_pausesGame)
             {
@@ -197,9 +199,11 @@ namespace ForgottenKingdom
             }
 
             _input?.SetGameplayEnabled(true);
-            // One write for a whole visit to the screen, and only when something really changed.
-            if (_progress != null && _equipment != null
-                && !_equipment.Loadout.SameAs(_loadoutOnOpen))
+            // One write for a whole visit to the screen, and only when something really changed:
+            // the loadout, or attribute points spent (skills save themselves on purchase).
+            var loadoutChanged = _equipment != null && !_equipment.Loadout.SameAs(_loadoutOnOpen);
+            var pointsSpent = _progression != null && _progression.StatPoints != _statPointsOnOpen;
+            if (_progress != null && (loadoutChanged || pointsSpent))
             {
                 _progress.Save();
             }
@@ -575,6 +579,8 @@ namespace ForgottenKingdom
                             + $"{MagicDamageCalculator.Evaluate(spell, curve, next, _caster.SkillMultiplierFor(spell)).Total:0.#}"
                         : string.Empty;
                     return $"Мана {curve.ManaFor(current):0} → {curve.ManaFor(next):0}{damage}";
+                case CharacterStat.Will:
+                    return $"Сила Тіні ×{curve.ShadowPowerFor(current):0.00} → ×{curve.ShadowPowerFor(next):0.00}";
                 default:
                     var weapon = _equipment?.ActiveWeaponDefinition;
                     if (weapon == null)
@@ -757,10 +763,10 @@ namespace ForgottenKingdom
 
         // ---------- the spellbook ----------
 
-        /// <summary>The branches the tree screen shows, in order. Shadow arrives later.</summary>
+        /// <summary>The branches the tree screen shows, in order.</summary>
         public static readonly SkillBranch[] Branches =
         {
-            SkillBranch.Warrior, SkillBranch.Hunter, SkillBranch.Mage
+            SkillBranch.Warrior, SkillBranch.Hunter, SkillBranch.Mage, SkillBranch.Shadow
         };
 
         public IReadOnlyCollection<string> KnownSpells =>

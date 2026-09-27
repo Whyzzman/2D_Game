@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
+using static ForgottenKingdom.UiParts;
 
 namespace ForgottenKingdom
 {
@@ -12,19 +13,25 @@ namespace ForgottenKingdom
     /// <see cref="InventoryScreen"/> owns the behaviour (opening, pausing, tabs, selection,
     /// equipping); this class only draws it and turns keys into its calls.
     ///
-    /// Pages on top: Спорядження (items by category, with the comparison panel) and Екіпірування
-    /// (the eight slots, what fits the chosen one, the derived stats). Character, Skills and
-    /// Spells are shown but disabled until those screens reach the game. Q/E or LB/RB turn the
-    /// pages, Z/C or LT/RT the categories, arrows or the stick move, Enter or A equips, X
-    /// unequips; Escape, B or the inventory key close it. Opened from the pause, it returns there.
+    /// Pages on top: Спорядження (items by category, with the comparison panel), Екіпірування
+    /// (the eight slots, what fits the chosen one, the derived stats), Персонаж
+    /// (<see cref="CharacterPage"/>) and Уміння (<see cref="SkillsPage"/>). Spells is shown but
+    /// disabled until that screen reaches the game. Q/E or LB/RB turn the pages, Z/C or LT/RT the
+    /// categories or branches, arrows or the stick move, Enter or A acts, X unequips or assigns;
+    /// Escape, B or the inventory key close it. Opened from the pause, it returns there.
     /// </summary>
     public sealed class InventoryView
     {
         public enum Page
         {
             Items,
-            Equipment
+            Equipment,
+            Character,
+            Skills
         }
+
+        private static readonly string[] Titles = { "СПОРЯДЖЕННЯ", "ЕКІПІРУВАННЯ", "ПЕРСОНАЖ", "УМІННЯ" };
+        private static readonly string[] PageNames = { "items", "equipment", "character", "skills" };
 
         private const string OpenClass = "inv--open";
         private const int GridColumns = 8;
@@ -39,10 +46,12 @@ namespace ForgottenKingdom
         private readonly VisualElement _overlay;
         private readonly Label _title;
         private readonly Label _purse;
-        private readonly Button[] _pageButtons = new Button[2];
+        private readonly Button[] _pageButtons = new Button[4];
         private readonly VisualElement _characterPip;
         private readonly VisualElement _skillsPip;
-        private readonly VisualElement[] _pages = new VisualElement[2];
+        private readonly VisualElement[] _pages = new VisualElement[4];
+        private readonly CharacterPage _character;
+        private readonly SkillsPage _skillsPage;
         private readonly Button[] _categoryButtons = new Button[InventoryScreen.Tabs.Length];
 
         // Items page.
@@ -107,19 +116,19 @@ namespace ForgottenKingdom
 
             _title = _overlay.Q<Label>("inv-title");
             _purse = _overlay.Q<Label>("inv-purse");
-            _pageButtons[(int)Page.Items] = _overlay.Q<Button>("inv-page-items");
-            _pageButtons[(int)Page.Equipment] = _overlay.Q<Button>("inv-page-equipment");
-            _pageButtons[0].clicked += () => ShowPage(Page.Items);
-            _pageButtons[1].clicked += () => ShowPage(Page.Equipment);
-            foreach (var disabled in new[] { "inv-page-character", "inv-page-skills", "inv-page-spells" })
+            for (var i = 0; i < _pageButtons.Length; i++)
             {
-                _overlay.Q<Button>(disabled)?.SetEnabled(false);
+                var page = (Page)i;
+                _pageButtons[i] = _overlay.Q<Button>($"inv-page-{PageNames[i]}");
+                _pageButtons[i].clicked += () => ShowPage(page);
+                _pages[i] = _overlay.Q($"inv-{PageNames[i]}");
             }
 
+            _overlay.Q<Button>("inv-page-spells")?.SetEnabled(false);
             _characterPip = _overlay.Q("inv-character-pip");
             _skillsPip = _overlay.Q("inv-skills-pip");
-            _pages[(int)Page.Items] = _overlay.Q("inv-items");
-            _pages[(int)Page.Equipment] = _overlay.Q("inv-equipment");
+            _character = new CharacterPage(_pages[(int)Page.Character], Redraw);
+            _skillsPage = new SkillsPage(_pages[(int)Page.Skills], Redraw);
             for (var i = 0; i < _categoryButtons.Length; i++)
             {
                 var index = i;
@@ -173,6 +182,8 @@ namespace ForgottenKingdom
         public EquipmentSlot SelectedSlot => EquipmentSlots.All[_slotIndex];
         public string SelectedCandidate => _candidateId;
         public IReadOnlyList<string> Candidates => _candidates;
+        public CharacterPage Character => _character;
+        public SkillsPage Skills => _skillsPage;
 
         /// <summary>Cells in the grid that hold an item, for tests and tools.</summary>
         public int ItemCellCount { get; private set; }
@@ -195,6 +206,8 @@ namespace ForgottenKingdom
                 return;
             }
 
+            _character.Attach(_screen, player, _progression);
+            _skillsPage.Attach(_screen, _skills);
             _screen.AddPresenter(this);
             _screen.Opened += OnOpened;
             _screen.Closed += OnClosed;
@@ -270,7 +283,7 @@ namespace ForgottenKingdom
                 _pageButtons[i]?.EnableInClassList("tab--active", i == (int)page);
             }
 
-            if (_title != null) { _title.text = page == Page.Items ? "СПОРЯДЖЕННЯ" : "ЕКІПІРУВАННЯ"; }
+            if (_title != null) { _title.text = Titles[(int)page]; }
             if (page == Page.Equipment)
             {
                 SelectSlot(_slotIndex);
@@ -298,21 +311,22 @@ namespace ForgottenKingdom
                 return;
             }
 
-            if (Pressed(keyboard?.qKey, pad?.leftShoulder) || Pressed(keyboard?.eKey, pad?.rightShoulder))
+            var turn = Pressed(keyboard?.qKey, pad?.leftShoulder) ? -1
+                : Pressed(keyboard?.eKey, pad?.rightShoulder) ? 1 : 0;
+            if (turn != 0)
             {
-                ShowPage(_page == Page.Items ? Page.Equipment : Page.Items);
+                ShowPage((Page)(((int)_page + turn + _pages.Length) % _pages.Length));
                 return;
             }
 
             var vertical = _vertical.Step(MenuInput.ReadVertical());
             var horizontal = _horizontal.Step(MenuInput.ReadHorizontal());
-            if (_page == Page.Items)
+            switch (_page)
             {
-                TickItems(keyboard, pad, horizontal, vertical);
-            }
-            else
-            {
-                TickEquipment(keyboard, pad, horizontal, vertical);
+                case Page.Items: TickItems(keyboard, pad, horizontal, vertical); break;
+                case Page.Equipment: TickEquipment(keyboard, pad, horizontal, vertical); break;
+                case Page.Character: _character.Tick(vertical); break;
+                default: _skillsPage.Tick(keyboard, pad, horizontal, vertical); break;
             }
         }
 
@@ -475,13 +489,12 @@ namespace ForgottenKingdom
             if (_purse != null) { _purse.text = _screen.Currency.ToString("N0"); }
             _characterPip?.EnableInClassList("pip--visible", _progression != null && _progression.StatPoints > 0);
             _skillsPip?.EnableInClassList("pip--visible", _skills != null && _skills.AvailableSkillPoints > 0);
-            if (_page == Page.Items)
+            switch (_page)
             {
-                DrawItems();
-            }
-            else
-            {
-                DrawEquipment();
+                case Page.Items: DrawItems(); break;
+                case Page.Equipment: DrawEquipment(); break;
+                case Page.Character: _character.Draw(); break;
+                default: _skillsPage.Draw(); break;
             }
         }
 
@@ -899,29 +912,14 @@ namespace ForgottenKingdom
 
         private void DrawDerived()
         {
-            _stats.Clear();
+            UiParts.DerivedStats(_stats, _playerStats, withLoad: false);
             if (_playerStats == null)
             {
                 return;
             }
 
-            AddStat("Атака", _playerStats.ActiveWeaponAttack.ToString("0"));
-            AddStat("Захист", _playerStats.PhysicalDefense.ToString("0.#"));
-            AddStat("Макс. здоров'я", _playerStats.MaxHealth.ToString("0"));
-            AddStat("Макс. мана", _playerStats.MaxMana.ToString("0"));
-            AddStat("Макс. витривалість", _playerStats.MaxStamina.ToString("0"));
-            AddStat("Опір рівноваги", (_playerStats.StaggerResistance * 100f).ToString("0") + "%");
             _loadFill.style.width = Length.Percent(Mathf.Clamp01(_playerStats.EquipLoadRatio) * 100f);
             _loadValue.text = $"{_playerStats.EquipmentWeight:0.0} / {_playerStats.MaxEquipLoad:0.0}";
-        }
-
-        private void AddStat(string label, string value)
-        {
-            var row = new VisualElement { pickingMode = PickingMode.Ignore };
-            row.AddToClassList("stat-row");
-            row.Add(Text(label, "stat-row__label"));
-            row.Add(Text(value, "stat-row__value"));
-            _stats.Add(row);
         }
 
         // ---------- helpers ----------
@@ -945,28 +943,6 @@ namespace ForgottenKingdom
         private static string RarityClass(string prefix, ItemRarity rarity)
         {
             return prefix + rarity.ToString().ToLowerInvariant();
-        }
-
-        private static Label Text(string text, string className)
-        {
-            var label = new Label(text) { pickingMode = PickingMode.Ignore };
-            label.AddToClassList(className);
-            return label;
-        }
-
-        private static VisualElement Marker(string className)
-        {
-            var marker = new VisualElement { pickingMode = PickingMode.Ignore };
-            marker.AddToClassList(className);
-            return marker;
-        }
-
-        private static void Show(VisualElement element, bool visible)
-        {
-            if (element != null)
-            {
-                element.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
-            }
         }
     }
 }

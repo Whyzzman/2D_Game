@@ -57,8 +57,25 @@ namespace ForgottenKingdom
                     return "Підвищує витривалість і межу ваги спорядження.";
                 case CharacterStat.Intelligence:
                     return "Підвищує запас мани та шкоду заклять.";
+                case CharacterStat.Will:
+                    return "Підвищує силу вмінь Тіні та опір кровотечі, отруті, опіку й холоду.";
                 default:
                     return string.Empty;
+            }
+        }
+
+        /// <summary>The one-line reminder under the attribute's name on the character screen.</summary>
+        public static string Hint(CharacterStat stat)
+        {
+            switch (stat)
+            {
+                case CharacterStat.Strength: return "Шкода зброї, вимоги важкої зброї";
+                case CharacterStat.Dexterity: return "Шкода швидкої зброї";
+                case CharacterStat.Vitality: return "Здоров'я";
+                case CharacterStat.Endurance: return "Запас витривалості, вага";
+                case CharacterStat.Intelligence: return "Сила заклять, мана";
+                case CharacterStat.Will: return "Сила Тіні, опір станам";
+                default: return string.Empty;
             }
         }
     }

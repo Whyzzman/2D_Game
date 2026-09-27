@@ -265,6 +265,113 @@
                         <ui:VisualElement class="hint" picking-mode="Ignore"><ui:Label class="key" text="Esc" picking-mode="Ignore" /><ui:Label class="key key--pad" text="B" picking-mode="Ignore" /><ui:Label class="hint__text" text="Назад" picking-mode="Ignore" /></ui:VisualElement>
                     </ui:VisualElement>
                 </ui:VisualElement>
+
+                <!-- character.html: level, the attributes, what a point gives, the derived numbers. -->
+                <ui:VisualElement name="inv-character" class="inv__page">
+                    <ui:VisualElement class="inv__body">
+                        <ui:VisualElement class="ch-col">
+                            <ui:VisualElement class="ch-level" picking-mode="Ignore">
+                                <ui:Label name="ch-level" class="ch-level__num display" text="1" picking-mode="Ignore" />
+                                <ui:VisualElement class="ch-level__side" picking-mode="Ignore">
+                                    <ui:VisualElement class="ch-level__row" picking-mode="Ignore">
+                                        <ui:Label class="ch-level__label display" text="РІВЕНЬ" picking-mode="Ignore" />
+                                        <ui:VisualElement class="spacer" picking-mode="Ignore" />
+                                        <ui:Label name="ch-xp" class="ch-level__xp" text="" picking-mode="Ignore" />
+                                    </ui:VisualElement>
+                                    <ui:VisualElement class="load ch-xp-bar" picking-mode="Ignore">
+                                        <ui:VisualElement name="ch-xp-fill" class="load__fill ch-xp-fill" picking-mode="Ignore" />
+                                    </ui:VisualElement>
+                                </ui:VisualElement>
+                            </ui:VisualElement>
+                            <ui:VisualElement name="ch-points" class="ch-points" picking-mode="Ignore">
+                                <ui:VisualElement class="pip pip--visible" picking-mode="Ignore" />
+                                <ui:Label class="ch-points__text" text="Нерозподілених очок" picking-mode="Ignore" />
+                                <ui:Label name="ch-points-value" class="ch-points__value display" text="0" picking-mode="Ignore" />
+                            </ui:VisualElement>
+                            <ui:VisualElement name="ch-stats" />
+                        </ui:VisualElement>
+                        <ui:VisualElement class="ch-col" picking-mode="Ignore">
+                            <ui:Label name="ch-tip-title" class="section-label display" text="" picking-mode="Ignore" />
+                            <ui:VisualElement class="ch-tip" picking-mode="Ignore">
+                                <ui:Label name="ch-tip-head" class="ch-tip__head display" text="" picking-mode="Ignore" />
+                                <ui:Label name="ch-tip-text" class="ch-tip__text" text="" picking-mode="Ignore" />
+                                <ui:VisualElement name="ch-tip-list" picking-mode="Ignore" />
+                            </ui:VisualElement>
+                            <ui:Label class="section-label ch-gap display" text="ПОХІДНІ ХАРАКТЕРИСТИКИ" picking-mode="Ignore" />
+                            <ui:VisualElement name="ch-derived" picking-mode="Ignore" />
+                        </ui:VisualElement>
+                        <ui:VisualElement class="ch-col ch-col--side" picking-mode="Ignore">
+                            <ui:Label class="section-label display" text="СТАН" picking-mode="Ignore" />
+                            <ui:VisualElement name="ch-state" picking-mode="Ignore" />
+                            <ui:Label class="section-label ch-gap display" text="ОПІР СТАНАМ" picking-mode="Ignore" />
+                            <ui:VisualElement name="ch-resist" picking-mode="Ignore" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                    <ui:VisualElement class="inv__footer" picking-mode="Ignore">
+                        <ui:VisualElement class="hint" picking-mode="Ignore"><ui:Label class="key" text="Enter" picking-mode="Ignore" /><ui:Label class="key key--pad" text="A" picking-mode="Ignore" /><ui:Label class="hint__text" text="Вкласти очко" picking-mode="Ignore" /></ui:VisualElement>
+                        <ui:VisualElement class="hint" picking-mode="Ignore"><ui:Label class="key" text="↕" picking-mode="Ignore" /><ui:Label class="hint__text" text="Характеристика" picking-mode="Ignore" /></ui:VisualElement>
+                        <ui:VisualElement class="hint" picking-mode="Ignore"><ui:Label class="key" text="Q" picking-mode="Ignore" /><ui:Label class="key" text="E" picking-mode="Ignore" /><ui:Label class="key key--pad" text="LB" picking-mode="Ignore" /><ui:Label class="key key--pad" text="RB" picking-mode="Ignore" /><ui:Label class="hint__text" text="Сторінки" picking-mode="Ignore" /></ui:VisualElement>
+                        <ui:VisualElement class="hint" picking-mode="Ignore"><ui:Label class="key" text="Esc" picking-mode="Ignore" /><ui:Label class="key key--pad" text="B" picking-mode="Ignore" /><ui:Label class="hint__text" text="Назад" picking-mode="Ignore" /></ui:VisualElement>
+                        <ui:VisualElement class="spacer" picking-mode="Ignore" />
+                        <ui:Label class="hint__text" text="Очки витрачаються одразу й не повертаються" picking-mode="Ignore" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+
+                <!-- skills.html: the branches, the tree, the chosen node. -->
+                <ui:VisualElement name="inv-skills" class="inv__page">
+                    <ui:VisualElement class="inv__categories">
+                        <ui:Button name="sk-branch-0" class="tab"><ui:Label class="tab__text display" text="ВОЇН" picking-mode="Ignore" /></ui:Button>
+                        <ui:Button name="sk-branch-1" class="tab"><ui:Label class="tab__text display" text="МИСЛИВЕЦЬ" picking-mode="Ignore" /></ui:Button>
+                        <ui:Button name="sk-branch-2" class="tab"><ui:Label class="tab__text display" text="МАГ" picking-mode="Ignore" /></ui:Button>
+                        <ui:Button name="sk-branch-3" class="tab"><ui:Label class="tab__text display" text="ТІНЬ" picking-mode="Ignore" /></ui:Button>
+                        <ui:VisualElement class="spacer" picking-mode="Ignore" />
+                        <ui:VisualElement class="sk-points" picking-mode="Ignore">
+                            <ui:VisualElement name="sk-points-pip" class="pip" picking-mode="Ignore" />
+                            <ui:Label class="sk-points__text" text="Очок умінь" picking-mode="Ignore" />
+                            <ui:Label name="sk-points" class="sk-points__value display" text="0" picking-mode="Ignore" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                    <ui:VisualElement class="inv__body">
+                        <ui:VisualElement class="sk-area">
+                            <ui:VisualElement name="sk-tree" class="sk-tree" />
+                        </ui:VisualElement>
+                        <ui:VisualElement class="detail">
+                            <ui:Label name="sk-name" class="detail__name display" text="" picking-mode="Ignore" />
+                            <ui:Label name="sk-meta" class="detail__type sk-meta" text="" picking-mode="Ignore" />
+                            <ui:Label name="sk-desc" class="detail__desc" text="" picking-mode="Ignore" />
+                            <ui:VisualElement class="detail__section" picking-mode="Ignore">
+                                <ui:Label name="sk-effects-title" class="section-label display" text="ЕФЕКТ" picking-mode="Ignore" />
+                                <ui:VisualElement name="sk-effects" picking-mode="Ignore" />
+                            </ui:VisualElement>
+                            <ui:VisualElement class="detail__section" picking-mode="Ignore">
+                                <ui:Label class="section-label display" text="ВИМОГИ" picking-mode="Ignore" />
+                                <ui:VisualElement name="sk-req" picking-mode="Ignore" />
+                            </ui:VisualElement>
+                            <ui:VisualElement name="sk-slots-section" class="detail__section">
+                                <ui:Label class="section-label display" text="СЛОТ АКТИВНОГО ВМІННЯ" picking-mode="Ignore" />
+                                <ui:VisualElement class="sk-slots">
+                                    <ui:Button name="sk-slot-0" class="sk-slot"><ui:Label class="key" text="1" picking-mode="Ignore" /><ui:Label name="sk-slot-0-name" class="sk-slot__name" text="" picking-mode="Ignore" /></ui:Button>
+                                    <ui:Button name="sk-slot-1" class="sk-slot"><ui:Label class="key" text="2" picking-mode="Ignore" /><ui:Label name="sk-slot-1-name" class="sk-slot__name" text="" picking-mode="Ignore" /></ui:Button>
+                                </ui:VisualElement>
+                            </ui:VisualElement>
+                            <ui:VisualElement class="spacer" picking-mode="Ignore" />
+                            <ui:VisualElement class="sk-actions">
+                                <ui:Button name="sk-buy" class="btn btn--primary btn--last"><ui:Label class="btn__text display" text="ВИВЧИТИ" picking-mode="Ignore" /></ui:Button>
+                                <ui:Button name="sk-assign" class="btn btn--last"><ui:Label class="btn__text display" text="ПРИЗНАЧИТИ В СЛОТ" picking-mode="Ignore" /></ui:Button>
+                            </ui:VisualElement>
+                            <ui:Label name="sk-problem" class="detail__problem" text="" picking-mode="Ignore" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                    <ui:VisualElement class="inv__footer" picking-mode="Ignore">
+                        <ui:VisualElement class="hint" picking-mode="Ignore"><ui:Label class="key" text="Enter" picking-mode="Ignore" /><ui:Label class="key key--pad" text="A" picking-mode="Ignore" /><ui:Label class="hint__text" text="Вивчити" picking-mode="Ignore" /></ui:VisualElement>
+                        <ui:VisualElement class="hint" picking-mode="Ignore"><ui:Label class="key" text="X" picking-mode="Ignore" /><ui:Label class="key key--pad" text="X" picking-mode="Ignore" /><ui:Label class="hint__text" text="Призначити" picking-mode="Ignore" /></ui:VisualElement>
+                        <ui:VisualElement class="hint" picking-mode="Ignore"><ui:Label class="key" text="Z" picking-mode="Ignore" /><ui:Label class="key" text="C" picking-mode="Ignore" /><ui:Label class="key key--pad" text="LT" picking-mode="Ignore" /><ui:Label class="key key--pad" text="RT" picking-mode="Ignore" /><ui:Label class="hint__text" text="Гілка" picking-mode="Ignore" /></ui:VisualElement>
+                        <ui:VisualElement class="hint" picking-mode="Ignore"><ui:Label class="key" text="Q" picking-mode="Ignore" /><ui:Label class="key" text="E" picking-mode="Ignore" /><ui:Label class="key key--pad" text="LB" picking-mode="Ignore" /><ui:Label class="key key--pad" text="RB" picking-mode="Ignore" /><ui:Label class="hint__text" text="Сторінки" picking-mode="Ignore" /></ui:VisualElement>
+                        <ui:VisualElement class="hint" picking-mode="Ignore"><ui:Label class="key" text="Esc" picking-mode="Ignore" /><ui:Label class="key key--pad" text="B" picking-mode="Ignore" /><ui:Label class="hint__text" text="Назад" picking-mode="Ignore" /></ui:VisualElement>
+                        <ui:VisualElement class="spacer" picking-mode="Ignore" />
+                        <ui:Label class="hint__text" text="Суцільна лінія — передумову виконано, пунктир — ще ні" picking-mode="Ignore" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
 

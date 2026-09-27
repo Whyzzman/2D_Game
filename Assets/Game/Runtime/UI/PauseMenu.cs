@@ -10,9 +10,9 @@ namespace ForgottenKingdom
     /// Skills, Settings, Back to the title. Escape or Start opens and closes it; the pad's back
     /// button closes it too.
     ///
-    /// Equipment opens the inventory window (<see cref="InventoryView"/>), which hands back to the
-    /// pause when it closes. Character and Skills are shown but disabled until those screens reach
-    /// the game; the diamond beside them still tells the player there are points to spend.
+    /// Equipment, Character and Skills open the inventory window (<see cref="InventoryView"/>) on
+    /// their page; it hands back to the pause when it closes. The diamond beside Character and
+    /// Skills tells the player there are points to spend.
     /// Settings are the title screen's own panel. Leaving for the title saves first, the same as
     /// quitting the application does.
     ///
@@ -39,6 +39,7 @@ namespace ForgottenKingdom
         private MenuInput.Repeater _repeater;
         private int _focus;
         private bool _isLeaving;
+        private string _returnFocus = "pause-equipment";
 
         public PauseMenu(VisualElement root, InventoryView inventory = null)
         {
@@ -56,8 +57,10 @@ namespace ForgottenKingdom
             _skillsPip = _overlay.Q("pause-skills-pip");
             Bind("pause-resume", Resume, true);
             Bind("pause-equipment", OpenEquipment, _inventory != null);
-            Bind("pause-character", null, false);
-            Bind("pause-skills", null, false);
+            Bind("pause-character", () => OpenWindow(InventoryView.Page.Character, "pause-character"),
+                _inventory != null);
+            Bind("pause-skills", () => OpenWindow(InventoryView.Page.Skills, "pause-skills"),
+                _inventory != null);
             Bind("pause-options", OpenOptions, true);
             Bind("pause-controls", OpenControls, true);
             Bind("pause-main-menu", ReturnToMainMenu, true);
@@ -270,15 +273,22 @@ namespace ForgottenKingdom
         }
 
         /// <summary>The pause steps aside for the inventory window and returns when it closes.</summary>
-        public void OpenEquipment()
+        public void OpenEquipment() => OpenWindow(InventoryView.Page.Items, "pause-equipment");
+
+        public void OpenCharacter() => OpenWindow(InventoryView.Page.Character, "pause-character");
+
+        public void OpenSkills() => OpenWindow(InventoryView.Page.Skills, "pause-skills");
+
+        private void OpenWindow(InventoryView.Page page, string button)
         {
             if (_inventory == null || !IsOpen)
             {
                 return;
             }
 
+            _returnFocus = button;
             Resume();
-            if (!_inventory.Open(InventoryView.Page.Items, fromPause: true))
+            if (!_inventory.Open(page, fromPause: true))
             {
                 Open();
             }
@@ -287,7 +297,7 @@ namespace ForgottenKingdom
         private void OnInventoryClosed()
         {
             Open();
-            SetFocus(_items.FindIndex(item => item.name == "pause-equipment"));
+            SetFocus(_items.FindIndex(item => item.name == _returnFocus));
         }
 
         public void OpenControls()

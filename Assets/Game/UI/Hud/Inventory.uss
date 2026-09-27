@@ -617,3 +617,342 @@
     margin: 0 0 0 4px;
     padding: 0;
 }
+
+/* ---------- character page (character.html) ---------- */
+
+.ch-col {
+    flex-grow: 1;
+    flex-basis: 0;
+    margin-right: 32px;
+}
+
+.ch-col--side {
+    flex-grow: 0;
+    flex-basis: auto;
+    width: 380px;
+    margin-right: 0;
+}
+
+.ch-gap {
+    margin-top: 24px;
+}
+
+.ch-level {
+    flex-direction: row;
+    align-items: flex-end;
+    margin-bottom: 12px;
+}
+
+.ch-level__num {
+    font-size: 52px;
+    color: rgb(232, 205, 138);
+    margin: 0 16px 0 0;
+    padding: 0;
+}
+
+.ch-level__side {
+    flex-grow: 1;
+    padding-bottom: 8px;
+}
+
+.ch-level__row {
+    flex-direction: row;
+    align-items: center;
+}
+
+.ch-level__label {
+    font-size: 13px;
+    color: rgb(138, 116, 52);
+    margin: 0;
+    padding: 0;
+}
+
+.ch-level__xp {
+    font-size: 13px;
+    color: rgb(142, 131, 117);
+    margin: 0;
+    padding: 0;
+}
+
+.ch-xp-bar {
+    margin-top: 8px;
+}
+
+.ch-xp-fill {
+    background-color: rgb(201, 161, 74);
+}
+
+.ch-points {
+    flex-direction: row;
+    align-items: center;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    border-width: 1px;
+    border-color: rgb(138, 116, 52);
+    background-color: rgba(138, 116, 52, 0.1);
+}
+
+.ch-points--none {
+    opacity: 0.5;
+}
+
+.ch-points__text {
+    flex-grow: 1;
+    font-size: 15px;
+    color: rgb(216, 203, 180);
+    margin: 0 0 0 12px;
+    padding: 0;
+}
+
+.ch-points__value {
+    font-size: 20px;
+    color: rgb(232, 205, 138);
+    margin: 0;
+    padding: 0;
+}
+
+.ch-stat {
+    flex-direction: row;
+    align-items: center;
+    padding: 12px 8px;
+    border-bottom-width: 1px;
+    border-bottom-color: rgba(58, 47, 37, 0.6);
+    border-left-width: 2px;
+    border-left-color: rgba(0, 0, 0, 0);
+}
+
+.ch-stat--focused {
+    background-color: rgba(138, 116, 52, 0.14);
+    border-left-color: rgb(201, 161, 74);
+}
+
+.ch-stat__names {
+    flex-grow: 1;
+}
+
+.ch-stat__name {
+    font-size: 17px;
+    color: rgb(240, 230, 210);
+    margin: 0;
+    padding: 0;
+}
+
+.ch-stat__hint {
+    font-size: 13px;
+    color: rgb(95, 87, 76);
+    margin: 2px 0 0 0;
+    padding: 0;
+}
+
+.ch-stat__value {
+    font-size: 20px;
+    color: rgb(240, 230, 210);
+    margin: 0 12px 0 0;
+    padding: 0;
+}
+
+.ch-stat__preview {
+    min-width: 54px;
+    font-size: 15px;
+    color: rgb(127, 168, 92);
+    -unity-text-align: middle-right;
+    margin: 0 12px 0 0;
+    padding: 0;
+}
+
+.ch-stat__add,
+.ch-stat__add:hover,
+.ch-stat__add:active {
+    width: 34px;
+    height: 34px;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    -unity-text-align: middle-center;
+    color: rgb(232, 205, 138);
+    background-color: rgb(28, 23, 19);
+    border-width: 1px;
+    border-color: rgb(138, 116, 52);
+    border-radius: 0;
+}
+
+.ch-stat__add:hover {
+    border-color: rgb(232, 205, 138);
+}
+
+.ch-stat__add:disabled {
+    color: rgb(95, 87, 76);
+    border-color: rgb(58, 47, 37);
+    opacity: 0.5;
+}
+
+.ch-tip {
+    padding: 12px 16px;
+    border-left-width: 2px;
+    border-left-color: rgb(138, 116, 52);
+    background-color: rgba(138, 116, 52, 0.07);
+}
+
+.ch-tip__head {
+    font-size: 17px;
+    color: rgb(240, 230, 210);
+    margin: 0 0 8px 0;
+    padding: 0;
+}
+
+.ch-tip__text {
+    font-size: 15px;
+    color: rgb(142, 131, 117);
+    white-space: normal;
+    margin: 0 0 8px 0;
+    padding: 0;
+}
+
+.ch-tip__line {
+    font-size: 15px;
+    color: rgb(216, 203, 180);
+    white-space: normal;
+    margin: 0 0 3px 0;
+    padding: 0;
+}
+
+.ch-tip__limit {
+    font-size: 15px;
+    color: rgb(196, 85, 47);
+    margin: 4px 0 0 0;
+    padding: 0;
+}
+
+/* ---------- skills page (skills.html) ---------- */
+
+.inv__categories {
+    align-items: center;
+}
+
+.sk-points {
+    flex-direction: row;
+    align-items: center;
+}
+
+.sk-points__text {
+    font-size: 15px;
+    color: rgb(216, 203, 180);
+    margin: 0 8px 0 8px;
+    padding: 0;
+}
+
+.sk-points__value {
+    font-size: 20px;
+    color: rgb(232, 205, 138);
+    margin: 0;
+    padding: 0;
+}
+
+.sk-area {
+    flex-grow: 1;
+    margin-right: 24px;
+}
+
+/* The grid is 5 columns of 120 px and 5 rows of 116 px; the lines are drawn on it. */
+.sk-tree {
+    position: relative;
+    width: 600px;
+    height: 580px;
+    margin-top: 8px;
+}
+
+.sk-links {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 600px;
+    height: 580px;
+}
+
+.sk-node {
+    position: absolute;
+    width: 84px;
+    height: 84px;
+}
+
+.sk-node--locked {
+    opacity: 0.55;
+}
+
+.sk-node__rank {
+    position: absolute;
+    bottom: -8px;
+    left: 26px;
+    width: 32px;
+    font-size: 13px;
+    color: rgb(240, 230, 210);
+    -unity-text-align: middle-center;
+    margin: 0;
+    padding: 0 2px;
+    background-color: rgb(11, 9, 7);
+    border-width: 1px;
+    border-color: rgb(107, 90, 66);
+}
+
+.sk-node__slot {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    color: rgb(15, 13, 11);
+    background-color: rgb(201, 161, 74);
+    margin: 0;
+    padding: 0;
+}
+
+.sk-meta {
+    color: rgb(138, 116, 52);
+}
+
+.sk-slots {
+    flex-direction: row;
+}
+
+.sk-slot,
+.sk-slot:hover,
+.sk-slot:active {
+    flex-grow: 1;
+    flex-basis: 0;
+    flex-direction: row;
+    align-items: center;
+    margin: 0 8px 0 0;
+    padding: 8px 12px;
+    background-color: rgba(0, 0, 0, 0);
+    border-width: 1px;
+    border-color: rgb(58, 47, 37);
+    border-radius: 0;
+}
+
+.sk-slot:hover {
+    border-color: rgb(107, 90, 66);
+}
+
+.sk-slot--taken {
+    border-color: rgb(138, 116, 52);
+}
+
+.sk-slot__name {
+    font-size: 15px;
+    color: rgb(240, 230, 210);
+    -unity-text-align: middle-left;
+    margin: 0 0 0 4px;
+    padding: 0;
+}
+
+.sk-slot__name--empty {
+    color: rgb(95, 87, 76);
+}
+
+/* Two long labels do not fit side by side in the 430 px panel: one above the other. */
+.sk-actions > .btn {
+    margin-top: 8px;
+}
