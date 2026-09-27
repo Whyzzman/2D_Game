@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<title>Тінь Забутого Королівства — Перепризначення клавіш</title>
+<link rel="stylesheet" href="../_shared/ui.css">
+<style>
+  body { background: #050403; }
+  .sheet { display: flex; flex-wrap: wrap; gap: 28px; padding: 28px; }
+  .frame { position: relative; width: 912px; height: 513px; overflow: hidden; border: 1px solid var(--edge-mid); }
+  .frame--wide { width: 1852px; height: 1041px; }
+  .frame > .stage-inner { position: absolute; width: 1920px; height: 1080px; transform: scale(0.475); transform-origin: top left; }
+  .frame--wide > .stage-inner { transform: scale(0.964); }
+  .frame__caption {
+    position: absolute; left: 0; right: 0; bottom: 0; z-index: 5;
+    padding: 6px 10px;
+    font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--gold-dim); background: rgba(5,4,3,0.88);
+    border-top: 1px solid var(--edge-mid);
+  }
+  .intro { padding: 28px 28px 0; max-width: 1860px; color: var(--ink-muted); font-size: var(--fs-small); line-height: 1.7; }
+  .intro b { color: var(--ink-bright); font-weight: 500; }
+
+  /* ---------- Керування: той самий екран, тепер кожна клітинка — кнопка ---------- */
+  .controls { width: 1440px; }
+  .controls .panel__body { padding: var(--s4) var(--s6) var(--s5); }
+  .controls__cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0 var(--s7); }
+  .row { display: grid; grid-template-columns: 1fr 104px 104px 124px; align-items: center; gap: var(--s2); }
+  .head {
+    padding-bottom: var(--s2); border-bottom: 1px solid var(--edge-mid);
+    font-family: var(--font-display); font-size: var(--fs-micro);
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-dim);
+  }
+  .head span:not(:first-child) { text-align: center; }
+  .section-title {
+    margin: var(--s3) 0 2px;
+    font-family: var(--font-display); font-size: var(--fs-micro);
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-dim);
+  }
+  .row--action { padding: 3px 0; border-bottom: 1px solid rgba(58,47,37,0.5); font-size: var(--fs-small); }
+  .row--action > span:first-child { color: var(--ink); }
+
+  /* Клітинка прив'язки: рамка як у слота, у фокусі — золото. */
+  .bind {
+    height: 34px; display: flex; align-items: center; justify-content: center; gap: 4px;
+    border: 1px solid var(--edge-mid); background: rgba(11,9,7,0.6);
+    font-size: 12px; color: var(--ink-dim);
+  }
+  .bind .glyph { min-width: 26px; height: 24px; font-size: 11px; box-shadow: none; }
+  .bind.is-focused { border-color: var(--gold); box-shadow: var(--focus); background: rgba(138,116,52,0.12); }
+  .bind.is-empty::after { content: "—"; color: var(--ink-dim); }
+  /* Незмінні: рух стіком і пауза — замок замість рамки. */
+  .bind.is-fixed { border-style: dashed; opacity: 0.6; }
+  .bind.is-fixed::before { content: ""; width: 8px; height: 10px; border: 1.5px solid var(--ink-dim); border-radius: 2px 2px 1px 1px; margin-right: 2px; }
+  /* Очікування клавіші: пульсує, щоб було видно, що гра слухає. */
+  .bind.is-listening { border-color: var(--gold-bright); color: var(--gold-bright); animation: listen 1s ease-in-out infinite; font-style: italic; }
+  @keyframes listen { 50% { background: rgba(232,205,138,0.16); } }
+  /* Щойно помінялася: короткий спалах, щоб гравець побачив, куди поділася стара клавіша. */
+  .bind.is-swapped { border-color: var(--gold-dim); background: rgba(240,180,65,0.18); }
+  .mod { color: var(--ink-dim); font-size: 11px; }
+
+  .controls__foot { margin-top: var(--s4); display: flex; align-items: center; gap: var(--s5); font-size: var(--fs-small); color: var(--ink-muted); }
+  .controls__foot .hint { display: flex; align-items: center; gap: var(--s2); }
+  .controls__foot .spacer { flex: 1; }
+  .note {
+    margin-top: var(--s3); padding: var(--s2) var(--s3);
+    border-left: 2px solid var(--gold-dim); background: rgba(138,116,52,0.08);
+    font-size: var(--fs-small); color: var(--gold-bright);
+  }
+  .note--warn { border-left-color: var(--danger); color: var(--danger); background: rgba(196,85,47,0.08); }
+
+  /* ---------- підтвердження скидання ---------- */
+  .confirm { width: 560px; }
+  .confirm p { margin: 0 0 var(--s5); color: var(--ink-muted); font-size: var(--fs-body); line-height: 1.6; }
+  .confirm .row-btns { display: flex; gap: var(--s3); }
+  .confirm .btn { flex: 1; font-family: var(--font-display); letter-spacing: 0.12em; text-transform: uppercase; }
+
+  /* ---------- головне меню ---------- */
+  .title-screen { position: absolute; inset: 0; display: grid; place-items: center; }
+  .title-screen__art { position: absolute; inset: 0; background: radial-gradient(60% 50% at 50% 38%, rgba(138,116,52,0.14) 0%, transparent 70%), radial-gradient(120% 90% at 50% 10%, #241f19 0%, #100d0b 55%, #060504 100%); }
+  .game-title { position: relative; font-family: var(--font-display); font-size: 78px; letter-spacing: 0.1em; line-height: 1.1; text-align: center; color: var(--ink-bright); margin: 0 0 var(--s7); }
+  .game-title small { display: block; font-size: 24px; letter-spacing: 0.34em; color: var(--gold-dim); margin-top: var(--s3); }
+  .menu-list { position: relative; display: flex; flex-direction: column; gap: var(--s3); width: 400px; }
+  .menu-list .btn { width: 100%; font-family: var(--font-display); letter-spacing: 0.14em; text-transform: uppercase; }
+  .is-new { box-shadow: inset 3px 0 0 var(--gold-dim); }
+
+  /* ---------- гліфи в грі йдуть за прив'язками ---------- */
+  .ability { position: absolute; inset: 0; display: grid; place-items: center; background: rgba(4,3,3,0.78); }
+  .ability__card { width: 720px; text-align: center; }
+  .ability__card .panel__body { padding: var(--s6) var(--s7); }
+  .ability__kicker { font-family: var(--font-display); font-size: var(--fs-micro); letter-spacing: 0.32em; text-transform: uppercase; color: var(--gold-dim); }
+  .ability__name { margin: var(--s3) 0 var(--s4); font-family: var(--font-display); font-size: 40px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-bright); }
+  .ability__how { display: inline-flex; align-items: center; gap: var(--s3); font-size: var(--fs-body); color: var(--ink); }
+</style>
+</head>
+<body>
+
+<div class="intro">
+  <b>Пункт 41, 2026-09-27 — на Approval 1.</b> Перепризначення клавіш, як вирішено: на екрані
+  «Керування» (з паузи й тепер також із головного меню), клавіатура й геймпад, зайнята клавіша
+  <b>міняється місцями</b>, перепризначаються всі ігрові дії, крім паузи. У кожної дії дві клавіші
+  клавіатури (основна й додаткова — так лишаються теперішні пари J/ЛКМ, K/ПКМ, I/Tab) і одна кнопка
+  геймпада. Незмінні: пауза (Esc/Start), рух лівим стіком і хрестовиною, модифікатор <b>LT</b> для
+  умінь і заклять (на геймпаді змінюється лише друга кнопка комбінації), а також клавіші всередині
+  меню (стрілки, Enter, Q/E, Z/C) — щоб не можна було замкнути себе в меню. Прив'язки зберігаються
+  разом із налаштуваннями, окремо від прогресу, і нова гра їх не стирає. Усі підказки в грі
+  (картка здібності, слоти HUD, екран «Керування», підказка взаємодії) показують уже нові клавіші.
+</div>
+
+<div class="sheet">
+
+  <div class="frame frame--wide"><div class="stage-inner"><div class="gameplay-backdrop"></div><div class="scrim" data-screen="browse"></div></div>
+    <div class="frame__caption">1. Керування — стрілками обирається клітинка, Enter/A — змінити, Backspace/X — очистити додаткову, «Скинути все» внизу</div></div>
+
+  <div class="frame"><div class="stage-inner"><div class="gameplay-backdrop"></div><div class="scrim" data-screen="listen"></div></div>
+    <div class="frame__caption">2. Очікування — «Натисніть клавішу…»; Esc скасовує (для геймпада — Start)</div></div>
+
+  <div class="frame"><div class="stage-inner"><div class="gameplay-backdrop"></div><div class="scrim" data-screen="swap"></div></div>
+    <div class="frame__caption">3. Стрибку призначено J — J була в Атаці, тож Атака отримала Space; обидві клітинки спалахують</div></div>
+
+  <div class="frame"><div class="stage-inner"><div class="gameplay-backdrop"></div><div class="scrim" data-screen="pad"></div></div>
+    <div class="frame__caption">4. Геймпад — змінюється кнопка після «LT +»; спроба призначити LT чи Start пояснює, чому ні</div></div>
+
+  <div class="frame"><div class="stage-inner"><div class="gameplay-backdrop"></div><div class="scrim" data-screen="reset"></div></div>
+    <div class="frame__caption">5. Скинути все — підтвердження; скасування за замовчуванням</div></div>
+
+  <div class="frame"><div class="stage-inner">
+      <div class="title-screen"><div class="title-screen__art"></div>
+        <div style="position:relative; display:grid; place-items:center;">
+          <h1 class="game-title">Тінь<br>Забутого Королівства<small>Пролог</small></h1>
+          <div class="menu-list">
+            <button class="btn">Продовжити</button>
+            <button class="btn btn--primary">Нова гра</button>
+            <button class="btn">Налаштування</button>
+            <button class="btn is-focused is-new">Керування</button>
+            <button class="btn">Вийти</button>
+          </div>
+        </div>
+      </div></div>
+    <div class="frame__caption">6. Головне меню — «Керування» перед виходом, щоб налаштувати клавіші ще до гри</div></div>
+
+  <div class="frame"><div class="stage-inner"><div class="gameplay-backdrop"></div>
+      <div class="ability"><div class="panel panel--royal ability__card"><div class="panel__body">
+        <div class="ability__kicker">Отримано здібність</div>
+        <div class="ability__name">Ривок</div>
+        <div class="ability__how">Натисни <span class="glyph">Shift</span> <span class="or" style="color:var(--ink-dim)">або</span> <span class="glyph glyph--pad">RT</span></div>
+      </div></div></div></div>
+    <div class="frame__caption">7. Гліфи йдуть за прив'язками — ривок перепризначено на Shift, і картка вже каже Shift</div></div>
+
+</div>
+
+<script>
+(function () {
+  "use strict";
+  // [дія, основна, додаткова, геймпад, незмінність геймпада]
+  var LEFT = [
+    ["Рух", [
+      ["Вгору", "W", "", "лівий стік", "fixed"],
+      ["Вниз", "S", "", "лівий стік", "fixed"],
+      ["Вліво", "A", "", "лівий стік", "fixed"],
+      ["Вправо", "D", "", "лівий стік", "fixed"],
+      ["Стрибок", "Space", "", "A"],
+      ["Ривок", "L", "", "RT"]]],
+    ["Бій", [
+      ["Атака", "J", "ЛКМ", "X"],
+      ["Важка атака", "K", "ПКМ", "RB"],
+      ["Блок / парирування", "Q", "", "LB"],
+      ["Фляга", "R", "", "▲"]]]
+  ];
+  var RIGHT = [
+    ["Уміння й закляття", [
+      ["Уміння 1", "1", "", "LB", "mod"],
+      ["Уміння 2", "2", "", "RB", "mod"],
+      ["Закляття 1", "3", "", "X", "mod"],
+      ["Закляття 2", "4", "", "Y", "mod"],
+      ["Закляття 3", "5", "", "B", "mod"],
+      ["Зміна зброї", "F", "", "◀"]]],
+    ["Інше", [
+      ["Взаємодія", "E", "", "Y"],
+      ["Спорядження", "I", "Tab", "Select"],
+      ["Карта", "M", "", "▼"],
+      ["Пауза", "Esc", "", "Start", "fixed", "fixed"]]]
+  ];
+
+  function glyph(text, pad) {
+    if (!text) { return ""; }
+    if (text === "лівий стік") { return '<span class="mod">лівий стік</span>'; }
+    return '<span class="glyph' + (pad ? " glyph--pad" : "") + '">' + text + "</span>";
+  }
+
+  function cell(value, pad, state, extra) {
+    var cls = "bind" + (value ? "" : " is-empty") + (state ? " " + state : "");
+    var inner = state && state.indexOf("is-listening") >= 0 ? "Натисніть клавішу…" : (extra || "") + glyph(value, pad);
+    return '<span class="' + cls + '">' + inner + "</span>";
+  }
+
+  function column(groups, screen) {
+    var html = '<div><div class="row head"><span>Дія</span><span>Клавіша</span><span>Додаткова</span><span>Геймпад</span></div>';
+    groups.forEach(function (group) {
+      html += '<div class="section-title">' + group[0] + "</div>";
+      group[1].forEach(function (a) {
+        var name = a[0], key = a[1], alt = a[2], pad = a[3];
+        var s = [a[5] === "fixed" ? "is-fixed" : "", "", a[4] === "fixed" ? "is-fixed" : ""];
+        if (screen === "swap" && name === "Стрибок") { key = "J"; s[0] = "is-swapped"; }
+        if (screen === "swap" && name === "Атака") { key = "Space"; s[0] = "is-swapped"; }
+        if (screen === "swap" && name === "Стрибок") { s[0] += " is-focused"; }
+        if (screen === "browse" && name === "Атака") { s[0] = "is-focused"; }
+        if (screen === "listen" && name === "Ривок") { s[0] = "is-listening is-focused"; }
+        if (screen === "pad" && name === "Уміння 1") { s[2] = "is-focused"; }
+        var modPrefix = a[4] === "mod" ? '<span class="mod">LT +</span>' : "";
+        html += '<div class="row row--action"><span>' + name + "</span>"
+          + cell(key, false, s[0]) + cell(alt, false, s[1]) + cell(pad, true, s[2], modPrefix) + "</div>";
+      });
+    });
+    return html + "</div>";
+  }
+
+  function screen(name) {
+    var note = "";
+    if (name === "swap") { note = '<div class="note">J перейшла до «Стрибка», а «Атака» отримала Space — клавіші поміняно місцями.</div>'; }
+    if (name === "pad") { note = '<div class="note note--warn">LT — модифікатор умінь і заклять, його не можна призначити окремій дії.</div>'; }
+    var panel = '<div class="panel panel--royal controls">'
+      + '<div class="panel__header"><h2 class="panel__title">Керування</h2></div>'
+      + '<div class="panel__body"><div class="controls__cols">' + column(LEFT, name) + column(RIGHT, name) + "</div>" + note
+      + '<div class="controls__foot">'
+      + '<span class="hint"><span class="glyph">Enter</span><span class="glyph glyph--pad">A</span> Змінити</span>'
+      + '<span class="hint"><span class="glyph">Backspace</span><span class="glyph glyph--pad">X</span> Очистити додаткову</span>'
+      + '<span class="hint"><span class="glyph">Esc</span><span class="glyph glyph--pad">B</span> ' + (name === "listen" ? "Скасувати" : "Назад") + "</span>"
+      + '<span class="spacer"></span><button class="btn">Скинути все</button></div>'
+      + "</div></div>";
+    if (name !== "reset") { return panel; }
+    return '<div style="position:relative;display:grid;place-items:center;width:100%;height:100%">'
+      + '<div style="opacity:0.35;position:absolute">' + panel + "</div>"
+      + '<div class="panel panel--royal confirm" style="position:relative"><div class="panel__header"><h2 class="panel__title">Скинути клавіші?</h2></div>'
+      + '<div class="panel__body"><p>Усі дії повернуться до стандартних клавіш і кнопок. Інші налаштування не зміняться.</p>'
+      + '<div class="row-btns"><button class="btn btn--primary is-focused">Скасувати</button><button class="btn btn--danger">Скинути</button></div></div></div></div>';
+  }
+
+  window.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll("[data-screen]").forEach(function (host) {
+      host.innerHTML = screen(host.getAttribute("data-screen"));
+    });
+  });
+})();
+</script>
+<script src="../_shared/stage.js"></script>
+</body>
+</html>
