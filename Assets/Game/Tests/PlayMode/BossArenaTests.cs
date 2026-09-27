@@ -99,6 +99,29 @@ namespace ForgottenKingdom.Tests
         }
 
         [UnityTest]
+        public IEnumerator TheSealNamesTheBossOnATitleCardThatFadesAway()
+        {
+            var hud = Object.FindAnyObjectByType<HudController>();
+            Assert.That(hud.BossTitle, Is.Not.Null);
+            Assert.That(hud.BossTitle.IsShowing, Is.False);
+
+            yield return EnterArena();
+            yield return null;
+            yield return null;
+            Assert.That(hud.BossTitle.IsShowing, Is.True, "The fight began without the boss's name.");
+            Assert.That(hud.BossTitle.Name, Is.EqualTo("Страж Гробниці"));
+            Assert.That(hud.BossTitle.Epithet, Is.EqualTo("ТОЙ, ХТО НЕ СПИТЬ"));
+
+            yield return new WaitForSecondsRealtime(BossTitleCard.Total + 0.3f);
+            Assert.That(hud.BossTitle.IsShowing, Is.False, "The title card never left.");
+
+            foreach (var boss in Object.FindObjectsByType<BossController>(FindObjectsInactive.Include))
+            {
+                Assert.That(boss.Epithet, Is.Not.Empty, $"{boss.name} has no epithet.");
+            }
+        }
+
+        [UnityTest]
         public IEnumerator DyingLiftsTheSealWithoutTheVictoryFlare()
         {
             yield return EnterArena();

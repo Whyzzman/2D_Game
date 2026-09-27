@@ -500,6 +500,41 @@
     width: 560px;
 }
 
+/* ---------- boss title (design/ui/boss-title) ---------- */
+
+/* Lower third, over the arena floor rather than on the fight; never blocks, never dims. */
+.boss-title {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 64%;
+    align-items: center;
+    opacity: 0;
+}
+
+.boss-title__epithet {
+    font-size: 20px;
+    color: rgb(138, 116, 52);
+    letter-spacing: 6px;
+    margin-bottom: 12px;
+    -unity-text-align: middle-center;
+}
+
+.boss-title__name {
+    font-size: 76px;
+    color: rgb(240, 230, 210);
+    letter-spacing: 8px;
+    -unity-text-align: middle-center;
+    text-shadow: 0 3px 8px rgba(0, 0, 0, 0.9);
+    -unity-text-outline-width: 0.4px;
+    -unity-text-outline-color: rgba(0, 0, 0, 0.8);
+}
+
+.boss-title__rule {
+    width: 0;
+    margin-top: 12px;
+}
+
 /* ---------- fade and death ---------- */
 
 .fade {

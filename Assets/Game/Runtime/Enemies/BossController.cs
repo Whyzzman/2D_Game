@@ -43,6 +43,8 @@ namespace ForgottenKingdom
     {
         [SerializeField] private string _bossId = "guardian-of-the-tomb";
         [SerializeField] private string _displayName = "Страж Гробниці";
+        [Tooltip("The line over the name on the boss's title card.")]
+        [SerializeField] private string _epithet = string.Empty;
         [SerializeField] private EnemyMotor2D _motor;
         [SerializeField] private CombatActor _actor;
         [SerializeField] private Hitbox _hitbox;
@@ -106,6 +108,7 @@ namespace ForgottenKingdom
 
         public string BossId => _bossId;
         public string DisplayName => _displayName;
+        public string Epithet => _epithet;
 
         /// <summary>Health share at which phase two begins; the boss bar marks it.</summary>
         public float PhaseTwoHealthFraction => _phaseTwoHealthFraction;

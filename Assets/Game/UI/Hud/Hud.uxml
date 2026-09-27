@@ -149,6 +149,13 @@
             <ui:VisualElement class="zone-title__rule ornament" picking-mode="Ignore" />
         </ui:VisualElement>
 
+        <!-- design/ui/boss-title/boss-title.html: the boss's name as its arena seals. -->
+        <ui:VisualElement name="boss-title" class="boss-title" picking-mode="Ignore">
+            <ui:Label name="boss-title-epithet" class="boss-title__epithet display" text="" picking-mode="Ignore" />
+            <ui:Label name="boss-title-name" class="boss-title__name display" text="" picking-mode="Ignore" />
+            <ui:VisualElement name="boss-title-rule" class="boss-title__rule ornament" picking-mode="Ignore" />
+        </ui:VisualElement>
+
         <ui:VisualElement name="fade" class="fade" picking-mode="Ignore" />
 
         <ui:VisualElement name="death" class="death" picking-mode="Ignore">

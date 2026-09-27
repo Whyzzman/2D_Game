@@ -1431,6 +1431,8 @@ namespace ForgottenKingdom.EditorTools
             SetSorting(shieldRenderer, "Characters", 4);
 
             var boss = Ensure<BossController>(root);
+            // The epithets on the title cards (approved with design/ui/boss-title, 2026-09-27).
+            SetString(boss, "_epithet", "Той, хто не спить");
             SetReference(boss, "_hitbox", hitbox);
             SetReference(boss, "_shockwave", shockwave);
             SetReference(boss, "_bodyCollider", capsule);

@@ -80,6 +80,7 @@ namespace ForgottenKingdom
         private Label _purse;
         private VisualElement _prompt;
         private Label _promptText;
+        private BossTitleCard _bossTitle;
         private VisualElement _zoneTitle;
         private Label _zoneTitleText;
         private VisualElement _fade;
@@ -139,6 +140,9 @@ namespace ForgottenKingdom
         public bool IsDeathShown => _death != null && _death.ClassListContains("death--visible");
         public float FadeAmount => _fadeValue;
         public string ZoneTitleText => _zoneTitleText != null ? _zoneTitleText.text : string.Empty;
+
+        /// <summary>For tests: the boss title card.</summary>
+        public BossTitleCard BossTitle => _bossTitle;
 
         private void OnEnable()
         {
@@ -220,6 +224,7 @@ namespace ForgottenKingdom
             _promptText = _root.Q<Label>("prompt-text");
             _zoneTitle = _root.Q("zone-title");
             _zoneTitleText = _root.Q<Label>("zone-title-text");
+            _bossTitle = new BossTitleCard(_root);
             _fade = _root.Q("fade");
             _death = _root.Q("death");
             _weaponSlot = new Slot(_root.Q("slot-weapon"));
@@ -319,6 +324,7 @@ namespace ForgottenKingdom
             UpdatePurseAndPrompt();
             UpdateFade(dt);
             UpdateZoneTitle(dt);
+            _bossTitle?.Tick(dt);
         }
 
         private void UpdateResources(float dt)
@@ -432,6 +438,8 @@ namespace ForgottenKingdom
                 _shownBossPhase = -1;
                 _bossMeter.Snap(share);
                 if (_bossName != null) { _bossName.text = boss.DisplayName; }
+                // The seal has just closed: the boss is named once, as the fight begins.
+                _bossTitle?.Show(boss.DisplayName, boss.Epithet);
                 if (_bossMark != null)
                 {
                     _bossMark.style.left = Length.Percent(boss.PhaseTwoHealthFraction * 100f);
@@ -544,7 +552,8 @@ namespace ForgottenKingdom
 
             var prompt = _interactor != null ? _interactor.CurrentPrompt : string.Empty;
             var dead = _player != null && !_player.IsAlive;
-            if (dead)
+            // The boss's name sits where the prompt does; for its few seconds the name wins.
+            if (dead || (_bossTitle != null && _bossTitle.IsShowing))
             {
                 prompt = string.Empty;
             }
@@ -621,6 +630,7 @@ namespace ForgottenKingdom
             // Death owns the centre of the screen: a zone card still fading must not sit on it.
             _titleClock = -1f;
             if (_zoneTitle != null) { _zoneTitle.style.opacity = 0f; }
+            _bossTitle?.Hide();
             _death?.EnableInClassList("death--visible", true);
         }
 

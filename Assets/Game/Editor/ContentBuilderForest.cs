@@ -644,6 +644,7 @@ namespace ForgottenKingdom.EditorTools
             var boss = Ensure<BossController>(root);
             SetString(boss, "_bossId", WardenBossId);
             SetString(boss, "_displayName", "Порожній Вартовий");
+            SetString(boss, "_epithet", "Корінь, що пам'ятає");
             SetReference(boss, "_hitbox", hitbox);
             SetReference(boss, "_bodyCollider", capsule);
             // No shield and no shockwave: this one is not the Guardian wearing green.
