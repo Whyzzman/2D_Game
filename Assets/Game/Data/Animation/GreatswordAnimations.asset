@@ -61,6 +61,26 @@ MonoBehaviour:
     - {fileID: 21300000, guid: aa6f7d6835905014a8e9db0c5a973352, type: 3}
     _framesPerSecond: 18
     _isLooping: 0
+  _attackUp:
+    _clipName: player_attackup
+    _frames:
+    - {fileID: 21300000, guid: 36a039115510e4b6a95dddce3c66c488, type: 3}
+    - {fileID: 21300000, guid: e42f3b6cc8fe646e6adfb2fa6976663c, type: 3}
+    - {fileID: 21300000, guid: c00bccdd6b85f42e5bcb42c6d2ceefeb, type: 3}
+    - {fileID: 21300000, guid: c8eeb261fd67f4b249f8fddf131412b4, type: 3}
+    - {fileID: 21300000, guid: d2e7ef6c56bcc48219a9984c89af9085, type: 3}
+    _framesPerSecond: 18
+    _isLooping: 0
+  _attackDown:
+    _clipName: player_attackdown
+    _frames:
+    - {fileID: 21300000, guid: 01674d6cfee51477dacd6b53686dfbd4, type: 3}
+    - {fileID: 21300000, guid: c5a3f1eb0e5e84069ae6756a1b71ddae, type: 3}
+    - {fileID: 21300000, guid: 87e30d3e23dba4e8580884f9fcd906e0, type: 3}
+    - {fileID: 21300000, guid: a1f7952e9ba1741c1abcbc08bc4246f5, type: 3}
+    - {fileID: 21300000, guid: 71af96559cbad460fa12c183a4ded12a, type: 3}
+    _framesPerSecond: 18
+    _isLooping: 0
   _block:
     _clipName: 
     _frames: []

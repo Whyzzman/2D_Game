@@ -26,6 +26,8 @@ namespace ForgottenKingdom
         [SerializeField] private AnimationClipDefinition _attack2 = new AnimationClipDefinition();
         [SerializeField] private AnimationClipDefinition _attack3 = new AnimationClipDefinition();
         [SerializeField] private AnimationClipDefinition _heavy = new AnimationClipDefinition();
+        [SerializeField] private AnimationClipDefinition _attackUp = new AnimationClipDefinition();
+        [SerializeField] private AnimationClipDefinition _attackDown = new AnimationClipDefinition();
         [SerializeField] private AnimationClipDefinition _block = new AnimationClipDefinition();
         [SerializeField] private AnimationClipDefinition _parry = new AnimationClipDefinition();
 
@@ -41,6 +43,8 @@ namespace ForgottenKingdom
                 case PlayerAnimationState.Attack2: return Valid(_attack2);
                 case PlayerAnimationState.Attack3: return Valid(_attack3);
                 case PlayerAnimationState.Heavy: return Valid(_heavy);
+                case PlayerAnimationState.AttackUp: return Valid(_attackUp);
+                case PlayerAnimationState.AttackDown: return Valid(_attackDown);
                 case PlayerAnimationState.Block: return Valid(_block);
                 case PlayerAnimationState.Parry: return Valid(_parry);
                 default: return null;

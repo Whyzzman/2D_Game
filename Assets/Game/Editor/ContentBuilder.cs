@@ -3310,8 +3310,9 @@ namespace ForgottenKingdom.EditorTools
             serialized.FindProperty("_weaponType").enumValueIndex = (int)WeaponType.Greatsword;
             foreach (var spec in PlaceholderPlayerArt.GreatswordStates)
             {
-                var field = spec.State == PlayerAnimationState.Heavy
-                    ? "_heavy"
+                var field = spec.State == PlayerAnimationState.Heavy ? "_heavy"
+                    : spec.State == PlayerAnimationState.AttackUp ? "_attackUp"
+                    : spec.State == PlayerAnimationState.AttackDown ? "_attackDown"
                     : "_attack" + ((int)spec.State - (int)PlayerAnimationState.Attack1 + 1);
                 WriteClip(serialized.FindProperty(field), spec, frames[spec.State]);
             }

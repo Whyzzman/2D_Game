@@ -66,8 +66,7 @@ namespace ForgottenKingdom.Tests
         {
             foreach (PlayerAnimationState state in Enum.GetValues(typeof(PlayerAnimationState)))
             {
-                if (state == PlayerAnimationState.Heal || state == PlayerAnimationState.AttackUp
-                    || state == PlayerAnimationState.AttackDown)
+                if (state == PlayerAnimationState.Heal)
                 {
                     // Drinking a flask has no art yet and borrows the cast's opening on purpose
                     // (ANIMATION_LIST.md); it must still never come up empty.
@@ -105,6 +104,21 @@ namespace ForgottenKingdom.Tests
             Assert.That(_set.Clip(PlayerAnimationState.Run, null).IsLooping, Is.True);
             Assert.That(_set.Clip(PlayerAnimationState.Death, null).IsLooping, Is.False);
             Assert.That(_set.Clip(PlayerAnimationState.Attack1, null).IsLooping, Is.False);
+        }
+
+        [Test]
+        public void TheSwingsUpAndDownAreTheirOwnPoses()
+        {
+            var side = _set.Clip(PlayerAnimationState.Attack1, null);
+            foreach (var state in new[] { PlayerAnimationState.AttackUp, PlayerAnimationState.AttackDown })
+            {
+                var clip = _set.Clip(state, null);
+                Assert.That(clip, Is.Not.SameAs(side), $"{state} still borrows the side swing.");
+                Assert.That(clip.IsLooping, Is.False);
+                var greatsword = _set.WeaponSet(WeaponType.Greatsword);
+                Assert.That(_set.Clip(state, greatsword), Is.Not.SameAs(clip),
+                    $"The greatsword's {state} is its own, as its side swings are.");
+            }
         }
 
         // ---------- weapon overrides ----------

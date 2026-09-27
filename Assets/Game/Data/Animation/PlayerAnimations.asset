@@ -316,6 +316,26 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 301b47535881b254c9a4c50502b1328a, type: 3}
       _framesPerSecond: 24
       _isLooping: 0
+  - state: 33
+    clip:
+      _clipName: player_attackup
+      _frames:
+      - {fileID: 21300000, guid: c84158f4d1f4345f0b97167f35089ead, type: 3}
+      - {fileID: 21300000, guid: ee328cb1f87644a0f9d07736c593f546, type: 3}
+      - {fileID: 21300000, guid: 1c38a6c7bee6443e99988012d17c9ad6, type: 3}
+      - {fileID: 21300000, guid: dd52de8672ff3433d866dcf7300af200, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+  - state: 34
+    clip:
+      _clipName: player_attackdown
+      _frames:
+      - {fileID: 21300000, guid: ae1184e40e82f48f38bb69263f4dff74, type: 3}
+      - {fileID: 21300000, guid: ac6e2442d254c4ed3902caca4daed90d, type: 3}
+      - {fileID: 21300000, guid: 7cc1b5bb4809f44cca17acff9f0e62ab, type: 3}
+      - {fileID: 21300000, guid: 5605c4a196d904805beda60916fbdec4, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
   _fallback:
     _clipName: player_idle
     _frames:

@@ -54,8 +54,8 @@ namespace ForgottenKingdom
         /// </summary>
         Heal,
         /// <summary>
-        /// The swings up and down (pogo). Added last, like Heal; until they have frames of their
-        /// own they borrow the first swing, so they are never shown empty.
+        /// The swings up and down (pogo). Added last, like Heal; they have their own frames, and
+        /// should a set lack them they borrow the first swing rather than showing nothing.
         /// </summary>
         AttackUp,
         AttackDown

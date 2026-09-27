@@ -92,7 +92,9 @@ namespace ForgottenKingdom.EditorTools
             new StateSpec(PlayerAnimationState.ShadowDashEnd, 3, 24f, false),
             new StateSpec(PlayerAnimationState.ShadowStrike, 5, 24f, false),
             new StateSpec(PlayerAnimationState.WeaponSwitch, 3, 24f, false),
-            new StateSpec(PlayerAnimationState.ActiveSkill, 4, 24f, false)
+            new StateSpec(PlayerAnimationState.ActiveSkill, 4, 24f, false),
+            new StateSpec(PlayerAnimationState.AttackUp, 4, 24f, false),
+            new StateSpec(PlayerAnimationState.AttackDown, 4, 24f, false)
         };
 
         /// <summary>
@@ -105,7 +107,9 @@ namespace ForgottenKingdom.EditorTools
             new StateSpec(PlayerAnimationState.Attack1, 5, 18f, false),
             new StateSpec(PlayerAnimationState.Attack2, 5, 18f, false),
             new StateSpec(PlayerAnimationState.Attack3, 6, 18f, false),
-            new StateSpec(PlayerAnimationState.Heavy, 7, 18f, false)
+            new StateSpec(PlayerAnimationState.Heavy, 7, 18f, false),
+            new StateSpec(PlayerAnimationState.AttackUp, 5, 18f, false),
+            new StateSpec(PlayerAnimationState.AttackDown, 5, 18f, false)
         };
 
         /// <summary>Writes every missing or changed frame and returns the sprites, per state.</summary>
@@ -340,6 +344,10 @@ namespace ForgottenKingdom.EditorTools
                         alpha: Mathf.Lerp(0.55f, 1f, Mathf.Min(1f, t * 2f)));
                 case PlayerAnimationState.ActiveSkill:
                     return SwingPose(t, -60f, 50f, 16f, 1f * reachScale);
+                case PlayerAnimationState.AttackUp:
+                    return UpSwingPose(t, reachScale);
+                case PlayerAnimationState.AttackDown:
+                    return DownSwingPose(t, reachScale);
 
                 case PlayerAnimationState.Block:
                     pose.Lean = 12f;
@@ -550,6 +558,59 @@ namespace ForgottenKingdom.EditorTools
             pose.Squash = 1f;
             pose.Alpha = alpha;
             return pose;
+        }
+
+        /// <summary>
+        /// The swing up: the blade starts low and forward and finishes pointing straight overhead,
+        /// the body leaning back under it, so the arc reads as "up" even without the effect.
+        /// </summary>
+        private static Pose UpSwingPose(float t, float reach)
+        {
+            var pose = Pose.Stand;
+            var eased = Commit(t);
+            pose.Lean = Mathf.Lerp(10f, -10f, eased);
+            pose.HipY = Mathf.Lerp(72f, 80f, eased);
+            pose.FrontArm = Mathf.Lerp(-34f, 158f, eased);
+            pose.FrontForearm = Mathf.Lerp(34f, 18f, eased) * reach;
+            pose.BackArm = Mathf.Lerp(-20f, -40f, eased);
+            pose.BackForearm = 24f;
+            pose.FrontThigh = Mathf.Lerp(16f, 8f, eased);
+            pose.FrontShin = Mathf.Lerp(-26f, -6f, eased);
+            pose.BackThigh = Mathf.Lerp(-18f, -8f, eased);
+            pose.BackShin = Mathf.Lerp(-22f, -8f, eased);
+            pose.HeadTilt = Mathf.Lerp(0f, -14f, eased);
+            pose.CloakSway = Mathf.Lerp(-8f, 20f, eased);
+            return pose;
+        }
+
+        /// <summary>
+        /// The swing down, only ever in the air: knees tucked, the blade raised overhead and driven
+        /// straight down past the feet — the pose of a pogo, which has to be readable at a glance.
+        /// </summary>
+        private static Pose DownSwingPose(float t, float reach)
+        {
+            var pose = Pose.Stand;
+            var eased = Commit(t);
+            pose.Lean = Mathf.Lerp(-6f, 14f, eased);
+            pose.HipY = 84f;
+            pose.FrontArm = Mathf.Lerp(132f, -18f, eased);
+            pose.FrontForearm = Mathf.Lerp(24f, -34f, eased) * reach;
+            pose.BackArm = Mathf.Lerp(40f, 60f, eased);
+            pose.BackForearm = 20f;
+            pose.FrontThigh = 48f;
+            pose.FrontShin = -70f;
+            pose.BackThigh = 26f;
+            pose.BackShin = -62f;
+            pose.HeadTilt = Mathf.Lerp(-6f, 12f, eased);
+            pose.CloakSway = Mathf.Lerp(-18f, -34f, eased);
+            return pose;
+        }
+
+        /// <summary>Wind up, commit, follow through — the same beat as <see cref="SwingPose"/>.</summary>
+        private static float Commit(float t)
+        {
+            var commit = Mathf.Clamp01((t - 0.25f) / 0.45f);
+            return commit * commit * (3f - 2f * commit);
         }
 
         // ---------- rasterising ----------
