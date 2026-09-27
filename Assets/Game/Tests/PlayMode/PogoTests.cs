@@ -196,5 +196,31 @@ namespace ForgottenKingdom.Tests
             Assert.That(_motor.Velocity.y, Is.GreaterThan(0f));
             Assert.That(_motor.AirDashesUsed, Is.Zero);
         }
+
+        [UnityTest]
+        public IEnumerator ALandedSideSwingPushesThePlayerBackALittle()
+        {
+            yield return Load("TombTrial");
+            var dummy = Object.FindAnyObjectByType<TrainingDummy>();
+            Assume.That(dummy, Is.Not.Null);
+            var facing = _motor.FacingDirection;
+            _motor.ResetTo(new Vector2(dummy.transform.position.x - facing * 1.1f, dummy.transform.position.y));
+            yield return WaitUntil(() => _motor.IsGrounded, 2f);
+            yield return new WaitForSeconds(0.3f);
+            Assume.That(_motor.FacingDirection, Is.EqualTo(facing));
+
+            var recoils = 0;
+            _combat.Recoiled += () => recoils++;
+            var hits = dummy.HitCount;
+            var before = _motor.transform.position.x;
+            Assert.That(_combat.TryStartLight(AttackDirection.Side), Is.True);
+            yield return WaitUntil(() => dummy.HitCount > hits, 1f);
+            Assume.That(dummy.HitCount, Is.GreaterThan(hits), "The swing has to land.");
+            yield return new WaitForSeconds(0.3f);
+
+            var moved = (_motor.transform.position.x - before) * -facing;
+            Assert.That(recoils, Is.EqualTo(1), "One push per swing.");
+            Assert.That(moved, Is.InRange(0.2f, 1.2f), "Pushed away from the dummy, a little.");
+        }
     }
 }

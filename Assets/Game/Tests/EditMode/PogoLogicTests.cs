@@ -62,5 +62,21 @@ namespace ForgottenKingdom.Tests
                 Is.Not.EqualTo(WeaponTrail.ArcPoint(AttackDirection.Up, 1f, 1, 1.35f)),
                 "The point travels.");
         }
+
+        [Test]
+        public void OnlyASideSwingPushesBackAndAShieldPushesHarder()
+        {
+            Assert.That(PlayerCombat.RecoilOf(AttackDirection.Side, DamageOutcome.Hit, true).push, Is.EqualTo(1f));
+            Assert.That(PlayerCombat.RecoilOf(AttackDirection.Side, DamageOutcome.Blocked, true).push,
+                Is.GreaterThan(1f), "A shield pushes back harder than flesh.");
+            Assert.That(PlayerCombat.RecoilOf(AttackDirection.Side, DamageOutcome.Ignored, true),
+                Is.EqualTo((0f, 0f)), "A hit that did nothing pushes nothing.");
+            Assert.That(PlayerCombat.RecoilOf(AttackDirection.Up, DamageOutcome.Hit, false).fall,
+                Is.GreaterThan(0f), "A swing up in the air presses the fall.");
+            Assert.That(PlayerCombat.RecoilOf(AttackDirection.Up, DamageOutcome.Hit, true),
+                Is.EqualTo((0f, 0f)), "On the ground it does nothing.");
+            Assert.That(PlayerCombat.RecoilOf(AttackDirection.Down, DamageOutcome.Hit, false),
+                Is.EqualTo((0f, 0f)), "The swing down has its pogo instead.");
+        }
     }
 }

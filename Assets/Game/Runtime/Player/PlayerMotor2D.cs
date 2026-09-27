@@ -45,6 +45,10 @@ namespace ForgottenKingdom
         private Vector3 _visualScale;
         private float _lastHorizontalInput;
         private Vector2? _skillVelocity;
+        private float _recoilSpeed;
+        private float _recoilFallSpeed;
+        private float _recoilUntil;
+        private bool _recoilPending;
         public void SetSkillVelocity(Vector2? velocity) { _skillVelocity = velocity; }
         private GameProgress _progress;
         private StatusEffects _statuses;
@@ -180,6 +184,11 @@ namespace ForgottenKingdom
                 nextVelocity.x *= _statuses.MovementMultiplier;
             }
 
+            if (!_skillVelocity.HasValue)
+            {
+                nextVelocity = ApplyRecoil(nextVelocity, mode);
+            }
+
             nextVelocity = _skillVelocity.HasValue
                 ? SlopeOff(nextVelocity)
                 : _slope.FromFlat(nextVelocity, hasGround && IsGrounded,
@@ -237,10 +246,59 @@ namespace ForgottenKingdom
 
         public bool IsBouncing => _logic != null && _logic.IsBouncing;
 
-        /// <summary>The last spot on the ground clear of spikes; spikes return the player here.</summary>
+        /// <summary>
+        /// The recoil of a landed hit, as in Hollow Knight: for a moment the horizontal speed is
+        /// the recoil's, whatever the stick says, and a fall may be pressed a little faster. It
+        /// nudges, it never throws — a dash, a skill or a knockback overrides it.
+        /// </summary>
+        public void Recoil(float horizontalSpeed, float minimumFallSpeed, float duration)
+        {
+            _recoilSpeed = horizontalSpeed;
+            _recoilFallSpeed = minimumFallSpeed;
+            _recoilUntil = Time.time + Mathf.Max(0f, duration);
+            _recoilPending = true;
+        }
+
+        public bool IsRecoiling => Time.time < _recoilUntil;
+
+        private Vector2 ApplyRecoil(Vector2 velocity, LocomotionMode mode)
+        {
+            if (IsDashing || mode == LocomotionMode.Knockback)
+            {
+                _recoilPending = false;
+                return velocity;
+            }
+
+            if (!IsRecoiling)
+            {
+                // The push ends where it was meant to: the slowed movement of a swing would
+                // otherwise take its time braking, and carry the player twice as far.
+                if (_recoilPending && velocity.x * _recoilSpeed > 0f)
+                {
+                    velocity.x = 0f;
+                }
+
+                _recoilPending = false;
+                return velocity;
+            }
+
+            if (!Mathf.Approximately(_recoilSpeed, 0f))
+            {
+                velocity.x = _recoilSpeed;
+            }
+
+            if (_recoilFallSpeed > 0f && !IsGrounded)
+            {
+                velocity.y = Mathf.Min(velocity.y, -_recoilFallSpeed);
+            }
+
+            return velocity;
+        }
+
         /// <summary>What the player stands on; the camera reads the level's shape from it.</summary>
         public LayerMask GroundMask => _groundMask;
 
+        /// <summary>The last spot on the ground clear of spikes; spikes return the player here.</summary>
         public Vector2 LastSafeGround { get; private set; }
         public bool HasSafeGround { get; private set; }
 
@@ -280,6 +338,8 @@ namespace ForgottenKingdom
             _logic.Reset();
             _cornerShiftUsed = 0f;
             _skillVelocity = null;
+            _recoilUntil = 0f;
+            _recoilPending = false;
             _wallMovement?.ResetMovement();
             _input.ClearInput();
             if (_visual != null)
