@@ -53,6 +53,18 @@ MonoBehaviour:
     profile: {fileID: 11400000, guid: 3468d205c7a13324d89f9a07b2a2de9d, type: 2}
   - kind: 19
     profile: {fileID: 11400000, guid: 4d9c8c3bd70a4794bb16c6d6f3f4cad3, type: 2}
+  - kind: 30
+    profile: {fileID: 11400000, guid: 5947d97b15aad474a8483f81b04042da, type: 2}
+  - kind: 31
+    profile: {fileID: 11400000, guid: 140f0eafbd556496e843bd40672e9849, type: 2}
+  - kind: 32
+    profile: {fileID: 11400000, guid: 99581179e75254027bd5a7c10186a983, type: 2}
+  - kind: 33
+    profile: {fileID: 11400000, guid: 28fd4488e71cc4864b6a1203c9fed7d5, type: 2}
+  - kind: 34
+    profile: {fileID: 11400000, guid: 6b66f4e90e5ed4957993fb979f41e740, type: 2}
+  - kind: 35
+    profile: {fileID: 11400000, guid: ce2baf5388e4d46cea51515e277c0230, type: 2}
   - kind: 20
     profile: {fileID: 11400000, guid: bd991e75ff3f8bb4abb13f8650ddd5f8, type: 2}
   - kind: 21

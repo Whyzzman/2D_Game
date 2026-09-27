@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1948b099c584578408b2536d2dd0cc7d, type: 3}
+  m_Name: feedback_landdust
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.FeedbackProfile
+  _burst:
+    _clipName: vfx_dust_land
+    _frames:
+    - {fileID: 21300000, guid: 441e0c5181ec44115a364a1d38c77209, type: 3}
+    - {fileID: 21300000, guid: f4984843906e0407797daec6c437abe5, type: 3}
+    - {fileID: 21300000, guid: a50b303f61e744e1ca4da95cc2f33aa5, type: 3}
+    - {fileID: 21300000, guid: ac5ac0b544ee2497999a28d3993ce08b, type: 3}
+    - {fileID: 21300000, guid: a3649733637a1444f9d037ad462c4a42, type: 3}
+    - {fileID: 21300000, guid: 865a84ee958314c6f9a655744ba0614b, type: 3}
+    _framesPerSecond: 20
+    _isLooping: 0
+  _tint: {r: 1, g: 1, b: 1, a: 1}
+  _scale: 1
+  _facesHitDirection: 0
+  _mirrorsToDirection: 0
+  _sortingLayer: VFXBack
+  _sortingOrder: 0
+  _hitStop: 0
+  _shake: 0
+  _shakeScale: 1
+  _shakeVerticalBias: 1
+  _screenFlash: 0
+  _flashColor: {r: 1, g: 1, b: 1, a: 1}
+  _lightColor: {r: 0, g: 0, b: 0, a: 0}
+  _lightRadius: 2
+  _lightDuration: 0.18
+  _priority: 1
+  _soundEvent: 
+  _haptic: 0

@@ -1156,6 +1156,7 @@ namespace ForgottenKingdom.EditorTools
             BuildPlayerVisual(root);
             BuildStatusVfx(root, 0.85f);
             BuildInvulnerabilityBlink(root);
+            Ensure<MovementFeedback>(root);
             BuildWeaponTrail(root, combat);
             StripMissingScripts(root);
 
@@ -2915,9 +2916,23 @@ namespace ForgottenKingdom.EditorTools
 
             // Movement: read as dust and motion, never as magic.
             entries.Add(Feedback(FeedbackKind.Dash, "vfx_dash", shake: ShakeProfile.None,
-                priority: 5, layer: "VFXBack"));
+                priority: 5, layer: "VFXBack", mirrors: true));
             entries.Add(Feedback(FeedbackKind.AirDash, "vfx_air_dash", shake: ShakeProfile.None,
-                priority: 5, layer: "VFXBack"));
+                priority: 5, layer: "VFXBack", mirrors: true));
+            // Footwork dust (MovementFeedback): the lowest priority there is, so it never claims
+            // the screen from anything, and no sound — the footsteps already have theirs.
+            entries.Add(Feedback(FeedbackKind.JumpDust, "vfx_dust_jump", shake: ShakeProfile.None,
+                priority: 1, facesDirection: false, layer: "VFXBack"));
+            entries.Add(Feedback(FeedbackKind.LandDust, "vfx_dust_land", shake: ShakeProfile.None,
+                priority: 1, facesDirection: false, layer: "VFXBack"));
+            entries.Add(Feedback(FeedbackKind.RunDust, "vfx_dust_kick", shake: ShakeProfile.None,
+                priority: 1, layer: "VFXBack", mirrors: true));
+            entries.Add(Feedback(FeedbackKind.WallSlideDust, "vfx_dust_wall", shake: ShakeProfile.None,
+                priority: 1, layer: "VFXBack", mirrors: true));
+            entries.Add(Feedback(FeedbackKind.WallJump, "vfx_wall_kick", shake: ShakeProfile.None,
+                priority: 1, layer: "VFXBack", mirrors: true));
+            entries.Add(Feedback(FeedbackKind.AirJump, "vfx_air_jump", shake: ShakeProfile.None,
+                priority: 1, facesDirection: false, layer: "VFXBack"));
             entries.Add(Feedback(FeedbackKind.WallContact, "vfx_wall_contact",
                 shake: ShakeProfile.None, priority: 5, layer: "VFXBack"));
 
@@ -2979,7 +2994,8 @@ namespace ForgottenKingdom.EditorTools
             float hitStop = 0f, ShakeProfile shake = ShakeProfile.Tiny, float shakeScale = 1f,
             float verticalBias = 1f, float flash = 0f, Color flashColor = default,
             Color light = default, float lightRadius = 2f, int priority = 10, float scale = 1f,
-            bool facesDirection = true, string layer = "VFXFront", string sound = "")
+            bool facesDirection = true, string layer = "VFXFront", string sound = "",
+            bool mirrors = false)
         {
             var name = "feedback_" + kind.ToString().ToLowerInvariant();
             var profile = CreateAsset<FeedbackProfile>($"{FeedbackFolder}/{name}.asset");
@@ -2997,6 +3013,7 @@ namespace ForgottenKingdom.EditorTools
             serialized.FindProperty("_priority").intValue = priority;
             serialized.FindProperty("_scale").floatValue = scale;
             serialized.FindProperty("_facesHitDirection").boolValue = facesDirection;
+            serialized.FindProperty("_mirrorsToDirection").boolValue = mirrors;
             serialized.FindProperty("_sortingLayer").stringValue = layer;
             serialized.FindProperty("_tint").colorValue = Color.white;
             serialized.FindProperty("_soundEvent").stringValue = sound;

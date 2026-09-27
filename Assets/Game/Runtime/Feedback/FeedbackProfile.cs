@@ -39,7 +39,14 @@ namespace ForgottenKingdom
         EnemyDeath,
         Pickup,
         /// <summary>A swing down bouncing off an enemy or spikes. Appended: kinds are stored as numbers.</summary>
-        Pogo
+        Pogo,
+        // Movement dust (appended: kinds are stored as numbers).
+        JumpDust,
+        LandDust,
+        RunDust,
+        WallSlideDust,
+        WallJump,
+        AirJump
     }
 
     /// <summary>
@@ -61,6 +68,9 @@ namespace ForgottenKingdom
         [SerializeField, Min(0.01f)] private float _scale = 1f;
         [Tooltip("Turns the burst to face the hit direction; off for effects with no direction.")]
         [SerializeField] private bool _facesHitDirection = true;
+        [Tooltip("Mirrors the burst left or right instead of turning it, for effects with a floor "
+            + "under them: turned, ground dust thrown left would hang upside down.")]
+        [SerializeField] private bool _mirrorsToDirection;
         [SerializeField] private string _sortingLayer = "VFXFront";
         [SerializeField] private int _sortingOrder;
 
@@ -91,6 +101,7 @@ namespace ForgottenKingdom
         public Color Tint => _tint;
         public float Scale => _scale;
         public bool FacesHitDirection => _facesHitDirection;
+        public bool MirrorsToDirection => _mirrorsToDirection;
         public string SortingLayer => string.IsNullOrEmpty(_sortingLayer) ? "VFXFront" : _sortingLayer;
         public int SortingOrder => _sortingOrder;
         public ShakeProfile Shake => _shake;

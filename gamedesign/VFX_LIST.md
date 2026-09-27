@@ -75,8 +75,12 @@
 | --- | --- | --- | --- | --- | --- |
 | `vfx_dash` | `PlayerCharacter.DashStarted` | VFXBack | 0.18 с | **P0** | смуга руху, пил зі стоп |
 | `vfx_air_dash` | ривок у повітрі | VFXBack | 0.18 с | P1 | без пилу, інша форма |
-| `vfx_wall_slide` | `WallMovement.StateChanged` → Slide | VFXBack | цикл | P2 | іскри/пил по стіні |
-| `vfx_wall_jump` | → Jump | VFXBack | 0.20 с | P2 | поштовх від стіни |
+| `vfx_dust_wall` (було `vfx_wall_slide`) | `WallMovement.State` = Slide, кожні 0,11 с | VFXBack | 0.25 с | P2 | пил зі стіни, віддзеркалюється від неї — **зроблено** |
+| `vfx_wall_kick` (було `vfx_wall_jump`) | → Jump | VFXBack | 0.23 с | P2 | поштовх від стіни — **зроблено** |
+| `vfx_dust_jump` | `PlayerMotor2D.Jumped` (відрив від землі) | VFXBack | 0.23 с | P1 | пил в обидва боки від стоп — **зроблено** |
+| `vfx_dust_land` | `PlayerAnimationController.Landed`, падіння ≥ 3 од/с | VFXBack | 0.30 с | P1 | розмір від сили приземлення — **зроблено** |
+| `vfx_dust_kick` | старт бігу з місця й розворот на швидкості | VFXBack | 0.25 с | P1 | пил позаду, на рівному бігу немає — **зроблено** |
+| `vfx_air_jump` | `PlayerMotor2D.AirJumped` | VFXBack | 0.21 с | P2 | бліде кільце під ногами — **зроблено** |
 | `vfx_shadow_dash_start` | `ShadowAbilities.Started` (Dash) | VFXFront | 0.10 с | P1 | розчинення в дим |
 | `vfx_shadow_dash_trail` | під час ривка Тіні | VFXBack | цикл | P1 | **окремий ассет**, не запечений у спрайт |
 | `vfx_shadow_dash_end` | `ShadowAbilities.Ended` | VFXFront | 0.12 с | P1 | збирання з тіні |

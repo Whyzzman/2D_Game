@@ -70,6 +70,9 @@ namespace ForgottenKingdom
         /// <summary>Raised when the player actually takes the second jump.</summary>
         public event Action AirJumped;
 
+        /// <summary>A jump left the ground.</summary>
+        public event Action Jumped;
+
         public event Action<MovementState> StateChanged;
         public event Action Respawned;
 
@@ -94,6 +97,12 @@ namespace ForgottenKingdom
             : FacingDirection;
         public Vector2 Velocity => _body != null ? _body.linearVelocity : Vector2.zero;
 
+        /// <summary>The drawn body, flipped to face; presentation may squash it, never move it.</summary>
+        public Transform Visual => _visual;
+
+        /// <summary>The visual's authored scale, before facing is applied.</summary>
+        public Vector3 VisualScale => _visualScale;
+
         private void Awake()
         {
             _body = GetComponent<Rigidbody2D>();
@@ -105,6 +114,7 @@ namespace ForgottenKingdom
             _wallMovement = GetComponent<WallMovement>();
             _logic = new PlayerMovementLogic(_settings, _dashSettings);
             _logic.AirJumped += () => AirJumped?.Invoke();
+            _logic.Jumped += () => Jumped?.Invoke();
             _groundFilter = new ContactFilter2D();
             _groundFilter.SetLayerMask(_groundMask);
             _groundFilter.useTriggers = false;

@@ -27,6 +27,7 @@ MonoBehaviour:
   _tint: {r: 1, g: 1, b: 1, a: 1}
   _scale: 1
   _facesHitDirection: 1
+  _mirrorsToDirection: 0
   _sortingLayer: VFXFront
   _sortingOrder: 0
   _hitStop: 0.04

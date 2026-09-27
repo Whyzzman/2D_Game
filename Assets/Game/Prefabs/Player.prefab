@@ -737,6 +737,7 @@ GameObject:
   - component: {fileID: 4073653979807976577}
   - component: {fileID: 2267458759049365359}
   - component: {fileID: 163436257272519233}
+  - component: {fileID: 2828779501212156672}
   m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
@@ -1396,6 +1397,21 @@ MonoBehaviour:
   _blinksPerSecond: 10
   _dimAlpha: 0.3
   _steadyAlpha: 0.55
+--- !u!114 &2828779501212156672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5698690768296159545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 228bd82cef0bf4f0198172c38afdd481, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.MovementFeedback
+  _motor: {fileID: 0}
+  _wall: {fileID: 0}
+  _animation: {fileID: 0}
 --- !u!1 &5840511060120495854
 GameObject:
   m_ObjectHideFlags: 0

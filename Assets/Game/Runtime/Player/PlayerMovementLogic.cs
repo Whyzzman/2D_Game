@@ -100,6 +100,9 @@ namespace ForgottenKingdom
         /// <summary>Raised when a jump is actually taken in the air; the hook for its puff and sound.</summary>
         public event Action AirJumped;
 
+        /// <summary>Raised when a jump leaves the ground (not a bounce); the hook for its dust.</summary>
+        public event Action Jumped;
+
         /// <summary>
         /// A dash is available when none is running, the cooldown has elapsed, and the player is
         /// either on the ground or still has an air dash left.
@@ -223,6 +226,7 @@ namespace ForgottenKingdom
                 _coyoteRemaining = -1f;
                 _awaitingGroundExit = true;
                 IsGrounded = false;
+                Jumped?.Invoke();
             }
             else if (input.IsJumpPressed && IsAirJumpReady && !IsWallJumpPending)
             {

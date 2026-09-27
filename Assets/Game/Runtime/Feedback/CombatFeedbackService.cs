@@ -393,7 +393,10 @@ namespace ForgottenKingdom
         {
             var motor = player.GetComponent<PlayerMotor2D>();
             var grounded = motor == null || motor.IsGrounded;
-            PlayAt(grounded ? FeedbackKind.Dash : FeedbackKind.AirDash, player.transform);
+            // The streak trails behind the dash, so it follows the way the dash went.
+            var direction = new Vector2(motor != null ? motor.FacingDirection : 1, 0f);
+            PlayInternal(grounded ? FeedbackKind.Dash : FeedbackKind.AirDash,
+                player.transform.position, direction, 1f);
         }
 
         private void OnBossAttack(BossController boss, BossAttackKind kind)

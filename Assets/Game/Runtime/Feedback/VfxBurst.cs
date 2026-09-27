@@ -51,11 +51,14 @@ namespace ForgottenKingdom
             IsPlaying = _duration > 0f;
 
             transform.position = position;
-            var angle = profile.FacesHitDirection && direction.sqrMagnitude > 0.0001f
+            var angle = profile.FacesHitDirection && !profile.MirrorsToDirection
+                && direction.sqrMagnitude > 0.0001f
                 ? Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg
                 : 0f;
             transform.rotation = Quaternion.Euler(0f, 0f, angle);
-            transform.localScale = Vector3.one * Mathf.Max(0.01f, profile.Scale * scale);
+            var size = Mathf.Max(0.01f, profile.Scale * scale);
+            var mirror = profile.MirrorsToDirection && direction.x < 0f ? -1f : 1f;
+            transform.localScale = new Vector3(size * mirror, size, size);
 
             _renderer.enabled = true;
             _renderer.color = profile.Tint;

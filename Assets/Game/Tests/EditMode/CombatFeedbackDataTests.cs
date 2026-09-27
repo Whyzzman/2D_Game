@@ -114,6 +114,50 @@ namespace ForgottenKingdom.Tests
         }
 
         [Test]
+        public void FootworkDustNeverTakesTheScreenOrMakesASound()
+        {
+            var footwork = new[]
+            {
+                FeedbackKind.JumpDust, FeedbackKind.LandDust, FeedbackKind.RunDust,
+                FeedbackKind.WallSlideDust, FeedbackKind.WallJump, FeedbackKind.AirJump
+            };
+
+            foreach (var kind in footwork)
+            {
+                var profile = _library.Profile(kind);
+                Assert.That(profile.HitStop, Is.Zero, $"{kind} freezes the game.");
+                Assert.That(profile.Shake, Is.EqualTo(ShakeProfile.None), $"{kind} shakes the camera.");
+                Assert.That(profile.Priority, Is.LessThan(_library.Profile(FeedbackKind.Pickup).Priority),
+                    $"{kind} could take the screen from a real moment.");
+                Assert.That(profile.SoundEvent, Is.Empty, $"{kind} doubles the footstep sounds.");
+                Assert.That(profile.SortingLayer, Is.EqualTo("VFXBack"), $"{kind} covers the hero.");
+            }
+
+            // Directional dust mirrors instead of turning, or dust thrown left hangs upside down.
+            foreach (var kind in new[] { FeedbackKind.RunDust, FeedbackKind.WallSlideDust,
+                FeedbackKind.WallJump, FeedbackKind.Dash, FeedbackKind.AirDash })
+            {
+                Assert.That(_library.Profile(kind).MirrorsToDirection, Is.True, $"{kind} does not mirror.");
+            }
+        }
+
+        [Test]
+        public void TheSquashIsSlightAndKeepsTheBodysBulk()
+        {
+            var stretched = MovementFeedback.ScaleFor(MovementFeedback.JumpStretch);
+            var pressed = MovementFeedback.ScaleFor(-MovementFeedback.LandSquash);
+
+            Assert.That(stretched.y, Is.InRange(1.04f, 1.09f), "A jump stretch is a hint, not a cartoon.");
+            Assert.That(stretched.x, Is.LessThan(1f));
+            Assert.That(pressed.y, Is.InRange(0.9f, 0.96f));
+            Assert.That(pressed.x, Is.GreaterThan(1f));
+            Assert.That(MovementFeedback.ScaleFor(0f), Is.EqualTo(Vector2.one));
+            Assert.That(MovementFeedback.LandingWeight(MovementFeedback.LandDustSpeed),
+                Is.LessThan(MovementFeedback.LandingWeight(20f)), "A drop lands harder than a hop.");
+            Assert.That(MovementFeedback.LandingWeight(40f), Is.EqualTo(1f));
+        }
+
+        [Test]
         public void TheFourElementsKeepDifferentLightColours()
         {
             // Light colour is most of how a player tells at a glance what just hit them, so fire,

@@ -38,6 +38,9 @@ namespace ForgottenKingdom.EditorTools
         private static readonly Color32 Blood = new Color32(0x8E, 0x1B, 0x28, 0xFF);
         private static readonly Color32 Poison = new Color32(0x7F, 0xA8, 0x3C, 0xFF);
         private static readonly Color32 Dust = new Color32(0x6B, 0x60, 0x52, 0xFF);
+        // Footstep dust is lighter than impact dust: on the tomb's dark stone the darker tone vanishes.
+        private static readonly Color32 DustLight = new Color32(0x9A, 0x8E, 0x7C, 0xFF);
+        private static readonly Color32 DustPale = new Color32(0xC4, 0xB8, 0xA4, 0xFF);
         private static readonly Color32 GuardGold = new Color32(0xF0, 0xB4, 0x41, 0xFF);
         private static readonly Color32 Clear = new Color32(0, 0, 0, 0);
 
@@ -48,11 +51,15 @@ namespace ForgottenKingdom.EditorTools
             public readonly int Frames;
             public readonly float Fps;
 
-            public Spec(string name, int frames, float fps)
+            /// <summary>Height of the pivot: 0.5 bursts from the middle, low values sit on the floor.</summary>
+            public readonly float PivotY;
+
+            public Spec(string name, int frames, float fps, float pivotY = 0.5f)
             {
                 Name = name;
                 Frames = frames;
                 Fps = fps;
+                PivotY = pivotY;
             }
         }
 
@@ -90,8 +97,17 @@ namespace ForgottenKingdom.EditorTools
             new Spec("vfx_boss_phase", 16, 18f),
             new Spec("vfx_boss_death", 18, 16f),
             new Spec("vfx_enemy_death", 8, 16f),
-            new Spec("vfx_pickup", 6, 20f)
+            new Spec("vfx_pickup", 6, 20f),
+            // Movement dust sits on the floor it rose from, so it pivots at its base.
+            new Spec("vfx_dust_jump", 5, 22f, FloorPivot),
+            new Spec("vfx_dust_land", 6, 20f, FloorPivot),
+            new Spec("vfx_dust_kick", 5, 20f, FloorPivot),
+            new Spec("vfx_dust_wall", 4, 16f),
+            new Spec("vfx_wall_kick", 5, 22f),
+            new Spec("vfx_air_jump", 5, 24f, 0.7f)
         };
+
+        private const float FloorPivot = 0.1f;
 
         /// <summary>Looping overlays that ride on a creature rather than bursting once.</summary>
         public static readonly string[] Overlays =
@@ -115,7 +131,7 @@ namespace ForgottenKingdom.EditorTools
                     var path = $"{Root}/Impacts/{spec.Name}/{spec.Name}_{i:00}.png";
                     PlaceholderImport.EnsureFolder($"{Root}/Impacts/{spec.Name}");
                     PlaceholderImport.WriteIfChanged(path, Render(spec.Name, t).EncodePng());
-                    PlaceholderImport.ConfigureImporter(path, new Vector2(0.5f, 0.5f));
+                    PlaceholderImport.ConfigureImporter(path, new Vector2(0.5f, spec.PivotY));
                     frames[i] = AssetDatabase.LoadAssetAtPath<Sprite>(path);
                 }
 
@@ -178,6 +194,12 @@ namespace ForgottenKingdom.EditorTools
                 case "vfx_boss_death": return BossDeath(t);
                 case "vfx_enemy_death": return Motes(t, 170, new Color32(0x2B, 0x1F, 0x3A, 0xFF));
                 case "vfx_pickup": return Sparkle(t);
+                case "vfx_dust_jump": return DustPuffs(t, 170, 5, 1f, 0.25f, 1f);
+                case "vfx_dust_land": return DustPuffs(t, 230, 8, 1f, 0.12f, 1.2f);
+                case "vfx_dust_kick": return DustPuffs(t, 150, 5, 0f, 0.2f, 0.9f);
+                case "vfx_dust_wall": return WallDust(t, false);
+                case "vfx_wall_kick": return WallDust(t, true);
+                case "vfx_air_jump": return AirJumpPuff(t);
                 default: return new Canvas(64, 64);
             }
         }
@@ -562,6 +584,85 @@ namespace ForgottenKingdom.EditorTools
                 var puff = 7f + (float)rng.NextDouble() * 13f;
                 c.Ellipse(new Vector2(x, y), puff * fade, puff * 0.62f * fade,
                     Fade(Dust, fade * 0.7f));
+            }
+
+            return c;
+        }
+
+        /// <summary>
+        /// Dust rolling out along the floor from the feet. <paramref name="spread"/> 1 throws it
+        /// both ways (jump, landing); 0 throws it all behind — drawn to the left, for a run to the
+        /// right, and mirrored at runtime. Low and soft: it is a footstep, not an impact.
+        /// </summary>
+        private static Canvas DustPuffs(float t, int size, int perSide, float spread, float rise,
+            float bulk)
+        {
+            var c = new Canvas(size, size / 2);
+            var floor = new Vector2(size * 0.5f, size * 0.5f * FloorPivot);
+            var rng = new System.Random(size + perSide);
+            var fade = Opacity(t) * 0.8f;
+            var ease = 1f - (1f - t) * (1f - t);
+            var sides = spread > 0.5f ? new[] { -1f, 1f } : new[] { -1f };
+            foreach (var side in sides)
+            {
+                for (var i = 0; i < perSide; i++)
+                {
+                    // Spread evenly outward, so the puffs roll out as a line rather than a lump.
+                    var reach = size * 0.4f * ((i + 0.3f + 0.4f * (float)rng.NextDouble()) / perSide);
+                    var lift = size * rise * (0.3f + (float)rng.NextDouble()) * ease;
+                    var at = floor + new Vector2(side * (6f + reach * ease), 7f + lift);
+                    var puff = (9f + (float)rng.NextDouble() * 7f) * bulk * Mathf.Lerp(0.6f, 1.35f, t);
+                    c.Ellipse(at, puff, puff * 0.7f, Fade(DustLight, fade * 0.7f));
+                    c.Ellipse(at + new Vector2(0f, puff * 0.2f), puff * 0.55f, puff * 0.4f,
+                        Fade(DustPale, fade * 0.5f));
+                }
+            }
+
+            return c;
+        }
+
+        /// <summary>
+        /// Dust off a wall: drawn with the wall on the left and the dust leaving it to the right.
+        /// A slide sheds a few flakes that fall; a leap throws a short burst away from the stone.
+        /// </summary>
+        private static Canvas WallDust(float t, bool leap)
+        {
+            var c = new Canvas(120, 120);
+            var wall = new Vector2(20f, 60f);
+            var rng = new System.Random(leap ? 121 : 122);
+            var fade = Opacity(t) * 0.8f;
+            var count = leap ? 7 : 3;
+            for (var i = 0; i < count; i++)
+            {
+                var angle = Mathf.Lerp(-1.1f, 1.1f, (i + 0.5f) / count) + (float)(rng.NextDouble() - 0.5) * 0.3f;
+                var reach = (leap ? 70f : 26f) * (0.5f + 0.5f * (float)rng.NextDouble()) * t;
+                var fall = leap ? 0f : t * 30f;
+                var at = wall + new Vector2(Mathf.Cos(angle) * reach, Mathf.Sin(angle) * reach * 0.8f - fall);
+                var puff = (leap ? 7f : 4.5f) + (float)rng.NextDouble() * 4f;
+                c.Ellipse(at, puff, puff * 0.75f, Fade(DustLight, fade * 0.75f));
+            }
+
+            return c;
+        }
+
+        /// <summary>
+        /// The second jump, pushed off nothing: a pale flattened ring under the feet and a few
+        /// motes thrown down. Pale steel rather than dust, since there is no floor to raise dust.
+        /// </summary>
+        private static Canvas AirJumpPuff(float t)
+        {
+            var c = new Canvas(150, 100);
+            var centre = new Vector2(75f, 70f);
+            var fade = Opacity(t) * 0.7f;
+            var radius = Mathf.Lerp(12f, 58f, 1f - (1f - t) * (1f - t));
+            c.Ellipse(centre, radius, radius * 0.25f, Fade(Steel, fade * 0.45f));
+            c.Ellipse(centre, radius - 5f, radius * 0.25f - 3f, Clear);
+            var rng = new System.Random(131);
+            for (var i = 0; i < 6; i++)
+            {
+                var x = centre.x + ((float)rng.NextDouble() - 0.5f) * radius * 1.4f;
+                var y = centre.y - t * (25f + (float)rng.NextDouble() * 30f);
+                c.Ellipse(new Vector2(x, y), 3.5f * fade + 1f, 3.5f * fade + 1f, Fade(Steel, fade * 0.8f));
             }
 
             return c;

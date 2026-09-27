@@ -22,6 +22,9 @@ namespace ForgottenKingdom
         public WallMovementState State { get; private set; }
         public event System.Action<WallMovementState> StateChanged;
 
+        /// <summary>Which side the wall was on at the last slide or leap: -1 left, 1 right.</summary>
+        public int WallSide { get; private set; }
+
         private void Awake()
         {
             _stamina = GetComponent<Stamina>();
@@ -51,6 +54,7 @@ namespace ForgottenKingdom
                     if (input.IsJumpPressed)
                     {
                         _jumpDirection = -wallDirection;
+                        WallSide = wallDirection;
                         velocity = new Vector2(_jumpDirection * _jumpAwaySpeed, _jumpUpSpeed);
                         _regrabRemaining = _regrabDelay;
                         State = WallMovementState.Jump;
@@ -66,6 +70,7 @@ namespace ForgottenKingdom
                     else if (velocity.y < 0f)
                     {
                         velocity.y = Mathf.Max(velocity.y, -_slideSpeed);
+                        WallSide = wallDirection;
                         State = WallMovementState.Slide;
                     }
                 }
