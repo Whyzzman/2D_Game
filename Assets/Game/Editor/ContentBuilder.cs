@@ -127,6 +127,7 @@ namespace ForgottenKingdom.EditorTools
             BuildFeedback();
             BuildAudio();
             BuildSpellProjectilePrefab();
+            BuildLostCurrencyMarkPrefab();
             var playerPrefab = BuildPlayerPrefab();
             var zombiePrefab = BuildEnemyPrefab("ZombieSoldier", zombie, false,
                 // 70: about four sword swings, a Hollow Knight husk's worth (item 37).
@@ -1162,6 +1163,7 @@ namespace ForgottenKingdom.EditorTools
             BuildInvulnerabilityBlink(root);
             Ensure<MovementFeedback>(root);
             BuildWeaponTrail(root, combat);
+            BuildLostCurrencyDrop(root);
             StripMissingScripts(root);
 
             var saved = PrefabUtility.SaveAsPrefabAsset(root, path);
@@ -2994,6 +2996,10 @@ namespace ForgottenKingdom.EditorTools
             entries.Add(Feedback(FeedbackKind.AltarKindle, "vfx_altar_kindle", shake: ShakeProfile.None,
                 light: new Color(1f, 0.74f, 0.4f, 0.9f), lightRadius: 4.5f, priority: 20,
                 facesDirection: false, layer: "VFXBack"));
+            // The lost gold taken back: the pickup sparkle, larger and warm-lit; tinted gold at play.
+            entries.Add(Feedback(FeedbackKind.LostGoldRecovered, "vfx_pickup", shake: ShakeProfile.None,
+                light: new Color(1f, 0.82f, 0.4f, 0.9f), lightRadius: 3f, priority: 15,
+                facesDirection: false, scale: 1.6f));
             entries.Add(Feedback(FeedbackKind.WallContact, "vfx_wall_contact",
                 shake: ShakeProfile.None, priority: 5, layer: "VFXBack"));
 

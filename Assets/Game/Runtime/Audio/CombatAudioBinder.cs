@@ -100,6 +100,7 @@ namespace ForgottenKingdom
                 case FeedbackKind.ArenaOpen: return AudioId.GateOpen;
                 // A lit altar is already heard (CheckpointActivate); a lost spell has its own hiss.
                 case FeedbackKind.CastFizzle: return AudioId.CastFizzle;
+                case FeedbackKind.LostGoldRecovered: return AudioId.PickupCurrency;
                 default: return AudioId.None;
             }
         }

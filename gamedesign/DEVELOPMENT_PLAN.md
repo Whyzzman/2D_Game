@@ -39,13 +39,16 @@
   `PlayerCombat.HitLanded`; умения идут тем же хитбоксом, но без атаки оружия не платят. Числа —
   `TUNING.md`. Тесты `ManaNeverComesBackOnItsOwn`, `ALandedSwingPaysManaAndAHeavyOneMore`,
   2 в `MagicDataTests`.
-- [ ] **8. Цена смерти: «тень» героя с потерянным золотом** — новая механика, только если
-  пользователь захочет.
+- [x] **62 (8). Цена смерти** (решения пользователя 2026-09-28: теряется всё золото; вернуть —
+  подойти к следу и нажать взаимодействие; след — на последней твёрдой земле; вторая смерть
+  теряет старое). `LostCurrencyDrop` на игроке, след `LostCurrencyMark` (префаб, `vfx_lost_gold`),
+  `GameProgress.DropAllCurrency` / `RecoverLostCurrency`, сохранение v11, `FeedbackKind.LostGoldRecovered`.
+  Числа — `TUNING.md`. Тесты `LostCurrencyTests` (5), 1 в `SaveSystemTests`.
 - [ ] **9. Процедурная музыка зон и боевой слой** (KI-002, KI-005; `MUSIC_SYSTEM.md`).
 - [ ] **10. Стабильность и производительность** — нестабильные `WorldTraversalTests` и
   `CameraFramingTests`, FPS в сборке Mac, прогон сборки от меню до первого босса.
 
-Полный PlayMode-прогон: после него сделано 5 пунктов (57–61), **до следующего — 3**.
+Полный PlayMode-прогон: после него сделано 6 пунктов (57–62), **до следующего — 2**.
 
 ## Отложено до конца разработки
 

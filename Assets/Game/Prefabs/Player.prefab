@@ -1099,6 +1099,7 @@ GameObject:
   - component: {fileID: 163436257272519233}
   - component: {fileID: 2828779501212156672}
   - component: {fileID: 2533932965858502163}
+  - component: {fileID: 6885577336320300636}
   m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
@@ -1787,6 +1788,22 @@ MonoBehaviour:
   _mana: {fileID: 6817236196247687801}
   _perHit: 10
   _perHeavyHit: 15
+--- !u!114 &6885577336320300636
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5698690768296159545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7086cc0d59d04c0694f39c498d7b1b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.LostCurrencyDrop
+  _player: {fileID: 5383813697250227479}
+  _motor: {fileID: 6066871109167986890}
+  _progress: {fileID: 0}
+  _markPrefab: {fileID: 4928988481324999536, guid: d7d4b5393fd7446f68c1278939fb1253, type: 3}
 --- !u!1 &5840511060120495854
 GameObject:
   m_ObjectHideFlags: 0

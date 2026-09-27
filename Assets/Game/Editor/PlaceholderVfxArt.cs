@@ -121,13 +121,18 @@ namespace ForgottenKingdom.EditorTools
             // fizzle is pale so the spell's own colour can tint it; the kindle is warm already.
             new Spec(CastOrbName, 1, 12f),
             new Spec("vfx_cast_fizzle", 8, 20f),
-            new Spec("vfx_altar_kindle", 12, 18f)
+            new Spec("vfx_altar_kindle", 12, 18f),
+            // A loop the lost-gold trace carries while it waits (LostCurrencyMark).
+            new Spec(LostGoldName, 8, 8f, FloorPivot)
         };
+
+        public const string LostGoldName = "vfx_lost_gold";
 
         public const string CastOrbName = "vfx_cast_orb";
 
         /// <summary>Loops never reach their end: the last frame must lead back into the first.</summary>
-        private static bool IsLoop(string name) => name == StunStarsName || name == "vfx_arena_runes";
+        private static bool IsLoop(string name) =>
+            name == StunStarsName || name == "vfx_arena_runes" || name == LostGoldName;
 
         private const float FloorPivot = 0.1f;
 
@@ -236,6 +241,7 @@ namespace ForgottenKingdom.EditorTools
                 case CastOrbName: return CastOrb();
                 case "vfx_cast_fizzle": return CastFizzle(t);
                 case "vfx_altar_kindle": return AltarKindle(t);
+                case LostGoldName: return LostGold(t);
                 default: return new Canvas(64, 64);
             }
         }
@@ -1037,6 +1043,48 @@ namespace ForgottenKingdom.EditorTools
             c.Ellipse(centre, 22f, 22f, Fade(white, 0.35f));
             c.Ellipse(centre, 14f, 14f, Fade(white, 0.75f));
             c.Ellipse(centre, 8f, 8f, white);
+            return c;
+        }
+
+        /// <summary>
+        /// The trace a death leaves: a dark wisp of the hero's shape rising from the floor, the
+        /// height of a kneeling figure, with gold motes turning slowly around it. Dark so it is not
+        /// mistaken for an altar; the motes and its own light are what catch the eye.
+        /// </summary>
+        private static Canvas LostGold(float t)
+        {
+            var c = new Canvas(140, 180);
+            var phase = t * Mathf.PI * 2f;
+            var dark = new Color32(0x1C, 0x14, 0x24, 0xFF);
+            var rim = new Color32(0x5E, 0x4A, 0x6E, 0xFF);
+            var gold = new Color32(0xFF, 0xD2, 0x66, 0xFF);
+
+            // The wisp: stacked ellipses narrowing upwards, swaying as one.
+            for (var i = 0; i < 9; i++)
+            {
+                var k = i / 8f;
+                var sway = Mathf.Sin(phase + k * 2.4f) * 6f * k;
+                var centre = new Vector2(70f + sway, 18f + k * 118f);
+                var width = Mathf.Lerp(30f, 8f, k * k);
+                c.Ellipse(centre, width + 3f, 15f, Fade(rim, 0.35f * (1f - k * 0.5f)));
+                c.Ellipse(centre, width, 13f, Fade(dark, 0.9f - k * 0.45f));
+            }
+
+            // A hood's hint at the top, so it reads as the hero's own shade.
+            var head = new Vector2(70f + Mathf.Sin(phase + 2.4f) * 6f, 128f);
+            c.Ellipse(head, 15f, 17f, Fade(dark, 0.8f));
+
+            // Coins of light circling it: on the near side bright, behind it dim.
+            for (var i = 0; i < 7; i++)
+            {
+                var a = phase + i * Mathf.PI * 2f / 7f;
+                var p = new Vector2(70f + Mathf.Cos(a) * 34f, 40f + i * 11f + Mathf.Sin(a) * 6f);
+                var near = Mathf.Sin(a) < 0f ? 1f : 0.45f;
+                c.Ellipse(p, 5f, 5f, Fade(gold, 0.25f * near));
+                c.Ellipse(p, 2.6f, 2.6f, Fade(gold, near));
+            }
+
+            c.Ellipse(new Vector2(70f, 10f), 40f, 6f, Fade(gold, 0.22f));
             return c;
         }
 

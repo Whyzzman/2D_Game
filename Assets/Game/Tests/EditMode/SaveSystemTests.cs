@@ -127,6 +127,7 @@ namespace ForgottenKingdom.Tests
             data.player.maxHealth = 0f;
             data.player.maxStamina = -20f;
             data.totalPlayTimeSeconds = -3f;
+            data.lostCurrency = -40;
             File.WriteAllText(SaveSystem.FilePath, JsonUtility.ToJson(data, true));
 
             var loaded = SaveSystem.Read();
@@ -135,6 +136,7 @@ namespace ForgottenKingdom.Tests
             Assert.That(loaded.player.maxHealth, Is.GreaterThan(0f));
             Assert.That(loaded.player.maxStamina, Is.GreaterThan(0f));
             Assert.That(loaded.totalPlayTimeSeconds, Is.Zero);
+            Assert.That(loaded.lostCurrency, Is.Zero);
         }
 
         [Test]
@@ -153,6 +155,20 @@ namespace ForgottenKingdom.Tests
             Assert.That(loaded.IsBossDefeated("guardian-of-the-tomb"), Is.True);
             Assert.That(loaded.player, Is.Not.Null, "Missing sections default instead of failing.");
             Assert.That(loaded.player.unlockedAbilities, Does.Contain(AbilityIds.Dash));
+            Assert.That(loaded.lostCurrency, Is.Zero, "A file from before death had a price lost nothing.");
+        }
+
+        [Test]
+        public void TheGoldLeftAtADeathSurvivesARoundTrip()
+        {
+            var data = GameProgressData.CreateNew();
+            data.lostCurrency = 240;
+            data.lostCurrencyPosition = new Vector2(12.5f, -3f);
+            SaveSystem.Write(data);
+
+            var loaded = SaveSystem.Read();
+            Assert.That(loaded.lostCurrency, Is.EqualTo(240));
+            Assert.That(loaded.lostCurrencyPosition, Is.EqualTo(new Vector2(12.5f, -3f)));
         }
 
         [Test]

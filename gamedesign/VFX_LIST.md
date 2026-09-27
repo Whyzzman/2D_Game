@@ -147,6 +147,7 @@
 | `vfx_checkpoint_activate` | `CheckpointActivated` | VFXFront | 0.80 с | **P0** | ✅ 2026-09-27: `vfx_altar_kindle` (12 кадрів, VFXBack) |
 | `vfx_loot_common` / `_rare` / `_unique` | `WorldPickup` існує | VFXBack | цикл | P1 |
 | `vfx_loot_pickup` | `WorldPickup.Collected` | VFXFront | 0.30 с | P1 |
+| `vfx_lost_gold` | `LostCurrencyMark` показаний (золото, лишене смертю) | Characters −2 | цикл | P1 | ✅ 2026-09-28: 8 кадрів, 8 FPS, темна тінь із золотими іскрами; повернення — `vfx_pickup` ×1,6 золотим (`LostGoldRecovered`) |
 | `vfx_barrier_seal` | `BossEncounter` запечатує арену | VFXFront | 0.60 с | **P0** |
 | `vfx_barrier_open` | арена відкривається | VFXFront | 0.60 с | **P0** |
 | `vfx_level_up` | `LevelChanged` | VFXFront | 1.00 с | P2 |

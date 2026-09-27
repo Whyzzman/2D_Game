@@ -58,7 +58,9 @@ namespace ForgottenKingdom
         ArenaRunes,
         // Magic and altars (item 6 of the 2026-09-27 list).
         CastFizzle,
-        AltarKindle
+        AltarKindle,
+        /// <summary>The gold left at the last death taken back (item 8 of the 2026-09-27 list).</summary>
+        LostGoldRecovered
     }
 
     /// <summary>

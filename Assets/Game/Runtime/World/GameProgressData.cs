@@ -113,7 +113,7 @@ namespace ForgottenKingdom
     [Serializable]
     public sealed class GameProgressData
     {
-        public const int CurrentVersion = 10;
+        public const int CurrentVersion = 11;
 
         /// <summary>The first layout that knew about the map, shortcuts and zone title cards.</summary>
         public const int WorldMapVersion = 10;
@@ -148,6 +148,13 @@ namespace ForgottenKingdom
         public List<string> collectedPickups = new List<string>();
         /// <summary>What is worn, as ids. Validated against the inventory on every load.</summary>
         public EquipmentLoadout equipment = new EquipmentLoadout();
+        /// <summary>
+        /// Gold left where the player last died (the user's choice, 2026-09-28): all of it, waiting
+        /// on the last solid ground stood on until it is touched. A second death before that loses
+        /// it for good. Written from version eleven on; an older file has none, which is correct.
+        /// </summary>
+        public int lostCurrency;
+        public Vector2 lostCurrencyPosition;
         public float totalPlayTimeSeconds;
         public string createdAtUtc = string.Empty;
         public string lastSavedAtUtc = string.Empty;
@@ -307,6 +314,7 @@ namespace ForgottenKingdom
 
             MigrateStarterWeapon();
             totalPlayTimeSeconds = Mathf.Max(0f, totalPlayTimeSeconds);
+            lostCurrency = Mathf.Max(0, lostCurrency);
             checkpointId ??= string.Empty;
             // Left empty on purpose for a pre-version-nine file. Guessing "the Tomb" here would be
             // right today and wrong the moment a zone is renamed; the registry knows, this does not.

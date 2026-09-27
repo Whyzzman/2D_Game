@@ -61,6 +61,9 @@ namespace ForgottenKingdom
         public event Action<string, int, int> ItemRemoved;
         public event Action<int, int> CurrencyChanged;
 
+        /// <summary>Gold was left at a death or taken back; the mark in the world listens.</summary>
+        public event Action LostCurrencyChanged;
+
         /// <summary>Raised when what the player wears is recorded; the HUD and screen listen.</summary>
         public event Action<EquipmentLoadout> LoadoutChanged;
 
@@ -80,6 +83,9 @@ namespace ForgottenKingdom
         public ItemDatabase Items => _items;
         public EquipmentLoadout Loadout => Data.equipment;
         public int Currency => Data.player.currency;
+        public int LostCurrency => Data.lostCurrency;
+        public bool HasLostCurrency => Data.lostCurrency > 0;
+        public Vector2 LostCurrencyPosition => Data.lostCurrencyPosition;
 
         private void Awake()
         {
@@ -395,6 +401,40 @@ namespace ForgottenKingdom
             Data.player.currency -= amount;
             CurrencyChanged?.Invoke(Data.player.currency, -amount);
             return true;
+        }
+
+        /// <summary>
+        /// A death: the purse is left behind where the player can reach it again. Whatever an
+        /// earlier death left is gone — only the latest can be taken back. Dying with an empty
+        /// purse leaves nothing to find, and still loses the old gold.
+        /// </summary>
+        public void DropAllCurrency(Vector2 position)
+        {
+            var carried = Data.player.currency;
+            Data.lostCurrency = carried;
+            Data.lostCurrencyPosition = position;
+            if (carried > 0)
+            {
+                Data.player.currency = 0;
+                CurrencyChanged?.Invoke(0, -carried);
+            }
+
+            LostCurrencyChanged?.Invoke();
+        }
+
+        /// <summary>Takes the gold left at the last death back into the purse; returns how much.</summary>
+        public int RecoverLostCurrency()
+        {
+            var amount = Data.lostCurrency;
+            if (amount <= 0)
+            {
+                return 0;
+            }
+
+            Data.lostCurrency = 0;
+            AddCurrency(amount);
+            LostCurrencyChanged?.Invoke();
+            return amount;
         }
 
         public bool IsPickupCollected(string pickupId)
