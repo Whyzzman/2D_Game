@@ -47,7 +47,7 @@ namespace ForgottenKingdom.Tests
             yield return SceneManager.LoadSceneAsync("TombTrial");
             _player = Object.FindAnyObjectByType<PlayerCharacter>();
             _motor = _player.GetComponent<PlayerMotor2D>();
-            _zombies = Object.FindObjectsByType<EnemyController>(FindObjectsSortMode.None)
+            _zombies = Object.FindObjectsByType<EnemyController>()
                 .Where(enemy => enemy.name.StartsWith("ZombieSoldier") && TombScene.InTomb(enemy))
                 .OrderBy(enemy => enemy.transform.position.x)
                 .ToArray();

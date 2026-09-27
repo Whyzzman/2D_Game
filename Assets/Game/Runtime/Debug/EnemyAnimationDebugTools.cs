@@ -30,7 +30,7 @@ namespace ForgottenKingdom
         /// <summary>Enemies are spawned and reset by the world, so the list is refreshed on demand.</summary>
         public void Rescan()
         {
-            _enemies = FindObjectsByType<EnemyAnimationController>(FindObjectsSortMode.None);
+            _enemies = FindObjectsByType<EnemyAnimationController>();
             _boss = FindAnyObjectByType<BossAnimationController>();
             if (_enemies.Length > 0)
             {

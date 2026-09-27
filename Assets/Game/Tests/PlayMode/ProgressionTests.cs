@@ -397,7 +397,7 @@ namespace ForgottenKingdom.Tests
         public IEnumerator AShieldGuardIsWorthMoreThanAZombie()
         {
             var zombie = Zombie().GetComponent<ExperienceReward>();
-            var guard = Object.FindObjectsByType<EnemyController>(FindObjectsSortMode.None)
+            var guard = Object.FindObjectsByType<EnemyController>()
                 .First(enemy => enemy.name.StartsWith("ShieldGuard"))
                 .GetComponent<ExperienceReward>();
 
@@ -590,7 +590,7 @@ namespace ForgottenKingdom.Tests
 
         private EnemyController Zombie()
         {
-            return Object.FindObjectsByType<EnemyController>(FindObjectsSortMode.None)
+            return Object.FindObjectsByType<EnemyController>()
                 .First(enemy => enemy.name.StartsWith("ZombieSoldier"));
         }
 

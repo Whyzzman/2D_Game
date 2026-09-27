@@ -41,7 +41,7 @@ namespace ForgottenKingdom.Tests
             Assert.That(_loot, Is.Not.Null);
             Assert.That(_progress.Items, Is.Not.Null, "Progress knows the catalogue.");
 
-            var droppers = Object.FindObjectsByType<LootDropper>(FindObjectsSortMode.None)
+            var droppers = Object.FindObjectsByType<LootDropper>()
                 .Where(dropper => dropper.GetComponent<EnemyController>() != null
                     && !dropper.name.StartsWith("Training"))
                 .ToArray();
@@ -305,7 +305,7 @@ namespace ForgottenKingdom.Tests
 
         private EnemyController Zombie()
         {
-            return Object.FindObjectsByType<EnemyController>(FindObjectsSortMode.None)
+            return Object.FindObjectsByType<EnemyController>()
                 .First(enemy => enemy.name.StartsWith("ZombieSoldier"));
         }
 

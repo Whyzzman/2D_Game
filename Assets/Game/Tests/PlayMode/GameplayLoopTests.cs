@@ -321,7 +321,7 @@ namespace ForgottenKingdom.Tests
 
         private EnemyController FindEnemy(string prefabName)
         {
-            var enemy = Object.FindObjectsByType<EnemyController>(FindObjectsSortMode.None)
+            var enemy = Object.FindObjectsByType<EnemyController>()
                 .FirstOrDefault(candidate => candidate.name.StartsWith(prefabName));
             Assert.That(enemy, Is.Not.Null, $"The level needs a {prefabName}.");
             return enemy;

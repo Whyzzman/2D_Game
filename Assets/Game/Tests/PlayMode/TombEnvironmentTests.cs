@@ -97,7 +97,7 @@ namespace ForgottenKingdom.Tests
         public IEnumerator NothingGameplayRelevantWasLeftOnTheDefaultLayer()
         {
             yield return null;
-            var stray = Object.FindObjectsByType<SpriteRenderer>(FindObjectsSortMode.None)
+            var stray = Object.FindObjectsByType<SpriteRenderer>()
                 .Where(r => r.sortingLayerName == "Default")
                 .Select(r => r.name)
                 .ToArray();
@@ -113,7 +113,7 @@ namespace ForgottenKingdom.Tests
         {
             yield return null;
             // The Tomb's own backdrop; the forest brings three layers of its own further east.
-            var layers = Object.FindObjectsByType<ParallaxLayer>(FindObjectsSortMode.None)
+            var layers = Object.FindObjectsByType<ParallaxLayer>()
                 .Where(l => l.name.Contains("_tomb_"))
                 .ToArray();
 
@@ -133,7 +133,7 @@ namespace ForgottenKingdom.Tests
             // The property that matters is coverage, not displacement: however far a dash carries
             // the camera, no layer may leave a gap at the edge of the view. Each layer wraps by
             // whole tile widths, so it can never drift more than one tile from the camera.
-            var layers = Object.FindObjectsByType<ParallaxLayer>(FindObjectsSortMode.None);
+            var layers = Object.FindObjectsByType<ParallaxLayer>();
             var camera = Camera.main.transform;
             var before = layers.ToDictionary(l => l, l => l.transform.position.x);
 
@@ -285,7 +285,7 @@ namespace ForgottenKingdom.Tests
             layers.First(l => l.name.ToLowerInvariant().Contains(keyword));
 
         private Checkpoint NearestCheckpoint() =>
-            Object.FindObjectsByType<Checkpoint>(FindObjectsSortMode.None)
+            Object.FindObjectsByType<Checkpoint>()
                 .OrderBy(c => Mathf.Abs(c.transform.position.x - _player.transform.position.x))
                 .First();
     }

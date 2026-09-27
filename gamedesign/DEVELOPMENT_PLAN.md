@@ -1030,5 +1030,9 @@ x≈36,5) с местом для рывка за спину → вход в ар
   камера в них стоит и переезжает на каждом стыке. Тесты `CameraRoomsTests` (EditMode),
   `TheViewKeepsToTheRoomAndShowsLittleUnderTheFloor`,
   `CrossingIntoTheNextRoomSlidesTheViewWithoutACut`. Средне.
-- [ ] **45. Заменить устаревший `FindObjectsSortMode`** — 128 предупреждений в консоли
-  Unity 6.5. Легко.
+- [x] **45. Заменить устаревший `FindObjectsSortMode`** — было: 128 предупреждений в консоли
+  Unity 6.5 (в логе batchmode — по 199 CS0618 на обе формы). Сделано 2026-09-27: у всех
+  46 вызовов в 20 файлах (7 runtime, 13 тестов) убран аргумент `FindObjectsSortMode.None` —
+  порядок нигде не использовался. В логе компиляции CS0618 — 0; осталось одно чужое
+  предупреждение CS0067 (`EnemyController.StateChanged` не вызывается). Новый код пишет
+  `FindObjectsByType<T>()` или `FindObjectsByType<T>(FindObjectsInactive)`. Легко.

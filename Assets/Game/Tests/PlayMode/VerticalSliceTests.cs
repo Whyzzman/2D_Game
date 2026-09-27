@@ -44,8 +44,7 @@ namespace ForgottenKingdom.Tests
 
             // A debug readout left ungated ships with the game and answers the F-keys of whoever
             // is playing it.
-            foreach (var behaviour in Object.FindObjectsByType<MonoBehaviour>(
-                FindObjectsSortMode.None))
+            foreach (var behaviour in Object.FindObjectsByType<MonoBehaviour>())
             {
                 var name = behaviour.GetType().Name;
                 if (!name.Contains("Debug") && !name.Contains("Overlay"))
@@ -64,14 +63,13 @@ namespace ForgottenKingdom.Tests
             yield return null;
 
             // They stand where a player starts, so they must not be there in a release build.
-            foreach (var dummy in Object.FindObjectsByType<TrainingDummy>(FindObjectsSortMode.None))
+            foreach (var dummy in Object.FindObjectsByType<TrainingDummy>())
             {
                 Assert.That(dummy.GetComponentInParent<DeveloperOnly>(true), Is.Not.Null,
                     $"'{dummy.name}' would greet the player.");
             }
 
-            foreach (var attacker in Object.FindObjectsByType<TrainingAttacker>(
-                FindObjectsSortMode.None))
+            foreach (var attacker in Object.FindObjectsByType<TrainingAttacker>())
             {
                 Assert.That(attacker.GetComponentInParent<DeveloperOnly>(true), Is.Not.Null,
                     $"'{attacker.name}' would greet the player.");
@@ -85,7 +83,7 @@ namespace ForgottenKingdom.Tests
             yield return null;
 
             Assert.That(DeveloperOnly.IsDeveloperBuild, Is.True);
-            Assert.That(Object.FindObjectsByType<TrainingDummy>(FindObjectsSortMode.None),
+            Assert.That(Object.FindObjectsByType<TrainingDummy>(),
                 Is.Not.Empty);
         }
 
@@ -110,7 +108,7 @@ namespace ForgottenKingdom.Tests
 
         private static void AssertSingle<T>() where T : Object
         {
-            var found = Object.FindObjectsByType<T>(FindObjectsSortMode.None);
+            var found = Object.FindObjectsByType<T>();
             Assert.That(found.Length, Is.EqualTo(1),
                 $"{typeof(T).Name}: expected exactly one, found {found.Length}.");
         }

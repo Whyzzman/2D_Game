@@ -204,7 +204,7 @@ namespace ForgottenKingdom.Tests
         public IEnumerator ManyHitsInOneFrameOnlyFreezeTheGameOnce()
         {
             // An area spell hitting a crowd must not multiply into a noticeable pause.
-            var enemies = Object.FindObjectsByType<EnemyController>(FindObjectsSortMode.None)
+            var enemies = Object.FindObjectsByType<EnemyController>()
                 .Take(4).ToArray();
             Assume.That(enemies.Length, Is.GreaterThan(1));
 
@@ -413,7 +413,7 @@ namespace ForgottenKingdom.Tests
         // ---------- helpers ----------
 
         private static EnemyController Enemy() =>
-            Object.FindObjectsByType<EnemyController>(FindObjectsSortMode.None)
+            Object.FindObjectsByType<EnemyController>()
                 .First(e => e.name.StartsWith("ZombieSoldier"));
 
         private static string Join(IEnumerable<FeedbackKind> kinds) =>

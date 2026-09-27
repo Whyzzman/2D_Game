@@ -179,7 +179,7 @@ namespace ForgottenKingdom
 
         private void Subscribe()
         {
-            foreach (var actor in FindObjectsByType<CombatActor>(FindObjectsSortMode.None))
+            foreach (var actor in FindObjectsByType<CombatActor>())
             {
                 _actors.Add(actor);
                 actor.DamageTaken += OnDamageTaken;
@@ -187,7 +187,7 @@ namespace ForgottenKingdom
                 actor.Killed += OnKilled;
             }
 
-            foreach (var status in FindObjectsByType<StatusEffects>(FindObjectsSortMode.None))
+            foreach (var status in FindObjectsByType<StatusEffects>())
             {
                 _statuses.Add(status);
                 status.Applied += type => OnStatusApplied(status, type);
@@ -215,7 +215,7 @@ namespace ForgottenKingdom
                 respawner.PlayerDied += ClearAll;
             }
 
-            foreach (var enemy in FindObjectsByType<EnemyController>(FindObjectsSortMode.None))
+            foreach (var enemy in FindObjectsByType<EnemyController>())
             {
                 var captured = enemy;
                 enemy.GuardBrokenOpen += () => PlayAt(FeedbackKind.GuardBreak, captured.transform);

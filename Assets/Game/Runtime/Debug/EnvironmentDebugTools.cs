@@ -31,9 +31,9 @@ namespace ForgottenKingdom
 
         public void Rescan()
         {
-            _parallax = FindObjectsByType<ParallaxLayer>(FindObjectsSortMode.None);
+            _parallax = FindObjectsByType<ParallaxLayer>();
             _foreground.Clear();
-            foreach (var renderer in FindObjectsByType<SpriteRenderer>(FindObjectsSortMode.None))
+            foreach (var renderer in FindObjectsByType<SpriteRenderer>())
             {
                 if (renderer.sortingLayerName == "Foreground")
                 {
@@ -133,7 +133,7 @@ namespace ForgottenKingdom
                 return;
             }
 
-            foreach (var collider in FindObjectsByType<Collider2D>(FindObjectsSortMode.None))
+            foreach (var collider in FindObjectsByType<Collider2D>())
             {
                 if (collider == null || !collider.enabled)
                 {

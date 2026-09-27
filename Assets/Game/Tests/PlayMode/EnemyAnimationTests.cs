@@ -36,7 +36,7 @@ namespace ForgottenKingdom.Tests
         public void TearDown()
         {
             foreach (var animation in UnityEngine.Object
-                .FindObjectsByType<EnemyAnimationController>(FindObjectsSortMode.None))
+                .FindObjectsByType<EnemyAnimationController>())
             {
                 animation.ForcedState = null;
             }
@@ -54,7 +54,7 @@ namespace ForgottenKingdom.Tests
         {
             yield return null;
             var enemies = UnityEngine.Object
-                .FindObjectsByType<EnemyController>(FindObjectsSortMode.None);
+                .FindObjectsByType<EnemyController>();
             Assume.That(enemies.Length, Is.GreaterThan(0));
 
             foreach (var enemy in enemies)
@@ -73,7 +73,7 @@ namespace ForgottenKingdom.Tests
         {
             yield return null;
             foreach (var animation in UnityEngine.Object
-                .FindObjectsByType<EnemyAnimationController>(FindObjectsSortMode.None))
+                .FindObjectsByType<EnemyAnimationController>())
             {
                 var body = Body(animation.gameObject);
                 Assert.That(body.sprite, Is.Not.Null, $"{animation.name} has no sprite.");
@@ -243,7 +243,7 @@ namespace ForgottenKingdom.Tests
         private static EnemyController Enemy(string namePrefix)
         {
             var enemy = UnityEngine.Object
-                .FindObjectsByType<EnemyController>(FindObjectsSortMode.None)
+                .FindObjectsByType<EnemyController>()
                 .FirstOrDefault(e => e.name.StartsWith(namePrefix));
             Assume.That(enemy, Is.Not.Null, $"The level contains a {namePrefix}.");
             return enemy;

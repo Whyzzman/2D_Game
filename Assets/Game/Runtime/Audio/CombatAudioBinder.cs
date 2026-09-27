@@ -253,7 +253,7 @@ namespace ForgottenKingdom
 
         private void BindEnemies()
         {
-            foreach (var enemy in FindObjectsByType<EnemyController>(FindObjectsSortMode.None))
+            foreach (var enemy in FindObjectsByType<EnemyController>())
             {
                 var captured = enemy;
                 var isGuard = enemy.Guard != null;
@@ -317,7 +317,7 @@ namespace ForgottenKingdom
         /// </summary>
         private void BindBoss()
         {
-            foreach (var found in FindObjectsByType<BossController>(FindObjectsSortMode.None))
+            foreach (var found in FindObjectsByType<BossController>())
             {
                 var boss = found;
                 var profile = boss.GetComponent<ActorAudioProfile>();
@@ -483,7 +483,7 @@ namespace ForgottenKingdom
                     unlocked.transform.position);
             }
 
-            foreach (var encounter in FindObjectsByType<BossEncounter>(FindObjectsSortMode.None))
+            foreach (var encounter in FindObjectsByType<BossEncounter>())
             {
                 encounter.AbilityUnlocked += _ => AudioManager.Play2D(AudioId.AbilityUnlocked);
             }

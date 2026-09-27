@@ -525,7 +525,7 @@ namespace ForgottenKingdom.Tests
 
         private EnemyController Zombie()
         {
-            return Object.FindObjectsByType<EnemyController>(FindObjectsSortMode.None)
+            return Object.FindObjectsByType<EnemyController>()
                 .First(enemy => enemy.name.StartsWith("ZombieSoldier"));
         }
 

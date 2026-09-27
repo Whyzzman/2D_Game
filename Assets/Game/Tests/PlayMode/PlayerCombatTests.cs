@@ -238,7 +238,7 @@ namespace ForgottenKingdom.Tests
 
         private TrainingDummy NearestDummy()
         {
-            var dummies = Object.FindObjectsByType<TrainingDummy>(FindObjectsSortMode.None);
+            var dummies = Object.FindObjectsByType<TrainingDummy>();
             Assert.That(dummies.Length, Is.GreaterThan(0), "The training area needs a dummy.");
             var best = dummies[0];
             foreach (var dummy in dummies)

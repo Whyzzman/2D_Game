@@ -121,7 +121,7 @@ namespace ForgottenKingdom.Tests
         public IEnumerator OrdinaryEnemiesAreNeverSavedAsDead()
         {
             yield return LightAltar(Altars().First());
-            var zombie = Object.FindObjectsByType<EnemyController>(FindObjectsSortMode.None)
+            var zombie = Object.FindObjectsByType<EnemyController>()
                 .First(enemy => enemy.name.StartsWith("ZombieSoldier"));
             zombie.Actor.ClearInvulnerability();
             zombie.Actor.ApplyDamage(new DamageInfo(9999f, Vector2.right));
@@ -131,7 +131,7 @@ namespace ForgottenKingdom.Tests
 
             yield return LoadLevel();
 
-            var restored = Object.FindObjectsByType<EnemyController>(FindObjectsSortMode.None)
+            var restored = Object.FindObjectsByType<EnemyController>()
                 .First(enemy => enemy.name.StartsWith("ZombieSoldier"));
             Assert.That(restored.IsAlive, Is.True, "Trash mobs always come back.");
             Assert.That(restored.Actor.Health.Current, Is.EqualTo(restored.Actor.Health.Max));

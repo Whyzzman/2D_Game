@@ -59,9 +59,9 @@ namespace ForgottenKingdom
 
         private void Start()
         {
-            _enemies = FindObjectsByType<EnemyController>(FindObjectsSortMode.None);
-            _dummies = FindObjectsByType<TrainingDummy>(FindObjectsSortMode.None);
-            _attackers = FindObjectsByType<TrainingAttacker>(FindObjectsSortMode.None);
+            _enemies = FindObjectsByType<EnemyController>();
+            _dummies = FindObjectsByType<TrainingDummy>();
+            _attackers = FindObjectsByType<TrainingAttacker>();
             if (_player != null)
             {
                 _player.Actor.DamageTaken += OnPlayerDamaged;

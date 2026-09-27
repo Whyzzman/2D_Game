@@ -305,7 +305,7 @@ namespace ForgottenKingdom.Tests
             yield return SceneManager.LoadSceneAsync("TombTrial");
             _player = Object.FindAnyObjectByType<PlayerCharacter>();
             _motor = _player.GetComponent<PlayerMotor2D>();
-            _guards = Object.FindObjectsByType<EnemyController>(FindObjectsSortMode.None)
+            _guards = Object.FindObjectsByType<EnemyController>()
                 .Where(enemy => enemy.name.StartsWith("ShieldGuard") && TombScene.InTomb(enemy))
                 .OrderBy(enemy => enemy.transform.position.x)
                 .ToArray();

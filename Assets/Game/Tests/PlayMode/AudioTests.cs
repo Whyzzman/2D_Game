@@ -56,7 +56,7 @@ namespace ForgottenKingdom.Tests
         public IEnumerator TheSceneHasExactlyOneListener()
         {
             yield return null;
-            var listeners = Object.FindObjectsByType<AudioListener>(FindObjectsSortMode.None);
+            var listeners = Object.FindObjectsByType<AudioListener>();
 
             Assert.That(listeners.Length, Is.EqualTo(1),
                 "Zero listeners is a silent game; two is undefined behaviour.");
@@ -338,7 +338,7 @@ namespace ForgottenKingdom.Tests
         public IEnumerator EveryEnemyInTheSceneCanBeHeard()
         {
             yield return null;
-            var enemies = Object.FindObjectsByType<EnemyController>(FindObjectsSortMode.None);
+            var enemies = Object.FindObjectsByType<EnemyController>();
             Assume.That(enemies.Length, Is.GreaterThan(0));
 
             // Every enemy kind present has to have a full set, or a fight goes half-silent.

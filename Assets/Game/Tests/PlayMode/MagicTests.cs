@@ -221,7 +221,7 @@ namespace ForgottenKingdom.Tests
             // projectile and not the enemy's patrol.
             // The leftmost dummy, with clear air between it and the player: anything standing in
             // between would stop the bolt first, which is itself correct but not what this checks.
-            var dummy = Object.FindObjectsByType<TrainingDummy>(FindObjectsSortMode.None)
+            var dummy = Object.FindObjectsByType<TrainingDummy>()
                 .OrderBy(target => target.transform.position.x).First();
             var target = dummy.GetComponent<CombatActor>();
             target.ClearInvulnerability();
@@ -298,7 +298,7 @@ namespace ForgottenKingdom.Tests
         public IEnumerator ArcaneBurstStrikesEveryoneNearbyExactlyOnce()
         {
             LearnAndEquip("arcane_burst", 0);
-            var dummies = Object.FindObjectsByType<TrainingDummy>(FindObjectsSortMode.None);
+            var dummies = Object.FindObjectsByType<TrainingDummy>();
             Assert.That(dummies.Length, Is.GreaterThan(1));
             var first = dummies[0].GetComponent<Health>();
             var second = dummies[1].GetComponent<Health>();
@@ -354,7 +354,7 @@ namespace ForgottenKingdom.Tests
         public IEnumerator AZombieBurnsAndAGuardShrugsOffSteel()
         {
             var zombie = Zombie().Actor.Resistances;
-            var guard = Object.FindObjectsByType<EnemyController>(FindObjectsSortMode.None)
+            var guard = Object.FindObjectsByType<EnemyController>()
                 .First(enemy => enemy.name.StartsWith("ShieldGuard")).Actor.Resistances;
 
             Assert.That(zombie, Is.Not.Null);
@@ -680,7 +680,7 @@ namespace ForgottenKingdom.Tests
 
         private EnemyController Zombie()
         {
-            return Object.FindObjectsByType<EnemyController>(FindObjectsSortMode.None)
+            return Object.FindObjectsByType<EnemyController>()
                 .First(enemy => enemy.name.StartsWith("ZombieSoldier"));
         }
 
