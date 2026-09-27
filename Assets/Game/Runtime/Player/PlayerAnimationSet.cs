@@ -49,8 +49,8 @@ namespace ForgottenKingdom
         ShadowStrike,
         WeaponSwitch,
         /// <summary>
-        /// Drinking a flask. Added last so saved states keep their numbers; until it has frames
-        /// of its own it borrows the cast's opening, the closest pose the placeholders have.
+        /// Drinking a flask. Added last so saved states keep their numbers; it has frames of its
+        /// own, and a set without them borrows the cast's opening rather than showing nothing.
         /// </summary>
         Heal,
         /// <summary>

@@ -94,7 +94,8 @@ namespace ForgottenKingdom.EditorTools
             new StateSpec(PlayerAnimationState.WeaponSwitch, 3, 24f, false),
             new StateSpec(PlayerAnimationState.ActiveSkill, 4, 24f, false),
             new StateSpec(PlayerAnimationState.AttackUp, 4, 24f, false),
-            new StateSpec(PlayerAnimationState.AttackDown, 4, 24f, false)
+            new StateSpec(PlayerAnimationState.AttackDown, 4, 24f, false),
+            new StateSpec(PlayerAnimationState.Heal, 6, 12f, false)
         };
 
         /// <summary>
@@ -174,6 +175,8 @@ namespace ForgottenKingdom.EditorTools
             public float CloakSway;
             public float Squash;
             public float Alpha;
+            /// <summary>Drinking: the front hand holds a flask and the sword moves to the back hand.</summary>
+            public bool Flask;
 
             public static Pose Stand => new Pose
             {
@@ -348,6 +351,8 @@ namespace ForgottenKingdom.EditorTools
                     return UpSwingPose(t, reachScale);
                 case PlayerAnimationState.AttackDown:
                     return DownSwingPose(t, reachScale);
+                case PlayerAnimationState.Heal:
+                    return DrinkPose(t);
 
                 case PlayerAnimationState.Block:
                     pose.Lean = 12f;
@@ -606,6 +611,33 @@ namespace ForgottenKingdom.EditorTools
             return pose;
         }
 
+        /// <summary>
+        /// Drinking a flask: raised to the mouth, the head thrown back while it is drunk (the heal
+        /// lands at half the clip), then lowered. The sword hangs from the other hand, point down,
+        /// so the whole pose says "not fighting now" — the window an enemy can punish.
+        /// </summary>
+        private static Pose DrinkPose(float t)
+        {
+            var pose = Pose.Stand;
+            var raise = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(t / 0.35f));
+            var lower = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01((t - 0.75f) / 0.25f));
+            var up = raise * (1f - lower);
+            pose.Flask = true;
+            pose.Lean = Mathf.Lerp(4f, -8f, up);
+            pose.HipY = 77f;
+            pose.FrontArm = Mathf.Lerp(20f, 108f, up) - pose.Lean;
+            pose.FrontForearm = Mathf.Lerp(40f, 132f, up);
+            pose.BackArm = -8f;
+            pose.BackForearm = 10f;
+            pose.HeadTilt = Mathf.Lerp(0f, -22f, up);
+            pose.FrontThigh = 8f;
+            pose.FrontShin = -8f;
+            pose.BackThigh = -8f;
+            pose.BackShin = -10f;
+            pose.CloakSway = Mathf.Lerp(0f, 8f, up);
+            return pose;
+        }
+
         /// <summary>Wind up, commit, follow through — the same beat as <see cref="SwingPose"/>.</summary>
         private static float Commit(float t)
         {
@@ -633,7 +665,13 @@ namespace ForgottenKingdom.EditorTools
             var head = shoulder + Canvas.Rotate(new Vector2(0f, 17f), lean + pose.HeadTilt);
 
             // Back limbs first: depth comes from draw order, not from a z buffer.
-            canvas.Limb(shoulder, pose.BackArm + lean, 20f, pose.BackForearm, 18f, 6f, Charcoal);
+            var backHand = canvas.Limb(shoulder, pose.BackArm + lean, 20f, pose.BackForearm, 18f, 6f,
+                Charcoal);
+            if (pose.Flask)
+            {
+                Sword(canvas, backHand, pose.BackArm + lean + pose.BackForearm - 80f, greatsword);
+            }
+
             canvas.Limb(hip, pose.BackThigh, 24f, pose.BackShin, 24f, 8f, Charcoal);
 
             Cloak(canvas, shoulder, hip, lean, pose.CloakSway);
@@ -647,7 +685,14 @@ namespace ForgottenKingdom.EditorTools
                 shoulder + Canvas.Rotate(new Vector2(3f, 2f), lean), 9f, 8f, Steel);
             var hand = canvas.Limb(shoulder, pose.FrontArm + lean, 20f, pose.FrontForearm, 18f, 6f,
                 CloakTone);
-            Sword(canvas, hand, pose.FrontArm + lean + pose.FrontForearm, greatsword);
+            if (pose.Flask)
+            {
+                Flask(canvas, hand, pose.FrontArm + lean + pose.FrontForearm);
+            }
+            else
+            {
+                Sword(canvas, hand, pose.FrontArm + lean + pose.FrontForearm, greatsword);
+            }
 
             // Without a neck the head reads as a separate object floating above the shoulders.
             canvas.Thick(shoulder, head, 8f, 10f, Charcoal);
@@ -694,6 +739,23 @@ namespace ForgottenKingdom.EditorTools
             canvas.Ellipse(hand - blade * (greatsword ? 14f : 10f), 2.8f, 2.8f, Guard);
         }
 
+        /// <summary>
+        /// A small flask in the hand, its neck along the forearm. The liquid is the one warm,
+        /// bright spot on the figure while drinking — the same amber as the HUD's flasks.
+        /// </summary>
+        private static void Flask(Canvas canvas, Vector2 hand, float forearmAngle)
+        {
+            var along = Canvas.Rotate(new Vector2(0f, -1f), -forearmAngle).normalized;
+            var body = hand - along * 3f;
+            canvas.Ellipse(body, 6.5f, 6.5f, FlaskGlass);
+            canvas.Ellipse(body, 4.8f, 4.8f, FlaskLiquid);
+            canvas.Thick(body + along * 5f, body + along * 11f, 3.5f, 3f, FlaskGlass);
+            canvas.Thick(body + along * 10f, body + along * 12.5f, 4f, 4f, Leather);
+            canvas.Ellipse(body + new Vector2(-1.8f, 1.8f), 1.4f, 1.4f, BladeEdge);
+        }
+
+        private static readonly Color32 FlaskGlass = new Color32(107, 90, 66, 0xFF);
+        private static readonly Color32 FlaskLiquid = new Color32(201, 161, 74, 0xFF);
         private static readonly Color32 BladeSteel = new Color32(0x9A, 0xA3, 0xAE, 0xFF);
         private static readonly Color32 BladeEdge = new Color32(0xE6, 0xEC, 0xF2, 0xFF);
         private static readonly Color32 Guard = new Color32(0xB0, 0x8A, 0x3E, 0xFF);
