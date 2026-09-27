@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<title>Тінь Забутого Королівства — Картка боса</title>
+<link rel="stylesheet" href="../_shared/ui.css">
+<style>
+  /* Картка з'являється, коли бар'єр арени зачиняється, і сама йде — ввід не блокує, екран не
+     затемнює: бос у цей час грає своє безпечне інтро, а гравець уже може рухатися. */
+  .hud { position: absolute; inset: 0; pointer-events: none; }
+
+  /* Смуга боса вже існує в HUD (перенесена) — тут лише для контексту, як вона стоїть поруч. */
+  .boss { position: absolute; left: 50%; top: 52px; transform: translateX(-50%); width: 880px; text-align: center;
+          opacity: 0; transition: opacity 0.6s ease 1.2s; }
+  .is-playing .boss, .is-held .boss { opacity: 1; }
+  .boss__name { font-family: var(--font-display); font-size: var(--fs-boss); color: var(--ink-bright);
+                letter-spacing: 0.08em; margin: 0 0 var(--s2); font-weight: 400; }
+  .boss__bar { height: 22px; }
+  .boss__meta { display: flex; justify-content: space-between; margin-top: var(--s2); font-size: var(--fs-micro); }
+  .boss__phase { font-family: var(--font-display); letter-spacing: 0.16em; color: var(--gold); text-transform: uppercase; }
+
+  /* Сама картка: нижня третина, по центру, над підлогою арени — не на бої, а під ним. */
+  .title-card {
+    position: absolute; left: 50%; top: 690px; transform: translateX(-50%);
+    width: 1100px; text-align: center;
+    opacity: 0;
+  }
+  .title-card__epithet {
+    font-family: var(--font-display); font-size: var(--fs-lead);
+    letter-spacing: 0.32em; text-transform: uppercase; color: var(--gold-dim);
+    margin-bottom: var(--s3);
+  }
+  .title-card__name {
+    font-family: var(--font-display); font-weight: 400;
+    font-size: 76px; line-height: 1; letter-spacing: 0.1em;
+    color: var(--ink-bright); margin: 0;
+    text-shadow: 0 0 24px rgba(0,0,0,0.9), 0 2px 0 rgba(0,0,0,0.8);
+  }
+  /* Лінії під ім'ям розходяться від центру — у тон печаті, що саме зачинилася. */
+  .title-card__rule {
+    height: 1px; margin: var(--s4) auto 0; width: 0;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+
+  /* Хронометраж: 0,6 с поява, 2,2 с тримає, 0,8 с згасання — разом 3,6 с, як інтро Стража. */
+  .is-playing .title-card { animation: card 3.6s ease forwards; }
+  .is-playing .title-card__name { animation: name 3.6s ease forwards; }
+  .is-playing .title-card__rule { animation: rule 3.6s ease forwards; }
+  .is-held .title-card { opacity: 1; }
+  .is-held .title-card__rule { width: 70%; }
+
+  @keyframes card {
+    0%   { opacity: 0; }
+    17%  { opacity: 1; }
+    78%  { opacity: 1; }
+    100% { opacity: 0; }
+  }
+  @keyframes name {
+    0%   { letter-spacing: 0.22em; }
+    30%  { letter-spacing: 0.1em; }
+    100% { letter-spacing: 0.1em; }
+  }
+  @keyframes rule {
+    0%   { width: 0; }
+    30%  { width: 70%; }
+    100% { width: 70%; }
+  }
+
+  /* Зі «зменшеним рухом» — без розтягування літер і ліній, лише поява й згасання. */
+  .reduced .title-card__name { animation: none !important; }
+  .reduced .title-card__rule { animation: none !important; width: 70%; }
+
+  .controls-note {
+    position: absolute; left: 48px; bottom: 40px; pointer-events: auto;
+    display: flex; gap: var(--s3); align-items: center; font-size: var(--fs-small); color: var(--ink-muted);
+  }
+  .controls-note button { pointer-events: auto; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="gameplay-backdrop"></div>
+
+  <div class="hud" id="hud">
+    <div class="boss">
+      <h2 class="boss__name" data-name>Страж Гробниці</h2>
+      <div class="bar boss__bar">
+        <div class="bar__fill bar__fill--boss" style="width:100%"></div>
+        <div class="bar__ticks"></div>
+      </div>
+      <div class="boss__meta">
+        <span class="boss__phase">Фаза I</span>
+        <span class="muted tabular">2000 / 2000</span>
+      </div>
+    </div>
+
+    <div class="title-card">
+      <div class="title-card__epithet" data-epithet>Той, хто не спить</div>
+      <h1 class="title-card__name" data-name>Страж Гробниці</h1>
+      <div class="title-card__rule"></div>
+    </div>
+
+    <div class="controls-note">
+      <button class="btn" id="replay">Програти ще раз</button>
+      <button class="btn" id="hold">Зупинити на кадрі</button>
+      <button class="btn" id="boss">Інший бос</button>
+      <button class="btn" id="motion">Зменшений рух: вимк.</button>
+    </div>
+  </div>
+
+  <div class="legend">
+    Картка боса: з'являється в мить, коли зачиняється печать арени, тримається ~2 с і згасає
+    (усього 3,6 с). Ввід не блокує й екран не затемнює. Надписи над іменем — <b>пропозиції</b>,
+    їх можна змінити або прибрати.
+  </div>
+</div>
+
+<div class="viewport-note"></div>
+<script src="../_shared/stage.js"></script>
+<script>
+  (function () {
+    "use strict";
+    var bosses = [
+      { name: "Страж Гробниці", epithet: "Той, хто не спить" },
+      { name: "Порожній Вартовий", epithet: "Корінь, що пам'ятає" }
+    ];
+    var index = 0;
+    var hud = document.getElementById("hud");
+
+    function show() {
+      document.querySelectorAll("[data-name]").forEach(function (el) { el.textContent = bosses[index].name; });
+      document.querySelector("[data-epithet]").textContent = bosses[index].epithet;
+    }
+
+    function play() {
+      hud.classList.remove("is-playing", "is-held");
+      void hud.offsetWidth; // restart the animation
+      hud.classList.add("is-playing");
+    }
+
+    document.getElementById("replay").addEventListener("click", play);
+    document.getElementById("hold").addEventListener("click", function () {
+      hud.classList.remove("is-playing");
+      hud.classList.add("is-held");
+    });
+    document.getElementById("boss").addEventListener("click", function () {
+      index = (index + 1) % bosses.length;
+      show();
+      play();
+    });
+    document.getElementById("motion").addEventListener("click", function (event) {
+      var on = hud.classList.toggle("reduced");
+      event.target.textContent = "Зменшений рух: " + (on ? "увімк." : "вимк.");
+      play();
+    });
+
+    show();
+    window.addEventListener("load", function () { setTimeout(play, 400); });
+  })();
+</script>
+</body>
+</html>
