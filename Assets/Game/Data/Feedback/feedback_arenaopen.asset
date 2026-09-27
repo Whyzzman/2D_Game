@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1948b099c584578408b2536d2dd0cc7d, type: 3}
+  m_Name: feedback_arenaopen
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.FeedbackProfile
+  _burst:
+    _clipName: vfx_arena_open
+    _frames:
+    - {fileID: 21300000, guid: 26c1caf97f0d94d7ebeeb7639de476d1, type: 3}
+    - {fileID: 21300000, guid: b9b3991cd32334ede9aa95acf3ed140e, type: 3}
+    - {fileID: 21300000, guid: d006cd03dda6f43c8b9c076e1fcf055b, type: 3}
+    - {fileID: 21300000, guid: f78eebd56e1dd4b16bac54c942c25c1d, type: 3}
+    - {fileID: 21300000, guid: 4c63922f8c9b94ed1941285f171a9497, type: 3}
+    - {fileID: 21300000, guid: 6a988d878a7b643c6ad9dba01544bb6f, type: 3}
+    - {fileID: 21300000, guid: 20824ffc4ea0d43038ef41fee8e45f02, type: 3}
+    - {fileID: 21300000, guid: 5eaa4a056bd924167a42a4747b9e37e6, type: 3}
+    - {fileID: 21300000, guid: 656da3eabdbff4863874457d4300a18a, type: 3}
+    - {fileID: 21300000, guid: 5c74ed6b310a84b8990a0b07414b4376, type: 3}
+    _framesPerSecond: 18
+    _isLooping: 0
+  _tint: {r: 1, g: 1, b: 1, a: 1}
+  _scale: 1
+  _facesHitDirection: 0
+  _mirrorsToDirection: 0
+  _sortingLayer: VFXFront
+  _sortingOrder: 0
+  _hitStop: 0
+  _shake: 1
+  _shakeScale: 1
+  _shakeVerticalBias: 1
+  _screenFlash: 0
+  _flashColor: {r: 1, g: 1, b: 1, a: 1}
+  _lightColor: {r: 0.62, g: 0.78, b: 1, a: 0.7}
+  _lightRadius: 4
+  _lightDuration: 0.18
+  _priority: 40
+  _soundEvent: 
+  _haptic: 0

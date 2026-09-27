@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1948b099c584578408b2536d2dd0cc7d, type: 3}
+  m_Name: feedback_bossdanger
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.FeedbackProfile
+  _burst:
+    _clipName: vfx_boss_danger
+    _frames:
+    - {fileID: 21300000, guid: 4272bf738c63c4647b7d300873d17bb7, type: 3}
+    - {fileID: 21300000, guid: 4decdf6c2195e48bbbc2b613fb29c57e, type: 3}
+    - {fileID: 21300000, guid: 1a2ab23d376454863bf14350d3b9f287, type: 3}
+    - {fileID: 21300000, guid: b40a7014ed3fc44069ca3ddcfc83fa2d, type: 3}
+    - {fileID: 21300000, guid: 2d7cd7a634feb4df69ede81e7bf94b2a, type: 3}
+    - {fileID: 21300000, guid: cee4b2cf35a264ef7b99c33676bf18c1, type: 3}
+    - {fileID: 21300000, guid: d1a2a2bdcf4c9499c82010e08a792379, type: 3}
+    - {fileID: 21300000, guid: 7399ce7fc0a45444e89de19a2a98149f, type: 3}
+    - {fileID: 21300000, guid: 1f096c43ac51744549d222942b78ff4e, type: 3}
+    _framesPerSecond: 20
+    _isLooping: 0
+  _tint: {r: 1, g: 1, b: 1, a: 1}
+  _scale: 1
+  _facesHitDirection: 0
+  _mirrorsToDirection: 0
+  _sortingLayer: VFXFront
+  _sortingOrder: 0
+  _hitStop: 0
+  _shake: 0
+  _shakeScale: 1
+  _shakeVerticalBias: 1
+  _screenFlash: 0
+  _flashColor: {r: 1, g: 1, b: 1, a: 1}
+  _lightColor: {r: 1, g: 0.35, b: 0.2, a: 0.6}
+  _lightRadius: 3
+  _lightDuration: 0.18
+  _priority: 30
+  _soundEvent: 
+  _haptic: 0

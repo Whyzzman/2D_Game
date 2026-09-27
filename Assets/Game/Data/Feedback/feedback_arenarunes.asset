@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1948b099c584578408b2536d2dd0cc7d, type: 3}
+  m_Name: feedback_arenarunes
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.FeedbackProfile
+  _burst:
+    _clipName: vfx_arena_runes
+    _frames:
+    - {fileID: 21300000, guid: 52569335a7f5540b1ab6152e67638a98, type: 3}
+    - {fileID: 21300000, guid: 3333d7aa0d5424446ae032de5b97d074, type: 3}
+    - {fileID: 21300000, guid: 85d97bc147ac247f7841add6d72b39b7, type: 3}
+    - {fileID: 21300000, guid: 0743e321d72e74d6690642c8a78ee06e, type: 3}
+    - {fileID: 21300000, guid: b9b65bd77f447486e9e993eff4f5f807, type: 3}
+    - {fileID: 21300000, guid: 0cb630fadc40246dcbf479e647ab658f, type: 3}
+    - {fileID: 21300000, guid: 9fa22843e037c4ce9a7f9cb08b63dd61, type: 3}
+    - {fileID: 21300000, guid: 959704b8430094ad2887fc8fd43ed706, type: 3}
+    _framesPerSecond: 10
+    _isLooping: 0
+  _tint: {r: 1, g: 1, b: 1, a: 1}
+  _scale: 1
+  _facesHitDirection: 0
+  _mirrorsToDirection: 0
+  _sortingLayer: VFXFront
+  _sortingOrder: 0
+  _hitStop: 0
+  _shake: 0
+  _shakeScale: 1
+  _shakeVerticalBias: 1
+  _screenFlash: 0
+  _flashColor: {r: 1, g: 1, b: 1, a: 1}
+  _lightColor: {r: 0.62, g: 0.78, b: 1, a: 0.8}
+  _lightRadius: 2
+  _lightDuration: 0.18
+  _priority: 0
+  _soundEvent: 
+  _haptic: 0

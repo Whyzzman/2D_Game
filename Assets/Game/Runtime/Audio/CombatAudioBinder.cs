@@ -96,6 +96,8 @@ namespace ForgottenKingdom
                 case FeedbackKind.EnemyDeath: return AudioId.ZombieDeath;
                 case FeedbackKind.Pickup: return AudioId.PickupCommon;
                 case FeedbackKind.Pogo: return AudioId.Pogo;
+                // The seal shutting is covered by the boss waking; its breaking is a gate opening.
+                case FeedbackKind.ArenaOpen: return AudioId.GateOpen;
                 default: return AudioId.None;
             }
         }

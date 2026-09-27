@@ -91,6 +91,15 @@ namespace ForgottenKingdom
         // Hooks for audio, music and VFX; they fire with no assets attached.
         public event Action FightStarted;
         public event Action<BossAttackKind> AttackStarted;
+
+        /// <summary>A swing begins its windup: which movement the attack carries and which swing it is.</summary>
+        public event Action<BossAttackMovement, int> SwingWindup;
+
+        /// <summary>A charge starts running or a leap leaves the ground.</summary>
+        public event Action<BossAttackMovement> MovementBegan;
+
+        /// <summary>A charge stops or a leap lands.</summary>
+        public event Action<BossAttackMovement> MovementEnded;
         public event Action<float> Staggered;
         public event Action<DamageInfo> AttackParried;
         public event Action ShieldDropped;
@@ -353,6 +362,7 @@ namespace ForgottenKingdom
                 CurrentSwingIndex = i;
                 CurrentSwing = swing;
                 SwingPhase = BossSwingPhase.Windup;
+                SwingWindup?.Invoke(i == 0 ? attack.Movement : BossAttackMovement.None, i);
 
                 if (i == 0)
                 {
@@ -418,6 +428,7 @@ namespace ForgottenKingdom
                     // Telegraph first, then commit to a straight run: no homing.
                     yield return TrackThenCommit(windup * 0.55f, attack.TrackingTime);
                     SwingPhase = BossSwingPhase.Travel;
+                    MovementBegan?.Invoke(BossAttackMovement.Charge);
                     var elapsed = 0f;
                     while (elapsed < windup * 0.45f)
                     {
@@ -432,11 +443,14 @@ namespace ForgottenKingdom
                         yield return null;
                     }
                     _motor.Stop();
+                    MovementEnded?.Invoke(BossAttackMovement.Charge);
                     break;
                 case BossAttackMovement.Leap:
                     yield return TrackThenCommit(windup, attack.TrackingTime);
                     SwingPhase = BossSwingPhase.Travel;
+                    MovementBegan?.Invoke(BossAttackMovement.Leap);
                     yield return Leap(attack.MovementSpeed);
+                    MovementEnded?.Invoke(BossAttackMovement.Leap);
                     break;
                 default:
                     _motor.Stop();

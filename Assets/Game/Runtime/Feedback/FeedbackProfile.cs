@@ -48,7 +48,14 @@ namespace ForgottenKingdom
         WallJump,
         AirJump,
         /// <summary>The glint on an enemy's weapon as a swing winds up.</summary>
-        EnemyTelegraph
+        EnemyTelegraph,
+        /// <summary>A boss about to charge or leap: the red warning over its body.</summary>
+        BossDanger,
+        /// <summary>A boss arena's barrier sealing, and breaking once the boss is beaten.</summary>
+        ArenaSeal,
+        ArenaOpen,
+        /// <summary>Not a burst: the rune loop and light the sealed barrier carries.</summary>
+        ArenaRunes
     }
 
     /// <summary>

@@ -39,6 +39,10 @@ namespace ForgottenKingdom.EditorTools
         private static readonly Color32 Poison = new Color32(0x7F, 0xA8, 0x3C, 0xFF);
         private static readonly Color32 Dust = new Color32(0x6B, 0x60, 0x52, 0xFF);
         // Footstep dust is lighter than impact dust: on the tomb's dark stone the darker tone vanishes.
+        private static readonly Color32 DangerRed = new Color32(0xFF, 0x52, 0x2E, 0xFF);
+        // The boss seals: cold, like the arena light they stand in.
+        private static readonly Color32 SealBlue = new Color32(0x8F, 0xB8, 0xFF, 0xFF);
+        private static readonly Color32 SealPale = new Color32(0xDC, 0xE8, 0xFF, 0xFF);
         private static readonly Color32 DustLight = new Color32(0x9A, 0x8E, 0x7C, 0xFF);
         private static readonly Color32 DustPale = new Color32(0xC4, 0xB8, 0xA4, 0xFF);
         private static readonly Color32 GuardGold = new Color32(0xF0, 0xB4, 0x41, 0xFF);
@@ -107,8 +111,16 @@ namespace ForgottenKingdom.EditorTools
             new Spec("vfx_air_jump", 5, 24f, 0.7f),
             new Spec("vfx_enemy_telegraph", 6, 24f),
             // A loop, not a burst: StunIndicator cycles it while the balance is broken.
-            new Spec("vfx_stun_stars", 8, 14f)
+            new Spec("vfx_stun_stars", 8, 14f),
+            new Spec("vfx_boss_danger", 9, 20f),
+            new Spec("vfx_arena_seal", 10, 20f),
+            new Spec("vfx_arena_open", 10, 18f),
+            // A loop the sealed barrier carries (ArenaSealGlow), not a burst.
+            new Spec("vfx_arena_runes", 8, 10f)
         };
+
+        /// <summary>Loops never reach their end: the last frame must lead back into the first.</summary>
+        private static bool IsLoop(string name) => name == StunStarsName || name == "vfx_arena_runes";
 
         private const float FloorPivot = 0.1f;
 
@@ -134,7 +146,7 @@ namespace ForgottenKingdom.EditorTools
                 {
                     // A loop never reaches its end: its last frame must lead back into the first.
                     var t = spec.Frames <= 1 ? 0f
-                        : spec.Name == StunStarsName ? i / (float)spec.Frames
+                        : IsLoop(spec.Name) ? i / (float)spec.Frames
                         : i / (float)(spec.Frames - 1);
                     var path = $"{Root}/Impacts/{spec.Name}/{spec.Name}_{i:00}.png";
                     PlaceholderImport.EnsureFolder($"{Root}/Impacts/{spec.Name}");
@@ -210,6 +222,10 @@ namespace ForgottenKingdom.EditorTools
                 case "vfx_air_jump": return AirJumpPuff(t);
                 case "vfx_enemy_telegraph": return Glint(t);
                 case "vfx_stun_stars": return StunStars(t);
+                case "vfx_boss_danger": return Danger(t);
+                case "vfx_arena_seal": return SealColumn(t, true);
+                case "vfx_arena_open": return SealColumn(t, false);
+                case "vfx_arena_runes": return RuneColumn(t);
                 default: return new Canvas(64, 64);
             }
         }
@@ -724,6 +740,85 @@ namespace ForgottenKingdom.EditorTools
                 }
 
                 c.Ellipse(at, 3.5f * size, 3.5f * size, Fade(SteelWarm, alpha));
+            }
+
+            return c;
+        }
+
+        /// <summary>
+        /// A boss about to charge or leap: a red ring drawn in toward the body with spikes
+        /// pointing at it, so it reads as gathering, not as an impact.
+        /// </summary>
+        private static Canvas Danger(float t)
+        {
+            var c = new Canvas(360, 360);
+            var centre = new Vector2(180f, 180f);
+            var fade = Mathf.Sin(t * Mathf.PI);
+            var radius = Mathf.Lerp(170f, 70f, Mathf.SmoothStep(0f, 1f, t));
+            c.Ellipse(centre, radius + 10f, radius + 10f, Fade(DangerRed, fade * 0.18f));
+            c.Ellipse(centre, radius, radius, Fade(DangerRed, fade * 0.6f));
+            c.Ellipse(centre, radius - 12f, radius - 12f, Clear);
+            for (var i = 0; i < 8; i++)
+            {
+                var angle = i * Mathf.PI / 4f + Mathf.PI / 8f;
+                var dir = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
+                c.Thick(centre + dir * (radius + 24f), centre + dir * (radius - 20f), 11f, 0.5f,
+                    Fade(DangerRed, fade * 0.9f));
+            }
+
+            return c;
+        }
+
+        /// <summary>One rune glyph: a stave with two strokes, the Tomb's warding mark.</summary>
+        private static void Rune(Canvas c, Vector2 at, float size, Color32 tone, int variant)
+        {
+            c.Thick(at + new Vector2(0f, -size), at + new Vector2(0f, size), 3.5f, 3.5f, tone);
+            var flip = variant % 2 == 0 ? 1f : -1f;
+            c.Thick(at + new Vector2(0f, size * 0.55f), at + new Vector2(size * 0.6f * flip, size * 0.1f),
+                3f, 3f, tone);
+            c.Thick(at + new Vector2(0f, -size * 0.1f), at + new Vector2(-size * 0.6f * flip, -size * 0.55f),
+                3f, 3f, tone);
+        }
+
+        private static readonly float[] RuneHeights = { 0.12f, 0.31f, 0.5f, 0.69f, 0.88f };
+
+        /// <summary>
+        /// The sealed barrier's runes, breathing in turn from the bottom up; drawn a unit wide and
+        /// seven tall, the barrier's own size.
+        /// </summary>
+        private static Canvas RuneColumn(float t)
+        {
+            var c = new Canvas(100, 700);
+            for (var i = 0; i < RuneHeights.Length; i++)
+            {
+                var glow = 0.55f + 0.45f * Mathf.Sin((t - i * 0.2f) * Mathf.PI * 2f);
+                var at = new Vector2(50f, 700f * RuneHeights[i]);
+                c.Ellipse(at, 34f, 40f, Fade(SealBlue, glow * 0.22f));
+                Rune(c, at, 26f, Fade(SealPale, 0.5f + glow * 0.5f), i);
+            }
+
+            return c;
+        }
+
+        /// <summary>
+        /// The seal closing: a column of light that flares and settles into the runes — or, when
+        /// it breaks, the runes flaring once and scattering upward.
+        /// </summary>
+        private static Canvas SealColumn(float t, bool closing)
+        {
+            var c = new Canvas(160, 740);
+            var fade = closing ? 1f - t : Opacity(t);
+            var width = closing ? Mathf.Lerp(70f, 12f, t) : Mathf.Lerp(20f, 60f, t);
+            c.Thick(new Vector2(80f, 20f), new Vector2(80f, 720f), width, width, Fade(SealBlue, fade * 0.35f));
+            c.Thick(new Vector2(80f, 20f), new Vector2(80f, 720f), width * 0.3f, width * 0.3f,
+                Fade(SealPale, fade * 0.6f));
+            var rng = new System.Random(closing ? 141 : 142);
+            for (var i = 0; i < RuneHeights.Length; i++)
+            {
+                var rise = closing ? 0f : t * (60f + (float)rng.NextDouble() * 80f);
+                var drift = closing ? 0f : ((float)rng.NextDouble() - 0.5f) * 60f * t;
+                var at = new Vector2(80f + drift, 20f + 700f * RuneHeights[i] + rise);
+                Rune(c, at, 26f * (closing ? Mathf.Lerp(1.6f, 1f, t) : 1f), Fade(SealPale, fade), i);
             }
 
             return c;

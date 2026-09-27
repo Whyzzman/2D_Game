@@ -25,8 +25,26 @@ namespace ForgottenKingdom
 
         private SpriteRenderer[] _overlays = System.Array.Empty<SpriteRenderer>();
         private float _startedAt = float.NegativeInfinity;
+        private Color _activeColor;
+        private float _activeDuration = 0.1f;
+        private bool _swells;
 
-        public bool IsFlashing => Time.unscaledTime < _startedAt + _duration;
+        public bool IsFlashing => Time.unscaledTime < _startedAt + _activeDuration;
+
+        /// <summary>Whether the running flash is a warning rather than a hit.</summary>
+        public bool IsWarning => IsFlashing && _swells;
+
+        /// <summary>
+        /// A warning glow in place of a hit flash: it swells and fades over the duration rather
+        /// than striking at once, so it reads as "about to" and not as "just hit".
+        /// </summary>
+        public void Warn(Color color, float duration)
+        {
+            _activeColor = color;
+            _activeDuration = Mathf.Max(0.01f, duration);
+            _swells = true;
+            _startedAt = Time.unscaledTime;
+        }
 
         private void Awake()
         {
@@ -80,12 +98,17 @@ namespace ForgottenKingdom
                 return;
             }
 
+            // A hit lands over a warning: the blow is the newer, more important news.
+            _activeColor = _color;
+            _activeDuration = _duration;
+            _swells = false;
             _startedAt = Time.unscaledTime;
         }
 
         private void LateUpdate()
         {
-            var fade = Mathf.Clamp01(1f - (Time.unscaledTime - _startedAt) / _duration);
+            var t = Mathf.Clamp01((Time.unscaledTime - _startedAt) / _activeDuration);
+            var fade = _swells ? Mathf.Sin(t * Mathf.PI) : 1f - t;
             var top = int.MinValue;
             foreach (var source in _sources)
             {
@@ -115,7 +138,7 @@ namespace ForgottenKingdom
                 overlay.sortingLayerID = source.sortingLayerID;
                 // Over every part, so the whole creature reads as one flash.
                 overlay.sortingOrder = top + 1;
-                overlay.color = new Color(_color.r, _color.g, _color.b, _color.a * fade);
+                overlay.color = new Color(_activeColor.r, _activeColor.g, _activeColor.b, _activeColor.a * fade);
             }
         }
     }

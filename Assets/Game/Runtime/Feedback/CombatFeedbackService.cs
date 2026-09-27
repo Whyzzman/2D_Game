@@ -233,10 +233,19 @@ namespace ForgottenKingdom
             // Every boss in the scene: the forest's Warden deserves the same weight as the Guardian.
             foreach (var boss in FindObjectsByType<BossController>(FindObjectsInactive.Include))
             {
-                boss.AttackStarted += kind => OnBossAttack(boss, kind);
+                var bossSockets = boss.GetComponentInChildren<VisualSockets>(true);
+                var bossFlash = boss.GetComponent<HitFlash>();
+                boss.SwingWindup += (movement, swing) => OnBossWindup(boss, bossSockets, bossFlash, movement);
+                boss.MovementBegan += movement => OnBossMovement(boss, movement, true);
+                boss.MovementEnded += movement => OnBossMovement(boss, movement, false);
                 boss.PhaseChanged += phase => OnBossPhase(boss, phase);
                 boss.Defeated += defeated => PlayAt(FeedbackKind.BossDeath, defeated.transform, 2f);
                 boss.Staggered += _ => PlayAt(FeedbackKind.StaggerBreak, boss.transform, 1.5f);
+            }
+
+            foreach (var encounter in FindObjectsByType<BossEncounter>(FindObjectsInactive.Include))
+            {
+                ArenaSealGlow.Attach(encounter, _library, _effectMaterial, _lightTemplate);
             }
 
             var shadow = FindAnyObjectByType<ShadowAbilities>();
@@ -418,16 +427,56 @@ namespace ForgottenKingdom
             PlayInternal(FeedbackKind.EnemyTelegraph, position, Vector2.right, 1f);
         }
 
-        private void OnBossAttack(BossController boss, BossAttackKind kind)
+        /// <summary>The red of a boss about to throw itself at the player: danger, not damage.</summary>
+        public static readonly Color BossDangerColor = new Color(1f, 0.32f, 0.18f, 0.7f);
+
+        /// <summary>How long the red warning swells and fades; about the windup of a charge.</summary>
+        public const float BossDangerTime = 0.45f;
+
+        /// <summary>
+        /// Every boss swing glints on the weapon as the enemies' do, larger; a charge or a leap —
+        /// the moves that cover the arena — also glows the body red, so "it is about to come at
+        /// me" reads apart from "it is about to swing".
+        /// </summary>
+        private void OnBossWindup(BossController boss, VisualSockets sockets, HitFlash flash,
+            BossAttackMovement movement)
         {
-            switch (kind)
+            if (boss == null)
             {
-                case BossAttackKind.Charge:
-                    PlayAt(FeedbackKind.BossCharge, boss.transform, 1.4f);
-                    break;
-                case BossAttackKind.JumpSlam:
-                    PlayAt(FeedbackKind.BossSlam, boss.transform, 2f);
-                    break;
+                return;
+            }
+
+            var weapon = sockets != null && sockets.Has(VisualSocket.Weapon)
+                ? sockets.Position(VisualSocket.Weapon)
+                : boss.transform.position;
+            PlayInternal(FeedbackKind.EnemyTelegraph, weapon, Vector2.right, 1.7f);
+            if (movement == BossAttackMovement.None)
+            {
+                return;
+            }
+
+            flash?.Warn(BossDangerColor, BossDangerTime);
+            PlayInternal(FeedbackKind.BossDanger, boss.transform.position, Vector2.right, 1f);
+        }
+
+        /// <summary>
+        /// Dust when a charge starts running, and the slam when a leap comes down — at the landing,
+        /// where the blow is, not at the take-off as it used to play.
+        /// </summary>
+        private void OnBossMovement(BossController boss, BossAttackMovement movement, bool began)
+        {
+            if (boss == null)
+            {
+                return;
+            }
+
+            if (began && movement == BossAttackMovement.Charge)
+            {
+                PlayAt(FeedbackKind.BossCharge, boss.transform, 1.4f);
+            }
+            else if (!began && movement == BossAttackMovement.Leap)
+            {
+                PlayAt(FeedbackKind.BossSlam, boss.transform, 2f);
             }
         }
 

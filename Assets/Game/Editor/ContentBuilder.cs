@@ -2966,6 +2966,20 @@ namespace ForgottenKingdom.EditorTools
             entries.Add(Feedback(FeedbackKind.EnemyTelegraph, "vfx_enemy_telegraph",
                 shake: ShakeProfile.None, light: new Color(1f, 0.82f, 0.45f, 0.45f),
                 lightRadius: 1.2f, priority: 2, facesDirection: false));
+            // Boss danger and the arena seal. The danger must be seen through anything but a
+            // blow landing, and never shakes: the boss has not done anything yet.
+            entries.Add(Feedback(FeedbackKind.BossDanger, "vfx_boss_danger", shake: ShakeProfile.None,
+                light: new Color(1f, 0.35f, 0.2f, 0.6f), lightRadius: 3f, priority: 30,
+                facesDirection: false));
+            entries.Add(Feedback(FeedbackKind.ArenaSeal, "vfx_arena_seal", shake: ShakeProfile.Small,
+                light: new Color(0.62f, 0.78f, 1f, 0.8f), lightRadius: 4f, priority: 40,
+                facesDirection: false));
+            entries.Add(Feedback(FeedbackKind.ArenaOpen, "vfx_arena_open", shake: ShakeProfile.Tiny,
+                light: new Color(0.62f, 0.78f, 1f, 0.7f), lightRadius: 4f, priority: 40,
+                facesDirection: false));
+            // Only its frames and light colour are read, by ArenaSealGlow; it is never played.
+            entries.Add(Feedback(FeedbackKind.ArenaRunes, "vfx_arena_runes", shake: ShakeProfile.None,
+                light: new Color(0.62f, 0.78f, 1f, 0.8f), priority: 0, facesDirection: false));
             entries.Add(Feedback(FeedbackKind.WallContact, "vfx_wall_contact",
                 shake: ShakeProfile.None, priority: 5, layer: "VFXBack"));
 

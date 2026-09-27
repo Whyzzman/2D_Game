@@ -103,6 +103,11 @@
 (0,25 с, VFXFront, зі світлом); `vfx_stun_stars` — петля зірочок над головою оглушеного ворога чи
 боса. Подробиці — `COMBAT_FEEDBACK.md` §12в.
 
+**Бос і арена (2026-09-27):** `vfx_boss_danger` — червоне кільце перед ривком і стрибком;
+`vfx_arena_seal` / `vfx_arena_open` — закриття й злам печаті; `vfx_arena_runes` — петля рун на
+закритому бар'єрі. Відповідають `vfx_boss_charge_warning`, `vfx_barrier_seal`, `vfx_barrier_open`,
+`vfx_boss_rune_glow` із таблиць нижче. Подробиці — `COMBAT_FEEDBACK.md` §12г.
+
 ## Статуси
 
 Усі чотири мають **різні силуети**, не лише кольори.
