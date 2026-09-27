@@ -190,18 +190,25 @@ namespace ForgottenKingdom.Tests
         [UnityTest]
         public IEnumerator TheDirectorWorksWithNoTracksAssigned()
         {
-            // There is no music yet, and that has to be an ordinary state rather than an error.
-            var director = Object.FindAnyObjectByType<MusicDirector>();
+            // A score may be missing in part or whole (a region not scored yet): that has to be an
+            // ordinary state rather than an error. The level's own director has music, so an
+            // empty one is made for the test.
+            var host = new GameObject("EmptyMusic");
+            host.SetActive(false);
+            var director = host.AddComponent<MusicDirector>();
+            host.SetActive(true);
             yield return null;
 
             Assert.That(director.HasTrackForState, Is.False);
             director.TransitionTo(MusicState.BossPhaseTwo);
             yield return null;
             Assert.That(director.State, Is.EqualTo(MusicState.BossPhaseTwo));
+            Assert.That(director.CurrentLayer, Is.Null);
 
             director.StopMusic();
             yield return null;
             Assert.That(director.State, Is.EqualTo(MusicState.Silent));
+            Object.Destroy(host);
         }
 
         // ---------- traversal cannot walk around the fight ----------

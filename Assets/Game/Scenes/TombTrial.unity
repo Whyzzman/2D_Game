@@ -75891,22 +75891,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.MusicDirector
   _palettes:
   - _zoneId: zone_forgotten_tomb
-    _exploration: {fileID: 0}
+    _exploration: {fileID: 8300000, guid: ab2941236d839401fa5957fafaef5117, type: 3}
     _bossIntro: {fileID: 0}
-    _bossPhaseOne: {fileID: 0}
-    _bossPhaseTwo: {fileID: 0}
-    _victory: {fileID: 0}
+    _bossPhaseOne: {fileID: 8300000, guid: 9e022cf3603334120905c0ddf69959bc, type: 3}
+    _bossPhaseTwo: {fileID: 8300000, guid: 9e022cf3603334120905c0ddf69959bc, type: 3}
+    _victory: {fileID: 8300000, guid: 058f8c4e981fe4b16a44ee09a8fd4940, type: 3}
+    _combatLayer: {fileID: 8300000, guid: efee96021befd4d7db0ab3c7432fcacb, type: 3}
+    _bossLayer: {fileID: 8300000, guid: f47e30b6fd75140099cfc56d9e9d18bb, type: 3}
   - _zoneId: zone_withered_forest
-    _exploration: {fileID: 0}
+    _exploration: {fileID: 8300000, guid: d88c4e51de61d4d37b2788d47f503fb7, type: 3}
     _bossIntro: {fileID: 0}
-    _bossPhaseOne: {fileID: 0}
-    _bossPhaseTwo: {fileID: 0}
-    _victory: {fileID: 0}
-  _mainMenu: {fileID: 0}
+    _bossPhaseOne: {fileID: 8300000, guid: 9e022cf3603334120905c0ddf69959bc, type: 3}
+    _bossPhaseTwo: {fileID: 8300000, guid: 9e022cf3603334120905c0ddf69959bc, type: 3}
+    _victory: {fileID: 8300000, guid: 058f8c4e981fe4b16a44ee09a8fd4940, type: 3}
+    _combatLayer: {fileID: 8300000, guid: 62bb7f8258a91479e9f5c156914db5fa, type: 3}
+    _bossLayer: {fileID: 8300000, guid: f47e30b6fd75140099cfc56d9e9d18bb, type: 3}
+  _mainMenu: {fileID: 8300000, guid: b508723c5f8e94799bd35438442d12f4, type: 3}
   _crossfade: 1.6
   _duckAmount: 0.45
   _duckRecovery: 1.5
   _volume: 0.55
+  _startState: 2
+  _layerFadeIn: 1.2
+  _layerFadeOut: 3
 --- !u!114 &2012626527
 MonoBehaviour:
   m_ObjectHideFlags: 0

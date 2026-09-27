@@ -282,19 +282,78 @@ namespace ForgottenKingdom.Tests
         // ---------- music state ----------
 
         [UnityTest]
-        public IEnumerator TheMusicDirectorTracksTheFightWithoutNeedingATrack()
+        public IEnumerator EachRegionHasItsTrackAndTheBossesShareOne()
         {
             var director = Object.FindAnyObjectByType<MusicDirector>();
             yield return null;
             Assume.That(director.State, Is.EqualTo(MusicState.Exploration));
+            Assert.That(director.HasTrackForState, Is.True, "The Tomb has music now.");
+            var tomb = director.CurrentTrack;
+            Assert.That(director.CurrentLayer, Is.Not.Null, "... and a fight layer under it.");
+
+            director.SetZone("zone_withered_forest");
+            Assert.That(director.CurrentTrack, Is.Not.Null.And.Not.EqualTo(tomb),
+                "The forest sounds like itself.");
+            director.SetZone("zone_forgotten_tomb");
 
             var boss = TombScene.Guardian();
             boss.BeginFight(_player);
             yield return null;
             Assert.That(director.State, Is.Not.EqualTo(MusicState.Exploration));
+            var fight = director.CurrentTrack;
+            Assert.That(fight, Is.Not.Null.And.Not.EqualTo(tomb));
 
-            // No clips are assigned yet, and that has to be fine rather than an error.
-            Assert.That(director.HasTrackForState, Is.False);
+            director.TransitionTo(MusicState.BossPhaseTwo);
+            Assert.That(director.CurrentTrack, Is.SameAs(fight),
+                "Phase two adds drums to the same track rather than restarting it.");
+            var deadline = Time.realtimeSinceStartup + 3f;
+            while (director.LayerMix < 0.99f && Time.realtimeSinceStartup < deadline)
+            {
+                yield return null;
+            }
+
+            Assert.That(director.LayerMix, Is.EqualTo(1f).Within(0.01f));
+        }
+
+        [UnityTest]
+        public IEnumerator TheFightLayerRisesWhileFightingAndSettlesAfter()
+        {
+            var director = Object.FindAnyObjectByType<MusicDirector>();
+            var combat = _player.GetComponent<PlayerCombatStatus>();
+            yield return null;
+            Assume.That(director.State, Is.EqualTo(MusicState.Exploration));
+            Assert.That(director.LayerMix, Is.Zero, "Quiet while nothing is fighting.");
+
+            combat.Report();
+            var deadline = Time.realtimeSinceStartup + 3f;
+            while (director.LayerMix < 0.99f && Time.realtimeSinceStartup < deadline)
+            {
+                combat.Report();
+                yield return null;
+            }
+
+            Assert.That(director.LayerMix, Is.EqualTo(1f).Within(0.01f), "The pulse comes in.");
+
+            combat.Clear();
+            deadline = Time.realtimeSinceStartup + 5f;
+            while (director.LayerMix > 0f && Time.realtimeSinceStartup < deadline)
+            {
+                yield return null;
+            }
+
+            Assert.That(director.LayerMix, Is.Zero, "... and ebbs away once the fight is over.");
+        }
+
+        [UnityTest]
+        public IEnumerator TheTitleScreenPlaysItsOwnTheme()
+        {
+            yield return SceneManager.LoadSceneAsync("MainMenu");
+            yield return null;
+            var director = Object.FindAnyObjectByType<MusicDirector>();
+
+            Assert.That(director, Is.Not.Null);
+            Assert.That(director.State, Is.EqualTo(MusicState.MainMenu));
+            Assert.That(director.HasTrackForState, Is.True);
         }
 
         [UnityTest]

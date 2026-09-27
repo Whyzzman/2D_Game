@@ -44,11 +44,15 @@
   теряет старое). `LostCurrencyDrop` на игроке, след `LostCurrencyMark` (префаб, `vfx_lost_gold`),
   `GameProgress.DropAllCurrency` / `RecoverLostCurrency`, сохранение v11, `FeedbackKind.LostGoldRecovered`.
   Числа — `TUNING.md`. Тесты `LostCurrencyTests` (5), 1 в `SaveSystemTests`.
-- [ ] **9. Процедурная музыка зон и боевой слой** (KI-002, KI-005; `MUSIC_SYSTEM.md`).
+- [x] **63 (9). Процедурная музыка** (решения пользователя 2026-09-28: мрачный эмбиент с редкой
+  мелодией; меню, Гробница, Лес, общий бой боссов, победа; боевой слой в обычном бою). Генератор
+  `PlaceholderMusicArt`, в сцены — `SceneMusic.Apply`; `MusicDirector` получил синхронные слои
+  (`PlayScheduled`), `_startState` и директор в `MainMenu`. Подробности — `MUSIC_SYSTEM.md`.
+  Тесты: 3 в `AudioTests`, 11 в `AudioDataTests`, переписан `TheDirectorWorksWithNoTracksAssigned`.
 - [ ] **10. Стабильность и производительность** — нестабильные `WorldTraversalTests` и
   `CameraFramingTests`, FPS в сборке Mac, прогон сборки от меню до первого босса.
 
-Полный PlayMode-прогон: после него сделано 6 пунктов (57–62), **до следующего — 2**.
+Полный PlayMode-прогон: после него сделано 7 пунктов (57–63), **до следующего — 1**.
 
 ## Отложено до конца разработки
 

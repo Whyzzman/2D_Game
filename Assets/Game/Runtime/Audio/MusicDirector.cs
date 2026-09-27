@@ -30,6 +30,10 @@ namespace ForgottenKingdom
         [SerializeField] private AudioClip _bossPhaseOne;
         [SerializeField] private AudioClip _bossPhaseTwo;
         [SerializeField] private AudioClip _victory;
+        [Tooltip("Drums and bass on the exploration track's grid, faded in while the player fights.")]
+        [SerializeField] private AudioClip _combatLayer;
+        [Tooltip("The boss track's heavier drums, faded in for phase two.")]
+        [SerializeField] private AudioClip _bossLayer;
 
         public string ZoneId => _zoneId;
         public AudioClip Exploration => _exploration;
@@ -37,6 +41,8 @@ namespace ForgottenKingdom
         public AudioClip BossPhaseOne => _bossPhaseOne;
         public AudioClip BossPhaseTwo => _bossPhaseTwo;
         public AudioClip Victory => _victory;
+        public AudioClip CombatLayer => _combatLayer;
+        public AudioClip BossLayer => _bossLayer;
     }
 
     /// <summary>
@@ -54,6 +60,11 @@ namespace ForgottenKingdom
     ///
     /// Two sources, not one: a hard cut from one track to another is a jump-scare, so the outgoing
     /// track fades out while the incoming one fades in.
+    ///
+    /// Each track may carry a layer of the same length and tempo (the user's choice, 2026-09-28):
+    /// drums under exploration while the player is fighting, heavier drums for a boss's second
+    /// phase. The layer always plays with its track, started on the same audio clock tick, and
+    /// only its volume moves — so fading it in never restarts or shifts anything.
     /// </summary>
     [DisallowMultipleComponent]
     public sealed class MusicDirector : MonoBehaviour
@@ -70,9 +81,21 @@ namespace ForgottenKingdom
         [SerializeField, Range(0f, 1f)] private float _duckAmount = 0.45f;
         [SerializeField, Min(0.05f)] private float _duckRecovery = 1.5f;
         [SerializeField, Range(0f, 1f)] private float _volume = 0.55f;
+        [Tooltip("Where the director starts: exploration in the level, the menu theme in the menu.")]
+        [SerializeField] private MusicState _startState = MusicState.Exploration;
+        [SerializeField, Min(0.05f)] private float _layerFadeIn = 1.2f;
+        [SerializeField, Min(0.05f)] private float _layerFadeOut = 3f;
+
+        /// <summary>Lead time for a scheduled start, so a track and its layer begin on one tick.</summary>
+        private const double ScheduleLead = 0.06;
 
         private AudioSource _current;
         private AudioSource _previous;
+        private AudioSource _currentLayer;
+        private AudioSource _previousLayer;
+        private PlayerCombatStatus _combat;
+        private float _layerMix;
+        private float _previousLayerMix;
         private MusicPalette _palette;
         private MusicState _state = MusicState.Silent;
         private float _fade;
@@ -84,6 +107,14 @@ namespace ForgottenKingdom
 
         /// <summary>True when a track is actually assigned for the current state.</summary>
         public bool HasTrackForState => ClipFor(_state) != null;
+
+        /// <summary>How far the current track's layer is faded in, 0 to 1.</summary>
+        public float LayerMix => _layerMix;
+
+        /// <summary>The layer playing under the current track, if it has one.</summary>
+        public AudioClip CurrentLayer => _currentLayer != null ? _currentLayer.clip : null;
+
+        public AudioClip CurrentTrack => _current != null ? _current.clip : null;
 
         /// <summary>True while a crossfade is still in progress.</summary>
         public bool IsCrossfading => _previous != null && _previous.isPlaying;
@@ -102,6 +133,8 @@ namespace ForgottenKingdom
             Instance = this;
             _current = CreateSource();
             _previous = CreateSource();
+            _currentLayer = CreateSource();
+            _previousLayer = CreateSource();
         }
 
         private void OnDestroy()
@@ -126,7 +159,7 @@ namespace ForgottenKingdom
         {
             _palette = FindPalette(string.Empty);
             Bind();
-            TransitionTo(MusicState.Exploration);
+            TransitionTo(_startState);
         }
 
         /// <summary>
@@ -158,6 +191,7 @@ namespace ForgottenKingdom
                 boss.PhaseChanged += OnBossPhase;
             }
 
+            _combat = FindAnyObjectByType<PlayerCombatStatus>();
             var respawner = FindAnyObjectByType<PlayerRespawner>();
             if (respawner != null)
             {
@@ -203,6 +237,10 @@ namespace ForgottenKingdom
             {
                 Crossfade(wanted);
             }
+            else if (LayerFor(state) != CurrentLayer)
+            {
+                StartLayerInStep(LayerFor(state));
+            }
 
             StateChanged?.Invoke(state);
         }
@@ -220,17 +258,77 @@ namespace ForgottenKingdom
         private void Crossfade(AudioClip clip)
         {
             (_current, _previous) = (_previous, _current);
+            (_currentLayer, _previousLayer) = (_previousLayer, _currentLayer);
+            _previousLayerMix = _layerMix;
+            _layerMix = 0f;
             _fade = 0f;
 
             _current.clip = clip;
             _current.volume = 0f;
-            if (clip != null)
+            _currentLayer.clip = clip != null ? LayerFor(_state) : null;
+            _currentLayer.volume = 0f;
+            if (clip == null)
             {
-                _current.Play();
+                _current.Stop();
+                _currentLayer.Stop();
+                return;
+            }
+
+            // The track and its layer begin on the same tick of the audio clock, or they drift apart.
+            var start = AudioSettings.dspTime + ScheduleLead;
+            _current.PlayScheduled(start);
+            if (_currentLayer.clip != null)
+            {
+                _currentLayer.PlayScheduled(start);
             }
             else
             {
-                _current.Stop();
+                _currentLayer.Stop();
+            }
+        }
+
+        /// <summary>A new layer under a track that keeps playing: joined at the track's own position.</summary>
+        private void StartLayerInStep(AudioClip layer)
+        {
+            _currentLayer.Stop();
+            _currentLayer.clip = layer;
+            _layerMix = 0f;
+            if (layer == null || !_current.isPlaying)
+            {
+                return;
+            }
+
+            _currentLayer.timeSamples = Mathf.Min(_current.timeSamples, layer.samples - 1);
+            _currentLayer.Play();
+        }
+
+        private AudioClip LayerFor(MusicState state)
+        {
+            var palette = _palette ?? FindPalette(string.Empty);
+            if (palette == null)
+            {
+                return null;
+            }
+
+            switch (state)
+            {
+                case MusicState.Exploration: return palette.CombatLayer;
+                case MusicState.BossIntro:
+                case MusicState.BossPhaseOne:
+                case MusicState.BossPhaseTwo:
+                    return palette.BossLayer;
+                default: return null;
+            }
+        }
+
+        /// <summary>Whether the layer should be heard now: a fight while exploring, or phase two.</summary>
+        private bool WantsLayer()
+        {
+            switch (_state)
+            {
+                case MusicState.Exploration: return _combat != null && _combat.IsInCombat;
+                case MusicState.BossPhaseTwo: return true;
+                default: return false;
             }
         }
 
@@ -261,6 +359,10 @@ namespace ForgottenKingdom
             if (wanted != (_current != null ? _current.clip : null))
             {
                 Crossfade(wanted);
+            }
+            else if (LayerFor(_state) != CurrentLayer)
+            {
+                StartLayerInStep(LayerFor(_state));
             }
         }
 
@@ -314,15 +416,15 @@ namespace ForgottenKingdom
         {
             _duck = Mathf.Min(1f, _duck + Time.unscaledDeltaTime / _duckRecovery);
             _fade = Mathf.Min(1f, _fade + Time.unscaledDeltaTime / _crossfade);
+            var layerTarget = WantsLayer() ? 1f : 0f;
+            _layerMix = Mathf.MoveTowards(_layerMix, layerTarget,
+                Time.unscaledDeltaTime / (layerTarget > _layerMix ? _layerFadeIn : _layerFadeOut));
 
-            var bus = AudioManager.Instance != null
-                ? AudioManager.Instance.BusVolume(AudioBus.Music)
-                : 1f;
-            var target = _volume * bus * _duck;
-
+            var target = _volume * BusVolume() * _duck;
             if (_current != null)
             {
                 _current.volume = target * _fade;
+                _currentLayer.volume = target * _fade * _layerMix;
             }
 
             if (_previous == null)
@@ -331,11 +433,29 @@ namespace ForgottenKingdom
             }
 
             _previous.volume = target * (1f - _fade);
+            _previousLayer.volume = target * (1f - _fade) * _previousLayerMix;
             if (_fade >= 1f && _previous.isPlaying)
             {
                 _previous.Stop();
                 _previous.clip = null;
+                _previousLayer.Stop();
+                _previousLayer.clip = null;
             }
+        }
+
+        /// <summary>
+        /// The music slider. The menu has no <see cref="AudioManager"/>, so there the settings are
+        /// read directly — the slider must be obeyed on the title screen too.
+        /// </summary>
+        private static float BusVolume()
+        {
+            if (AudioManager.Instance != null)
+            {
+                return AudioManager.Instance.BusVolume(AudioBus.Music);
+            }
+
+            var settings = GameSettings.Current;
+            return settings != null ? settings.musicVolume * settings.masterVolume : 1f;
         }
     }
 }

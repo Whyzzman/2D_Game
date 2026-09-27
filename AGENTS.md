@@ -45,7 +45,7 @@
   Не звать `Shake()` / `HitStop.Request()` из боевого кода. Профили `Data/Feedback` — только
   подача, без урона и дистанций.
 - **Звук** — только `AudioManager.Play(AudioId.X, …)`: геймплей называет момент, не файл.
-  Музыки нет, `MusicDirector` держит состояния.
+  Музыка процедурная (`PlaceholderMusicArt`), в сцены её вписывает `SceneMusic.Apply`.
 - **`Time.timeScale`** пишет только `GameTimeScale` (`SetPaused` / `SetFrozen` / `SetBaseScale`).
 - **Интерфейс**: новый экран — сначала HTML в `design/ui/` на согласование (Approval 1), потом
   UXML/USS/C# в `Assets/Game/UI/` (Approval 2; у перенесённых экранов он предварительный до
@@ -95,7 +95,7 @@
   `-executeMethod ForgottenKingdom.EditorTools.ContentBuilder.Build` → `rsync -a` обратно
   **до** следующей синхронизации (иначе `--delete` сотрёт сгенерированное — дважды так теряли
   контент) → откатить шум генератора (`git checkout` незатронутых префабов врагов и
-  `Data/Skills/hunter_efficiency.asset`) → снова синхронизировать → тесты. Пока цикл идёт, не
+  `Data/Skills/hunter_efficiency.asset`, `Prefabs/LostCurrencyMark.prefab`) → снова синхронизировать → тесты. Пока цикл идёт, не
   править `Assets/Game` и не запускать второй. `Assets/Settings` копировать отдельно.
 - Объём: после каждого пункта — весь EditMode и связанные PlayMode-наборы (`-testFilter`), затем
   коммит и push. Полный PlayMode (~10 мин) — раз на **8** пунктов; найденное — отдельным

@@ -712,16 +712,8 @@ namespace ForgottenKingdom.EditorTools
                 return;
             }
 
-            // Two palettes, both empty. The states and the crossfades are real and tested; there
-            // is still no music, and this does not pretend otherwise.
-            var musicData = new SerializedObject(music);
-            var musicPalettes = musicData.FindProperty("_palettes");
-            musicPalettes.arraySize = 2;
-            musicPalettes.GetArrayElementAtIndex(0).FindPropertyRelative("_zoneId").stringValue =
-                TombZoneId;
-            musicPalettes.GetArrayElementAtIndex(1).FindPropertyRelative("_zoneId").stringValue =
-                ForestZoneId;
-            musicData.ApplyModifiedPropertiesWithoutUndo();
+            // The procedural score: a track and fight layer per region, one shared boss track.
+            SceneMusic.ConfigureLevel(music, PlaceholderMusicArt.Generate());
         }
     }
 }

@@ -232,6 +232,48 @@ namespace ForgottenKingdom.Tests
             Assert.That(seen.Count, Is.GreaterThan(1));
         }
 
+        // ---------- the score ----------
+
+        [TestCase("music_tomb", "music_tomb_pulse")]
+        [TestCase("music_forest", "music_forest_pulse")]
+        [TestCase("music_boss", "music_boss_drums")]
+        public void AFightLayerIsExactlyAsLongAsItsTrack(string track, string layer)
+        {
+            // Started on one tick and looping together, they stay in step only if they match.
+            Assert.That(Samples(layer).Length, Is.EqualTo(Samples(track).Length));
+        }
+
+        [TestCase("music_menu")]
+        [TestCase("music_tomb")]
+        [TestCase("music_tomb_pulse")]
+        [TestCase("music_forest")]
+        [TestCase("music_forest_pulse")]
+        [TestCase("music_boss")]
+        [TestCase("music_boss_drums")]
+        [TestCase("music_victory")]
+        public void EveryLoopJoinsWithoutAClick(string name)
+        {
+            var samples = Samples(name);
+            Assert.That(samples.Length, Is.GreaterThan(22050 * 10), "Long enough not to wear thin.");
+            Assert.That(Mathf.Abs(samples[samples.Length - 1] - samples[0]), Is.LessThan(0.05f),
+                "The end runs into the start.");
+        }
+
+        /// <summary>The raw 16-bit samples of a generated track, read from the file itself.</summary>
+        private static float[] Samples(string name)
+        {
+            var path = System.IO.Path.GetFullPath($"Assets/Game/Audio/Music/{name}.wav");
+            Assert.That(System.IO.File.Exists(path), Is.True, $"The content build writes {name}.");
+            var bytes = System.IO.File.ReadAllBytes(path);
+            var samples = new float[(bytes.Length - 44) / 2];
+            for (var i = 0; i < samples.Length; i++)
+            {
+                samples[i] = BitConverter.ToInt16(bytes, 44 + i * 2) / 32000f;
+            }
+
+            return samples;
+        }
+
         private static T Load<T>(string path) where T : ScriptableObject
         {
             var asset = UnityEditor.AssetDatabase.LoadAssetAtPath<T>(path);

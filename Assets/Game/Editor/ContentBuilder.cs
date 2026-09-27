@@ -2654,6 +2654,9 @@ namespace ForgottenKingdom.EditorTools
         {
             EnsureFolder(AudioEventFolder);
             var clips = PlaceholderAudioArt.Generate();
+            // The score is written here too, so a content build alone keeps the tracks current;
+            // SceneMusic puts them into the scenes.
+            PlaceholderMusicArt.Generate();
             var events = new System.Collections.Generic.List<AudioEvent>();
 
             // Movement. Frequent and quiet: high voice counts, low priority, nothing spatial.

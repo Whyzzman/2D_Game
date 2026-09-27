@@ -35,6 +35,7 @@ namespace ForgottenKingdom.EditorTools
             cameraObject.transform.position = new Vector3(0f, 3.4f, -10f);
 
             var systems = new GameObject("Systems");
+            SceneMusic.AddMenuMusic(PlaceholderMusicArt.Generate());
             var ambient = FindOrCreateChild(systems, "GlobalLight");
             AddLight(ambient, Light2D.LightType.Global, new Color(0.55f, 0.6f, 0.78f), 0.55f);
 
