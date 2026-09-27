@@ -45,6 +45,7 @@ namespace ForgottenKingdom
         private SpellDefinition _casting;
         private int _castingSlot = -1;
         private float _releaseAt;
+        private float _castTime;
         private float _endsAt;
         private float _killManaReadyAt;
         private bool _hasReleased;
@@ -55,6 +56,14 @@ namespace ForgottenKingdom
 
         public bool IsCasting => _casting != null;
         public SpellDefinition CastingSpell => _casting;
+
+        /// <summary>
+        /// How far the shaping is towards release, 0 to 1; 1 once released. What the charge in the
+        /// hand grows by, so it can never promise a release that is not coming.
+        /// </summary>
+        public float CastProgress => _casting == null ? 0f
+            : _hasReleased || _castTime <= 0f ? 1f
+            : Mathf.Clamp01(1f - (_releaseAt - Time.time) / _castTime);
 
         /// <summary>Share of normal speed allowed while shaping the current spell.</summary>
         public float MovementScale => _casting != null ? _casting.MovementScale : 1f;
@@ -247,6 +256,7 @@ namespace ForgottenKingdom
             _castingSlot = slot;
             _hasReleased = false;
             var castTime = CastTimeOf(spell);
+            _castTime = castTime;
             _releaseAt = Time.time + castTime;
             _endsAt = _releaseAt + spell.RecoveryTime;
             _mana?.SetCasting(true);

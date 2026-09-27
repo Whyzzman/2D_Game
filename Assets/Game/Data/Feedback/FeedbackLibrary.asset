@@ -75,6 +75,10 @@ MonoBehaviour:
     profile: {fileID: 11400000, guid: 5dae47c07d7494e0dad13802372cc565, type: 2}
   - kind: 40
     profile: {fileID: 11400000, guid: 9ebb5f7a694c2487dae9a26319e530c8, type: 2}
+  - kind: 41
+    profile: {fileID: 11400000, guid: a8d5b93cc05864df5b85da9ee57b787e, type: 2}
+  - kind: 42
+    profile: {fileID: 11400000, guid: 91d47a63db7f64d0da344124730f6267, type: 2}
   - kind: 20
     profile: {fileID: 11400000, guid: bd991e75ff3f8bb4abb13f8650ddd5f8, type: 2}
   - kind: 21

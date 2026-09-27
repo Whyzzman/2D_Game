@@ -62,7 +62,7 @@ namespace ForgottenKingdom
         /// One combat moment, one sound. The mapping is deliberately flat and readable: this is
         /// the table someone will want to read when a fight sounds wrong.
         /// </summary>
-        private static AudioId ForFeedback(FeedbackKind kind)
+        public static AudioId ForFeedback(FeedbackKind kind)
         {
             switch (kind)
             {
@@ -98,6 +98,8 @@ namespace ForgottenKingdom
                 case FeedbackKind.Pogo: return AudioId.Pogo;
                 // The seal shutting is covered by the boss waking; its breaking is a gate opening.
                 case FeedbackKind.ArenaOpen: return AudioId.GateOpen;
+                // A lit altar is already heard (CheckpointActivate); a lost spell has its own hiss.
+                case FeedbackKind.CastFizzle: return AudioId.CastFizzle;
                 default: return AudioId.None;
             }
         }

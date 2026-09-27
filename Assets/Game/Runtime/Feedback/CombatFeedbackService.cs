@@ -98,11 +98,20 @@ namespace ForgottenKingdom
         public static void Play(FeedbackKind kind, Vector2 position, Vector2 direction = default,
             float scale = 1f)
         {
-            Instance?.PlayInternal(kind, position, direction, scale);
+            Instance?.PlayInternal(kind, position, direction, scale, Color.white);
+        }
+
+        /// <summary>The same moment, its burst tinted — a spell's colour on a pale effect.</summary>
+        public static void Play(FeedbackKind kind, Vector2 position, Color tint, float scale = 1f)
+        {
+            Instance?.PlayInternal(kind, position, Vector2.right, scale, tint);
         }
 
         private void PlayInternal(FeedbackKind kind, Vector2 position, Vector2 direction,
-            float scale)
+            float scale) => PlayInternal(kind, position, direction, scale, Color.white);
+
+        private void PlayInternal(FeedbackKind kind, Vector2 position, Vector2 direction,
+            float scale, Color tint)
         {
             if (_library == null)
             {
@@ -119,7 +128,7 @@ namespace ForgottenKingdom
             // landed, and five hits should produce five sparks.
             if (profile.HasBurst)
             {
-                _bursts.Take().Play(profile, position, direction, scale, _bursts);
+                _bursts.Take().Play(profile, position, direction, scale, _bursts, tint);
             }
 
             if (profile.HasLight && _lightSprite != null)
@@ -246,6 +255,16 @@ namespace ForgottenKingdom
             foreach (var encounter in FindObjectsByType<BossEncounter>(FindObjectsInactive.Include))
             {
                 ArenaSealGlow.Attach(encounter, _library, _effectMaterial, _lightTemplate);
+            }
+
+            // Lighting an altar: a warm flash at the flame. The altar's own light wave and the
+            // flame catching are CheckpointVisual's; this is the burst over them.
+            foreach (var checkpoint in FindObjectsByType<Checkpoint>(FindObjectsInactive.Include))
+            {
+                var visual = checkpoint.GetComponent<CheckpointVisual>();
+                checkpoint.Activated += lit => PlayInternal(FeedbackKind.AltarKindle,
+                    visual != null ? visual.FlamePosition : (Vector2)lit.transform.position,
+                    Vector2.right, 1f);
             }
 
             var shadow = FindAnyObjectByType<ShadowAbilities>();

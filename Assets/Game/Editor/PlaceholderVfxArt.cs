@@ -116,8 +116,15 @@ namespace ForgottenKingdom.EditorTools
             new Spec("vfx_arena_seal", 10, 20f),
             new Spec("vfx_arena_open", 10, 18f),
             // A loop the sealed barrier carries (ArenaSealGlow), not a burst.
-            new Spec("vfx_arena_runes", 8, 10f)
+            new Spec("vfx_arena_runes", 8, 10f),
+            // Magic and altars. The orb is one still frame the CastCharge scales and tints; the
+            // fizzle is pale so the spell's own colour can tint it; the kindle is warm already.
+            new Spec(CastOrbName, 1, 12f),
+            new Spec("vfx_cast_fizzle", 8, 20f),
+            new Spec("vfx_altar_kindle", 12, 18f)
         };
+
+        public const string CastOrbName = "vfx_cast_orb";
 
         /// <summary>Loops never reach their end: the last frame must lead back into the first.</summary>
         private static bool IsLoop(string name) => name == StunStarsName || name == "vfx_arena_runes";
@@ -226,6 +233,9 @@ namespace ForgottenKingdom.EditorTools
                 case "vfx_arena_seal": return SealColumn(t, true);
                 case "vfx_arena_open": return SealColumn(t, false);
                 case "vfx_arena_runes": return RuneColumn(t);
+                case CastOrbName: return CastOrb();
+                case "vfx_cast_fizzle": return CastFizzle(t);
+                case "vfx_altar_kindle": return AltarKindle(t);
                 default: return new Canvas(64, 64);
             }
         }
@@ -1015,6 +1025,90 @@ namespace ForgottenKingdom.EditorTools
         /// get out of the way quickly, so this holds full opacity through the first two thirds and
         /// drops off sharply after.
         /// </summary>
+        /// <summary>
+        /// The gathered spell: a soft halo round a hot core, white so the caster can colour it.
+        /// </summary>
+        private static Canvas CastOrb()
+        {
+            var c = new Canvas(64, 64);
+            var centre = new Vector2(32f, 32f);
+            var white = new Color32(255, 255, 255, 255);
+            c.Ellipse(centre, 30f, 30f, Fade(white, 0.18f));
+            c.Ellipse(centre, 22f, 22f, Fade(white, 0.35f));
+            c.Ellipse(centre, 14f, 14f, Fade(white, 0.75f));
+            c.Ellipse(centre, 8f, 8f, white);
+            return c;
+        }
+
+        /// <summary>
+        /// A broken cast: the shape bursts into a ragged ring and its sparks fall away dimming —
+        /// falling, not flying, so it reads as lost rather than as an attack. Pale, to be tinted.
+        /// </summary>
+        private static Canvas CastFizzle(float t)
+        {
+            var c = new Canvas(150, 150);
+            var centre = new Vector2(75f, 88f);
+            var pale = new Color32(235, 235, 240, 255);
+            var fade = Mathf.Clamp01((1f - t) * 1.6f);
+            var rng = new System.Random(29);
+            var ring = Mathf.Lerp(10f, 30f, Mathf.Sqrt(t));
+            for (var i = 0; i < 9; i++)
+            {
+                // Ragged: every other arc is missing, the broken shape of the spell.
+                var a = i * Mathf.PI * 2f / 9f + (float)rng.NextDouble() * 0.3f;
+                var from = centre + new Vector2(Mathf.Cos(a), Mathf.Sin(a)) * ring;
+                var to = centre + new Vector2(Mathf.Cos(a + 0.35f), Mathf.Sin(a + 0.35f)) * ring;
+                c.Thick(from, to, 3f * fade, 2f * fade, Fade(pale, fade * 0.7f));
+            }
+
+            for (var i = 0; i < 12; i++)
+            {
+                var a = (float)rng.NextDouble() * Mathf.PI * 2f;
+                var speed = Mathf.Lerp(24f, 46f, (float)rng.NextDouble());
+                var p = centre + new Vector2(Mathf.Cos(a), Mathf.Sin(a) * 0.6f) * speed * t
+                    + Vector2.down * 60f * t * t;
+                var r = Mathf.Lerp(3.2f, 1f, t);
+                c.Ellipse(p, r, r, Fade(pale, fade));
+            }
+
+            return c;
+        }
+
+        /// <summary>
+        /// An altar catching: a warm flash, a ring of light rolling out across the stone and
+        /// tongues of flame and embers rising. Big and slow next to a hit — it is the one moment
+        /// of safety in the level, not a blow.
+        /// </summary>
+        private static Canvas AltarKindle(float t)
+        {
+            var c = new Canvas(240, 240);
+            var centre = new Vector2(120f, 110f);
+            var flash = Mathf.Clamp01(1f - t * 3f);
+            c.Ellipse(centre, 46f * (0.6f + flash), 46f * (0.6f + flash), Fade(FireCore, flash * 0.7f));
+            var fade = Mathf.Clamp01((1f - t) * 1.4f);
+            var ring = Mathf.Lerp(18f, 110f, Mathf.Sqrt(t));
+            var width = Mathf.Lerp(9f, 2f, t);
+            for (var i = 0; i < 36; i++)
+            {
+                var a = i * Mathf.PI * 2f / 36f;
+                var b = (i + 1) * Mathf.PI * 2f / 36f;
+                c.Thick(centre + new Vector2(Mathf.Cos(a), Mathf.Sin(a) * 0.55f) * ring,
+                    centre + new Vector2(Mathf.Cos(b), Mathf.Sin(b) * 0.55f) * ring, width, width,
+                    Fade(SteelWarm, fade * 0.6f));
+            }
+
+            var rng = new System.Random(41);
+            for (var i = 0; i < 14; i++)
+            {
+                var x = centre.x + Mathf.Lerp(-40f, 40f, (float)rng.NextDouble());
+                var rise = Mathf.Lerp(40f, 110f, (float)rng.NextDouble()) * t;
+                var r = Mathf.Lerp(3.5f, 1f, t) * Mathf.Lerp(0.7f, 1.2f, (float)rng.NextDouble());
+                c.Ellipse(new Vector2(x, centre.y + rise), r, r * 1.4f, Fade(FireCore, fade));
+            }
+
+            return c;
+        }
+
         private static float Opacity(float t) =>
             Mathf.Clamp01((1f - Mathf.Clamp01(t)) * 2.6f);
 

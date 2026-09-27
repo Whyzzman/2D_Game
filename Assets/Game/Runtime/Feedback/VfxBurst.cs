@@ -41,7 +41,11 @@ namespace ForgottenKingdom
         /// the classic pooling bug, and it looks like a rendering glitch rather than a logic one.
         /// </summary>
         public void Play(FeedbackProfile profile, Vector2 position, Vector2 direction,
-            float scale, VfxPool pool)
+            float scale, VfxPool pool) => Play(profile, position, direction, scale, pool, Color.white);
+
+        /// <summary>The same, tinted: one pale burst serves every element of magic.</summary>
+        public void Play(FeedbackProfile profile, Vector2 position, Vector2 direction,
+            float scale, VfxPool pool, Color tint)
         {
             _pool = pool;
             _clip = profile.Burst;
@@ -61,7 +65,7 @@ namespace ForgottenKingdom
             transform.localScale = new Vector3(size * mirror, size, size);
 
             _renderer.enabled = true;
-            _renderer.color = profile.Tint;
+            _renderer.color = profile.Tint * tint;
             _renderer.sortingLayerName = profile.SortingLayer;
             _renderer.sortingOrder = profile.SortingOrder;
             _renderer.sprite = _clip != null ? _clip.FrameAt(0f) : null;

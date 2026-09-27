@@ -96,8 +96,8 @@
 | `vfx_frostshard_impact` | те саме | VFXFront | 0.25 с | **P0** | |
 | `vfx_arcane_burst` | випуск Вибуху Сили | VFXFront | 0.50 с | P1 | геометрія й руни, радіус **3.2 юніта** — має збігатися |
 | `vfx_mana_shield` | `TemporaryBuffs.BuffsChanged` | VFXBack | цикл | P2 | стримана оболонка, не закриває гравця |
-| `vfx_cast_charge` | `CastStarted` | VFXFront | цикл | P1 | збирання енергії в руці |
-| `vfx_cast_interrupt` | `CastInterrupted` | VFXFront | 0.20 с | P2 | зрив — має читатися як невдача |
+| `vfx_cast_charge` | `CastStarted` | VFXFront | цикл | P1 | ✅ 2026-09-27: `vfx_cast_orb` (1 кадр) — `CastCharge` масштабує, фарбує кольором заклинання й пульсує |
+| `vfx_cast_interrupt` | `CastInterrupted` | VFXFront | 0.20 с | P2 | ✅ 2026-09-27: `vfx_cast_fizzle` (8 кадрів), блідий, фарбується кольором заклинання |
 
 **Реакції ворогів (2026-09-27):** `vfx_enemy_telegraph` — відблиск на зброї на старті замаху
 (0,25 с, VFXFront, зі світлом); `vfx_stun_stars` — петля зірочок над головою оглушеного ворога чи
@@ -144,7 +144,7 @@
 | Ім'я | Тригер | Шар | Трив. | Пріор. |
 | --- | --- | --- | --- | --- |
 | `vfx_checkpoint_idle` | `Checkpoint` запалений | VFXBack | цикл | **P0** |
-| `vfx_checkpoint_activate` | `CheckpointActivated` | VFXFront | 0.80 с | **P0** |
+| `vfx_checkpoint_activate` | `CheckpointActivated` | VFXFront | 0.80 с | **P0** | ✅ 2026-09-27: `vfx_altar_kindle` (12 кадрів, VFXBack) |
 | `vfx_loot_common` / `_rare` / `_unique` | `WorldPickup` існує | VFXBack | цикл | P1 |
 | `vfx_loot_pickup` | `WorldPickup.Collected` | VFXFront | 0.30 с | P1 |
 | `vfx_barrier_seal` | `BossEncounter` запечатує арену | VFXFront | 0.60 с | **P0** |

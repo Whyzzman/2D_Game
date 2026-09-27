@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1948b099c584578408b2536d2dd0cc7d, type: 3}
+  m_Name: feedback_altarkindle
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.FeedbackProfile
+  _burst:
+    _clipName: vfx_altar_kindle
+    _frames:
+    - {fileID: 21300000, guid: fb890c7dbcfd24686a0b6b2063588f4c, type: 3}
+    - {fileID: 21300000, guid: 30928c608331f4f158219656459e5eb6, type: 3}
+    - {fileID: 21300000, guid: fc7cf0c78c4cf44cb970ff063c5c9808, type: 3}
+    - {fileID: 21300000, guid: 0b662fe0cf3b3459f87313e129f8edff, type: 3}
+    - {fileID: 21300000, guid: 843546bf06bc148f0909ed815ee5589d, type: 3}
+    - {fileID: 21300000, guid: 8435899057aa34dcc9ce584f51fe7f85, type: 3}
+    - {fileID: 21300000, guid: 982741c283b7b49bf9f221176ee47401, type: 3}
+    - {fileID: 21300000, guid: 7649f74c0207d4e798867e760600223a, type: 3}
+    - {fileID: 21300000, guid: c277717e026d5434b94fc3779c1818d4, type: 3}
+    - {fileID: 21300000, guid: e854b5ea2e00f4ea185e786d7b70c1b8, type: 3}
+    - {fileID: 21300000, guid: dc9921bfc661246b08e4dbf5a8086203, type: 3}
+    - {fileID: 21300000, guid: 3cc46d0a063c94ceba1055c473b827c8, type: 3}
+    _framesPerSecond: 18
+    _isLooping: 0
+    _anchors: []
+  _tint: {r: 1, g: 1, b: 1, a: 1}
+  _scale: 1
+  _facesHitDirection: 0
+  _mirrorsToDirection: 0
+  _sortingLayer: VFXBack
+  _sortingOrder: 0
+  _hitStop: 0
+  _shake: 0
+  _shakeScale: 1
+  _shakeVerticalBias: 1
+  _screenFlash: 0
+  _flashColor: {r: 1, g: 1, b: 1, a: 1}
+  _lightColor: {r: 1, g: 0.74, b: 0.4, a: 0.9}
+  _lightRadius: 4.5
+  _lightDuration: 0.18
+  _priority: 20
+  _soundEvent: 
+  _haptic: 0

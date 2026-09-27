@@ -198,6 +198,22 @@ namespace ForgottenKingdom.EditorTools
                 height, angle);
         }
 
+        /// <summary>
+        /// Where the casting hand holds the gathering spell, in units from the feet, facing right:
+        /// the front hand of the cast pose half-way through its loop, a little past the fingers.
+        /// </summary>
+        public static Vector2 CastHand()
+        {
+            var pose = PoseFor(PlayerAnimationState.CastStart, 0.5f, 0f);
+            Skeleton(pose, out _, out var shoulder);
+            var upper = pose.FrontArm + pose.Lean;
+            var elbow = shoulder + Canvas.Rotate(new Vector2(0f, -20f), -upper);
+            var along = Canvas.Rotate(new Vector2(0f, -1f), -(upper + pose.FrontForearm));
+            var hand = elbow + along * (18f + 6f);
+            return new Vector2((hand.x - Width * 0.5f) / PlaceholderImport.PixelsPerUnit,
+                hand.y / PlaceholderImport.PixelsPerUnit);
+        }
+
         public const string CloakTailPath = ArtFolder + "/Cloak/player_cloak_tail.png";
 
         /// <summary>

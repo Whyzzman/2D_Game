@@ -205,6 +205,9 @@ namespace ForgottenKingdom
         HerbEat,
 
         // ---- pogo ----
-        Pogo
+        Pogo,
+
+        // ---- a spell lost to a hit (appended) ----
+        CastFizzle
     }
 }

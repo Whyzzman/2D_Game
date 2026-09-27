@@ -55,7 +55,10 @@ namespace ForgottenKingdom
         ArenaSeal,
         ArenaOpen,
         /// <summary>Not a burst: the rune loop and light the sealed barrier carries.</summary>
-        ArenaRunes
+        ArenaRunes,
+        // Magic and altars (item 6 of the 2026-09-27 list).
+        CastFizzle,
+        AltarKindle
     }
 
     /// <summary>

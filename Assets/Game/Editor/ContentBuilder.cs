@@ -2776,6 +2776,7 @@ namespace ForgottenKingdom.EditorTools
             events.Add(Sound(AudioId.HerbEat, clips, 0.5f, voices: 1, priority: 55));
             // The pogo's ring is how a bounce is felt; chains of them must each be heard.
             events.Add(Sound(AudioId.Pogo, clips, 0.7f, voices: 2, priority: 75, interval: 0.05f));
+            events.Add(Sound(AudioId.CastFizzle, clips, 0.55f, voices: 1, priority: 60));
 
             // Interface. Quiet, flat, and spaced so fast navigation does not chatter.
             events.Add(Sound(AudioId.UiNavigate, clips, 0.3f, AudioBus.Ui, voices: 1, priority: 25,
@@ -2982,6 +2983,13 @@ namespace ForgottenKingdom.EditorTools
             // Only its frames and light colour are read, by ArenaSealGlow; it is never played.
             entries.Add(Feedback(FeedbackKind.ArenaRunes, "vfx_arena_runes", shake: ShakeProfile.None,
                 light: new Color(0.62f, 0.78f, 1f, 0.8f), priority: 0, facesDirection: false));
+            // Magic and altars. The fizzle is tinted by the lost spell's colour at play time; it
+            // never shakes or freezes — losing a spell is a setback, not a blow.
+            entries.Add(Feedback(FeedbackKind.CastFizzle, "vfx_cast_fizzle", shake: ShakeProfile.None,
+                priority: 6, facesDirection: false, scale: 0.8f));
+            entries.Add(Feedback(FeedbackKind.AltarKindle, "vfx_altar_kindle", shake: ShakeProfile.None,
+                light: new Color(1f, 0.74f, 0.4f, 0.9f), lightRadius: 4.5f, priority: 20,
+                facesDirection: false, layer: "VFXBack"));
             entries.Add(Feedback(FeedbackKind.WallContact, "vfx_wall_contact",
                 shake: ShakeProfile.None, priority: 5, layer: "VFXBack"));
 
@@ -3405,6 +3413,7 @@ namespace ForgottenKingdom.EditorTools
             SetReference(controller, "_body", body);
             SetReference(controller, "_face", face);
             BuildCloakTail(visual.gameObject, controller, body);
+            BuildCastCharge(root, bodyObject);
 
             BuildVisualSockets(root, visual.gameObject, bodyObject);
 
@@ -3452,6 +3461,35 @@ namespace ForgottenKingdom.EditorTools
             SetReference(sockets, "_overhead", overhead.transform);
             SetReference(sockets, "_weapon", mount != null ? mount : bodyObject.transform);
             SetReference(sockets, "_cast", castPoint != null ? castPoint : bodyObject.transform);
+        }
+
+        /// <summary>
+        /// The spell gathering in the casting hand (item 6 of the 2026-09-27 list). A child of the
+        /// body frame, so it mirrors with the facing; lit by its own small light.
+        /// </summary>
+        private static void BuildCastCharge(GameObject root, GameObject bodyObject)
+        {
+            var orb = FindOrCreateChild(bodyObject, "CastOrb");
+            orb.transform.localPosition = PlaceholderPlayerArt.CastHand();
+            var renderer = Ensure<SpriteRenderer>(orb);
+            renderer.sprite = _vfx != null && _vfx.TryGetValue(PlaceholderVfxArt.CastOrbName,
+                out var frames) && frames.Length > 0 ? frames[0] : null;
+            renderer.sharedMaterial = _material;
+            renderer.sortingLayerName = "VFXFront";
+            renderer.sortingOrder = 0;
+            renderer.enabled = false;
+            var light = orb.GetComponent<UnityEngine.Rendering.Universal.Light2D>();
+            if (light == null)
+            {
+                light = AddLight(orb, UnityEngine.Rendering.Universal.Light2D.LightType.Point,
+                    Color.white, 0f, 1.6f, 0.1f, 0.6f);
+            }
+
+            light.enabled = false;
+            var charge = Ensure<CastCharge>(orb);
+            SetReference(charge, "_caster", root.GetComponent<SpellCaster>());
+            SetReference(charge, "_renderer", renderer);
+            SetReference(charge, "_light", light);
         }
 
         /// <summary>

@@ -1189,3 +1189,11 @@ x≈36,5) с местом для рывка за спину → вход в ар
   `ANIMATION_PIPELINE.md` §7а, `ART_ASSET_LIST.md`. Тесты: 5 в `PlayerAnimationTests`, 2 в
   `AnimationDataTests`. Средне.
 
+- [x] **60. Магия и алтари** (решения пользователя 2026-09-27: сгусток в руке, срыв — рассыпается
+  со звуком, зажжение алтаря — вспышка и волна света без паузы и надписи). Было: каст показывала
+  только поза, срыв не показывался и не звучал вовсе, алтарь переключался с холодного на тёплый
+  мгновенно. Сделано: `CastCharge` (сгусток цвета заклинания растёт и пульсирует к выпуску,
+  `SpellCaster.CastProgress`), `FeedbackKind.CastFizzle` + `AudioId.CastFizzle` (тонированная вспышка,
+  `CombatFeedbackService.Play(kind, position, tint)`), `FeedbackKind.AltarKindle` и волна света в
+  `CheckpointVisual`. Подробности — `COMBAT_FEEDBACK.md` §12д. Тесты `MagicFeedbackTests` (6). Средне.
+
