@@ -14,16 +14,19 @@ namespace ForgottenKingdom
     {
         private const string OpenClass = "ability--open";
 
-        /// <summary>What each ability does, and the keyboard and pad buttons it answers to.</summary>
-        private static readonly Dictionary<string, (string text, string how, string key, string pad)> Lessons =
-            new Dictionary<string, (string, string, string, string)>
+        /// <summary>
+        /// What each ability does and the action it is used through; the card shows that action's
+        /// keys as the player has set them (controls.html, frame 7).
+        /// </summary>
+        private static readonly Dictionary<string, (string text, string how, string action)> Lessons =
+            new Dictionary<string, (string, string, string)>
             {
-                [AbilityIds.Dash] = ("Короткий ривок уперед, крізь удари.", "Натисни", "L", "RT"),
+                [AbilityIds.Dash] = ("Короткий ривок уперед, крізь удари.", "Натисни", "Dash"),
                 [AbilityIds.DoubleJump] = ("Тепер можна відштовхнутися від повітря.",
-                    "У повітрі натисни", "Space", "A"),
-                [AbilityIds.AirDash] = ("Ривок тепер працює й у повітрі.", "У повітрі натисни", "L", "RT"),
+                    "У повітрі натисни", "Jump"),
+                [AbilityIds.AirDash] = ("Ривок тепер працює й у повітрі.", "У повітрі натисни", "Dash"),
                 [AbilityIds.WallRun] = ("Стіна більше не перешкода: по ній можна бігти вгору.",
-                    "Притиснись до стіни й тримай", "Space", "A"),
+                    "Притиснись до стіни й тримай", "Jump"),
             };
 
         private readonly VisualElement _card;
@@ -161,8 +164,8 @@ namespace ForgottenKingdom
             }
 
             if (_how != null) { _how.text = lesson.how; }
-            if (_key != null) { _key.text = lesson.key; }
-            if (_pad != null) { _pad.text = lesson.pad; }
+            if (_key != null) { _key.text = KeyBindings.Glyph(lesson.action, gamepad: false); }
+            if (_pad != null) { _pad.text = KeyBindings.Glyph(lesson.action, gamepad: true); }
         }
     }
 }

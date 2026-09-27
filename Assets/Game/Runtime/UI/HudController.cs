@@ -107,6 +107,7 @@ namespace ForgottenKingdom
         private MapView _map;
         private ShrineView _shrine;
         private AbilityCard _abilityCard;
+        private HudKeyGlyphs _keyGlyphs;
         private VisualElement _flasks;
         private VisualElement _flaskRow;
         private readonly System.Collections.Generic.List<VisualElement> _flaskIcons =
@@ -126,6 +127,9 @@ namespace ForgottenKingdom
 
         /// <summary>The "ability gained" card; it shares this document.</summary>
         public AbilityCard AbilityCard => _abilityCard;
+
+        /// <summary>The key glyphs on the slots, flasks and prompt; they follow rebinding.</summary>
+        public HudKeyGlyphs KeyGlyphs => _keyGlyphs;
 
         /// <summary>Flask icons currently drawn, for tests and tools.</summary>
         public int FlaskIconCount => _flaskIcons.Count;
@@ -154,6 +158,7 @@ namespace ForgottenKingdom
             _shrine.Attach(FindAnyObjectByType<ShrineMenu>(), _world);
             _pause = new PauseMenu(_root, _inventory, _map, _shrine);
             _pause.Attach(_player, _progress);
+            _keyGlyphs = new HudKeyGlyphs(_root);
             _abilityCard = new AbilityCard(_root);
             _abilityCard.Attach(_player, _progress);
             _flasks = _root.Q("flasks");
@@ -170,6 +175,7 @@ namespace ForgottenKingdom
             _map?.Detach();
             _shrine?.Detach();
             _abilityCard?.Detach();
+            _keyGlyphs?.Dispose();
         }
 
         private void Start()

@@ -205,6 +205,21 @@ namespace ForgottenKingdom.Tests
         }
 
         [UnityTest]
+        public IEnumerator TheTitleScreenOpensTheControlsScreen()
+        {
+            yield return SceneManager.LoadSceneAsync(MainMenuController.SceneName);
+            yield return null;
+            var menu = Object.FindAnyObjectByType<MainMenuController>();
+            menu.OpenControls();
+            Assert.That(menu.IsControlsOpen, Is.True, "Keys can be set before playing.");
+            Assert.That(menu.Controls.Editor, Is.Not.Null);
+            yield return null;
+            yield return null;
+            menu.Controls.Back();
+            Assert.That(menu.IsControlsOpen, Is.False);
+        }
+
+        [UnityTest]
         public IEnumerator NewGameFromTheMenuKeepsTheSettings()
         {
             GameSettings.Set(data => data.screenShake = 0.25f);

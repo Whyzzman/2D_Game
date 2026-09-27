@@ -236,6 +236,61 @@
                     "isPartOfComposite": true
                 },
                 {
+                    "name": "WASD 2",
+                    "id": "bc0c9544-70f0-4a0a-8bc9-bfafb3a61ee4",
+                    "path": "Dpad",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "f4415091-c191-4a3b-ac27-bfbc9197b829",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "e066e2b5-9a88-437d-a661-0e7812b77595",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "036bbb8d-135b-49fc-8930-130dc89a555d",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "dad63e6f-e74b-4149-b242-2db6c357538d",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
                     "name": "",
                     "id": "1635d3fe-58b6-4ba9-a4e2-f4b964f6b5c8",
                     "path": "<XRController>/{Primary2DAxis}",
@@ -292,6 +347,17 @@
                 },
                 {
                     "name": "",
+                    "id": "943ef636-a763-42d5-83f8-8523e6cc5a76",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "1c04ea5f-b012-41d1-a6f7-02e963b52893",
                     "path": "<Keyboard>/e",
                     "interactions": "",
@@ -314,8 +380,19 @@
                 },
                 {
                     "name": "",
-                    "id": "2b4e1f75-3d62-4c1b-8042-63fab1e29d01",
-                    "path": "<Mouse>/leftButton",
+                    "id": "3cb5b51f-565b-4692-9b12-33ae465eff45",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2b4e1f75-3d62-4c1b-8042-63fab1e29d02",
+                    "path": "<Keyboard>/j",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
@@ -325,8 +402,8 @@
                 },
                 {
                     "name": "",
-                    "id": "2b4e1f75-3d62-4c1b-8042-63fab1e29d02",
-                    "path": "<Keyboard>/j",
+                    "id": "2b4e1f75-3d62-4c1b-8042-63fab1e29d01",
+                    "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
@@ -347,8 +424,8 @@
                 },
                 {
                     "name": "",
-                    "id": "2b4e1f75-3d62-4c1b-8042-63fab1e29d04",
-                    "path": "<Mouse>/rightButton",
+                    "id": "2b4e1f75-3d62-4c1b-8042-63fab1e29d05",
+                    "path": "<Keyboard>/k",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
@@ -358,8 +435,8 @@
                 },
                 {
                     "name": "",
-                    "id": "2b4e1f75-3d62-4c1b-8042-63fab1e29d05",
-                    "path": "<Keyboard>/k",
+                    "id": "2b4e1f75-3d62-4c1b-8042-63fab1e29d04",
+                    "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
@@ -402,6 +479,17 @@
                 },
                 {
                     "name": "",
+                    "id": "e39b0972-78ea-40db-98d0-b153730763af",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Dash",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "2b4e1f75-3d62-4c1b-8042-63fab1e29d09",
                     "path": "<Keyboard>/q",
                     "interactions": "",
@@ -424,6 +512,17 @@
                 },
                 {
                     "name": "",
+                    "id": "9632bc51-13fd-4ed2-b777-ce1971dcd46b",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Block",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "2b4e1f75-3d62-4c1b-8042-63fab1e29d0b",
                     "path": "<Keyboard>/r",
                     "interactions": "",
@@ -440,6 +539,17 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
+                    "action": "Heal",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "de230b4a-3a16-420e-9c10-1870e0b71d1e",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
                     "action": "Heal",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -490,6 +600,17 @@
                 },
                 {
                     "name": "",
+                    "id": "682a4888-7d1c-4282-a572-49819a7bd24a",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Map",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "2b4e1f75-3d62-4c1b-8042-63fab1e29d0f",
                     "path": "<Gamepad>/select",
                     "interactions": "",
@@ -517,6 +638,17 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
+                    "action": "SwitchWeapon",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8193c40f-30f8-4e9d-b4c7-6e9268fdac55",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
                     "action": "SwitchWeapon",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -621,6 +753,17 @@
                     "isPartOfComposite": true
                 },
                 {
+                    "name": "",
+                    "id": "ff9ae7e5-4fae-490e-b6b2-115e214f3dc2",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "ActiveSkill1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
                     "name": "LT + RB",
                     "id": "5ac6023f-78c0-4510-abdf-2d83ca3a0688",
                     "path": "OneModifier(modifiersOrder=1)",
@@ -652,6 +795,17 @@
                     "action": "ActiveSkill2",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "ddbcb5bf-b0d3-4db9-a25a-3beb184cdf0c",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "ActiveSkill2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 },
                 {
                     "name": "LT + X",
@@ -687,6 +841,17 @@
                     "isPartOfComposite": true
                 },
                 {
+                    "name": "",
+                    "id": "3797f6fa-2a5c-4d6f-bef5-085dcff8b2a7",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "CastSpell1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
                     "name": "LT + Y",
                     "id": "75da4217-bc2f-46fa-a016-778b87817dc9",
                     "path": "OneModifier(modifiersOrder=1)",
@@ -720,6 +885,17 @@
                     "isPartOfComposite": true
                 },
                 {
+                    "name": "",
+                    "id": "099b18bd-4ab3-4185-8b46-3bea5c79f5d4",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "CastSpell2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
                     "name": "LT + B",
                     "id": "a319f403-941f-4d82-a992-584c48c6ad1a",
                     "path": "OneModifier(modifiersOrder=1)",
@@ -751,6 +927,17 @@
                     "action": "CastSpell3",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "3b0d09ba-2438-41ab-a19b-2cadaf65334e",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "CastSpell3",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 },
                 {
                     "name": "",

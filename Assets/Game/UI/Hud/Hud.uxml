@@ -2,6 +2,7 @@
     <Style src="Hud.uss" />
     <Style src="../Menu/Options.uss" />
     <Style src="Pause.uss" />
+    <Style src="../Menu/Controls.uss" />
     <Style src="Inventory.uss" />
     <Style src="Map.uss" />
     <ui:VisualElement name="hud" class="hud" picking-mode="Ignore">
@@ -449,113 +450,8 @@
                 </ui:VisualElement>
             </ui:VisualElement>
 
-            <!-- design/ui/tutorial/tutorial.html, frame 4: the controls, view only. -->
-            <ui:VisualElement name="controls-panel" class="controls">
-                <ui:VisualElement class="pause__inset" picking-mode="Ignore" />
-                <ui:VisualElement class="pause__header" picking-mode="Ignore">
-                    <ui:Label class="controls__title display" text="КЕРУВАННЯ" picking-mode="Ignore" />
-                </ui:VisualElement>
-                <ui:VisualElement class="controls__body" picking-mode="Ignore">
-                    <ui:VisualElement class="controls__cols" picking-mode="Ignore">
-                    <ui:VisualElement class="controls__col" picking-mode="Ignore">
-                        <ui:VisualElement class="controls__head" picking-mode="Ignore">
-                            <ui:Label class="controls__head-name" text="ДІЯ" picking-mode="Ignore" />
-                            <ui:Label class="controls__head-col" text="КЛАВІАТУРА" picking-mode="Ignore" />
-                            <ui:Label class="controls__head-col" text="ГЕЙМПАД" picking-mode="Ignore" />
-                        </ui:VisualElement>
-                        <ui:Label class="controls__section" text="РУХ" picking-mode="Ignore" />
-                        <ui:VisualElement class="control-row" picking-mode="Ignore">
-                            <ui:Label class="control-row__name" text="Рух" picking-mode="Ignore" />
-                            <ui:VisualElement class="keys" picking-mode="Ignore"><ui:Label class="key" text="A" picking-mode="Ignore" /><ui:Label class="key" text="D" picking-mode="Ignore" /></ui:VisualElement>
-                            <ui:VisualElement class="keys" picking-mode="Ignore"><ui:Label class="keys__text" text="лівий стік" picking-mode="Ignore" /></ui:VisualElement>
-                        </ui:VisualElement>
-                        <ui:VisualElement class="control-row" picking-mode="Ignore">
-                            <ui:Label class="control-row__name" text="Стрибок" picking-mode="Ignore" />
-                            <ui:VisualElement class="keys" picking-mode="Ignore"><ui:Label class="key" text="Space" picking-mode="Ignore" /></ui:VisualElement>
-                            <ui:VisualElement class="keys" picking-mode="Ignore"><ui:Label class="key key--pad" text="A" picking-mode="Ignore" /></ui:VisualElement>
-                        </ui:VisualElement>
-                        <ui:VisualElement class="control-row" picking-mode="Ignore">
-                            <ui:Label class="control-row__name" text="Біг по стіні" picking-mode="Ignore" />
-                            <ui:VisualElement class="keys" picking-mode="Ignore"><ui:Label class="keys__text" text="тримати" picking-mode="Ignore" /><ui:Label class="key" text="Space" picking-mode="Ignore" /></ui:VisualElement>
-                            <ui:VisualElement class="keys" picking-mode="Ignore"><ui:Label class="keys__text" text="тримати" picking-mode="Ignore" /><ui:Label class="key key--pad" text="A" picking-mode="Ignore" /></ui:VisualElement>
-                        </ui:VisualElement>
-                        <ui:VisualElement class="control-row" picking-mode="Ignore">
-                            <ui:Label class="control-row__name" text="Ривок" picking-mode="Ignore" />
-                            <ui:VisualElement class="keys" picking-mode="Ignore"><ui:Label class="key" text="L" picking-mode="Ignore" /></ui:VisualElement>
-                            <ui:VisualElement class="keys" picking-mode="Ignore"><ui:Label class="key key--pad" text="RT" picking-mode="Ignore" /></ui:VisualElement>
-                        </ui:VisualElement>
-                        <ui:Label class="controls__section" text="БІЙ" picking-mode="Ignore" />
-                        <ui:VisualElement class="control-row" picking-mode="Ignore">
-                            <ui:Label class="control-row__name" text="Атака" picking-mode="Ignore" />
-                            <ui:VisualElement class="keys" picking-mode="Ignore"><ui:Label class="key" text="J" picking-mode="Ignore" /><ui:Label class="keys__text" text="ЛКМ" picking-mode="Ignore" /></ui:VisualElement>
-                            <ui:VisualElement class="keys" picking-mode="Ignore"><ui:Label class="key key--pad" text="X" picking-mode="Ignore" /></ui:VisualElement>
-                        </ui:VisualElement>
-                        <ui:VisualElement class="control-row" picking-mode="Ignore">
-                            <ui:Label class="control-row__name" text="Важка атака" picking-mode="Ignore" />
-                            <ui:VisualElement class="keys" picking-mode="Ignore"><ui:Label class="key" text="K" picking-mode="Ignore" /><ui:Label class="keys__text" text="ПКМ" picking-mode="Ignore" /></ui:VisualElement>
-                            <ui:VisualElement class="keys" picking-mode="Ignore"><ui:Label class="key key--pad" text="RB" picking-mode="Ignore" /></ui:VisualElement>
-                        </ui:VisualElement>
-                        <ui:VisualElement class="control-row" picking-mode="Ignore">
-                            <ui:Label class="control-row__name" text="Блок / парирування" picking-mode="Ignore" />
-                            <ui:VisualElement class="keys" picking-mode="Ignore"><ui:Label class="key" text="Q" picking-mode="Ignore" /></ui:VisualElement>
-                            <ui:VisualElement class="keys" picking-mode="Ignore"><ui:Label class="key key--pad" text="LB" picking-mode="Ignore" /></ui:VisualElement>
-                        </ui:VisualElement>
-                        <ui:VisualElement class="control-row" picking-mode="Ignore">
-                            <ui:Label class="control-row__name" text="Фляга" picking-mode="Ignore" />
-                            <ui:VisualElement class="keys" picking-mode="Ignore"><ui:Label class="key" text="R" picking-mode="Ignore" /></ui:VisualElement>
-                            <ui:VisualElement class="keys" picking-mode="Ignore"><ui:Label class="keys__text" text="хрестовина ▲" picking-mode="Ignore" /></ui:VisualElement>
-                        </ui:VisualElement>
-                    </ui:VisualElement>
-                    <ui:VisualElement class="controls__col controls__col--right" picking-mode="Ignore">
-                        <ui:VisualElement class="controls__head" picking-mode="Ignore">
-                            <ui:Label class="controls__head-name" text="ДІЯ" picking-mode="Ignore" />
-                            <ui:Label class="controls__head-col" text="КЛАВІАТУРА" picking-mode="Ignore" />
-                            <ui:Label class="controls__head-col" text="ГЕЙМПАД" picking-mode="Ignore" />
-                        </ui:VisualElement>
-                        <ui:Label class="controls__section" text="УМІННЯ Й ЗАКЛЯТТЯ" picking-mode="Ignore" />
-                        <ui:VisualElement class="control-row" picking-mode="Ignore">
-                            <ui:Label class="control-row__name" text="Уміння 1 / 2" picking-mode="Ignore" />
-                            <ui:VisualElement class="keys" picking-mode="Ignore"><ui:Label class="key" text="1" picking-mode="Ignore" /><ui:Label class="key" text="2" picking-mode="Ignore" /></ui:VisualElement>
-                            <ui:VisualElement class="keys" picking-mode="Ignore"><ui:Label class="key key--pad" text="LT" picking-mode="Ignore" /><ui:Label class="keys__text" text="+" picking-mode="Ignore" /><ui:Label class="key key--pad" text="LB" picking-mode="Ignore" /><ui:Label class="key key--pad" text="RB" picking-mode="Ignore" /></ui:VisualElement>
-                        </ui:VisualElement>
-                        <ui:VisualElement class="control-row" picking-mode="Ignore">
-                            <ui:Label class="control-row__name" text="Закляття 1–3" picking-mode="Ignore" />
-                            <ui:VisualElement class="keys" picking-mode="Ignore"><ui:Label class="key" text="3" picking-mode="Ignore" /><ui:Label class="key" text="4" picking-mode="Ignore" /><ui:Label class="key" text="5" picking-mode="Ignore" /></ui:VisualElement>
-                            <ui:VisualElement class="keys" picking-mode="Ignore"><ui:Label class="key key--pad" text="LT" picking-mode="Ignore" /><ui:Label class="keys__text" text="+" picking-mode="Ignore" /><ui:Label class="key key--pad" text="X" picking-mode="Ignore" /><ui:Label class="key key--pad" text="Y" picking-mode="Ignore" /><ui:Label class="key key--pad" text="B" picking-mode="Ignore" /></ui:VisualElement>
-                        </ui:VisualElement>
-                        <ui:VisualElement class="control-row" picking-mode="Ignore">
-                            <ui:Label class="control-row__name" text="Зміна зброї" picking-mode="Ignore" />
-                            <ui:VisualElement class="keys" picking-mode="Ignore"><ui:Label class="key" text="F" picking-mode="Ignore" /></ui:VisualElement>
-                            <ui:VisualElement class="keys" picking-mode="Ignore"><ui:Label class="keys__text" text="хрестовина ◀" picking-mode="Ignore" /></ui:VisualElement>
-                        </ui:VisualElement>
-                        <ui:Label class="controls__section" text="ІНШЕ" picking-mode="Ignore" />
-                        <ui:VisualElement class="control-row" picking-mode="Ignore">
-                            <ui:Label class="control-row__name" text="Взаємодія" picking-mode="Ignore" />
-                            <ui:VisualElement class="keys" picking-mode="Ignore"><ui:Label class="key" text="E" picking-mode="Ignore" /></ui:VisualElement>
-                            <ui:VisualElement class="keys" picking-mode="Ignore"><ui:Label class="key key--pad" text="Y" picking-mode="Ignore" /></ui:VisualElement>
-                        </ui:VisualElement>
-                        <ui:VisualElement class="control-row" picking-mode="Ignore">
-                            <ui:Label class="control-row__name" text="Спорядження" picking-mode="Ignore" />
-                            <ui:VisualElement class="keys" picking-mode="Ignore"><ui:Label class="key" text="I" picking-mode="Ignore" /><ui:Label class="key" text="Tab" picking-mode="Ignore" /></ui:VisualElement>
-                            <ui:VisualElement class="keys" picking-mode="Ignore"><ui:Label class="key key--pad" text="Select" picking-mode="Ignore" /></ui:VisualElement>
-                        </ui:VisualElement>
-                        <ui:VisualElement class="control-row" picking-mode="Ignore">
-                            <ui:Label class="control-row__name" text="Карта" picking-mode="Ignore" />
-                            <ui:VisualElement class="keys" picking-mode="Ignore"><ui:Label class="key" text="M" picking-mode="Ignore" /></ui:VisualElement>
-                            <ui:VisualElement class="keys" picking-mode="Ignore"><ui:Label class="keys__text" text="хрестовина ▼" picking-mode="Ignore" /></ui:VisualElement>
-                        </ui:VisualElement>
-                        <ui:VisualElement class="control-row" picking-mode="Ignore">
-                            <ui:Label class="control-row__name" text="Пауза" picking-mode="Ignore" />
-                            <ui:VisualElement class="keys" picking-mode="Ignore"><ui:Label class="key" text="Esc" picking-mode="Ignore" /></ui:VisualElement>
-                            <ui:VisualElement class="keys" picking-mode="Ignore"><ui:Label class="key key--pad" text="Start" picking-mode="Ignore" /></ui:VisualElement>
-                        </ui:VisualElement>
-                    </ui:VisualElement>
-                    </ui:VisualElement>
-                    <ui:Button name="controls-back" class="controls__back">
-                        <ui:Label class="key" text="Esc" picking-mode="Ignore" /><ui:Label class="key key--pad" text="B" picking-mode="Ignore" /><ui:Label class="controls__back-text" text="Назад" picking-mode="Ignore" />
-                    </ui:Button>
-                </ui:VisualElement>
-            </ui:VisualElement>
+            <!-- design/ui/controls/controls.html: the controls, now changeable; ControlsPanel builds the rows. -->
+            <ui:VisualElement name="controls-panel" class="controls" />
 
             <ui:VisualElement name="options-panel" class="options">
                 <ui:Label class="options__title display" text="Налаштування" />

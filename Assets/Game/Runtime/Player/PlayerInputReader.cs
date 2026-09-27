@@ -51,6 +51,9 @@ namespace ForgottenKingdom
 
             // Own only our actions; never disable the project-wide UI or another player's input.
             _runtimeActions = Instantiate(_inputActions);
+            // The player's own keys (the controls screen) on top of the authored ones.
+            KeyBindings.ApplyTo(_runtimeActions);
+            KeyBindings.Changed += OnKeyBindingsChanged;
             _move = _runtimeActions.FindAction("Player/Move", true);
             _jump = _runtimeActions.FindAction("Player/Jump", true);
             _lightAttack = _runtimeActions.FindAction("Player/LightAttack", true);
@@ -164,10 +167,20 @@ namespace ForgottenKingdom
 
         private void OnDestroy()
         {
+            KeyBindings.Changed -= OnKeyBindingsChanged;
             if (_runtimeActions != null)
             {
                 Destroy(_runtimeActions);
             }
+        }
+
+        /// <summary>
+        /// The controls screen changed a key. Overrides can go onto enabled actions; the screen
+        /// only runs while gameplay input is suspended, so no press is half-way through.
+        /// </summary>
+        private void OnKeyBindingsChanged()
+        {
+            KeyBindings.ApplyTo(_runtimeActions);
         }
 
         public MovementInput Consume()

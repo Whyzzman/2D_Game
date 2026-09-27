@@ -29,7 +29,7 @@ namespace ForgottenKingdom
         private readonly List<Button> _items = new List<Button>();
         private readonly List<System.Action> _actions = new List<System.Action>();
         private readonly VisualElement _characterPip;
-        private readonly VisualElement _controls;
+        private readonly ControlsPanel _controls;
         private readonly VisualElement _skillsPip;
         private readonly InventoryView _inventory;
         private readonly MapView _map;
@@ -74,16 +74,16 @@ namespace ForgottenKingdom
             Bind("pause-options", OpenOptions, true);
             Bind("pause-controls", OpenControls, true);
             Bind("pause-main-menu", ReturnToMainMenu, true);
-            _controls = root.Q("controls-panel");
-            var back = root.Q<Button>("controls-back");
-            if (back != null) { back.clicked += CloseControls; }
+            _controls = new ControlsPanel(root, OnControlsClosed);
         }
 
         public bool IsOpen => _overlay != null && _overlay.ClassListContains(OpenClass);
         public bool IsOptionsOpen => _options != null && _options.IsOpen;
 
-        /// <summary>The controls list (tutorial.html, frame 4) is showing over the pause.</summary>
-        public bool IsControlsOpen => _controls != null && _controls.ClassListContains("controls--open");
+        /// <summary>The controls screen (controls.html) is showing over the pause.</summary>
+        public bool IsControlsOpen => _controls != null && _controls.IsOpen;
+
+        public ControlsPanel Controls => _controls;
 
         /// <summary>Which buttons can be pressed, in order; for tests and tools.</summary>
         public IEnumerable<string> EnabledButtons
@@ -149,7 +149,8 @@ namespace ForgottenKingdom
             }
             else if (IsControlsOpen)
             {
-                CloseControls();
+                // The Escape that cancels waiting for a key must not also leave the screen.
+                _controls.Back();
             }
             else if (IsOpen)
             {
@@ -231,12 +232,13 @@ namespace ForgottenKingdom
 
             if (IsControlsOpen)
             {
-                // A view with nothing to choose: confirm or back both return to the pause.
-                if (MenuInput.PadBackPressed() || MenuInput.Confirmed())
+                if (MenuInput.PadBackPressed() && !_controls.SwallowsCancel)
                 {
-                    CloseControls();
+                    _controls.Back();
+                    return;
                 }
 
+                _controls.Tick();
                 return;
             }
 
@@ -332,17 +334,16 @@ namespace ForgottenKingdom
             }
 
             _overlay.AddToClassList("pause--controls");
-            _controls.AddToClassList("controls--open");
+            _controls.Open();
         }
 
         public void CloseControls()
         {
-            if (!IsControlsOpen)
-            {
-                return;
-            }
+            _controls?.Close();
+        }
 
-            _controls.RemoveFromClassList("controls--open");
+        private void OnControlsClosed()
+        {
             _overlay.RemoveFromClassList("pause--controls");
             SetFocus(_items.FindIndex(item => item.name == "pause-controls"));
         }

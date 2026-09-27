@@ -55,6 +55,7 @@ namespace ForgottenKingdom.Tests
         {
             if (_inventory != null && _inventory.IsOpen) { _inventory.Close(); }
             if (_map != null && _map.IsOpen) { _map.Close(); }
+            KeyBindings.ResetAll();
             GamePause.Clear();
             Time.timeScale = 1f;
             if (_keyboard != null) { InputSystem.RemoveDevice(_keyboard); }
@@ -136,6 +137,82 @@ namespace ForgottenKingdom.Tests
             Assert.That(GamePause.IsPaused, Is.False);
             yield return null;
             LogAssert.NoUnexpectedReceived();
+        }
+
+        // ---------- rebinding (controls.html) ----------
+
+        private static BindingRow Row(string label) =>
+            System.Array.Find(KeyBindings.Rows, row => row.Label == label);
+
+        [UnityTest]
+        public IEnumerator AReboundJumpKeyJumpsAndTheOldOneNoLongerDoes()
+        {
+            var motor = Object.FindAnyObjectByType<PlayerMotor2D>();
+            var deadline = Time.realtimeSinceStartup + 3f;
+            while (!motor.IsGrounded && Time.realtimeSinceStartup < deadline) { yield return null; }
+            Assume.That(motor.IsGrounded, Is.True);
+
+            using (var editor = new BindingEditor())
+            {
+                Assert.That(editor.Assign(Row("Стрибок"), KeyBindings.PrimarySlot, "<Keyboard>/u").Change,
+                    Is.EqualTo(BindingChange.Assigned));
+            }
+
+            yield return Tap(Key.Space);
+            yield return new WaitForSeconds(0.15f);
+            Assert.That(motor.IsGrounded, Is.True, "Space is not the jump any more.");
+
+            yield return Tap(Key.U);
+            deadline = Time.realtimeSinceStartup + 1f;
+            while (motor.IsGrounded && Time.realtimeSinceStartup < deadline) { yield return null; }
+            Assert.That(motor.IsGrounded, Is.False, "The new key jumps.");
+        }
+
+        [UnityTest]
+        public IEnumerator TheControlsScreenTakesTheNextKeyAndEscapeOnlyCancelsTheWait()
+        {
+            var pause = Object.FindAnyObjectByType<HudController>().Pause;
+            yield return Tap(Key.Escape);
+            Assume.That(pause.IsOpen, Is.True);
+            pause.OpenControls();
+            yield return null;
+            var controls = pause.Controls;
+            Assert.That(pause.IsControlsOpen, Is.True);
+            var dash = System.Array.IndexOf(KeyBindings.Rows, Row("Ривок"));
+
+            Assert.That(controls.BeginListening(dash, KeyBindings.PrimarySlot), Is.True);
+            yield return Tap(Key.LeftShift);
+            var deadline = Time.realtimeSinceStartup + 1f;
+            while (controls.IsListening && Time.realtimeSinceStartup < deadline) { yield return null; }
+            Assert.That(controls.Editor.Glyph(Row("Ривок"), KeyBindings.PrimarySlot), Is.EqualTo("Shift"));
+            Assert.That(KeyBindings.Glyph("Dash", gamepad: false), Is.EqualTo("Shift"));
+
+            yield return null;
+            Assert.That(controls.BeginListening(dash, KeyBindings.PrimarySlot), Is.True);
+            yield return Tap(Key.Escape);
+            yield return null;
+            Assert.That(controls.IsListening, Is.False);
+            Assert.That(pause.IsControlsOpen, Is.True, "Escape cancelled the wait, not the screen.");
+            Assert.That(controls.Editor.Glyph(Row("Ривок"), KeyBindings.PrimarySlot), Is.EqualTo("Shift"));
+
+            yield return Tap(Key.Escape);
+            Assert.That(pause.IsControlsOpen, Is.False, "A second Escape leaves the screen.");
+            Assert.That(pause.IsOpen, Is.True);
+        }
+
+        [UnityTest]
+        public IEnumerator TheHudGlyphsFollowTheKeys()
+        {
+            var glyphs = Object.FindAnyObjectByType<HudController>().KeyGlyphs;
+            Assert.That(glyphs.TextOf("Heal"), Is.EqualTo("R"));
+            using (var editor = new BindingEditor())
+            {
+                editor.Assign(Row("Фляга"), KeyBindings.PrimarySlot, "<Keyboard>/g");
+            }
+
+            yield return null;
+            Assert.That(glyphs.TextOf("Heal"), Is.EqualTo("G"));
+            Assert.That(glyphs.TextOf("ActiveSkill1"), Is.EqualTo("1"));
         }
 
         private IEnumerator Tap(Key key)

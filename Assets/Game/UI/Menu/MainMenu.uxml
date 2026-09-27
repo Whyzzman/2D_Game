@@ -1,6 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
     <Style src="MainMenu.uss" />
     <Style src="Options.uss" />
+    <Style src="Controls.uss" />
     <ui:VisualElement name="menu" class="menu">
         <ui:VisualElement name="vignette" class="menu__vignette" picking-mode="Ignore" />
         <ui:VisualElement name="fade" class="menu__fade" picking-mode="Ignore" />
@@ -15,6 +16,7 @@
                 <ui:Button name="continue" class="menu-button display" text="Продовжити" />
                 <ui:Button name="new-game" class="menu-button display" text="Нова гра" />
                 <ui:Button name="options" class="menu-button display" text="Налаштування" />
+                <ui:Button name="controls" class="menu-button display" text="Керування" />
                 <ui:Button name="quit" class="menu-button display" text="Вийти" />
             </ui:VisualElement>
         </ui:VisualElement>
@@ -29,6 +31,9 @@
             <ui:Slider name="opt-hitstop" class="option" label="Зупинка при ударі" low-value="0" high-value="1" />
             <ui:Button name="options-back" class="menu-button menu-button--small display" text="Назад" />
         </ui:VisualElement>
+
+        <!-- design/ui/controls/controls.html, frame 6: the same controls screen as in the pause. -->
+        <ui:VisualElement name="controls-panel" class="controls" />
 
         <!-- design/ui/menus/menus.html, frame 3: the modal takes the input; the menu under it does not react. -->
         <ui:VisualElement name="confirm-new" class="confirm">

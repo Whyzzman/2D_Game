@@ -199,7 +199,8 @@ namespace ForgottenKingdom.Tests
 
                 var isModifierPart = binding.isPartOfComposite && i > 0
                     && PartOfModifierComposite(bindings, i);
-                if (!isModifierPart)
+                // An empty binding is a free second key for the controls screen, not a trigger.
+                if (!isModifierPart && !string.IsNullOrEmpty(binding.path))
                 {
                     yield return binding.path;
                 }

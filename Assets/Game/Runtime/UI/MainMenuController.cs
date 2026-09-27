@@ -30,6 +30,7 @@ namespace ForgottenKingdom
         private VisualElement _root;
         private VisualElement _fade;
         private OptionsPanel _options;
+        private ControlsPanel _controls;
         private Button _continue;
         private int _focus;
         private bool _isLeaving;
@@ -39,6 +40,8 @@ namespace ForgottenKingdom
         private int _confirmFocus;
 
         public bool IsOptionsOpen => _options != null && _options.IsOpen;
+        public bool IsControlsOpen => _controls != null && _controls.IsOpen;
+        public ControlsPanel Controls => _controls;
         public bool CanContinue => _continue != null && _continue.enabledSelf;
 
         /// <summary>The "erase the save?" window over the title is up.</summary>
@@ -58,6 +61,7 @@ namespace ForgottenKingdom
             Dress();
             BindButtons();
             _options = new OptionsPanel(_root, OnOptionsClosed);
+            _controls = new ControlsPanel(_root, OnControlsClosed);
             BindConfirm();
             Refresh();
             // Opened by the next frame's layout, so the transition actually runs.
@@ -98,6 +102,7 @@ namespace ForgottenKingdom
             Bind("continue", Continue);
             Bind("new-game", NewGame);
             Bind("options", OpenOptions);
+            Bind("controls", OpenControls);
             Bind("quit", Quit);
         }
 
@@ -154,6 +159,19 @@ namespace ForgottenKingdom
             if (IsConfirmOpen)
             {
                 UpdateConfirmKeys();
+                return;
+            }
+
+            if (IsControlsOpen)
+            {
+                // The Escape that cancels waiting for a key must not also leave the screen.
+                if (MenuInput.Cancelled() && !_controls.SwallowsCancel)
+                {
+                    _controls.Back();
+                    return;
+                }
+
+                _controls.Tick();
                 return;
             }
 
@@ -320,6 +338,18 @@ namespace ForgottenKingdom
         {
             _options?.Open();
             _root.Q("front")?.style.SetOpacity(0.15f);
+        }
+
+        /// <summary>The same controls screen as in the pause, to set the keys before playing.</summary>
+        public void OpenControls()
+        {
+            _controls?.Open();
+            _root.Q("front")?.style.SetOpacity(0.15f);
+        }
+
+        private void OnControlsClosed()
+        {
+            _root.Q("front")?.style.SetOpacity(1f);
         }
 
         public void CloseOptions()

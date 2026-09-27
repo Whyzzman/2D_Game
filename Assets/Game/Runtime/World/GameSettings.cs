@@ -16,6 +16,9 @@ namespace ForgottenKingdom
         [Range(0f, 1f)] public float flashIntensity = 1f;
         [Range(0f, 1f)] public float hitStop = 1f;
         public bool showDamageNumbers = true;
+
+        /// <summary>The player's own keys: the Input System's override JSON (<see cref="KeyBindings"/>).</summary>
+        public string bindingOverrides = string.Empty;
     }
 
     /// <summary>
