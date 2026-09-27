@@ -46,7 +46,9 @@ namespace ForgottenKingdom
         RunDust,
         WallSlideDust,
         WallJump,
-        AirJump
+        AirJump,
+        /// <summary>The glint on an enemy's weapon as a swing winds up.</summary>
+        EnemyTelegraph
     }
 
     /// <summary>

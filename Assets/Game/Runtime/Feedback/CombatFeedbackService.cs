@@ -226,6 +226,8 @@ namespace ForgottenKingdom
                 var captured = enemy;
                 enemy.GuardBrokenOpen += () => PlayAt(FeedbackKind.GuardBreak, captured.transform);
                 enemy.StaggerBroken += _ => PlayAt(FeedbackKind.StaggerBreak, captured.transform);
+                var sockets = enemy.GetComponentInChildren<VisualSockets>(true);
+                enemy.AttackTelegraphed += _ => OnEnemyTelegraph(captured, sockets);
             }
 
             // Every boss in the scene: the forest's Warden deserves the same weight as the Guardian.
@@ -397,6 +399,23 @@ namespace ForgottenKingdom
             var direction = new Vector2(motor != null ? motor.FacingDirection : 1, 0f);
             PlayInternal(grounded ? FeedbackKind.Dash : FeedbackKind.AirDash,
                 player.transform.position, direction, 1f);
+        }
+
+        /// <summary>
+        /// A glint where the weapon is as the swing winds up: in a dark room the pose alone can be
+        /// lost, and the glint is what the eye catches first.
+        /// </summary>
+        private void OnEnemyTelegraph(EnemyController enemy, VisualSockets sockets)
+        {
+            if (enemy == null)
+            {
+                return;
+            }
+
+            var position = sockets != null && sockets.Has(VisualSocket.Weapon)
+                ? sockets.Position(VisualSocket.Weapon)
+                : enemy.transform.position;
+            PlayInternal(FeedbackKind.EnemyTelegraph, position, Vector2.right, 1f);
         }
 
         private void OnBossAttack(BossController boss, BossAttackKind kind)

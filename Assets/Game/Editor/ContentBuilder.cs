@@ -1288,6 +1288,7 @@ namespace ForgottenKingdom.EditorTools
                 size.y, hasShield);
             BuildStatusVfx(root, size.y * 0.53f);
             BuildHitFlash(root);
+            BuildStunIndicator(root, size.y * 0.5f + 0.45f);
             // Anything one kind needs and the others do not — a voice, for now — goes on before
             // the prefab is written, so it is part of the asset rather than patched into it.
             configure?.Invoke(root);
@@ -1448,6 +1449,7 @@ namespace ForgottenKingdom.EditorTools
             BuildBossVisual(root, shieldObject);
             BuildStatusVfx(root, 1.5f);
             BuildHitFlash(root);
+            BuildStunIndicator(root, GuardianStunHeight);
             StripMissingScripts(root);
             return SavePrefab(root, $"{PrefabFolder}/GuardianOfTheTomb.prefab");
         }
@@ -2402,6 +2404,32 @@ namespace ForgottenKingdom.EditorTools
         /// The flash of a landed hit on an enemy or boss (<see cref="HitFlash"/>): it copies the
         /// shape of the body the animation drives.
         /// </summary>
+        // Just over each boss's head: half its body height and a little.
+        private const float GuardianStunHeight = 1.75f;
+        private const float WardenStunHeight = 1.55f;
+
+        /// <summary>Stars over the head while stunned (<see cref="StunIndicator"/>).</summary>
+        private static void BuildStunIndicator(GameObject root, float height)
+        {
+            var indicator = Ensure<StunIndicator>(root);
+            var serialized = new SerializedObject(indicator);
+            serialized.FindProperty("_actor").objectReferenceValue = root.GetComponent<CombatActor>();
+            serialized.FindProperty("_anchor").objectReferenceValue = root.transform.Find("Visual");
+            serialized.FindProperty("_height").floatValue = height;
+            serialized.FindProperty("_material").objectReferenceValue = _material;
+            var frames = _vfx != null && _vfx.TryGetValue(PlaceholderVfxArt.StunStarsName, out var sprites)
+                ? sprites
+                : System.Array.Empty<Sprite>();
+            var list = serialized.FindProperty("_frames");
+            list.arraySize = frames.Length;
+            for (var i = 0; i < frames.Length; i++)
+            {
+                list.GetArrayElementAtIndex(i).objectReferenceValue = frames[i];
+            }
+
+            serialized.ApplyModifiedPropertiesWithoutUndo();
+        }
+
         private static void BuildHitFlash(GameObject root)
         {
             var flash = Ensure<HitFlash>(root);
@@ -2933,6 +2961,11 @@ namespace ForgottenKingdom.EditorTools
                 priority: 1, layer: "VFXBack", mirrors: true));
             entries.Add(Feedback(FeedbackKind.AirJump, "vfx_air_jump", shake: ShakeProfile.None,
                 priority: 1, facesDirection: false, layer: "VFXBack"));
+            // The enemy's wind-up glint: quiet (its sound is the telegraph's own), but lit, so it
+            // is seen in the darkest room.
+            entries.Add(Feedback(FeedbackKind.EnemyTelegraph, "vfx_enemy_telegraph",
+                shake: ShakeProfile.None, light: new Color(1f, 0.82f, 0.45f, 0.45f),
+                lightRadius: 1.2f, priority: 2, facesDirection: false));
             entries.Add(Feedback(FeedbackKind.WallContact, "vfx_wall_contact",
                 shake: ShakeProfile.None, priority: 5, layer: "VFXBack"));
 

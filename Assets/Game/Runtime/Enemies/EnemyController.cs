@@ -45,7 +45,7 @@ namespace ForgottenKingdom
         [Tooltip("Leave empty to find the registry and the player once on start.")]
         [SerializeField] private EnemyRegistry _registry;
         [SerializeField] private PlayerCharacter _target;
-        private float _corpseHiddenAt = -1f;
+        private EnemyKnockback _knockback;
         private Vector2 _spawnPosition;
         private int _spawnFacing = 1;
         private Vector2 _lastKnownTargetPosition;
@@ -127,6 +127,7 @@ namespace ForgottenKingdom
             }
 
             _senses = new EnemySenses(_definition, _motor, transform);
+            _knockback = new EnemyKnockback(_motor, _bodyCollider, _motor.GroundMask);
             _spawnPosition = transform.position;
             _spawnFacing = _motor.FacingDirection;
             _idleDuration = RollIdleTime();
@@ -199,13 +200,20 @@ namespace ForgottenKingdom
             _combat.Tick(deltaTime);
             if (_state == EnemyState.Dead)
             {
-                // The corpse lingers, then hides. The object stays alive so a rest can revive it
-                // instead of spawning a duplicate.
-                if (_corpseHiddenAt > 0f && Time.time >= _corpseHiddenAt)
+                // The body lies where it fell until a rest revives it, as in Hollow Knight; the
+                // object stays alive so the rest can revive it instead of spawning a duplicate.
+                // Only a body lost down a pit is hidden.
+                if (_visualRoot != null && _visualRoot.activeSelf && _knockback.IsCorpseLost(_motor.ProbeGround()))
                 {
-                    _corpseHiddenAt = -1f;
                     SetVisible(false);
                 }
+                return;
+            }
+
+            // A shoved enemy slides and cannot act until it stops.
+            if (_knockback.IsSliding)
+            {
+                _knockback.Tick(deltaTime);
                 return;
             }
 
@@ -264,7 +272,7 @@ namespace ForgottenKingdom
                 _bodyCollider.enabled = true;
             }
 
-            _corpseHiddenAt = -1f;
+            _knockback.Restore();
             SetVisible(true);
             _guard?.ResetGuard();
             // A revived enemy never gets a free opening swing.
@@ -857,12 +865,20 @@ namespace ForgottenKingdom
                     Enter(EnemyState.Search, force: true);
                 }
 
+                // Every blow still shoves, except one taken mid-swing: a committed attack keeps
+                // its footing, or a flurry could push an enemy out of its own lunge.
+                if (!_combat.IsAttacking)
+                {
+                    _knockback.Begin(info, _actor.KnockbackResistance);
+                }
+
                 return;
             }
 
             _hurtReadyAt = Time.time + _definition.HitReactionCooldown;
             _combat.Cancel();
             Enter(EnemyState.Hurt, force: true);
+            _knockback.Begin(info, _actor.KnockbackResistance);
         }
 
         /// <summary>A perfect parry always breaks the swing, whatever the poise meter says.</summary>
@@ -930,12 +946,8 @@ namespace ForgottenKingdom
             _motor.Stop();
             _motor.enabled = false;
             _guard?.LowerGuard();
-            if (_bodyCollider != null)
-            {
-                _bodyCollider.enabled = false;
-            }
+            _knockback.ThrowCorpse(info);
             Enter(EnemyState.Dead, force: true);
-            _corpseHiddenAt = Time.time + _definition.DeathTime;
             Died?.Invoke(this);
         }
 

@@ -216,6 +216,9 @@ namespace ForgottenKingdom
             Invulnerability?.Clear();
         }
 
+        /// <summary>0 moves with every blow, 1 never moves.</summary>
+        public float KnockbackResistance => _knockbackResistance;
+
         public void ApplyKnockback(float force, Vector2 direction)
         {
             if (_body == null || force <= 0f)

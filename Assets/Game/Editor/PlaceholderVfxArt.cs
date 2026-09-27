@@ -104,10 +104,15 @@ namespace ForgottenKingdom.EditorTools
             new Spec("vfx_dust_kick", 5, 20f, FloorPivot),
             new Spec("vfx_dust_wall", 4, 16f),
             new Spec("vfx_wall_kick", 5, 22f),
-            new Spec("vfx_air_jump", 5, 24f, 0.7f)
+            new Spec("vfx_air_jump", 5, 24f, 0.7f),
+            new Spec("vfx_enemy_telegraph", 6, 24f),
+            // A loop, not a burst: StunIndicator cycles it while the balance is broken.
+            new Spec("vfx_stun_stars", 8, 14f)
         };
 
         private const float FloorPivot = 0.1f;
+
+        public const string StunStarsName = "vfx_stun_stars";
 
         /// <summary>Looping overlays that ride on a creature rather than bursting once.</summary>
         public static readonly string[] Overlays =
@@ -127,7 +132,10 @@ namespace ForgottenKingdom.EditorTools
                 var frames = new Sprite[spec.Frames];
                 for (var i = 0; i < spec.Frames; i++)
                 {
-                    var t = spec.Frames <= 1 ? 0f : i / (float)(spec.Frames - 1);
+                    // A loop never reaches its end: its last frame must lead back into the first.
+                    var t = spec.Frames <= 1 ? 0f
+                        : spec.Name == StunStarsName ? i / (float)spec.Frames
+                        : i / (float)(spec.Frames - 1);
                     var path = $"{Root}/Impacts/{spec.Name}/{spec.Name}_{i:00}.png";
                     PlaceholderImport.EnsureFolder($"{Root}/Impacts/{spec.Name}");
                     PlaceholderImport.WriteIfChanged(path, Render(spec.Name, t).EncodePng());
@@ -200,6 +208,8 @@ namespace ForgottenKingdom.EditorTools
                 case "vfx_dust_wall": return WallDust(t, false);
                 case "vfx_wall_kick": return WallDust(t, true);
                 case "vfx_air_jump": return AirJumpPuff(t);
+                case "vfx_enemy_telegraph": return Glint(t);
+                case "vfx_stun_stars": return StunStars(t);
                 default: return new Canvas(64, 64);
             }
         }
@@ -663,6 +673,57 @@ namespace ForgottenKingdom.EditorTools
                 var x = centre.x + ((float)rng.NextDouble() - 0.5f) * radius * 1.4f;
                 var y = centre.y - t * (25f + (float)rng.NextDouble() * 30f);
                 c.Ellipse(new Vector2(x, y), 3.5f * fade + 1f, 3.5f * fade + 1f, Fade(Steel, fade * 0.8f));
+            }
+
+            return c;
+        }
+
+        /// <summary>
+        /// The glint on an enemy's weapon as its swing winds up: a four-pointed star that flares
+        /// and shrinks. Guard gold, the same warning colour as the sigil over the head, so the two
+        /// read as one language.
+        /// </summary>
+        private static Canvas Glint(float t)
+        {
+            var c = new Canvas(130, 130);
+            var centre = new Vector2(65f, 65f);
+            // Flares for the first third, then shrinks away.
+            var size = t < 0.3f ? Mathf.Lerp(0.3f, 1f, t / 0.3f) : Mathf.Lerp(1f, 0f, (t - 0.3f) / 0.7f);
+            var fade = Mathf.Clamp01(size * 1.4f);
+            c.Ellipse(centre, 20f * size, 20f * size, Fade(GuardGold, fade * 0.3f));
+            foreach (var axis in new[] { Vector2.up, Vector2.right })
+            {
+                var reach = (axis == Vector2.up ? 58f : 44f) * size;
+                c.Thick(centre - axis * reach, centre, 0.5f, 7f * size + 1f, Fade(SteelWarm, fade));
+                c.Thick(centre, centre + axis * reach, 7f * size + 1f, 0.5f, Fade(SteelWarm, fade));
+            }
+
+            c.Ellipse(centre, 6f * size + 1f, 6f * size + 1f, Fade(Steel, fade));
+            return c;
+        }
+
+        /// <summary>
+        /// Three small stars circling on a flat ellipse over the head; one loop over the frames.
+        /// Those behind the head are drawn smaller and dimmer so the circle reads as a ring.
+        /// </summary>
+        private static Canvas StunStars(float t)
+        {
+            var c = new Canvas(140, 70);
+            var centre = new Vector2(70f, 35f);
+            for (var i = 0; i < 3; i++)
+            {
+                var angle = (t + i / 3f) * Mathf.PI * 2f;
+                var depth = (Mathf.Sin(angle) + 1f) * 0.5f;
+                var at = centre + new Vector2(Mathf.Cos(angle) * 50f, Mathf.Sin(angle) * 14f);
+                var size = Mathf.Lerp(0.6f, 1f, depth);
+                var alpha = Mathf.Lerp(0.55f, 1f, depth);
+                foreach (var axis in new[] { Vector2.up, Vector2.right })
+                {
+                    c.Thick(at - axis * 11f * size, at, 0.5f, 4.5f * size, Fade(GuardGold, alpha));
+                    c.Thick(at, at + axis * 11f * size, 4.5f * size, 0.5f, Fade(GuardGold, alpha));
+                }
+
+                c.Ellipse(at, 3.5f * size, 3.5f * size, Fade(SteelWarm, alpha));
             }
 
             return c;

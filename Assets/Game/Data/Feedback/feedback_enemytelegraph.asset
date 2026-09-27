@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1948b099c584578408b2536d2dd0cc7d, type: 3}
+  m_Name: feedback_enemytelegraph
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.FeedbackProfile
+  _burst:
+    _clipName: vfx_enemy_telegraph
+    _frames:
+    - {fileID: 21300000, guid: 5c5a8d9ef4ae94aac827ccf592a2a5be, type: 3}
+    - {fileID: 21300000, guid: 66145ff9d5a254aefbf98cd89288f242, type: 3}
+    - {fileID: 21300000, guid: 845925621ce7041b8a827fd0ae6c8f41, type: 3}
+    - {fileID: 21300000, guid: 9412f3c5ad16b416692ccf9470347e98, type: 3}
+    - {fileID: 21300000, guid: 1aa0d0a9bdd664cc9a82c3bced4de83b, type: 3}
+    - {fileID: 21300000, guid: 4d598b2ccc58b4e6ca6f3f5cf690b34c, type: 3}
+    _framesPerSecond: 24
+    _isLooping: 0
+  _tint: {r: 1, g: 1, b: 1, a: 1}
+  _scale: 1
+  _facesHitDirection: 0
+  _mirrorsToDirection: 0
+  _sortingLayer: VFXFront
+  _sortingOrder: 0
+  _hitStop: 0
+  _shake: 0
+  _shakeScale: 1
+  _shakeVerticalBias: 1
+  _screenFlash: 0
+  _flashColor: {r: 1, g: 1, b: 1, a: 1}
+  _lightColor: {r: 1, g: 0.82, b: 0.45, a: 0.45}
+  _lightRadius: 1.2
+  _lightDuration: 0.18
+  _priority: 2
+  _soundEvent: 
+  _haptic: 0

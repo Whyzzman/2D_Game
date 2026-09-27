@@ -59,6 +59,27 @@ namespace ForgottenKingdom
             _body.linearVelocity = new Vector2(0f, _body.linearVelocity.y);
         }
 
+        public LayerMask GroundMask => _groundMask;
+
+        public Vector2 Velocity => _body != null ? _body.linearVelocity : Vector2.zero;
+
+        /// <summary>Sets only the sideways speed, keeping the fall: a shove along the floor.</summary>
+        public void SetHorizontalVelocity(float speed)
+        {
+            _body.linearVelocity = new Vector2(speed, _body.linearVelocity.y);
+        }
+
+        /// <summary>Sets the whole velocity; a thrown body. Works with the motor switched off.</summary>
+        public void SetVelocity(Vector2 velocity)
+        {
+            if (_body == null) { _body = GetComponent<Rigidbody2D>(); }
+            _body.linearVelocity = velocity;
+        }
+
+        /// <summary>Whether ground is under the feet, asked directly (the motor is off on a corpse).</summary>
+        public bool ProbeGround() => Physics2D.OverlapCircle(
+            (Vector2)transform.position + _groundProbeOffset, 0.12f, _groundMask) != null;
+
         /// <summary>Sets the whole velocity at once, used by leaping attacks.</summary>
         public void Launch(Vector2 velocity)
         {

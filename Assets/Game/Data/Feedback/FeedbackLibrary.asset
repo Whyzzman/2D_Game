@@ -65,6 +65,8 @@ MonoBehaviour:
     profile: {fileID: 11400000, guid: 6b66f4e90e5ed4957993fb979f41e740, type: 2}
   - kind: 35
     profile: {fileID: 11400000, guid: ce2baf5388e4d46cea51515e277c0230, type: 2}
+  - kind: 36
+    profile: {fileID: 11400000, guid: 904d4992ff4914b378ca76b2f45eac32, type: 2}
   - kind: 20
     profile: {fileID: 11400000, guid: bd991e75ff3f8bb4abb13f8650ddd5f8, type: 2}
   - kind: 21
