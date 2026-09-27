@@ -27,6 +27,7 @@ namespace ForgottenKingdom
         private readonly List<Button> _items = new List<Button>();
         private readonly List<System.Action> _actions = new List<System.Action>();
         private readonly VisualElement _characterPip;
+        private readonly VisualElement _controls;
         private readonly VisualElement _skillsPip;
         private PlayerCharacter _player;
         private PlayerInputReader _input;
@@ -53,11 +54,18 @@ namespace ForgottenKingdom
             Bind("pause-character", null, false);
             Bind("pause-skills", null, false);
             Bind("pause-options", OpenOptions, true);
+            Bind("pause-controls", OpenControls, true);
             Bind("pause-main-menu", ReturnToMainMenu, true);
+            _controls = root.Q("controls-panel");
+            var back = root.Q<Button>("controls-back");
+            if (back != null) { back.clicked += CloseControls; }
         }
 
         public bool IsOpen => _overlay != null && _overlay.ClassListContains(OpenClass);
         public bool IsOptionsOpen => _options != null && _options.IsOpen;
+
+        /// <summary>The controls list (tutorial.html, frame 4) is showing over the pause.</summary>
+        public bool IsControlsOpen => _controls != null && _controls.ClassListContains("controls--open");
 
         /// <summary>Which buttons can be pressed, in order; for tests and tools.</summary>
         public IEnumerable<string> EnabledButtons
@@ -115,6 +123,10 @@ namespace ForgottenKingdom
             {
                 _options.Close();
             }
+            else if (IsControlsOpen)
+            {
+                CloseControls();
+            }
             else if (IsOpen)
             {
                 Resume();
@@ -149,6 +161,7 @@ namespace ForgottenKingdom
             }
 
             _options?.Close();
+            CloseControls();
             _overlay.RemoveFromClassList(OpenClass);
             GamePause.Pop();
             _input?.SetGameplayEnabled(true);
@@ -192,6 +205,17 @@ namespace ForgottenKingdom
                 return;
             }
 
+            if (IsControlsOpen)
+            {
+                // A view with nothing to choose: confirm or back both return to the pause.
+                if (MenuInput.PadBackPressed() || MenuInput.Confirmed())
+                {
+                    CloseControls();
+                }
+
+                return;
+            }
+
             if (MenuInput.PadBackPressed())
             {
                 Resume();
@@ -232,6 +256,29 @@ namespace ForgottenKingdom
             {
                 if (button.enabledSelf) { SetFocus(index); }
             });
+        }
+
+        public void OpenControls()
+        {
+            if (_controls == null)
+            {
+                return;
+            }
+
+            _overlay.AddToClassList("pause--controls");
+            _controls.AddToClassList("controls--open");
+        }
+
+        public void CloseControls()
+        {
+            if (!IsControlsOpen)
+            {
+                return;
+            }
+
+            _controls.RemoveFromClassList("controls--open");
+            _overlay.RemoveFromClassList("pause--controls");
+            SetFocus(_items.FindIndex(item => item.name == "pause-controls"));
         }
 
         public void OpenOptions()

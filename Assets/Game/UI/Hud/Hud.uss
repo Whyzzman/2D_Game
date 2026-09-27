@@ -548,3 +548,79 @@
     color: rgb(142, 131, 117);
     letter-spacing: 3px;
 }
+
+/* ---------- flasks (design/ui/tutorial/tutorial.html, frames 1-2) ---------- */
+
+.flasks {
+    flex-direction: row;
+    align-items: flex-end;
+    margin-bottom: 12px;
+}
+
+.flasks__row {
+    flex-direction: row;
+    align-items: flex-end;
+}
+
+.flask {
+    width: 26px;
+    height: 34px;
+    margin-right: 6px;
+    align-items: center;
+}
+
+.flask__neck {
+    width: 9px;
+    height: 8px;
+    background-color: rgb(34, 28, 23);
+    border-width: 1px;
+    border-bottom-width: 0;
+    border-color: rgb(107, 90, 66);
+}
+
+.flask__body {
+    flex-grow: 1;
+    width: 22px;
+    justify-content: flex-end;
+    overflow: hidden;
+    background-color: rgb(34, 28, 23);
+    border-width: 1px;
+    border-color: rgb(107, 90, 66);
+    border-radius: 3px;
+}
+
+.flask__liquid {
+    height: 70%;
+    background-color: rgb(201, 161, 74);
+    border-top-width: 3px;
+    border-top-color: rgb(232, 205, 138);
+}
+
+.flask--empty > .flask__neck,
+.flask--empty > .flask__body {
+    background-color: rgb(11, 9, 7);
+    border-color: rgb(58, 47, 37);
+}
+
+.flask--empty .flask__liquid {
+    display: none;
+}
+
+/* The one being drunk glows and runs low. */
+.flask--drinking > .flask__body {
+    border-color: rgb(232, 205, 138);
+}
+
+.flask--drinking .flask__liquid {
+    height: 35%;
+}
+
+.flasks__key {
+    margin-left: 8px;
+    min-width: 24px;
+    height: 24px;
+}
+
+.flasks--empty > .flasks__key {
+    opacity: 0.5;
+}

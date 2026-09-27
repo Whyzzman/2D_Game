@@ -168,6 +168,7 @@ namespace ForgottenKingdom
                     {
                         _progress.UnlockAbility(_rewardAbilityId);
                         AbilityUnlocked?.Invoke(_rewardAbilityId);
+                        AbilityAnnouncements.Announce(_rewardAbilityId);
                     }
 
                     RewardGranted?.Invoke(_rewardId, _rewardName);

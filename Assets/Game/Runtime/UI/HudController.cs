@@ -103,9 +103,22 @@ namespace ForgottenKingdom
         private string _shownPrompt;
 
         private PauseMenu _pause;
+        private AbilityCard _abilityCard;
+        private VisualElement _flasks;
+        private VisualElement _flaskRow;
+        private readonly System.Collections.Generic.List<VisualElement> _flaskIcons =
+            new System.Collections.Generic.List<VisualElement>();
+        private int _shownFlaskCharges = -1;
+        private bool _shownFlaskDrinking;
 
         /// <summary>The pause over the game; it shares this document.</summary>
         public PauseMenu Pause => _pause;
+
+        /// <summary>The "ability gained" card; it shares this document.</summary>
+        public AbilityCard AbilityCard => _abilityCard;
+
+        /// <summary>Flask icons currently drawn, for tests and tools.</summary>
+        public int FlaskIconCount => _flaskIcons.Count;
 
         /// <summary>For tests and tools: whether the boss bar is currently up.</summary>
         public bool IsBossBarVisible => _boss != null && _boss.ClassListContains("boss--visible");
@@ -125,6 +138,10 @@ namespace ForgottenKingdom
             Bind();
             _pause = new PauseMenu(_root);
             _pause.Attach(_player, _progress);
+            _abilityCard = new AbilityCard(_root);
+            _abilityCard.Attach(_player, _progress);
+            _flasks = _root.Q("flasks");
+            _flaskRow = _root.Q("flask-row");
             Dress();
             Subscribe(true);
         }
@@ -133,6 +150,7 @@ namespace ForgottenKingdom
         {
             Subscribe(false);
             _pause?.Detach();
+            _abilityCard?.Detach();
         }
 
         private void Start()
@@ -263,8 +281,10 @@ namespace ForgottenKingdom
             }
 
             _pause?.Tick();
+            _abilityCard?.Tick();
             var dt = Time.unscaledDeltaTime;
             UpdateResources(dt);
+            UpdateFlasks();
             UpdateBoss(dt);
             UpdateLoadout();
             UpdateConditions();
@@ -305,6 +325,63 @@ namespace ForgottenKingdom
                 _stamina.Set(staminaShare, dt);
                 _stamina.Fill?.EnableInClassList("bar__fill--low", staminaShare < LowShare);
             }
+        }
+
+        /// <summary>
+        /// The flask row: full ones lit, spent ones only an outline, and the one being drunk
+        /// glowing and running low. Rebuilt only when the charge count or the drinking changes.
+        /// </summary>
+        private void UpdateFlasks()
+        {
+            var flasks = _player != null ? _player.Flasks : null;
+            if (flasks == null || _flaskRow == null)
+            {
+                return;
+            }
+
+            if (_flaskIcons.Count != flasks.MaxCharges)
+            {
+                _flaskRow.Clear();
+                _flaskIcons.Clear();
+                for (var i = 0; i < flasks.MaxCharges; i++)
+                {
+                    var flask = new VisualElement { pickingMode = PickingMode.Ignore };
+                    flask.AddToClassList("flask");
+                    var neck = new VisualElement { pickingMode = PickingMode.Ignore };
+                    neck.AddToClassList("flask__neck");
+                    var body = new VisualElement { pickingMode = PickingMode.Ignore };
+                    body.AddToClassList("flask__body");
+                    var liquid = new VisualElement { pickingMode = PickingMode.Ignore };
+                    liquid.AddToClassList("flask__liquid");
+                    body.Add(liquid);
+                    flask.Add(neck);
+                    flask.Add(body);
+                    _flaskRow.Add(flask);
+                    _flaskIcons.Add(flask);
+                }
+
+                _shownFlaskCharges = -1;
+            }
+
+            var charges = flasks.Charges;
+            var drinking = flasks.IsDrinking;
+            if (charges == _shownFlaskCharges && drinking == _shownFlaskDrinking)
+            {
+                return;
+            }
+
+            _shownFlaskCharges = charges;
+            _shownFlaskDrinking = drinking;
+            for (var i = 0; i < _flaskIcons.Count; i++)
+            {
+                // The charge is paid as the drink starts, so the one being drunk sits just past
+                // the remaining ones.
+                var isDrinking = drinking && i == charges;
+                _flaskIcons[i].EnableInClassList("flask--drinking", isDrinking);
+                _flaskIcons[i].EnableInClassList("flask--empty", i >= charges && !isDrinking);
+            }
+
+            _flasks?.EnableInClassList("flasks--empty", charges == 0 && !drinking);
         }
 
         private void UpdateBoss(float dt)

@@ -75,6 +75,43 @@ namespace ForgottenKingdom.Tests
         }
 
         [UnityTest]
+        public IEnumerator TheHudShowsTheFlasksAndWhichOneIsBeingDrunk()
+        {
+            yield return LoadGame();
+            var hud = Object.FindAnyObjectByType<HudController>();
+            var player = Object.FindAnyObjectByType<PlayerCharacter>();
+            var root = hud.GetComponent<UIDocument>().rootVisualElement;
+            Assert.That(hud.FlaskIconCount, Is.EqualTo(player.Flasks.MaxCharges));
+            Assert.That(root.Query(className: "flask--empty").ToList(), Is.Empty, "All full at start.");
+
+            player.Actor.Health.SetCurrent(20f);
+            Assume.That(player.TryHeal(), Is.True);
+            yield return null;
+            Assert.That(root.Query(className: "flask--drinking").ToList(), Has.Count.EqualTo(1));
+
+            yield return new WaitForSeconds(player.Flasks.DrinkTime + 0.2f);
+            Assert.That(root.Query(className: "flask--drinking").ToList(), Is.Empty);
+            Assert.That(root.Query(className: "flask--empty").ToList(), Has.Count.EqualTo(1),
+                "One flask spent.");
+        }
+
+        [UnityTest]
+        public IEnumerator AnEarnedAbilityShowsItsCardAndHoldsTheGameUntilContinued()
+        {
+            yield return LoadGame();
+            var card = Object.FindAnyObjectByType<HudController>().AbilityCard;
+            AbilityAnnouncements.Announce(AbilityIds.DoubleJump);
+            Assert.That(card.IsOpen, Is.True);
+            Assert.That(card.Showing, Is.EqualTo(AbilityIds.DoubleJump));
+            Assert.That(GamePause.IsPaused, Is.True, "The game waits under the card.");
+
+            yield return null;
+            card.Continue();
+            Assert.That(card.IsOpen, Is.False);
+            Assert.That(GamePause.IsPaused, Is.False);
+        }
+
+        [UnityTest]
         public IEnumerator TheBossBarAppearsWithTheFightAndNamesTheBoss()
         {
             yield return LoadGame();

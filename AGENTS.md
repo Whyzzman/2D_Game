@@ -46,7 +46,9 @@
   тема `GameTheme.tss`), `HudController`, `MainMenuController`. Они ждут
   согласования в Unity (Approval 2). **2026-09-26 пользователь утвердил весь HTML
   `design/ui` (Approval 1)** и перенесена пауза (`PauseMenu` в документе HUD, `Esc`/`Start`,
-  общие `OptionsPanel`/`MenuInput`/`Options.uss`) — тоже ждёт Approval 2. Остальные
+  общие `OptionsPanel`/`MenuInput`/`Options.uss`), затем окно «Почати нову гру?», счётчик фляг,
+  экран «Керування» и карточка способности (`design/ui/tutorial/tutorial.html`) — всё ждёт
+  Approval 2. Остальные
   экраны (инвентарь, умения, карта, вівтар) переносить только по отдельной команде
   пользователя, по одному.
 - Звук централизован в `AudioManager` (PHASE 22, `gamedesign/AUDIO_DESIGN.md`).

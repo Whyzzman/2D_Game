@@ -111,7 +111,19 @@ namespace ForgottenKingdom.Tests
         {
             yield return Tap(Key.Escape);
             Assert.That(_pause.EnabledButtons.ToArray(), Is.EqualTo(new[]
-                { "pause-resume", "pause-options", "pause-main-menu" }));
+                { "pause-resume", "pause-options", "pause-controls", "pause-main-menu" }));
+        }
+
+        [UnityTest]
+        public IEnumerator TheControlsOpenFromThePauseAndEscapeReturnsToIt()
+        {
+            yield return Tap(Key.Escape);
+            _pause.OpenControls();
+            Assert.That(_pause.IsControlsOpen, Is.True);
+
+            yield return Tap(Key.Escape);
+            Assert.That(_pause.IsControlsOpen, Is.False);
+            Assert.That(_pause.IsOpen, Is.True, "Back to the pause, not out of it.");
         }
 
         [UnityTest]
