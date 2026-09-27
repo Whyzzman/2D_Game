@@ -37,7 +37,9 @@ namespace ForgottenKingdom
         BossPhase,
         BossDeath,
         EnemyDeath,
-        Pickup
+        Pickup,
+        /// <summary>A swing down bouncing off an enemy or spikes. Appended: kinds are stored as numbers.</summary>
+        Pogo
     }
 
     /// <summary>

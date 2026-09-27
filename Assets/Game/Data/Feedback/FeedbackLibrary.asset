@@ -71,4 +71,6 @@ MonoBehaviour:
     profile: {fileID: 11400000, guid: aabd5908eaee92a4cbd90066fc1099c2, type: 2}
   - kind: 28
     profile: {fileID: 11400000, guid: ee478c757e402de4bbeeeedc30a164f2, type: 2}
+  - kind: 29
+    profile: {fileID: 11400000, guid: 57c2255f16898437886c522649720d98, type: 2}
   _fallback: {fileID: 11400000, guid: e89051c71743d2848b9c0a81f3f06bda, type: 2}

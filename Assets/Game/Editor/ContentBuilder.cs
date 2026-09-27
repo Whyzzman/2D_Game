@@ -2634,6 +2634,8 @@ namespace ForgottenKingdom.EditorTools
             // Healing is heard by the player only as a cue that the commitment started.
             events.Add(Sound(AudioId.FlaskDrink, clips, 0.55f, voices: 1, priority: 60));
             events.Add(Sound(AudioId.HerbEat, clips, 0.5f, voices: 1, priority: 55));
+            // The pogo's ring is how a bounce is felt; chains of them must each be heard.
+            events.Add(Sound(AudioId.Pogo, clips, 0.7f, voices: 2, priority: 75, interval: 0.05f));
 
             // Interface. Quiet, flat, and spaced so fast navigation does not chatter.
             events.Add(Sound(AudioId.UiNavigate, clips, 0.3f, AudioBus.Ui, voices: 1, priority: 25,
@@ -2838,6 +2840,12 @@ namespace ForgottenKingdom.EditorTools
                 shake: ShakeProfile.None, priority: 8, facesDirection: false));
             entries.Add(Feedback(FeedbackKind.Pickup, "vfx_pickup", shake: ShakeProfile.None,
                 priority: 3, facesDirection: false));
+            // The pogo, as Hollow Knight gives it: a spark under the feet, a hair of freeze and a
+            // downward kick, whether the blade found an enemy or spikes — a bounce that makes no
+            // mark reads as the player floating off by accident.
+            entries.Add(Feedback(FeedbackKind.Pogo, "vfx_block", hitStop: 0.035f,
+                shake: ShakeProfile.Tiny, verticalBias: 1.8f,
+                light: new Color(0.85f, 0.9f, 1f, 0.45f), lightRadius: 1.6f, priority: 15));
 
             var library = CreateAsset<FeedbackLibrary>(FeedbackLibraryPath);
             var serialized = new SerializedObject(library);

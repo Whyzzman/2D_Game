@@ -100,8 +100,12 @@ namespace ForgottenKingdom.Tests
                 "On the ground down and attack is an ordinary swing.");
             yield return WaitForSwingToEnd();
 
+            var announced = AttackDirection.Side;
+            _combat.AttackStarted += _ => announced = _combat.CurrentDirection;
             yield return Press(Key.W, Key.J);
             Assert.That(_combat.CurrentDirection, Is.EqualTo(AttackDirection.Up));
+            Assert.That(announced, Is.EqualTo(AttackDirection.Up),
+                "Listeners to the swing's start (trail, sound) already see its direction.");
             var animation = _player.GetComponent<PlayerAnimationController>();
             yield return WaitUntil(() => animation.State == PlayerAnimationState.AttackUp, 0.3f);
             Assert.That(animation.State, Is.EqualTo(PlayerAnimationState.AttackUp));
@@ -166,6 +170,14 @@ namespace ForgottenKingdom.Tests
             var pogos = 0;
             _combat.Pogoed += () => pogos++;
             var hits = dummy.HitCount;
+            var feedback = Object.FindAnyObjectByType<CombatFeedbackService>();
+            var pogoFeedback = 0;
+            var burstsDown = 0;
+            feedback.Played += (kind, position) =>
+            {
+                if (kind == FeedbackKind.Pogo) { pogoFeedback++; }
+                if (kind == FeedbackKind.LightHit || kind == FeedbackKind.HeavyHit) { burstsDown++; }
+            };
 
             var at = dummy.transform.position;
             _motor.ResetTo(new Vector2(at.x, at.y + 1.9f));
@@ -175,6 +187,8 @@ namespace ForgottenKingdom.Tests
 
             Assert.That(dummy.HitCount, Is.GreaterThan(hits), "The swing down hurts what it lands on.");
             Assert.That(pogos, Is.EqualTo(1), "One bounce per swing.");
+            Assert.That(pogoFeedback, Is.EqualTo(1), "The bounce has its own spark and ring.");
+            Assert.That(burstsDown, Is.GreaterThan(0), "And the hit its own impact.");
             // The bounce is taken on the next physics step.
             yield return new WaitForFixedUpdate();
             yield return new WaitForFixedUpdate();

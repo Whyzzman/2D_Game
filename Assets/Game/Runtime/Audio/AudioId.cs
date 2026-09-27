@@ -202,6 +202,9 @@ namespace ForgottenKingdom
 
         // ---- healing (appended: ids are stored as numbers) ----
         FlaskDrink,
-        HerbEat
+        HerbEat,
+
+        // ---- pogo ----
+        Pogo
     }
 }

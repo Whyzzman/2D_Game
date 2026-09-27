@@ -250,7 +250,10 @@ namespace ForgottenKingdom.EditorTools
 
             // ---- healing ----
             new Spec(AudioId.FlaskDrink, "SFX/Player", "sfx_player_flask_drink", Recipe.Chime, 2, 0.35f, 1.5f),
-            new Spec(AudioId.HerbEat, "SFX/Player", "sfx_player_herb_eat", Recipe.Rustle, 2, 0.4f, 0.9f)
+            new Spec(AudioId.HerbEat, "SFX/Player", "sfx_player_herb_eat", Recipe.Rustle, 2, 0.4f, 0.9f),
+
+            // ---- pogo: a short bright ring, the blade striking and springing off ----
+            new Spec(AudioId.Pogo, "SFX/Player", "sfx_player_pogo", Recipe.MetalRing, 3, 0.28f, 1.35f)
         };
 
         /// <summary>Writes every missing or changed clip and returns them, by sound.</summary>

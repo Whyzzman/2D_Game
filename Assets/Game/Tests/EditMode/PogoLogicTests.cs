@@ -44,5 +44,23 @@ namespace ForgottenKingdom.Tests
             Assert.That(a.y, Is.GreaterThan(b.y + 1f),
                 "An ordinary rise without the button held is cut; the bounce keeps its height.");
         }
+
+        [Test]
+        public void EachSwingDrawsItsOwnArc()
+        {
+            var upEnd = WeaponTrail.ArcPoint(AttackDirection.Up, 0.5f, 1, 1.35f);
+            Assert.That(upEnd.y, Is.GreaterThan(1.2f), "Mid-swing, the swing up is overhead.");
+            Assert.That(upEnd.x, Is.EqualTo(0f).Within(0.01f));
+            var downMid = WeaponTrail.ArcPoint(AttackDirection.Down, 0.5f, 1, 1.35f);
+            Assert.That(downMid.y, Is.LessThan(-0.8f), "Mid-swing, the swing down is under the feet.");
+            Assert.That(downMid.x, Is.EqualTo(0f).Within(0.01f));
+            var side = WeaponTrail.ArcPoint(AttackDirection.Side, 0.5f, 1, 1.35f);
+            Assert.That(side.x, Is.GreaterThan(0.9f), "The side swing crosses in front.");
+            var mirrored = WeaponTrail.ArcPoint(AttackDirection.Side, 0.5f, -1, 1.35f);
+            Assert.That(mirrored.x, Is.EqualTo(-side.x).Within(0.0001f), "Facing left mirrors it.");
+            Assert.That(WeaponTrail.ArcPoint(AttackDirection.Up, 0f, 1, 1.35f),
+                Is.Not.EqualTo(WeaponTrail.ArcPoint(AttackDirection.Up, 1f, 1, 1.35f)),
+                "The point travels.");
+        }
     }
 }

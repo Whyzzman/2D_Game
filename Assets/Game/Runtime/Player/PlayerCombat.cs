@@ -140,25 +140,18 @@ namespace ForgottenKingdom
                 var aimed = direction == AttackDirection.Up
                     ? first.Aimed(_upHitboxOffset, _upHitboxSize, "AttackUp")
                     : first.Aimed(_downHitboxOffset, _downHitboxSize, "AttackDown");
-                if (!TryBegin(aimed, weapon))
-                {
-                    return false;
-                }
-
-                CurrentDirection = direction;
-                return true;
+                return TryBegin(aimed, weapon, direction);
             }
 
             var next = _runner.IsBusy || Time.time <= _comboExpiresAt
                 ? (_comboIndex + 1) % Mathf.Max(1, weapon.ComboLength)
                 : 0;
-            if (!TryBegin(weapon.LightAttack(next), weapon))
+            if (!TryBegin(weapon.LightAttack(next), weapon, AttackDirection.Side))
             {
                 return false;
             }
 
             _comboIndex = next;
-            CurrentDirection = AttackDirection.Side;
             return true;
         }
 
@@ -166,13 +159,12 @@ namespace ForgottenKingdom
         {
             var weapon = Weapon;
             // A weapon with no heavy move simply ignores the input instead of throwing.
-            if (weapon == null || !TryBegin(weapon.HeavyAttack, weapon))
+            if (weapon == null || !TryBegin(weapon.HeavyAttack, weapon, AttackDirection.Side))
             {
                 return false;
             }
 
             _comboIndex = 0;
-            CurrentDirection = AttackDirection.Side;
             return true;
         }
 
@@ -211,7 +203,12 @@ namespace ForgottenKingdom
             _comboExpiresAt = 0f;
         }
 
-        private bool TryBegin(AttackDefinition attack, WeaponDefinition weapon)
+        /// <summary>
+        /// Starts a swing. The direction is set before anyone hears of the swing, so everything
+        /// listening to <see cref="AttackStarted"/> — the trail, the sound — sees the right one.
+        /// </summary>
+        private bool TryBegin(AttackDefinition attack, WeaponDefinition weapon,
+            AttackDirection direction)
         {
             if (attack == null || !enabled)
             {
@@ -225,6 +222,7 @@ namespace ForgottenKingdom
 
             _hitbox.End();
             _hasBounced = false;
+            CurrentDirection = direction;
             _runner.Begin(attack, weapon.AttackSpeed);
             _comboExpiresAt = Time.time + attack.Duration / weapon.AttackSpeed
                 + weapon.ComboResetTime;

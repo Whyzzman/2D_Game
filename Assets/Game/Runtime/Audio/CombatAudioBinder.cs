@@ -95,6 +95,7 @@ namespace ForgottenKingdom
                 case FeedbackKind.BossDeath: return AudioId.BossDeath;
                 case FeedbackKind.EnemyDeath: return AudioId.ZombieDeath;
                 case FeedbackKind.Pickup: return AudioId.PickupCommon;
+                case FeedbackKind.Pogo: return AudioId.Pogo;
                 default: return AudioId.None;
             }
         }

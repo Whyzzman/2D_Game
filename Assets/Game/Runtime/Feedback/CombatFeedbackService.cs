@@ -203,6 +203,12 @@ namespace ForgottenKingdom
                 }
 
                 player.DashStarted += () => OnPlayerDash(player);
+                var combat = player.GetComponent<PlayerCombat>();
+                if (combat != null)
+                {
+                    combat.Pogoed += () => PlayInternal(FeedbackKind.Pogo,
+                        (Vector2)player.transform.position + PogoSparkOffset, Vector2.down, 1f);
+                }
             }
 
             // Respawning has to leave nothing behind: no shake, no freeze, no burst still playing
@@ -284,7 +290,28 @@ namespace ForgottenKingdom
                     return;
             }
 
-            PlayInternal(KindForHit(info), position, info.HitDirection, ScaleForHit(info));
+            PlayInternal(KindForHit(info), position, BurstDirection(info), ScaleForHit(info));
+        }
+
+        /// <summary>Where the pogo's spark sits: under the feet, where the blade struck.</summary>
+        private static readonly Vector2 PogoSparkOffset = new Vector2(0f, -1.1f);
+
+        /// <summary>
+        /// Which way the impact bursts. A swing up or down still knocks back sideways — that is
+        /// combat's business and unchanged — but its spark follows the blade, not the facing.
+        /// </summary>
+        private static Vector2 BurstDirection(in DamageInfo info)
+        {
+            if (info.Source is PlayerCombat combat)
+            {
+                switch (combat.CurrentDirection)
+                {
+                    case AttackDirection.Up: return Vector2.up;
+                    case AttackDirection.Down: return Vector2.down;
+                }
+            }
+
+            return info.HitDirection;
         }
 
         /// <summary>
