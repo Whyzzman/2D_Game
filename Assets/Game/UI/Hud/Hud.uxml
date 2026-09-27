@@ -374,6 +374,44 @@
                         <ui:Label class="hint__text" text="Суцільна лінія — передумову виконано, пунктир — ще ні" picking-mode="Ignore" />
                     </ui:VisualElement>
                 </ui:VisualElement>
+
+                <!-- spellbook.html: the book, the three slots of the combat keys, the chosen spell. -->
+                <ui:VisualElement name="inv-spells" class="inv__page">
+                    <ui:VisualElement class="inv__body">
+                        <ui:VisualElement class="sp-col">
+                            <ui:Label class="section-label display" text="ЗАКЛЯТТЯ КНИГИ" picking-mode="Ignore" />
+                            <ui:ScrollView name="sp-list" class="sp-list" />
+                            <ui:Label class="section-label sp-gap display" text="СЛОТИ ЗАКЛЯТЬ" picking-mode="Ignore" />
+                            <ui:VisualElement class="sp-slots">
+                                <ui:Button name="sp-slot-0" class="sp-slot"><ui:Label name="sp-slot-0-key" class="sp-slot__key" text="" picking-mode="Ignore" /><ui:VisualElement name="sp-slot-0-frame" class="inv-slot sp-slot__frame" picking-mode="Ignore" /><ui:Label name="sp-slot-0-name" class="sp-slot__name" text="" picking-mode="Ignore" /></ui:Button>
+                                <ui:Button name="sp-slot-1" class="sp-slot"><ui:Label name="sp-slot-1-key" class="sp-slot__key" text="" picking-mode="Ignore" /><ui:VisualElement name="sp-slot-1-frame" class="inv-slot sp-slot__frame" picking-mode="Ignore" /><ui:Label name="sp-slot-1-name" class="sp-slot__name" text="" picking-mode="Ignore" /></ui:Button>
+                                <ui:Button name="sp-slot-2" class="sp-slot"><ui:Label name="sp-slot-2-key" class="sp-slot__key" text="" picking-mode="Ignore" /><ui:VisualElement name="sp-slot-2-frame" class="inv-slot sp-slot__frame" picking-mode="Ignore" /><ui:Label name="sp-slot-2-name" class="sp-slot__name" text="" picking-mode="Ignore" /></ui:Button>
+                            </ui:VisualElement>
+                        </ui:VisualElement>
+                        <ui:VisualElement class="detail sp-detail">
+                            <ui:Label name="sp-name" class="detail__name display" text="" picking-mode="Ignore" />
+                            <ui:Label name="sp-meta" class="detail__type" text="" picking-mode="Ignore" />
+                            <ui:Label name="sp-desc" class="detail__desc" text="" picking-mode="Ignore" />
+                            <ui:Label class="section-label display" text="ХАРАКТЕРИСТИКИ" picking-mode="Ignore" />
+                            <ui:VisualElement name="sp-stats" picking-mode="Ignore" />
+                            <ui:VisualElement class="spacer" picking-mode="Ignore" />
+                            <ui:VisualElement class="sk-actions">
+                                <ui:Button name="sp-assign" class="btn btn--primary btn--last"><ui:Label class="btn__text display" text="ПРИЗНАЧИТИ" picking-mode="Ignore" /></ui:Button>
+                                <ui:Button name="sp-remove" class="btn btn--last"><ui:Label class="btn__text display" text="ЗНЯТИ ЗІ СЛОТУ" picking-mode="Ignore" /></ui:Button>
+                            </ui:VisualElement>
+                            <ui:Label name="sp-problem" class="detail__problem" text="" picking-mode="Ignore" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                    <ui:VisualElement class="inv__footer" picking-mode="Ignore">
+                        <ui:VisualElement class="hint" picking-mode="Ignore"><ui:Label class="key" text="Enter" picking-mode="Ignore" /><ui:Label class="key key--pad" text="A" picking-mode="Ignore" /><ui:Label class="hint__text" text="Призначити" picking-mode="Ignore" /></ui:VisualElement>
+                        <ui:VisualElement class="hint" picking-mode="Ignore"><ui:Label class="key" text="1–3" picking-mode="Ignore" /><ui:Label class="key" text="↔" picking-mode="Ignore" /><ui:Label class="hint__text" text="Слот" picking-mode="Ignore" /></ui:VisualElement>
+                        <ui:VisualElement class="hint" picking-mode="Ignore"><ui:Label class="key" text="Backspace" picking-mode="Ignore" /><ui:Label class="key key--pad" text="X" picking-mode="Ignore" /><ui:Label class="hint__text" text="Зняти" picking-mode="Ignore" /></ui:VisualElement>
+                        <ui:VisualElement class="hint" picking-mode="Ignore"><ui:Label class="key" text="Q" picking-mode="Ignore" /><ui:Label class="key" text="E" picking-mode="Ignore" /><ui:Label class="key key--pad" text="LB" picking-mode="Ignore" /><ui:Label class="key key--pad" text="RB" picking-mode="Ignore" /><ui:Label class="hint__text" text="Сторінки" picking-mode="Ignore" /></ui:VisualElement>
+                        <ui:VisualElement class="hint" picking-mode="Ignore"><ui:Label class="key" text="Esc" picking-mode="Ignore" /><ui:Label class="key key--pad" text="B" picking-mode="Ignore" /><ui:Label class="hint__text" text="Назад" picking-mode="Ignore" /></ui:VisualElement>
+                        <ui:VisualElement class="spacer" picking-mode="Ignore" />
+                        <ui:Label class="hint__text" text="Слоти заклять збігаються з клавішами в бою" picking-mode="Ignore" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
 

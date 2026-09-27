@@ -15,8 +15,8 @@ namespace ForgottenKingdom
     ///
     /// Pages on top: Спорядження (items by category, with the comparison panel), Екіпірування
     /// (the eight slots, what fits the chosen one, the derived stats), Персонаж
-    /// (<see cref="CharacterPage"/>) and Уміння (<see cref="SkillsPage"/>). Spells is shown but
-    /// disabled until that screen reaches the game. Q/E or LB/RB turn the pages, Z/C or LT/RT the
+    /// (<see cref="CharacterPage"/>), Уміння (<see cref="SkillsPage"/>) and Закляття
+    /// (<see cref="SpellsPage"/>). Q/E or LB/RB turn the pages, Z/C or LT/RT the
     /// categories or branches, arrows or the stick move, Enter or A acts, X unequips or assigns;
     /// Escape, B or the inventory key close it. Opened from the pause, it returns there.
     /// </summary>
@@ -27,11 +27,13 @@ namespace ForgottenKingdom
             Items,
             Equipment,
             Character,
-            Skills
+            Skills,
+            Spells
         }
 
-        private static readonly string[] Titles = { "СПОРЯДЖЕННЯ", "ЕКІПІРУВАННЯ", "ПЕРСОНАЖ", "УМІННЯ" };
-        private static readonly string[] PageNames = { "items", "equipment", "character", "skills" };
+        private static readonly string[] Titles =
+            { "СПОРЯДЖЕННЯ", "ЕКІПІРУВАННЯ", "ПЕРСОНАЖ", "УМІННЯ", "КНИГА ЗАКЛЯТЬ" };
+        private static readonly string[] PageNames = { "items", "equipment", "character", "skills", "spells" };
 
         private const string OpenClass = "inv--open";
         private const int GridColumns = 8;
@@ -46,12 +48,13 @@ namespace ForgottenKingdom
         private readonly VisualElement _overlay;
         private readonly Label _title;
         private readonly Label _purse;
-        private readonly Button[] _pageButtons = new Button[4];
+        private readonly Button[] _pageButtons = new Button[5];
         private readonly VisualElement _characterPip;
         private readonly VisualElement _skillsPip;
-        private readonly VisualElement[] _pages = new VisualElement[4];
+        private readonly VisualElement[] _pages = new VisualElement[5];
         private readonly CharacterPage _character;
         private readonly SkillsPage _skillsPage;
+        private readonly SpellsPage _spellsPage;
         private readonly Button[] _categoryButtons = new Button[InventoryScreen.Tabs.Length];
 
         // Items page.
@@ -121,11 +124,11 @@ namespace ForgottenKingdom
                 _pages[i] = _overlay.Q($"inv-{PageNames[i]}");
             }
 
-            _overlay.Q<Button>("inv-page-spells")?.SetEnabled(false);
             _characterPip = _overlay.Q("inv-character-pip");
             _skillsPip = _overlay.Q("inv-skills-pip");
             _character = new CharacterPage(_pages[(int)Page.Character], Redraw);
             _skillsPage = new SkillsPage(_pages[(int)Page.Skills], Redraw);
+            _spellsPage = new SpellsPage(_pages[(int)Page.Spells], Redraw);
             for (var i = 0; i < _categoryButtons.Length; i++)
             {
                 var index = i;
@@ -181,6 +184,7 @@ namespace ForgottenKingdom
         public IReadOnlyList<string> Candidates => _candidates;
         public CharacterPage Character => _character;
         public SkillsPage Skills => _skillsPage;
+        public SpellsPage Spells => _spellsPage;
 
         /// <summary>Cells in the grid that hold an item, for tests and tools.</summary>
         public int ItemCellCount { get; private set; }
@@ -205,6 +209,7 @@ namespace ForgottenKingdom
 
             _character.Attach(_screen, player, _progression);
             _skillsPage.Attach(_screen, _skills);
+            _spellsPage.Attach(_screen, player);
             _screen.AddPresenter(this);
             _screen.Opened += OnOpened;
             _screen.Closed += OnClosed;
@@ -326,7 +331,8 @@ namespace ForgottenKingdom
                 case Page.Items: TickItems(keyboard, pad, horizontal, vertical); break;
                 case Page.Equipment: TickEquipment(keyboard, pad, horizontal, vertical); break;
                 case Page.Character: _character.Tick(vertical); break;
-                default: _skillsPage.Tick(keyboard, pad, horizontal, vertical); break;
+                case Page.Skills: _skillsPage.Tick(keyboard, pad, horizontal, vertical); break;
+                default: _spellsPage.Tick(keyboard, pad, horizontal, vertical); break;
             }
         }
 
@@ -494,7 +500,8 @@ namespace ForgottenKingdom
                 case Page.Items: DrawItems(); break;
                 case Page.Equipment: DrawEquipment(); break;
                 case Page.Character: _character.Draw(); break;
-                default: _skillsPage.Draw(); break;
+                case Page.Skills: _skillsPage.Draw(); break;
+                default: _spellsPage.Draw(); break;
             }
         }
 

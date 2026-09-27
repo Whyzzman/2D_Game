@@ -956,3 +956,159 @@
 .sk-actions > .btn {
     margin-top: 8px;
 }
+
+/* ---------- spellbook page (spellbook.html) ---------- */
+
+.sp-col {
+    flex-grow: 1;
+    margin-right: 24px;
+}
+
+.sp-gap {
+    margin-top: 16px;
+}
+
+.sp-list {
+    max-height: 430px;
+}
+
+.sp-spell,
+.sp-spell:hover,
+.sp-spell:active {
+    flex-direction: row;
+    align-items: center;
+    margin: 0 0 12px 0;
+    padding: 12px;
+    background-color: rgb(28, 23, 19);
+    border-width: 1px;
+    border-color: rgb(58, 47, 37);
+    border-radius: 0;
+}
+
+.sp-spell:hover {
+    border-color: rgb(107, 90, 66);
+}
+
+.sp-spell--selected,
+.sp-spell--selected:hover {
+    border-color: rgb(201, 161, 74);
+    background-color: rgb(40, 32, 20);
+}
+
+.sp-spell--locked {
+    opacity: 0.45;
+}
+
+.sp-spell__icon {
+    width: 56px;
+    height: 56px;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(22, 18, 15);
+    border-width: 1px;
+    border-color: rgb(58, 47, 37);
+}
+
+.sp-spell__body {
+    flex-grow: 1;
+    margin-left: 16px;
+}
+
+.sp-spell__name {
+    font-size: 17px;
+    color: rgb(240, 230, 210);
+    -unity-text-align: middle-left;
+    margin: 0;
+    padding: 0;
+}
+
+.sp-spell__meta {
+    font-size: 13px;
+    letter-spacing: 1px;
+    color: rgb(142, 131, 117);
+    -unity-text-align: middle-left;
+    margin: 2px 0 0 0;
+    padding: 0;
+}
+
+.sp-spell__slot {
+    min-width: 64px;
+    font-size: 13px;
+    letter-spacing: 1px;
+    -unity-text-align: middle-center;
+    color: rgb(201, 161, 74);
+    margin: 0;
+    padding: 4px 8px;
+    border-width: 1px;
+    border-color: rgb(138, 116, 52);
+}
+
+.sp-spell__slot--empty {
+    color: rgb(95, 87, 76);
+    border-color: rgb(58, 47, 37);
+}
+
+.sp-el-fire { color: rgb(255, 140, 51); }
+.sp-el-frost { color: rgb(143, 214, 255); }
+.sp-el-arcane { color: rgb(107, 143, 255); }
+.sp-el-dark { color: rgb(155, 107, 214); }
+
+.sp-icon {
+    width: 34px;
+    height: 34px;
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.sp-slots {
+    flex-direction: row;
+}
+
+.sp-slot,
+.sp-slot:hover,
+.sp-slot:active {
+    flex-grow: 1;
+    flex-basis: 0;
+    align-items: center;
+    margin: 0 12px 0 0;
+    padding: 12px;
+    background-color: rgba(0, 0, 0, 0);
+    border-width: 1px;
+    border-color: rgb(58, 47, 37);
+    border-radius: 0;
+}
+
+.sp-slot--target,
+.sp-slot--target:hover {
+    border-color: rgb(201, 161, 74);
+    background-color: rgba(138, 116, 52, 0.1);
+}
+
+.sp-slot__key {
+    font-size: 13px;
+    letter-spacing: 1px;
+    color: rgb(95, 87, 76);
+    margin: 0 0 8px 0;
+    padding: 0;
+}
+
+.sp-slot__frame {
+    width: 60px;
+    height: 60px;
+}
+
+.sp-slot__name {
+    font-size: 15px;
+    color: rgb(240, 230, 210);
+    -unity-text-align: middle-center;
+    margin: 8px 0 0 0;
+    padding: 0;
+}
+
+.sp-slot__name--empty {
+    color: rgb(95, 87, 76);
+    -unity-font-style: italic;
+}
+
+.sp-detail {
+    width: 440px;
+}
