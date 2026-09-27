@@ -10,7 +10,8 @@ namespace ForgottenKingdom.Tests
 {
     /// <summary>
     /// The Tomb camera's framing: a jump does not rock the view, the view never shows past the
-    /// world's ends, and a boss fight keeps it on the arena.
+    /// world's ends, keeps to the player's room and slides into the next, and a boss fight keeps
+    /// it on the arena.
     /// </summary>
     public sealed class CameraFramingTests
     {
@@ -103,18 +104,68 @@ namespace ForgottenKingdom.Tests
         }
 
         [UnityTest]
+        public IEnumerator TheViewKeepsToTheRoomAndShowsLittleUnderTheFloor()
+        {
+            var director = _follow.GetComponent<CameraDirector>();
+            var hall = director.Rooms.Rooms[director.Rooms.IndexOf("room_tomb_burial_hall")];
+            _motor.ResetTo(new Vector2(hall.Area.center.x, 0.85f));
+            yield return Realtime(1f);
+
+            Assert.That(_follow.ActiveBounds, Is.EqualTo(hall.View));
+            var halfHeight = _camera.orthographicSize;
+            var halfWidth = halfHeight * _camera.aspect;
+            var view = _camera.transform.position;
+            Assert.That(view.y - halfHeight, Is.GreaterThanOrEqualTo(-1f - CameraRooms.FloorMargin - 0.1f),
+                "Only a strip of ground shows under the floor, not the void below it.");
+            if (hall.View.width > halfWidth * 2f)
+            {
+                Assert.That(view.x - halfWidth, Is.GreaterThanOrEqualTo(hall.View.xMin - 0.1f));
+                Assert.That(view.x + halfWidth, Is.LessThanOrEqualTo(hall.View.xMax + 0.1f));
+            }
+        }
+
+        [UnityTest]
+        public IEnumerator CrossingIntoTheNextRoomSlidesTheViewWithoutACut()
+        {
+            var director = _follow.GetComponent<CameraDirector>();
+            var entrance = director.Rooms.Rooms[director.Rooms.IndexOf("room_tomb_entrance")];
+            var hall = director.Rooms.Rooms[director.Rooms.IndexOf("room_tomb_burial_hall")];
+            _motor.ResetTo(new Vector2(entrance.Area.xMax - 2f, 0.85f));
+            yield return Realtime(1f);
+
+            var slid = false;
+            var biggestStep = 0f;
+            var last = _camera.transform.position;
+            yield return Keys(Key.D);
+            var end = Time.realtimeSinceStartup + 1.5f;
+            while (Time.realtimeSinceStartup < end)
+            {
+                yield return null;
+                slid |= _follow.IsChangingRooms;
+                biggestStep = Mathf.Max(biggestStep, Vector2.Distance(last, _camera.transform.position));
+                last = _camera.transform.position;
+            }
+
+            yield return Keys();
+            Assert.That(_motor.transform.position.x, Is.GreaterThan(hall.Area.xMin + CameraRooms.SwitchMargin),
+                "The player has to reach the next room for this to mean anything.");
+            Assert.That(slid, Is.True, "The view slid across instead of cutting.");
+            Assert.That(biggestStep, Is.LessThan(0.6f), "No frame jumps the view.");
+            Assert.That(_follow.ActiveBounds, Is.EqualTo(hall.View));
+        }
+
+        [UnityTest]
         public IEnumerator ABossFightKeepsTheViewOnTheArena()
         {
-            var world = _follow.ActiveBounds;
             _motor.ResetTo(new Vector2(42f, 1f));
             var end = Time.realtimeSinceStartup + 3f;
-            while (Time.realtimeSinceStartup < end && _follow.ActiveBounds == world)
+            while (Time.realtimeSinceStartup < end && !_follow.HasFightBounds)
             {
                 yield return null;
             }
 
             var arena = _follow.ActiveBounds;
-            Assert.That(arena.HasValue && arena != world, Is.True, "The fight gave the camera its arena.");
+            Assert.That(_follow.HasFightBounds && arena.HasValue, Is.True, "The fight gave the camera its arena.");
             // Let the zoom settle before measuring the view against the arena.
             yield return Realtime(2f);
 

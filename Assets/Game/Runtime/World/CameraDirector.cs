@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -12,9 +13,9 @@ namespace ForgottenKingdom
     /// a second, and the reduced-motion setting turns the punch off.
     ///
     /// It also gives the follow its limits from the world graph: the extent of this scene's
-    /// areas, so the view never shows past the world's ends, and for a boss fight the arena's
-    /// area, so the fight stays framed. The areas are coarse slabs today; tighter per-room
-    /// rectangles can replace them later without touching the camera.
+    /// areas, so the view never shows past the world's ends; the room the player is in
+    /// (<see cref="CameraRooms"/>), sliding into the next one when the player crosses over; and
+    /// for a boss fight the arena's room, so the fight stays framed.
     /// </summary>
     [DisallowMultipleComponent]
     [RequireComponent(typeof(CameraFollow2D))]
@@ -24,11 +25,19 @@ namespace ForgottenKingdom
         [SerializeField, Min(0.05f)] private float _bossZoomTime = 1.1f;
         [SerializeField, Range(0f, 0.2f)] private float _parryPunch = 0.06f;
         [SerializeField, Min(0.02f)] private float _parryPunchTime = 0.12f;
+        [Tooltip("How long the view takes to slide into the next room.")]
+        [SerializeField, Min(0f)] private float _roomChangeTime = 0.5f;
 
         private CameraFollow2D _follow;
         private BossEncounter[] _encounters = System.Array.Empty<BossEncounter>();
         private PlayerCharacter _player;
         private GameProgress _progress;
+        private PlayerMotor2D _motor;
+        private CameraRooms _rooms = new CameraRooms();
+        private int _room = -1;
+
+        /// <summary>The rooms of this scene, for tests and debugging.</summary>
+        public CameraRooms Rooms => _rooms;
 
         private void Awake()
         {
@@ -36,11 +45,20 @@ namespace ForgottenKingdom
             _encounters = FindObjectsByType<BossEncounter>(FindObjectsInactive.Include);
             _player = FindAnyObjectByType<PlayerCharacter>();
             _progress = FindAnyObjectByType<GameProgress>();
+            _motor = _player != null ? _player.GetComponent<PlayerMotor2D>() : null;
         }
 
         private void Start()
         {
             _follow.SetWorldBounds(SceneExtent());
+            _rooms = BuildRooms();
+            FollowRoom(0f);
+            _follow.SnapToTarget();
+        }
+
+        private void Update()
+        {
+            FollowRoom(_roomChangeTime);
         }
 
         private void OnEnable()
@@ -54,6 +72,11 @@ namespace ForgottenKingdom
             if (_player != null)
             {
                 _player.Parried += OnParried;
+            }
+
+            if (_motor != null)
+            {
+                _motor.Respawned += OnRespawned;
             }
         }
 
@@ -72,6 +95,35 @@ namespace ForgottenKingdom
             {
                 _player.Parried -= OnParried;
             }
+
+            if (_motor != null)
+            {
+                _motor.Respawned -= OnRespawned;
+            }
+        }
+
+        /// <summary>A respawn or a journey cuts straight to the new room, never slides.</summary>
+        private void OnRespawned()
+        {
+            FollowRoom(0f);
+            _follow.SnapToTarget();
+        }
+
+        private void FollowRoom(float blendTime)
+        {
+            if (_motor == null || _rooms.Count == 0)
+            {
+                return;
+            }
+
+            var room = _rooms.RoomAt(_motor.transform.position, blendTime > 0f ? _room : -1);
+            if (room == _room && room >= 0)
+            {
+                return;
+            }
+
+            _room = room;
+            _follow.SetRoomBounds(room >= 0 ? _rooms.Rooms[room].View : (Rect?)null, blendTime);
         }
 
         private void OnFightStarted(BossController boss)
@@ -81,7 +133,9 @@ namespace ForgottenKingdom
             var arena = graph != null && boss != null
                 ? graph.AreaAt(SceneManager.GetActiveScene().name, boss.transform.position)
                 : null;
-            _follow.SetFightBounds(arena != null ? arena.WorldBounds : (Rect?)null);
+            var room = arena != null ? _rooms.IndexOf(arena.AreaId) : -1;
+            _follow.SetFightBounds(room >= 0 ? _rooms.Rooms[room].View
+                : arena != null ? arena.WorldBounds : (Rect?)null);
         }
 
         private void OnFightEnded(BossController boss)
@@ -90,26 +144,62 @@ namespace ForgottenKingdom
             _follow.SetFightBounds(null);
         }
 
-        /// <summary>Every area of this scene put together, or nothing when there is no graph.</summary>
-        private Rect? SceneExtent()
+        /// <summary>The rooms of this scene, shaped by its ground; none without a graph.</summary>
+        private CameraRooms BuildRooms()
+        {
+            if (_motor == null)
+            {
+                return new CameraRooms();
+            }
+
+            var areas = new List<(string, Rect)>();
+            foreach (var area in SceneAreas())
+            {
+                areas.Add((area.AreaId, area.WorldBounds));
+            }
+
+            var filter = new ContactFilter2D { useTriggers = false };
+            filter.SetLayerMask(_motor.GroundMask);
+            var hits = new List<Collider2D>();
+            return CameraRooms.Build(areas, rect =>
+            {
+                Physics2D.OverlapArea(rect.min, rect.max, filter, hits);
+                var solids = new List<Bounds>(hits.Count);
+                foreach (var hit in hits)
+                {
+                    solids.Add(hit.bounds);
+                }
+
+                return solids;
+            });
+        }
+
+        private IEnumerable<WorldAreaDefinition> SceneAreas()
         {
             var graph = _progress != null ? _progress.World : null;
             if (graph == null)
             {
-                return null;
+                yield break;
             }
 
             var scene = SceneManager.GetActiveScene().name;
-            Rect? extent = null;
             foreach (var area in graph.Areas)
             {
                 var zone = area != null ? graph.Zone(area.ZoneId) : null;
-                if (area == null || (zone != null && !string.IsNullOrEmpty(zone.SceneName)
-                    && zone.SceneName != scene))
+                if (area != null && (zone == null || string.IsNullOrEmpty(zone.SceneName)
+                    || zone.SceneName == scene))
                 {
-                    continue;
+                    yield return area;
                 }
+            }
+        }
 
+        /// <summary>Every area of this scene put together, or nothing when there is no graph.</summary>
+        private Rect? SceneExtent()
+        {
+            Rect? extent = null;
+            foreach (var area in SceneAreas())
+            {
                 var bounds = area.WorldBounds;
                 extent = extent.HasValue
                     ? Rect.MinMaxRect(Mathf.Min(extent.Value.xMin, bounds.xMin),

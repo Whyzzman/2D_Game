@@ -238,6 +238,9 @@ namespace ForgottenKingdom
         public bool IsBouncing => _logic != null && _logic.IsBouncing;
 
         /// <summary>The last spot on the ground clear of spikes; spikes return the player here.</summary>
+        /// <summary>What the player stands on; the camera reads the level's shape from it.</summary>
+        public LayerMask GroundMask => _groundMask;
+
         public Vector2 LastSafeGround { get; private set; }
         public bool HasSafeGround { get; private set; }
 

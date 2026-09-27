@@ -41,6 +41,10 @@ namespace ForgottenKingdom
         private float _fallLead;
         private float _fallLeadVelocity;
         private Rect? _worldBounds;
+        private Rect? _roomBounds;
+        private Rect? _previousRoomBounds;
+        private float _roomBlendStart;
+        private float _roomBlendTime;
         private Rect? _fightBounds;
         private float _lead;
         private float _leadVelocity;
@@ -61,7 +65,14 @@ namespace ForgottenKingdom
             : (Vector2)transform.position;
 
         /// <summary>The rectangle the view is kept inside right now, if any.</summary>
-        public Rect? ActiveBounds => _fightBounds ?? _worldBounds;
+        public Rect? ActiveBounds => _fightBounds ?? _roomBounds ?? _worldBounds;
+
+        /// <summary>True while a boss fight holds the view on its arena.</summary>
+        public bool HasFightBounds => _fightBounds.HasValue;
+
+        /// <summary>True while the view is sliding from one room into the next.</summary>
+        public bool IsChangingRooms => _fightBounds == null && _previousRoomBounds.HasValue
+            && Time.time < _roomBlendStart + _roomBlendTime;
 
         private bool HasVerticalDeadZone => _verticalDeadZoneAbove > 0f;
 
@@ -131,6 +142,7 @@ namespace ForgottenKingdom
             _leadVelocity = 0f;
             _fallLead = 0f;
             _fallLeadVelocity = 0f;
+            _previousRoomBounds = null;
             if (_target != null)
             {
                 _anchorY = _target.transform.position.y;
@@ -143,6 +155,24 @@ namespace ForgottenKingdom
         /// The whole world's extent: the view never shows past it. Null lifts the limit.
         /// </summary>
         public void SetWorldBounds(Rect? bounds) => _worldBounds = bounds;
+
+        /// <summary>
+        /// The room the player is in; it takes over from the world's limit. A change of room slides
+        /// the view across over <paramref name="blendTime"/> seconds instead of cutting, as Hollow
+        /// Knight's rooms do; zero cuts, for a respawn or a jump across the map.
+        /// </summary>
+        public void SetRoomBounds(Rect? bounds, float blendTime)
+        {
+            if (bounds == _roomBounds)
+            {
+                return;
+            }
+
+            _previousRoomBounds = blendTime > 0f && _roomBounds.HasValue ? _roomBounds : null;
+            _roomBounds = bounds;
+            _roomBlendStart = Time.time;
+            _roomBlendTime = Mathf.Max(0.01f, blendTime);
+        }
 
         /// <summary>
         /// A boss arena for the length of the fight; it replaces the world's limit until cleared,
@@ -183,7 +213,10 @@ namespace ForgottenKingdom
 
         /// <summary>
         /// Moves a view centre so the whole view stays inside the active bounds. A rectangle
-        /// narrower than the view centres it instead, which is what holds a small arena still.
+        /// narrower than the view centres it instead, which is what holds a small arena still; one
+        /// lower than the view keeps its floor at the bottom of the screen rather than showing as
+        /// much empty space under it as over it. Between rooms it eases from the old room's
+        /// framing to the new one's. Past the world's ends it never goes, whatever the room.
         /// </summary>
         private Vector2 Clamp(Vector2 center)
         {
@@ -193,19 +226,28 @@ namespace ForgottenKingdom
                 return center;
             }
 
-            var rect = bounds.Value;
-            var halfHeight = _camera.orthographicSize;
-            var halfWidth = halfHeight * _camera.aspect;
-            center.x = ClampAxis(center.x, rect.xMin, rect.xMax, halfWidth);
-            center.y = ClampAxis(center.y, rect.yMin, rect.yMax, halfHeight);
-            return center;
+            var clamped = ClampTo(bounds.Value, center);
+            if (IsChangingRooms)
+            {
+                var t = Mathf.SmoothStep(0f, 1f, (Time.time - _roomBlendStart) / _roomBlendTime);
+                clamped = Vector2.Lerp(ClampTo(_previousRoomBounds.Value, center), clamped, t);
+            }
+
+            // A room narrower than the view would centre past the world's end; the world wins.
+            return _worldBounds.HasValue ? ClampTo(_worldBounds.Value, clamped) : clamped;
         }
 
-        private static float ClampAxis(float value, float min, float max, float half)
+        private Vector2 ClampTo(Rect rect, Vector2 center)
         {
-            return max - min <= half * 2f
-                ? (min + max) * 0.5f
-                : Mathf.Clamp(value, min + half, max - half);
+            var halfHeight = _camera.orthographicSize;
+            var halfWidth = halfHeight * _camera.aspect;
+            center.x = rect.width <= halfWidth * 2f
+                ? rect.center.x
+                : Mathf.Clamp(center.x, rect.xMin + halfWidth, rect.xMax - halfWidth);
+            center.y = rect.height <= halfHeight * 2f
+                ? rect.yMin + halfHeight
+                : Mathf.Clamp(center.y, rect.yMin + halfHeight, rect.yMax - halfHeight);
+            return center;
         }
 
         /// <summary>Eases the view to a size relative to its normal one (1 = normal).</summary>
