@@ -29,6 +29,7 @@
             <ui:Slider name="opt-shake" class="option" label="Тремтіння камери" low-value="0" high-value="1" />
             <ui:Slider name="opt-flash" class="option" label="Спалахи" low-value="0" high-value="1" />
             <ui:Slider name="opt-hitstop" class="option" label="Зупинка при ударі" low-value="0" high-value="1" />
+            <ui:Toggle name="opt-post" class="option option--toggle" label="Ефекти зображення" value="true" />
             <ui:Button name="options-back" class="menu-button menu-button--small display" text="Назад" />
         </ui:VisualElement>
 

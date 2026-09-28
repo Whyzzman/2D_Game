@@ -16,6 +16,8 @@ namespace ForgottenKingdom
         [Range(0f, 1f)] public float flashIntensity = 1f;
         [Range(0f, 1f)] public float hitStop = 1f;
         public bool showDamageNumbers = true;
+        /// <summary>Bloom and vignette; the zones' colour grade stays either way.</summary>
+        public bool postEffects = true;
 
         /// <summary>The player's own keys: the Input System's override JSON (<see cref="KeyBindings"/>).</summary>
         public string bindingOverrides = string.Empty;

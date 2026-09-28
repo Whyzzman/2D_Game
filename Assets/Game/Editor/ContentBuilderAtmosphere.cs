@@ -413,6 +413,8 @@ namespace ForgottenKingdom.EditorTools
             SetFloat(follow, "_fallLookAheadSmoothTime", 0.5f);
             Ensure<CameraDirector>(camera);
             camera.GetComponent<Camera>().backgroundColor = new Color(0.04f, 0.045f, 0.065f);
+            // Zone grades, the boss grade and the switchable bloom and vignette (SceneScreenGrade.Apply).
+            SceneScreenGrade.ConfigureLevelCamera(camera.GetComponent<Camera>());
         }
     }
 }

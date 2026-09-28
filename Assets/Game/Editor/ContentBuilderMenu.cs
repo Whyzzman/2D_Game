@@ -33,6 +33,7 @@ namespace ForgottenKingdom.EditorTools
             camera.clearFlags = CameraClearFlags.SolidColor;
             camera.backgroundColor = new Color(0.03f, 0.03f, 0.045f);
             cameraObject.transform.position = new Vector3(0f, 3.4f, -10f);
+            SceneScreenGrade.ConfigureMenuCamera(camera);
 
             var systems = new GameObject("Systems");
             SceneMusic.AddMenuMusic(PlaceholderMusicArt.Generate());

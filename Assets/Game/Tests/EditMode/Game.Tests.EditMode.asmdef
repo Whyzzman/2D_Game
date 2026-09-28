@@ -1,7 +1,8 @@
 {
   "name": "Game.Tests.EditMode",
   "rootNamespace": "ForgottenKingdom.Tests",
-  "references": ["Game.Runtime", "Unity.InputSystem"],
+  "references": ["Game.Runtime", "Unity.InputSystem", "Unity.RenderPipelines.Universal.Runtime",
+    "Unity.RenderPipelines.Core.Runtime"],
   "includePlatforms": ["Editor"],
   "optionalUnityReferences": ["TestAssemblies"]
 }

@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 namespace ForgottenKingdom
 {
     /// <summary>
-    /// The settings panel shared by the title screen and the pause menu: the same five sliders,
+    /// The settings panel shared by the title screen and the pause menu: the same five sliders and the picture-effects switch,
     /// written straight into <see cref="GameSettings"/> and saved to their own file on close, so
     /// a new game never touches them. Markup and look live in Options.uss and the two UXMLs.
     /// </summary>
@@ -33,6 +33,7 @@ namespace ForgottenKingdom
             BindSlider("opt-shake", settings.screenShake, v => GameSettings.Set(d => d.screenShake = v));
             BindSlider("opt-flash", settings.flashIntensity, v => GameSettings.Set(d => d.flashIntensity = v));
             BindSlider("opt-hitstop", settings.hitStop, v => GameSettings.Set(d => d.hitStop = v));
+            BindToggle("opt-post", settings.postEffects, v => GameSettings.Set(d => d.postEffects = v));
             var back = _panel.Q<Button>("options-back");
             if (back != null)
             {
@@ -94,6 +95,10 @@ namespace ForgottenKingdom
                         slider.value + horizontal * 0.6f * Time.unscaledDeltaTime);
                 }
             }
+            else if (focused is Toggle toggle && MenuInput.Confirmed())
+            {
+                toggle.value = !toggle.value;
+            }
             else if (focused is Button && MenuInput.Confirmed())
             {
                 Close();
@@ -111,6 +116,19 @@ namespace ForgottenKingdom
             slider.SetValueWithoutNotify(value);
             slider.RegisterValueChangedCallback(e => write(e.newValue));
             _items.Add(slider);
+        }
+
+        private void BindToggle(string name, bool value, System.Action<bool> write)
+        {
+            var toggle = _panel.Q<Toggle>(name);
+            if (toggle == null)
+            {
+                return;
+            }
+
+            toggle.SetValueWithoutNotify(value);
+            toggle.RegisterValueChangedCallback(e => write(e.newValue));
+            _items.Add(toggle);
         }
 
         private void MoveFocus(int step)
