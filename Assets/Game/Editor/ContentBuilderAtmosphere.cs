@@ -39,6 +39,8 @@ namespace ForgottenKingdom.EditorTools
             FrameCamera(camera);
             // The zones' air and the foreground; the live scene gets them from SceneAmbience.Apply.
             SceneAmbience.Build(new GameObject(SceneAmbience.RootName).transform);
+            // The forest's sky, edges and moonlight; the live scene gets them from SceneForestLook.Apply.
+            SceneForestLook.Build();
         }
 
         // ---------- lights ----------

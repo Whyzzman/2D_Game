@@ -1,0 +1,715 @@
+fileFormatVersion: 2
+guid: 8b6114f15a28147f8a6d285bdbe249e0
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -6493122512722210731
+    second: env_forest_edge_roots_01_0
+  - first:
+      213: 2270492908518037646
+    second: env_forest_edge_roots_01_1
+  - first:
+      213: 2886393378908759099
+    second: env_forest_edge_roots_01_2
+  - first:
+      213: -2578840980400087930
+    second: env_forest_edge_roots_01_3
+  - first:
+      213: 8386165850376551460
+    second: env_forest_edge_roots_01_4
+  - first:
+      213: -3447107773374323244
+    second: env_forest_edge_roots_01_5
+  - first:
+      213: 6331321230497485532
+    second: env_forest_edge_roots_01_6
+  - first:
+      213: 5664938336116493237
+    second: env_forest_edge_roots_01_7
+  - first:
+      213: 8186251203015522331
+    second: env_forest_edge_roots_01_8
+  - first:
+      213: 6418998652732615655
+    second: env_forest_edge_roots_01_9
+  - first:
+      213: 95878445421278241
+    second: env_forest_edge_roots_01_10
+  - first:
+      213: 8551326273196875080
+    second: env_forest_edge_roots_01_11
+  - first:
+      213: -1097097287760653748
+    second: env_forest_edge_roots_01_12
+  - first:
+      213: 6944066700826081523
+    second: env_forest_edge_roots_01_13
+  - first:
+      213: 301287862425964583
+    second: env_forest_edge_roots_01_14
+  - first:
+      213: -6598435853685420515
+    second: env_forest_edge_roots_01_15
+  - first:
+      213: 5928709049920876792
+    second: env_forest_edge_roots_01_16
+  - first:
+      213: 690308519047826277
+    second: env_forest_edge_roots_01_17
+  - first:
+      213: 7367547818893956265
+    second: env_forest_edge_roots_01_18
+  - first:
+      213: 1198936205549842176
+    second: env_forest_edge_roots_01_19
+  - first:
+      213: -1493874654833579080
+    second: env_forest_edge_roots_01_20
+  - first:
+      213: 1132566591095571016
+    second: env_forest_edge_roots_01_21
+  - first:
+      213: 1900156947083159942
+    second: env_forest_edge_roots_01_22
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 0
+    wrapV: 0
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 0
+  alignment: 9
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: env_forest_edge_roots_01_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 76
+        width: 5
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 550d91a0a7bc3e5a0800000000000000
+      internalID: -6493122512722210731
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_edge_roots_01_1
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 78
+        width: 10
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e88d24d4549628f10800000000000000
+      internalID: 2270492908518037646
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_edge_roots_01_2
+      rect:
+        serializedVersion: 2
+        x: 21
+        y: 74
+        width: 22
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b3465ef3c778e0820800000000000000
+      internalID: 2886393378908759099
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_edge_roots_01_3
+      rect:
+        serializedVersion: 2
+        x: 43
+        y: 72
+        width: 6
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 68c5807aacd163cd0800000000000000
+      internalID: -2578840980400087930
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_edge_roots_01_4
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 72
+        width: 20
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 42cb43bb865a16470800000000000000
+      internalID: 8386165850376551460
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_edge_roots_01_5
+      rect:
+        serializedVersion: 2
+        x: 93
+        y: 16
+        width: 27
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4d529816eb96920d0800000000000000
+      internalID: -3447107773374323244
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_edge_roots_01_6
+      rect:
+        serializedVersion: 2
+        x: 119
+        y: 51
+        width: 10
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cd211b64d1f5dd750800000000000000
+      internalID: 6331321230497485532
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_edge_roots_01_7
+      rect:
+        serializedVersion: 2
+        x: 131
+        y: 70
+        width: 8
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5bb47be0767ed9e40800000000000000
+      internalID: 5664938336116493237
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_edge_roots_01_8
+      rect:
+        serializedVersion: 2
+        x: 141
+        y: 71
+        width: 8
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b18bad5b8186b9170800000000000000
+      internalID: 8186251203015522331
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_edge_roots_01_9
+      rect:
+        serializedVersion: 2
+        x: 151
+        y: 73
+        width: 10
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7eba6dde34dd41950800000000000000
+      internalID: 6418998652732615655
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_edge_roots_01_10
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 22
+        width: 19
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 124b3f820f0a45100800000000000000
+      internalID: 95878445421278241
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_edge_roots_01_11
+      rect:
+        serializedVersion: 2
+        x: 177
+        y: 80
+        width: 6
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 84d5d5840f96ca670800000000000000
+      internalID: 8551326273196875080
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_edge_roots_01_12
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 23
+        width: 27
+        height: 77
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c425bf654d356c0f0800000000000000
+      internalID: -1097097287760653748
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_edge_roots_01_13
+      rect:
+        serializedVersion: 2
+        x: 243
+        y: 85
+        width: 6
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3f87b578fd74e5060800000000000000
+      internalID: 6944066700826081523
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_edge_roots_01_14
+      rect:
+        serializedVersion: 2
+        x: 253
+        y: 34
+        width: 30
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 720590fe6b36e2400800000000000000
+      internalID: 301287862425964583
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_edge_roots_01_15
+      rect:
+        serializedVersion: 2
+        x: 291
+        y: 14
+        width: 16
+        height: 86
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d1e01e31d85ad64a0800000000000000
+      internalID: -6598435853685420515
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_edge_roots_01_16
+      rect:
+        serializedVersion: 2
+        x: 307
+        y: 73
+        width: 6
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8f07d212871074250800000000000000
+      internalID: 5928709049920876792
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_edge_roots_01_17
+      rect:
+        serializedVersion: 2
+        x: 315
+        y: 79
+        width: 6
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 56b854fc0f7749900800000000000000
+      internalID: 690308519047826277
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_edge_roots_01_18
+      rect:
+        serializedVersion: 2
+        x: 323
+        y: 71
+        width: 8
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9a4d0e2d4b9ce3660800000000000000
+      internalID: 7367547818893956265
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_edge_roots_01_19
+      rect:
+        serializedVersion: 2
+        x: 330
+        y: 14
+        width: 13
+        height: 86
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 00f2720702a73a010800000000000000
+      internalID: 1198936205549842176
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_edge_roots_01_20
+      rect:
+        serializedVersion: 2
+        x: 345
+        y: 47
+        width: 28
+        height: 53
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8bb6fa39ae0b44be0800000000000000
+      internalID: -1493874654833579080
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_edge_roots_01_21
+      rect:
+        serializedVersion: 2
+        x: 374
+        y: 21
+        width: 11
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8420ab2605fa7bf00800000000000000
+      internalID: 1132566591095571016
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: env_forest_edge_roots_01_22
+      rect:
+        serializedVersion: 2
+        x: 385
+        y: 74
+        width: 12
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 689e1680da6be5a10800000000000000
+      internalID: 1900156947083159942
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      env_forest_edge_roots_01_0: -6493122512722210731
+      env_forest_edge_roots_01_1: 2270492908518037646
+      env_forest_edge_roots_01_10: 95878445421278241
+      env_forest_edge_roots_01_11: 8551326273196875080
+      env_forest_edge_roots_01_12: -1097097287760653748
+      env_forest_edge_roots_01_13: 6944066700826081523
+      env_forest_edge_roots_01_14: 301287862425964583
+      env_forest_edge_roots_01_15: -6598435853685420515
+      env_forest_edge_roots_01_16: 5928709049920876792
+      env_forest_edge_roots_01_17: 690308519047826277
+      env_forest_edge_roots_01_18: 7367547818893956265
+      env_forest_edge_roots_01_19: 1198936205549842176
+      env_forest_edge_roots_01_2: 2886393378908759099
+      env_forest_edge_roots_01_20: -1493874654833579080
+      env_forest_edge_roots_01_21: 1132566591095571016
+      env_forest_edge_roots_01_22: 1900156947083159942
+      env_forest_edge_roots_01_3: -2578840980400087930
+      env_forest_edge_roots_01_4: 8386165850376551460
+      env_forest_edge_roots_01_5: -3447107773374323244
+      env_forest_edge_roots_01_6: 6331321230497485532
+      env_forest_edge_roots_01_7: 5664938336116493237
+      env_forest_edge_roots_01_8: 8186251203015522331
+      env_forest_edge_roots_01_9: 6418998652732615655
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

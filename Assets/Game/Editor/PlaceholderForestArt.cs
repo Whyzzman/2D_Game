@@ -65,10 +65,12 @@ namespace ForgottenKingdom.EditorTools
             Add(sprites, "Tiles", "env_forest_platform_01", PlankTile(false), centred: true);
             Add(sprites, "Tiles", "env_forest_platform_broken_01", PlankTile(true), centred: true);
             Add(sprites, "Tiles", "env_forest_rootwall_01", RootWallTile(), centred: true);
+            Add(sprites, "Tiles", "env_forest_edge_top_01", EdgeTop(), centred: true);
+            Add(sprites, "Tiles", "env_forest_edge_roots_01", EdgeRoots(), centred: true);
 
-            Add(sprites, "Backgrounds", "env_forest_bg_far_01", Background(0));
-            Add(sprites, "Backgrounds", "env_forest_bg_mid_01", Background(1));
-            Add(sprites, "Backgrounds", "env_forest_bg_near_01", Background(2));
+            Add(sprites, "Backgrounds", "env_forest_bg_far_01", ForestBackdrop.Layer(0));
+            Add(sprites, "Backgrounds", "env_forest_bg_mid_01", ForestBackdrop.Layer(1));
+            Add(sprites, "Backgrounds", "env_forest_bg_near_01", ForestBackdrop.Layer(2));
 
             Add(sprites, "Props", "env_forest_trunk_01", Trunk(false));
             Add(sprites, "Props", "env_forest_trunk_dead_01", Trunk(true));
@@ -82,8 +84,9 @@ namespace ForgottenKingdom.EditorTools
             Add(sprites, "Props", "env_forest_bridge_01", BridgeSection());
             Add(sprites, "Props", "env_forest_canopy_01", Canopy(), centred: true);
             Add(sprites, "Props", "env_forest_fog_01", FogBank(), centred: true);
+            Add(sprites, "Props", "env_forest_edge_cap_01", EdgeCap(), centred: true);
 
-            Add(sprites, "Arena", "env_forest_arena_backdrop", ArenaBackdrop());
+            Add(sprites, "Arena", "env_forest_arena_backdrop", ForestBackdrop.Abbey());
             Add(sprites, "Arena", "env_forest_arena_crest", ArenaCrest(), centred: true);
 
             Add(sprites, "Decals", "env_forest_decal_moss_01", MossPatch(), centred: true);
@@ -173,27 +176,38 @@ namespace ForgottenKingdom.EditorTools
             return c;
         }
 
-        /// <summary>Rock face, root-shot. Lower contrast than anything walkable.</summary>
+        /// <summary>
+        /// Rock face under the forest floor: strata of wet stone with root threads down them.
+        /// Low contrast and no hard blocks — it is what the ground is made of, not something to
+        /// look at. The strata follow sines that divide the width, so the tile repeats cleanly.
+        /// </summary>
         private static Canvas CliffTile()
         {
             var c = new Canvas(Unit * 2, Unit * 2);
             var rng = new System.Random(4303);
-            c.Rect(0, 0, c.Width, c.Height, Teal);
-            for (var i = 0; i < 26; i++)
+            var deep = Blend(Night, Teal, 0.55f);
+            var layer = Blend(Night, Teal, 0.8f);
+            var lit = Blend(layer, TealPale, 0.12f);
+            c.Rect(0, 0, c.Width, c.Height, deep);
+            for (var band = 0; band < 5; band++)
             {
-                var x = rng.Next(0, c.Width);
-                var y = rng.Next(0, c.Height);
-                var w = rng.Next(14, 46);
-                var h = rng.Next(10, 30);
-                c.Rect(x, y, x + w, y + h,
-                    rng.Next(0, 2) == 0 ? Night : Blend(Teal, TealPale, 0.35f));
+                var y0 = band * 40f + 6f;
+                for (var x = 0; x < c.Width; x++)
+                {
+                    var phase = x / (float)c.Width * Mathf.PI * 2f;
+                    var top = y0 + 22f + 5f * Mathf.Sin(phase * (band + 1) + band)
+                        + 2f * Mathf.Sin(phase * 5f + band * 2f);
+                    var bottom = y0 + 4f * Mathf.Sin(phase * 2f + band * 1.7f);
+                    c.Rect(x, bottom, x + 1, top, layer);
+                    // A faint lit lip on each stratum, catching the moon.
+                    c.Rect(x, top - 1f, x + 1, top, lit);
+                }
             }
 
-            Speckle(c, rng, 420, Night, 0, c.Height);
-            // Roots crawling down the face: the forest is taking the rock too.
-            for (var i = 0; i < 6; i++)
+            Speckle(c, rng, 260, deep, 0, c.Height);
+            for (var i = 0; i < 5; i++)
             {
-                Vein(c, rng, rng.Next(0, c.Width), c.Height - 4, rng.Next(50, 150), BarkDark,
+                Vein(c, rng, 12 + rng.Next(0, c.Width - 24), c.Height - 2, rng.Next(60, 170), BarkDark,
                     horizontal: false);
             }
 
@@ -255,83 +269,6 @@ namespace ForgottenKingdom.EditorTools
             return c;
         }
 
-        // ---------- backgrounds ----------
-
-        /// <summary>
-        /// Three depths of forest. The far layer is fog with the capital's tower barely in it; the
-        /// middle is a treeline; the near is trunks. Each is flatter and darker than the layer in
-        /// front, so depth is read as depth rather than as clutter.
-        ///
-        /// The columns are spaced to divide the width exactly, because a background that does not
-        /// tile is a seam that scrolls past the player every few seconds.
-        /// </summary>
-        private static Canvas Background(int depth)
-        {
-            var c = new Canvas(Unit * 16, Unit * 9);
-            var rng = new System.Random(4600 + depth);
-            var sky = depth == 0 ? Blend(Night, FogBlue, 0.45f)
-                : depth == 1 ? Blend(Night, Teal, 0.55f) : Night;
-            c.Rect(0, 0, c.Width, c.Height, sky);
-
-            if (depth == 0)
-            {
-                // Moon, and the fog bands it lights. The one bright thing in the whole zone.
-                c.Ellipse(new Vector2(c.Width * 0.72f, c.Height * 0.78f), 44f, 44f,
-                    Blend(sky, Moonlight, 0.75f));
-                for (var i = 0; i < 6; i++)
-                {
-                    var y = c.Height * (0.30f + i * 0.09f);
-                    c.Rect(0, y, c.Width, y + 14f, Blend(sky, FogBlue, 0.3f - i * 0.03f));
-                }
-
-                // The capital's tower, far off and broken: the reason any of this is happening.
-                var towerX = c.Width * 0.28f;
-                c.Rect(towerX - 16f, c.Height * 0.38f, towerX + 16f, c.Height * 0.72f,
-                    Blend(sky, Night, 0.55f));
-                c.Triangle(new Vector2(towerX - 22f, c.Height * 0.70f),
-                    new Vector2(towerX + 22f, c.Height * 0.70f),
-                    new Vector2(towerX - 4f, c.Height * 0.80f), Blend(sky, Night, 0.6f));
-            }
-
-            // Treelines. Spacing divides 1600 exactly at every depth, so the layer tiles.
-            var spacing = depth == 0 ? 200 : depth == 1 ? 160 : 400;
-            var tone = depth == 0 ? Blend(sky, Night, 0.4f)
-                : depth == 1 ? Blend(Night, Bark, 0.35f) : BarkDark;
-            for (var x = 0; x < c.Width; x += spacing)
-            {
-                var jitter = rng.Next(-spacing / 5, spacing / 5);
-                var trunkX = x + spacing * 0.5f + jitter;
-                var height = c.Height * (depth == 0 ? 0.40f : depth == 1 ? 0.62f : 1.05f)
-                    + rng.Next(-40, 60);
-                var width = depth == 0 ? 10f : depth == 1 ? 20f : 52f;
-                c.Rect(trunkX - width, 0f, trunkX + width, height, tone);
-
-                // Bare branches, forking upward. Dead: no canopy mass at all.
-                var forks = depth == 2 ? 5 : 3;
-                for (var b = 0; b < forks; b++)
-                {
-                    var side = b % 2 == 0 ? 1f : -1f;
-                    var at = height * (0.55f + b * 0.09f);
-                    var reach = width * (depth == 2 ? 3.2f : 4.5f) * (0.6f + b * 0.12f);
-                    c.Thick(new Vector2(trunkX, at),
-                        new Vector2(trunkX + side * reach, at + reach * 0.55f),
-                        width * 0.45f, width * 0.14f, tone);
-                }
-            }
-
-            if (depth < 2)
-            {
-                // Ground fog sitting in the treeline, which is what makes the forest feel wet.
-                for (var i = 0; i < 4; i++)
-                {
-                    var y = 30f + i * 26f;
-                    c.TintOver(0f, y, c.Width, y + 22f, FogBlue, 0.18f - i * 0.03f);
-                }
-            }
-
-            return c;
-        }
-
         // ---------- props ----------
 
         private static Canvas Trunk(bool dead)
@@ -349,11 +286,16 @@ namespace ForgottenKingdom.EditorTools
                     new Vector2(c.Width * 0.5f + i * 26f, 2f), 14f, 6f, BarkDark);
             }
 
+            // Kinked rather than ruled straight: two segments, the upper one leaning further.
+            var knee = new Vector2(c.Width * 0.5f + lean * 2f - 6f, c.Height * 0.45f);
             var top = new Vector2(c.Width * 0.5f + lean * 6f, c.Height - 40f);
-            c.Thick(new Vector2(c.Width * 0.5f, 10f), top, 46f, 24f, body);
+            c.Thick(new Vector2(c.Width * 0.5f, 10f), knee, 46f, 36f, body);
+            c.Thick(knee, top, 36f, 22f, body);
             // A lit edge down one side; without it a trunk is a brown rectangle.
-            c.Thick(new Vector2(c.Width * 0.5f + 16f, 10f),
-                new Vector2(top.x + 8f, top.y), 8f, 5f, BarkLit);
+            c.Thick(new Vector2(c.Width * 0.5f + 17f, 10f), knee + new Vector2(13f, 0f), 7f, 6f,
+                Blend(BarkLit, Moonlight, 0.25f));
+            c.Thick(knee + new Vector2(13f, 0f), new Vector2(top.x + 8f, top.y), 6f, 4f,
+                Blend(BarkLit, Moonlight, 0.25f));
 
             for (var b = 0; b < 5; b++)
             {
@@ -364,9 +306,12 @@ namespace ForgottenKingdom.EditorTools
 
             if (dead)
             {
-                // Split open and hollow, with the corruption inside rather than on it.
-                c.Rect(c.Width * 0.5f - 10f, 90f, c.Width * 0.5f + 8f, c.Height * 0.55f, Night);
-                c.Rect(c.Width * 0.5f - 5f, 110f, c.Width * 0.5f + 3f, c.Height * 0.45f, Violet);
+                // Split open and hollow, the corruption a dim glow deep inside rather than a stripe.
+                c.Ellipse(new Vector2(c.Width * 0.5f + 4f, c.Height * 0.3f), 13f, 70f, Night);
+                c.Ellipse(new Vector2(c.Width * 0.5f + 4f, c.Height * 0.28f), 5f, 34f,
+                    Blend(Night, Violet, 0.55f));
+                c.Ellipse(new Vector2(c.Width * 0.5f + 12f, c.Height * 0.3f), 3f, 64f, BarkLit);
+                Speckle(c, rng, 90, Moss, 0, (int)(c.Height * 0.3f));
             }
             else
             {
@@ -478,20 +423,50 @@ namespace ForgottenKingdom.EditorTools
             return c;
         }
 
+        /// <summary>
+        /// A roadside arch of the same pointed shape as the Tomb's, its head fallen: one pier
+        /// whole with half the arch still springing from it, the other broken low.
+        /// </summary>
         private static Canvas RuinedArch()
         {
             var c = new Canvas(Unit * 4, Unit * 4);
             var rng = new System.Random(4707);
-            c.Rect(40f, 0f, 92f, 300f, RoadStone);
-            c.Rect(c.Width - 92f, 0f, c.Width - 40f, 224f, RoadStone);
-            // The span is gone from the middle; only the two springing stones are left.
-            c.Rect(40f, 300f, 150f, 336f, RoadStone);
-            c.Rect(c.Width - 140f, 224f, c.Width - 40f, 254f, RoadStone);
-            Speckle(c, rng, 240, Blend(RoadStone, Night, 0.45f), 0, 340);
-            Speckle(c, rng, 150, Moss, 0, 180);
-            for (var i = 0; i < 6; i++)
+            const float leftPier = 40f;
+            const float rightPier = 308f;
+            const float pier = 52f;
+            const float spring = 250f;
+            c.Rect(leftPier, 0f, leftPier + pier, spring, RoadStone);
+            c.Rect(rightPier, 0f, rightPier + pier, 170f, RoadStone);
+            // The left half of the pointed head, centred on the far springing point.
+            var centre = new Vector2(rightPier, spring);
+            var span = rightPier - (leftPier + pier);
+            for (var y = (int)spring; y < spring + span; y++)
             {
-                Vein(c, rng, 50 + rng.Next(0, 40), rng.Next(0, 280), rng.Next(40, 110), BarkDark,
+                for (var x = (int)leftPier; x < leftPier + pier + span * 0.55f; x++)
+                {
+                    var d = Vector2.Distance(new Vector2(x, y), centre);
+                    if (d >= span && d <= span + pier * 0.8f)
+                    {
+                        c.Set(x, y, RoadStone);
+                    }
+                }
+            }
+
+            // A jagged break where the head gave way, and fallen voussoirs at the foot.
+            c.Triangle(new Vector2(leftPier + pier + span * 0.4f, spring + span * 0.5f),
+                new Vector2(leftPier + pier + span * 0.6f, spring + span * 0.3f),
+                new Vector2(leftPier + pier + span * 0.6f, spring + span * 0.8f), Clear);
+            c.Rect(rightPier - 60f, 0f, rightPier - 10f, 26f, RoadStone);
+            c.Rect(leftPier + pier + 30f, 0f, leftPier + pier + 64f, 18f, RoadStone);
+            // Lit edges: the top of each pier and the outside of the arch.
+            c.RectOver(leftPier, spring - 4f, leftPier + pier, spring, RoadLit);
+            c.RectOver(rightPier, 166f, rightPier + pier, 170f, RoadLit);
+            c.RectOver(leftPier, 0f, leftPier + 4f, spring, RoadLit);
+            Speckle(c, rng, 240, Blend(RoadStone, Night, 0.45f), 0, 400);
+            Speckle(c, rng, 180, Moss, 0, 200);
+            for (var i = 0; i < 7; i++)
+            {
+                Vein(c, rng, leftPier + rng.Next(4, 48), rng.Next(60, 380), rng.Next(40, 140), BarkDark,
                     horizontal: false);
             }
 
@@ -610,53 +585,6 @@ namespace ForgottenKingdom.EditorTools
 
         // ---------- arena ----------
 
-        /// <summary>
-        /// The Warden's clearing: a dead tree at the centre, a ruined shrine behind it and the moon
-        /// directly above. Open sky, which is the single strongest contrast with the Guardian's
-        /// vaulted crypt — the player should know they are outdoors before the fight starts.
-        /// </summary>
-        private static Canvas ArenaBackdrop()
-        {
-            var c = new Canvas(Unit * 16, Unit * 9);
-            var rng = new System.Random(4713);
-            c.Rect(0, 0, c.Width, c.Height, Blend(Night, Teal, 0.35f));
-
-            // Moon and its light, centred: the arena is lit from above and from nowhere else.
-            var moon = new Vector2(c.Width * 0.5f, c.Height * 0.82f);
-            c.Ellipse(moon, 120f, 120f, Blend(Night, Moonlight, 0.18f));
-            c.Ellipse(moon, 62f, 62f, Blend(Night, Moonlight, 0.85f));
-
-            // The great dead tree, filling the middle and reaching off the top of the frame.
-            var trunkX = c.Width * 0.5f;
-            c.Thick(new Vector2(trunkX, 0f), new Vector2(trunkX + 20f, c.Height * 0.72f),
-                150f, 60f, Night);
-            for (var b = 0; b < 8; b++)
-            {
-                var side = b % 2 == 0 ? 1f : -1f;
-                var at = new Vector2(trunkX + b * 3f, c.Height * (0.40f + b * 0.045f));
-                c.Thick(at, at + new Vector2(side * (200f + b * 40f), 120f + b * 26f),
-                    36f - b * 2f, 8f, Night);
-            }
-
-            // The shrine behind it, half swallowed. Royal stone, same as the road.
-            for (var i = -1; i <= 1; i += 2)
-            {
-                var x = trunkX + i * 420f;
-                c.Rect(x - 40f, 0f, x + 40f, c.Height * 0.44f, Blend(RoadStone, Night, 0.55f));
-                c.Rect(x - 56f, c.Height * 0.44f, x + 56f, c.Height * 0.48f,
-                    Blend(RoadStone, Night, 0.5f));
-            }
-
-            // Ground fog across the whole clearing, heaviest at the feet.
-            for (var i = 0; i < 6; i++)
-            {
-                c.TintOver(0f, i * 24f, c.Width, i * 24f + 26f, FogBlue, 0.22f - i * 0.03f);
-            }
-
-            Speckle(c, rng, 200, Blend(Night, Violet, 0.5f), 0, (int)(c.Height * 0.3f));
-            return c;
-        }
-
         /// <summary>The ring of roots the Warden rises out of, painted on the arena floor.</summary>
         private static Canvas ArenaCrest()
         {
@@ -674,6 +602,95 @@ namespace ForgottenKingdom.EditorTools
             }
 
             Speckle(c, rng, 120, new Color32(Poison.r, Poison.g, Poison.b, 90), 0, c.Height);
+            return c;
+        }
+
+        // ---------- platform edges ----------
+
+        /// <summary>
+        /// The living lip of forest ground: a mat of moss with grass standing up out of it and
+        /// drips hanging over the edge. Laid along the top of every walkable block, it is what
+        /// turns a grey slab into ground, and its bright top is where the player reads the edge.
+        /// 4 × 0.56 units; the mat's top is 30 px up, the collider's top.
+        /// </summary>
+        private static Canvas EdgeTop()
+        {
+            var c = new Canvas(Unit * 4, 56);
+            var rng = new System.Random(4801);
+            for (var x = 0; x < c.Width; x++)
+            {
+                var phase = x / (float)c.Width * Mathf.PI * 2f;
+                var under = 18f + 2f * Mathf.Sin(phase * 9f) + rng.Next(0, 2);
+                c.Rect(x, under, x + 1, 26f, Moss);
+                c.Rect(x, 26f, x + 1, 30f, MossLit);
+                if (rng.Next(0, 5) == 0)
+                {
+                    // A drip of moss over the edge.
+                    c.Rect(x, under - rng.Next(2, 14), x + 1, under, Moss);
+                }
+
+                if (rng.Next(0, 3) == 0)
+                {
+                    // Grass, thin and uneven.
+                    c.Rect(x, 30f, x + 1, 30f + rng.Next(2, 20), rng.Next(0, 3) == 0 ? Moss : MossLit);
+                }
+            }
+
+            return c;
+        }
+
+        /// <summary>
+        /// Roots and moss hanging from under a floating ledge, so a platform grows out of the
+        /// forest instead of floating in it. Hangs from the top row down; 4 × 1 unit.
+        /// </summary>
+        private static Canvas EdgeRoots()
+        {
+            var c = new Canvas(Unit * 4, Unit);
+            var rng = new System.Random(4802);
+            for (var i = 0; i < 16; i++)
+            {
+                var x = 14f + rng.Next(0, c.Width - 28);
+                var length = rng.Next(24, 92);
+                var bend = rng.Next(-16, 17);
+                var mid = new Vector2(x + bend * 0.5f, c.Height - length * 0.5f);
+                c.Thick(new Vector2(x, c.Height), mid, rng.Next(4, 9), 3f, i % 3 == 0 ? Bark : BarkDark);
+                c.Thick(mid, new Vector2(x + bend, c.Height - length), 3f, 1f, BarkDark);
+            }
+
+            for (var x = 0; x < c.Width; x += 2)
+            {
+                if (rng.Next(0, 3) == 0)
+                {
+                    c.Rect(x, c.Height - rng.Next(4, 30), x + 2, c.Height, Moss);
+                }
+            }
+
+            return c;
+        }
+
+        /// <summary>
+        /// A clump of moss and root wrapped round a ledge's end, which rounds off the square
+        /// corner of the collider. Drawn for the right end; the left one is its mirror.
+        /// </summary>
+        private static Canvas EdgeCap()
+        {
+            var c = new Canvas(80, 90);
+            var rng = new System.Random(4803);
+            c.Ellipse(new Vector2(30f, 58f), 30f, 16f, Moss);
+            c.Ellipse(new Vector2(26f, 64f), 24f, 10f, MossLit);
+            for (var i = 0; i < 6; i++)
+            {
+                var x = 16f + rng.Next(0, 34);
+                c.Thick(new Vector2(x, 50f), new Vector2(x + rng.Next(-6, 14), rng.Next(8, 36)),
+                    rng.Next(3, 6), 1f, i % 2 == 0 ? BarkDark : Moss);
+            }
+
+            for (var i = 0; i < 10; i++)
+            {
+                var x = 8f + rng.Next(0, 46);
+                c.Rect(x, 70f, x + 1, 70f + rng.Next(3, 16), MossLit);
+            }
+
             return c;
         }
 

@@ -208,21 +208,44 @@ namespace ForgottenKingdom.EditorTools
             return c;
         }
 
-        /// <summary>A horizontal band of fog that tiles left to right without a seam.</summary>
+        /// <summary>
+        /// A horizontal band of fog that tiles left to right without a seam: twenty soft billows,
+        /// each an ellipse wider than tall and wrapped round the edges, over a thin even veil. It
+        /// used to be two sines sheared by height, which drew diagonal stripes across every zone.
+        /// </summary>
         private static Canvas FogBand()
         {
             const int width = 512;
             const int height = 128;
             var c = new Canvas(width, height);
+            var rng = new System.Random(7301);
+            var billows = new (float x, float y, float rx, float ry, float weight)[20];
+            for (var i = 0; i < billows.Length; i++)
+            {
+                billows[i] = ((float)rng.NextDouble() * width, 46f + (float)rng.NextDouble() * 36f,
+                    30f + (float)rng.NextDouble() * 50f, 10f + (float)rng.NextDouble() * 10f,
+                    0.5f + (float)rng.NextDouble() * 0.4f);
+            }
+
             for (var y = 0; y < height; y++)
             {
-                var vertical = Mathf.Sin(y / (float)(height - 1) * Mathf.PI);
+                var vertical = Mathf.Pow(Mathf.Sin(y / (float)(height - 1) * Mathf.PI), 1.6f);
                 for (var x = 0; x < width; x++)
                 {
-                    var phase = x / (float)width * Mathf.PI * 2f;
-                    var billow = 0.55f + 0.25f * Mathf.Sin(phase * 3f + y * 0.05f)
-                        + 0.2f * Mathf.Sin(phase * 7f - y * 0.08f);
-                    var alpha = Mathf.Clamp01(vertical * vertical * billow);
+                    var sum = 0f;
+                    foreach (var (bx, by, rx, ry, weight) in billows)
+                    {
+                        // Distance across the wrap, so a billow at the right edge continues on the left.
+                        var dx = Mathf.Repeat(x - bx + width * 0.5f, width) - width * 0.5f;
+                        var dy = y - by;
+                        var q = dx * dx / (rx * rx) + dy * dy / (ry * ry);
+                        if (q < 9f)
+                        {
+                            sum += weight * Mathf.Exp(-q);
+                        }
+                    }
+
+                    var alpha = Mathf.Clamp01(vertical * (0.25f + 0.75f * (1f - Mathf.Exp(-sum * 1.2f))));
                     if (alpha > 0.01f)
                     {
                         c.Set(x, y, new Color32(255, 255, 255, (byte)(alpha * 255)));

@@ -619,8 +619,8 @@ namespace ForgottenKingdom.EditorTools
         {
             var layers = new[]
             {
-                // Dropped below the floor and stretched upward, so the treelines fill the frame
-                // from the ground to the sky instead of floating over an empty band.
+                // Four units below the floor, twenty tall (ForestBackdrop): from under the floor to
+                // past the top of every climb. SceneForestLook.Build fits them again after.
                 ("env_forest_bg_far_01", "BackgroundFar", 0.12f, 0.04f, -4f, 1f),
                 ("env_forest_bg_mid_01", "BackgroundMid", 0.32f, 0.09f, -4f, 1f),
                 ("env_forest_bg_near_01", "BackgroundNear", 0.58f, 0.16f, -4f, 1f)
@@ -641,7 +641,6 @@ namespace ForgottenKingdom.EditorTools
                 // Centred on the zone rather than on the origin, so the strip covers it without
                 // needing to be absurdly wide.
                 strip.transform.position = new Vector3(185f, height, 0f);
-                strip.transform.localScale = new Vector3(1f, 1.45f, 1f);
                 var renderer = strip.AddComponent<SpriteRenderer>();
                 if (layer != "BackgroundNear")
                 {
@@ -650,7 +649,7 @@ namespace ForgottenKingdom.EditorTools
                 renderer.sprite = art;
                 renderer.drawMode = SpriteDrawMode.Tiled;
                 renderer.tileMode = SpriteTileMode.Continuous;
-                renderer.size = new Vector2(art.bounds.size.x * 16f, art.bounds.size.y);
+                renderer.size = new Vector2(art.bounds.size.x * 3f, art.bounds.size.y);
                 renderer.color = new Color(1f, 1f, 1f, alpha);
                 SetSorting(renderer, layer, 1);
 
