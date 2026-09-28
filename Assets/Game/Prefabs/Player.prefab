@@ -1103,6 +1103,7 @@ GameObject:
   - component: {fileID: 889931998609281026}
   - component: {fileID: 7464111563418591982}
   - component: {fileID: 5299036118544267504}
+  - component: {fileID: 3787244074650942526}
   m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
@@ -1858,6 +1859,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.FlaskShards
   _player: {fileID: 0}
   _progress: {fileID: 0}
+--- !u!114 &3787244074650942526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5698690768296159545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96bb28e6c687f4ddca6d16d257a90f91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.PlayerGrapple
+  _range: 7.5
+  _pullSpeed: 21
+  _releaseDistance: 0.8
+  _maxPullTime: 0.9
+  _releaseLift: 7
+  _solidMask:
+    serializedVersion: 2
+    m_Bits: 512
+  _handOffset: {x: 0.2, y: 1.1}
 --- !u!1 &5840511060120495854
 GameObject:
   m_ObjectHideFlags: 0

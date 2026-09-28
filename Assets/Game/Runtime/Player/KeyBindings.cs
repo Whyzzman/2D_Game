@@ -61,6 +61,7 @@ namespace ForgottenKingdom
             new BindingRow("Рух", "Вправо", "Move", "right", padFixed: "лівий стік"),
             new BindingRow("Рух", "Стрибок", "Jump"),
             new BindingRow("Рух", "Ривок", "Dash"),
+            new BindingRow("Рух", "Гак-кішка", "Grapple"),
             new BindingRow("Бій", "Атака", "LightAttack"),
             new BindingRow("Бій", "Важка атака", "HeavyAttack"),
             new BindingRow("Бій", "Блок / парирування", "Block"),
@@ -78,7 +79,7 @@ namespace ForgottenKingdom
         };
 
         /// <summary>Rows in the left column; the rest go to the right one.</summary>
-        public const int LeftColumnRows = 10;
+        public const int LeftColumnRows = 11;
 
         private static InputActionAsset _display;
 

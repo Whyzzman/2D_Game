@@ -1176,6 +1176,8 @@ namespace ForgottenKingdom.EditorTools
             BuildInvulnerabilityBlink(root);
             Ensure<MovementFeedback>(root);
             Ensure<FlaskShards>(root);
+            // The Ashen King's grapple (item 2): inert until the ability is owned.
+            Ensure<PlayerGrapple>(root);
             BuildWeaponTrail(root, combat);
             BuildLostCurrencyDrop(root);
             StripMissingScripts(root);

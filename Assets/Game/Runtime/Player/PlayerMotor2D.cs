@@ -50,6 +50,9 @@ namespace ForgottenKingdom
         private float _recoilUntil;
         private bool _recoilPending;
         public void SetSkillVelocity(Vector2? velocity) { _skillVelocity = velocity; }
+
+        /// <summary>The air jump and air dash back, as a wall or a grapple ring gives them.</summary>
+        public void RefreshAirMoves() => _logic?.RefreshAirMoves();
         private GameProgress _progress;
         private StatusEffects _statuses;
         private WallMovement _wallMovement;
@@ -252,6 +255,12 @@ namespace ForgottenKingdom
         public void Bounce()
         {
             _logic?.Bounce(_settings.PogoSpeed);
+        }
+
+        /// <summary>A throw upward at a speed of the caller's, not cut by a released jump (the grapple's pop).</summary>
+        public void Bounce(float speed)
+        {
+            _logic?.Bounce(speed);
         }
 
         public bool IsBouncing => _logic != null && _logic.IsBouncing;

@@ -21,6 +21,7 @@ namespace ForgottenKingdom
         private InputAction _pause;
         private InputAction _switchWeapon;
         private InputAction _abilityModifier;
+        private InputAction _grapple;
         private readonly InputAction[] _activeSkills = new InputAction[2];
         private readonly InputAction[] _spells = new InputAction[3];
         private int _pressedSkillSlot = -1;
@@ -72,6 +73,7 @@ namespace ForgottenKingdom
             _spells[1] = _runtimeActions.FindAction("Player/CastSpell2", true);
             _spells[2] = _runtimeActions.FindAction("Player/CastSpell3", true);
             _abilityModifier = _runtimeActions.FindAction("Player/AbilityModifier", true);
+            _grapple = _runtimeActions.FindAction("Player/Grapple", true);
         }
 
         private void OnEnable()
@@ -118,6 +120,7 @@ namespace ForgottenKingdom
             _block.Enable();
             _heal.Enable();
             _interact.Enable();
+            _grapple.Enable();
         }
 
         private void OnDisable()
@@ -162,6 +165,7 @@ namespace ForgottenKingdom
             _block.Disable();
             _heal.Disable();
             _interact.Disable();
+            _grapple.Disable();
             ClearInput();
         }
 
@@ -258,6 +262,10 @@ namespace ForgottenKingdom
         /// turns its pages with the same key that started it.
         /// </summary>
         public bool InteractPressedThisFrame => _interact != null && _interact.WasPressedThisFrame();
+
+        /// <summary>The grapple's own button this frame (G, the d-pad right); silent in menus.</summary>
+        public bool GrapplePressedThisFrame => IsReceivingInput && IsPressAccepted
+            && _grapple != null && _grapple.WasPressedThisFrame();
 
         /// <summary>Escape or Start. Heard while gameplay is suspended: it is also what closes the pause.</summary>
         public event System.Action PauseToggled;

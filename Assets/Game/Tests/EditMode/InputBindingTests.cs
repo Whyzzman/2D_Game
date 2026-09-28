@@ -22,7 +22,7 @@ namespace ForgottenKingdom.Tests
         {
             "Move", "Jump", "LightAttack", "HeavyAttack", "Dash", "Block", "Heal",
             "Interact", "Inventory", "Map", "SwitchWeapon", "ActiveSkill1", "ActiveSkill2",
-            "CastSpell1", "CastSpell2", "CastSpell3", "AbilityModifier", "Pause"
+            "CastSpell1", "CastSpell2", "CastSpell3", "AbilityModifier", "Pause", "Grapple"
         };
 
         /// <summary>The plain actions the reader ignores while the modifier is held.</summary>
