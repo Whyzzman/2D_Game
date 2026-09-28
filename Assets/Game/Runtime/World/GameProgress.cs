@@ -422,6 +422,49 @@ namespace ForgottenKingdom
             LostCurrencyChanged?.Invoke();
         }
 
+        /// <summary>The quill's marks on the map (item 70).</summary>
+        public IReadOnlyList<MapMark> MapMarks => Data.mapMarks;
+        public event Action MapMarksChanged;
+
+        /// <summary>
+        /// The quill on a room: a room already marked loses its mark, an unmarked one takes the
+        /// first free colour. False with no quill, or when all five colours are in use.
+        /// </summary>
+        public bool ToggleMapMark(string areaId)
+        {
+            if (string.IsNullOrEmpty(areaId) || !HasReward(MerchantStock.QuillRewardId))
+            {
+                return false;
+            }
+
+            var existing = Data.mapMarks.FindIndex(mark => mark.areaId == areaId);
+            if (existing >= 0)
+            {
+                Data.mapMarks.RemoveAt(existing);
+            }
+            else
+            {
+                var color = -1;
+                for (var i = 0; i < MapMark.Colors && color < 0; i++)
+                {
+                    if (!Data.mapMarks.Exists(mark => mark.color == i))
+                    {
+                        color = i;
+                    }
+                }
+
+                if (color < 0)
+                {
+                    return false;
+                }
+
+                Data.mapMarks.Add(new MapMark { areaId = areaId, color = color });
+            }
+
+            MapMarksChanged?.Invoke();
+            return true;
+        }
+
         /// <summary>Takes the gold left at the last death back into the purse; returns how much.</summary>
         public int RecoverLostCurrency()
         {

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<title>Тінь Забутого Королівства — Розмова</title>
+<link rel="stylesheet" href="../_shared/ui.css">
+<style>
+  body { background: #050403; }
+  .sheet { display: flex; flex-wrap: wrap; gap: 28px; padding: 28px; }
+  .frame { position: relative; flex-shrink: 0; width: 912px; height: 513px; overflow: hidden; border: 1px solid var(--edge-mid); }
+  .frame > .stage-inner { position: absolute; width: 1920px; height: 1080px; transform: scale(0.475); transform-origin: top left; }
+  .frame__caption {
+    position: absolute; left: 0; right: 0; bottom: 0; z-index: 5; padding: 6px 10px;
+    font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--gold-dim); background: rgba(5,4,3,0.88); border-top: 1px solid var(--edge-mid);
+  }
+  .note { max-width: 1852px; margin: 28px 28px 0; color: var(--ink-muted); font-size: 14px; line-height: 1.6; }
+  .note b { color: var(--ink); }
+  .note ul { margin: 8px 0 0; padding-left: 20px; }
+
+  /* Сцена-заглушка: підлога, силует героя й співрозмовника. Лише для масштабу. */
+  .world { position: absolute; inset: 0;
+    background: radial-gradient(60% 50% at 50% 55%, rgba(92,70,40,0.25), transparent 70%), linear-gradient(180deg, #120f0c, #0a0807); }
+  .floor { position: absolute; left: 0; right: 0; top: 760px; bottom: 0; background: linear-gradient(180deg, #1e1914, #0c0a08); border-top: 2px solid #2d251d; }
+  .figure { position: absolute; bottom: 320px; width: 70px; height: 160px; background: #0e0c0a; border-radius: 30px 30px 6px 6px;
+            box-shadow: 0 0 0 2px rgba(196,218,246,0.35); }
+  .figure--hero { left: 820px; }
+  .figure--npc { left: 1040px; width: 96px; height: 150px; border-radius: 40px 40px 8px 8px; box-shadow: 0 0 0 2px rgba(206,150,100,0.35); }
+  .altar { position: absolute; left: 1250px; bottom: 320px; width: 90px; height: 120px; background: #1a1612; border-top: 3px solid #6b5a42; }
+  .altar::after { content: ""; position: absolute; left: 30px; top: -38px; width: 30px; height: 38px; border-radius: 50% 50% 40% 40%;
+                  background: radial-gradient(circle at 50% 70%, #ffd27a, #f0b441 45%, rgba(240,180,65,0) 72%); }
+
+  /* Підказка над співрозмовником: та сама мова, що в HUD (.prompt), але прив'язана до персонажа. */
+  .talk-prompt {
+    position: absolute; left: 1088px; bottom: 510px; transform: translateX(-50%);
+    display: flex; align-items: center; gap: var(--s2); white-space: nowrap;
+    padding: 6px 12px; background: rgba(11,9,7,0.78); border: 1px solid var(--edge-mid);
+    font-size: var(--fs-body); color: var(--ink);
+  }
+  .talk-prompt b { color: var(--gold); font-weight: 500; }
+
+  /* Рамка розмови: нижня третина, по центру, як у HK — ім'я й текст, без портрета й без вибору. */
+  .dialogue {
+    position: absolute; left: 50%; bottom: 92px; transform: translateX(-50%);
+    width: 1180px; min-height: 196px; padding: var(--s5) var(--s7) var(--s6);
+    background: linear-gradient(180deg, rgba(23,19,15,0.96), rgba(11,9,7,0.96));
+    border: 1px solid var(--edge-light);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.8), inset 0 0 0 1px rgba(0,0,0,0.7);
+  }
+  .dialogue::before, .dialogue::after { content: ""; position: absolute; top: -1px; width: 120px; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+  .dialogue::before { left: 60px; } .dialogue::after { right: 60px; }
+  .dialogue__name {
+    position: absolute; left: var(--s7); top: -18px; padding: 4px 14px;
+    background: #0f0d0b; border: 1px solid var(--gold-dim);
+    font-family: var(--font-display); font-size: var(--fs-lead); letter-spacing: 0.14em; color: var(--gold-bright);
+  }
+  .dialogue__epithet { font-family: var(--font-body); font-size: var(--fs-micro); letter-spacing: 0.08em; color: var(--ink-muted); margin-left: var(--s3); text-transform: none; }
+  .dialogue__text { margin: var(--s3) 0 0; font-size: 22px; line-height: 1.6; color: var(--ink-bright); max-width: 62ch; }
+  .dialogue__text i { color: var(--gold); font-style: normal; }
+  .dialogue__text .typing { color: var(--ink-dim); }
+  .dialogue__next {
+    position: absolute; right: var(--s6); bottom: var(--s4);
+    display: flex; align-items: center; gap: var(--s2); font-size: var(--fs-micro); color: var(--ink-muted); letter-spacing: 0.08em;
+  }
+  .dialogue__next .arrow { width: 0; height: 0; border-left: 7px solid transparent; border-right: 7px solid transparent; border-top: 9px solid var(--gold); animation: bob 1s ease-in-out infinite; }
+  @keyframes bob { 50% { transform: translateY(3px); } }
+  .dialogue__pages { position: absolute; left: var(--s7); bottom: var(--s4); display: flex; gap: 6px; }
+  .dialogue__pages span { width: 6px; height: 6px; transform: rotate(45deg); background: var(--edge-light); }
+  .dialogue__pages span.is-on { background: var(--gold); }
+
+  /* Єдиний вибір у грі — у торговця: торгувати або піти. */
+  .choices { display: flex; gap: var(--s4); margin-top: var(--s5); }
+  .choices .btn { min-width: 220px; font-family: var(--font-display); letter-spacing: 0.12em; text-transform: uppercase; }
+
+  /* Щоденник розмов — новий рядок у журналі (стор. «Люди»), коротко. */
+  .journal { position: absolute; inset: 120px 360px; }
+  .person { display: grid; grid-template-columns: 1fr; gap: var(--s1); padding: var(--s3) var(--s4); border-bottom: 1px solid rgba(58,47,37,0.6); }
+  .person b { font-family: var(--font-display); letter-spacing: 0.1em; color: var(--ink-bright); font-size: var(--fs-lead); font-weight: 500; }
+  .person span { font-size: var(--fs-small); color: var(--ink-muted); line-height: 1.5; }
+  .person small { font-size: var(--fs-micro); color: var(--gold-dim); letter-spacing: 0.08em; text-transform: uppercase; }
+  .person.is-new b::after { content: "  •"; color: var(--gold); }
+</style>
+</head>
+<body>
+
+<div class="note">
+  <b>Пункт 70 · Розмова (Approval 1).</b> Рішення користувача: розмова як у Hollow Knight — без вибору
+  реплік; репліки змінюються з прогресом (після боса, нової зони, повторної зустрічі). Імена й тексти
+  — пропозиція, їх можна змінити.
+  <ul>
+    <li><b>Скупник Гнат</b> — торговець з возом, спершу біля вівтаря Гробниці, після Стража переїжджає до вівтаря Лісу й лишає записку.</li>
+    <li><b>Паломниця Мирослава</b> — шукає згаслі вівтарі; підказує дорогу й розповідає про вогонь королівства. Зустрічається тричі.</li>
+    <li><b>Вартовий Северин</b> — привид біля саркофагу; пам'ятає падіння. Мовчить, поки Страж живий.</li>
+  </ul>
+  Керування: взаємодія (<b>E</b> / <b>Y</b>) — почати й гортати; <b>Esc</b> / <b>B</b> — закінчити. Поки розмова йде, герой не рухається,
+  вороги поруч не підходять (розмова в бою неможлива — підказка згасає, коли гравця помітили).
+</div>
+
+<div class="sheet">
+
+  <div class="frame">
+    <div class="stage-inner">
+      <div class="world"><div class="floor"></div><div class="figure figure--hero"></div><div class="figure figure--npc"></div><div class="altar"></div></div>
+      <div class="talk-prompt"><span class="glyph">E</span> <b>Говорити</b> · Скупник Гнат</div>
+    </div>
+    <div class="frame__caption">1 · Підказка над персонажем, коли герой поруч</div>
+  </div>
+
+  <div class="frame">
+    <div class="stage-inner">
+      <div class="world"><div class="floor"></div><div class="figure figure--hero"></div><div class="figure figure--npc"></div><div class="altar"></div></div>
+      <div class="dialogue">
+        <div class="dialogue__name">Паломниця Мирослава<span class="dialogue__epithet">шукачка вогню</span></div>
+        <p class="dialogue__text">Цей вівтар ще теплий. Хтось запалив його до тебе — або він так і не згас.
+          Триста років… а вогонь пам'ятає <i>королівську руку</i>.</p>
+        <div class="dialogue__pages"><span class="is-on"></span><span></span><span></span></div>
+        <div class="dialogue__next"><span class="glyph">E</span> далі <span class="arrow"></span></div>
+      </div>
+    </div>
+    <div class="frame__caption">2 · Репліка: ім'я, текст, лічильник сторінок, «далі»</div>
+  </div>
+
+  <div class="frame">
+    <div class="stage-inner">
+      <div class="world"><div class="floor"></div><div class="figure figure--hero"></div><div class="figure figure--npc"></div><div class="altar"></div></div>
+      <div class="dialogue">
+        <div class="dialogue__name">Вартовий Северин<span class="dialogue__epithet">привид</span></div>
+        <p class="dialogue__text">Ворота впали вночі. Ми тримали залу, доки свічки не догоріли<span class="typing">… і тоді</span></p>
+        <div class="dialogue__pages"><span></span><span class="is-on"></span></div>
+      </div>
+    </div>
+    <div class="frame__caption">3 · Текст друкується (~45 знаків/с); натискання показує рядок одразу</div>
+  </div>
+
+  <div class="frame">
+    <div class="stage-inner">
+      <div class="world"><div class="floor"></div><div class="figure figure--hero"></div><div class="figure figure--npc"></div><div class="altar"></div></div>
+      <div class="dialogue">
+        <div class="dialogue__name">Скупник Гнат<span class="dialogue__epithet">торговець</span></div>
+        <p class="dialogue__text">Живий? Рідкість. Золото маєш — товар знайдеться. Чутки теж, та вони дорожчі.</p>
+        <div class="choices">
+          <button class="btn btn--primary is-focused">Торгувати</button>
+          <button class="btn">Піти</button>
+        </div>
+      </div>
+    </div>
+    <div class="frame__caption">4 · Торговець: після реплік — «Торгувати» / «Піти»</div>
+  </div>
+
+  <div class="frame">
+    <div class="stage-inner">
+      <div class="world" style="filter:brightness(0.35)"><div class="floor"></div></div>
+      <div class="panel panel--royal journal">
+        <div class="panel__header"><h2 class="panel__title">Люди</h2></div>
+        <div class="panel__body" style="padding:0">
+          <div class="person is-new"><small>Ліс · вівтар Тихої галявини</small><b>Скупник Гнат</b><span>Переїхав за вами. Торгує картами, уламками фляг і чутками.</span></div>
+          <div class="person"><small>Гробниця · Поховальна зала</small><b>Паломниця Мирослава</b><span>Шукає згаслі вівтарі. Сказала, що вогонь у Лісі горить інакше.</span></div>
+          <div class="person"><small>Гробниця · Саркофаг</small><b>Вартовий Северин</b><span>Привид варти. Пам'ятає ніч, коли впали ворота.</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="frame__caption">5 · Журнал «Люди» — нова вкладка інвентаря: хто де й що сказав</div>
+  </div>
+
+</div>
+</body>
+</html>

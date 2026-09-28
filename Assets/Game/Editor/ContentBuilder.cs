@@ -146,6 +146,8 @@ namespace ForgottenKingdom.EditorTools
             var dummyPrefab = BuildDummyPrefab();
             var attackerPrefab = BuildAttackerPrefab();
             // Every character frame, the training targets included, gets its normal map.
+            // The people of the world (item 70), before the normals so their figures get them too.
+            BuildNpcContent();
             CharacterNormals.AttachAll();
             BuildPickupPrefab();
             AssetDatabase.SaveAssets();
@@ -154,6 +156,8 @@ namespace ForgottenKingdom.EditorTools
             {
                 BuildScene(playerPrefab, zombiePrefab, guardPrefab, bossPrefab, checkpointPrefab,
                     dummyPrefab, attackerPrefab, forest);
+                // The people stand by altars, so they are placed once the level is whole.
+                SceneNpcs.Apply();
                 AssetDatabase.SaveAssets();
             }
             else
@@ -658,6 +662,7 @@ namespace ForgottenKingdom.EditorTools
             // because a zone's loot belongs with the zone, not in an ever-longer shared list.
             definitions.AddRange(BuildForestItems());
             definitions.AddRange(BuildWorldItems());
+            definitions.AddRange(BuildNpcItems());
 
             var database = CreateAsset<ItemDatabase>($"{DataFolder}/ItemDatabase.asset");
             var serialized = new SerializedObject(database);
@@ -1164,6 +1169,7 @@ namespace ForgottenKingdom.EditorTools
             BuildStatusVfx(root, 0.85f);
             BuildInvulnerabilityBlink(root);
             Ensure<MovementFeedback>(root);
+            Ensure<FlaskShards>(root);
             BuildWeaponTrail(root, combat);
             BuildLostCurrencyDrop(root);
             StripMissingScripts(root);
@@ -2792,6 +2798,8 @@ namespace ForgottenKingdom.EditorTools
             events.Add(Sound(AudioId.CastFizzle, clips, 0.55f, voices: 1, priority: 60));
             // Several bodies can go at once after a fight; they are a quiet afterthought.
             events.Add(Sound(AudioId.CorpseCrumble, clips, 0.4f, voices: 3, priority: 30));
+            events.Add(Sound(AudioId.ShopBuy, clips, 0.45f, voices: 1, priority: 50));
+            events.Add(Sound(AudioId.ChestOpen, clips, 0.55f, voices: 1, priority: 55));
 
             // Interface. Quiet, flat, and spaced so fast navigation does not chatter.
             events.Add(Sound(AudioId.UiNavigate, clips, 0.3f, AudioBus.Ui, voices: 1, priority: 25,

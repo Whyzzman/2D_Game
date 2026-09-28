@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<title>Тінь Забутого Королівства — Лавка і карта</title>
+<link rel="stylesheet" href="../_shared/ui.css">
+<style>
+  body { background: #050403; }
+  .sheet { display: flex; flex-wrap: wrap; gap: 28px; padding: 28px; }
+  .frame { position: relative; flex-shrink: 0; width: 912px; height: 513px; overflow: hidden; border: 1px solid var(--edge-mid); }
+  .frame > .stage-inner { position: absolute; width: 1920px; height: 1080px; transform: scale(0.475); transform-origin: top left; }
+  .frame__caption {
+    position: absolute; left: 0; right: 0; bottom: 0; z-index: 5; padding: 6px 10px;
+    font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--gold-dim); background: rgba(5,4,3,0.88); border-top: 1px solid var(--edge-mid);
+  }
+  .note { max-width: 1852px; margin: 28px 28px 0; color: var(--ink-muted); font-size: 14px; line-height: 1.6; }
+  .note b { color: var(--ink); }
+  .note table { border-collapse: collapse; margin-top: 10px; font-size: 13px; }
+  .note td, .note th { border-bottom: 1px solid var(--edge-mid); padding: 4px 14px 4px 0; text-align: left; }
+  .note th { color: var(--gold-dim); font-weight: 500; letter-spacing: 0.06em; }
+  .note td.n { text-align: right; font-variant-numeric: tabular-nums; color: var(--ink); }
+
+  .scrim { position: absolute; inset: 0; background:
+    radial-gradient(50% 50% at 50% 55%, rgba(60,44,24,0.35), transparent 70%), rgba(6,5,4,0.86); }
+
+  /* Лавка: список ліворуч, опис праворуч, гаманець угорі. Та сама мова, що інвентар. */
+  .shop { position: absolute; left: 50%; top: 110px; transform: translateX(-50%); width: 1360px; }
+  .shop .panel__header { display: flex; justify-content: space-between; align-items: baseline; }
+  .purse { font-size: var(--fs-lead); color: var(--gold-bright); font-variant-numeric: tabular-nums; display: flex; align-items: center; gap: var(--s2); }
+  .coin { width: 16px; height: 16px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, var(--gold-bright), var(--gold) 55%, var(--gold-dim)); box-shadow: 0 0 0 1px #3a2f25; }
+  .shop__body { display: grid; grid-template-columns: 1fr 520px; gap: var(--s5); padding: var(--s5); }
+  .goods { display: flex; flex-direction: column; gap: 6px; }
+  .good {
+    display: grid; grid-template-columns: 56px 1fr auto; align-items: center; gap: var(--s4);
+    padding: var(--s2) var(--s4); border: 1px solid transparent; background: rgba(11,9,7,0.5);
+  }
+  .good .slot { width: 52px; height: 52px; }
+  .good__name { font-size: var(--fs-body); color: var(--ink); }
+  .good__name small { display: block; font-size: var(--fs-micro); color: var(--ink-dim); margin-top: 2px; }
+  .good__price { font-size: var(--fs-lead); color: var(--gold); font-variant-numeric: tabular-nums; display: flex; align-items: center; gap: var(--s2); }
+  .good.is-focused { border-color: var(--gold); box-shadow: var(--focus); background: rgba(138,116,52,0.10); }
+  .good.is-focused .good__name { color: var(--gold-bright); }
+  .good.is-poor .good__price { color: var(--danger); }
+  .good.is-sold { opacity: 0.45; }
+  .good.is-sold .good__price { color: var(--ink-dim); font-size: var(--fs-small); letter-spacing: 0.12em; text-transform: uppercase; }
+  .good-group { font-family: var(--font-display); font-size: var(--fs-micro); letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold-dim); margin: var(--s3) 0 var(--s1); }
+
+  .detail { border-left: 1px solid var(--edge-mid); padding-left: var(--s5); display: flex; flex-direction: column; gap: var(--s3); }
+  .detail h3 { margin: 0; font-family: var(--font-display); font-size: var(--fs-title); letter-spacing: 0.06em; color: var(--ink-bright); font-weight: 500; }
+  .detail .kind { font-size: var(--fs-micro); letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-dim); }
+  .detail p { margin: 0; font-size: var(--fs-body); line-height: 1.6; color: var(--ink-muted); }
+  .detail .effect { color: var(--ink); border-top: 1px solid rgba(58,47,37,0.6); padding-top: var(--s3); }
+  .detail .effect b { color: var(--ok); font-weight: 500; }
+  .detail .buy { margin-top: auto; display: flex; justify-content: space-between; align-items: center; padding-top: var(--s4); border-top: 1px solid var(--edge-mid); }
+  .detail .buy .btn { min-width: 220px; font-family: var(--font-display); letter-spacing: 0.12em; text-transform: uppercase; }
+  .detail .warn { color: var(--danger); font-size: var(--fs-small); }
+  .shop__footer { display: flex; gap: var(--s6); padding: var(--s3) var(--s5); border-top: 1px solid var(--edge-mid); font-size: var(--fs-small); color: var(--ink-muted); }
+  .shop__footer span { display: inline-flex; gap: var(--s2); align-items: center; }
+
+  /* Іконки товарів — прості знаки, як інші іконки предметів у PHASE 21. */
+  .ico { position: absolute; inset: 10px; }
+  .ico--map { border: 2px solid #8e8375; background: repeating-linear-gradient(90deg, #2a241d 0 7px, #3a3128 7px 9px); }
+  .ico--quill { inset: 8px 20px; background: linear-gradient(160deg, #f0e6d2, #8e8375); clip-path: polygon(50% 0, 100% 30%, 60% 100%, 40% 100%, 0 30%); }
+  .ico--rumour { inset: 12px; border-radius: 50%; border: 2px dashed var(--gold); }
+  .ico--rumour::after { content: "?"; position: absolute; inset: 0; display: grid; place-items: center; color: var(--gold); font: 600 18px var(--font-display); }
+  .ico--pick { inset: 12px 20px; background: linear-gradient(180deg, #9aa3ae, #3e4247); clip-path: polygon(40% 0, 60% 0, 60% 60%, 90% 60%, 90% 75%, 60% 75%, 60% 100%, 40% 100%); }
+  .ico--shard { inset: 10px 14px; background: linear-gradient(160deg, #e8cd8a, #c9a14a 50%, #6b5a42); clip-path: polygon(50% 0, 100% 40%, 70% 100%, 20% 90%, 0 35%); }
+  .ico--relic { inset: 10px; border-radius: 50%; border: 3px solid var(--gold); box-shadow: inset 0 0 8px rgba(111,168,214,0.8); }
+
+  /* Картка чутки після купівлі: слова Гната + де позначено. */
+  .rumour { position: absolute; left: 50%; top: 300px; transform: translateX(-50%); width: 900px; text-align: center; }
+  .rumour__quote { font-size: 26px; line-height: 1.6; color: var(--ink-bright); margin: var(--s5) 0; font-style: italic; }
+  .rumour__where { font-size: var(--fs-body); color: var(--gold); display: inline-flex; gap: var(--s3); align-items: center; }
+  .rumour__where .mark { width: 16px; height: 16px; border: 2px solid var(--gold); transform: rotate(45deg); }
+
+  /* Карта. Відвідане — як зараз; куплене, але не відвідане — блідий обрис (новий стан). */
+  .map { position: absolute; inset: 72px 64px 96px; border: 1px solid var(--edge-mid);
+    background: radial-gradient(90% 70% at 50% 45%, rgba(92,78,55,0.20) 0%, transparent 70%), linear-gradient(180deg, #1c1813, #120f0c);
+    box-shadow: inset 0 0 120px rgba(0,0,0,0.85); }
+  .room { position: absolute; }
+  .room--seen { background: rgba(216,203,180,0.16); border: 2px solid #b9a98a; }
+  .room--bought { border: 2px dashed rgba(185,169,138,0.45); background: rgba(216,203,180,0.04); }
+  .room--unknown { border: 1px dotted rgba(142,131,117,0.35); }
+  .link { position: absolute; background: #6b5a42; }
+  .icon-shrine { position: absolute; width: 18px; height: 18px; border-radius: 50%; background: radial-gradient(circle, #ffd27a, #c9a14a 60%, transparent 70%); }
+  .icon-here { position: absolute; width: 16px; height: 16px; background: var(--gold-bright); transform: rotate(45deg); box-shadow: 0 0 12px var(--gold); }
+  .icon-rumour { position: absolute; width: 20px; height: 20px; border: 2px solid var(--gold); transform: rotate(45deg); }
+  .icon-rumour::after { content: "?"; position: absolute; inset: 0; transform: rotate(-45deg); display: grid; place-items: center; color: var(--gold); font: 600 12px var(--font-display); }
+  .icon-pin { position: absolute; width: 14px; height: 20px; }
+  .icon-pin::before { content: ""; position: absolute; inset: 0; background: currentColor; clip-path: polygon(50% 100%, 0 35%, 20% 0, 80% 0, 100% 35%); }
+  .map-legend { position: absolute; right: 88px; bottom: 120px; padding: var(--s3) var(--s4); background: rgba(11,9,7,0.82); border: 1px solid var(--edge-mid);
+    font-size: var(--fs-micro); color: var(--ink-muted); display: grid; grid-template-columns: 26px auto; gap: 8px var(--s3); align-items: center; }
+  .map-legend i { position: relative; display: block; width: 22px; height: 14px; }
+  .pen-bar { position: absolute; left: 88px; bottom: 120px; display: flex; gap: var(--s3); align-items: center; padding: var(--s3) var(--s4);
+    background: rgba(11,9,7,0.86); border: 1px solid var(--edge-light); font-size: var(--fs-small); color: var(--ink-muted); }
+  .pen-bar .pin { width: 24px; height: 30px; position: relative; }
+  .pen-bar .pin.is-focused { outline: 2px solid var(--gold); outline-offset: 3px; }
+  .map-header { position: absolute; left: 64px; right: 64px; top: 18px; display: flex; justify-content: space-between; align-items: baseline; }
+  .map-header h2 { font-family: var(--font-display); font-size: var(--fs-title); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-bright); margin: 0; font-weight: 500; }
+  .map-header span { font-size: var(--fs-small); color: var(--ink-muted); }
+  .map-header b { color: var(--gold); font-weight: 500; }
+</style>
+</head>
+<body>
+
+<div class="note">
+  <b>Пункт 70 · Лавка Скупника, чутки й куплена карта (Approval 1).</b> Рішення користувача: товари — карта зони й перо,
+  уламки фляги (+1 фляга кожен), відмички, реліквії, чутки за монету; куплена карта відкриває всю зону; ціни — збалансовано,
+  без гріндингу й не задешево. Золото за повне проходження зараз: Гробниця ≈ 630 (з них 500 — Страж), Ліс ≈ 1350 (900 — Вартовий).
+  Основне (карта + уламок) коштує близько половини заробленого в зоні; усе разом — у 1,4 раза більше, тож треба обирати,
+  а втрата золота при смерті нарешті щось важить.
+  <table>
+    <tr><th>Товар</th><th>Гробниця</th><th>Ліс</th><th>Що дає</th></tr>
+    <tr><td>Карта зони</td><td class="n">50</td><td class="n">100</td><td>усі кімнати зони блідим обрисом, вівтарі й двері</td></tr>
+    <tr><td>Перо картографа</td><td class="n">30</td><td class="n">—</td><td>власні позначки на карті (5 знаків), один раз на гру</td></tr>
+    <tr><td>Чутка</td><td class="n">40 × 2</td><td class="n">70 × 3</td><td>позначка схованки чи секрету на карті</td></tr>
+    <tr><td>Відмичка</td><td class="n">100</td><td class="n">150 × 2</td><td>відкриває замкнену скриню (1 у Гробниці, 2 у Лісі — нові)</td></tr>
+    <tr><td>Уламок фляги</td><td class="n">300</td><td class="n">550</td><td>+1 фляга</td></tr>
+    <tr><td>Реліквія</td><td class="n">350</td><td class="n">600</td><td>нові аксесуари: «Свічка Паломника», «Вузол Шепоту»</td></tr>
+    <tr><td><b>Разом</b></td><td class="n">910</td><td class="n">1760</td><td>що не куплено в Гробниці, Гнат везе в Ліс</td></tr>
+  </table>
+</div>
+
+<div class="sheet">
+
+  <div class="frame">
+    <div class="stage-inner">
+      <div class="scrim"></div>
+      <div class="panel panel--royal shop">
+        <div class="panel__header"><h2 class="panel__title">Віз Скупника</h2><div class="purse"><span class="coin"></span>412</div></div>
+        <div class="shop__body">
+          <div class="goods">
+            <div class="good-group">Мандри</div>
+            <div class="good is-focused"><div class="slot"><i class="ico ico--map"></i></div><div class="good__name">Карта Гробниці<small>відкриває всю зону</small></div><div class="good__price"><span class="coin"></span>50</div></div>
+            <div class="good"><div class="slot"><i class="ico ico--quill"></i></div><div class="good__name">Перо картографа<small>власні позначки</small></div><div class="good__price"><span class="coin"></span>30</div></div>
+            <div class="good"><div class="slot"><i class="ico ico--rumour"></i></div><div class="good__name">Чутка<small>лишилось 2</small></div><div class="good__price"><span class="coin"></span>40</div></div>
+            <div class="good-group">Сила</div>
+            <div class="good"><div class="slot"><i class="ico ico--shard"></i></div><div class="good__name">Уламок фляги<small>+1 фляга</small></div><div class="good__price"><span class="coin"></span>300</div></div>
+            <div class="good"><div class="slot" data-rarity="rare"><i class="ico ico--relic"></i></div><div class="good__name">Свічка Паломника<small>реліквія</small></div><div class="good__price"><span class="coin"></span>350</div></div>
+            <div class="good"><div class="slot"><i class="ico ico--pick"></i></div><div class="good__name">Відмичка<small>1 замок</small></div><div class="good__price"><span class="coin"></span>100</div></div>
+          </div>
+          <div class="detail">
+            <span class="kind">Мандри · карта</span>
+            <h3>Карта Гробниці</h3>
+            <p>Гнат перемалював її з планів варти. Де стіни обвалились — там і на папері діра.</p>
+            <p class="effect"><b>▲</b> Усі кімнати Гробниці з'являються на карті блідим обрисом, разом із вівтарями й дверима. Відвідані кімнати малюються, як і раніше.</p>
+            <div class="buy"><div class="purse"><span class="coin"></span>50</div><button class="btn btn--primary is-focused">Купити</button></div>
+          </div>
+        </div>
+        <div class="shop__footer"><span><span class="glyph">E</span> купити</span><span><span class="glyph">Esc</span> піти</span><span><span class="glyph">↑↓</span> обрати</span></div>
+      </div>
+    </div>
+    <div class="frame__caption">1 · Лавка: список, опис, ціна, гаманець</div>
+  </div>
+
+  <div class="frame">
+    <div class="stage-inner">
+      <div class="scrim"></div>
+      <div class="panel panel--royal shop">
+        <div class="panel__header"><h2 class="panel__title">Віз Скупника</h2><div class="purse"><span class="coin"></span>212</div></div>
+        <div class="shop__body">
+          <div class="goods">
+            <div class="good-group">Мандри</div>
+            <div class="good is-sold"><div class="slot"><i class="ico ico--map"></i></div><div class="good__name">Карта Гробниці</div><div class="good__price">Продано</div></div>
+            <div class="good is-sold"><div class="slot"><i class="ico ico--quill"></i></div><div class="good__name">Перо картографа</div><div class="good__price">Продано</div></div>
+            <div class="good"><div class="slot"><i class="ico ico--rumour"></i></div><div class="good__name">Чутка<small>лишилась 1</small></div><div class="good__price"><span class="coin"></span>40</div></div>
+            <div class="good-group">Сила</div>
+            <div class="good is-poor is-focused"><div class="slot"><i class="ico ico--shard"></i></div><div class="good__name">Уламок фляги<small>+1 фляга</small></div><div class="good__price"><span class="coin"></span>300</div></div>
+            <div class="good is-poor"><div class="slot" data-rarity="rare"><i class="ico ico--relic"></i></div><div class="good__name">Свічка Паломника<small>реліквія</small></div><div class="good__price"><span class="coin"></span>350</div></div>
+            <div class="good"><div class="slot"><i class="ico ico--pick"></i></div><div class="good__name">Відмичка<small>1 замок</small></div><div class="good__price"><span class="coin"></span>100</div></div>
+          </div>
+          <div class="detail">
+            <span class="kind">Сила · витратне</span>
+            <h3>Уламок фляги</h3>
+            <p>Шматок старої королівської фляги. Приклади до своєї — і вогонь вівтаря наповнить на ковток більше.</p>
+            <p class="effect"><b>▲</b> Фляг: 3 → 4</p>
+            <div class="buy"><span class="warn">Бракує 88 золота</span><button class="btn is-disabled">Купити</button></div>
+          </div>
+        </div>
+        <div class="shop__footer"><span><span class="glyph">E</span> купити</span><span><span class="glyph">Esc</span> піти</span><span><span class="glyph">↑↓</span> обрати</span></div>
+      </div>
+    </div>
+    <div class="frame__caption">2 · Продано й «бракує золота»: ціна червона, кнопка вимкнена</div>
+  </div>
+
+  <div class="frame">
+    <div class="stage-inner">
+      <div class="scrim"></div>
+      <div class="rumour">
+        <div class="section-label" style="justify-content:center">Чутка</div>
+        <p class="rumour__quote">«Під Поховальною залою варта замурувала скарбничку. Стіна там стара — пошукай, де камінь тріснутий».</p>
+        <div class="rumour__where"><span class="mark"></span> Позначено на карті · Гробниця</div>
+        <div style="margin-top:var(--s6)"><button class="btn btn--primary is-focused" style="min-width:220px">Далі</button></div>
+      </div>
+    </div>
+    <div class="frame__caption">3 · Куплена чутка: слова Гната й позначка на карті</div>
+  </div>
+
+  <div class="frame">
+    <div class="stage-inner" style="background:#0b0907">
+      <div class="map-header"><h2>Гробниця</h2><span>Досліджено <b>62%</b> · Карта <b>куплена</b></span></div>
+      <div class="map">
+        <div class="room room--seen" style="left:120px;top:420px;width:260px;height:120px"></div>
+        <div class="link" style="left:380px;top:474px;width:60px;height:4px"></div>
+        <div class="room room--seen" style="left:440px;top:380px;width:320px;height:200px"></div>
+        <div class="link" style="left:760px;top:474px;width:60px;height:4px"></div>
+        <div class="room room--seen" style="left:820px;top:300px;width:220px;height:300px"></div>
+        <div class="link" style="left:928px;top:600px;width:4px;height:60px"></div>
+        <div class="room room--bought" style="left:840px;top:660px;width:200px;height:120px"></div>
+        <div class="link" style="left:1040px;top:420px;width:60px;height:4px;opacity:.5"></div>
+        <div class="room room--bought" style="left:1100px;top:340px;width:360px;height:180px"></div>
+        <div class="link" style="left:1460px;top:430px;width:50px;height:4px;opacity:.5"></div>
+        <div class="room room--bought" style="left:1510px;top:380px;width:200px;height:260px"></div>
+        <div class="room room--unknown" style="left:520px;top:640px;width:180px;height:100px"></div>
+        <div class="icon-shrine" style="left:590px;top:540px"></div>
+        <div class="icon-shrine" style="left:1600px;top:600px;opacity:.6"></div>
+        <div class="icon-here" style="left:930px;top:500px"></div>
+        <div class="icon-rumour" style="left:930px;top:710px"></div>
+        <div class="icon-pin" style="left:1250px;top:410px;color:var(--danger)"></div>
+        <div class="icon-pin" style="left:260px;top:460px;color:var(--mana-high)"></div>
+      </div>
+      <div class="pen-bar"><span>Перо:</span>
+        <span class="pin icon-pin is-focused" style="position:relative;color:var(--danger)"></span>
+        <span class="pin icon-pin" style="position:relative;color:var(--mana-high)"></span>
+        <span class="pin icon-pin" style="position:relative;color:var(--ok)"></span>
+        <span class="pin icon-pin" style="position:relative;color:var(--gold)"></span>
+        <span class="pin icon-pin" style="position:relative;color:var(--ink)"></span>
+        <span><span class="glyph">R</span> поставити / зняти · 2 з 5</span></div>
+      <div class="map-legend">
+        <i class="room room--seen" style="position:relative"></i><span>відвідано</span>
+        <i class="room room--bought" style="position:relative"></i><span>з купленої карти</span>
+        <i style="position:relative"><span class="icon-rumour" style="left:2px;top:-2px;transform:rotate(45deg) scale(.7)"></span></i><span>чутка</span>
+        <i style="position:relative;color:var(--danger)"><span class="icon-pin" style="left:4px;top:-3px"></span></i><span>позначка пером</span>
+      </div>
+    </div>
+    <div class="frame__caption">4 · Карта з купленим планом, чуткою й позначками пером</div>
+  </div>
+
+</div>
+</body>
+</html>

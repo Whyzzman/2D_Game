@@ -107,6 +107,8 @@ namespace ForgottenKingdom
         private InventoryView _inventory;
         private MapView _map;
         private ShrineView _shrine;
+        private DialogueView _dialogue;
+        private ShopView _shop;
         private AbilityCard _abilityCard;
         private HudKeyGlyphs _keyGlyphs;
         private VisualElement _flasks;
@@ -125,6 +127,8 @@ namespace ForgottenKingdom
         /// <summary>The world map and the altar's menu; they share this document.</summary>
         public MapView Map => _map;
         public ShrineView Shrine => _shrine;
+        public DialogueView Dialogue => _dialogue;
+        public ShopView Shop => _shop;
 
         /// <summary>The "ability gained" card; it shares this document.</summary>
         public AbilityCard AbilityCard => _abilityCard;
@@ -160,7 +164,11 @@ namespace ForgottenKingdom
             _map.Attach(FindAnyObjectByType<WorldMapScreen>(), _world);
             _shrine = new ShrineView(_root, _inventory);
             _shrine.Attach(FindAnyObjectByType<ShrineMenu>(), _world);
-            _pause = new PauseMenu(_root, _inventory, _map, _shrine);
+            _dialogue = new DialogueView(_root);
+            _dialogue.Attach(FindAnyObjectByType<DialogueService>(), _player);
+            _shop = new ShopView(_root);
+            _shop.Attach(FindAnyObjectByType<ShopService>(), _player);
+            _pause = new PauseMenu(_root, _inventory, _map, _shrine, _dialogue, _shop);
             _pause.Attach(_player, _progress);
             _keyGlyphs = new HudKeyGlyphs(_root);
             _abilityCard = new AbilityCard(_root);
@@ -178,6 +186,8 @@ namespace ForgottenKingdom
             _inventory?.Detach();
             _map?.Detach();
             _shrine?.Detach();
+            _dialogue?.Detach();
+            _shop?.Detach();
             _abilityCard?.Detach();
             _keyGlyphs?.Dispose();
         }
@@ -314,6 +324,8 @@ namespace ForgottenKingdom
             _inventory?.Tick();
             _map?.Tick();
             _shrine?.Tick();
+            _dialogue?.Tick();
+            _shop?.Tick();
             _abilityCard?.Tick();
             var dt = Time.unscaledDeltaTime;
             UpdateResources(dt);

@@ -72,6 +72,8 @@ namespace ForgottenKingdom
                 _world.Reloaded += MarkDirty;
                 _world.AreaEntered += OnAreaEntered;
             }
+
+            if (Progress != null) { Progress.MapMarksChanged += MarkDirty; }
         }
 
         private void OnDisable()
@@ -83,6 +85,8 @@ namespace ForgottenKingdom
                 _world.Reloaded -= MarkDirty;
                 _world.AreaEntered -= OnAreaEntered;
             }
+
+            if (Progress != null) { Progress.MapMarksChanged -= MarkDirty; }
 
             if (IsOpen)
             {
@@ -231,10 +235,32 @@ namespace ForgottenKingdom
         public void Select(string areaId)
         {
             var node = View?.Node(areaId);
-            if (node != null && node.State == MapNodeState.Discovered)
+            if (node != null && node.IsKnown)
             {
                 SelectedAreaId = areaId;
             }
+        }
+
+        private GameProgress Progress => _world != null ? _world.Progress : null;
+
+        /// <summary>Whether the player owns the merchant's quill and may mark rooms.</summary>
+        public bool HasQuill => Progress != null && Progress.HasReward(MerchantStock.QuillRewardId);
+
+        /// <summary>The quill on the selected room: marks it, or takes its mark off (item 70).</summary>
+        public bool ToggleMarkOnSelection()
+        {
+            if (!IsOpen || Progress == null || string.IsNullOrEmpty(SelectedAreaId))
+            {
+                return false;
+            }
+
+            var changed = Progress.ToggleMapMark(SelectedAreaId);
+            if (changed)
+            {
+                Rebuild();
+            }
+
+            return changed;
         }
 
         // ---------- building ----------
@@ -249,7 +275,8 @@ namespace ForgottenKingdom
         {
             _isDirty = false;
             View = WorldMapBuilder.Build(_world.Graph, _world, _world.CurrentAreaId,
-                _world.CurrentZoneId, _world.IsFastTravelUnlocked, RevealAll);
+                _world.CurrentZoneId, _world.IsFastTravelUnlocked, RevealAll,
+                Progress != null ? Progress.MapMarks : null);
             _viewport.Configure(View.ContentBounds, _viewSize);
             BuildCount++;
             ViewChanged?.Invoke(View);

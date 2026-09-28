@@ -28,12 +28,14 @@ namespace ForgottenKingdom
             Equipment,
             Character,
             Skills,
-            Spells
+            Spells,
+            /// <summary>Who the hero has met (item 70).</summary>
+            People
         }
 
         private static readonly string[] Titles =
-            { "СПОРЯДЖЕННЯ", "ЕКІПІРУВАННЯ", "ПЕРСОНАЖ", "УМІННЯ", "КНИГА ЗАКЛЯТЬ" };
-        private static readonly string[] PageNames = { "items", "equipment", "character", "skills", "spells" };
+            { "СПОРЯДЖЕННЯ", "ЕКІПІРУВАННЯ", "ПЕРСОНАЖ", "УМІННЯ", "КНИГА ЗАКЛЯТЬ", "ЛЮДИ" };
+        private static readonly string[] PageNames = { "items", "equipment", "character", "skills", "spells", "people" };
 
         private const string OpenClass = "inv--open";
         private const int GridColumns = 8;
@@ -48,13 +50,14 @@ namespace ForgottenKingdom
         private readonly VisualElement _overlay;
         private readonly Label _title;
         private readonly Label _purse;
-        private readonly Button[] _pageButtons = new Button[5];
+        private readonly Button[] _pageButtons = new Button[6];
         private readonly VisualElement _characterPip;
         private readonly VisualElement _skillsPip;
-        private readonly VisualElement[] _pages = new VisualElement[5];
+        private readonly VisualElement[] _pages = new VisualElement[6];
         private readonly CharacterPage _character;
         private readonly SkillsPage _skillsPage;
         private readonly SpellsPage _spellsPage;
+        private readonly PeoplePage _peoplePage;
         private readonly Button[] _categoryButtons = new Button[InventoryScreen.Tabs.Length];
 
         // Items page.
@@ -129,6 +132,7 @@ namespace ForgottenKingdom
             _character = new CharacterPage(_pages[(int)Page.Character], Redraw);
             _skillsPage = new SkillsPage(_pages[(int)Page.Skills], Redraw);
             _spellsPage = new SpellsPage(_pages[(int)Page.Spells], Redraw);
+            _peoplePage = new PeoplePage(_pages[(int)Page.People]);
             for (var i = 0; i < _categoryButtons.Length; i++)
             {
                 var index = i;
@@ -185,6 +189,7 @@ namespace ForgottenKingdom
         public CharacterPage Character => _character;
         public SkillsPage Skills => _skillsPage;
         public SpellsPage Spells => _spellsPage;
+        public PeoplePage People => _peoplePage;
 
         /// <summary>Cells in the grid that hold an item, for tests and tools.</summary>
         public int ItemCellCount { get; private set; }
@@ -198,6 +203,7 @@ namespace ForgottenKingdom
             }
 
             _screen = UnityEngine.Object.FindAnyObjectByType<InventoryScreen>();
+            _peoplePage?.Attach(progress);
             _equipment = player != null ? player.Equipment : null;
             _playerStats = player != null ? player.Stats : null;
             _progression = UnityEngine.Object.FindAnyObjectByType<PlayerProgressionService>();
@@ -332,7 +338,7 @@ namespace ForgottenKingdom
                 case Page.Equipment: TickEquipment(keyboard, pad, horizontal, vertical); break;
                 case Page.Character: _character.Tick(vertical); break;
                 case Page.Skills: _skillsPage.Tick(keyboard, pad, horizontal, vertical); break;
-                default: _spellsPage.Tick(keyboard, pad, horizontal, vertical); break;
+                case Page.Spells: _spellsPage.Tick(keyboard, pad, horizontal, vertical); break;
             }
         }
 
@@ -529,7 +535,8 @@ namespace ForgottenKingdom
                 case Page.Equipment: DrawEquipment(); break;
                 case Page.Character: _character.Draw(); break;
                 case Page.Skills: _skillsPage.Draw(); break;
-                default: _spellsPage.Draw(); break;
+                case Page.Spells: _spellsPage.Draw(); break;
+                default: _peoplePage.Draw(); break;
             }
         }
 

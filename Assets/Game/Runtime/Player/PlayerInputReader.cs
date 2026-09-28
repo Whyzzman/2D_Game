@@ -253,6 +253,12 @@ namespace ForgottenKingdom
         /// <summary>The map button; like the inventory's, it is heard while the map is open.</summary>
         public event System.Action MapToggled;
 
+        /// <summary>
+        /// The interact key this frame, heard even while gameplay is suspended: a conversation
+        /// turns its pages with the same key that started it.
+        /// </summary>
+        public bool InteractPressedThisFrame => _interact != null && _interact.WasPressedThisFrame();
+
         /// <summary>Escape or Start. Heard while gameplay is suspended: it is also what closes the pause.</summary>
         public event System.Action PauseToggled;
 

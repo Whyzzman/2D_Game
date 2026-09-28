@@ -1102,6 +1102,7 @@ GameObject:
   - component: {fileID: 6885577336320300636}
   - component: {fileID: 889931998609281026}
   - component: {fileID: 7464111563418591982}
+  - component: {fileID: 5299036118544267504}
   m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
@@ -1843,6 +1844,20 @@ MonoBehaviour:
   _interval: 0.035
   _fadeTime: 0.22
   _count: 6
+--- !u!114 &5299036118544267504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5698690768296159545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54996aba5421841cd97681640d9c5e97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.FlaskShards
+  _player: {fileID: 0}
+  _progress: {fileID: 0}
 --- !u!1 &5840511060120495854
 GameObject:
   m_ObjectHideFlags: 0

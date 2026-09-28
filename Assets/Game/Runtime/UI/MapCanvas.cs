@@ -13,7 +13,9 @@ namespace ForgottenKingdom
         Secret,
         Gate,
         Player,
-        Here
+        Here,
+        /// <summary>A place a bought rumour points to: a gold diamond with a question.</summary>
+        Rumour
     }
 
     /// <summary>
@@ -96,7 +98,7 @@ namespace ForgottenKingdom
 
             foreach (var node in _view.Nodes)
             {
-                if (node.State == MapNodeState.Discovered && ToScreen(node.Rect).Contains(local))
+                if (node.IsKnown && ToScreen(node.Rect).Contains(local))
                 {
                     return node.AreaId;
                 }
@@ -245,12 +247,28 @@ namespace ForgottenKingdom
             }
 
             var tint = Tint(node.Area.ZoneId);
-            Rectangle(painter, box);
-            painter.fillColor = new Color(tint.r, tint.g, tint.b, 0.16f);
-            painter.Fill();
-            painter.strokeColor = new Color(tint.r, tint.g, tint.b, 0.75f);
-            painter.lineWidth = 1.2f;
-            painter.Stroke();
+            if (node.State == MapNodeState.Charted)
+            {
+                // From a bought map: a pale dashed outline, never as solid as a room walked through.
+                Rectangle(painter, box);
+                painter.fillColor = new Color(tint.r, tint.g, tint.b, 0.04f);
+                painter.Fill();
+                DashedRect(painter, box, new Color(tint.r, tint.g, tint.b, 0.5f), 1.2f, 6f, 4f);
+            }
+            else
+            {
+                Rectangle(painter, box);
+                painter.fillColor = new Color(tint.r, tint.g, tint.b, 0.16f);
+                painter.Fill();
+                painter.strokeColor = new Color(tint.r, tint.g, tint.b, 0.75f);
+                painter.lineWidth = 1.2f;
+                painter.Stroke();
+            }
+
+            if (node.MarkColor >= 0)
+            {
+                DrawMark(painter, new Vector2(box.xMin + 14f, box.yMin + 16f), node.MarkColor);
+            }
 
             var at = new Vector2(box.xMax - 16f, box.yMax - 16f);
             foreach (var icon in node.Icons)
@@ -290,6 +308,7 @@ namespace ForgottenKingdom
                 case MapIconType.Secret: return MapGlyph.Secret;
                 case MapIconType.Gate:
                 case MapIconType.SpecialDoor: return MapGlyph.Gate;
+                case MapIconType.Rumour: return MapGlyph.Rumour;
                 default: return null;
             }
         }
@@ -355,6 +374,21 @@ namespace ForgottenKingdom
                     Line(painter, c + new Vector2(-3f, -7f), c + new Vector2(-3f, 7f), new Color32(142, 131, 117, 255), 1.2f);
                     Line(painter, c + new Vector2(3f, -7f), c + new Vector2(3f, 7f), new Color32(142, 131, 117, 255), 1.2f);
                     break;
+                case MapGlyph.Rumour:
+                    Poly(painter, c, 0f, -10f, 10f, 0f, 0f, 10f, -10f, 0f);
+                    painter.fillColor = new Color(0.06f, 0.05f, 0.04f, 0.9f);
+                    painter.Fill();
+                    painter.strokeColor = gold;
+                    painter.lineWidth = 1.8f;
+                    painter.Stroke();
+                    // The question: a hook and a dot.
+                    painter.BeginPath();
+                    painter.Arc(c + new Vector2(0f, -2.5f), 3f, Angle.Degrees(180f), Angle.Degrees(420f));
+                    painter.Stroke();
+                    Poly(painter, c + new Vector2(0f, 5f), -1.2f, -1.2f, 1.2f, -1.2f, 1.2f, 1.2f, -1.2f, 1.2f);
+                    painter.fillColor = gold;
+                    painter.Fill();
+                    break;
                 case MapGlyph.Player:
                     painter.BeginPath();
                     painter.Arc(c, 14f, Angle.Degrees(0f), Angle.Degrees(360f));
@@ -374,6 +408,27 @@ namespace ForgottenKingdom
                     painter.Fill();
                     break;
             }
+        }
+
+        /// <summary>The quill's five colours, in the order the marks take them.</summary>
+        public static readonly Color[] MarkColors =
+        {
+            new Color32(196, 85, 47, 255),
+            new Color32(111, 168, 214, 255),
+            new Color32(127, 168, 92, 255),
+            new Color32(201, 161, 74, 255),
+            new Color32(216, 203, 180, 255)
+        };
+
+        /// <summary>A pin in one of the quill's colours, its point on <paramref name="c"/>'s foot.</summary>
+        public static void DrawMark(Painter2D painter, Vector2 c, int color)
+        {
+            Poly(painter, c, 0f, 9f, -6f, -1f, -4f, -8f, 4f, -8f, 6f, -1f);
+            painter.fillColor = MarkColors[Mathf.Clamp(color, 0, MarkColors.Length - 1)];
+            painter.Fill();
+            painter.strokeColor = new Color32(11, 9, 7, 255);
+            painter.lineWidth = 1.2f;
+            painter.Stroke();
         }
 
         private static void Poly(Painter2D painter, Vector2 c, params float[] xy)

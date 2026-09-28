@@ -211,6 +211,10 @@ namespace ForgottenKingdom
         CastFizzle,
 
         // ---- a dead body crumbling to ash (appended) ----
-        CorpseCrumble
+        CorpseCrumble,
+
+        // ---- the merchant and his chests (item 70, appended) ----
+        ShopBuy,
+        ChestOpen
     }
 }

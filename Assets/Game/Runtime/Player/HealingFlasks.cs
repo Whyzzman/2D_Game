@@ -30,6 +30,7 @@ namespace ForgottenKingdom
         [SerializeField, Min(0f)] private float _healPoint = 0.5f;
 
         private int _charges = -1;
+        private int _bonusCharges;
         private float _amount;
         private float _elapsed;
         private bool _hasHealed;
@@ -42,8 +43,26 @@ namespace ForgottenKingdom
         /// <summary>A hit landed before the heal point and the drink was lost.</summary>
         public event Action Spilled;
 
-        public int MaxCharges => _maxCharges;
-        public int Charges => _charges < 0 ? _maxCharges : _charges;
+        public int MaxCharges => _maxCharges + _bonusCharges;
+        public int Charges => _charges < 0 ? MaxCharges : _charges;
+
+        /// <summary>
+        /// Flasks added by shards from the merchant (item 70). A new flask arrives full; losing
+        /// one (a reload of an older save) takes the spare charge with it.
+        /// </summary>
+        public void SetBonusCharges(int bonus)
+        {
+            bonus = Mathf.Max(0, bonus);
+            if (bonus == _bonusCharges)
+            {
+                return;
+            }
+
+            var gained = bonus - _bonusCharges;
+            _bonusCharges = bonus;
+            _charges = Mathf.Clamp(Charges + Mathf.Max(0, gained), 0, MaxCharges);
+            ChargesChanged?.Invoke(_charges, MaxCharges);
+        }
         public float HealAmount => _healAmount;
         public float DrinkTime => _drinkTime;
         public bool IsDrinking { get; private set; }
@@ -60,7 +79,7 @@ namespace ForgottenKingdom
             _health = health;
             if (_charges < 0)
             {
-                _charges = _maxCharges;
+                _charges = MaxCharges;
             }
         }
 
@@ -77,7 +96,7 @@ namespace ForgottenKingdom
 
             _charges = Charges - 1;
             Begin(_healAmount, true);
-            ChargesChanged?.Invoke(_charges, _maxCharges);
+            ChargesChanged?.Invoke(_charges, MaxCharges);
             return true;
         }
 
@@ -143,13 +162,13 @@ namespace ForgottenKingdom
         public void Refill()
         {
             IsDrinking = false;
-            if (_charges == _maxCharges)
+            if (_charges == MaxCharges)
             {
                 return;
             }
 
-            _charges = _maxCharges;
-            ChargesChanged?.Invoke(_charges, _maxCharges);
+            _charges = MaxCharges;
+            ChargesChanged?.Invoke(_charges, MaxCharges);
         }
     }
 }

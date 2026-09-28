@@ -200,6 +200,13 @@ namespace ForgottenKingdom
             var keyboard = Keyboard.current;
             var pad = Gamepad.current;
             var dt = Time.unscaledDeltaTime;
+            // The merchant's quill: R or the pad's top button marks the chosen room (item 70).
+            if (_screen.HasQuill && ((keyboard != null && keyboard.rKey.wasPressedThisFrame)
+                || (pad != null && pad.buttonNorth.wasPressedThisFrame)))
+            {
+                _screen.ToggleMarkOnSelection();
+            }
+
             if (pad != null)
             {
                 var stick = pad.rightStick.ReadValue();
@@ -327,6 +334,16 @@ namespace ForgottenKingdom
                 lines.Add("Ви тут.");
             }
 
+            if (node.State == MapNodeState.Charted)
+            {
+                lines.Add("З купленої карти — ви тут ще не бували.");
+            }
+
+            if (node.MarkColor >= 0)
+            {
+                lines.Add("Ваша позначка пером.");
+            }
+
             foreach (var icon in node.Icons)
             {
                 switch (icon.Type)
@@ -343,6 +360,9 @@ namespace ForgottenKingdom
                         break;
                     case MapIconType.Secret:
                         lines.Add("Таємне місце.");
+                        break;
+                    case MapIconType.Rumour:
+                        lines.Add("Чутка Скупника: тут щось сховано.");
                         break;
                 }
             }
@@ -375,6 +395,11 @@ namespace ForgottenKingdom
             AddLegend(MapGlyph.Boss, "Страж місця");
             AddLegend(MapGlyph.Gate, "Поки що не пройти");
             AddLegend(MapGlyph.Secret, "Таємне місце");
+            AddLegend(MapGlyph.Rumour, "Чутка");
+            if (_screen != null && _screen.HasQuill)
+            {
+                AddLegend(MapGlyph.Here, "R / Y — позначка пером");
+            }
         }
 
         private void AddLegend(MapGlyph glyph, string text)

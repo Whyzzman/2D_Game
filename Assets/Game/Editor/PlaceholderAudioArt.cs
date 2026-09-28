@@ -257,7 +257,11 @@ namespace ForgottenKingdom.EditorTools
             // The shaped spell coming apart: a short crackle, thinner than a cast.
             new Spec(AudioId.CastFizzle, "SFX/Magic", "sfx_spell_fizzle", Recipe.Fire, 2, 0.3f, 1.6f),
             // A body giving way to ash: a dry, falling rustle, low and soft.
-            new Spec(AudioId.CorpseCrumble, "SFX/Enemies", "sfx_corpse_crumble", Recipe.Rustle, 2, 0.8f, 0.55f)
+            new Spec(AudioId.CorpseCrumble, "SFX/Enemies", "sfx_corpse_crumble", Recipe.Rustle, 2, 0.8f, 0.55f),
+            // Coins changing hands: a bright tick, a little lower than picking gold up.
+            new Spec(AudioId.ShopBuy, "SFX/World", "sfx_shop_buy", Recipe.Tick, 2, 0.3f, 1.8f),
+            // A lock giving way and an old lid lifting: a short crack.
+            new Spec(AudioId.ChestOpen, "SFX/World", "sfx_chest_open", Recipe.Crack, 2, 0.6f, 0.8f)
         };
 
         /// <summary>Writes every missing or changed clip and returns them, by sound.</summary>

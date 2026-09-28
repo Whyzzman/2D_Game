@@ -1,0 +1,437 @@
+/* Item 70: the conversation, the merchant's cart and the journal of people.
+   design/ui/dialogue/dialogue.html and design/ui/shop/shop.html. Prefixes dlg-, shop-, ppl-. */
+
+/* ---------- conversation ---------- */
+
+.dlg {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    display: none;
+    align-items: center;
+    justify-content: flex-end;
+    padding-bottom: 92px;
+}
+
+.dlg--open {
+    display: flex;
+}
+
+.dlg__box {
+    width: 1180px;
+    min-height: 196px;
+    padding: 30px 48px 20px 48px;
+    background-color: rgba(17, 14, 11, 0.96);
+    border-width: 1px;
+    border-color: rgb(107, 90, 66);
+    border-radius: 2px;
+}
+
+.dlg__name-plate {
+    position: absolute;
+    left: 48px;
+    top: -18px;
+    flex-direction: row;
+    align-items: center;
+    padding: 4px 14px;
+    background-color: rgb(15, 13, 11);
+    border-width: 1px;
+    border-color: rgb(138, 116, 52);
+}
+
+.dlg__name {
+    font-size: 20px;
+    letter-spacing: 2px;
+    color: rgb(232, 205, 138);
+    margin: 0;
+    padding: 0;
+}
+
+.dlg__epithet {
+    font-size: 13px;
+    color: rgb(142, 131, 117);
+    margin: 0 0 0 12px;
+    padding: 0;
+}
+
+.dlg__text {
+    font-size: 22px;
+    color: rgb(240, 230, 210);
+    white-space: normal;
+    max-width: 1000px;
+    margin: 6px 0 0 0;
+    padding: 0;
+}
+
+.dlg__choices {
+    display: none;
+    flex-direction: row;
+    margin-top: 20px;
+}
+
+.dlg--choosing .dlg__choices {
+    display: flex;
+}
+
+.dlg--choosing .dlg__next {
+    display: none;
+}
+
+.dlg__choice {
+    min-width: 220px;
+    margin: 0 16px 0 0;
+}
+
+.dlg__footer {
+    flex-direction: row;
+    align-items: center;
+    margin-top: 14px;
+}
+
+.dlg__pages {
+    flex-direction: row;
+}
+
+.dlg__page {
+    width: 6px;
+    height: 6px;
+    margin-right: 8px;
+    rotate: 45deg;
+    background-color: rgb(107, 90, 66);
+}
+
+.dlg__page--on {
+    background-color: rgb(201, 161, 74);
+}
+
+.dlg__next {
+    flex-direction: row;
+    align-items: center;
+}
+
+.dlg--typing .dlg__next {
+    opacity: 0.25;
+}
+
+.dlg__next-text {
+    font-size: 13px;
+    color: rgb(142, 131, 117);
+    margin: 0 0 0 6px;
+    padding: 0;
+}
+
+/* ---------- the merchant's cart ---------- */
+
+.shop {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(6, 5, 4, 0.86);
+}
+
+.shop--open {
+    display: flex;
+}
+
+.shop__panel {
+    width: 1360px;
+    background-color: rgb(23, 19, 15);
+    border-width: 1px;
+    border-color: rgb(107, 90, 66);
+    border-radius: 2px;
+}
+
+.shop--rumour .shop__panel {
+    display: none;
+}
+
+.shop__header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 24px;
+    border-bottom-width: 1px;
+    border-bottom-color: rgb(58, 47, 37);
+    background-color: rgba(240, 180, 65, 0.08);
+}
+
+.shop__title {
+    font-size: 24px;
+    letter-spacing: 3px;
+    color: rgb(240, 230, 210);
+    margin: 0;
+    padding: 0;
+}
+
+.shop__purse {
+    flex-direction: row;
+    align-items: center;
+}
+
+.shop__coin {
+    width: 18px;
+    height: 18px;
+    margin-right: 8px;
+    border-radius: 9px;
+    background-color: rgb(201, 161, 74);
+    border-width: 1px;
+    border-color: rgb(58, 47, 37);
+}
+
+.shop__purse-value {
+    font-size: 20px;
+    color: rgb(232, 205, 138);
+    margin: 0;
+    padding: 0;
+}
+
+.shop__body {
+    flex-direction: row;
+    padding: 24px;
+    min-height: 460px;
+}
+
+.shop__goods {
+    flex-grow: 1;
+    margin-right: 24px;
+}
+
+.shop__group {
+    font-size: 13px;
+    letter-spacing: 3px;
+    color: rgb(138, 116, 52);
+    margin: 12px 0 4px 0;
+    padding: 0;
+}
+
+.shop__row {
+    flex-direction: row;
+    align-items: center;
+    padding: 8px 16px;
+    margin: 0 0 6px 0;
+    background-color: rgba(11, 9, 7, 0.5);
+    border-width: 1px;
+    border-color: rgba(0, 0, 0, 0);
+    border-radius: 2px;
+}
+
+.shop__row--focused {
+    border-color: rgb(201, 161, 74);
+    background-color: rgba(138, 116, 52, 0.1);
+}
+
+.shop__row-icon {
+    width: 48px;
+    height: 48px;
+    margin-right: 16px;
+    background-color: rgb(15, 13, 11);
+    border-width: 1px;
+    border-color: rgb(58, 47, 37);
+}
+
+.shop__row-text {
+    flex-grow: 1;
+}
+
+.shop__row-name {
+    font-size: 17px;
+    color: rgb(216, 203, 180);
+    margin: 0;
+    padding: 0;
+}
+
+.shop__row--focused .shop__row-name {
+    color: rgb(232, 205, 138);
+}
+
+.shop__row-sub {
+    font-size: 13px;
+    color: rgb(95, 87, 76);
+    margin: 2px 0 0 0;
+    padding: 0;
+}
+
+.shop__row-price {
+    font-size: 20px;
+    color: rgb(201, 161, 74);
+    margin: 0;
+    padding: 0;
+}
+
+.shop__row--poor .shop__row-price {
+    color: rgb(196, 85, 47);
+}
+
+.shop__row--sold {
+    opacity: 0.45;
+}
+
+.shop__row--sold .shop__row-price {
+    font-size: 15px;
+    letter-spacing: 2px;
+    color: rgb(95, 87, 76);
+}
+
+.shop__detail {
+    width: 520px;
+    padding-left: 24px;
+    border-left-width: 1px;
+    border-left-color: rgb(58, 47, 37);
+}
+
+.shop__kind {
+    font-size: 13px;
+    letter-spacing: 2px;
+    color: rgb(138, 116, 52);
+    margin: 0;
+    padding: 0;
+}
+
+.shop__name {
+    font-size: 28px;
+    color: rgb(240, 230, 210);
+    margin: 6px 0 12px 0;
+    padding: 0;
+    white-space: normal;
+}
+
+.shop__desc {
+    font-size: 17px;
+    color: rgb(142, 131, 117);
+    white-space: normal;
+    margin: 0;
+    padding: 0;
+}
+
+.shop__effect {
+    font-size: 17px;
+    color: rgb(216, 203, 180);
+    white-space: normal;
+    margin: 12px 0 0 0;
+    padding: 12px 0 0 0;
+    border-top-width: 1px;
+    border-top-color: rgba(58, 47, 37, 0.6);
+}
+
+.shop__buy {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 16px;
+    border-top-width: 1px;
+    border-top-color: rgb(58, 47, 37);
+}
+
+.shop__price {
+    font-size: 20px;
+    color: rgb(232, 205, 138);
+    margin: 0;
+    padding: 0;
+}
+
+.shop__problem {
+    font-size: 15px;
+    color: rgb(196, 85, 47);
+    margin: 0 12px;
+    padding: 0;
+    flex-grow: 1;
+    -unity-text-align: middle-right;
+}
+
+.shop__buy-button {
+    min-width: 220px;
+}
+
+.shop__buy-button--off {
+    opacity: 0.4;
+}
+
+.shop__rumour {
+    display: none;
+    width: 900px;
+    align-items: center;
+}
+
+.shop--rumour .shop__rumour {
+    display: flex;
+}
+
+.shop__rumour-quote {
+    font-size: 26px;
+    -unity-font-style: italic;
+    color: rgb(240, 230, 210);
+    white-space: normal;
+    -unity-text-align: middle-center;
+    margin: 24px 0;
+    padding: 0;
+}
+
+.shop__rumour-where {
+    font-size: 17px;
+    color: rgb(201, 161, 74);
+    margin: 0 0 32px 0;
+    padding: 0;
+}
+
+.shop__rumour-ok {
+    min-width: 220px;
+}
+
+/* ---------- the journal of people ---------- */
+
+.ppl {
+    flex-direction: column;
+    padding: 24px 360px;
+}
+
+.ppl__list {
+    flex-grow: 1;
+}
+
+.ppl__person {
+    padding: 12px 16px;
+    border-bottom-width: 1px;
+    border-bottom-color: rgba(58, 47, 37, 0.6);
+}
+
+.ppl__place {
+    font-size: 13px;
+    letter-spacing: 2px;
+    color: rgb(138, 116, 52);
+    margin: 0;
+    padding: 0;
+}
+
+.ppl__name {
+    font-size: 20px;
+    color: rgb(240, 230, 210);
+    margin: 4px 0;
+    padding: 0;
+}
+
+.ppl__note {
+    font-size: 15px;
+    color: rgb(142, 131, 117);
+    white-space: normal;
+    margin: 0;
+    padding: 0;
+}
+
+.ppl__empty {
+    display: none;
+    font-size: 17px;
+    color: rgb(95, 87, 76);
+    -unity-text-align: middle-center;
+    margin: 48px 0;
+}
+
+.ppl--empty .ppl__empty {
+    display: flex;
+}

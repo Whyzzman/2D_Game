@@ -43,7 +43,9 @@ namespace ForgottenKingdom
         Merchant,
         Npc,
         Quest,
-        SpecialDoor
+        SpecialDoor,
+        /// <summary>A place a bought rumour points to (item 70). Appended: stored by number.</summary>
+        Rumour
     }
 
     /// <summary>When an area counts as visited.</summary>

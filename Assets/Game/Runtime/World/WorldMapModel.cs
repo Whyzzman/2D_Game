@@ -16,7 +16,13 @@ namespace ForgottenKingdom
         /// </summary>
         Unexplored,
 
-        Discovered
+        Discovered,
+
+        /// <summary>
+        /// Not visited, but on a map bought from the merchant, or pointed to by a rumour (item
+        /// 70): drawn as a pale outline with its name, its altars and the rumour's mark.
+        /// </summary>
+        Charted
     }
 
     /// <summary>How a line between two rooms is drawn.</summary>
@@ -57,12 +63,17 @@ namespace ForgottenKingdom
         public MapNodeState State;
         public bool IsCurrent;
         public readonly List<MapIcon> Icons = new List<MapIcon>();
+        /// <summary>The quill's mark on this room, a colour index; -1 for none.</summary>
+        public int MarkColor = -1;
+
+        /// <summary>Known well enough to be picked on the map: visited, or charted.</summary>
+        public bool IsKnown => State == MapNodeState.Discovered || State == MapNodeState.Charted;
 
         public string AreaId => Area.AreaId;
         public Rect Rect => Area.MapRect;
 
         /// <summary>Empty for a silhouette: an unexplored room has no name yet.</summary>
-        public string Label => State == MapNodeState.Discovered ? Area.DisplayName : string.Empty;
+        public string Label => IsKnown ? Area.DisplayName : string.Empty;
     }
 
     public sealed class MapLink
@@ -136,7 +147,8 @@ namespace ForgottenKingdom
 
         /// <param name="revealAll">Developer view: every room and every id, hidden or not.</param>
         public static WorldMapView Build(WorldGraph graph, IWorldQuery world, string currentAreaId,
-            string currentZoneId, bool fastTravelUnlocked, bool revealAll = false)
+            string currentZoneId, bool fastTravelUnlocked, bool revealAll = false,
+            IReadOnlyList<MapMark> marks = null)
         {
             var view = new WorldMapView { CurrentAreaId = currentAreaId ?? string.Empty };
             if (graph == null || world == null)
@@ -171,6 +183,23 @@ namespace ForgottenKingdom
                 MarkSilhouette(graph, states, connection.ToAreaId, connection.FromAreaId);
             }
 
+            // A bought map charts its zone's ordinary rooms; a rumour charts its one room, secret
+            // or not. Neither hides what has really been seen.
+            foreach (var area in graph.Areas)
+            {
+                if (area == null || states[area.AreaId] == MapNodeState.Discovered)
+                {
+                    continue;
+                }
+
+                var charted = IsRumoured(world, area)
+                    || (!area.IsSecret && world.HasProgression(MerchantStock.MapRewardId(area.ZoneId)));
+                if (charted)
+                {
+                    states[area.AreaId] = MapNodeState.Charted;
+                }
+            }
+
             var bounds = default(Rect);
             var hasBounds = false;
             foreach (var area in graph.Areas)
@@ -189,6 +218,30 @@ namespace ForgottenKingdom
                 if (node.State == MapNodeState.Discovered)
                 {
                     AddIcons(graph, world, node, fastTravelUnlocked);
+                }
+                else if (node.State == MapNodeState.Charted)
+                {
+                    // Altars as the map shows them, never lit; a boss is not given away.
+                    foreach (var checkpoint in graph.CheckpointsIn(node.AreaId))
+                    {
+                        node.Icons.Add(new MapIcon(MapIconType.Checkpoint, false, checkpoint.CheckpointId));
+                    }
+                }
+
+                if (node.State != MapNodeState.Discovered && IsRumoured(world, area))
+                {
+                    node.Icons.Add(new MapIcon(MapIconType.Rumour, true, area.AreaId));
+                }
+
+                if (marks != null && node.IsKnown)
+                {
+                    foreach (var mark in marks)
+                    {
+                        if (mark != null && mark.areaId == area.AreaId)
+                        {
+                            node.MarkColor = mark.color;
+                        }
+                    }
                 }
 
                 view.Nodes.Add(node);
@@ -238,6 +291,9 @@ namespace ForgottenKingdom
 
             return new ZoneCompletion(discovered, total, secretsFound, secretsTotal);
         }
+
+        private static bool IsRumoured(IWorldQuery world, WorldAreaDefinition area) =>
+            world.HasProgression(MerchantStock.RumourRewardId(area.AreaId));
 
         private static void MarkSilhouette(WorldGraph graph, Dictionary<string, MapNodeState> states,
             string knownId, string otherId)
@@ -298,8 +354,8 @@ namespace ForgottenKingdom
             }
 
             // A line is drawn when one end is known and the other is at least a silhouette.
-            var fromKnown = from == MapNodeState.Discovered;
-            var toKnown = to == MapNodeState.Discovered;
+            var fromKnown = from == MapNodeState.Discovered || from == MapNodeState.Charted;
+            var toKnown = to == MapNodeState.Discovered || to == MapNodeState.Charted;
             if ((!fromKnown && !toKnown) || from == MapNodeState.Hidden || to == MapNodeState.Hidden)
             {
                 return null;
@@ -451,7 +507,7 @@ namespace ForgottenKingdom
             var bestScore = float.MaxValue;
             foreach (var node in view.Nodes)
             {
-                if (node == from || node.State != MapNodeState.Discovered)
+                if (node == from || !node.IsKnown)
                 {
                     continue;
                 }

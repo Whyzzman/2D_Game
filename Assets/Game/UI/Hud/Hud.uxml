@@ -5,6 +5,7 @@
     <Style src="../Menu/Controls.uss" />
     <Style src="Inventory.uss" />
     <Style src="Map.uss" />
+    <Style src="Npc.uss" />
     <ui:VisualElement name="hud" class="hud" picking-mode="Ignore">
         <ui:VisualElement name="vignette" class="vignette" picking-mode="Ignore" />
 
@@ -176,6 +177,7 @@
                         <ui:Button name="inv-page-character" class="tab"><ui:Label class="tab__text display" text="ПЕРСОНАЖ" picking-mode="Ignore" /><ui:VisualElement name="inv-character-pip" class="pip" picking-mode="Ignore" /></ui:Button>
                         <ui:Button name="inv-page-skills" class="tab"><ui:Label class="tab__text display" text="УМІННЯ" picking-mode="Ignore" /><ui:VisualElement name="inv-skills-pip" class="pip" picking-mode="Ignore" /></ui:Button>
                         <ui:Button name="inv-page-spells" class="tab"><ui:Label class="tab__text display" text="ЗАКЛЯТТЯ" picking-mode="Ignore" /></ui:Button>
+                        <ui:Button name="inv-page-people" class="tab"><ui:Label class="tab__text display" text="ЛЮДИ" picking-mode="Ignore" /></ui:Button>
                     </ui:VisualElement>
                     <ui:VisualElement class="inv__purse" picking-mode="Ignore">
                         <ui:VisualElement class="inv__coin" picking-mode="Ignore" />
@@ -419,6 +421,18 @@
                         <ui:Label class="hint__text" text="Слоти заклять збігаються з клавішами в бою" picking-mode="Ignore" />
                     </ui:VisualElement>
                 </ui:VisualElement>
+
+                <!-- design/ui/dialogue/dialogue.html, frame 5: who the hero has met, where, and what they said. -->
+                <ui:VisualElement name="inv-people" class="inv__page">
+                    <ui:VisualElement class="inv__body ppl">
+                        <ui:ScrollView name="ppl-list" class="ppl__list" />
+                        <ui:Label name="ppl-empty" class="ppl__empty" text="Поки що ви нікого не зустріли." picking-mode="Ignore" />
+                    </ui:VisualElement>
+                    <ui:VisualElement class="inv__footer" picking-mode="Ignore">
+                        <ui:VisualElement class="hint" picking-mode="Ignore"><ui:Label class="key" text="Q" picking-mode="Ignore" /><ui:Label class="key" text="E" picking-mode="Ignore" /><ui:Label class="key key--pad" text="LB" picking-mode="Ignore" /><ui:Label class="key key--pad" text="RB" picking-mode="Ignore" /><ui:Label class="hint__text" text="Сторінки" picking-mode="Ignore" /></ui:VisualElement>
+                        <ui:VisualElement class="hint" picking-mode="Ignore"><ui:Label class="key" text="Esc" picking-mode="Ignore" /><ui:Label class="key key--pad" text="B" picking-mode="Ignore" /><ui:Label class="hint__text" text="Назад" picking-mode="Ignore" /></ui:VisualElement>
+                    </ui:VisualElement>
+                </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
 
@@ -473,6 +487,68 @@
                     </ui:VisualElement>
                 </ui:VisualElement>
                 <ui:VisualElement name="travel-map" class="travel__map" picking-mode="Ignore" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+
+        <!-- design/ui/dialogue/dialogue.html, frames 2-4: a character talking, as in Hollow Knight. -->
+        <ui:VisualElement name="dlg" class="dlg" picking-mode="Ignore">
+            <ui:VisualElement class="dlg__box">
+                <ui:VisualElement class="dlg__name-plate" picking-mode="Ignore">
+                    <ui:Label name="dlg-name" class="dlg__name display" text="" picking-mode="Ignore" />
+                    <ui:Label name="dlg-epithet" class="dlg__epithet" text="" picking-mode="Ignore" />
+                </ui:VisualElement>
+                <ui:Label name="dlg-text" class="dlg__text" text="" picking-mode="Ignore" />
+                <ui:VisualElement name="dlg-choices" class="dlg__choices">
+                    <ui:Button name="dlg-trade" class="btn btn--primary dlg__choice"><ui:Label class="btn__text display" text="ТОРГУВАТИ" picking-mode="Ignore" /></ui:Button>
+                    <ui:Button name="dlg-leave" class="btn dlg__choice"><ui:Label class="btn__text display" text="ПІТИ" picking-mode="Ignore" /></ui:Button>
+                </ui:VisualElement>
+                <ui:VisualElement class="dlg__footer" picking-mode="Ignore">
+                    <ui:VisualElement name="dlg-pages" class="dlg__pages" picking-mode="Ignore" />
+                    <ui:VisualElement class="spacer" picking-mode="Ignore" />
+                    <ui:VisualElement name="dlg-next" class="dlg__next" picking-mode="Ignore">
+                        <ui:Label class="key" text="E" picking-mode="Ignore" /><ui:Label class="key key--pad" text="A" picking-mode="Ignore" /><ui:Label class="dlg__next-text" text="далі" picking-mode="Ignore" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+
+        <!-- design/ui/shop/shop.html, frames 1-3: the merchant's cart and a rumour bought. -->
+        <ui:VisualElement name="shop" class="shop">
+            <ui:VisualElement class="shop__panel">
+                <ui:VisualElement class="pause__inset" picking-mode="Ignore" />
+                <ui:VisualElement class="shop__header" picking-mode="Ignore">
+                    <ui:Label name="shop-title" class="shop__title display" text="ВІЗ СКУПНИКА" picking-mode="Ignore" />
+                    <ui:VisualElement class="shop__purse" picking-mode="Ignore">
+                        <ui:VisualElement name="shop-purse-icon" class="shop__coin" picking-mode="Ignore" />
+                        <ui:Label name="shop-purse" class="shop__purse-value" text="0" picking-mode="Ignore" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                <ui:VisualElement class="shop__body">
+                    <ui:ScrollView name="shop-goods" class="shop__goods" />
+                    <ui:VisualElement class="shop__detail">
+                        <ui:Label name="shop-kind" class="shop__kind" text="" picking-mode="Ignore" />
+                        <ui:Label name="shop-name" class="shop__name display" text="" picking-mode="Ignore" />
+                        <ui:Label name="shop-desc" class="shop__desc" text="" picking-mode="Ignore" />
+                        <ui:Label name="shop-effect" class="shop__effect" text="" picking-mode="Ignore" />
+                        <ui:VisualElement class="spacer" picking-mode="Ignore" />
+                        <ui:VisualElement class="shop__buy">
+                            <ui:Label name="shop-price" class="shop__price" text="" picking-mode="Ignore" />
+                            <ui:Label name="shop-problem" class="shop__problem" text="" picking-mode="Ignore" />
+                            <ui:Button name="shop-buy" class="btn btn--primary btn--last shop__buy-button"><ui:Label class="btn__text display" text="КУПИТИ" picking-mode="Ignore" /></ui:Button>
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                <ui:VisualElement class="inv__footer" picking-mode="Ignore">
+                    <ui:VisualElement class="hint" picking-mode="Ignore"><ui:Label class="key" text="E" picking-mode="Ignore" /><ui:Label class="key key--pad" text="A" picking-mode="Ignore" /><ui:Label class="hint__text" text="Купити" picking-mode="Ignore" /></ui:VisualElement>
+                    <ui:VisualElement class="hint" picking-mode="Ignore"><ui:Label class="key" text="↑↓" picking-mode="Ignore" /><ui:Label class="hint__text" text="Обрати" picking-mode="Ignore" /></ui:VisualElement>
+                    <ui:VisualElement class="hint" picking-mode="Ignore"><ui:Label class="key" text="Esc" picking-mode="Ignore" /><ui:Label class="key key--pad" text="B" picking-mode="Ignore" /><ui:Label class="hint__text" text="Піти" picking-mode="Ignore" /></ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement name="shop-rumour" class="shop__rumour">
+                <ui:Label class="section-label display" text="ЧУТКА" picking-mode="Ignore" />
+                <ui:Label name="shop-rumour-quote" class="shop__rumour-quote" text="" picking-mode="Ignore" />
+                <ui:Label name="shop-rumour-where" class="shop__rumour-where" text="" picking-mode="Ignore" />
+                <ui:Button name="shop-rumour-ok" class="btn btn--primary btn--last shop__rumour-ok"><ui:Label class="btn__text display" text="ДАЛІ" picking-mode="Ignore" /></ui:Button>
             </ui:VisualElement>
         </ui:VisualElement>
 

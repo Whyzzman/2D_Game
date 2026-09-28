@@ -74,7 +74,7 @@
   трогает** — сцены источник истины уровня, правки делать в сцене (в генераторе — лишь
   рецепт). `BuildWithScenes` стирает ручные правки сцен: только для восстановления.
 - Сценные правки — редакторские `Scene*.Apply` (`SceneAmbience`, `SceneMusic`,
-  `SceneForestLook`, `SceneScreenGrade`, `SceneCharacterLight`): трогают только своё, повторный запуск безопасен; `BuildAtmosphere` зовёт
+  `SceneForestLook`, `SceneScreenGrade`, `SceneCharacterLight`, `SceneNpcs`): трогают только своё, повторный запуск безопасен; `BuildAtmosphere` зовёт
   тот же рецепт. Сменил их арт — прогнать `Apply` после `Build` (второй `executeMethod` цикла).
 - `Build` пересоздаёт дочерние объекты префабов врагов с новыми fileID — переопределения
   сцены на них пропадут; настраивать через генератор.

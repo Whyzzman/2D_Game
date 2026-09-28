@@ -95,6 +95,15 @@ namespace ForgottenKingdom
         }
     }
 
+    /// <summary>One mark made with the quill: which room, which of the five colours.</summary>
+    [Serializable]
+    public sealed class MapMark
+    {
+        public const int Colors = 5;
+        public string areaId = string.Empty;
+        public int color;
+    }
+
     /// <summary>Ability identifiers used by progression; kept in one place, not spelled inline.</summary>
     public static class AbilityIds
     {
@@ -155,6 +164,11 @@ namespace ForgottenKingdom
         /// </summary>
         public int lostCurrency;
         public Vector2 lostCurrencyPosition;
+        /// <summary>
+        /// The player's own marks on the map, made with the merchant's quill (item 70): a room and
+        /// one of five colours. An older file has none, which is correct.
+        /// </summary>
+        public List<MapMark> mapMarks = new List<MapMark>();
         public float totalPlayTimeSeconds;
         public string createdAtUtc = string.Empty;
         public string lastSavedAtUtc = string.Empty;
@@ -284,6 +298,9 @@ namespace ForgottenKingdom
             discoveredAreas ??= new List<string>();
             unlockedShortcuts ??= new List<string>();
             seenZoneIntros ??= new List<string>();
+            mapMarks ??= new List<MapMark>();
+            mapMarks.RemoveAll(mark => mark == null || string.IsNullOrEmpty(mark.areaId)
+                || mark.color < 0 || mark.color >= MapMark.Colors);
             player ??= PlayerProgressionData.CreateDefault();
             // A version two file has no inventory; an empty one is the right default.
             inventory ??= new ItemCollection();
