@@ -233,6 +233,10 @@ namespace ForgottenKingdom
         KingStep,
         KingRage,
         KingStunned,
-        KingDeath
+        KingDeath,
+
+        // ---- exploration (item 4, stage B, appended) ----
+        WallCrack,
+        WallCrumble
     }
 }

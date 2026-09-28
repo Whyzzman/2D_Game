@@ -167,6 +167,7 @@ namespace ForgottenKingdom.EditorTools
                     BuildCapital();
                     ConfigureCapitalAtmosphere();
                     SceneNpcs.Build();
+                    BuildExploration();
                 });
                 AssetDatabase.SaveAssets();
             }
@@ -2830,6 +2831,9 @@ namespace ForgottenKingdom.EditorTools
             events.Add(Sound(AudioId.KingRage, clips, 0.95f, voices: 1, priority: 120, spatial: 0.1f));
             events.Add(Sound(AudioId.KingStunned, clips, 0.75f, voices: 1, priority: 90));
             events.Add(Sound(AudioId.KingDeath, clips, 0.95f, voices: 1, priority: 120, spatial: 0.1f));
+            // A wall giving way to the hero's blows (item 4).
+            events.Add(Sound(AudioId.WallCrack, clips, 0.6f, voices: 2, priority: 50));
+            events.Add(Sound(AudioId.WallCrumble, clips, 0.8f, voices: 1, priority: 80));
 
             // Interface. Quiet, flat, and spaced so fast navigation does not chatter.
             events.Add(Sound(AudioId.UiNavigate, clips, 0.3f, AudioBus.Ui, voices: 1, priority: 25,

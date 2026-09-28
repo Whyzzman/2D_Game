@@ -22,6 +22,7 @@ namespace ForgottenKingdom
         [SerializeField] private Stamina _stamina;
         [SerializeField] private Mana _mana;
         [SerializeField] private StaggerMeter _stagger;
+        [SerializeField] private GameProgress _progress;
         [Tooltip("Larger means armour matters less per point; the curve never reaches zero damage.")]
         [SerializeField, Min(1f)] private float _defenseConstant = 60f;
         [Tooltip("Share of a hit that always gets through, however heavy the armour.")]
@@ -110,6 +111,7 @@ namespace ForgottenKingdom
             if (_stamina == null) { _stamina = GetComponent<Stamina>(); }
             if (_mana == null) { _mana = GetComponent<Mana>(); }
             if (_stagger == null) { _stagger = GetComponent<StaggerMeter>(); }
+            if (_progress == null) { _progress = FindAnyObjectByType<GameProgress>(); }
             _baseMaxHealth = _health != null ? _health.Max : _baseMaxHealth;
             _baseMaxStamina = _stamina != null ? _stamina.Max : _baseMaxStamina;
         }
@@ -127,6 +129,11 @@ namespace ForgottenKingdom
             }
             if (_skills != null) { _skills.SkillsChanged += Recalculate; }
             if (_buffs != null) { _buffs.BuffsChanged += OnBuffsChanged; }
+            if (_progress != null)
+            {
+                _progress.WorldChanged += OnWorldChanged;
+                _progress.Loaded += Recalculate;
+            }
         }
 
         private void OnDisable()
@@ -142,6 +149,30 @@ namespace ForgottenKingdom
             }
             if (_skills != null) { _skills.SkillsChanged -= Recalculate; }
             if (_buffs != null) { _buffs.BuffsChanged -= OnBuffsChanged; }
+            if (_progress != null)
+            {
+                _progress.WorldChanged -= OnWorldChanged;
+                _progress.Loaded -= Recalculate;
+            }
+        }
+
+        /// <summary>
+        /// A vessel shard picked up: the bars grow once four (or three) are whole, and a vessel
+        /// made whole fills its bar, as a completed mask does in Hollow Knight.
+        /// </summary>
+        private void OnWorldChanged(WorldFlag flag, string id)
+        {
+            if (flag != WorldFlag.RewardGranted || !VesselShards.TryKind(id, out var kind))
+            {
+                return;
+            }
+
+            Recalculate();
+            if (VesselShards.Partial(_progress, kind) == 0)
+            {
+                if (kind == VesselKind.Health) { _health?.RestoreToFull(); }
+                else { _mana?.RestoreToFull(); }
+            }
         }
 
         /// <summary>
@@ -250,6 +281,11 @@ namespace ForgottenKingdom
             _stats.SetBase(StatType.MaxHealth, healthFromStats);
             _stats.SetBase(StatType.MaxStamina, staminaFromStats);
             _stats.SetBase(StatType.MaxMana, manaFromStats);
+            // Whole vessels found in the world widen the bars by a share of all the rest.
+            _stats.Apply(new StatModifier(StatType.MaxHealth, ModifierOperation.Multiply,
+                VesselShards.Multiplier(_progress, VesselKind.Health)));
+            _stats.Apply(new StatModifier(StatType.MaxMana, ModifierOperation.Multiply,
+                VesselShards.Multiplier(_progress, VesselKind.Mana)));
             MaxEquipLoad = curve != null ? curve.EquipLoadFor(_finalStats.endurance) : 0f;
 
             EvaluateWeapon(curve);

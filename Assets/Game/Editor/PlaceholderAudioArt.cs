@@ -279,7 +279,11 @@ namespace ForgottenKingdom.EditorTools
             new Spec(AudioId.KingStep, "SFX/Boss", "sfx_king_step", Recipe.Boom, 4, 0.45f, 1.1f),
             new Spec(AudioId.KingRage, "SFX/Boss", "sfx_king_rage", Recipe.Fire, 1, 2.2f, 0.45f),
             new Spec(AudioId.KingStunned, "SFX/Boss", "sfx_king_stunned", Recipe.MetalRing, 2, 0.9f, 0.45f),
-            new Spec(AudioId.KingDeath, "SFX/Boss", "sfx_king_death", Recipe.Shadow, 1, 2.8f, 0.38f)
+            new Spec(AudioId.KingDeath, "SFX/Boss", "sfx_king_death", Recipe.Shadow, 1, 2.8f, 0.38f),
+
+            // ---- a breakable wall: stone giving under a blow, then the fall ----
+            new Spec(AudioId.WallCrack, "SFX/World", "sfx_wall_crack", Recipe.Crack, 3, 0.35f, 0.9f),
+            new Spec(AudioId.WallCrumble, "SFX/World", "sfx_wall_crumble", Recipe.Boom, 2, 1.2f, 0.6f)
         };
 
         /// <summary>Writes every missing or changed clip and returns them, by sound.</summary>

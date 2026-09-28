@@ -43,9 +43,15 @@ namespace ForgottenKingdom
         /// <summary>A shard of a flask found in the world rather than bought (item 2, stage D).</summary>
         public bool IsFlaskShard => !_isCurrency && _itemId.StartsWith(MerchantStock.FlaskShardPrefix);
 
+        /// <summary>A shard of the health or mana vessel (item 4 of the big list).</summary>
+        public bool IsVesselShard => !_isCurrency && VesselShards.TryKind(_itemId, out _);
+
         public string Prompt => Definition != null
             ? $"Підібрати: {Definition.DisplayName}"
-            : IsFlaskShard ? "Підібрати: Уламок фляги" : $"Підібрати {_amount}";
+            : IsFlaskShard ? "Підібрати: Уламок фляги"
+            : VesselShards.TryKind(_itemId, out var kind) && !_isCurrency
+                ? $"Підібрати: {VesselShards.ShardName(kind)}"
+                : $"Підібрати {_amount}";
 
         /// <summary>Configures a pickup spawned at runtime by the loot service.</summary>
         public void Configure(GameProgress progress, string itemId, bool isCurrency, int amount,
@@ -131,9 +137,10 @@ namespace ForgottenKingdom
             {
                 _progress.AddCurrency(_amount);
             }
-            else if (IsFlaskShard)
+            else if (IsFlaskShard || IsVesselShard)
             {
-                // Not an item: one more flask, counted by FlaskShards from the granted rewards.
+                // Not an item: one more flask or a piece of a vessel, counted from the granted
+                // rewards by FlaskShards and PlayerStats.
                 _progress.GrantReward(_itemId);
             }
             else if (_progress.AddItem(_itemId, _amount) != AddItemResult.Added)
@@ -171,7 +178,9 @@ namespace ForgottenKingdom
 
             _visual.color = _isCurrency
                 ? new Color(0.92f, 0.78f, 0.32f)
-                : (Definition != null ? Definition.PickupColor : new Color(0.7f, 0.7f, 0.75f));
+                : Definition != null ? Definition.PickupColor
+                : VesselShards.TryKind(_itemId, out var kind) ? VesselShards.PickupColor(kind)
+                : new Color(0.7f, 0.7f, 0.75f);
         }
     }
 }

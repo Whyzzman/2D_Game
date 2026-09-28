@@ -45,9 +45,6 @@ namespace ForgottenKingdom
         private const float LowShare = 0.3f;
         /// <summary>A change smaller than this (a twentieth of a percent) is not worth a relayout.</summary>
         private const float ShownEpsilon = 0.0005f;
-        private const float TitleIn = 0.9f;
-        private const float TitleHold = 2.6f;
-        private const float TitleOut = 1.1f;
 
         [SerializeField] private PlayerCharacter _player;
         [SerializeField] private Mana _mana;
@@ -81,8 +78,7 @@ namespace ForgottenKingdom
         private VisualElement _prompt;
         private Label _promptText;
         private BossTitleCard _bossTitle;
-        private VisualElement _zoneTitle;
-        private Label _zoneTitleText;
+        private ZoneTitleBanner _zoneTitle;
         private VisualElement _fade;
         private VisualElement _death;
         private Slot _weaponSlot;
@@ -90,7 +86,6 @@ namespace ForgottenKingdom
         private float _fadeValue;
         private float _fadeTarget;
         private float _fadeSpeed = 1f;
-        private float _titleClock = -1f;
         private int _shownCurrency = -1;
         // What the labels and fills last showed. UI Toolkit re-lays out on every style or text
         // write, so the HUD writes only when a shown value actually changes.
@@ -143,7 +138,7 @@ namespace ForgottenKingdom
         public bool IsBossBarVisible => _boss != null && _boss.ClassListContains("boss--visible");
         public bool IsDeathShown => _death != null && _death.ClassListContains("death--visible");
         public float FadeAmount => _fadeValue;
-        public string ZoneTitleText => _zoneTitleText != null ? _zoneTitleText.text : string.Empty;
+        public string ZoneTitleText => _zoneTitle != null ? _zoneTitle.Text : string.Empty;
 
         /// <summary>For tests: the boss title card.</summary>
         public BossTitleCard BossTitle => _bossTitle;
@@ -238,8 +233,7 @@ namespace ForgottenKingdom
             _purse = _root.Q<Label>("purse-value");
             _prompt = _root.Q("prompt");
             _promptText = _root.Q<Label>("prompt-text");
-            _zoneTitle = _root.Q("zone-title");
-            _zoneTitleText = _root.Q<Label>("zone-title-text");
+            _zoneTitle = new ZoneTitleBanner(_root);
             _bossTitle = new BossTitleCard(_root);
             _fade = _root.Q("fade");
             _death = _root.Q("death");
@@ -317,6 +311,9 @@ namespace ForgottenKingdom
                 if (on) { _world.ZoneTitleRequested += OnZoneTitle; }
                 else { _world.ZoneTitleRequested -= OnZoneTitle; }
             }
+
+            if (on) { WorldPickup.Collected += OnPickupCollected; }
+            else { WorldPickup.Collected -= OnPickupCollected; }
         }
 
         private void Update()
@@ -341,7 +338,7 @@ namespace ForgottenKingdom
             UpdateConditions();
             UpdatePurseAndPrompt();
             UpdateFade(dt);
-            UpdateZoneTitle(dt);
+            _zoneTitle?.Tick(dt);
             _bossTitle?.Tick(dt);
         }
 
@@ -599,37 +596,6 @@ namespace ForgottenKingdom
             }
         }
 
-        private void UpdateZoneTitle(float dt)
-        {
-            if (_titleClock < 0f || _zoneTitle == null)
-            {
-                return;
-            }
-
-            _titleClock += dt;
-            float alpha;
-            if (_titleClock < TitleIn)
-            {
-                alpha = _titleClock / TitleIn;
-            }
-            else if (_titleClock < TitleIn + TitleHold)
-            {
-                alpha = 1f;
-            }
-            else
-            {
-                alpha = 1f - (_titleClock - TitleIn - TitleHold) / TitleOut;
-            }
-
-            if (alpha <= 0f && _titleClock > TitleIn)
-            {
-                alpha = 0f;
-                _titleClock = -1f;
-            }
-
-            _zoneTitle.style.opacity = Mathf.Clamp01(alpha);
-        }
-
         private void OnFadeOut(float duration)
         {
             _fadeTarget = 1f;
@@ -646,8 +612,7 @@ namespace ForgottenKingdom
         private void OnPlayerDied()
         {
             // Death owns the centre of the screen: a zone card still fading must not sit on it.
-            _titleClock = -1f;
-            if (_zoneTitle != null) { _zoneTitle.style.opacity = 0f; }
+            _zoneTitle?.Hide();
             _bossTitle?.Hide();
             _death?.EnableInClassList("death--visible", true);
         }
@@ -659,13 +624,19 @@ namespace ForgottenKingdom
 
         private void OnZoneTitle(ZoneDefinition zone)
         {
-            if (zone == null || _zoneTitleText == null)
+            if (zone != null)
             {
-                return;
+                _zoneTitle?.Show(zone.DisplayName);
             }
+        }
 
-            _zoneTitleText.text = zone.DisplayName.ToUpperInvariant();
-            _titleClock = 0f;
+        /// <summary>A vessel shard says how far its vessel is along, where zone names appear.</summary>
+        private void OnPickupCollected(WorldPickup pickup)
+        {
+            if (pickup.IsVesselShard && VesselShards.TryKind(pickup.ItemId, out var kind))
+            {
+                _zoneTitle?.Show(VesselShards.Notice(_progress, kind));
+            }
         }
 
         private Sprite BranchIcon(SkillBranch branch)
