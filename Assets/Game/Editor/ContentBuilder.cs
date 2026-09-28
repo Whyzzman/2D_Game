@@ -2790,6 +2790,8 @@ namespace ForgottenKingdom.EditorTools
             // The pogo's ring is how a bounce is felt; chains of them must each be heard.
             events.Add(Sound(AudioId.Pogo, clips, 0.7f, voices: 2, priority: 75, interval: 0.05f));
             events.Add(Sound(AudioId.CastFizzle, clips, 0.55f, voices: 1, priority: 60));
+            // Several bodies can go at once after a fight; they are a quiet afterthought.
+            events.Add(Sound(AudioId.CorpseCrumble, clips, 0.4f, voices: 3, priority: 30));
 
             // Interface. Quiet, flat, and spaced so fast navigation does not chatter.
             events.Add(Sound(AudioId.UiNavigate, clips, 0.3f, AudioBus.Ui, voices: 1, priority: 25,
@@ -3614,7 +3616,7 @@ namespace ForgottenKingdom.EditorTools
         private static void WriteClip(SerializedProperty clip, string clipName, float fps,
             bool loops, Sprite[] sprites, Vector3[] anchors = null)
         {
-            // Where the cloak's live edge hangs on each frame; enemy clips carry none.
+            // Where the live piece hangs on each frame: the hero's cloak edge, an enemy's tail or rags.
             var anchorList = clip.FindPropertyRelative("_anchors");
             anchorList.arraySize = anchors != null ? anchors.Length : 0;
             for (var i = 0; i < anchorList.arraySize; i++)
@@ -3664,14 +3666,15 @@ namespace ForgottenKingdom.EditorTools
                 element.FindPropertyRelative("state").enumValueIndex = (int)spec.State;
                 WriteClip(element.FindPropertyRelative("clip"),
                     $"{prefix}_{spec.State.ToString().ToLowerInvariant()}", spec.Fps, spec.Loops,
-                    frames[spec.State]);
+                    frames[spec.State], PlaceholderEnemyArt.AnchorsFor(prefix, spec.State));
             }
 
             // Idle doubles as the fallback: a state that lost its frames leaves the enemy standing
             // rather than invisible, which is a visible bug instead of an invisible one.
             var idle = System.Array.Find(specs, s => s.State == EnemyAnimationState.Idle);
             WriteClip(serialized.FindProperty("_fallback"), $"{prefix}_idle", idle.Fps, true,
-                frames[EnemyAnimationState.Idle]);
+                frames[EnemyAnimationState.Idle],
+                PlaceholderEnemyArt.AnchorsFor(prefix, EnemyAnimationState.Idle));
             serialized.ApplyModifiedPropertiesWithoutUndo();
             EditorUtility.SetDirty(set);
         }
@@ -3691,12 +3694,13 @@ namespace ForgottenKingdom.EditorTools
                 element.FindPropertyRelative("state").enumValueIndex = (int)spec.State;
                 WriteClip(element.FindPropertyRelative("clip"),
                     $"boss_guardian_{spec.State.ToString().ToLowerInvariant()}", spec.Fps,
-                    spec.Loops, frames[spec.State]);
+                    spec.Loops, frames[spec.State], PlaceholderEnemyArt.AnchorsFor("boss_guardian", spec.State));
             }
 
             var idle = System.Array.Find(specs, s => s.State == BossAnimationState.IdleP1);
             WriteClip(serialized.FindProperty("_fallback"), "boss_guardian_idlep1", idle.Fps, true,
-                frames[BossAnimationState.IdleP1]);
+                frames[BossAnimationState.IdleP1],
+                PlaceholderEnemyArt.AnchorsFor("boss_guardian", BossAnimationState.IdleP1));
             serialized.ApplyModifiedPropertiesWithoutUndo();
             EditorUtility.SetDirty(set);
         }
@@ -3746,6 +3750,7 @@ namespace ForgottenKingdom.EditorTools
             SetReference(controller, "_face", face);
             BuildActorSockets(root, visual.gameObject, bodyObject, capsuleHeight,
                 carriesShield ? 0.45f : 0f);
+            BuildEnemyLife(root, visual.gameObject, controller, body, isBoss: false);
         }
 
         /// <summary>
@@ -3804,6 +3809,7 @@ namespace ForgottenKingdom.EditorTools
             SetReference(controller, "_body", body);
             SetReference(controller, "_face", face);
             BuildActorSockets(root, visual.gameObject, bodyObject, capsuleHeight, 0f);
+            BuildEnemyLife(root, visual.gameObject, controller, body, isBoss: true);
             if (shieldObject != null)
             {
                 SetReference(visual.GetComponent<VisualSockets>(), "_shield",

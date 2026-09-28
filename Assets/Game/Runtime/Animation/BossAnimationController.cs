@@ -15,7 +15,7 @@ namespace ForgottenKingdom
     /// <see cref="BossSwingPhase"/> — not by guesswork about elapsed time.
     /// </summary>
     [DisallowMultipleComponent]
-    public sealed class BossAnimationController : MonoBehaviour
+    public sealed class BossAnimationController : MonoBehaviour, ITrailAnchorSource
     {
         [SerializeField] private BossAnimationSet _set;
         [SerializeField] private SpriteRenderer _body;
@@ -54,6 +54,15 @@ namespace ForgottenKingdom
             : 0f;
 
         public BossAnimationState? ForcedState { get; set; }
+
+        public SpriteRenderer Body => _body;
+
+        /// <summary>Where the frame now shown hangs its loose piece (see <see cref="ITrailAnchorSource"/>).</summary>
+        public bool TryGetTrailAnchor(out Vector3 anchor)
+        {
+            anchor = default;
+            return _clip != null && _lastFrame >= 0 && _clip.TryGetAnchor(_lastFrame, out anchor);
+        }
 
         private void Awake()
         {

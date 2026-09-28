@@ -185,7 +185,7 @@ namespace ForgottenKingdom.EditorTools
         }
 
         /// <summary>Heads that are not a closed royal helm.</summary>
-        private static void ForestHead(Canvas canvas, Build build, Vector2 head, float tilt)
+        private static void ForestHead(Canvas canvas, Build build, Vector2 head, float tilt, float flare)
         {
             switch (build.Head)
             {
@@ -200,7 +200,7 @@ namespace ForgottenKingdom.EditorTools
                         head + Canvas.Rotate(new Vector2(-build.HeadRx * 0.2f, build.HeadRy * 1.5f),
                             tilt), build.Cloth);
                     Eye(canvas, head + Canvas.Rotate(new Vector2(build.HeadRx * 0.5f, -1f), tilt), 1.8f,
-                        PaleGreenEye);
+                        PaleGreenEye, flare);
                     break;
 
                 case HeadGear.Mask:
@@ -217,8 +217,8 @@ namespace ForgottenKingdom.EditorTools
                     canvas.Ellipse(head + Canvas.Rotate(new Vector2(4f, 2f), tilt), 2f, 2.6f,
                         Charcoal);
                     // Something alive behind the bone.
-                    canvas.Ellipse(head + Canvas.Rotate(new Vector2(-3f, 2f), tilt), 1f, 1.2f, PoisonEye);
-                    canvas.Ellipse(head + Canvas.Rotate(new Vector2(4f, 2f), tilt), 1f, 1.2f, PoisonEye);
+                    canvas.Ellipse(head + Canvas.Rotate(new Vector2(-3f, 2f), tilt), 1f + flare, 1.2f + flare, PoisonEye);
+                    canvas.Ellipse(head + Canvas.Rotate(new Vector2(4f, 2f), tilt), 1f + flare, 1.2f + flare, PoisonEye);
                     break;
 
                 default:
@@ -229,7 +229,7 @@ namespace ForgottenKingdom.EditorTools
                         head + Canvas.Rotate(new Vector2(build.HeadRx * 1.0f, -1f), tilt),
                         build.HeadRy * 0.34f, build.HeadRy * 0.2f, Charcoal);
                     Eye(canvas, head + Canvas.Rotate(new Vector2(build.HeadRx * 0.75f, 0f), tilt), 1.8f,
-                        PoisonEye);
+                        PoisonEye, flare);
                     for (var i = -1; i <= 1; i += 2)
                     {
                         var root = head + Canvas.Rotate(
@@ -368,15 +368,18 @@ namespace ForgottenKingdom.EditorTools
 
         public static Dictionary<EnemyAnimationState, Sprite[]> GenerateArcher() =>
             Generate(ArcherFolder, "enemy_archer", ArcherStates,
-                (state, t) => Render(Actor.Archer, ForestPose(Actor.Archer, state, t)));
+                (state, t) => Render(Actor.Archer,
+                    Telegraphed(Actor.Archer, state, t, ForestPose(Actor.Archer, state, t))));
 
         public static Dictionary<EnemyAnimationState, Sprite[]> GenerateShaman() =>
             Generate(ShamanFolder, "enemy_shaman", ShamanStates,
-                (state, t) => Render(Actor.Shaman, ForestPose(Actor.Shaman, state, t)));
+                (state, t) => Render(Actor.Shaman,
+                    Telegraphed(Actor.Shaman, state, t, ForestPose(Actor.Shaman, state, t))));
 
         public static Dictionary<EnemyAnimationState, Sprite[]> GenerateSpearman() =>
             Generate(SpearmanFolder, "enemy_spearman", SpearmanStates,
-                (state, t) => Render(Actor.Spearman, ForestPose(Actor.Spearman, state, t)));
+                (state, t) => Render(Actor.Spearman,
+                    Telegraphed(Actor.Spearman, state, t, ForestPose(Actor.Spearman, state, t))));
 
         public static Dictionary<BossAnimationState, Sprite[]> GenerateWarden() =>
             Generate(WardenFolder, "boss_warden", WardenStates,

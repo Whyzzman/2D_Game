@@ -8,8 +8,9 @@ namespace ForgottenKingdom
     /// or a scarf). The frames stay as they are; this is a short chain on springs that trails behind
     /// a run, flaps at a stop or a turn and settles while the hero stands.
     ///
-    /// It hangs from the point each frame names (<see cref="PlayerAnimationController.TryGetTrailAnchor"/>),
-    /// so it stays on the cloak's hem through every pose. The final artist paints only this edge,
+    /// It hangs from the point each frame names (<see cref="ITrailAnchorSource.TryGetTrailAnchor"/>),
+    /// so it stays on the cloak's hem through every pose. Enemies use the same chain for what
+    /// hangs off them (visual item 4, 2026-09-28): a hound's tail, rags, a hood, a cape, roots. The final artist paints only this edge,
     /// as one strip texture; the chain bends it.
     ///
     /// Presentation only: it reads the body and never touches gameplay. Time stops it with the
@@ -45,7 +46,8 @@ namespace ForgottenKingdom
         private const float ParentPull = 0.4f;
         private const float MaxSwing = 30f;
 
-        [SerializeField] private PlayerAnimationController _animation;
+        [Tooltip("The animation that names the hanging point per frame (an ITrailAnchorSource).")]
+        [SerializeField] private MonoBehaviour _animation;
         [SerializeField] private SpriteRenderer _body;
         [Tooltip("The strip, root on the left and torn tip on the right.")]
         [SerializeField] private Texture2D _texture;
@@ -72,6 +74,7 @@ namespace ForgottenKingdom
         private readonly float[] _swings = new float[Links + 1];
         private LineRenderer _line;
         private MaterialPropertyBlock _block;
+        private ITrailAnchorSource _source;
         private Vector3 _root;
         private Vector3 _offset;
         private Vector2 _rootVelocity;
@@ -96,8 +99,8 @@ namespace ForgottenKingdom
             _line = GetComponent<LineRenderer>();
             _line.positionCount = Links + 1;
             _line.useWorldSpace = true;
-            if (_animation == null) { _animation = GetComponentInParent<PlayerAnimationController>(); }
-            if (_body == null && _animation != null) { _body = _animation.Body; }
+            _source = _animation as ITrailAnchorSource ?? GetComponentInParent<ITrailAnchorSource>();
+            if (_body == null && _source != null) { _body = _source.Body; }
             if (_body != null)
             {
                 _line.sortingLayerID = _body.sortingLayerID;
@@ -163,7 +166,7 @@ namespace ForgottenKingdom
         private Vector3 ReadAnchor()
         {
             var anchor = _restAnchor;
-            if (_animation != null && _animation.TryGetTrailAnchor(out var framed))
+            if (_source != null && _source.TryGetTrailAnchor(out var framed))
             {
                 anchor = framed;
             }

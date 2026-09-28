@@ -255,7 +255,9 @@ namespace ForgottenKingdom.EditorTools
             // ---- pogo: a short bright ring, the blade striking and springing off ----
             new Spec(AudioId.Pogo, "SFX/Player", "sfx_player_pogo", Recipe.MetalRing, 3, 0.28f, 1.35f),
             // The shaped spell coming apart: a short crackle, thinner than a cast.
-            new Spec(AudioId.CastFizzle, "SFX/Magic", "sfx_spell_fizzle", Recipe.Fire, 2, 0.3f, 1.6f)
+            new Spec(AudioId.CastFizzle, "SFX/Magic", "sfx_spell_fizzle", Recipe.Fire, 2, 0.3f, 1.6f),
+            // A body giving way to ash: a dry, falling rustle, low and soft.
+            new Spec(AudioId.CorpseCrumble, "SFX/Enemies", "sfx_corpse_crumble", Recipe.Rustle, 2, 0.8f, 0.55f)
         };
 
         /// <summary>Writes every missing or changed clip and returns them, by sound.</summary>

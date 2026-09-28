@@ -208,6 +208,9 @@ namespace ForgottenKingdom
         Pogo,
 
         // ---- a spell lost to a hit (appended) ----
-        CastFizzle
+        CastFizzle,
+
+        // ---- a dead body crumbling to ash (appended) ----
+        CorpseCrumble
     }
 }

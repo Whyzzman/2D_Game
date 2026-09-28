@@ -17,7 +17,7 @@ namespace ForgottenKingdom
     /// desynchronises the art and the art can never lie about the active window.
     /// </summary>
     [DisallowMultipleComponent]
-    public sealed class PlayerAnimationController : MonoBehaviour
+    public sealed class PlayerAnimationController : MonoBehaviour, ITrailAnchorSource
     {
         /// <summary>Faster than this sideways at touchdown counts as landing on the run.</summary>
         private const float LandSkipSpeed = 0.5f;

@@ -17,7 +17,7 @@ namespace ForgottenKingdom
     /// an enemy can never desynchronise the telegraph from the active window.
     /// </summary>
     [DisallowMultipleComponent]
-    public sealed class EnemyAnimationController : MonoBehaviour
+    public sealed class EnemyAnimationController : MonoBehaviour, ITrailAnchorSource
     {
         [SerializeField] private EnemyAnimationSet _set;
         [Tooltip("The renderer showing the body; frames are written here.")]
@@ -54,6 +54,15 @@ namespace ForgottenKingdom
 
         /// <summary>Set by the debug tools to pin a state; never used by the game itself.</summary>
         public EnemyAnimationState? ForcedState { get; set; }
+
+        public SpriteRenderer Body => _body;
+
+        /// <summary>Where the frame now shown hangs its loose piece (see <see cref="ITrailAnchorSource"/>).</summary>
+        public bool TryGetTrailAnchor(out Vector3 anchor)
+        {
+            anchor = default;
+            return _clip != null && _lastFrame >= 0 && _clip.TryGetAnchor(_lastFrame, out anchor);
+        }
 
         private void Awake()
         {

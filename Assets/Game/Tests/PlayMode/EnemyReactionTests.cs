@@ -84,31 +84,40 @@ namespace ForgottenKingdom.Tests
         }
 
         [UnityTest]
-        public IEnumerator AKillingBlowThrowsTheBodyToLieWhereItFalls()
+        public IEnumerator AKillingBlowThrowsTheBodyWhichThenCrumbles()
         {
+            // The body is thrown along the blow and lands; since 2026-09-28 (visual item 4, the
+            // user's choice) it no longer lies there until a rest but crumbles to ash. A rest still
+            // brings the enemy back whole.
             var side = OpenSide();
             var start = _zombie.transform.position.x;
             _zombie.Actor.ApplyDamage(Blow(99999f, side, 3f));
             Assert.That(_zombie.IsAlive, Is.False);
 
             var motor = _zombie.GetComponent<EnemyMotor2D>();
+            var visual = _zombie.transform.Find("Visual");
+            var crumble = _zombie.GetComponent<CorpseCrumble>();
             yield return new WaitForSeconds(0.3f);
             yield return WaitUntil(motor.ProbeGround, 3f);
-            yield return new WaitForSeconds(2.5f);
 
             Assert.That((_zombie.transform.position.x - start) * side, Is.GreaterThan(0.3f),
                 "The body was not thrown along the blow.");
             Assert.That(motor.ProbeGround(), Is.True, "The body did not come to rest on the floor.");
-            var visual = _zombie.transform.Find("Visual");
-            Assert.That(visual.gameObject.activeSelf, Is.True, "The body vanished instead of lying there.");
+            Assert.That(visual.gameObject.activeSelf, Is.True, "The body is seen to fall before it goes.");
             var body = _zombie.GetComponent<Collider2D>();
-            Assert.That(body.enabled, Is.True);
             Assert.That((body.excludeLayers.value & (1 << LayerMask.NameToLayer("Player"))) != 0, Is.True,
                 "The player would trip over the corpse.");
+
+            yield return WaitUntil(() => crumble.IsGone, 6f);
+            Assert.That(crumble.IsGone, Is.True, "The body crumbled away.");
+            Assert.That(visual.gameObject.activeSelf, Is.False);
 
             _zombie.ResetEnemy();
             yield return null;
             Assert.That(_zombie.IsAlive, Is.True);
+            Assert.That(visual.gameObject.activeSelf, Is.True, "A rest brings the body back.");
+            Assert.That(visual.Find("Body").GetComponent<SpriteRenderer>().color.a, Is.EqualTo(1f).Within(0.01f),
+                "Whole, not half crumbled.");
             Assert.That(body.excludeLayers.value, Is.Zero, "A revived enemy kept a corpse's collisions.");
         }
 

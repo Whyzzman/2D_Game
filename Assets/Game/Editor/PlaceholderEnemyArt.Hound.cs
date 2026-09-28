@@ -36,6 +36,7 @@ namespace ForgottenKingdom.EditorTools
             public float Squash;
             public float Alpha;
             public float Glow;
+            public float EyeFlare;
 
             public static HoundPose Stand => new HoundPose
             {
@@ -51,7 +52,7 @@ namespace ForgottenKingdom.EditorTools
         {
             var build = ForestBuildFor(Actor.Hound);
             var canvas = new Canvas(build.Width, build.Height);
-            DrawHound(canvas, build, HoundPoseFor(state, t));
+            DrawHound(canvas, build, HoundTelegraphed(state, t, HoundPoseFor(state, t)));
             canvas.Silhouette(new Color32(6, 5, 5, 225), EnemyRim, 0.42f);
             return canvas.EncodePng();
         }
@@ -207,6 +208,24 @@ namespace ForgottenKingdom.EditorTools
             return pose;
         }
 
+        /// <summary>The hound's windup made clearer: it sinks lower, pulls its head back, eyes flare.</summary>
+        private static HoundPose HoundTelegraphed(EnemyAnimationState state, float t, HoundPose pose)
+        {
+            var peak = state == EnemyAnimationState.AttackLight ? 0.34f
+                : state == EnemyAnimationState.AttackHeavy ? 0.4f : -1f;
+            if (peak < 0f)
+            {
+                return pose;
+            }
+
+            var w = Windup(t, peak);
+            pose.BodyY -= 4f * w;
+            pose.SpineTilt -= 4f * w;
+            pose.Neck += 6f * w;
+            pose.EyeFlare = w;
+            return pose;
+        }
+
         private static void DrawHound(Canvas canvas, Build build, HoundPose pose)
         {
             // The spine runs back to front across the canvas, with the head towards +x, which is
@@ -221,9 +240,12 @@ namespace ForgottenKingdom.EditorTools
             canvas.Limb(front, pose.OffFrontUpper, 20f, pose.FrontLower, 18f, 5f, build.Metal);
             canvas.Limb(rear, pose.OffRearUpper, 22f, pose.RearLower, 20f, 5.5f, build.Metal);
 
-            // Tail: thin, long, and it tells you what the body is doing.
-            var tailTip = rear + Canvas.Rotate(new Vector2(-30f, 0f), pose.SpineTilt + pose.Tail);
-            canvas.Thick(rear, tailTip, 5f, 1.5f, build.Armor);
+            // Tail: only its root is drawn; the rest is the live tail hung from the stub's end
+            // (visual item 4), which carries on the angle the pose gives it.
+            var tailAngle = pose.SpineTilt + pose.Tail;
+            var tailStub = rear + Canvas.Rotate(new Vector2(-9f, 0f), tailAngle);
+            canvas.Thick(rear, tailStub, 5.5f, 4.5f, build.Armor);
+            Anchor(canvas, tailStub, HangAngle(Canvas.Rotate(new Vector2(-1f, 0f), tailAngle)));
 
             // Body: haunch heavier than chest, so it reads as built for springing.
             canvas.Thick(rear, front, 22f, 17f, build.Armor);
@@ -285,7 +307,7 @@ namespace ForgottenKingdom.EditorTools
                 canvas.RectOver(at.x - 2f, at.y + 6f, at.x + 2f, at.y + 10f, mark);
             }
 
-            Eye(canvas, head + Canvas.Rotate(new Vector2(3f, 3f), tilt), 1.9f, VioletEye);
+            Eye(canvas, head + Canvas.Rotate(new Vector2(3f, 3f), tilt), 1.9f, VioletEye, pose.EyeFlare);
 
             if (pose.Alpha < 0.999f)
             {

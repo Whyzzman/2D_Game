@@ -38,12 +38,95 @@ namespace ForgottenKingdom.EditorTools
         /// An eye that glows dimly: a darker ring, the bright core and a pin of light. The eyes are
         /// where the player looks to read which way an enemy faces and whether it has seen him.
         /// </summary>
-        private static void Eye(Canvas canvas, Vector2 at, float radius, Color32 core)
+        private static void Eye(Canvas canvas, Vector2 at, float radius, Color32 core, float flare = 0f)
         {
-            canvas.Ellipse(at, radius * 1.7f, radius * 1.4f, Color32.Lerp(core, Charcoal, 0.6f));
-            canvas.Ellipse(at, radius, radius * 0.8f, core);
-            canvas.Ellipse(at + new Vector2(radius * 0.3f, radius * 0.25f), radius * 0.4f, radius * 0.4f,
-                Color32.Lerp(core, new Color32(255, 255, 255, 255), 0.6f));
+            // Just before a blow lands the eyes flare (visual item 4): bigger, whiter, a glint.
+            flare = Mathf.Clamp01(flare);
+            var white = new Color32(255, 255, 255, 255);
+            var r = radius * (1f + 0.55f * flare);
+            var lit = Color32.Lerp(core, white, 0.45f * flare);
+            canvas.Ellipse(at, r * 1.7f, r * 1.4f, Color32.Lerp(core, Charcoal, 0.6f - 0.25f * flare));
+            canvas.Ellipse(at, r, r * 0.8f, lit);
+            canvas.Ellipse(at + new Vector2(r * 0.3f, r * 0.25f), r * 0.4f, r * 0.4f,
+                Color32.Lerp(core, white, 0.6f + 0.4f * flare));
+            if (flare > 0.3f)
+            {
+                var reach = r * (1.2f + 2.2f * flare);
+                canvas.Thick(at - new Vector2(reach, 0f), at + new Vector2(reach, 0f), 1.2f, 1.2f, lit);
+                canvas.Thick(at - new Vector2(0f, reach * 0.6f), at + new Vector2(0f, reach * 0.6f), 1f, 1f, lit);
+            }
+        }
+
+        /// <summary>
+        /// Where the loose piece hangs on the frame just drawn (x, y in pixels on the canvas, z the
+        /// angle), or null for an actor with nothing loose. Set by the draw, read by Generate.
+        /// </summary>
+        private static Vector3? _frameAnchor;
+
+        /// <summary>Per-frame hanging points of every generated clip, by "prefix_state".</summary>
+        private static readonly Dictionary<string, Vector3[]> FrameAnchors = new Dictionary<string, Vector3[]>();
+
+        /// <summary>The live piece's hanging points for one clip, or null when the actor has none.</summary>
+        public static Vector3[] AnchorsFor<TState>(string prefix, TState state) =>
+            FrameAnchors.TryGetValue($"{prefix}_{state.ToString().ToLowerInvariant()}", out var anchors)
+                ? anchors
+                : null;
+
+        /// <summary>
+        /// The windup made unmistakable (visual item 4): up to the moment the blow commits the body
+        /// sinks and leans back, the weapon goes further back and the eyes flare; it all lets go
+        /// within a few frames of the strike. <paramref name="peak"/> is where in the clip that is.
+        /// </summary>
+        private static Pose Anticipate(Pose pose, float t, float peak, bool moveArms = true)
+        {
+            var w = Windup(t, peak);
+            pose.HipY -= 5f * w;
+            pose.Lean -= 5f * w;
+            pose.FrontThigh -= 4f * w;
+            pose.BackThigh += 6f * w;
+            if (moveArms)
+            {
+                pose.FrontArm -= 12f * w;
+                pose.SwordAngle -= 14f * w;
+            }
+
+            pose.EyeFlare = w;
+            return pose;
+        }
+
+        private static float Windup(float t, float peak) =>
+            t <= peak ? Ease(Mathf.Clamp01(t / Mathf.Max(0.01f, peak)))
+                : 1f - Ease(Mathf.Clamp01((t - peak) / 0.12f));
+
+        /// <summary>Where each ordinary attack commits, as a share of its clip (from its pose curves).</summary>
+        private static float PeakOf(Actor actor, EnemyAnimationState state)
+        {
+            switch (state)
+            {
+                case EnemyAnimationState.AttackLight:
+                    return actor == Actor.Archer ? 0.72f : actor == Actor.Shaman ? 0.7f
+                        : actor == Actor.Spearman ? 0.42f : 0.3f;
+                case EnemyAnimationState.AttackHeavy:
+                    return actor == Actor.Shaman ? 0.78f : 0.3f;
+                case EnemyAnimationState.ShieldBash:
+                    return actor == Actor.Archer ? 0.28f : actor == Actor.Spearman ? 0.42f : 0.25f;
+                default:
+                    return -1f;
+            }
+        }
+
+        /// <summary>The pose, with the windup made clearer on attacks.</summary>
+        private static Pose Telegraphed(Actor actor, EnemyAnimationState state, float t, Pose pose)
+        {
+            var peak = PeakOf(actor, state);
+            if (peak < 0f)
+            {
+                return pose;
+            }
+
+            // A bow or a staff is held where it is aimed: only the body and the eyes tell.
+            var armed = actor != Actor.Archer && actor != Actor.Shaman;
+            return Anticipate(pose, t, peak, armed || state == EnemyAnimationState.ShieldBash);
         }
         private static readonly Color32 Steel = new Color32(0x3E, 0x42, 0x47, 0xFF);
         private static readonly Color32 DarkSteel = new Color32(0x2A, 0x2D, 0x31, 0xFF);
@@ -284,11 +367,13 @@ namespace ForgottenKingdom.EditorTools
 
         public static Dictionary<EnemyAnimationState, Sprite[]> GenerateZombie() =>
             Generate(ZombieFolder, "enemy_zombie", ZombieStates,
-                (state, t) => Render(Actor.Zombie, EnemyPose(Actor.Zombie, state, t)));
+                (state, t) => Render(Actor.Zombie,
+                    Telegraphed(Actor.Zombie, state, t, EnemyPose(Actor.Zombie, state, t))));
 
         public static Dictionary<EnemyAnimationState, Sprite[]> GenerateGuard() =>
             Generate(GuardFolder, "enemy_shieldguard", GuardStates,
-                (state, t) => Render(Actor.Guard, EnemyPose(Actor.Guard, state, t)));
+                (state, t) => Render(Actor.Guard,
+                    Telegraphed(Actor.Guard, state, t, EnemyPose(Actor.Guard, state, t))));
 
         public static Dictionary<BossAnimationState, Sprite[]> GenerateBoss() =>
             Generate(BossFolder, "boss_guardian", BossStates,
@@ -328,6 +413,8 @@ namespace ForgottenKingdom.EditorTools
                 PlaceholderImport.EnsureFolder(folder);
                 var name = $"{prefix}_{spec.State.ToString().ToLowerInvariant()}";
                 var sprites = new Sprite[spec.Frames];
+                var anchors = new Vector3[spec.Frames];
+                var anchored = true;
                 for (var i = 0; i < spec.Frames; i++)
                 {
                     var path = $"{folder}/{name}_{i:00}.png";
@@ -336,7 +423,21 @@ namespace ForgottenKingdom.EditorTools
                     var t = spec.Loops
                         ? i / (float)spec.Frames
                         : (spec.Frames <= 1 ? 0f : i / (float)(spec.Frames - 1));
-                    PlaceholderImport.WriteIfChanged(path, render(spec.State, t));
+                    _frameAnchor = null;
+                    var png = render(spec.State, t);
+                    if (_frameAnchor.HasValue)
+                    {
+                        // Canvas pixels to units from the pivot, which sits at the feet, centred.
+                        var a = _frameAnchor.Value;
+                        anchors[i] = new Vector3((a.x - _frameWidth * 0.5f) / PlaceholderImport.PixelsPerUnit,
+                            a.y / PlaceholderImport.PixelsPerUnit, a.z);
+                    }
+                    else
+                    {
+                        anchored = false;
+                    }
+
+                    PlaceholderImport.WriteIfChanged(path, png);
                     PlaceholderImport.ConfigureImporter(path);
                     sprites[i] = AssetDatabase.LoadAssetAtPath<Sprite>(path);
                     if (sprites[i] == null)
@@ -346,10 +447,31 @@ namespace ForgottenKingdom.EditorTools
                 }
 
                 result[spec.State] = sprites;
+                if (anchored)
+                {
+                    FrameAnchors[name] = anchors;
+                }
+                else
+                {
+                    FrameAnchors.Remove(name);
+                }
             }
 
             return result;
         }
+
+        private static float _frameWidth;
+
+        /// <summary>Records the hanging point for the frame being drawn (see <see cref="_frameAnchor"/>).</summary>
+        private static void Anchor(Canvas canvas, Vector2 at, float angle)
+        {
+            _frameWidth = canvas.Width;
+            _frameAnchor = new Vector3(at.x, at.y, angle);
+        }
+
+        /// <summary>The hang angle (degrees from straight down, positive towards the back) of a direction.</summary>
+        private static float HangAngle(Vector2 direction) =>
+            Mathf.Atan2(-direction.x, -direction.y) * Mathf.Rad2Deg;
 
         // ---------- posing ----------
 
@@ -378,6 +500,7 @@ namespace ForgottenKingdom.EditorTools
             public float Squash;
             public float Alpha;
             public float Glow;
+            public float EyeFlare;
 
             public static Pose Stand => new Pose
             {
@@ -963,6 +1086,8 @@ namespace ForgottenKingdom.EditorTools
             var head = shoulder + Canvas.Rotate(new Vector2(0f, build.Neck + build.HeadRy),
                 lean + pose.HeadTilt);
 
+            LooseAnchor(canvas, build, actor, hip, shoulder, head, lean, lean + pose.HeadTilt);
+
             // Back limbs first: depth comes from draw order, not from a z buffer.
             canvas.Limb(shoulder, pose.BackArm + lean, build.Arm, pose.BackForearm, build.Forearm,
                 build.ArmWidth, build.Metal);
@@ -1005,6 +1130,42 @@ namespace ForgottenKingdom.EditorTools
             if (pose.Alpha < 0.999f)
             {
                 canvas.Fade(pose.Alpha);
+            }
+        }
+
+        /// <summary>
+        /// Where each kind hangs its loose piece from (visual item 4): rags at the zombie's back,
+        /// the archer's hood tail, the hem of the shaman's robe, the spearman's scarf, the
+        /// Guardian's cape and the Warden's cloak of roots. The guard has nothing loose.
+        /// </summary>
+        private static void LooseAnchor(Canvas canvas, Build build, Actor actor, Vector2 hip,
+            Vector2 shoulder, Vector2 head, float lean, float headTilt)
+        {
+            var w = build.TorsoWidth;
+            switch (actor)
+            {
+                case Actor.Zombie:
+                    Anchor(canvas, hip + Canvas.Rotate(new Vector2(-w * 0.4f, build.Torso * 0.15f), lean), 10f + lean * 0.3f);
+                    break;
+                case Actor.Archer:
+                    Anchor(canvas, head + Canvas.Rotate(new Vector2(-build.HeadRx * 1.05f, -build.HeadRy * 0.35f), headTilt),
+                        28f + headTilt * 0.3f);
+                    break;
+                case Actor.Shaman:
+                    Anchor(canvas, hip + Canvas.Rotate(new Vector2(-w * 0.5f, -build.Torso * 0.3f), lean), 14f + lean * 0.3f);
+                    break;
+                case Actor.Spearman:
+                    Anchor(canvas, shoulder + Canvas.Rotate(new Vector2(-w * 0.3f, -2f), lean), 34f + lean * 0.3f);
+                    break;
+                case Actor.BossPhaseOne:
+                case Actor.BossPhaseTwo:
+                    Anchor(canvas, shoulder + Canvas.Rotate(new Vector2(-w * 0.55f, -build.Torso * 0.85f), lean),
+                        12f + lean * 0.3f);
+                    break;
+                case Actor.WardenPhaseOne:
+                case Actor.WardenPhaseTwo:
+                    Anchor(canvas, shoulder + Canvas.Rotate(new Vector2(-w * 0.45f, -4f), lean), 18f + lean * 0.3f);
+                    break;
             }
         }
 
@@ -1069,13 +1230,13 @@ namespace ForgottenKingdom.EditorTools
                     head + Canvas.Rotate(new Vector2(-build.HeadRx * 0.9f, -build.HeadRy * 0.4f),
                         tilt), build.Metal);
                 Eye(canvas, head + Canvas.Rotate(new Vector2(build.HeadRx * 0.45f, 0f), tilt), 2f,
-                    SicklyEye);
+                    SicklyEye, pose.EyeFlare);
                 return;
             }
 
             if (build.Head != HeadGear.Helm)
             {
-                ForestHead(canvas, build, head, tilt);
+                ForestHead(canvas, build, head, tilt, pose.EyeFlare);
                 return;
             }
 
@@ -1089,7 +1250,7 @@ namespace ForgottenKingdom.EditorTools
             {
                 // Two glints deep in the visor.
                 Eye(canvas, head + Canvas.Rotate(new Vector2(build.HeadRx * 0.72f, 1.5f), tilt), 1.4f,
-                    AmberEye);
+                    AmberEye, pose.EyeFlare);
                 return;
             }
 

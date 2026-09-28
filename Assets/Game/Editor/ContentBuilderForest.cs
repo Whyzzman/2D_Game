@@ -963,7 +963,7 @@ namespace ForgottenKingdom.EditorTools
                 element.FindPropertyRelative("state").enumValueIndex = (int)spec.State;
                 WriteClip(element.FindPropertyRelative("clip"),
                     $"boss_warden_{spec.State.ToString().ToLowerInvariant()}", spec.Fps,
-                    spec.Loops, frames[spec.State]);
+                    spec.Loops, frames[spec.State], PlaceholderEnemyArt.AnchorsFor("boss_warden", spec.State));
             }
 
             // The Warden's own moveset, stated outright: it has no shield to bash with, and the
@@ -977,7 +977,8 @@ namespace ForgottenKingdom.EditorTools
 
             var idle = System.Array.Find(specs, s => s.State == BossAnimationState.IdleP1);
             WriteClip(serialized.FindProperty("_fallback"), "boss_warden_idlep1", idle.Fps, true,
-                frames[BossAnimationState.IdleP1]);
+                frames[BossAnimationState.IdleP1],
+                PlaceholderEnemyArt.AnchorsFor("boss_warden", BossAnimationState.IdleP1));
             serialized.ApplyModifiedPropertiesWithoutUndo();
             EditorUtility.SetDirty(set);
         }
