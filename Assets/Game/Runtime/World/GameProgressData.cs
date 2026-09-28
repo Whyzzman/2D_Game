@@ -175,6 +175,12 @@ namespace ForgottenKingdom
         /// </summary>
         public List<KillCount> kills = new List<KillCount>();
         public List<string> bestiarySeen = new List<string>();
+        /// <summary>
+        /// Item 5: deaths over the whole game, for the summary, and whether the King has fallen and
+        /// the ending been seen. An older file has neither, which is correct.
+        /// </summary>
+        public int deaths;
+        public bool completed;
         public float totalPlayTimeSeconds;
         public string createdAtUtc = string.Empty;
         public string lastSavedAtUtc = string.Empty;
@@ -341,6 +347,7 @@ namespace ForgottenKingdom
             MigrateStarterWeapon();
             totalPlayTimeSeconds = Mathf.Max(0f, totalPlayTimeSeconds);
             lostCurrency = Mathf.Max(0, lostCurrency);
+            deaths = Mathf.Max(0, deaths);
             checkpointId ??= string.Empty;
             // Left empty on purpose for a pre-version-nine file. Guessing "the Tomb" here would be
             // right today and wrong the moment a zone is renamed; the registry knows, this does not.

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<title>Тінь Забутого Королівства — Написи і фінал</title>
+<link rel="stylesheet" href="../_shared/ui.css">
+<style>
+  body { background: #050403; }
+  .sheet { display: flex; flex-wrap: wrap; gap: 28px; padding: 28px; }
+  .frame { position: relative; flex-shrink: 0; width: 912px; height: 513px; overflow: hidden; border: 1px solid var(--edge-mid); }
+  .frame > .stage-inner { position: absolute; width: 1920px; height: 1080px; transform: scale(0.475); transform-origin: top left; }
+  .frame__caption {
+    position: absolute; left: 0; right: 0; bottom: 0; z-index: 5; padding: 6px 10px;
+    font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--gold-dim); background: rgba(5,4,3,0.88); border-top: 1px solid var(--edge-mid);
+  }
+  .note { max-width: 1852px; margin: 28px 28px 0; color: var(--ink-muted); font-size: 14px; line-height: 1.6; }
+  .note b { color: var(--ink); }
+  .note ul { margin: 8px 0 0; padding-left: 20px; }
+  .world { position: absolute; inset: 0;
+    background: radial-gradient(50% 45% at 50% 70%, rgba(92,70,40,0.35), transparent 70%), linear-gradient(180deg, #16120e, #0a0807); }
+  .black { position: absolute; inset: 0; background: #030202; }
+
+  /* Напис: камінь у світі + текст над ним, як репліка, але без імені мовця. */
+  .stone { position: absolute; left: 900px; bottom: 260px; width: 90px; height: 130px;
+    background: linear-gradient(180deg, #3b342c, #1c1814); border: 2px solid #4e4336; }
+  .stone::after { content: ""; position: absolute; left: 18px; right: 18px; top: 26px; height: 4px; box-shadow: 0 0 0 1px #2a241e, 0 14px 0 #2a241e, 0 28px 0 #2a241e, 0 42px 0 #2a241e; }
+  .hero { position: absolute; left: 1020px; bottom: 260px; width: 46px; height: 110px; background: #0d0b09; border-radius: 20px 20px 4px 4px; }
+  .ground { position: absolute; left: 0; right: 0; bottom: 0; height: 260px; background: #0c0a08; border-top: 2px solid #2a231c; }
+  .inscription {
+    position: absolute; left: 50%; top: 150px; transform: translateX(-50%); width: 1100px;
+    padding: var(--s6) var(--s7); text-align: center;
+    background: rgba(8,6,5,0.9); border-top: 1px solid var(--edge-light); border-bottom: 1px solid var(--edge-light);
+  }
+  .inscription__text { margin: 0; font-family: var(--font-display); font-size: 30px; line-height: 1.55; color: var(--ink-bright); letter-spacing: 0.03em; }
+  .inscription__hint { margin-top: var(--s5); font-size: var(--fs-small); color: var(--ink-dim); letter-spacing: 0.18em; text-transform: uppercase; }
+  .prompt { position: absolute; left: 880px; bottom: 420px; width: 130px; text-align: center; font-size: 22px; color: var(--gold-bright); }
+  .prompt b { display: inline-block; padding: 2px 10px; border: 1px solid var(--gold-dim); margin-right: 6px; }
+
+  /* Фінал: рядки з'являються по одному, попередній гасне до сірого. */
+  .ending { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 38px; }
+  .ending p { margin: 0; max-width: 1300px; text-align: center; font-family: var(--font-display); font-size: 40px; line-height: 1.5; letter-spacing: 0.04em; }
+  .ending .past { color: var(--ink-dim); }
+  .ending .now { color: var(--ink-bright); text-shadow: 0 0 40px rgba(201,161,74,0.25); }
+
+  /* Титри: повільний підйом, знизу підказка про пропуск. */
+  .credits { position: absolute; left: 0; right: 0; top: 140px; text-align: center; }
+  .credits h1 { margin: 0 0 90px; font-family: var(--font-display); font-size: 72px; letter-spacing: 0.1em; color: var(--ink-bright); font-weight: 400; }
+  .credits h3 { margin: 0 0 12px; font-size: 20px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold-dim); font-weight: 500; }
+  .credits div { margin-bottom: 64px; font-family: var(--font-display); font-size: 34px; color: var(--ink); }
+  .skip { position: absolute; right: 64px; bottom: 56px; font-size: var(--fs-small); color: var(--ink-dim); letter-spacing: 0.14em; }
+  .skip b { color: var(--ink-muted); border: 1px solid var(--edge-mid); padding: 2px 8px; margin-right: 6px; font-weight: 500; }
+
+  /* Підсумки: одна панель, шість рядків, одна кнопка. */
+  .summary { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 760px; }
+  .summary .panel__body { padding: var(--s6) var(--s7); }
+  .sum-row { display: flex; justify-content: space-between; align-items: baseline; padding: 14px 0; border-bottom: 1px solid rgba(58,47,37,0.6); font-size: 24px; }
+  .sum-row span { color: var(--ink-muted); }
+  .sum-row b { font-variant-numeric: tabular-nums; color: var(--gold-bright); font-weight: 500; }
+  .summary .btn { width: 100%; margin-top: var(--s6); font-family: var(--font-display); letter-spacing: 0.14em; text-transform: uppercase; }
+  .summary__head { text-align: center; }
+
+  /* Меню після фіналу (як menus.html). */
+  .title-screen { position: absolute; inset: 0; display: grid; place-items: center; }
+  .title-screen__art { position: absolute; inset: 0;
+    background: radial-gradient(60% 50% at 50% 38%, rgba(138,116,52,0.14) 0%, transparent 70%), radial-gradient(120% 90% at 50% 10%, #241f19 0%, #100d0b 55%, #060504 100%); }
+  .game-title { position: relative; font-family: var(--font-display); font-size: 78px; letter-spacing: 0.1em; line-height: 1.1; text-align: center; color: var(--ink-bright); margin: 0 0 var(--s7); font-weight: 400; }
+  .game-title small { display: block; font-size: 24px; letter-spacing: 0.34em; color: var(--gold-dim); margin-top: var(--s3); }
+  .menu-list { position: relative; display: flex; flex-direction: column; gap: var(--s3); width: 400px; }
+  .menu-list .btn { width: 100%; font-family: var(--font-display); letter-spacing: 0.14em; text-transform: uppercase; }
+  .save-meta { position: absolute; left: 64px; bottom: 56px; font-size: var(--fs-small); color: var(--ink-dim); line-height: 1.7; }
+  .save-meta b { color: var(--ink-muted); font-weight: 500; }
+  .crown { color: var(--gold); }
+  .ngplus-tag { margin-left: 8px; font-size: var(--fs-micro); color: var(--gold); border: 1px solid var(--gold-dim); padding: 1px 6px; }
+</style>
+</head>
+<body>
+<div class="note">
+  <b>П. 5 — початок і кінець гри.</b> Вступу-заставки немає: гра починається одразу, сюжет — у сімох
+  кам'яних написах (текст — <code>gamedesign/STORY.md</code>, чернетка). Після смерті Короля: фінал → титри →
+  підсумки → «Продовжити» повертає до останнього вівтаря з гаком. У меню після фіналу — «Нова гра+».
+  <ul>
+    <li>Напис: підказка над каменем, як у персонажа; текст — рамкою репліки без імені, закривається будь-якою дією.</li>
+    <li>Фінал і титри пропускаються утриманням «Взаємодії» (1 с), щоб не проскочити випадково.</li>
+    <li>«Нова гра+» стирає поточне проходження — окреме підтвердження з тим, що переноситься.</li>
+  </ul>
+</div>
+<div class="sheet">
+
+  <!-- 1. напис у світі -->
+  <div class="frame">
+    <div class="stage-inner">
+      <div class="world"></div><div class="ground"></div>
+      <div class="stone"></div><div class="hero"></div>
+      <div class="prompt"><b>E</b>Читати</div>
+    </div>
+    <div class="frame__caption">1 · Напис — підказка біля каменю</div>
+  </div>
+
+  <!-- 2. напис прочитано -->
+  <div class="frame">
+    <div class="stage-inner">
+      <div class="world" style="filter:brightness(0.55)"></div><div class="ground"></div>
+      <div class="stone"></div><div class="hero"></div>
+      <div class="inscription">
+        <p class="inscription__text">Тут лежать ті, хто не присягнув. Їхні імена стерто,<br>щоб королівство пам'ятало лише вірних.</p>
+        <div class="inscription__hint">Напис на камені</div>
+      </div>
+    </div>
+    <div class="frame__caption">2 · Напис — текст (гра не на паузі, рух закриває)</div>
+  </div>
+
+  <!-- 3. фінал -->
+  <div class="frame">
+    <div class="stage-inner">
+      <div class="black"></div>
+      <div class="ending">
+        <p class="past">Король упав, і слово його впало разом із ним.</p>
+        <p class="past">Попіл нарешті охолов. Ліс, що тримав присягу, відпустив коріння.</p>
+        <p class="now">Королівство забули. Уперше за сто років воно спочиває.<br>А тінь без імені лишилася — пам'ятати за всіх.</p>
+      </div>
+      <div class="skip"><b>E</b>утримати — пропустити</div>
+    </div>
+    <div class="frame__caption">3 · Фінал — три рядки по черзі</div>
+  </div>
+
+  <!-- 4. титри -->
+  <div class="frame">
+    <div class="stage-inner">
+      <div class="black"></div>
+      <div class="credits">
+        <h1>Тінь Забутого Королівства</h1>
+        <h3>Гра</h3><div>—</div>
+        <h3>Код і дизайн</h3><div>—</div>
+        <h3>Арт і звук</h3><div>тимчасові, процедурні</div>
+      </div>
+      <div class="skip"><b>E</b>утримати — пропустити</div>
+    </div>
+    <div class="frame__caption">4 · Титри — повільно вгору</div>
+  </div>
+
+  <!-- 5. підсумки -->
+  <div class="frame">
+    <div class="stage-inner">
+      <div class="black" style="background:#070605"></div>
+      <div class="panel panel--royal summary">
+        <div class="panel__header summary__head"><h2 class="panel__title">Підсумки</h2></div>
+        <div class="panel__body">
+          <div class="sum-row"><span>Час</span><b>4 год 12 хв</b></div>
+          <div class="sum-row"><span>Смертей</span><b>37</b></div>
+          <div class="sum-row"><span>Карта</span><b>86%</b></div>
+          <div class="sum-row"><span>Убито ворогів</span><b>412</b></div>
+          <div class="sum-row"><span>Секретів</span><b>11 / 14</b></div>
+          <div class="sum-row"><span>Рівень героя</span><b>18</b></div>
+          <button class="btn btn--primary is-focused">Продовжити</button>
+        </div>
+      </div>
+    </div>
+    <div class="frame__caption">5 · Підсумки — «Продовжити» веде до вівтаря</div>
+  </div>
+
+  <!-- 6. меню після фіналу -->
+  <div class="frame">
+    <div class="stage-inner">
+      <div class="title-screen">
+        <div class="title-screen__art"></div>
+        <div style="position:relative; display:grid; place-items:center;">
+          <h1 class="game-title">Тінь<br>Забутого Королівства<small>Пролог</small></h1>
+          <div class="menu-list">
+            <button class="btn btn--primary is-focused">Продовжити</button>
+            <button class="btn">Нова гра+</button>
+            <button class="btn">Нова гра</button>
+            <button class="btn">Налаштування</button>
+            <button class="btn">Вийти</button>
+          </div>
+        </div>
+        <div class="save-meta"><b>Храмовий вівтар</b> <span class="crown">♛ Пройдено</span><br>Рівень 18 · 4 год 12 хв</div>
+      </div>
+    </div>
+    <div class="frame__caption">6 · Головне меню — гру пройдено</div>
+  </div>
+
+  <!-- 7. підтвердження NG+ -->
+  <div class="frame">
+    <div class="stage-inner">
+      <div class="title-screen">
+        <div class="title-screen__art"></div>
+        <div class="scrim">
+          <div class="panel panel--royal modal" style="width:680px">
+            <div class="panel__header"><h2 class="panel__title" style="font-size:var(--fs-lead)">Почати «Нову гру+»?</h2></div>
+            <div class="panel__body">
+              <p style="margin:0 0 var(--s4); font-size:var(--fs-small); line-height:1.7; color:var(--ink-muted)">
+                <b style="color:var(--ink-bright)">Залишаться:</b> рівень, навички, спорядження, речі, золото.<br>
+                <b style="color:var(--ink-bright)">Почнуться заново:</b> здібності руху, карта, боси, секрети, бестіарій.<br>
+                Вороги й боси — <b style="color:var(--danger)">+50% здоров'я і шкоди</b>.
+              </p>
+              <div class="row">
+                <button class="btn is-focused">Скасувати</button>
+                <span class="spacer"></span>
+                <button class="btn btn--danger">Почати</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="frame__caption">7 · Підтвердження «Нової гри+»</div>
+  </div>
+
+  <!-- 8. меню в NG+ -->
+  <div class="frame">
+    <div class="stage-inner">
+      <div class="title-screen">
+        <div class="title-screen__art"></div>
+        <div style="position:relative; display:grid; place-items:center;">
+          <h1 class="game-title">Тінь<br>Забутого Королівства<small>Пролог</small></h1>
+          <div class="menu-list">
+            <button class="btn btn--primary is-focused">Продовжити</button>
+            <button class="btn">Нова гра</button>
+            <button class="btn">Налаштування</button>
+            <button class="btn">Вийти</button>
+          </div>
+        </div>
+        <div class="save-meta"><b>Вівтар входу</b><span class="ngplus-tag">NG+</span><br>Рівень 18 · 0 год 03 хв</div>
+      </div>
+    </div>
+    <div class="frame__caption">8 · Головне меню — у «Новій грі+»</div>
+  </div>
+
+</div>
+</body>
+</html>

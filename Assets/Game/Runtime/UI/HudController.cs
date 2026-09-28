@@ -79,6 +79,8 @@ namespace ForgottenKingdom
         private Label _promptText;
         private BossTitleCard _bossTitle;
         private ZoneTitleBanner _zoneTitle;
+        private InscriptionView _inscription;
+        private EndingView _ending;
         private VisualElement _fade;
         private VisualElement _death;
         private Slot _weaponSlot;
@@ -123,6 +125,8 @@ namespace ForgottenKingdom
         public MapView Map => _map;
         public ShrineView Shrine => _shrine;
         public DialogueView Dialogue => _dialogue;
+        public InscriptionView InscriptionPanel => _inscription;
+        public EndingView Ending => _ending;
         public ShopView Shop => _shop;
 
         /// <summary>The "ability gained" card; it shares this document.</summary>
@@ -163,7 +167,11 @@ namespace ForgottenKingdom
             _dialogue.Attach(FindAnyObjectByType<DialogueService>(), _player);
             _shop = new ShopView(_root);
             _shop.Attach(FindAnyObjectByType<ShopService>(), _player);
-            _pause = new PauseMenu(_root, _inventory, _map, _shrine, _dialogue, _shop);
+            _inscription = new InscriptionView(_root);
+            _inscription.Attach();
+            _ending = new EndingView(_root);
+            _ending.Attach(FindAnyObjectByType<EndingSequence>(), _player);
+            _pause = new PauseMenu(_root, _inventory, _map, _shrine, _dialogue, _shop, _ending);
             _pause.Attach(_player, _progress);
             _keyGlyphs = new HudKeyGlyphs(_root);
             _abilityCard = new AbilityCard(_root);
@@ -183,6 +191,8 @@ namespace ForgottenKingdom
             _shrine?.Detach();
             _dialogue?.Detach();
             _shop?.Detach();
+            _inscription?.Detach();
+            _ending?.Detach();
             _abilityCard?.Detach();
             _keyGlyphs?.Dispose();
         }
@@ -339,6 +349,7 @@ namespace ForgottenKingdom
             _shrine?.Tick();
             _dialogue?.Tick();
             _shop?.Tick();
+            _ending?.Tick();
             _abilityCard?.Tick();
             var dt = Time.unscaledDeltaTime;
             UpdateResources(dt);

@@ -30696,6 +30696,7 @@ GameObject:
   - component: {fileID: 2012626521}
   - component: {fileID: 2012626520}
   - component: {fileID: 2012626532}
+  - component: {fileID: 2012626533}
   m_Layer: 0
   m_Name: Systems
   m_TagString: Untagged
@@ -31083,6 +31084,22 @@ MonoBehaviour:
   _player: {fileID: 916045003}
   _neighbourDepth: 1
   _pollInterval: 0.2
+--- !u!114 &2012626533
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2012626512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 176832f51a776448fa663bf89447e72d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.EndingSequence
+  _progress: {fileID: 2012626513}
+  _respawner: {fileID: 2012626517}
+  _player: {fileID: 916045003}
+  _delay: 3
 --- !u!1 &2078292375
 GameObject:
   m_ObjectHideFlags: 0

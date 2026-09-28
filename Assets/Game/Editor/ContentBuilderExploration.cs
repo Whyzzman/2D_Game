@@ -148,9 +148,11 @@ namespace ForgottenKingdom.EditorTools
 
             BuildArmsTrial(Section(root, "ArmsTrial"), pickup, progress);
             BuildThornCourse(Section(root, "ThornCourse"), pickup, progress);
+            BuildInscriptions(Section(root, "Inscriptions"));
             if (progress != null)
             {
                 SetReference(progress, "_bestiary", BuildBestiaryCatalog());
+                BuildEnding(progress);
             }
         }
 

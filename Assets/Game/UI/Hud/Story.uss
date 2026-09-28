@@ -1,0 +1,206 @@
+/* Item 5: the story's stones, the ending, the credits and the summary.
+   design/ui/ending/ending.html. Prefixes ins-, end-. */
+
+/* ---------- a stone being read (frame 2) ---------- */
+
+.ins {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 14%;
+    align-items: center;
+    opacity: 0;
+    transition-property: opacity;
+    transition-duration: 0.35s;
+}
+
+.ins--open {
+    opacity: 1;
+}
+
+.ins__text {
+    width: 1100px;
+    padding: 32px 48px 10px 48px;
+    font-size: 30px;
+    color: rgb(240, 230, 210);
+    -unity-text-align: middle-center;
+    white-space: normal;
+    background-color: rgba(8, 6, 5, 0.9);
+    border-top-width: 1px;
+    border-top-color: rgb(107, 90, 66);
+}
+
+.ins__hint {
+    width: 1100px;
+    padding: 0 48px 26px 48px;
+    font-size: 15px;
+    letter-spacing: 3px;
+    color: rgb(95, 87, 76);
+    -unity-text-align: middle-center;
+    background-color: rgba(8, 6, 5, 0.9);
+    border-bottom-width: 1px;
+    border-bottom-color: rgb(107, 90, 66);
+}
+
+/* ---------- the ending, credits and summary (frames 3-5) ---------- */
+
+.end {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    display: none;
+    background-color: rgb(3, 2, 2);
+}
+
+.end--open {
+    display: flex;
+}
+
+.end__lines,
+.end__credits,
+.end__summary,
+.end__skip {
+    display: none;
+}
+
+.end--lines .end__lines,
+.end--credits .end__credits,
+.end--summary .end__summary {
+    display: flex;
+}
+
+.end--lines .end__skip,
+.end--credits .end__skip {
+    display: flex;
+}
+
+.end__lines {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    align-items: center;
+    justify-content: center;
+}
+
+.end__line {
+    width: 1300px;
+    margin: 19px 0;
+    font-size: 40px;
+    color: rgb(240, 230, 210);
+    -unity-text-align: middle-center;
+    white-space: normal;
+    opacity: 0;
+    transition-property: opacity, color;
+    transition-duration: 1.2s;
+}
+
+.end__line--on {
+    opacity: 1;
+}
+
+.end__line--past {
+    color: rgb(95, 87, 76);
+}
+
+.end__credits {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    align-items: center;
+}
+
+.end__roll {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    align-items: center;
+}
+
+.end__credits-title {
+    margin-bottom: 90px;
+    font-size: 72px;
+    color: rgb(240, 230, 210);
+}
+
+.end__credits-role {
+    margin-bottom: 12px;
+    font-size: 20px;
+    letter-spacing: 6px;
+    color: rgb(138, 116, 52);
+}
+
+.end__credits-name {
+    margin-bottom: 64px;
+    font-size: 34px;
+    color: rgb(216, 203, 180);
+}
+
+.end__summary {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(7, 6, 5);
+}
+
+.end__summary-title {
+    width: 760px;
+    padding: 18px 0;
+    font-size: 28px;
+    letter-spacing: 4px;
+    color: rgb(232, 205, 138);
+    -unity-text-align: middle-center;
+    background-color: rgb(23, 19, 15);
+    border-width: 1px 1px 0 1px;
+    border-color: rgb(138, 116, 52);
+}
+
+.end__summary-body {
+    width: 760px;
+    padding: 32px 48px;
+    background-color: rgb(23, 19, 15);
+    border-width: 0 1px 1px 1px;
+    border-color: rgb(138, 116, 52);
+}
+
+.end__row {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 14px 0;
+    border-bottom-width: 1px;
+    border-bottom-color: rgba(58, 47, 37, 0.6);
+}
+
+.end__row-name {
+    font-size: 24px;
+    color: rgb(142, 131, 117);
+}
+
+.end__row-value {
+    font-size: 24px;
+    color: rgb(232, 205, 138);
+}
+
+.end__continue {
+    margin-top: 32px;
+}
+
+.end__skip {
+    position: absolute;
+    right: 64px;
+    bottom: 56px;
+    font-size: 15px;
+    letter-spacing: 2px;
+    color: rgb(95, 87, 76);
+}

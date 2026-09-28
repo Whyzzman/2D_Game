@@ -6,6 +6,7 @@
     <Style src="Inventory.uss" />
     <Style src="Map.uss" />
     <Style src="Npc.uss" />
+    <Style src="Story.uss" />
     <ui:VisualElement name="hud" class="hud" picking-mode="Ignore">
         <ui:VisualElement name="vignette" class="vignette" picking-mode="Ignore" />
 
@@ -148,6 +149,12 @@
             <ui:VisualElement class="zone-title__rule ornament" picking-mode="Ignore" />
             <ui:Label name="zone-title-text" class="zone-title__text display" text="" picking-mode="Ignore" />
             <ui:VisualElement class="zone-title__rule ornament" picking-mode="Ignore" />
+        </ui:VisualElement>
+
+        <!-- design/ui/ending/ending.html frame 2: the words of a stone being read. -->
+        <ui:VisualElement name="ins" class="ins" picking-mode="Ignore">
+            <ui:Label name="ins-text" class="ins__text display" text="" picking-mode="Ignore" />
+            <ui:Label class="ins__hint" text="НАПИС НА КАМЕНІ" picking-mode="Ignore" />
         </ui:VisualElement>
 
         <!-- design/ui/boss-title/boss-title.html: the boss's name as its arena seals. -->
@@ -620,6 +627,39 @@
                     <ui:Label class="key" text="E" picking-mode="Ignore" /><ui:Label class="key key--pad" text="A" picking-mode="Ignore" /><ui:Label class="ability__continue-text" text="Продовжити" picking-mode="Ignore" />
                 </ui:Button>
             </ui:VisualElement>
+        </ui:VisualElement>
+        <!-- design/ui/ending/ending.html frames 3-5: the ending, the credits, the summary. Last, so over all. -->
+        <ui:VisualElement name="end" class="end">
+            <ui:VisualElement class="end__lines" picking-mode="Ignore">
+                <ui:Label name="end-line-0" class="end__line display" text="" picking-mode="Ignore" />
+                <ui:Label name="end-line-1" class="end__line display" text="" picking-mode="Ignore" />
+                <ui:Label name="end-line-2" class="end__line display" text="" picking-mode="Ignore" />
+            </ui:VisualElement>
+            <ui:VisualElement name="end-credits" class="end__credits" picking-mode="Ignore">
+                <ui:VisualElement name="end-roll" class="end__roll" picking-mode="Ignore">
+                    <ui:Label class="end__credits-title display" text="Тінь Забутого Королівства" picking-mode="Ignore" />
+                    <ui:Label class="end__credits-role" text="ГРА" picking-mode="Ignore" />
+                    <ui:Label class="end__credits-name display" text="—" picking-mode="Ignore" />
+                    <ui:Label class="end__credits-role" text="КОД І ДИЗАЙН" picking-mode="Ignore" />
+                    <ui:Label class="end__credits-name display" text="—" picking-mode="Ignore" />
+                    <ui:Label class="end__credits-role" text="АРТ І ЗВУК" picking-mode="Ignore" />
+                    <ui:Label class="end__credits-name display" text="тимчасові, процедурні" picking-mode="Ignore" />
+                    <ui:Label class="end__credits-name display" text="Дякуємо, що грали" picking-mode="Ignore" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement class="end__summary" picking-mode="Ignore">
+                <ui:Label class="end__summary-title display" text="ПІДСУМКИ" picking-mode="Ignore" />
+                <ui:VisualElement class="end__summary-body" picking-mode="Ignore">
+                    <ui:VisualElement class="end__row" picking-mode="Ignore"><ui:Label class="end__row-name" text="Час" picking-mode="Ignore" /><ui:Label name="end-time" class="end__row-value" text="" picking-mode="Ignore" /></ui:VisualElement>
+                    <ui:VisualElement class="end__row" picking-mode="Ignore"><ui:Label class="end__row-name" text="Смертей" picking-mode="Ignore" /><ui:Label name="end-deaths" class="end__row-value" text="" picking-mode="Ignore" /></ui:VisualElement>
+                    <ui:VisualElement class="end__row" picking-mode="Ignore"><ui:Label class="end__row-name" text="Карта" picking-mode="Ignore" /><ui:Label name="end-map" class="end__row-value" text="" picking-mode="Ignore" /></ui:VisualElement>
+                    <ui:VisualElement class="end__row" picking-mode="Ignore"><ui:Label class="end__row-name" text="Убито ворогів" picking-mode="Ignore" /><ui:Label name="end-kills" class="end__row-value" text="" picking-mode="Ignore" /></ui:VisualElement>
+                    <ui:VisualElement class="end__row" picking-mode="Ignore"><ui:Label class="end__row-name" text="Секретів" picking-mode="Ignore" /><ui:Label name="end-secrets" class="end__row-value" text="" picking-mode="Ignore" /></ui:VisualElement>
+                    <ui:VisualElement class="end__row" picking-mode="Ignore"><ui:Label class="end__row-name" text="Рівень героя" picking-mode="Ignore" /><ui:Label name="end-level" class="end__row-value" text="" picking-mode="Ignore" /></ui:VisualElement>
+                    <ui:Button name="end-continue" class="btn btn--primary end__continue"><ui:Label class="btn__text display" text="ПРОДОВЖИТИ" picking-mode="Ignore" /></ui:Button>
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:Label class="end__skip" text="E — утримати, щоб пропустити" picking-mode="Ignore" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

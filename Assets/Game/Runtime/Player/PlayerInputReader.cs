@@ -263,6 +263,9 @@ namespace ForgottenKingdom
         /// </summary>
         public bool InteractPressedThisFrame => _interact != null && _interact.WasPressedThisFrame();
 
+        /// <summary>Interact held down now, even with gameplay off: the ending is skipped by holding it.</summary>
+        public bool InteractHeld => _interact != null && _interact.IsPressed();
+
         /// <summary>The grapple's own button this frame (G, the d-pad right); silent in menus.</summary>
         public bool GrapplePressedThisFrame => IsReceivingInput && IsPressAccepted
             && _grapple != null && _grapple.WasPressedThisFrame();

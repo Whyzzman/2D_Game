@@ -259,6 +259,11 @@ namespace ForgottenKingdom
         private void OnPlayerDied()
         {
             DeathCount++;
+            if (_progress != null)
+            {
+                _progress.Data.deaths++;
+            }
+
             PlayerDied?.Invoke();
         }
 
