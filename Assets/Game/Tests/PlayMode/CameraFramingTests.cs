@@ -15,6 +15,11 @@ namespace ForgottenKingdom.Tests
     /// </summary>
     public sealed class CameraFramingTests
     {
+        // The slide and the follow together peak near 50 m/s; a five-metre cut in a frame of a
+        // twentieth of a second is 100.
+        private const float MaxSlideSpeed = 90f;
+        private const float MaxMeasuredFrame = 0.05f;
+
         private Keyboard _keyboard;
         private InputSettings _previousSettings;
         private InputSettings _testSettings;
@@ -156,24 +161,39 @@ namespace ForgottenKingdom.Tests
             _motor.ResetTo(new Vector2(entrance.Area.xMax - 0.7f, 0.85f));
             yield return Realtime(1f);
 
+            // Measured as a speed, not a step: on a loaded machine one frame can be a tenth of a
+            // second, and the slide covers a metre in it. A coroutine resumes before LateUpdate, so
+            // the camera moved during the previous frame, over the previous frame's deltaTime. A
+            // cut is the whole room, five metres or more, in one frame; frames too long to tell it
+            // from the slide are left out.
             var slid = false;
-            var biggestStep = 0f;
+            var fastest = 0f;
+            var measured = 0;
             var last = _camera.transform.position;
+            var lastDeltaTime = Time.deltaTime;
             yield return Keys(Key.D);
             var end = Time.realtimeSinceStartup + 1.5f;
             while (Time.realtimeSinceStartup < end)
             {
                 yield return null;
                 slid |= _follow.IsChangingRooms;
-                biggestStep = Mathf.Max(biggestStep, Vector2.Distance(last, _camera.transform.position));
+                if (lastDeltaTime > 0f && lastDeltaTime <= MaxMeasuredFrame)
+                {
+                    fastest = Mathf.Max(fastest,
+                        Vector2.Distance(last, _camera.transform.position) / lastDeltaTime);
+                    measured++;
+                }
+
                 last = _camera.transform.position;
+                lastDeltaTime = Time.deltaTime;
             }
 
             yield return Keys();
             Assert.That(_motor.transform.position.x, Is.GreaterThan(road.Area.xMin + CameraRooms.SwitchMargin),
                 "The player has to reach the next room for this to mean anything.");
             Assert.That(slid, Is.True, "The view slid across instead of cutting.");
-            Assert.That(biggestStep, Is.LessThan(0.6f), "No frame jumps the view.");
+            Assume.That(measured, Is.GreaterThan(10), "Too few frames short enough to judge.");
+            Assert.That(fastest, Is.LessThan(MaxSlideSpeed), "No frame jumps the view.");
             Assert.That(_follow.ActiveBounds, Is.EqualTo(road.View));
         }
 

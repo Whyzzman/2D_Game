@@ -23,6 +23,7 @@ namespace ForgottenKingdom.Tests
         private InputSettings _previousSettings;
         private InputSettings _testSettings;
         private bool _wasRunningInBackground;
+        private float _previousMaximumDeltaTime;
         private PlayerCharacter _player;
         private PlayerMotor2D _motor;
         private GameProgress _progress;
@@ -47,6 +48,13 @@ namespace ForgottenKingdom.Tests
             InputSystem.settings = _testSettings;
             _wasRunningInBackground = Application.runInBackground;
             Application.runInBackground = true;
+            // The walker reads the level and presses keys once a frame. On a loaded machine, at
+            // four times speed, one frame used to cover several physics steps — half a metre of
+            // running — so the jump from the road's step to the archer's ledge left early or late
+            // and dropped the walker under the ledge. One step per frame at most keeps its timing
+            // a player's, however slow the frames.
+            _previousMaximumDeltaTime = Time.maximumDeltaTime;
+            Time.maximumDeltaTime = Time.fixedDeltaTime;
             _keyboard = InputSystem.AddDevice<Keyboard>("WorldTraversalKeyboard");
 
             SaveSystem.Delete();
@@ -67,6 +75,7 @@ namespace ForgottenKingdom.Tests
             InputSystem.settings = _previousSettings;
             Object.Destroy(_testSettings);
             Application.runInBackground = _wasRunningInBackground;
+            Time.maximumDeltaTime = _previousMaximumDeltaTime;
             SaveSystem.Delete();
             yield return null;
         }
