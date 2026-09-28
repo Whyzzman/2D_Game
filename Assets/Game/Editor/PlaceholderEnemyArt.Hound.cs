@@ -52,7 +52,7 @@ namespace ForgottenKingdom.EditorTools
             var build = ForestBuildFor(Actor.Hound);
             var canvas = new Canvas(build.Width, build.Height);
             DrawHound(canvas, build, HoundPoseFor(state, t));
-            canvas.Silhouette(new Color32(6, 5, 5, 225), new Color32(150, 170, 160, 255), 0.32f);
+            canvas.Silhouette(new Color32(6, 5, 5, 225), EnemyRim, 0.42f);
             return canvas.EncodePng();
         }
 
@@ -285,7 +285,7 @@ namespace ForgottenKingdom.EditorTools
                 canvas.RectOver(at.x - 2f, at.y + 6f, at.x + 2f, at.y + 10f, mark);
             }
 
-            canvas.Ellipse(head + Canvas.Rotate(new Vector2(3f, 3f), tilt), 2.2f, 2f, mark);
+            Eye(canvas, head + Canvas.Rotate(new Vector2(3f, 3f), tilt), 1.9f, VioletEye);
 
             if (pose.Alpha < 0.999f)
             {

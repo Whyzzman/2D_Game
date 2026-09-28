@@ -199,8 +199,8 @@ namespace ForgottenKingdom.EditorTools
                             tilt),
                         head + Canvas.Rotate(new Vector2(-build.HeadRx * 0.2f, build.HeadRy * 1.5f),
                             tilt), build.Cloth);
-                    canvas.Ellipse(head + Canvas.Rotate(new Vector2(build.HeadRx * 0.5f, -1f), tilt),
-                        2.2f, 1.8f, build.Rot);
+                    Eye(canvas, head + Canvas.Rotate(new Vector2(build.HeadRx * 0.5f, -1f), tilt), 1.8f,
+                        PaleGreenEye);
                     break;
 
                 case HeadGear.Mask:
@@ -216,6 +216,9 @@ namespace ForgottenKingdom.EditorTools
                         Charcoal);
                     canvas.Ellipse(head + Canvas.Rotate(new Vector2(4f, 2f), tilt), 2f, 2.6f,
                         Charcoal);
+                    // Something alive behind the bone.
+                    canvas.Ellipse(head + Canvas.Rotate(new Vector2(-3f, 2f), tilt), 1f, 1.2f, PoisonEye);
+                    canvas.Ellipse(head + Canvas.Rotate(new Vector2(4f, 2f), tilt), 1f, 1.2f, PoisonEye);
                     break;
 
                 default:
@@ -225,6 +228,8 @@ namespace ForgottenKingdom.EditorTools
                     canvas.Thick(head + Canvas.Rotate(new Vector2(build.HeadRx * 0.3f, 1f), tilt),
                         head + Canvas.Rotate(new Vector2(build.HeadRx * 1.0f, -1f), tilt),
                         build.HeadRy * 0.34f, build.HeadRy * 0.2f, Charcoal);
+                    Eye(canvas, head + Canvas.Rotate(new Vector2(build.HeadRx * 0.75f, 0f), tilt), 1.8f,
+                        PoisonEye);
                     for (var i = -1; i <= 1; i += 2)
                     {
                         var root = head + Canvas.Rotate(

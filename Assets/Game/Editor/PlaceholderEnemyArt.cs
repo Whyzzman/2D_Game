@@ -27,6 +27,24 @@ namespace ForgottenKingdom.EditorTools
 
         // The shared royal-undead palette from the Visual Bible.
         private static readonly Color32 Charcoal = new Color32(0x14, 0x11, 0x0F, 0xFF);
+        private static readonly Color32 EnemyRim = new Color32(206, 150, 100, 255);
+        private static readonly Color32 SicklyEye = new Color32(236, 206, 112, 255);
+        private static readonly Color32 AmberEye = new Color32(246, 172, 82, 255);
+        private static readonly Color32 PaleGreenEye = new Color32(194, 236, 146, 255);
+        private static readonly Color32 PoisonEye = new Color32(172, 242, 112, 255);
+        private static readonly Color32 VioletEye = new Color32(236, 172, 255, 255);
+
+        /// <summary>
+        /// An eye that glows dimly: a darker ring, the bright core and a pin of light. The eyes are
+        /// where the player looks to read which way an enemy faces and whether it has seen him.
+        /// </summary>
+        private static void Eye(Canvas canvas, Vector2 at, float radius, Color32 core)
+        {
+            canvas.Ellipse(at, radius * 1.7f, radius * 1.4f, Color32.Lerp(core, Charcoal, 0.6f));
+            canvas.Ellipse(at, radius, radius * 0.8f, core);
+            canvas.Ellipse(at + new Vector2(radius * 0.3f, radius * 0.25f), radius * 0.4f, radius * 0.4f,
+                Color32.Lerp(core, new Color32(255, 255, 255, 255), 0.6f));
+        }
         private static readonly Color32 Steel = new Color32(0x3E, 0x42, 0x47, 0xFF);
         private static readonly Color32 DarkSteel = new Color32(0x2A, 0x2D, 0x31, 0xFF);
         private static readonly Color32 Navy = new Color32(0x2F, 0x3E, 0x52, 0xFF);
@@ -930,9 +948,9 @@ namespace ForgottenKingdom.EditorTools
             var build = BuildFor(actor);
             var canvas = new Canvas(build.Width, build.Height);
             Draw(canvas, build, pose, actor);
-            // Enemies get a lit edge too — never lost in the dark — but a colder, weaker one than
-            // the player's, so the player stays first in the hierarchy.
-            canvas.Silhouette(new Color32(6, 5, 5, 225), new Color32(150, 165, 190, 255), 0.32f);
+            // Enemies get a lit edge too — never lost in the dark — but a warm, sickly one and
+            // weaker than the player's: cold is the hero, warm is everything that wants him dead.
+            canvas.Silhouette(new Color32(6, 5, 5, 225), EnemyRim, 0.42f);
             return canvas.EncodePng();
         }
 
@@ -1050,8 +1068,8 @@ namespace ForgottenKingdom.EditorTools
                     head + Canvas.Rotate(new Vector2(build.HeadRx * 0.5f, build.HeadRy), tilt),
                     head + Canvas.Rotate(new Vector2(-build.HeadRx * 0.9f, -build.HeadRy * 0.4f),
                         tilt), build.Metal);
-                canvas.Ellipse(head + Canvas.Rotate(new Vector2(build.HeadRx * 0.45f, 0f), tilt),
-                    2.5f, 2f, build.Rot);
+                Eye(canvas, head + Canvas.Rotate(new Vector2(build.HeadRx * 0.45f, 0f), tilt), 2f,
+                    SicklyEye);
                 return;
             }
 
@@ -1069,6 +1087,9 @@ namespace ForgottenKingdom.EditorTools
 
             if (!build.Crown)
             {
+                // Two glints deep in the visor.
+                Eye(canvas, head + Canvas.Rotate(new Vector2(build.HeadRx * 0.72f, 1.5f), tilt), 1.4f,
+                    AmberEye);
                 return;
             }
 
@@ -1084,10 +1105,13 @@ namespace ForgottenKingdom.EditorTools
                 canvas.Thick(spikeBase, spikeTip, 6f, 1.5f, build.Trim);
             }
 
-            // Narrow eyes, brightening with the phase.
-            var eyeTone = Color32.Lerp(Charcoal, build.Rot, Mathf.Clamp01(pose.Glow));
+            // Narrow eyes, always lit and brightening with the phase.
+            var eyeTone = Color32.Lerp(Color32.Lerp(AmberEye, Charcoal, 0.35f), build.Rot,
+                Mathf.Clamp01(pose.Glow));
             canvas.Ellipse(head + Canvas.Rotate(new Vector2(build.HeadRx * 0.62f, 1f), tilt),
-                build.HeadRx * 0.22f, build.HeadRy * 0.1f, eyeTone);
+                build.HeadRx * 0.26f, build.HeadRy * 0.14f, Color32.Lerp(eyeTone, Charcoal, 0.5f));
+            canvas.Ellipse(head + Canvas.Rotate(new Vector2(build.HeadRx * 0.62f, 1f), tilt),
+                build.HeadRx * 0.2f, build.HeadRy * 0.09f, eyeTone);
         }
 
         /// <summary>

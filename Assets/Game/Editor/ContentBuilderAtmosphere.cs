@@ -41,6 +41,8 @@ namespace ForgottenKingdom.EditorTools
             SceneAmbience.Build(new GameObject(SceneAmbience.RootName).transform);
             // The forest's sky, edges and moonlight; the live scene gets them from SceneForestLook.Apply.
             SceneForestLook.Build();
+            // The characters' own fill light, and normal maps on every point light.
+            SceneCharacterLight.Build();
         }
 
         // ---------- lights ----------
@@ -62,6 +64,9 @@ namespace ForgottenKingdom.EditorTools
                 light.pointLightOuterRadius = outerRadius;
                 light.pointLightInnerRadius = innerRadius;
                 light.falloffIntensity = falloff;
+                // Shapes the characters by their normal maps. Flat art (no normal map) now takes
+                // it by angle too: from this height the falloff is only a little steeper.
+                SceneCharacterLight.UseNormalMaps(light, SceneCharacterLight.NormalDistance);
             }
 
             var serialized = new SerializedObject(light);

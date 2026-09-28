@@ -145,6 +145,8 @@ namespace ForgottenKingdom.EditorTools
             var checkpointPrefab = BuildCheckpointPrefab();
             var dummyPrefab = BuildDummyPrefab();
             var attackerPrefab = BuildAttackerPrefab();
+            // Every character frame, the training targets included, gets its normal map.
+            CharacterNormals.AttachAll();
             BuildPickupPrefab();
             AssetDatabase.SaveAssets();
 
@@ -1619,6 +1621,7 @@ namespace ForgottenKingdom.EditorTools
             fillRenderer.color = new Color(0.72f, 0.2f, 0.22f);
             SetSorting(fillRenderer, "WorldUI", 1);
 
+            DressTrainingTarget(root, PlaceholderDummyArt.Generate().dummy, 1.7f);
             var dummy = Ensure<TrainingDummy>(root);
             SetReference(dummy, "_actor", actor);
             SetReference(dummy, "_body",
@@ -1668,6 +1671,7 @@ namespace ForgottenKingdom.EditorTools
             telegraph.sharedMaterial = _material;
             SetSorting(telegraph, "VFXFront", 0);
 
+            DressTrainingTarget(root, PlaceholderDummyArt.Generate().attacker, 1.8f);
             var attacker = Ensure<TrainingAttacker>(root);
             SetReference(attacker, "_actor", actor);
             SetReference(attacker, "_hitbox", hitbox);
@@ -3404,6 +3408,9 @@ namespace ForgottenKingdom.EditorTools
             // The frames carry their own colour; tinting them would fight the palette.
             body.color = Color.white;
             SetSorting(body, "Characters", 3);
+            // Lit, so a candle or a spell lights the side of the figure facing it (normal maps,
+            // CharacterNormals); the Characters layer has a fill of its own (SceneCharacterLight).
+            body.sharedMaterial = LitSpriteMaterial();
 
             var faceObject = visual.Find("Face");
             var face = faceObject != null ? faceObject.GetComponent<SpriteRenderer>() : null;
@@ -3716,6 +3723,9 @@ namespace ForgottenKingdom.EditorTools
             // The frames carry their own colour; tinting them would fight the palette.
             body.color = Color.white;
             SetSorting(body, "Characters", 3);
+            // Lit, so a candle or a spell lights the side of the figure facing it (normal maps,
+            // CharacterNormals); the Characters layer has a fill of its own (SceneCharacterLight).
+            body.sharedMaterial = LitSpriteMaterial();
 
             var faceObject = visual.Find("Face");
             var face = faceObject != null ? faceObject.GetComponent<SpriteRenderer>() : null;
@@ -3764,6 +3774,9 @@ namespace ForgottenKingdom.EditorTools
             var body = Ensure<SpriteRenderer>(bodyObject);
             body.color = Color.white;
             SetSorting(body, "Characters", 3);
+            // Lit, so a candle or a spell lights the side of the figure facing it (normal maps,
+            // CharacterNormals); the Characters layer has a fill of its own (SceneCharacterLight).
+            body.sharedMaterial = LitSpriteMaterial();
 
             var faceObject = visual.Find("Face");
             var face = faceObject != null ? faceObject.GetComponent<SpriteRenderer>() : null;
@@ -3838,6 +3851,46 @@ namespace ForgottenKingdom.EditorTools
         }
 
         // ---------- helpers ----------
+
+        private const string LitSpritePath =
+            "Packages/com.unity.render-pipelines.universal/Runtime/Materials/Sprite-Lit-Default.mat";
+
+        /// <summary>The URP 2D sprite material that 2D lights, and their normal maps, reach.</summary>
+        public static Material LitSpriteMaterial()
+        {
+            var material = AssetDatabase.LoadAssetAtPath<Material>(LitSpritePath);
+            if (material == null)
+            {
+                Debug.LogError($"Lit sprite material missing at {LitSpritePath}.");
+            }
+
+            return material;
+        }
+
+        /// <summary>
+        /// A training target's drawn body in place of the coloured block: pivot at the foot of
+        /// the post, on the floor under the capsule, rocking when struck.
+        /// </summary>
+        private static void DressTrainingTarget(GameObject root, Sprite art, float capsuleHeight)
+        {
+            var visual = root.transform.Find("Visual");
+            var body = visual.Find("Body");
+            body.localPosition = new Vector3(0f, -capsuleHeight * 0.5f, 0f);
+            body.localScale = Vector3.one;
+            var renderer = body.GetComponent<SpriteRenderer>();
+            renderer.sprite = art;
+            renderer.color = Color.white;
+            renderer.sharedMaterial = LitSpriteMaterial();
+            var face = visual.Find("Face");
+            if (face != null)
+            {
+                Object.DestroyImmediate(face.gameObject);
+            }
+
+            var wobble = Ensure<HitWobble>(root);
+            SetReference(wobble, "_actor", root.GetComponent<CombatActor>());
+            SetReference(wobble, "_target", body);
+        }
 
         private static GameObject CreateActorRoot(string name, int layer, Color color, Vector2 size)
         {

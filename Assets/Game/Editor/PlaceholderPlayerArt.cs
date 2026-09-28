@@ -35,6 +35,11 @@ namespace ForgottenKingdom.EditorTools
         private static readonly Color32 Leather = new Color32(0x4A, 0x3B, 0x2E, 0xFF);
         private static readonly Color32 Steel = new Color32(0x3E, 0x42, 0x47, 0xFF);
         private static readonly Color32 Sash = new Color32(0x6B, 0x77, 0x84, 0xFF);
+        /// <summary>The cloak's grey-blue lining (Visual Bible §13): the hero's own accent, dimmer than any magic.</summary>
+        private static readonly Color32 Lining = new Color32(0x50, 0x60, 0x70, 0xFF);
+        private static readonly Color32 Face = new Color32(0x7A, 0x6F, 0x66, 0xFF);
+        /// <summary>The player's lit edge: silver, strong, the brightest outline on screen.</summary>
+        private static readonly Color32 Rim = new Color32(196, 218, 246, 255);
         private static readonly Color32 Clear = new Color32(0, 0, 0, 0);
 
         /// <summary>One authored state: how many frames it has and how fast it plays.</summary>
@@ -231,7 +236,9 @@ namespace ForgottenKingdom.EditorTools
                 CloakTone);
             canvas.Triangle(new Vector2(48f, 13f), new Vector2(48f, 6.5f), new Vector2(57f, 8f),
                 CloakTone);
-            canvas.Silhouette(new Color32(8, 7, 6, 235), new Color32(170, 198, 235, 255), 0.55f, 0.1f);
+            // The lining shows along the lower edge, as on the drawn cloak.
+            canvas.Thick(new Vector2(-6f, 7f), new Vector2(48f, 7.5f), 3f, 2.5f, Lining);
+            canvas.Silhouette(new Color32(8, 7, 6, 235), Rim, 0.8f, 0.12f);
             PlaceholderImport.WriteIfChanged(CloakTailPath, canvas.EncodePng());
             PlaceholderImport.ConfigureImporter(CloakTailPath);
             return AssetDatabase.LoadAssetAtPath<Texture2D>(CloakTailPath);
@@ -780,8 +787,7 @@ namespace ForgottenKingdom.EditorTools
             var canvas = new Canvas(Width, Height);
             Draw(canvas, PoseFor(state, t, reachBonus), reachBonus > 0f);
             // The player is the brightest, most outlined figure on screen (Visual Bible §13).
-            canvas.Silhouette(new Color32(8, 7, 6, 235), new Color32(170, 198, 235, 255), 0.55f,
-                0.1f);
+            canvas.Silhouette(new Color32(8, 7, 6, 235), Rim, 0.8f, 0.12f);
             return canvas.EncodePng();
         }
 
@@ -902,8 +908,10 @@ namespace ForgottenKingdom.EditorTools
             var baseFront = head + Canvas.Rotate(new Vector2(1f, 11f), tilt);
             var peak = head + Canvas.Rotate(new Vector2(-13f, 25f), tilt);
             canvas.Triangle(baseBack, baseFront, peak, Charcoal);
-            // A sliver of shadow where the face would be: the brief keeps it half hidden.
-            canvas.Ellipse(head + Canvas.Rotate(new Vector2(5f, -2f), tilt), 5f, 6f, CloakTone);
+            // The face, half hidden: a pale sliver of it under the brim, the brow in the hood's
+            // shadow. Muted skin, never white — the hero must not read as a masked figure.
+            canvas.Ellipse(head + Canvas.Rotate(new Vector2(5f, -3f), tilt), 4.5f, 5.5f, Face);
+            canvas.Ellipse(head + Canvas.Rotate(new Vector2(4f, 1.5f), tilt), 5.5f, 3.5f, CloakTone);
         }
 
         /// <summary>
@@ -921,6 +929,9 @@ namespace ForgottenKingdom.EditorTools
             var hemFront = hip + Canvas.Rotate(new Vector2(5f, -34f), -sway * 0.7f);
             canvas.Triangle(topBack, topFront, hemFront, CloakTone);
             canvas.Triangle(topBack, hemFront, hemBack, CloakTone);
+            // The lining turned out along the back edge, where the cloak swings open.
+            var inward = (hemFront - hemBack).normalized * 2.5f;
+            canvas.Thick(topBack + inward, hemBack + inward, 2.5f, 4f, Lining);
         }
 
         /// <summary>The cloak's back edge, from the shoulder to the long back corner of the hem.</summary>
