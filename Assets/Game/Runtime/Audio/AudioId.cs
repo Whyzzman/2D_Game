@@ -237,6 +237,7 @@ namespace ForgottenKingdom
 
         // ---- exploration (item 4, stage B, appended) ----
         WallCrack,
-        WallCrumble
+        WallCrumble,
+        TrialGong
     }
 }

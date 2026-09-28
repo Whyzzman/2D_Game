@@ -136,6 +136,21 @@ namespace ForgottenKingdom
         private void OnEnemyDied(EnemyController enemy) => _beaten[enemy.SpawnKey] = enemy.ResetPolicy;
 
         /// <summary>
+        /// Lets go of an enemy for good, as if it had never stood here: a trial's wave, spawned
+        /// again at the same spot next time, must not wake up already beaten.
+        /// </summary>
+        public void Forget(EnemyController enemy)
+        {
+            if (enemy == null)
+            {
+                return;
+            }
+
+            _beaten.Remove(enemy.SpawnKey);
+            Unregister(enemy);
+        }
+
+        /// <summary>
         /// Puts every enemy whose policy allows it back at its spawn. Called under the fade, so the
         /// player never sees them jump.
         /// </summary>

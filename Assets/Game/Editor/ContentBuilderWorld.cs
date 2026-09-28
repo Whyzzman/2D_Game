@@ -65,6 +65,8 @@ namespace ForgottenKingdom.EditorTools
         private const string ForestFalconerNest = "room_forest_falconer_nest";
         private const string CapitalRoofCache = "room_capital_roof_cache";
         private const string CapitalHiddenTreasury = "room_capital_hidden_treasury";
+        // The Thorn Path's last perch (item 4, stage C).
+        private const string ForestThornCourse = "room_forest_thorn_course";
 
         public const string TombBridgeShortcut = "shortcut_tomb_crypt_bridge";
         public const string ForestRoadGateShortcut = "shortcut_forest_road_gate";
@@ -214,6 +216,8 @@ namespace ForgottenKingdom.EditorTools
                     secret: true, ability: string.Empty, mapRow: 2.3f),
                 Pocket(CapitalHiddenTreasury, CapitalZoneId, "Прихована скарбниця", 490.5f, 494.5f, 6.8f,
                     secret: true, ability: string.Empty),
+                Pocket(ForestThornCourse, ForestZoneId, "Терновий шлях", 242f, 245f, 10.4f,
+                    secret: false, ability: AbilityIds.DoubleJump, mapRow: 2.3f),
                 AreaJson(BeyondCapital, FutureZoneId, string.Empty,
                     new Vector2(551f * MapScale, 0f), new Vector2(0.8f, 1.2f),
                     Rect.MinMaxRect(545f, -8f, 557f, 16f), optional: true)
@@ -291,6 +295,8 @@ namespace ForgottenKingdom.EditorTools
                 LinkJson("conn_capital_nest_cache", CapitalBellNest, CapitalRoofCache),
                 LinkJson("conn_capital_gallery_treasury", CapitalGallery, CapitalHiddenTreasury,
                     MapDirection.West),
+                LinkJson("conn_forest_deep_thorns", ForestDeep, ForestThornCourse,
+                    MapDirection.North, ConnectionType.AbilityGate, ability: AbilityIds.DoubleJump),
                 LinkJson("conn_capital_throne_beyond", CapitalThroneHall, BeyondCapital,
                     type: ConnectionType.Gate, boss: CapitalKingBossId, future: true)
             })).Append("],");

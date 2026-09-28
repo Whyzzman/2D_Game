@@ -49,7 +49,8 @@ namespace ForgottenKingdom.Tests
             Assert.That(mana.Length, Is.GreaterThanOrEqualTo(3), "Enough mana shards for a vessel.");
 
             var graph = _progress.World;
-            foreach (var shard in health.Concat(mana))
+            // The trials' prizes are paid where the trial is won, not hidden on a shelf.
+            foreach (var shard in health.Concat(mana).Where(s => !s.PersistentId.Contains("trial-")))
             {
                 var at = (Vector2)shard.transform.position;
                 Assert.That(shard.IsPersistent, Is.True, $"{shard.name} is remembered once taken.");

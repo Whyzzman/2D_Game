@@ -145,6 +145,199 @@ namespace ForgottenKingdom.EditorTools
             {
                 BuildSecretRoom(rooms, room, pickup, progress);
             }
+
+            BuildArmsTrial(Section(root, "ArmsTrial"), pickup, progress);
+            BuildThornCourse(Section(root, "ThornCourse"), pickup, progress);
+        }
+
+        // ---------- trials (stage C) ----------
+
+        public const string ArmsTrialId = ExplorationIdPrefix + "trial-ash-road";
+
+        /// <summary>
+        /// The trial of arms on the Ash Road, the capital's empty first stretch: a gong at its
+        /// middle, walls that close it at 321 and 343 while it runs, and three waves of enemies the
+        /// hero has met on the way — the Tomb's, the Forest's, then the Capital's own. The first
+        /// win lays out a health shard and a purse.
+        /// </summary>
+        private static void BuildArmsTrial(Transform root, GameObject pickup, GameProgress progress)
+        {
+            var gong = new GameObject("TrialGong");
+            gong.transform.SetParent(root);
+            gong.transform.position = new Vector2(331.5f, 0f);
+            var trigger = gong.AddComponent<BoxCollider2D>();
+            trigger.isTrigger = true;
+            trigger.size = new Vector2(1.8f, 2.6f);
+            trigger.offset = new Vector2(0f, 1.3f);
+            GongPart(gong, "Post", new Vector2(0f, 1.1f), new Vector2(0.18f, 2.2f), new Color(0.24f, 0.2f, 0.18f));
+            GongPart(gong, "Beam", new Vector2(0f, 2.15f), new Vector2(1.5f, 0.16f), new Color(0.24f, 0.2f, 0.18f));
+            GongPart(gong, "Disc", new Vector2(0f, 1.45f), new Vector2(1.05f, 1.05f), new Color(0.72f, 0.5f, 0.24f));
+
+            var barriers = new[]
+            {
+                CapitalBlock(root, "TrialWallWest", new Vector2(321f, 4f), new Vector2(1f, 8f), CapitalSurface.Masonry),
+                CapitalBlock(root, "TrialWallEast", new Vector2(343f, 4f), new Vector2(1f, 8f), CapitalSurface.Masonry)
+            };
+            foreach (var barrier in barriers)
+            {
+                Ensure<NonClimbableSurface>(barrier);
+                barrier.SetActive(false);
+            }
+
+            var trial = Ensure<TrialArena>(gong);
+            SetString(trial, "_trialId", ArmsTrialId);
+            SetString(trial, "_displayName", "Випробування зброї");
+            SetReference(trial, "_progress", progress);
+            SetReference(trial, "_registry", Object.FindAnyObjectByType<EnemyRegistry>());
+
+            GameObject Enemy(string name) => AssetDatabase.LoadAssetAtPath<GameObject>($"{PrefabFolder}/{name}.prefab");
+            var waves = new[]
+            {
+                (new[] { Enemy("ZombieSoldier"), Enemy("ZombieSoldier"), Enemy("CorruptedHound") },
+                    new[] { new Vector2(325f, 0.9f), new Vector2(338f, 0.9f), new Vector2(340f, 0.9f) }),
+                (new[] { Enemy("ShieldGuard"), Enemy("RoyalSpearman"), Enemy("ForestArcher") },
+                    new[] { new Vector2(324f, 0.9f), new Vector2(339f, 0.9f), new Vector2(341f, 0.9f) }),
+                (new[] { Enemy(GargoylePrefabName), Enemy(RavenPrefabName), Enemy(RavenPrefabName), Enemy(PriestPrefabName) },
+                    new[] { new Vector2(333f, 0.9f), new Vector2(325f, 6f), new Vector2(339f, 6.5f), new Vector2(337f, 0.9f) })
+            };
+            var serialized = new SerializedObject(trial);
+            var list = serialized.FindProperty("_waves");
+            list.arraySize = waves.Length;
+            for (var w = 0; w < waves.Length; w++)
+            {
+                var element = list.GetArrayElementAtIndex(w);
+                var enemies = element.FindPropertyRelative("Enemies");
+                var positions = element.FindPropertyRelative("Positions");
+                enemies.arraySize = waves[w].Item1.Length;
+                positions.arraySize = waves[w].Item2.Length;
+                for (var i = 0; i < waves[w].Item1.Length; i++)
+                {
+                    enemies.GetArrayElementAtIndex(i).objectReferenceValue = waves[w].Item1[i];
+                    positions.GetArrayElementAtIndex(i).vector2Value = waves[w].Item2[i];
+                }
+            }
+
+            SetObjects(serialized.FindProperty("_barriers"), barriers);
+            PlacePickup(pickup, new Vector2(330f, 0.7f), progress, VesselShards.HealthPrefix + "trial-ash-road",
+                false, 1, ExplorationIdPrefix + "health-trial-ash-road", false);
+            PlacePickup(pickup, new Vector2(333f, 0.6f), progress, string.Empty, true, 600,
+                ExplorationIdPrefix + "trial-ash-road-purse", true);
+            var rewards = new System.Collections.Generic.List<GameObject>();
+            foreach (var find in Object.FindObjectsByType<WorldPickup>(FindObjectsInactive.Include))
+            {
+                if (find.PersistentId != null && find.PersistentId.Contains("trial-ash-road"))
+                {
+                    find.transform.SetParent(root, true);
+                    find.gameObject.SetActive(false);
+                    rewards.Add(find.gameObject);
+                }
+            }
+
+            SetObjects(serialized.FindProperty("_rewards"), rewards.ToArray());
+            serialized.ApplyModifiedPropertiesWithoutUndo();
+        }
+
+        private static void SetObjects(SerializedProperty property, GameObject[] objects)
+        {
+            property.arraySize = objects.Length;
+            for (var i = 0; i < objects.Length; i++)
+            {
+                property.GetArrayElementAtIndex(i).objectReferenceValue = objects[i];
+            }
+        }
+
+        private static void GongPart(GameObject gong, string name, Vector2 at, Vector2 size, Color color)
+        {
+            var part = new GameObject(name);
+            part.transform.SetParent(gong.transform, false);
+            part.transform.localPosition = at;
+            part.transform.localScale = new Vector3(size.x, size.y, 1f);
+            var renderer = part.AddComponent<SpriteRenderer>();
+            renderer.sprite = name == "Disc" && Shape("shape_pickup_relic") != null ? Shape("shape_pickup_relic") : _sprite;
+            renderer.sharedMaterial = _material;
+            renderer.color = color;
+            SetSorting(renderer, "EnvironmentBack", 6);
+        }
+
+        /// <summary>A platform of the Thorn Path: its span and its top.</summary>
+        private readonly struct Perch
+        {
+            public readonly float X0;
+            public readonly float X1;
+            public readonly float Top;
+
+            public Perch(float x0, float x1, float top)
+            {
+                X0 = x0;
+                X1 = x1;
+                Top = top;
+            }
+        }
+
+        /// <summary>
+        /// The Thorn Path over the Deep Forest: six perches, each hop asking one thing — a jump,
+        /// a second jump, a dash in the air across nine units no jump spans (a jump and a second
+        /// jump carry about 7.4), then two more climbs. Under every gap a tray of thorns from
+        /// the second perch on (over 5 units up, out of a jump's reach from the road): falling short
+        /// puts the hero back on the perch they left, as spikes do in Hollow Knight. The
+        /// mana shard waits on the last.
+        /// </summary>
+        public static readonly Vector4[] ThornPerches =
+        {
+            new Vector4(214f, 216.5f, 1.6f, 0f),
+            new Vector4(219f, 220.5f, 3.2f, 0f),
+            new Vector4(223.5f, 225f, 6.2f, 0f),
+            new Vector4(234f, 235.5f, 6.2f, 0f),
+            new Vector4(238f, 239.5f, 8.6f, 0f),
+            new Vector4(242f, 245f, 10.4f, 0f)
+        };
+
+        private static void BuildThornCourse(Transform root, GameObject pickup, GameProgress progress)
+        {
+            for (var i = 0; i < ThornPerches.Length; i++)
+            {
+                var perch = new Perch(ThornPerches[i].x, ThornPerches[i].y, ThornPerches[i].z);
+                var block = ForestBlock(root, $"ThornPerch{i}", new Vector2((perch.X0 + perch.X1) * 0.5f, perch.Top - 0.25f),
+                    new Vector2(perch.X1 - perch.X0, 0.5f), ForestSurface.Plank);
+                Ensure<NonClimbableSurface>(block);
+                if (i == 0)
+                {
+                    continue;
+                }
+
+                // The thorns under the gap before this perch, a little below the lower of the two.
+                var previous = ThornPerches[i - 1];
+                var from = previous.y;
+                var to = perch.X0;
+                var trayY = Mathf.Min(previous.z, perch.Top) - 1.2f;
+                // Under the first two hops a fall only lands on the forest floor: thorns there
+                // would be in reach of an ordinary jump on the main path below.
+                if (i <= 2)
+                {
+                    continue;
+                }
+
+                var thorns = new GameObject($"Thorns{i}");
+                thorns.transform.SetParent(root);
+                thorns.transform.position = new Vector2((from + to) * 0.5f, trayY);
+                var spikes = thorns.AddComponent<Spikes>();
+                SetVector(spikes, "_size", new Vector2(to - from, 0.4f));
+                SetColor(spikes, "_color", new Color(0.36f, 0.3f, 0.22f));
+            }
+
+            var last = ThornPerches[ThornPerches.Length - 1];
+            PlacePickup(pickup, new Vector2((last.x + last.y) * 0.5f, last.z + 0.7f), progress,
+                VesselShards.ManaPrefix + "thorn-course", false, 1, ExplorationIdPrefix + "mana-thorn-course", false);
+            foreach (var find in Object.FindObjectsByType<WorldPickup>(FindObjectsInactive.Include))
+            {
+                if (find.PersistentId == ExplorationIdPrefix + "mana-thorn-course")
+                {
+                    find.transform.SetParent(root, true);
+                }
+            }
+
+            AreaTrigger(root, ForestThornCourse, new Vector2((last.x + last.y) * 0.5f, last.z + 1f),
+                new Vector2(last.y - last.x - 0.4f, 1.6f));
         }
 
         /// <summary>Floor, roof, far wall, the breakable wall, the veil over the inside, the shard.</summary>

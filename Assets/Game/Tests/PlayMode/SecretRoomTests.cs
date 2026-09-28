@@ -105,9 +105,9 @@ namespace ForgottenKingdom.Tests
             }
 
             Assert.That(shards.Count(s => VesselShards.TryKind(s.ItemId, out var k) && k == VesselKind.Health),
-                Is.EqualTo(7), "Seven health shards so far: four in pockets, three behind walls.");
+                Is.EqualTo(8), "Eight health shards: four in pockets, three behind walls, one for a trial.");
             Assert.That(shards.Count(s => VesselShards.TryKind(s.ItemId, out var k) && k == VesselKind.Mana),
-                Is.EqualTo(5), "Five mana shards so far: three in pockets, two behind walls.");
+                Is.EqualTo(6), "Six mana shards: three in pockets, two behind walls, one for a trial.");
             yield return null;
         }
 

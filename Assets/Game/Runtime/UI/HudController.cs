@@ -312,8 +312,18 @@ namespace ForgottenKingdom
                 else { _world.ZoneTitleRequested -= OnZoneTitle; }
             }
 
-            if (on) { WorldPickup.Collected += OnPickupCollected; }
-            else { WorldPickup.Collected -= OnPickupCollected; }
+            if (on)
+            {
+                WorldPickup.Collected += OnPickupCollected;
+                TrialArena.WaveStarted += OnTrialWave;
+                TrialArena.Won += OnTrialWon;
+            }
+            else
+            {
+                WorldPickup.Collected -= OnPickupCollected;
+                TrialArena.WaveStarted -= OnTrialWave;
+                TrialArena.Won -= OnTrialWon;
+            }
         }
 
         private void Update()
@@ -638,6 +648,11 @@ namespace ForgottenKingdom
                 _zoneTitle?.Show(VesselShards.Notice(_progress, kind));
             }
         }
+
+        private void OnTrialWave(TrialArena trial, int wave, int count) =>
+            _zoneTitle?.Show($"Хвиля {wave}/{count}");
+
+        private void OnTrialWon(TrialArena trial) => _zoneTitle?.Show($"{trial.DisplayName}: пройдено");
 
         private Sprite BranchIcon(SkillBranch branch)
         {

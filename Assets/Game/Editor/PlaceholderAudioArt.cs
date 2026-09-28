@@ -283,7 +283,9 @@ namespace ForgottenKingdom.EditorTools
 
             // ---- a breakable wall: stone giving under a blow, then the fall ----
             new Spec(AudioId.WallCrack, "SFX/World", "sfx_wall_crack", Recipe.Crack, 3, 0.35f, 0.9f),
-            new Spec(AudioId.WallCrumble, "SFX/World", "sfx_wall_crumble", Recipe.Boom, 2, 1.2f, 0.6f)
+            new Spec(AudioId.WallCrumble, "SFX/World", "sfx_wall_crumble", Recipe.Boom, 2, 1.2f, 0.6f),
+            // ---- a trial's gong (stage C) ----
+            new Spec(AudioId.TrialGong, "SFX/World", "sfx_trial_gong", Recipe.MetalRing, 1, 2.2f, 0.35f)
         };
 
         /// <summary>Writes every missing or changed clip and returns them, by sound.</summary>
