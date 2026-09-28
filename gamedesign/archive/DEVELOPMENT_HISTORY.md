@@ -1039,3 +1039,25 @@ x≈36,5) с местом для рывка за спину → вход в ар
   `SpellCaster.CastProgress`), `FeedbackKind.CastFizzle` + `AudioId.CastFizzle` (тонированная вспышка,
   `CombatFeedbackService.Play(kind, position, tint)`), `FeedbackKind.AltarKindle` и волна света в
   `CheckpointVisual`. Подробности — `COMBAT_FEEDBACK.md` §12д. Тесты `MagicFeedbackTests` (6). Средне.
+
+- [x] **61 (7). Мана от ударов** (решения пользователя 2026-09-28: пассивную регенерацию убрать
+  совсем; 10 за удар, тяжёлый 15; только удары оружием, в щит — половина). `WeaponManaGain` слушает
+  `PlayerCombat.HitLanded`; умения идут тем же хитбоксом, но без атаки оружия не платят. Числа —
+  `TUNING.md`. Тесты `ManaNeverComesBackOnItsOwn`, `ALandedSwingPaysManaAndAHeavyOneMore`,
+  2 в `MagicDataTests`.
+- [x] **62 (8). Цена смерти** (решения пользователя 2026-09-28: теряется всё золото; вернуть —
+  подойти к следу и нажать взаимодействие; след — на последней твёрдой земле; вторая смерть
+  теряет старое). `LostCurrencyDrop` на игроке, след `LostCurrencyMark` (префаб, `vfx_lost_gold`),
+  `GameProgress.DropAllCurrency` / `RecoverLostCurrency`, сохранение v11, `FeedbackKind.LostGoldRecovered`.
+  Числа — `TUNING.md`. Тесты `LostCurrencyTests` (5), 1 в `SaveSystemTests`.
+- [x] **63 (9). Процедурная музыка** (решения пользователя 2026-09-28: мрачный эмбиент с редкой
+  мелодией; меню, Гробница, Лес, общий бой боссов, победа; боевой слой в обычном бою). Генератор
+  `PlaceholderMusicArt`, в сцены — `SceneMusic.Apply`; `MusicDirector` получил синхронные слои
+  (`PlayScheduled`), `_startState` и директор в `MainMenu`. Подробности — `MUSIC_SYSTEM.md`.
+  Тесты: 3 в `AudioTests`, 11 в `AudioDataTests`, переписан `TheDirectorWorksWithNoTracksAssigned`.
+- [x] **64 (10). Стабильность тестов** (FPS и прогон сборки — в «Отложено»). Оба сбоя
+  воспроизведены искусственно медленными кадрами (40–70 мс). `WorldTraversalTests`: при 4× один
+  кадр покрывал несколько шагов физики, бот прыгал со ступени на уступ лучника не вовремя и
+  падал под уступ — теперь `Time.maximumDeltaTime = fixedDeltaTime` на время теста.
+  `CameraFramingTests`: «скачок» мерился шагом за кадр — теперь скоростью по dt того кадра,
+  когда двигалась камера (< 90 м/с; сама камера до ~50). Игра не менялась.
