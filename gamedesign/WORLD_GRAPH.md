@@ -28,6 +28,7 @@ PHASE 25. Источник истины — `Assets/Game/Data/WorldGraph.asset`,
 | --- | --- | --- | --- |
 | `zone_forgotten_tomb` | Забута Гробниця | `Zone_Tomb` | да |
 | `zone_withered_forest` | Зів'ялий Ліс | `Zone_Forest` | да |
+| `zone_ashen_capital` | Попеляста Столиця | `Zone_Capital` | да (`CAPITAL.md`) |
 | `zone_unknown_east` | — (без имени) | — | нет |
 
 Все зоны живут в пространстве сцены мира `TombTrial` (`SceneName`); как они грузятся —

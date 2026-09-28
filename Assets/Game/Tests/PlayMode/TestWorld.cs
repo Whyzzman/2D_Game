@@ -18,6 +18,19 @@ namespace ForgottenKingdom.Tests
             yield return WaitReady();
         }
 
+        /// <summary>Every zone of the world in at once, for a test that looks at all of them.</summary>
+        public static IEnumerator LoadEveryZone()
+        {
+            if (ZoneStreamer.Current == null)
+            {
+                yield break;
+            }
+
+            ZoneStreamer.Current.NeighbourDepth = 10;
+            yield return null;
+            yield return WaitReady();
+        }
+
         /// <summary>Until the zones are in and settled; at once for a scene without a streamer.</summary>
         public static IEnumerator WaitReady(float timeout = 15f)
         {

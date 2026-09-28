@@ -625,7 +625,7 @@ namespace ForgottenKingdom.EditorTools
         /// A premultiplied-free RGBA buffer with real "over" blending, which the shared
         /// <see cref="Canvas"/> does not do: backgrounds are built from soft light and haze.
         /// </summary>
-        private sealed class Paint
+        internal sealed class Paint
         {
             public readonly int Width;
             public readonly int Height;

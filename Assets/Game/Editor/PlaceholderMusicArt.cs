@@ -28,7 +28,7 @@ namespace ForgottenKingdom.EditorTools
         /// <summary>What the content build hands the scene: every track and layer, by name.</summary>
         public sealed class Score
         {
-            public AudioClip Menu, Tomb, TombPulse, Forest, ForestPulse, Boss, BossDrums, Victory;
+            public AudioClip Menu, Tomb, TombPulse, Forest, ForestPulse, Capital, CapitalPulse, Boss, BossDrums, Victory;
         }
 
         public static Score Generate()
@@ -41,6 +41,8 @@ namespace ForgottenKingdom.EditorTools
                 TombPulse = Write("music_tomb_pulse", PulseLayer(TombSong, 11)),
                 Forest = Write("music_forest", ForestTrack()),
                 ForestPulse = Write("music_forest_pulse", PulseLayer(ForestSong, 12)),
+                Capital = Write("music_capital", CapitalTrack()),
+                CapitalPulse = Write("music_capital_pulse", PulseLayer(CapitalSong, 14)),
                 Boss = Write("music_boss", BossTrack()),
                 BossDrums = Write("music_boss_drums", BossDrums()),
                 Victory = Write("music_victory", VictoryTrack())
@@ -85,6 +87,11 @@ namespace ForgottenKingdom.EditorTools
             new[] { 52, 55, 59 }, new[] { 45, 49, 52 }, new[] { 47, 50, 54 },
             new[] { 48, 52, 55 }, new[] { 50, 54, 57 });
 
+        // The capital: slower than the forest, lower than the tomb, and in a darker key.
+        private static readonly Song CapitalSong = new Song(56f, 12, 2,
+            new[] { 46, 49, 53 }, new[] { 42, 46, 49 }, new[] { 44, 48, 51 },
+            new[] { 46, 49, 53 }, new[] { 41, 45, 48 }, new[] { 44, 47, 51 });
+
         private static readonly Song BossSong = new Song(104f, 16, 2,
             new[] { 48, 51, 55 }, new[] { 44, 48, 51 }, new[] { 41, 44, 48 },
             new[] { 43, 47, 50 }, new[] { 48, 51, 55 }, new[] { 44, 48, 51 },
@@ -127,6 +134,18 @@ namespace ForgottenKingdom.EditorTools
             Arpeggio(buffer, song, new System.Random(8), 0.13f);
             Melody(buffer, song, new System.Random(9), new[] { 64, 66, 67, 69, 71, 74, 76 },
                 Voice.Pipe, 0.18f, phraseEvery: 4, notesPerPhrase: 5);
+            return Finish(buffer);
+        }
+
+        /// <summary>A burnt city: organ under everything, a bell tolling now and then, little else.</summary>
+        private static float[] CapitalTrack()
+        {
+            var song = CapitalSong;
+            var buffer = new float[song.Length];
+            Drone(buffer, song, 0.2f);
+            Pads(buffer, song, PadTone.Organ, 0.16f);
+            Melody(buffer, song, new System.Random(17), new[] { 58, 61, 63, 65, 68, 70 },
+                Voice.Bell, 0.18f, phraseEvery: 4, notesPerPhrase: 2);
             return Finish(buffer);
         }
 

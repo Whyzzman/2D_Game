@@ -261,7 +261,12 @@ namespace ForgottenKingdom.EditorTools
             // Coins changing hands: a bright tick, a little lower than picking gold up.
             new Spec(AudioId.ShopBuy, "SFX/World", "sfx_shop_buy", Recipe.Tick, 2, 0.3f, 1.8f),
             // A lock giving way and an old lid lifting: a short crack.
-            new Spec(AudioId.ChestOpen, "SFX/World", "sfx_chest_open", Recipe.Crack, 2, 0.6f, 0.8f)
+            new Spec(AudioId.ChestOpen, "SFX/World", "sfx_chest_open", Recipe.Crack, 2, 0.6f, 0.8f),
+
+            // ---- the Ashen Capital: a hollow burnt city, a bell far off, embers settling ----
+            new Spec(AudioId.AmbienceCapitalBase, "Ambience/Capital", "amb_capital_base", Recipe.Bed, 1, 8f, 0.62f),
+            new Spec(AudioId.AmbienceBellToll, "Ambience/Capital", "amb_capital_bell", Recipe.MetalRing, 2, 2.4f, 0.32f),
+            new Spec(AudioId.AmbienceEmbers, "Ambience/Capital", "amb_capital_embers", Recipe.Fire, 3, 1.1f, 1.1f)
         };
 
         /// <summary>Writes every missing or changed clip and returns them, by sound.</summary>

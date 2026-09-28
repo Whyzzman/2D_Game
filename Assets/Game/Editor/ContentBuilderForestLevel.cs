@@ -535,14 +535,13 @@ namespace ForgottenKingdom.EditorTools
                 progress);
             ForestBlock(section, "ForestExitFloor", new Vector2(308f, -0.5f), new Vector2(11f, 1f));
 
-            // The road on. Sealed by something that is not a Warden or a lever: the next region is
-            // not built, and the map shows a closed way east with no name on it. Solid, so nobody
-            // walks off the end of the world.
+            // The road on to the Ashen Capital (item 2 of the big list): sealed while the Warden
+            // stands, open for good once he falls.
             var future = ForestBlock(section, "FutureRoadSeal", new Vector2(313.5f, 4f),
                 new Vector2(1f, 10f), ForestSurface.RootWall);
             Ensure<NonClimbableSurface>(future);
-            PlaceDoor(section, "FutureRoadGate", new Vector2(313.5f, 4f),
-                RequirementKind.Unavailable, "zone_unknown_east", future, progress);
+            PlaceDoor(section, CapitalRoadGateName, new Vector2(313.5f, 4f),
+                RequirementKind.BossDefeated, WardenBossId, future, progress);
 
             ForestProp(section, "env_forest_arena_backdrop", new Vector2(288f, -1f),
                 "EnvironmentBack", 0, 1f);

@@ -20,6 +20,7 @@ namespace ForgottenKingdom.EditorTools
         private const string MenuPath = "Assets/Game/Scenes/MainMenu.unity";
         private const string TombZone = "zone_forgotten_tomb";
         private const string ForestZone = "zone_withered_forest";
+        private const string CapitalZone = "zone_ashen_capital";
         private const string MenuMusicName = "Music";
 
         [MenuItem("Forgotten Kingdom/Scene/Apply Music")]
@@ -46,14 +47,15 @@ namespace ForgottenKingdom.EditorTools
             Debug.Log("Music applied to TombTrial and MainMenu.");
         }
 
-        /// <summary>Two regions, one fight: the bosses share a track and its phase-two drums.</summary>
+        /// <summary>Three regions, one fight: the bosses share a track and its phase-two drums.</summary>
         public static void ConfigureLevel(MusicDirector director, PlaceholderMusicArt.Score score)
         {
             var serialized = new SerializedObject(director);
             var palettes = serialized.FindProperty("_palettes");
-            palettes.arraySize = 2;
+            palettes.arraySize = 3;
             Palette(palettes.GetArrayElementAtIndex(0), TombZone, score.Tomb, score.TombPulse, score);
             Palette(palettes.GetArrayElementAtIndex(1), ForestZone, score.Forest, score.ForestPulse, score);
+            Palette(palettes.GetArrayElementAtIndex(2), CapitalZone, score.Capital, score.CapitalPulse, score);
             serialized.FindProperty("_mainMenu").objectReferenceValue = score.Menu;
             serialized.FindProperty("_startState").enumValueIndex = (int)MusicState.Exploration;
             serialized.ApplyModifiedPropertiesWithoutUndo();

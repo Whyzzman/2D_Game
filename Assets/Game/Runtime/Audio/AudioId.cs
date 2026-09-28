@@ -215,6 +215,11 @@ namespace ForgottenKingdom
 
         // ---- the merchant and his chests (item 70, appended) ----
         ShopBuy,
-        ChestOpen
+        ChestOpen,
+
+        // ---- the Ashen Capital (item 2 of the big list, appended) ----
+        AmbienceCapitalBase,
+        AmbienceBellToll,
+        AmbienceEmbers
     }
 }

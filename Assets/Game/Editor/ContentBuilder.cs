@@ -158,7 +158,12 @@ namespace ForgottenKingdom.EditorTools
                     dummyPrefab, attackerPrefab, forest);
                 // The people stand by altars, so they are placed once the level is whole; then the
                 // whole world is split into its world scene and one scene per zone.
-                WorldScenes.Rebuild(SceneNpcs.Build);
+                WorldScenes.Rebuild(() =>
+                {
+                    BuildCapital();
+                    ConfigureCapitalAtmosphere();
+                    SceneNpcs.Build();
+                });
                 AssetDatabase.SaveAssets();
             }
             else
@@ -2801,6 +2806,13 @@ namespace ForgottenKingdom.EditorTools
             events.Add(Sound(AudioId.CorpseCrumble, clips, 0.4f, voices: 3, priority: 30));
             events.Add(Sound(AudioId.ShopBuy, clips, 0.45f, voices: 1, priority: 50));
             events.Add(Sound(AudioId.ChestOpen, clips, 0.55f, voices: 1, priority: 55));
+            // The capital's own air, at the bottom of the table with the other rooms.
+            events.Add(Sound(AudioId.AmbienceCapitalBase, clips, 0.5f, AudioBus.Ambience, voices: 1,
+                priority: 5, spatial: 0f, loop: true));
+            events.Add(Sound(AudioId.AmbienceBellToll, clips, 0.3f, AudioBus.Ambience, voices: 1,
+                priority: 8, spatial: 0.8f));
+            events.Add(Sound(AudioId.AmbienceEmbers, clips, 0.3f, AudioBus.Ambience, voices: 2,
+                priority: 7, spatial: 0.6f));
 
             // Interface. Quiet, flat, and spaced so fast navigation does not chatter.
             events.Add(Sound(AudioId.UiNavigate, clips, 0.3f, AudioBus.Ui, voices: 1, priority: 25,

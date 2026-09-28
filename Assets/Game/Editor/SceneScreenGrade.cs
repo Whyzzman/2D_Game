@@ -21,12 +21,14 @@ namespace ForgottenKingdom.EditorTools
         public const string Folder = "Assets/Game/Data/Grading";
         public const string TombProfile = Folder + "/grade_tomb.asset";
         public const string ForestProfile = Folder + "/grade_forest.asset";
+        public const string CapitalProfile = Folder + "/grade_capital.asset";
         public const string EffectsProfile = Folder + "/grade_effects.asset";
         public const string BossProfile = Folder + "/grade_boss.asset";
         private const string LevelPath = "Assets/Game/Scenes/TombTrial.unity";
         private const string MenuPath = "Assets/Game/Scenes/MainMenu.unity";
         private const string TombZone = "zone_forgotten_tomb";
         private const string ForestZone = "zone_withered_forest";
+        private const string CapitalZone = "zone_ashen_capital";
         private const string ChildPrefix = "Grade";
 
         [MenuItem("Forgotten Kingdom/Scene/Apply Screen Grade")]
@@ -68,9 +70,10 @@ namespace ForgottenKingdom.EditorTools
             var grade = Prepare(camera);
             var serialized = new SerializedObject(grade);
             var zones = serialized.FindProperty("_zones");
-            zones.arraySize = 2;
+            zones.arraySize = 3;
             Zone(zones.GetArrayElementAtIndex(0), TombZone, AddVolume(camera, "Tomb", TombProfile, 0));
             Zone(zones.GetArrayElementAtIndex(1), ForestZone, AddVolume(camera, "Forest", ForestProfile, 0));
+            Zone(zones.GetArrayElementAtIndex(2), CapitalZone, AddVolume(camera, "Capital", CapitalProfile, 0));
             serialized.FindProperty("_defaultZoneId").stringValue = TombZone;
             serialized.FindProperty("_boss").objectReferenceValue = AddVolume(camera, "Boss", BossProfile, 1);
             serialized.FindProperty("_effects").objectReferenceValue =
@@ -154,6 +157,11 @@ namespace ForgottenKingdom.EditorTools
             Adjustments(forest, contrast: 6f, saturation: -4f, filter: new Color(0.95f, 1f, 0.99f));
             Toning(forest, shadows: new Color(0.45f, 0.52f, 0.5f), highlights: new Color(0.52f, 0.54f, 0.56f));
 
+            // The capital: ash in the shadows, the embers' warmth in the highlights.
+            var capital = Profile(CapitalProfile);
+            Adjustments(capital, contrast: 10f, saturation: -12f, filter: new Color(1.02f, 0.98f, 0.96f));
+            Toning(capital, shadows: new Color(0.5f, 0.46f, 0.46f), highlights: new Color(0.6f, 0.5f, 0.42f));
+
             var effects = Profile(EffectsProfile);
             var bloom = Ensure<Bloom>(effects);
             bloom.threshold.Override(0.8f);
@@ -169,7 +177,7 @@ namespace ForgottenKingdom.EditorTools
             var boss = Profile(BossProfile);
             Adjustments(boss, contrast: 18f, saturation: -14f, filter: null);
 
-            foreach (var profile in new[] { tomb, forest, effects, boss })
+            foreach (var profile in new[] { tomb, forest, capital, effects, boss })
             {
                 EditorUtility.SetDirty(profile);
             }

@@ -57,7 +57,7 @@ namespace ForgottenKingdom.Tests
         [UnityTest]
         public IEnumerator EveryAltarInTheLevelIsInTheDatabaseAndInsideItsArea()
         {
-            yield return null;
+            yield return TestWorld.LoadEveryZone();
             var graph = _progress.World;
             var altars = Object.FindObjectsByType<Checkpoint>(FindObjectsInactive.Include);
             Assert.That(altars.Select(a => a.CheckpointId),

@@ -82,10 +82,10 @@ namespace ForgottenKingdom.Tests
 
         // ---------- the main path ----------
 
-        [UnityTest, Timeout(240000)]
+        [UnityTest, Timeout(420000)]
         public IEnumerator TheWholeMainPathIsWalkableEastAndBackWithoutAnyAbility()
         {
-            // Both bosses beaten, as a player walking this far would have them. No air dash, no
+            // The Guardian and the Warden beaten, as a player walking this far would have them. No air dash, no
             // wall run, no second jump: the walk must need none of them.
             _progress.MarkBossDefeated(TombScene.GuardianId);
             _progress.MarkBossDefeated(TombScene.WardenId);
@@ -95,9 +95,11 @@ namespace ForgottenKingdom.Tests
             yield return null;
 
             GameTimeScale.SetBaseScale(4f);
-            yield return Walk(+1, 312f, "east to the sealed road beyond the Warden",
+            // On through the road the Warden kept, across the capital to the sealed road east of
+            // the throne; the capital is loaded on the way, as the forest's neighbour.
+            yield return Walk(+1, 543f, "east through the capital to the sealed road beyond the throne",
                 pullWinches: false);
-            Assert.That(_world.CurrentAreaId, Is.EqualTo("room_forest_far_gate"));
+            Assert.That(_world.CurrentAreaId, Is.EqualTo("room_capital_throne_hall"));
             Assert.That(_progress.IsShortcutUnlocked(ContentBuilderIds.RoadGate), Is.False,
                 "East is walkable over the archer's ledge without the shortcut.");
 

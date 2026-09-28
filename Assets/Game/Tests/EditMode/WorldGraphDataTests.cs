@@ -15,6 +15,7 @@ namespace ForgottenKingdom.Tests
         private const string GraphPath = "Assets/Game/Data/WorldGraph.asset";
         private const string Guardian = "guardian-of-the-tomb";
         private const string Warden = "hollow-warden";
+        private const string King = "ashen-king";
         private WorldGraph _graph;
 
         [SetUp]
@@ -186,16 +187,16 @@ namespace ForgottenKingdom.Tests
             var beyond = _graph.Area(future.ToAreaId);
             Assert.That(_graph.Zone(beyond.ZoneId).IsImplemented, Is.False);
             Assert.That(beyond.DisplayName, Is.Empty, "No spoiler for a region that is not built.");
-            Assert.That(future.RequiredBossId, Is.EqualTo(Warden));
+            Assert.That(future.RequiredBossId, Is.EqualTo(King));
             Assert.That(_graph.Checkpoints.Any(c => c.ZoneId == beyond.ZoneId), Is.False);
-            Assert.That(WorldRules.IsOpen(future, new ProgressDataWorldQuery(Beaten(Guardian, Warden))),
-                Is.False, "Beating the Warden opens his gate, not a zone that does not exist.");
+            Assert.That(WorldRules.IsOpen(future, new ProgressDataWorldQuery(Beaten(Guardian, Warden, King))),
+                Is.False, "Beating the King opens his hall, not a zone that does not exist.");
         }
 
         [Test]
         public void EveryAltarIsATravelDestinationInABuiltZone()
         {
-            Assert.That(_graph.Checkpoints.Count, Is.EqualTo(6));
+            Assert.That(_graph.Checkpoints.Count, Is.EqualTo(9));
             foreach (var checkpoint in _graph.Checkpoints)
             {
                 Assert.That(checkpoint.CanFastTravel, Is.True, checkpoint.CheckpointId);
@@ -475,17 +476,21 @@ namespace ForgottenKingdom.Tests
         }
 
         [Test]
-        public void TheRoadBeyondTheForestIsSealedAndTheBorderIsDrawnHeavier()
+        public void TheRoadBeyondTheCapitalIsSealedAndTheBorderIsDrawnHeavier()
         {
             var data = Walked("room_tomb_guardian_arena", "room_forest_root_tunnel",
-                "room_forest_warden_arena", "room_forest_far_gate");
+                "room_forest_warden_arena", "room_forest_far_gate", "room_capital_ash_road",
+                "room_capital_palace_approach", "room_capital_throne_hall");
             data.MarkBossDefeated(Guardian);
             data.MarkBossDefeated(Warden);
-            var view = Map(data, "room_forest_far_gate");
+            data.MarkBossDefeated(King);
+            var view = Map(data, "room_capital_throne_hall");
 
             var future = view.Links.Single(l => l.Connection.IsFuture);
             Assert.That(future.State, Is.EqualTo(MapLinkState.Sealed));
-            Assert.That(view.Node("room_beyond_forest").Label, Is.Empty);
+            Assert.That(view.Node("room_beyond_capital").Label, Is.Empty);
+            Assert.That(view.Links.Single(l => l.Connection.ConnectionId == "conn_forest_to_capital")
+                .IsZoneTransition, Is.True);
             Assert.That(view.Links.Single(l => l.Connection.ConnectionId == "conn_tomb_to_forest")
                 .IsZoneTransition, Is.True);
         }

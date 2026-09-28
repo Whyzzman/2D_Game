@@ -33,6 +33,9 @@ namespace ForgottenKingdom.EditorTools
         public const string TombZoneId = "zone_forgotten_tomb";
         public const string ForestZoneId = "zone_withered_forest";
         public const string WardenBossId = "hollow-warden";
+        // The third zone (item 2 of the big list, 2026-09-28).
+        public const string CapitalZoneId = "zone_ashen_capital";
+        public const string CapitalKingBossId = "ashen-king";
 
         // ---------- catalogue ----------
 

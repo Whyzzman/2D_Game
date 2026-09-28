@@ -225,8 +225,9 @@ namespace ForgottenKingdom
             foreach (var area in graph.Areas)
             {
                 var zone = area != null ? graph.Zone(area.ZoneId) : null;
+                // A region only hinted at is never walked into; it gets no frame of its own.
                 if (area != null && (zone == null || string.IsNullOrEmpty(zone.SceneName)
-                    || zone.SceneName == scene))
+                    || zone.SceneName == scene) && (zone == null || zone.IsImplemented))
                 {
                     yield return area;
                 }

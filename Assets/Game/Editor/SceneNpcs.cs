@@ -7,7 +7,7 @@ namespace ForgottenKingdom.EditorTools
     /// <summary>
     /// Places the people of the world and the merchant's chests in TombTrial (item 70, the user's
     /// choices of 2026-09-28): Hnat by the first altar, then by the forest's first once the
-    /// Guardian falls; Myroslava by the crypt's altar, the royal road's, then the deep forest's;
+    /// Guardian falls and by the capital's gate once the Warden does; Myroslava by the crypt's altar, the royal road's, then the deep forest's;
     /// Severyn's ghost before the Guardian's door; one locked chest in the Tomb and two in the
     /// Forest. Everything goes under one root, <c>Npcs</c>, which is replaced whole, so running it
     /// again is safe and nothing else in the scene is touched.
@@ -49,7 +49,8 @@ namespace ForgottenKingdom.EditorTools
             var warden = ContentBuilder.WardenBossId;
 
             Place(root, gnat, "tomb-altar-01", 3.2f, null, GuardianBossId, "Гробниця · Вхід до Гробниці", dialogue);
-            Place(root, gnat, "forest-entrance", 3.2f, GuardianBossId, null, "Ліс · Узлісся", dialogue);
+            Place(root, gnat, "forest-entrance", 3.2f, GuardianBossId, warden, "Ліс · Узлісся", dialogue);
+            Place(root, gnat, "capital-gate", 3.2f, warden, null, "Столиця · Міська брама", dialogue);
             Place(root, myroslava, "tomb-altar-02", 2.2f, null, GuardianBossId, "Гробниця · Обвалений склеп", dialogue);
             Place(root, myroslava, "royal-road-shrine", -2.6f, GuardianBossId, warden, "Ліс · Королівський шлях", dialogue);
             Place(root, myroslava, "deep-forest-shrine", -2.6f, warden, null, "Ліс · Глибокий ліс", dialogue);

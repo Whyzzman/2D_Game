@@ -46,7 +46,17 @@ namespace ForgottenKingdom.EditorTools
         private const string ForestWardenArena = "room_forest_warden_arena";
         private const string ForestFarGate = "room_forest_far_gate";
         private const string ForestOverlook = "room_forest_warden_overlook";
-        private const string BeyondForest = "room_beyond_forest";
+        private const string CapitalAshRoad = "room_capital_ash_road";
+        private const string CapitalCityGate = "room_capital_city_gate";
+        private const string CapitalMarket = "room_capital_market";
+        private const string CapitalBellTower = "room_capital_bell_tower";
+        private const string CapitalBellNest = "room_capital_bell_nest";
+        private const string CapitalTemple = "room_capital_temple";
+        private const string CapitalGardens = "room_capital_gardens";
+        private const string CapitalPalaceApproach = "room_capital_palace_approach";
+        private const string CapitalThroneHall = "room_capital_throne_hall";
+        private const string CapitalGallery = "room_capital_royal_gallery";
+        private const string BeyondCapital = "room_beyond_capital";
 
         public const string TombBridgeShortcut = "shortcut_tomb_crypt_bridge";
         public const string ForestRoadGateShortcut = "shortcut_forest_road_gate";
@@ -125,6 +135,9 @@ namespace ForgottenKingdom.EditorTools
                 .Append(ZoneJson(ForestZoneId, "Зів'ялий Ліс", "Зів'ялий Ліс",
                     new Vector2(80f, 0.85f), true, new Color(0.5f, 0.66f, 0.46f),
                     WorldScenes.ForestSceneName)).Append(',')
+                .Append(ZoneJson(CapitalZoneId, "Попеляста Столиця", "Попеляста Столиця",
+                    new Vector2(330f, 0.85f), true, new Color(0.7f, 0.56f, 0.5f),
+                    WorldScenes.CapitalSceneName)).Append(',')
                 // Unnamed on purpose: the map shows a sealed road east, not what lies there.
                 .Append(ZoneJson(FutureZoneId, string.Empty, string.Empty, Vector2.zero, false,
                     new Color(0.4f, 0.4f, 0.42f)))
@@ -165,9 +178,22 @@ namespace ForgottenKingdom.EditorTools
                 MainRoom(ForestFarGate, ForestZoneId, "Край лісу", 302f, 318f),
                 Pocket(ForestOverlook, ForestZoneId, "Оглядовий виступ", 304.5f, 309.5f, 2.8f,
                     secret: true, ability: AbilityIds.DoubleJump),
-                AreaJson(BeyondForest, FutureZoneId, string.Empty,
-                    new Vector2(324f * MapScale, 0f), new Vector2(0.8f, 1.2f),
-                    Rect.MinMaxRect(318f, -8f, 330f, 16f), optional: true)
+                MainRoom(CapitalAshRoad, CapitalZoneId, "Попелястий тракт", 318f, 345f),
+                MainRoom(CapitalCityGate, CapitalZoneId, "Міська брама", 345f, 372f),
+                MainRoom(CapitalMarket, CapitalZoneId, "Ринкова площа", 372f, 404f),
+                MainRoom(CapitalBellTower, CapitalZoneId, "Дзвінниця", 404f, 424f),
+                Pocket(CapitalBellNest, CapitalZoneId, "Гніздо на дзвінниці", 421f, 424f, 8.2f,
+                    secret: true, ability: AbilityIds.AirDash),
+                MainRoom(CapitalTemple, CapitalZoneId, "Храмовий квартал", 424f, 458f),
+                MainRoom(CapitalGardens, CapitalZoneId, "Спалені сади", 458f, 492f),
+                MainRoom(CapitalPalaceApproach, CapitalZoneId, "Підступ до палацу", 492f, 512f),
+                Pocket(CapitalGallery, CapitalZoneId, "Королівська галерея", 494f, 510f, 9.4f,
+                    secret: true, ability: AbilityIds.Grapple),
+                MainRoom(CapitalThroneHall, CapitalZoneId, "Тронна зала", 512f, 545f,
+                    boss: CapitalKingBossId),
+                AreaJson(BeyondCapital, FutureZoneId, string.Empty,
+                    new Vector2(551f * MapScale, 0f), new Vector2(0.8f, 1.2f),
+                    Rect.MinMaxRect(545f, -8f, 557f, 16f), optional: true)
             })).Append("],");
 
             json.Append("\"_connections\":[").Append(string.Join(",", new[]
@@ -215,8 +241,24 @@ namespace ForgottenKingdom.EditorTools
                     type: ConnectionType.BossGate, boss: WardenBossId),
                 LinkJson("conn_forest_far_overlook", ForestFarGate, ForestOverlook,
                     MapDirection.North, ConnectionType.AbilityGate, ability: AbilityIds.DoubleJump),
-                LinkJson("conn_forest_far_beyond", ForestFarGate, BeyondForest,
-                    type: ConnectionType.Gate, boss: WardenBossId, future: true)
+                // The road the Warden kept: sealed until he falls, then the way to the capital.
+                LinkJson("conn_forest_to_capital", ForestFarGate, CapitalAshRoad,
+                    type: ConnectionType.ZoneTransition, boss: WardenBossId),
+                LinkJson("conn_capital_road_gate", CapitalAshRoad, CapitalCityGate),
+                LinkJson("conn_capital_gate_market", CapitalCityGate, CapitalMarket),
+                LinkJson("conn_capital_market_tower", CapitalMarket, CapitalBellTower),
+                LinkJson("conn_capital_tower_nest", CapitalBellTower, CapitalBellNest,
+                    MapDirection.North, ConnectionType.AbilityGate, ability: AbilityIds.AirDash),
+                LinkJson("conn_capital_tower_temple", CapitalBellTower, CapitalTemple),
+                LinkJson("conn_capital_temple_gardens", CapitalTemple, CapitalGardens),
+                LinkJson("conn_capital_gardens_approach", CapitalGardens, CapitalPalaceApproach),
+                LinkJson("conn_capital_approach_gallery", CapitalPalaceApproach, CapitalGallery,
+                    MapDirection.North, ConnectionType.AbilityGate, ability: AbilityIds.Grapple),
+                LinkJson("conn_capital_approach_throne", CapitalPalaceApproach, CapitalThroneHall,
+                    type: ConnectionType.Door),
+                // East of the throne the road goes on, sealed: what lies there is the ending's.
+                LinkJson("conn_capital_throne_beyond", CapitalThroneHall, BeyondCapital,
+                    type: ConnectionType.Gate, boss: CapitalKingBossId, future: true)
             })).Append("],");
 
             json.Append("\"_checkpoints\":[").Append(string.Join(",", new[]
@@ -227,7 +269,11 @@ namespace ForgottenKingdom.EditorTools
                 AltarJson("royal-road-shrine", "Придорожня святиня", ForestZoneId, ForestRoyalRoad),
                 AltarJson("deep-forest-shrine", "Святиня глибокого лісу", ForestZoneId, ForestDeep),
                 AltarJson("warden-shrine", "Святиня Вартового", ForestZoneId,
-                    ForestWardenApproach)
+                    ForestWardenApproach),
+                AltarJson("capital-gate", "Вівтар міської брами", CapitalZoneId, CapitalCityGate),
+                AltarJson("capital-temple", "Храмовий вівтар", CapitalZoneId, CapitalTemple),
+                AltarJson("capital-palace", "Вівтар біля палацу", CapitalZoneId,
+                    CapitalPalaceApproach)
             })).Append("],");
 
             json.Append("\"_abilities\":[").Append(string.Join(",", new[]
@@ -244,7 +290,10 @@ namespace ForgottenKingdom.EditorTools
                     string.Empty),
                 // Bought on the skill tree. A build choice, so the world never asks for it.
                 AbilityJson(AbilityIds.ShadowDash, "Тіньовий ривок", AbilityKind.CombatSkill,
-                    string.Empty)
+                    string.Empty),
+                // The Ashen King's: every ring in the kingdom asks for it, never the main path.
+                AbilityJson(AbilityIds.Grapple, "Гак-кішка", AbilityKind.TraversalProgression,
+                    CapitalKingBossId)
             })).Append("],");
 
             json.Append("\"_startAreaId\":\"").Append(TombEntrance).Append("\",");
