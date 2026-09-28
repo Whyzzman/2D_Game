@@ -39,6 +39,7 @@ namespace ForgottenKingdom.Tests
 
         [TestCase("GuardianAnimations")]
         [TestCase("WardenAnimations")]
+        [TestCase("KingAnimations")]
         public void TheBossesCapesHangFromEveryFrame(string setName)
         {
             var set = AssetDatabase.LoadAssetAtPath<BossAnimationSet>($"{Folder}/{setName}.asset");

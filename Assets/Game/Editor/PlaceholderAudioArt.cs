@@ -272,7 +272,14 @@ namespace ForgottenKingdom.EditorTools
             new Spec(AudioId.RavenCaw, "SFX/Enemies", "sfx_raven_caw", Recipe.Shadow, 3, 0.45f, 1.7f),
             new Spec(AudioId.GargoyleWake, "SFX/Enemies", "sfx_gargoyle_wake", Recipe.Crack, 2, 0.9f, 0.55f),
             new Spec(AudioId.PriestHeal, "SFX/Enemies", "sfx_priest_heal", Recipe.Chime, 2, 0.7f, 0.9f),
-            new Spec(AudioId.PriestBlink, "SFX/Enemies", "sfx_priest_blink", Recipe.Shadow, 2, 0.4f, 1.3f)
+            new Spec(AudioId.PriestBlink, "SFX/Enemies", "sfx_priest_blink", Recipe.Shadow, 2, 0.4f, 1.3f),
+
+            // ---- the King: plate that shakes the floor, a curse catching fire ----
+            new Spec(AudioId.KingAwaken, "SFX/Boss", "sfx_king_awaken", Recipe.Drone, 1, 2.4f, 0.4f),
+            new Spec(AudioId.KingStep, "SFX/Boss", "sfx_king_step", Recipe.Boom, 4, 0.45f, 1.1f),
+            new Spec(AudioId.KingRage, "SFX/Boss", "sfx_king_rage", Recipe.Fire, 1, 2.2f, 0.45f),
+            new Spec(AudioId.KingStunned, "SFX/Boss", "sfx_king_stunned", Recipe.MetalRing, 2, 0.9f, 0.45f),
+            new Spec(AudioId.KingDeath, "SFX/Boss", "sfx_king_death", Recipe.Shadow, 1, 2.8f, 0.38f)
         };
 
         /// <summary>Writes every missing or changed clip and returns them, by sound.</summary>

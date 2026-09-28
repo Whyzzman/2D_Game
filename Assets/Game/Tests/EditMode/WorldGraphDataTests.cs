@@ -154,7 +154,7 @@ namespace ForgottenKingdom.Tests
                 .Where(c => !string.IsNullOrEmpty(c.RequiredAbilityId))
                 .GroupBy(c => c.RequiredAbilityId)
                 .ToDictionary(g => g.Key, g => g.Count());
-            Assert.That(gatesByAbility.Values.Sum(), Is.InRange(4, 8));
+            Assert.That(gatesByAbility.Values.Sum(), Is.InRange(4, 12));
             Assert.That(gatesByAbility.ContainsKey(AbilityIds.DoubleJump), Is.True);
             Assert.That(gatesByAbility.ContainsKey(AbilityIds.AirDash), Is.True);
             Assert.That(gatesByAbility.ContainsKey(AbilityIds.WallRun), Is.True);
@@ -518,7 +518,7 @@ namespace ForgottenKingdom.Tests
             Assert.That(completion.Discovered, Is.EqualTo(2));
             Assert.That(completion.SecretsFound, Is.EqualTo(1));
             Assert.That(completion.Total, Is.EqualTo(7), "Six rooms and the visible reliquary.");
-            Assert.That(completion.SecretsTotal, Is.EqualTo(2));
+            Assert.That(completion.SecretsTotal, Is.EqualTo(3), "The ossuary, the bell shaft and the mason's cache.");
         }
 
         [Test]

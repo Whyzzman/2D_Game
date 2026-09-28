@@ -27,6 +27,8 @@ namespace ForgottenKingdom
                 [AbilityIds.AirDash] = ("Ривок тепер працює й у повітрі.", "У повітрі натисни", "Dash"),
                 [AbilityIds.WallRun] = ("Стіна більше не перешкода: по ній можна бігти вгору.",
                     "Притиснись до стіни й тримай", "Jump"),
+                [AbilityIds.Grapple] = ("Залізні кільця тепер тримають: гак підтягне до них і підкине вгору.",
+                    "Біля кільця натисни", "Grapple"),
             };
 
         private readonly VisualElement _card;

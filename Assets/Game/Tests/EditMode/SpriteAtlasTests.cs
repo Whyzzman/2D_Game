@@ -41,7 +41,7 @@ namespace ForgottenKingdom.Tests
         public void EveryCharacterAndTheHitEffectsHaveTheirOwnAtlas()
         {
             var folders = PackedFolders();
-            Assert.That(folders, Has.Length.EqualTo(14), "Player, ten enemies, two bosses, effects.");
+            Assert.That(folders, Has.Length.EqualTo(15), "Player, ten enemies, three bosses, effects.");
             foreach (var folder in folders)
             {
                 var path = AtlasFor(folder);

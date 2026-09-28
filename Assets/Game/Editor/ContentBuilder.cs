@@ -144,6 +144,8 @@ namespace ForgottenKingdom.EditorTools
             var forest = BuildForestContent();
             // The capital's four (item 2, stage C); the level places them by prefab name.
             BuildCapitalContent();
+            // Their king (stage D); the throne hall places him by prefab name too.
+            BuildCapitalBoss();
             var checkpointPrefab = BuildCheckpointPrefab();
             var dummyPrefab = BuildDummyPrefab();
             var attackerPrefab = BuildAttackerPrefab();
@@ -671,6 +673,7 @@ namespace ForgottenKingdom.EditorTools
             definitions.AddRange(BuildForestItems());
             definitions.AddRange(BuildWorldItems());
             definitions.AddRange(BuildNpcItems());
+            definitions.AddRange(BuildCapitalItems());
 
             var database = CreateAsset<ItemDatabase>($"{DataFolder}/ItemDatabase.asset");
             var serialized = new SerializedObject(database);
@@ -2821,6 +2824,12 @@ namespace ForgottenKingdom.EditorTools
             events.Add(Sound(AudioId.GargoyleWake, clips, 0.7f, voices: 2, priority: 80));
             events.Add(Sound(AudioId.PriestHeal, clips, 0.55f, voices: 2, priority: 70));
             events.Add(Sound(AudioId.PriestBlink, clips, 0.5f, voices: 2, priority: 60));
+            // The King. His rage is the one that must never be dropped, as the Warden's phase.
+            events.Add(Sound(AudioId.KingAwaken, clips, 0.9f, voices: 1, priority: 110, spatial: 0.2f));
+            events.Add(Sound(AudioId.KingStep, clips, 0.55f, voices: 2, priority: 35, interval: 0.14f));
+            events.Add(Sound(AudioId.KingRage, clips, 0.95f, voices: 1, priority: 120, spatial: 0.1f));
+            events.Add(Sound(AudioId.KingStunned, clips, 0.75f, voices: 1, priority: 90));
+            events.Add(Sound(AudioId.KingDeath, clips, 0.95f, voices: 1, priority: 120, spatial: 0.1f));
 
             // Interface. Quiet, flat, and spaced so fast navigation does not chatter.
             events.Add(Sound(AudioId.UiNavigate, clips, 0.3f, AudioBus.Ui, voices: 1, priority: 25,

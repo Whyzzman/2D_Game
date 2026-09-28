@@ -72,8 +72,9 @@ namespace ForgottenKingdom.EditorTools
             BuildBellTower(root, pickup, progress);
             BuildTempleQuarter(root, checkpoint, respawner, progress, player != null ? player.gameObject : null);
             BuildBurntGardens(root, pickup, progress);
-            BuildPalaceApproach(root, checkpoint, respawner, progress, player != null ? player.gameObject : null);
-            BuildThroneHall(root, progress);
+            BuildPalaceApproach(root, checkpoint, pickup, respawner, progress, player != null ? player.gameObject : null);
+            BuildThroneHall(root, progress, respawner);
+            BuildGrappleReturns(level.transform, progress, pickup);
             BuildCapitalParallax(root, camera);
             BuildCapitalAsh(root);
             PlaceCapitalEnemies();
@@ -296,10 +297,10 @@ namespace ForgottenKingdom.EditorTools
         }
 
         /// <summary>
-        /// Before the throne: the last altar, and above it the royal gallery at 9.4 — out of reach
-        /// of every jump in the game. Rings to it come with the King's own gift.
+        /// Before the throne: the last altar, and above it the royal gallery at 6.8 — twice what a
+        /// second jump reaches from this bare floor, with no wall or ledge near. Rings to it come with the King's own gift.
         /// </summary>
-        private static void BuildPalaceApproach(Transform parent, GameObject checkpoint,
+        private static void BuildPalaceApproach(Transform parent, GameObject checkpoint, GameObject pickup,
             PlayerRespawner respawner, GameProgress progress, GameObject player)
         {
             var section = Section(parent, "PalaceApproach");
@@ -307,12 +308,21 @@ namespace ForgottenKingdom.EditorTools
             CapitalProp(section, "env_capital_column_01", new Vector2(494.5f, 0f), "EnvironmentBack", 1, 1.4f);
             CapitalProp(section, "env_capital_column_01", new Vector2(509.5f, 0f), "EnvironmentBack", 1, 1.4f, flip: true);
             CapitalProp(section, "env_capital_banner_01", new Vector2(502f, 4.5f), "EnvironmentBack", 3, 1.1f);
-            var gallery = CapitalBlock(section, "RoyalGallery", new Vector2(502f, 9.15f), new Vector2(14f, 0.5f),
+            var gallery = CapitalBlock(section, "RoyalGallery", new Vector2(502f, 6.55f), new Vector2(14f, 0.5f),
                 CapitalSurface.Ledge);
             Ensure<NonClimbableSurface>(gallery);
-            AreaTrigger(section, CapitalGalleryArea, new Vector2(502f, 10.3f), new Vector2(12f, 1.6f));
+            AreaTrigger(section, CapitalGalleryArea, new Vector2(502f, 7.7f), new Vector2(12f, 1.6f));
+            // Past the gallery's east end, above it: the line lets go 1.9 under the ring and the pop
+            // tops out at 1.1 under it, so the second jump (+1.5) is what clears the shelf, and a
+            // step west once over it puts the hero on top. Clear of its face, so it is no wall jump. Its underside would stop a line thrown through it.
+            PlaceGrappleRing(section, "GalleryRing", new Vector2(511f, 8f));
+            if (pickup != null)
+            {
+                PlacePickup(pickup, new Vector2(498f, 7.3f), progress, string.Empty, true, 300,
+                    "capital-gallery-purse", true);
+            }
             PlaceAbilityGate(section, "GalleryHint", new Vector2(500f, 0.8f), AbilityIds.Grapple,
-                "conn_capital_approach_gallery", new Vector2(502f, 9.9f), progress);
+                "conn_capital_approach_gallery", new Vector2(502f, 7.3f), progress);
             if (checkpoint != null)
             {
                 PlaceCheckpoint(checkpoint, new Vector2(496f, 0.8f), "capital-palace",
@@ -321,16 +331,17 @@ namespace ForgottenKingdom.EditorTools
         }
 
         /// <summary>
-        /// The Throne Hall: a flat arena 33 wide under the empty throne, its seal waiting for the
-        /// King's fight (a later stage), and the road east sealed for the ending's sake.
+        /// The Throne Hall: a flat arena 33 wide before the throne, sealed behind the hero by the
+        /// King's fight (stage D), and the road east sealed for the ending's sake.
         /// </summary>
-        private static void BuildThroneHall(Transform parent, GameProgress progress)
+        private static void BuildThroneHall(Transform parent, GameProgress progress, PlayerRespawner respawner)
         {
             var section = Section(parent, "ThroneHall");
             CapitalBlock(section, "ThroneFloor", new Vector2(528.5f, -0.5f), new Vector2(33f, 1f));
             var barrier = CapitalBlock(section, "ThroneBarrier", new Vector2(512f, 3.5f), new Vector2(1f, 9f),
                 CapitalSurface.Rubble);
             barrier.SetActive(false);
+            BuildKingEncounter(section, barrier, progress, respawner);
             CapitalProp(section, "env_capital_throne_01", new Vector2(539f, 0f), "EnvironmentBack", 1);
             CapitalProp(section, "env_capital_banner_01", new Vector2(520f, 4f), "EnvironmentBack", 3);
             CapitalProp(section, "env_capital_banner_01", new Vector2(532f, 4f), "EnvironmentBack", 3, 1f, flip: true);

@@ -183,6 +183,23 @@ MonoBehaviour:
     _requiredAbilityId: wall-run
     _iconType: 5
     _bossId: 
+  - _areaId: room_tomb_mason_cache
+    _zoneId: zone_forgotten_tomb
+    _displayName: "\u0421\u0445\u043E\u0432\u043E\u043A \u043A\u0430\u043C\u0435\u043D\u044F\u0440\u0430"
+    _mapPosition: {x: -0.65, y: 3.1}
+    _mapSize: {x: 0.7, y: 0.6}
+    _worldBounds:
+      serializedVersion: 2
+      x: -8
+      y: 14.5
+      width: 3
+      height: 2.2000008
+    _isSecret: 1
+    _isOptional: 1
+    _discoveryRule: 1
+    _requiredAbilityId: grapple
+    _iconType: 5
+    _bossId: 
   - _areaId: room_tomb_reliquary
     _zoneId: zone_forgotten_tomb
     _displayName: "\u0420\u0435\u043B\u0456\u043A\u0432\u0456\u0430\u0440\u0456\u0439"
@@ -285,6 +302,23 @@ MonoBehaviour:
     _discoveryRule: 0
     _requiredAbilityId: 
     _iconType: 0
+    _bossId: 
+  - _areaId: room_forest_hunter_hollow
+    _zoneId: zone_withered_forest
+    _displayName: "\u0414\u0443\u043F\u043B\u043E \u043C\u0438\u0441\u043B\u0438\u0432\u0446\u044F"
+    _mapPosition: {x: 16.4, y: 3.1}
+    _mapSize: {x: 0.7, y: 0.6}
+    _worldBounds:
+      serializedVersion: 2
+      x: 162
+      y: 10
+      width: 4
+      height: 2.1999998
+    _isSecret: 1
+    _isOptional: 1
+    _discoveryRule: 1
+    _requiredAbilityId: grapple
+    _iconType: 5
     _bossId: 
   - _areaId: room_forest_watchtower
     _zoneId: zone_withered_forest
@@ -569,7 +603,7 @@ MonoBehaviour:
     _worldBounds:
       serializedVersion: 2
       x: 494
-      y: 9.4
+      y: 6.8
       width: 16
       height: 2.1999998
     _isSecret: 1
@@ -730,6 +764,19 @@ MonoBehaviour:
     _persistentUnlockId: 
     _openedFromAreaId: 
     _isFuture: 0
+  - _connectionId: conn_tomb_bellshaft_cache
+    _fromAreaId: room_tomb_bell_shaft
+    _toAreaId: room_tomb_mason_cache
+    _direction: 2
+    _type: 5
+    _isBidirectional: 1
+    _requiredAbilityId: grapple
+    _requiredProgressionId: 
+    _requiredBossId: 
+    _isShortcut: 0
+    _persistentUnlockId: 
+    _openedFromAreaId: 
+    _isFuture: 0
   - _connectionId: conn_tomb_passage_reliquary
     _fromAreaId: room_tomb_guard_passage
     _toAreaId: room_tomb_reliquary
@@ -802,6 +849,19 @@ MonoBehaviour:
     _type: 0
     _isBidirectional: 1
     _requiredAbilityId: 
+    _requiredProgressionId: 
+    _requiredBossId: 
+    _isShortcut: 0
+    _persistentUnlockId: 
+    _openedFromAreaId: 
+    _isFuture: 0
+  - _connectionId: conn_forest_grove_hollow
+    _fromAreaId: room_forest_poison_grove
+    _toAreaId: room_forest_hunter_hollow
+    _direction: 2
+    _type: 5
+    _isBidirectional: 1
+    _requiredAbilityId: grapple
     _requiredProgressionId: 
     _requiredBossId: 
     _isShortcut: 0

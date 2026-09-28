@@ -40,9 +40,12 @@ namespace ForgottenKingdom
 
         public bool CanInteract => !_isCollected && isActiveAndEnabled;
 
+        /// <summary>A shard of a flask found in the world rather than bought (item 2, stage D).</summary>
+        public bool IsFlaskShard => !_isCurrency && _itemId.StartsWith(MerchantStock.FlaskShardPrefix);
+
         public string Prompt => Definition != null
             ? $"Підібрати: {Definition.DisplayName}"
-            : $"Підібрати {_amount}";
+            : IsFlaskShard ? "Підібрати: Уламок фляги" : $"Підібрати {_amount}";
 
         /// <summary>Configures a pickup spawned at runtime by the loot service.</summary>
         public void Configure(GameProgress progress, string itemId, bool isCurrency, int amount,
@@ -127,6 +130,11 @@ namespace ForgottenKingdom
             if (_isCurrency)
             {
                 _progress.AddCurrency(_amount);
+            }
+            else if (IsFlaskShard)
+            {
+                // Not an item: one more flask, counted by FlaskShards from the granted rewards.
+                _progress.GrantReward(_itemId);
             }
             else if (_progress.AddItem(_itemId, _amount) != AddItemResult.Added)
             {

@@ -32,6 +32,8 @@ namespace ForgottenKingdom.EditorTools
         private const string TombArena = "room_tomb_guardian_arena";
         private const string TombOssuary = "room_tomb_royal_ossuary";
         private const string TombBellShaft = "room_tomb_bell_shaft";
+        private const string TombMasonCache = "room_tomb_mason_cache";
+        private const string ForestHunterHollow = "room_forest_hunter_hollow";
         private const string TombReliquary = "room_tomb_reliquary";
         private const string ForestTunnel = "room_forest_root_tunnel";
         private const string ForestEntrance = "room_forest_entrance";
@@ -156,6 +158,9 @@ namespace ForgottenKingdom.EditorTools
                     secret: true, ability: AbilityIds.DoubleJump),
                 Pocket(TombBellShaft, TombZoneId, "Дзвонова шахта", -6.8f, -2.8f, 10.4f,
                     secret: true, ability: AbilityIds.WallRun),
+                // Over the bell loft, for the King's grapple (stage D).
+                Pocket(TombMasonCache, TombZoneId, "Сховок каменяра", -8f, -5f, 14.5f,
+                    secret: true, ability: AbilityIds.Grapple, mapRow: 3.1f),
                 Pocket(TombReliquary, TombZoneId, "Реліквіарій", 3f, 5f, 4f,
                     secret: false, ability: AbilityIds.AirDash),
                 MainRoom(ForestTunnel, ForestZoneId, "Кореневий тунель", 62.5f, 81f),
@@ -163,6 +168,8 @@ namespace ForgottenKingdom.EditorTools
                 MainRoom(ForestRoyalRoad, ForestZoneId, "Зруйнований королівський шлях", 110f, 134f),
                 MainRoom(ForestBrokenArch, ForestZoneId, "Зламана арка", 134f, 147f),
                 MainRoom(ForestGrove, ForestZoneId, "Отруйний гай", 147f, 181f),
+                Pocket(ForestHunterHollow, ForestZoneId, "Дупло мисливця", 162f, 166f, 10f,
+                    secret: true, ability: AbilityIds.Grapple, mapRow: 3.1f),
                 MainRoom(ForestWatchtower, ForestZoneId, "Руїни сторожової вежі", 181f, 212f,
                     top: 11.9f),
                 AreaJson(ForestWatchtowerTop, ForestZoneId, "Вершина вежі",
@@ -187,7 +194,7 @@ namespace ForgottenKingdom.EditorTools
                 MainRoom(CapitalTemple, CapitalZoneId, "Храмовий квартал", 424f, 458f),
                 MainRoom(CapitalGardens, CapitalZoneId, "Спалені сади", 458f, 492f),
                 MainRoom(CapitalPalaceApproach, CapitalZoneId, "Підступ до палацу", 492f, 512f),
-                Pocket(CapitalGallery, CapitalZoneId, "Королівська галерея", 494f, 510f, 9.4f,
+                Pocket(CapitalGallery, CapitalZoneId, "Королівська галерея", 494f, 510f, 6.8f,
                     secret: true, ability: AbilityIds.Grapple),
                 MainRoom(CapitalThroneHall, CapitalZoneId, "Тронна зала", 512f, 545f,
                     boss: CapitalKingBossId),
@@ -214,6 +221,8 @@ namespace ForgottenKingdom.EditorTools
                     MapDirection.North, ConnectionType.AbilityGate, ability: AbilityIds.DoubleJump),
                 LinkJson("conn_tomb_hall_bellshaft", TombBurialHall, TombBellShaft,
                     MapDirection.North, ConnectionType.AbilityGate, ability: AbilityIds.WallRun),
+                LinkJson("conn_tomb_bellshaft_cache", TombBellShaft, TombMasonCache,
+                    MapDirection.North, ConnectionType.AbilityGate, ability: AbilityIds.Grapple),
                 LinkJson("conn_tomb_passage_reliquary", TombGuardPassage, TombReliquary,
                     MapDirection.West, ConnectionType.AbilityGate, ability: AbilityIds.AirDash),
                 LinkJson("conn_forest_tunnel_entrance", ForestTunnel, ForestEntrance),
@@ -225,6 +234,8 @@ namespace ForgottenKingdom.EditorTools
                     type: ConnectionType.Shortcut, shortcut: ForestRoadGateShortcut,
                     openedFrom: ForestBrokenArch),
                 LinkJson("conn_forest_arch_grove", ForestBrokenArch, ForestGrove),
+                LinkJson("conn_forest_grove_hollow", ForestGrove, ForestHunterHollow,
+                    MapDirection.North, ConnectionType.AbilityGate, ability: AbilityIds.Grapple),
                 LinkJson("conn_forest_grove_watchtower", ForestGrove, ForestWatchtower),
                 LinkJson("conn_forest_watchtower_deep", ForestWatchtower, ForestDeep),
                 LinkJson("conn_forest_watchtower_climb", ForestWatchtower, ForestWatchtowerTop,

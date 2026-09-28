@@ -226,6 +226,13 @@ namespace ForgottenKingdom
         RavenCaw,
         GargoyleWake,
         PriestHeal,
-        PriestBlink
+        PriestBlink,
+
+        // ---- the Oath-Bound King (item 2, stage D, appended) ----
+        KingAwaken,
+        KingStep,
+        KingRage,
+        KingStunned,
+        KingDeath
     }
 }
