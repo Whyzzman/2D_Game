@@ -181,6 +181,8 @@ namespace ForgottenKingdom
         /// </summary>
         public int deaths;
         public bool completed;
+        /// <summary>Which «Нова гра+» this is; 0 for a first run (<see cref="NewGamePlus"/>).</summary>
+        public int newGamePlus;
         public float totalPlayTimeSeconds;
         public string createdAtUtc = string.Empty;
         public string lastSavedAtUtc = string.Empty;
@@ -348,6 +350,7 @@ namespace ForgottenKingdom
             totalPlayTimeSeconds = Mathf.Max(0f, totalPlayTimeSeconds);
             lostCurrency = Mathf.Max(0, lostCurrency);
             deaths = Mathf.Max(0, deaths);
+            newGamePlus = Mathf.Max(0, newGamePlus);
             checkpointId ??= string.Empty;
             // Left empty on purpose for a pre-version-nine file. Guessing "the Tomb" here would be
             // right today and wrong the moment a zone is renamed; the registry knows, this does not.

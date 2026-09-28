@@ -38,11 +38,13 @@ namespace ForgottenKingdom
         private VisualElement _confirm;
         private readonly List<Button> _confirmButtons = new List<Button>();
         private int _confirmFocus;
+        private bool _confirmPlus;
 
         public bool IsOptionsOpen => _options != null && _options.IsOpen;
         public bool IsControlsOpen => _controls != null && _controls.IsOpen;
         public ControlsPanel Controls => _controls;
         public bool CanContinue => _continue != null && _continue.enabledSelf;
+        public bool CanStartNewGamePlus => _root?.Q<Button>("new-game-plus")?.enabledSelf == true;
 
         /// <summary>The "erase the save?" window over the title is up.</summary>
         public bool IsConfirmOpen => _confirm != null && _confirm.ClassListContains("confirm--open");
@@ -100,6 +102,7 @@ namespace ForgottenKingdom
         private void BindButtons()
         {
             Bind("continue", Continue);
+            Bind("new-game-plus", NewGamePlusRun);
             Bind("new-game", NewGame);
             Bind("options", OpenOptions);
             Bind("controls", OpenControls);
@@ -126,13 +129,21 @@ namespace ForgottenKingdom
         {
             var hasSave = SaveSystem.HasValidSave();
             _continue?.SetEnabled(hasSave);
+            var plus = _root?.Q<Button>("new-game-plus");
+            if (plus != null)
+            {
+                var completed = hasSave && SaveSystem.Read()?.completed == true;
+                plus.SetEnabled(completed);
+                plus.style.display = completed ? DisplayStyle.Flex : DisplayStyle.None;
+            }
+
             var meta = _root?.Q<Label>("save-meta");
             if (meta != null)
             {
                 meta.text = hasSave ? DescribeSave() : "Збереження не знайдено";
             }
 
-            SetFocus(hasSave ? 0 : 1);
+            SetFocus(hasSave ? 0 : _items.FindIndex(b => b.name == "new-game"));
         }
 
         private static string DescribeSave()
@@ -144,9 +155,12 @@ namespace ForgottenKingdom
             }
 
             var minutes = Mathf.FloorToInt(data.totalPlayTimeSeconds / 60f);
-            return minutes >= 60
+            var text = minutes >= 60
                 ? $"Збереження · {minutes / 60} год {minutes % 60} хв"
                 : $"Збереження · {minutes} хв";
+            if (data.newGamePlus > 0) { text += data.newGamePlus > 1 ? $" · NG+{data.newGamePlus}" : " · NG+"; }
+            if (data.completed) { text += " · ♛ Пройдено"; }
+            return text;
         }
 
         private void Update()
@@ -249,11 +263,28 @@ namespace ForgottenKingdom
             StartCoroutine(Leave(true));
         }
 
+        /// <summary>
+        /// «Нова гра+» (design/ui/ending/ending.html frames 6–7): only on a completed save, and
+        /// always asked first — the finished run is replaced by the next one.
+        /// </summary>
+        public void NewGamePlusRun()
+        {
+            var data = SaveSystem.HasValidSave() ? SaveSystem.Read() : null;
+            if (data == null || !data.completed)
+            {
+                return;
+            }
+
+            _confirmPlus = true;
+            OpenConfirm();
+        }
+
         /// <summary>The window's "erase and start" — the only way a save is deleted from here.</summary>
         public void ConfirmNewGame()
         {
+            var plus = _confirmPlus;
             CloseConfirm();
-            StartCoroutine(Leave(true));
+            StartCoroutine(Leave(true, plus));
         }
 
         public void CancelNewGame() => CloseConfirm();
@@ -294,6 +325,13 @@ namespace ForgottenKingdom
 
             var save = _confirm.Q<Label>("confirm-save");
             if (save != null) { save.text = DescribeSave(); }
+            SetConfirmText("confirm-title", _confirmPlus ? "ПОЧАТИ «НОВУ ГРУ+»?" : "ПОЧАТИ НОВУ ГРУ?");
+            SetConfirmText("confirm-text", _confirmPlus
+                ? "Залишаться: рівень, навички, спорядження, речі, золото.\n"
+                    + "Почнуться заново: здібності руху, карта, боси, секрети, бестіарій.\n"
+                    + "Вороги й боси — +50% здоров'я і шкоди."
+                : "Поточне проходження буде стерто назавжди.");
+            SetConfirmText("confirm-erase-text", _confirmPlus ? "Почати" : "Стерти й почати");
             _confirm.AddToClassList("confirm--open");
             // Cancel first, as in the mock-up: confirming by reflex keeps the save.
             SetConfirmFocus(0);
@@ -301,7 +339,14 @@ namespace ForgottenKingdom
 
         private void CloseConfirm()
         {
+            _confirmPlus = false;
             _confirm?.RemoveFromClassList("confirm--open");
+        }
+
+        private void SetConfirmText(string name, string text)
+        {
+            var label = _confirm.Q<Label>(name);
+            if (label != null) { label.text = text; }
         }
 
         private void UpdateConfirmKeys()
@@ -371,7 +416,7 @@ namespace ForgottenKingdom
 #endif
         }
 
-        private IEnumerator Leave(bool newGame)
+        private IEnumerator Leave(bool newGame, bool plus = false)
         {
             if (_isLeaving)
             {
@@ -384,7 +429,9 @@ namespace ForgottenKingdom
             if (newGame)
             {
                 // Progress only: accessibility settings are in their own file and stay.
+                var next = plus ? NewGamePlus.From(SaveSystem.Read()) : null;
                 SaveSystem.Delete();
+                if (next != null) { SaveSystem.Write(next); }
             }
 
             SceneManager.LoadScene(GameSceneName);

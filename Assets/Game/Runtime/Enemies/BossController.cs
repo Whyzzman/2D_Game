@@ -164,6 +164,8 @@ namespace ForgottenKingdom
             _spawnFacing = _motor.FacingDirection;
         }
 
+        private void Start() => _actor.Toughen(NewGamePlus.Scale);
+
         private void OnEnable()
         {
             _actor.DamageTaken += OnDamageTaken;

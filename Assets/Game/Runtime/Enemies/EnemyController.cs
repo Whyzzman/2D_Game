@@ -190,6 +190,7 @@ namespace ForgottenKingdom
 
         private void Start()
         {
+            _actor.Toughen(NewGamePlus.Scale);
             // Resolved once instead of searching the scene while the enemy is running.
             if (_target == null)
             {

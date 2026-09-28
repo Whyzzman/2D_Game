@@ -136,6 +136,7 @@ namespace ForgottenKingdom
         {
             Data = data ?? GameProgressData.CreateNew();
             Data.Migrate();
+            NewGamePlus.Adopt(Data);
             // Always, not only for old versions: SaveSystem.Read has already raised the version
             // by the time the data arrives here, so an old file cannot be told apart by it. The
             // migration only adds what the save proves and is idempotent, so a current save

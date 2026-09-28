@@ -14,6 +14,8 @@
 
             <ui:VisualElement name="list" class="menu-list">
                 <ui:Button name="continue" class="menu-button display" text="Продовжити" />
+                <!-- design/ui/ending/ending.html frame 6: only once the game is completed. -->
+                <ui:Button name="new-game-plus" class="menu-button display" text="Нова гра+" />
                 <ui:Button name="new-game" class="menu-button display" text="Нова гра" />
                 <ui:Button name="options" class="menu-button display" text="Налаштування" />
                 <ui:Button name="controls" class="menu-button display" text="Керування" />
@@ -41,15 +43,15 @@
             <ui:VisualElement class="confirm__panel">
                 <ui:VisualElement class="confirm__inset" picking-mode="Ignore" />
                 <ui:VisualElement class="confirm__header" picking-mode="Ignore">
-                    <ui:Label class="confirm__title display" text="ПОЧАТИ НОВУ ГРУ?" picking-mode="Ignore" />
+                    <ui:Label name="confirm-title" class="confirm__title display" text="ПОЧАТИ НОВУ ГРУ?" picking-mode="Ignore" />
                 </ui:VisualElement>
                 <ui:VisualElement class="confirm__body">
-                    <ui:Label class="confirm__text" text="Поточне проходження буде стерто назавжди." picking-mode="Ignore" />
+                    <ui:Label name="confirm-text" class="confirm__text" text="Поточне проходження буде стерто назавжди." picking-mode="Ignore" />
                     <ui:Label name="confirm-save" class="confirm__save" text="" picking-mode="Ignore" />
                     <ui:VisualElement class="confirm__row">
                         <ui:Button name="confirm-cancel" class="btn"><ui:Label class="btn__text" text="Скасувати" picking-mode="Ignore" /></ui:Button>
                         <ui:VisualElement class="confirm__spacer" picking-mode="Ignore" />
-                        <ui:Button name="confirm-erase" class="btn btn--danger"><ui:Label class="btn__text" text="Стерти й почати" picking-mode="Ignore" /></ui:Button>
+                        <ui:Button name="confirm-erase" class="btn btn--danger"><ui:Label name="confirm-erase-text" class="btn__text" text="Стерти й почати" picking-mode="Ignore" /></ui:Button>
                     </ui:VisualElement>
                 </ui:VisualElement>
             </ui:VisualElement>

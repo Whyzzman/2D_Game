@@ -26,6 +26,8 @@ namespace ForgottenKingdom
         private StatusEffects _statuses;
         public StatusEffects Statuses => _statuses;
         private bool _isResolved;
+        private bool _isPlayer;
+        private bool _isToughened;
 
         /// <summary>Raised for every hit that was not ignored, including blocks and parries.</summary>
         public event Action<DamageInfo, DamageResult> DamageTaken;
@@ -98,6 +100,7 @@ namespace ForgottenKingdom
             }
 
             _isResolved = true;
+            _isPlayer = GetComponent<PlayerCharacter>() != null;
             if (_health == null)
             {
                 _health = GetComponent<Health>();
@@ -130,6 +133,22 @@ namespace ForgottenKingdom
             }
         }
 
+        /// <summary>
+        /// «Нова гра+»: an enemy's health raised once, when it first stands in the world; the
+        /// world's resets refill it to the raised maximum.
+        /// </summary>
+        public void Toughen(float scale)
+        {
+            EnsureReferences();
+            if (_isToughened || scale <= 1f || _health == null)
+            {
+                return;
+            }
+
+            _isToughened = true;
+            _health.SetMax(_health.Max * scale, true);
+        }
+
         public DamageResult ApplyDamage(in DamageInfo info)
         {
             if (!IsAlive)
@@ -158,9 +177,11 @@ namespace ForgottenKingdom
             // and this stays the only place either one is applied.
             // Resistance comes first: what a fire hit is worth against this creature is a
             // property of the creature, not of the shield or the armour in front of it.
+            // «Нова гра+» hits the hero harder; nothing else changes what a blow is worth here.
+            var amount = _isPlayer ? info.Amount * NewGamePlus.Scale : info.Amount;
             var resisted = _resistances != null
-                ? info.Amount * _resistances.Multiplier(info.Type)
-                : info.Amount;
+                ? amount * _resistances.Multiplier(info.Type)
+                : amount;
             var mitigated = _mitigation != null
                 ? Mathf.Max(0f, _mitigation.Mitigate(info.Scaled(resisted, info.StaggerDamage,
                     info.GuardDamage, info.IsCritical)))
