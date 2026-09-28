@@ -23,6 +23,13 @@ namespace ForgottenKingdom
         /// <summary>Slower than this, touching down is a step, not a landing worth dust.</summary>
         public const float LandDustSpeed = 3f;
 
+        /// <summary>
+        /// A long fall stretches the body a little along its speed (hero animation 2.0): nothing
+        /// until the fall is faster than any jump's, then up to four percent at full speed.
+        /// </summary>
+        public const float FallStretch = 0.04f;
+        private const float FallStretchFrom = 11f;
+
         private const float HardLandingSpeed = 18f;
         private const float SquashTime = 0.14f;
         private const float KickCooldown = 0.18f;
@@ -44,6 +51,8 @@ namespace ForgottenKingdom
         private float _squashPeak;
         private float _squashElapsed = float.MaxValue;
         private bool _isSquashed;
+        private float _pulse;
+        private float _fallStretch;
 
         private float _fallSpeed;
         private bool _wasGrounded;
@@ -57,6 +66,9 @@ namespace ForgottenKingdom
 
         /// <summary>Current squash: above zero stretched tall, below zero pressed flat.</summary>
         public float Squash => _isSquashed ? _squash : 0f;
+
+        /// <summary>The share of <see cref="Squash"/> that comes from falling fast.</summary>
+        public float FallStretchNow => _isSquashed ? _fallStretch : 0f;
 
         private void Awake()
         {
@@ -121,6 +133,11 @@ namespace ForgottenKingdom
             {
                 _fallSpeed = Mathf.Max(_fallSpeed, -velocity.y);
             }
+
+            var falling = !grounded && !_motor.IsDashing && !FeedbackSettings.ReducedMotion;
+            _fallStretch = falling
+                ? FallStretch * Mathf.InverseLerp(FallStretchFrom, HardLandingSpeed, -velocity.y)
+                : 0f;
 
             TrackRun(grounded, velocity.x);
             TrackWallSlide();
@@ -268,7 +285,8 @@ namespace ForgottenKingdom
             }
 
             _squashPeak = peak;
-            _squash = peak;
+            _pulse = peak;
+            _squash = peak + _fallStretch;
             _squashElapsed = 0f;
             _isSquashed = true;
         }
@@ -279,21 +297,24 @@ namespace ForgottenKingdom
         /// </summary>
         private void LateUpdate()
         {
-            if (!_isSquashed || _visual == null)
+            if (_visual == null)
             {
                 return;
             }
 
             _squashElapsed += Time.deltaTime;
             var t = Mathf.Clamp01(_squashElapsed / SquashTime);
-            if (t >= 1f)
+            var ease = 1f - t;
+            _pulse = t >= 1f ? 0f : _squashPeak * ease * ease;
+            var squash = _pulse + _fallStretch;
+            if (Mathf.Approximately(squash, 0f))
             {
                 ClearSquash();
                 return;
             }
 
-            var ease = 1f - t;
-            _squash = _squashPeak * ease * ease;
+            _isSquashed = true;
+            _squash = squash;
             var scale = ScaleFor(_squash);
             var authored = _motor.VisualScale;
             _visual.localScale = new Vector3(Mathf.Abs(authored.x) * _motor.FacingDirection * scale.x,
@@ -311,6 +332,8 @@ namespace ForgottenKingdom
 
             _isSquashed = false;
             _squash = 0f;
+            _pulse = 0f;
+            _squashElapsed = float.MaxValue;
             if (_visual != null && _motor != null)
             {
                 var authored = _motor.VisualScale;

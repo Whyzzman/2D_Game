@@ -28,6 +28,11 @@ namespace ForgottenKingdom
         /// <summary>After one variant, the next waits somewhere in this range (the user's choice).</summary>
         public const float IdleVariantGapMin = 8f;
         public const float IdleVariantGapMax = 12f;
+        /// <summary>
+        /// A drop at least this tall ends in the hard landing: taller than the double jump (≈3,4),
+        /// so only a real fall earns it (the user's choice, 2026-09-28: visual only).
+        /// </summary>
+        public const float HardLandHeight = 5.5f;
         [SerializeField] private PlayerAnimationSet _set;
         [Tooltip("The renderer showing the character; frames are written here.")]
         [SerializeField] private SpriteRenderer _body;
@@ -60,6 +65,9 @@ namespace ForgottenKingdom
         private float _calm;
         private float _nextVariant = IdleVariantDelay;
         private bool _variantPlaying;
+        private PlayerAnimationState _variant = PlayerAnimationState.IdleVariant;
+        private bool _glanceNext;
+        private float _airTop = float.NegativeInfinity;
 
         /// <summary>Raised on every real change, for VFX and audio that follow the visual.</summary>
         public event Action<PlayerAnimationState, PlayerAnimationState> StateChanged;
@@ -157,6 +165,7 @@ namespace ForgottenKingdom
 
         private void OnEnable()
         {
+            if (_motor != null) { _motor.Respawned += OnRespawned; }
             if (_equipment != null) { _equipment.ActiveWeaponChanged += OnWeaponChanged; }
             if (_defense != null) { _defense.BlockedHit += OnBlockedHit; }
             if (_caster != null) { _caster.SpellReleased += OnSpellReleased; }
@@ -169,6 +178,7 @@ namespace ForgottenKingdom
 
         private void OnDisable()
         {
+            if (_motor != null) { _motor.Respawned -= OnRespawned; }
             if (_equipment != null) { _equipment.ActiveWeaponChanged -= OnWeaponChanged; }
             if (_defense != null) { _defense.BlockedHit -= OnBlockedHit; }
             if (_caster != null) { _caster.SpellReleased -= OnSpellReleased; }
@@ -180,6 +190,9 @@ namespace ForgottenKingdom
         }
 
         private void OnWeaponChanged(EquippedWeapon weapon) => RefreshWeaponSet();
+
+        /// <summary>Put back on the ground elsewhere: the drop into a pit is no fall to land from.</summary>
+        private void OnRespawned() => _airTop = float.NegativeInfinity;
 
         private void OnBlockedHit(DamageInfo info) => Flash(PlayerAnimationState.BlockImpact);
 
@@ -258,16 +271,18 @@ namespace ForgottenKingdom
         private static bool IsStanding(PlayerAnimationState state) =>
             state == PlayerAnimationState.Idle || state == PlayerAnimationState.IdleVariant
             || state == PlayerAnimationState.Run || state == PlayerAnimationState.Turn
-            || state == PlayerAnimationState.Land;
+            || state == PlayerAnimationState.Land || state == PlayerAnimationState.HardLand
+            || state == PlayerAnimationState.IdleGlance;
 
         /// <summary>
-        /// Counts how long the hero has stood still, and now and then lets the idle variant play
+        /// Counts how long the hero has stood still, and now and then lets an idle flourish play
         /// once (the user's choice, 2026-09-27: after about six seconds, then every eight to
-        /// twelve). Anything but standing ends it at once and starts the count over.
+        /// twelve). The two flourishes take turns, the look back first. Anything but standing ends
+        /// it at once and starts the count over.
         /// </summary>
         private void TrackCalm(float deltaTime)
         {
-            if (_state == PlayerAnimationState.IdleVariant)
+            if (_state == PlayerAnimationState.IdleVariant || _state == PlayerAnimationState.IdleGlance)
             {
                 if (_completed)
                 {
@@ -288,6 +303,10 @@ namespace ForgottenKingdom
             _calm += deltaTime;
             if (_calm >= _nextVariant && _set != null && _set.Has(PlayerAnimationState.IdleVariant))
             {
+                _variant = _glanceNext && _set.Has(PlayerAnimationState.IdleGlance)
+                    ? PlayerAnimationState.IdleGlance
+                    : PlayerAnimationState.IdleVariant;
+                _glanceNext = !_glanceNext;
                 _variantPlaying = true;
                 _calm = 0f;
                 _nextVariant = UnityEngine.Random.Range(IdleVariantGapMin, IdleVariantGapMax);
@@ -462,10 +481,19 @@ namespace ForgottenKingdom
         /// stale through an attack or a dash, and the Land pose then played late, on the ground.
         /// The pose is held only for a landing on the spot that nothing else is using the body
         /// for: landing on the run goes straight into the run instead of sliding in the pose.
+        /// A drop of <see cref="HardLandHeight"/> or more lands on one knee instead; a wall slid
+        /// down breaks the fall, so the height counts from the last wall or the top of the arc.
         /// </summary>
         private void TrackLanding()
         {
             var grounded = _motor == null || _motor.IsGrounded;
+            var height = transform.position.y;
+            if (!grounded)
+            {
+                var onWall = _wall != null && _wall.State != WallMovementState.None;
+                _airTop = onWall ? height : Mathf.Max(_airTop, height);
+            }
+
             if (grounded && !_wasGrounded)
             {
                 Landed?.Invoke();
@@ -473,8 +501,15 @@ namespace ForgottenKingdom
                 var isFree = _character == null || _character.Action == PlayerAction.None;
                 if (!isRunning && isFree)
                 {
-                    Flash(PlayerAnimationState.Land);
+                    Flash(_airTop - height >= HardLandHeight
+                        ? PlayerAnimationState.HardLand
+                        : PlayerAnimationState.Land);
                 }
+            }
+
+            if (grounded)
+            {
+                _airTop = height;
             }
 
             _wasGrounded = grounded;
@@ -503,6 +538,17 @@ namespace ForgottenKingdom
             }
 
             var motion = _motor != null ? _motor.State : MovementState.Idle;
+            if (Held(PlayerAnimationState.HardLand))
+            {
+                // Visual only: the first step or jump ends the kneel rather than waiting for it.
+                if (motion == MovementState.Idle)
+                {
+                    return PlayerAnimationState.HardLand;
+                }
+
+                _oneShotUntil = float.NegativeInfinity;
+            }
+
             switch (motion)
             {
                 case MovementState.Jump:
@@ -524,9 +570,7 @@ namespace ForgottenKingdom
                         return PlayerAnimationState.Turn;
                     }
 
-                    return _variantPlaying
-                        ? PlayerAnimationState.IdleVariant
-                        : PlayerAnimationState.Idle;
+                    return _variantPlaying ? _variant : PlayerAnimationState.Idle;
             }
         }
 

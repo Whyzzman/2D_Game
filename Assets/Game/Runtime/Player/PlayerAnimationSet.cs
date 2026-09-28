@@ -68,7 +68,17 @@ namespace ForgottenKingdom
         /// The two frames after the facing flips on the ground. Visual only — the turn itself is
         /// instant, as in Hollow Knight — and a set without it shows Idle for that instant.
         /// </summary>
-        Turn
+        Turn,
+        /// <summary>
+        /// Touching down after a long drop: down on one knee, then up again. Visual only (the
+        /// user's choice, 2026-09-28) — any move cuts it. A set without it shows Land.
+        /// </summary>
+        HardLand,
+        /// <summary>
+        /// The second idle flourish, taking turns with <see cref="IdleVariant"/>: a look down at
+        /// the blade, then ahead. A set without it shows Idle.
+        /// </summary>
+        IdleGlance
     }
 
     /// <summary>
@@ -111,7 +121,13 @@ namespace ForgottenKingdom
                 return Clip(PlayerAnimationState.Attack1, weapon);
             }
 
-            if ((state == PlayerAnimationState.IdleVariant || state == PlayerAnimationState.Turn)
+            if (state == PlayerAnimationState.HardLand && !Has(state, weapon))
+            {
+                return Clip(PlayerAnimationState.Land, weapon);
+            }
+
+            if ((state == PlayerAnimationState.IdleVariant || state == PlayerAnimationState.Turn
+                    || state == PlayerAnimationState.IdleGlance)
                 && !Has(state, weapon))
             {
                 return Clip(PlayerAnimationState.Idle, weapon);

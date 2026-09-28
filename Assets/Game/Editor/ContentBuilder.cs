@@ -3436,6 +3436,7 @@ namespace ForgottenKingdom.EditorTools
             SetReference(controller, "_face", face);
             BuildCloakTail(visual.gameObject, controller, body);
             BuildCastCharge(root, bodyObject);
+            BuildHeroMotion(root, controller, body);
 
             BuildVisualSockets(root, visual.gameObject, bodyObject);
 

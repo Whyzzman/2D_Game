@@ -66,7 +66,8 @@ namespace ForgottenKingdom.EditorTools
         /// </summary>
         public static readonly StateSpec[] States =
         {
-            new StateSpec(PlayerAnimationState.Idle, 4, 8f, true),
+            // A slow breath: two seconds a cycle (hero animation 2.0, 2026-09-28).
+            new StateSpec(PlayerAnimationState.Idle, 12, 6f, true),
             new StateSpec(PlayerAnimationState.Run, 6, 12f, true),
             new StateSpec(PlayerAnimationState.JumpStart, 2, 24f, false),
             new StateSpec(PlayerAnimationState.JumpRise, 2, 12f, true),
@@ -102,7 +103,9 @@ namespace ForgottenKingdom.EditorTools
             new StateSpec(PlayerAnimationState.AttackDown, 4, 24f, false),
             new StateSpec(PlayerAnimationState.Heal, 6, 12f, false),
             new StateSpec(PlayerAnimationState.IdleVariant, 10, 12f, false),
-            new StateSpec(PlayerAnimationState.Turn, 2, 24f, false)
+            new StateSpec(PlayerAnimationState.Turn, 2, 24f, false),
+            new StateSpec(PlayerAnimationState.HardLand, 5, 12f, false),
+            new StateSpec(PlayerAnimationState.IdleGlance, 10, 12f, false)
         };
 
         /// <summary>
@@ -137,8 +140,10 @@ namespace ForgottenKingdom.EditorTools
                 for (var i = 0; i < spec.Frames; i++)
                 {
                     var path = $"{folder}/{Name(spec.State)}_{i:00}.png";
+                    // The frame before, so a swing's fastest frame can be drawn as a smear.
+                    var previous = i > 0 ? FramePhase(spec, i - 1) : (float?)null;
                     PlaceholderImport.WriteIfChanged(path, Render(spec.State, FramePhase(spec, i),
-                        reachBonus));
+                        reachBonus, previous));
                     PlaceholderImport.ConfigureImporter(path);
                     sprites[i] = AssetDatabase.LoadAssetAtPath<Sprite>(path);
                     if (sprites[i] == null)
@@ -270,6 +275,8 @@ namespace ForgottenKingdom.EditorTools
             public float HeadTilt;
             public float CloakSway;
             public float Squash;
+            /// <summary>Extra torso length in pixels: the chest rising with a breath.</summary>
+            public float Chest;
             public float Alpha;
             /// <summary>Drinking: the front hand holds a flask and the sword moves to the back hand.</summary>
             public bool Flask;
@@ -311,10 +318,37 @@ namespace ForgottenKingdom.EditorTools
             switch (state)
             {
                 case PlayerAnimationState.Idle:
-                    pose.HipY += Sin01(t) * 1.5f;
-                    pose.HeadTilt = Sin01(t) * 2f;
-                    pose.CloakSway = Sin01(t) * 3f;
+                {
+                    // A breath: the chest and shoulders rise, the arms ride up with them, and the
+                    // head and cloak follow a beat later.
+                    var breath = 0.5f - 0.5f * Mathf.Cos(t * Mathf.PI * 2f);
+                    var after = 0.5f - 0.5f * Mathf.Cos((t - 0.12f) * Mathf.PI * 2f);
+                    pose.Chest = breath * 2.5f;
+                    pose.HipY += breath * 0.8f;
+                    pose.FrontArm -= breath * 3f;
+                    pose.BackArm += breath * 3f;
+                    pose.HeadTilt = -after * 2.5f;
+                    pose.CloakSway = (after - 0.5f) * 5f;
                     break;
+                }
+
+                case PlayerAnimationState.IdleGlance:
+                {
+                    // Down at the blade, a turn of the wrist to look along it, then up ahead and
+                    // back into the stance, which it ends on so returning to Idle never jumps.
+                    var down = Plateau(t, 0.04f, 0.56f);
+                    var ahead = Plateau(t, 0.5f, 0.96f);
+                    pose.FrontArm += 22f * down;
+                    pose.FrontForearm += 46f * down;
+                    pose.HeadTilt = 16f * down - 9f * ahead;
+                    pose.Lean = 3f + 4f * down - 3f * ahead;
+                    pose.Chest = 1.5f * ahead;
+                    pose.CloakSway = -3f * down + 4f * ahead;
+                    break;
+                }
+
+                case PlayerAnimationState.HardLand:
+                    return HardLandPose(t);
 
                 case PlayerAnimationState.Run:
                     // Counter-swing: the arm opposite the leading leg comes forward, which is what
@@ -773,6 +807,35 @@ namespace ForgottenKingdom.EditorTools
             return pose;
         }
 
+        /// <summary>
+        /// Down on one knee after a long drop (the user's choice, 2026-09-28: visual only): the
+        /// impact presses the body flat on the first frame, the pose holds, then the hero stands.
+        /// The last frame is the stance, so returning to Idle never jumps.
+        /// </summary>
+        private static Pose HardLandPose(float t)
+        {
+            var stand = Pose.Stand;
+            var rise = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01((t - 0.3f) / 0.7f));
+            float Blend(float kneel, float standing) => Mathf.Lerp(kneel, standing, rise);
+            var pose = stand;
+            pose.Squash = 1f - 0.07f * (1f - Mathf.Clamp01(t / 0.25f));
+            pose.Lean = Blend(25f, stand.Lean);
+            pose.HipX = Blend(-3f, stand.HipX);
+            pose.HipY = Blend(33f, stand.HipY);
+            pose.FrontThigh = Blend(78f, stand.FrontThigh);
+            pose.FrontShin = Blend(-80f, stand.FrontShin);
+            pose.BackThigh = Blend(-8f, stand.BackThigh);
+            pose.BackShin = Blend(-82f, stand.BackShin);
+            pose.FrontArm = Blend(-12f, stand.FrontArm);
+            pose.FrontForearm = Blend(44f, stand.FrontForearm);
+            pose.BackArm = Blend(-38f, stand.BackArm);
+            pose.BackForearm = Blend(8f, stand.BackForearm);
+            pose.HeadTilt = Blend(16f, stand.HeadTilt);
+            pose.Chest = Blend(-2f, 0f);
+            pose.CloakSway = Blend(32f, stand.CloakSway);
+            return pose;
+        }
+
         /// <summary>Wind up, commit, follow through — the same beat as <see cref="SwingPose"/>.</summary>
         private static float Commit(float t)
         {
@@ -782,10 +845,17 @@ namespace ForgottenKingdom.EditorTools
 
         // ---------- rasterising ----------
 
-        private static byte[] Render(PlayerAnimationState state, float t, float reachBonus)
+        private static byte[] Render(PlayerAnimationState state, float t, float reachBonus,
+            float? previousT = null)
         {
             var canvas = new Canvas(Width, Height);
-            Draw(canvas, PoseFor(state, t, reachBonus), reachBonus > 0f);
+            float? smearFrom = null;
+            if (previousT.HasValue && IsSwing(state))
+            {
+                smearFrom = ForearmOf(PoseFor(state, previousT.Value, reachBonus));
+            }
+
+            Draw(canvas, PoseFor(state, t, reachBonus), reachBonus > 0f, smearFrom);
             // The player is the brightest, most outlined figure on screen (Visual Bible §13).
             canvas.Silhouette(new Color32(8, 7, 6, 235), Rim, 0.8f, 0.12f);
             return canvas.EncodePng();
@@ -794,10 +864,10 @@ namespace ForgottenKingdom.EditorTools
         private static void Skeleton(Pose pose, out Vector2 hip, out Vector2 shoulder)
         {
             hip = new Vector2(Width * 0.5f + pose.HipX, pose.HipY * pose.Squash);
-            shoulder = hip + Canvas.Rotate(new Vector2(0f, 46f * pose.Squash), pose.Lean);
+            shoulder = hip + Canvas.Rotate(new Vector2(0f, (46f + pose.Chest) * pose.Squash), pose.Lean);
         }
 
-        private static void Draw(Canvas canvas, Pose pose, bool greatsword = false)
+        private static void Draw(Canvas canvas, Pose pose, bool greatsword = false, float? smearFrom = null)
         {
             Skeleton(pose, out var hip, out var shoulder);
             var lean = pose.Lean;
@@ -830,7 +900,12 @@ namespace ForgottenKingdom.EditorTools
             }
             else
             {
-                Sword(canvas, hand, pose.FrontArm + lean + pose.FrontForearm, greatsword);
+                if (smearFrom.HasValue)
+                {
+                    Smear(canvas, hand, smearFrom.Value, ForearmOf(pose), greatsword);
+                }
+
+                Sword(canvas, hand, ForearmOf(pose), greatsword);
             }
 
             // Without a neck the head reads as a separate object floating above the shoulders.
@@ -858,7 +933,7 @@ namespace ForgottenKingdom.EditorTools
             // Angles are measured from straight down, turning forward. A lowered arm holds the
             // blade forward and low; a raised one carries it along the arm and over the head, so
             // the swing's arc is the blade's arc.
-            var bladeAngle = forearmAngle * 0.8f + 40f;
+            var bladeAngle = BladeAngle(forearmAngle);
             var blade = Canvas.Rotate(new Vector2(0f, -1f), -bladeAngle).normalized;
             var across = new Vector2(-blade.y, blade.x);
             var length = greatsword ? 84f : 62f;
@@ -876,6 +951,57 @@ namespace ForgottenKingdom.EditorTools
             canvas.Thick(guard - across * (greatsword ? 11f : 8f), guard + across * (greatsword ? 11f : 8f),
                 3.5f, 3.5f, Guard);
             canvas.Ellipse(hand - blade * (greatsword ? 14f : 10f), 2.8f, 2.8f, Guard);
+        }
+
+        private static float BladeAngle(float forearmAngle) => forearmAngle * 0.8f + 40f;
+
+        private static float ForearmOf(Pose pose) => pose.FrontArm + pose.Lean + pose.FrontForearm;
+
+        private static bool IsSwing(PlayerAnimationState state) =>
+            state == PlayerAnimationState.Attack1 || state == PlayerAnimationState.Attack2
+            || state == PlayerAnimationState.Attack3 || state == PlayerAnimationState.Heavy
+            || state == PlayerAnimationState.AttackUp || state == PlayerAnimationState.AttackDown
+            || state == PlayerAnimationState.GroundBreaker || state == PlayerAnimationState.DashStrike
+            || state == PlayerAnimationState.ShadowStrike || state == PlayerAnimationState.ActiveSkill;
+
+        /// <summary>A blade that turned at least this far since the frame before is drawn smeared.</summary>
+        public const float SmearMinSweep = 40f;
+
+        /// <summary>The smear's pale trailing end: the hero's cold edge, dimmed.</summary>
+        private static readonly Color32 SmearPale = new Color32(150, 168, 194, 0xFF);
+
+        /// <summary>
+        /// The swing's fastest frame (the user's choice, 2026-09-28): the blade drawn as a crescent
+        /// over the arc it covered since the frame before, full and bright at the blade, thinning
+        /// and paling towards where it came from. The slash effect still plays over it.
+        /// </summary>
+        private static void Smear(Canvas canvas, Vector2 hand, float fromForearm, float toForearm,
+            bool greatsword)
+        {
+            var from = BladeAngle(fromForearm);
+            var sweep = BladeAngle(toForearm) - from;
+            if (Mathf.Abs(sweep) < SmearMinSweep)
+            {
+                return;
+            }
+
+            var length = (greatsword ? 84f : 62f) + 4f;
+            var steps = Mathf.CeilToInt(Mathf.Abs(sweep) / 5f);
+            Vector2 Direction(float u) => Canvas.Rotate(new Vector2(0f, -1f), -(from + sweep * u)).normalized;
+            float Outer(float u) => length * (0.62f + 0.38f * u);
+            float Inner(float u) => Mathf.Min(length * (0.22f + 0.5f * (1f - u)), Outer(u) - 1.5f);
+            for (var k = 0; k < steps; k++)
+            {
+                var u0 = k / (float)steps;
+                var u1 = (k + 1) / (float)steps;
+                var inner0 = hand + Direction(u0) * Inner(u0);
+                var outer0 = hand + Direction(u0) * Outer(u0);
+                var inner1 = hand + Direction(u1) * Inner(u1);
+                var outer1 = hand + Direction(u1) * Outer(u1);
+                var tone = Color32.Lerp(SmearPale, BladeEdge, (u0 + u1) * 0.5f);
+                canvas.Triangle(inner0, outer0, outer1, tone);
+                canvas.Triangle(inner0, outer1, inner1, tone);
+            }
         }
 
         /// <summary>

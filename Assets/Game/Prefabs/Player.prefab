@@ -1100,6 +1100,8 @@ GameObject:
   - component: {fileID: 2828779501212156672}
   - component: {fileID: 2533932965858502163}
   - component: {fileID: 6885577336320300636}
+  - component: {fileID: 889931998609281026}
+  - component: {fileID: 7464111563418591982}
   m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
@@ -1804,6 +1806,43 @@ MonoBehaviour:
   _motor: {fileID: 6066871109167986890}
   _progress: {fileID: 0}
   _markPrefab: {fileID: 4928988481324999536, guid: d7d4b5393fd7446f68c1278939fb1253, type: 3}
+--- !u!114 &889931998609281026
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5698690768296159545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f88b247065d22445fb9306935446094d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.HeroLean
+  _motor: {fileID: 6066871109167986890}
+  _animation: {fileID: 4073653979807976577}
+  _body: {fileID: 8944033414132734852}
+  _maxLean: 4
+  _stiffness: 260
+  _damping: 20
+--- !u!114 &7464111563418591982
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5698690768296159545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2147c1f4637d1485fadf127410833585, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.DashAfterimages
+  _animation: {fileID: 4073653979807976577}
+  _body: {fileID: 9079692608646343180}
+  _material: {fileID: 2100000, guid: 3901c6c8da8834bcea4f6b348011e90d, type: 2}
+  _tint: {r: 0.77, g: 0.85, b: 0.96, a: 0.5}
+  _interval: 0.035
+  _fadeTime: 0.22
+  _count: 6
 --- !u!1 &5840511060120495854
 GameObject:
   m_ObjectHideFlags: 0
