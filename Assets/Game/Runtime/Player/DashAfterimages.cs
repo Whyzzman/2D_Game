@@ -61,6 +61,9 @@ namespace ForgottenKingdom
                 var ghost = new GameObject("HeroAfterimage");
                 var renderer = ghost.AddComponent<SpriteRenderer>();
                 renderer.sharedMaterial = _material;
+                // On the hero's layer from the start: nothing of the hero sits on Default, even
+                // while waiting hidden for the next dash.
+                renderer.sortingLayerName = _body != null ? _body.sortingLayerName : "Characters";
                 renderer.enabled = false;
                 _ghosts[i] = renderer;
             }
