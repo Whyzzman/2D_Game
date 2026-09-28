@@ -24,7 +24,7 @@ namespace ForgottenKingdom.Tests
         }
 
         [Test]
-        public void TheCapitalIsABuiltZoneOfEightRoomsTwoSecretsAndThreeAltars()
+        public void TheCapitalIsABuiltZoneOfEightRoomsFourSecretsAndThreeAltars()
         {
             var zone = _graph.Zone(Capital);
             Assert.That(zone, Is.Not.Null);
@@ -35,7 +35,8 @@ namespace ForgottenKingdom.Tests
             var areas = _graph.AreasIn(Capital);
             Assert.That(areas.Count(a => !a.IsOptional), Is.EqualTo(8));
             Assert.That(areas.Where(a => a.IsSecret).Select(a => a.RequiredAbilityId),
-                Is.EquivalentTo(new[] { AbilityIds.AirDash, AbilityIds.Grapple }));
+                Is.EquivalentTo(new[] { AbilityIds.AirDash, AbilityIds.Grapple, string.Empty, string.Empty }),
+                "Two behind abilities, two behind breakable walls (item 4).");
             Assert.That(_graph.Checkpoints.Count(c => c.ZoneId == Capital), Is.EqualTo(3));
             Assert.That(areas.Single(a => a.IsBossArena).BossId, Is.EqualTo(King));
         }

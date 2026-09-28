@@ -1502,6 +1502,7 @@ MonoBehaviour:
   _stamina: {fileID: 929592973326987963}
   _mana: {fileID: 6817236196247687801}
   _stagger: {fileID: 5893319227821320259}
+  _progress: {fileID: 0}
   _defenseConstant: 60
   _minimumDamageShare: 0.15
   _baseStaggerResistance: 0

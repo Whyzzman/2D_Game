@@ -134,7 +134,11 @@ namespace ForgottenKingdom
             if (_hurtbox != null) { _hurtbox.enabled = !broken; }
             if (_visual != null)
             {
-                _visual.enabled = !broken;
+                foreach (var part in _visual.GetComponentsInChildren<SpriteRenderer>(true))
+                {
+                    part.enabled = !broken;
+                }
+
                 _visual.color = _baseColor;
                 _visual.transform.localPosition = _restPosition;
             }

@@ -518,7 +518,7 @@ namespace ForgottenKingdom.Tests
             Assert.That(completion.Discovered, Is.EqualTo(2));
             Assert.That(completion.SecretsFound, Is.EqualTo(1));
             Assert.That(completion.Total, Is.EqualTo(7), "Six rooms and the visible reliquary.");
-            Assert.That(completion.SecretsTotal, Is.EqualTo(3), "The ossuary, the bell shaft and the mason's cache.");
+            Assert.That(completion.SecretsTotal, Is.EqualTo(4), "The ossuary, the bell shaft, the mason's cache and the walled cell.");
         }
 
         [Test]

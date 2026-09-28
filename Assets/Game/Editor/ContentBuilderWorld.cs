@@ -59,6 +59,12 @@ namespace ForgottenKingdom.EditorTools
         private const string CapitalThroneHall = "room_capital_throne_hall";
         private const string CapitalGallery = "room_capital_royal_gallery";
         private const string BeyondCapital = "room_beyond_capital";
+        // Rooms behind breakable walls (item 4, stage B).
+        private const string TombWalledCell = "room_tomb_walled_cell";
+        private const string ForestGroveStash = "room_forest_grove_stash";
+        private const string ForestFalconerNest = "room_forest_falconer_nest";
+        private const string CapitalRoofCache = "room_capital_roof_cache";
+        private const string CapitalHiddenTreasury = "room_capital_hidden_treasury";
 
         public const string TombBridgeShortcut = "shortcut_tomb_crypt_bridge";
         public const string ForestRoadGateShortcut = "shortcut_forest_road_gate";
@@ -174,7 +180,7 @@ namespace ForgottenKingdom.EditorTools
                     top: 11.9f),
                 AreaJson(ForestWatchtowerTop, ForestZoneId, "Вершина вежі",
                     new Vector2(197f * MapScale, 1.9f), new Vector2(1.6f, 0.9f),
-                    Rect.MinMaxRect(186f, 11.9f, 206f, 18f), optional: true,
+                    Rect.MinMaxRect(186f, 11.9f, 210.5f, 18f), optional: true,
                     ability: AbilityIds.WallRun),
                 Pocket(ForestHuntersPerch, ForestZoneId, "Мисливський поміст", 201f, 205f, 14.9f,
                     secret: true, ability: AbilityIds.DoubleJump, mapRow: 3.1f),
@@ -198,6 +204,16 @@ namespace ForgottenKingdom.EditorTools
                     secret: true, ability: AbilityIds.Grapple),
                 MainRoom(CapitalThroneHall, CapitalZoneId, "Тронна зала", 512f, 545f,
                     boss: CapitalKingBossId),
+                Pocket(TombWalledCell, TombZoneId, "Замурована келія", -11.3f, -7.3f, 10.4f,
+                    secret: true, ability: string.Empty, mapRow: 2.3f),
+                Pocket(ForestGroveStash, ForestZoneId, "Схрон у гаю", 175f, 179f, 5.9f,
+                    secret: true, ability: string.Empty),
+                Pocket(ForestFalconerNest, ForestZoneId, "Гніздо сокольника", 205.5f, 209.5f, 14.9f,
+                    secret: true, ability: string.Empty, mapRow: 3.8f),
+                Pocket(CapitalRoofCache, CapitalZoneId, "Сховок під дахом", 424.5f, 428.5f, 8.2f,
+                    secret: true, ability: string.Empty, mapRow: 2.3f),
+                Pocket(CapitalHiddenTreasury, CapitalZoneId, "Прихована скарбниця", 490.5f, 494.5f, 6.8f,
+                    secret: true, ability: string.Empty),
                 AreaJson(BeyondCapital, FutureZoneId, string.Empty,
                     new Vector2(551f * MapScale, 0f), new Vector2(0.8f, 1.2f),
                     Rect.MinMaxRect(545f, -8f, 557f, 16f), optional: true)
@@ -268,6 +284,13 @@ namespace ForgottenKingdom.EditorTools
                 LinkJson("conn_capital_approach_throne", CapitalPalaceApproach, CapitalThroneHall,
                     type: ConnectionType.Door),
                 // East of the throne the road goes on, sealed: what lies there is the ending's.
+                // Behind breakable walls: three blows open each for good (item 4, stage B).
+                LinkJson("conn_tomb_bellshaft_cell", TombBellShaft, TombWalledCell, MapDirection.West),
+                LinkJson("conn_forest_grove_stash", ForestGrove, ForestGroveStash),
+                LinkJson("conn_forest_perch_nest", ForestHuntersPerch, ForestFalconerNest),
+                LinkJson("conn_capital_nest_cache", CapitalBellNest, CapitalRoofCache),
+                LinkJson("conn_capital_gallery_treasury", CapitalGallery, CapitalHiddenTreasury,
+                    MapDirection.West),
                 LinkJson("conn_capital_throne_beyond", CapitalThroneHall, BeyondCapital,
                     type: ConnectionType.Gate, boss: CapitalKingBossId, future: true)
             })).Append("],");
