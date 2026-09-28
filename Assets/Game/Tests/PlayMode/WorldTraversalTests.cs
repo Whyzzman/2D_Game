@@ -64,12 +64,15 @@ namespace ForgottenKingdom.Tests
             _progress = Object.FindAnyObjectByType<GameProgress>();
             _world = Object.FindAnyObjectByType<WorldState>();
             Quiet();
+            // Zones loaded on the way (the capital, as the forest's neighbour) are quietened too.
+            ZoneStreamer.ZonesChanged += Quiet;
             yield return Keys();
         }
 
         [UnityTearDown]
         public IEnumerator TearDown()
         {
+            ZoneStreamer.ZonesChanged -= Quiet;
             GameTimeScale.Reset();
             if (_keyboard != null) { InputSystem.RemoveDevice(_keyboard); }
             InputSystem.settings = _previousSettings;

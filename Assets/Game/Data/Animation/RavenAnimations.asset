@@ -1,0 +1,144 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 649169c22105a06499c9bc0695fd8d1d, type: 3}
+  m_Name: RavenAnimations
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.EnemyAnimationSet
+  _clips:
+  - state: 1
+    clip:
+      _clipName: enemy_raven_idle
+      _frames:
+      - {fileID: 21300000, guid: c90b5d9adb35349738a084cf17f04442, type: 3}
+      - {fileID: 21300000, guid: 4a9841bf7433a42eca6f4200741e2f32, type: 3}
+      - {fileID: 21300000, guid: 00c44c1069ccf4cd391989a7db538d91, type: 3}
+      - {fileID: 21300000, guid: 8f0b999464bb24b898285cb2bf37fcaa, type: 3}
+      - {fileID: 21300000, guid: 845b66dd07a6f468486e87695cde3cea, type: 3}
+      - {fileID: 21300000, guid: 9af6897ee0ff244939f300c80d3e494c, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 1
+      _anchors: []
+  - state: 2
+    clip:
+      _clipName: enemy_raven_patrol
+      _frames:
+      - {fileID: 21300000, guid: 654a8a85dcf38468db77699e0f2d7d88, type: 3}
+      - {fileID: 21300000, guid: e5fa328006c3f419d8528645e7a6972b, type: 3}
+      - {fileID: 21300000, guid: 8eb31d16a2e5c4166978dc68921273f3, type: 3}
+      - {fileID: 21300000, guid: 8c9c7ca9c90684e40b7d636972c60e1a, type: 3}
+      - {fileID: 21300000, guid: 250f6751b78a34340b449c20ae01aca5, type: 3}
+      - {fileID: 21300000, guid: a2dd193483865494091119a40ff27244, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 1
+      _anchors: []
+  - state: 3
+    clip:
+      _clipName: enemy_raven_alert
+      _frames:
+      - {fileID: 21300000, guid: 21b1bbebc54c34f79916ffd4c0130139, type: 3}
+      - {fileID: 21300000, guid: aa74fa92ebf9c4fcea7b427f5afdb21c, type: 3}
+      - {fileID: 21300000, guid: 32e99264de1a14adda73da7895daa393, type: 3}
+      - {fileID: 21300000, guid: a4515f673b8bf4290a90200ca25e4f48, type: 3}
+      - {fileID: 21300000, guid: c6fb05c4a386b4c87b49e81147835502, type: 3}
+      _framesPerSecond: 14
+      _isLooping: 0
+      _anchors: []
+  - state: 4
+    clip:
+      _clipName: enemy_raven_chase
+      _frames:
+      - {fileID: 21300000, guid: f426b330e02a448c0ba0a68249f1cb4f, type: 3}
+      - {fileID: 21300000, guid: 59fc5ac45dd494160886d683c9b75d5e, type: 3}
+      - {fileID: 21300000, guid: 501208b0ef6c04b8ca6aeda21b819f53, type: 3}
+      - {fileID: 21300000, guid: 8ad8238b423134bd09d7487d0e7a4fc9, type: 3}
+      - {fileID: 21300000, guid: 1d9699e7b0d31499fb2d1e5dd4f97653, type: 3}
+      - {fileID: 21300000, guid: b11a042b6210e496d91f59837ec1f074, type: 3}
+      _framesPerSecond: 16
+      _isLooping: 1
+      _anchors: []
+  - state: 0
+    clip:
+      _clipName: enemy_raven_attacklight
+      _frames:
+      - {fileID: 21300000, guid: afdefb16b48dd4eef905002525c6110d, type: 3}
+      - {fileID: 21300000, guid: af8c985ea2cff428f99c6e35cea5db37, type: 3}
+      - {fileID: 21300000, guid: 8a3246d54011147548d1e7e2f36ef0df, type: 3}
+      - {fileID: 21300000, guid: 30165a7a030394c29bdef23ec693b0dc, type: 3}
+      - {fileID: 21300000, guid: 43ca6516cc4364c0e8f30a5a5e22c4ea, type: 3}
+      - {fileID: 21300000, guid: ba51279f55c0d4489ac372f715b3fd38, type: 3}
+      - {fileID: 21300000, guid: 464982a5f7c624d618e350b3528faa73, type: 3}
+      - {fileID: 21300000, guid: 1499f7dba2fb54894b38a982d07fd2ec, type: 3}
+      - {fileID: 21300000, guid: 682689401dd004ba3a74dbfc59d2f12c, type: 3}
+      - {fileID: 21300000, guid: bdc3af6a4d7a24525aeb2c2f06c57ea7, type: 3}
+      - {fileID: 21300000, guid: f2db3c37ccccb4da1938f9211749df31, type: 3}
+      - {fileID: 21300000, guid: caf40c0d2524144c89ef0bf3764d6bdb, type: 3}
+      - {fileID: 21300000, guid: ceb30e2618855460297a76df4b66864b, type: 3}
+      - {fileID: 21300000, guid: ea076db640b5249bd977955506ff12a9, type: 3}
+      - {fileID: 21300000, guid: 4ca41b062de914c58a67e3841456e58f, type: 3}
+      - {fileID: 21300000, guid: b958dbc6a9e10477eaf03f101f8e69db, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors: []
+  - state: 11
+    clip:
+      _clipName: enemy_raven_hurt
+      _frames:
+      - {fileID: 21300000, guid: 25e29afe9a2264391877b498f209aa1f, type: 3}
+      - {fileID: 21300000, guid: 8b9e85173f69d4e528a6edb29f4b1362, type: 3}
+      - {fileID: 21300000, guid: 95d40fb8169e1470abaa2377af4df472, type: 3}
+      - {fileID: 21300000, guid: a84081f6c12974580923b12bdd8ee92e, type: 3}
+      - {fileID: 21300000, guid: 1baeba269113f4300a479bcb524b0ae8, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors: []
+  - state: 12
+    clip:
+      _clipName: enemy_raven_stunned
+      _frames:
+      - {fileID: 21300000, guid: 4a0fff391ff8b454d8ad923f422ea0a4, type: 3}
+      - {fileID: 21300000, guid: 3a0a3613c7f4d4b2e9c6b9f73e34fec1, type: 3}
+      - {fileID: 21300000, guid: 8438272b541e047d28eb2ac740f2d790, type: 3}
+      - {fileID: 21300000, guid: 1bd958722c06843a983f952b530f5d7b, type: 3}
+      - {fileID: 21300000, guid: b61a24d07347c41aab11bd63c78dee64, type: 3}
+      - {fileID: 21300000, guid: 542d06583f0f8453aa44e2b5f08e94dd, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 1
+      _anchors: []
+  - state: 13
+    clip:
+      _clipName: enemy_raven_death
+      _frames:
+      - {fileID: 21300000, guid: 73856192483d042db99a22e592425f25, type: 3}
+      - {fileID: 21300000, guid: 056d37720c16148ba9620b3705812cb1, type: 3}
+      - {fileID: 21300000, guid: e659711bef9a64cdea4b5271843f6230, type: 3}
+      - {fileID: 21300000, guid: f059228d892c743b7bdbbda478b8a258, type: 3}
+      - {fileID: 21300000, guid: 0e9081079751e49bfa3bd59e49e68b3d, type: 3}
+      - {fileID: 21300000, guid: c4e1bd429bb24420fbda14123533f43e, type: 3}
+      - {fileID: 21300000, guid: 628dda4301a374d21893b3724f34e17c, type: 3}
+      - {fileID: 21300000, guid: 69ad7b87491ff4144aea48c181069ab5, type: 3}
+      - {fileID: 21300000, guid: a6354ffedc9964663ac26e9decb3b53c, type: 3}
+      - {fileID: 21300000, guid: 86dce59ac9b394dd892d19015f38af45, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 0
+      _anchors: []
+  _fallback:
+    _clipName: enemy_raven_idle
+    _frames:
+    - {fileID: 21300000, guid: c90b5d9adb35349738a084cf17f04442, type: 3}
+    - {fileID: 21300000, guid: 4a9841bf7433a42eca6f4200741e2f32, type: 3}
+    - {fileID: 21300000, guid: 00c44c1069ccf4cd391989a7db538d91, type: 3}
+    - {fileID: 21300000, guid: 8f0b999464bb24b898285cb2bf37fcaa, type: 3}
+    - {fileID: 21300000, guid: 845b66dd07a6f468486e87695cde3cea, type: 3}
+    - {fileID: 21300000, guid: 9af6897ee0ff244939f300c80d3e494c, type: 3}
+    _framesPerSecond: 12
+    _isLooping: 1
+    _anchors: []
+  _carriesShield: 0

@@ -50,6 +50,9 @@ namespace ForgottenKingdom
 
         public int Count => _enemies.Count;
 
+        /// <summary>The enemies of the zones loaded now, for behaviours that look after their allies.</summary>
+        public IReadOnlyList<EnemyController> Enemies => _enemies;
+
         /// <summary>Whether the enemy that stands at this spawn is beaten until the next reset.</summary>
         public bool IsBeaten(string spawnKey) => _beaten.ContainsKey(spawnKey);
 

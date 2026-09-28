@@ -266,7 +266,13 @@ namespace ForgottenKingdom.EditorTools
             // ---- the Ashen Capital: a hollow burnt city, a bell far off, embers settling ----
             new Spec(AudioId.AmbienceCapitalBase, "Ambience/Capital", "amb_capital_base", Recipe.Bed, 1, 8f, 0.62f),
             new Spec(AudioId.AmbienceBellToll, "Ambience/Capital", "amb_capital_bell", Recipe.MetalRing, 2, 2.4f, 0.32f),
-            new Spec(AudioId.AmbienceEmbers, "Ambience/Capital", "amb_capital_embers", Recipe.Fire, 3, 1.1f, 1.1f)
+            new Spec(AudioId.AmbienceEmbers, "Ambience/Capital", "amb_capital_embers", Recipe.Fire, 3, 1.1f, 1.1f),
+
+            // ---- the capital's enemies: a harsh caw, stone tearing loose, a chime and a breath ----
+            new Spec(AudioId.RavenCaw, "SFX/Enemies", "sfx_raven_caw", Recipe.Shadow, 3, 0.45f, 1.7f),
+            new Spec(AudioId.GargoyleWake, "SFX/Enemies", "sfx_gargoyle_wake", Recipe.Crack, 2, 0.9f, 0.55f),
+            new Spec(AudioId.PriestHeal, "SFX/Enemies", "sfx_priest_heal", Recipe.Chime, 2, 0.7f, 0.9f),
+            new Spec(AudioId.PriestBlink, "SFX/Enemies", "sfx_priest_blink", Recipe.Shadow, 2, 0.4f, 1.3f)
         };
 
         /// <summary>Writes every missing or changed clip and returns them, by sound.</summary>

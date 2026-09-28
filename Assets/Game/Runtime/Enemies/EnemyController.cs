@@ -96,6 +96,14 @@ namespace ForgottenKingdom
         public EnemyResetPolicy ResetPolicy => _resetPolicy;
 
         /// <summary>
+        /// Set by a behaviour that moves this enemy itself — a gargoyle still asleep on its plinth,
+        /// a raven in the air. While held the controller decides nothing and drives nothing; it
+        /// still takes hits, dies and resets, and an attack started through
+        /// <see cref="TryAttackWith"/> still runs.
+        /// </summary>
+        public bool IsHeld { get; set; }
+
+        /// <summary>
         /// Who this enemy is across a zone's unload and reload: its scene, its name and where it
         /// was placed. <see cref="EnemyRegistry"/> keeps the beaten ones by it.
         /// </summary>
@@ -206,6 +214,12 @@ namespace ForgottenKingdom
             var deltaTime = Time.fixedDeltaTime;
             _stateTimer += deltaTime;
             _combat.Tick(deltaTime);
+            if (IsHeld && _state != EnemyState.Dead)
+            {
+                SettleWhileHeld();
+                return;
+            }
+
             if (_state == EnemyState.Dead)
             {
                 // The body lies where it fell until a rest revives it, as in Hollow Knight; the
@@ -319,6 +333,27 @@ namespace ForgottenKingdom
             Enter(EnemyState.Dead, force: true);
             SetVisible(false);
         }
+
+        /// <summary>
+        /// Starts one of the definition's attacks for a behaviour that chose the moment itself
+        /// (the raven's dive). The same token, cooldown and telegraph as any other attack.
+        /// </summary>
+        public bool TryAttackWith(int optionIndex)
+        {
+            if (!IsAlive || _combat.IsAttacking || optionIndex < 0 || optionIndex >= _definition.AttackCount
+                || Time.time < _attackReadyPerOption[optionIndex])
+            {
+                return false;
+            }
+
+            return StartOption(optionIndex, _definition.Attack(optionIndex));
+        }
+
+        /// <summary>True while the attack started last is still running.</summary>
+        public bool IsAttacking => _combat.IsAttacking;
+
+        /// <summary>Where the running attack is: windup, the active strike, or recovery.</summary>
+        public AttackPhase AttackPhase => _combat.Phase;
 
         public bool CanAttack()
         {
@@ -676,6 +711,21 @@ namespace ForgottenKingdom
 
             _motor.Face(delta > 0f ? 1 : -1);
             _motor.Drive(_definition.ReturnSpeed);
+        }
+
+        /// <summary>
+        /// Held, nothing is decided, but a finished attack or a spent flinch still ends, so what
+        /// the enemy shows (its animation reads the state) never sticks on a moment long past.
+        /// </summary>
+        private void SettleWhileHeld()
+        {
+            var flinching = _state == EnemyState.Hurt || _state == EnemyState.Stunned;
+            var stunned = _actor.Stagger != null && _actor.Stagger.IsStunned;
+            if ((_state == EnemyState.Attack && !_combat.IsAttacking)
+                || (flinching && !stunned && _stateTimer >= _definition.HurtTime))
+            {
+                Enter(HasTarget && _isProvoked ? EnemyState.Chase : EnemyState.Idle, force: true);
+            }
         }
 
         private void TickRecovering()

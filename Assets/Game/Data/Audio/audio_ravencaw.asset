@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f262bfdbc3db1d1448a3cf59cba06016, type: 3}
+  m_Name: audio_ravencaw
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.AudioEvent
+  _id: 141
+  _clips:
+  - {fileID: 8300000, guid: 3a4a486bffc8b496285146be60d81a4c, type: 3}
+  - {fileID: 8300000, guid: f4edfb7c6b5f1443ba62f27dc6a3a644, type: 3}
+  - {fileID: 8300000, guid: 1bdb3841ae10b4861ad54f444987d82a, type: 3}
+  _bus: 2
+  _volume: 0.5
+  _volumeJitter: 0.06
+  _pitchJitter: 0.045
+  _spatialBlend: 0.55
+  _maxDistance: 26
+  _maxVoices: 2
+  _minimumInterval: 0
+  _priority: 60
+  _loop: 0

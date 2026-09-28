@@ -76,6 +76,7 @@ namespace ForgottenKingdom.EditorTools
             BuildThroneHall(root, progress);
             BuildCapitalParallax(root, camera);
             BuildCapitalAsh(root);
+            PlaceCapitalEnemies();
             var placed = Section(root, "Placed");
             foreach (var placement in CapitalPlacements())
             {
@@ -96,7 +97,51 @@ namespace ForgottenKingdom.EditorTools
                 if (find.PersistentId != null && find.PersistentId.StartsWith("capital-")) { found.Add(find.gameObject); }
             }
 
+            foreach (var enemy in Object.FindObjectsByType<EnemyController>(FindObjectsInactive.Include))
+            {
+                var x = enemy.transform.position.x;
+                if (x > 313.5f && x < 545f) { found.Add(enemy.gameObject); }
+            }
+
             return found;
+        }
+
+        /// <summary>
+        /// Who stands where (stage C): ravens over the market and the gardens, crossbowmen on the
+        /// balconies, gargoyles on the belfry's rubble, flanking the temple's dais and before the
+        /// palace, priests on the dais and the pergola. The gardens have one of each. Heights are
+        /// body centres: feet on the floor at 0 are 0.9 up, as the forest's are.
+        /// </summary>
+        private static void PlaceCapitalEnemies()
+        {
+            var raven = CapitalEnemy(RavenPrefabName);
+            var gargoyle = CapitalEnemy(GargoylePrefabName);
+            var priest = CapitalEnemy(PriestPrefabName);
+            var crossbowman = CapitalEnemy(CrossbowmanPrefabName);
+            if (raven == null || gargoyle == null || priest == null || crossbowman == null)
+            {
+                Debug.LogError("The capital's enemies are not built; run ContentBuilder.Build first.");
+                return;
+            }
+
+            // The market.
+            SpawnEnemy(raven, new Vector2(383f, 6f));
+            SpawnEnemy(raven, new Vector2(395f, 6.5f));
+            SpawnEnemy(crossbowman, new Vector2(379.5f, 3.5f));
+            SpawnEnemy(crossbowman, new Vector2(397.5f, 3.5f));
+            // The bell tower: asleep on the fallen belfry.
+            SpawnEnemy(gargoyle, new Vector2(414f, 7.3f));
+            // The temple: two stone guardians either side of the dais, a priest upon it.
+            SpawnEnemy(gargoyle, new Vector2(437.5f, 0.9f));
+            SpawnEnemy(gargoyle, new Vector2(454f, 0.9f));
+            SpawnEnemy(priest, new Vector2(446f, 2.5f));
+            // The gardens: all four together.
+            SpawnEnemy(raven, new Vector2(466f, 6f));
+            SpawnEnemy(gargoyle, new Vector2(476f, 0.9f));
+            SpawnEnemy(priest, new Vector2(481f, 4.1f));
+            SpawnEnemy(crossbowman, new Vector2(488f, 0.9f));
+            // Before the palace, one more stone guard.
+            SpawnEnemy(gargoyle, new Vector2(507f, 0.9f));
         }
 
         /// <summary>

@@ -1,0 +1,126 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a3bf27c6a3b5a64bba1a1b22b6e25e4, type: 3}
+  m_Name: StoneGargoyle
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.EnemyDefinition
+  _displayName: "\u041A\u0430\u043C'\u044F\u043D\u0430 \u0433\u043E\u0440\u0433\u0443\u043B\u044F"
+  _experienceReward: 110
+  _patrolSpeed: 0
+  _chaseSpeed: 2.6
+  _returnSpeed: 2
+  _patrolRange: 0
+  _idleTime: 1
+  _idleTimeVariance: 0.6
+  _detectionRange: 7
+  _loseSightRange: 11
+  _verticalDetectionRange: 3.5
+  _alertTime: 0.5
+  _searchTime: 2
+  _behindDetectionRange: 2
+  _facingDeadZone: 0.35
+  _aiTickInterval: 0.08
+  _attackRange: 1.8
+  _verticalAttackRange: 1.6
+  _attackCooldown: 1.4
+  _facingLockTime: 0.12
+  _decisionCooldown: 0.25
+  _guardMovementScale: 0.3
+  _attacks:
+  - _kind: 0
+    _attack:
+      _displayName: Claw
+      _animationState: Attack
+      _damage: 18
+      _damageMultiplier: 1
+      _damageType: 0
+      _staminaCost: 0
+      _staggerDamage: 14
+      _knockback: 5
+      _guardDamage: 16
+      _hitStop: 0.05
+      _isUnblockable: 0
+      _isParryable: 1
+      _windup: 0.45
+      _activeTime: 0.1
+      _recovery: 0.45
+      _comboLinkTime: 0.6
+      _cancelableAfter: 0.6
+      _hitboxOffset: {x: 1, y: 0.1}
+      _hitboxSize: {x: 1.5, y: 1.2}
+      _movementScale: 0
+      _statusBuildup: []
+    _cooldown: 1.5
+    _minRange: 0
+    _maxRange: 1.8
+    _weight: 5
+    _requiredPressure: 0
+    _weightAgainstGuard: 0
+    _facingLockTime: 0.2
+    _spawn:
+      _kind: 0
+      _prefab: {fileID: 0}
+      _offset: {x: 0.7, y: 0.2}
+      _speed: 9
+      _range: 14
+      _pierce: 1
+      _color: {r: 1, g: 1, b: 1, a: 1}
+      _atTargetPosition: 1
+      _maxPlacementDistance: 7
+    _lunge: {x: 0, y: 0}
+  - _kind: 1
+    _attack:
+      _displayName: Slam
+      _animationState: AttackHeavy
+      _damage: 30
+      _damageMultiplier: 1
+      _damageType: 0
+      _staminaCost: 0
+      _staggerDamage: 30
+      _knockback: 12
+      _guardDamage: 40
+      _hitStop: 0.08
+      _isUnblockable: 0
+      _isParryable: 0
+      _windup: 0.8
+      _activeTime: 0.12
+      _recovery: 0.7
+      _comboLinkTime: 1
+      _cancelableAfter: 1
+      _hitboxOffset: {x: 1.1, y: -0.2}
+      _hitboxSize: {x: 2.2, y: 1}
+      _movementScale: 0
+      _statusBuildup: []
+    _cooldown: 4
+    _minRange: 0
+    _maxRange: 2.2
+    _weight: 3
+    _requiredPressure: 0
+    _weightAgainstGuard: 0
+    _facingLockTime: 0.3
+    _spawn:
+      _kind: 0
+      _prefab: {fileID: 0}
+      _offset: {x: 0.7, y: 0.2}
+      _speed: 9
+      _range: 14
+      _pierce: 1
+      _color: {r: 1, g: 1, b: 1, a: 1}
+      _atTargetPosition: 1
+      _maxPlacementDistance: 7
+    _lunge: {x: 0, y: 0}
+  _preferredRange: 0
+  _retreatRange: 0
+  _retreatSpeed: 3
+  _hurtTime: 0.22
+  _hitReactionCooldown: 0.9
+  _deathTime: 1.6
+  _maxChaseTime: 14

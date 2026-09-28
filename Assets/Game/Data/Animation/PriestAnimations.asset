@@ -1,0 +1,299 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 649169c22105a06499c9bc0695fd8d1d, type: 3}
+  m_Name: PriestAnimations
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.EnemyAnimationSet
+  _clips:
+  - state: 1
+    clip:
+      _clipName: enemy_priest_idle
+      _frames:
+      - {fileID: 21300000, guid: 9cb9e0de1a60241f28d9103f2c533cca, type: 3}
+      - {fileID: 21300000, guid: d738a7edbcd02435988243d5acb1adb1, type: 3}
+      - {fileID: 21300000, guid: 21eb6864e10aa400b82bb25eec7b52bf, type: 3}
+      - {fileID: 21300000, guid: 79611249fbf664869b90d827d7aae9e3, type: 3}
+      - {fileID: 21300000, guid: ed9e990b6ba684e8684078db5a3c9ab6, type: 3}
+      - {fileID: 21300000, guid: f57c03d87025e4f5d89a689326bf746c, type: 3}
+      _framesPerSecond: 8
+      _isLooping: 1
+      _anchors:
+      - {x: -0.13767228, y: 0.6570093, z: 14.9}
+      - {x: -0.13767228, y: 0.6639374, z: 14.9}
+      - {x: -0.13767228, y: 0.6639374, z: 14.9}
+      - {x: -0.13767228, y: 0.6570093, z: 14.9}
+      - {x: -0.13767228, y: 0.65008104, z: 14.9}
+      - {x: -0.13767228, y: 0.65008104, z: 14.9}
+  - state: 2
+    clip:
+      _clipName: enemy_priest_patrol
+      _frames:
+      - {fileID: 21300000, guid: 19500de5f69d044e39cdf14d79b391b4, type: 3}
+      - {fileID: 21300000, guid: 588458b77082c4f59bad6384e638dfa1, type: 3}
+      - {fileID: 21300000, guid: 826a85832d1634d19943ace89ac3784b, type: 3}
+      - {fileID: 21300000, guid: 2aa1567a21d9748658c473ebdadb4314, type: 3}
+      - {fileID: 21300000, guid: d8c1da438f304425581a47f027f37739, type: 3}
+      - {fileID: 21300000, guid: c4589d81b865a41db86c26d41c5232fc, type: 3}
+      - {fileID: 21300000, guid: f52773d828fbf47a582d930fcf8a0a57, type: 3}
+      - {fileID: 21300000, guid: 571f0931be0de48a2b845e288ea54912, type: 3}
+      _framesPerSecond: 10
+      _isLooping: 1
+      _anchors:
+      - {x: -0.14257866, y: 0.661901, z: 15.5}
+      - {x: -0.14257866, y: 0.6802858, z: 15.5}
+      - {x: -0.14257866, y: 0.687901, z: 15.5}
+      - {x: -0.14257866, y: 0.6802858, z: 15.5}
+      - {x: -0.14257866, y: 0.661901, z: 15.5}
+      - {x: -0.14257866, y: 0.6802858, z: 15.5}
+      - {x: -0.14257866, y: 0.687901, z: 15.5}
+      - {x: -0.14257866, y: 0.6802858, z: 15.5}
+  - state: 3
+    clip:
+      _clipName: enemy_priest_alert
+      _frames:
+      - {fileID: 21300000, guid: 5e5f0d26711774f36a7a3590783904c1, type: 3}
+      - {fileID: 21300000, guid: c8bfce9008de7481cbcccb19a80cce50, type: 3}
+      - {fileID: 21300000, guid: 870aa8ce8db7d40739d427f013c7462a, type: 3}
+      - {fileID: 21300000, guid: d5fb837c59b804878baece8a67069bc9, type: 3}
+      - {fileID: 21300000, guid: 16cc1a80bcd77476aa0f17097bc67625, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 0
+      _anchors:
+      - {x: -0.14257866, y: 0.661901, z: 15.5}
+      - {x: -0.14370368, y: 0.6630721, z: 15.640625}
+      - {x: -0.14614482, y: 0.66568065, z: 15.95}
+      - {x: -0.14853859, y: 0.6683327, z: 16.259375}
+      - {x: -0.14961082, y: 0.6695523, z: 16.4}
+  - state: 4
+    clip:
+      _clipName: enemy_priest_chase
+      _frames:
+      - {fileID: 21300000, guid: d8b53da1be353415f8f6704db7c9a483, type: 3}
+      - {fileID: 21300000, guid: e69c63c84732049e1b018848084bb701, type: 3}
+      - {fileID: 21300000, guid: 585645f5f147946aaba5f7dd0d6c52e2, type: 3}
+      - {fileID: 21300000, guid: 2b638243569af4b6fa737dbd12ec0b68, type: 3}
+      - {fileID: 21300000, guid: 04984993cab724398adcd6bb52bab9c5, type: 3}
+      - {fileID: 21300000, guid: ee7ab1b8369274ebea7fc0b31e811a30, type: 3}
+      - {fileID: 21300000, guid: f4e5ee9f9ea1c4b108692423f69fcf97, type: 3}
+      - {fileID: 21300000, guid: 2dacb3badfc1e47d9a9c4505658b26a3, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 1
+      _anchors:
+      - {x: -0.15834595, y: 0.6803064, z: 17.6}
+      - {x: -0.15834595, y: 0.7015196, z: 17.6}
+      - {x: -0.15834595, y: 0.7103064, z: 17.6}
+      - {x: -0.15834595, y: 0.7015196, z: 17.6}
+      - {x: -0.15834595, y: 0.6803064, z: 17.6}
+      - {x: -0.15834595, y: 0.7015196, z: 17.6}
+      - {x: -0.15834595, y: 0.7103064, z: 17.6}
+      - {x: -0.15834595, y: 0.7015196, z: 17.6}
+  - state: 0
+    clip:
+      _clipName: enemy_priest_attacklight
+      _frames:
+      - {fileID: 21300000, guid: 4432b99d4d2ac41bfb5ae7560b1e9c18, type: 3}
+      - {fileID: 21300000, guid: f515f7ffcdae64042ab032a2a5301bcc, type: 3}
+      - {fileID: 21300000, guid: ad68fad8c3f944e4780c2f206d2606ed, type: 3}
+      - {fileID: 21300000, guid: 2facde7d8f8df4f56ade87f7202c8058, type: 3}
+      - {fileID: 21300000, guid: 9e2bdba916cab443fa1b170cc528dee4, type: 3}
+      - {fileID: 21300000, guid: a6ab65beadfa84f529059bdf4d1eb41a, type: 3}
+      - {fileID: 21300000, guid: 325a88d9d4e4a420b81b3418d464475b, type: 3}
+      - {fileID: 21300000, guid: a8ae00a31f6a241c2914115d339888de, type: 3}
+      - {fileID: 21300000, guid: 76f955b9f62c248728d9fde0e3982509, type: 3}
+      - {fileID: 21300000, guid: 7a731854f7b2d4f5fadd463ef9d7a00a, type: 3}
+      - {fileID: 21300000, guid: 49490621f055b4438ba143553c5b867b, type: 3}
+      - {fileID: 21300000, guid: 4b718ac3dc8aa472293a4f1ebfc42700, type: 3}
+      - {fileID: 21300000, guid: 0093f165709a142e586651cb913b0628, type: 3}
+      - {fileID: 21300000, guid: 82a708dcc5ba341e3a6f529381016beb, type: 3}
+      - {fileID: 21300000, guid: 54adb8b5230ac486082388179034528c, type: 3}
+      - {fileID: 21300000, guid: c39dbe4f587b9405a8a930a0ca1ac8d3, type: 3}
+      - {fileID: 21300000, guid: bd1f13187e16e4a03b8bf992f1ec808e, type: 3}
+      - {fileID: 21300000, guid: 8abcbe3af88d54c20868425f15c07e3a, type: 3}
+      - {fileID: 21300000, guid: 5bf8283a3f48f473db01fd9441a79b7e, type: 3}
+      - {fileID: 21300000, guid: 1fad6b5199ec443eea58fe31e6338c28, type: 3}
+      - {fileID: 21300000, guid: 49fd62d51c5ff4cc0ac4333019fe9c80, type: 3}
+      - {fileID: 21300000, guid: e423f44abc70b46bc8d1359a80c3abd2, type: 3}
+      - {fileID: 21300000, guid: 7bc7203cd99fc4b42949455c15702f0d, type: 3}
+      - {fileID: 21300000, guid: dcac46531c9354ee8b2c22a6405c8bc6, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.113608554, y: 0.637233, z: 12.2}
+      - {x: -0.11345093, y: 0.63656837, z: 12.183358}
+      - {x: -0.113004684, y: 0.6346901, z: 12.136309}
+      - {x: -0.11230926, y: 0.63177264, z: 12.063166}
+      - {x: -0.11140366, y: 0.62799066, z: 11.96824}
+      - {x: -0.11032707, y: 0.6235193, z: 11.855846}
+      - {x: -0.10911896, y: 0.61853296, z: 11.730297}
+      - {x: -0.107819214, y: 0.6132052, z: 11.595907}
+      - {x: -0.10646874, y: 0.6077086, z: 11.456987}
+      - {x: -0.10510925, y: 0.60221446, z: 11.317852}
+      - {x: -0.10378319, y: 0.5968926, z: 11.182815}
+      - {x: -0.10253388, y: 0.5919118, z: 11.056188}
+      - {x: -0.10140541, y: 0.5874393, z: 10.942285}
+      - {x: -0.1004422, y: 0.58364165, z: 10.845418}
+      - {x: -0.09968903, y: 0.58068484, z: 10.769902}
+      - {x: -0.099190824, y: 0.57873464, z: 10.720049}
+      - {x: -0.09899193, y: 0.5779575, z: 10.700172}
+      - {x: -0.103779145, y: 0.5932788, z: 11.182406}
+      - {x: -0.11950508, y: 0.6299734, z: 12.830914}
+      - {x: -0.13423546, y: 0.6537781, z: 14.491501}
+      - {x: -0.14444107, y: 0.66385007, z: 15.733447}
+      - {x: -0.14949776, y: 0.66942275, z: 16.385109}
+      - {x: -0.14961082, y: 0.6695523, z: 16.4}
+      - {x: -0.14961082, y: 0.6695523, z: 16.4}
+  - state: 9
+    clip:
+      _clipName: enemy_priest_attackheavy
+      _frames:
+      - {fileID: 21300000, guid: 3aa6c7dd6078f4c77b9dd5407f3abe2e, type: 3}
+      - {fileID: 21300000, guid: c8ad924f4333e4c3b81dbcf9148ba0d3, type: 3}
+      - {fileID: 21300000, guid: c75d99d58d12943b69b9d70ed828bcd6, type: 3}
+      - {fileID: 21300000, guid: f8354c0368db24de08719537fe695ef3, type: 3}
+      - {fileID: 21300000, guid: 8bdd7dd0a2aed40108b4684eb73c6236, type: 3}
+      - {fileID: 21300000, guid: ed5a05e56b0c5423490f827a490a65f6, type: 3}
+      - {fileID: 21300000, guid: 3b0080064b878440c8e2c37534d1fbb0, type: 3}
+      - {fileID: 21300000, guid: 7ce9ade3bdcef4502be7a2cb10c28b2c, type: 3}
+      - {fileID: 21300000, guid: 7ff7d3e99d1674833a82bad7a6100c03, type: 3}
+      - {fileID: 21300000, guid: 0a8f34a46d8ca44c5b042853de86a3a8, type: 3}
+      - {fileID: 21300000, guid: 9f571f452bd8742dbb84314a3b8d0eaa, type: 3}
+      - {fileID: 21300000, guid: 9b567bd659c7b43f69fcf03f832d5c5e, type: 3}
+      - {fileID: 21300000, guid: 17afc07083edc44d3b762a633d6c4275, type: 3}
+      - {fileID: 21300000, guid: dcfb91050f39a40d0a4c7c4f7b7202c8, type: 3}
+      - {fileID: 21300000, guid: 79f5d572213dc4a44b1a1dd800b1e8d2, type: 3}
+      - {fileID: 21300000, guid: 752c05747ffad4c02ba3462d0d1a3a89, type: 3}
+      - {fileID: 21300000, guid: 7a5d850fc9d2e40a1ae96e20929c332f, type: 3}
+      - {fileID: 21300000, guid: 0298e124ee03644ecbb0aab6d914ae09, type: 3}
+      - {fileID: 21300000, guid: d0aaaa0d1b94d40e58c339d0502ea556, type: 3}
+      - {fileID: 21300000, guid: 969702e317da74433a80092e917a2dff, type: 3}
+      - {fileID: 21300000, guid: 0ac436194612a4da49427069f007ed5f, type: 3}
+      - {fileID: 21300000, guid: 9f161e51b423843c29a0787e0186acfe, type: 3}
+      - {fileID: 21300000, guid: 941147c19406941388b487f740bd5866, type: 3}
+      - {fileID: 21300000, guid: 872244d4e038349cc9b41a4fab0741b1, type: 3}
+      - {fileID: 21300000, guid: e0a008eec5acb492e80e186fea527677, type: 3}
+      - {fileID: 21300000, guid: f993448b5b2624d958801499d8fa126d, type: 3}
+      - {fileID: 21300000, guid: 8a3328c88608741e6b1f233d3292e2ab, type: 3}
+      - {fileID: 21300000, guid: 3d14cafa096514d21ab8395b87b8e163, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.113608554, y: 0.637233, z: 12.2}
+      - {x: -0.11351555, y: 0.6368406, z: 12.190175}
+      - {x: -0.11324829, y: 0.635715, z: 12.161985}
+      - {x: -0.11282471, y: 0.63393396, z: 12.117357}
+      - {x: -0.112262115, y: 0.6315754, z: 12.058219}
+      - {x: -0.11157814, y: 0.62871766, z: 11.986497}
+      - {x: -0.1107901, y: 0.62543887, z: 11.904118}
+      - {x: -0.10991554, y: 0.62181693, z: 11.813009}
+      - {x: -0.108972244, y: 0.6179298, z: 11.715097}
+      - {x: -0.10797821, y: 0.613855, z: 11.612311}
+      - {x: -0.1069516, y: 0.6096693, z: 11.506576}
+      - {x: -0.105911024, y: 0.60544986, z: 11.399819}
+      - {x: -0.104875185, y: 0.6012724, z: 11.293969}
+      - {x: -0.1038633, y: 0.597213, z: 11.19095}
+      - {x: -0.10289467, y: 0.5933467, z: 11.092692}
+      - {x: -0.101988904, y: 0.5897486, z: 11.0011215}
+      - {x: -0.101165846, y: 0.58649313, z: 10.918164}
+      - {x: -0.10044548, y: 0.58365464, z: 10.845748}
+      - {x: -0.09984779, y: 0.58130705, z: 10.785801}
+      - {x: -0.09939278, y: 0.57952464, z: 10.740248}
+      - {x: -0.09910042, y: 0.5783815, z: 10.711018}
+      - {x: -0.09899055, y: 0.5779522, z: 10.700036}
+      - {x: -0.10305351, y: 0.59053713, z: 11.1087885}
+      - {x: -0.11894424, y: 0.62340146, z: 12.770172}
+      - {x: -0.13780579, y: 0.6559314, z: 14.916064}
+      - {x: -0.15226975, y: 0.6726661, z: 16.75458}
+      - {x: -0.16245869, y: 0.685951, z: 18.204817}
+      - {x: -0.16630962, y: 0.6916436, z: 18.8}
+  - state: 11
+    clip:
+      _clipName: enemy_priest_hurt
+      _frames:
+      - {fileID: 21300000, guid: 1d9094362caca492583616d5c78fbe2a, type: 3}
+      - {fileID: 21300000, guid: ccbb5712313984d4b9812e32c355df13, type: 3}
+      - {fileID: 21300000, guid: 2a0be31e06de4450497f559acff95fe4, type: 3}
+      - {fileID: 21300000, guid: 2df7fbf27ab1f46ffb4566b73e993c21, type: 3}
+      - {fileID: 21300000, guid: 5db6c3897e2ee4c9285a18c953db8d0e, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.13, y: 0.65, z: 14}
+      - {x: -0.1334021, y: 0.62741137, z: 10.605887}
+      - {x: -0.1336184, y: 0.6199779, z: 9.2}
+      - {x: -0.1334021, y: 0.62741137, z: 10.605887}
+      - {x: -0.13, y: 0.65, z: 14}
+  - state: 12
+    clip:
+      _clipName: enemy_priest_stunned
+      _frames:
+      - {fileID: 21300000, guid: b791b2e8de7254a12ad61ecb0339b924, type: 3}
+      - {fileID: 21300000, guid: 6f9f35700e3614193a6ff42d3424a75d, type: 3}
+      - {fileID: 21300000, guid: 1d46bcf11dad843d382dadb0a76e4f60, type: 3}
+      - {fileID: 21300000, guid: 00de1effd1dbf4800b6d80d30dcdfb9f, type: 3}
+      - {fileID: 21300000, guid: 0c7bf304346ec4fa98144d2e365fb3a5, type: 3}
+      - {fileID: 21300000, guid: d197a09ab8426419cbc6e94beea3f1c3, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 1
+      _anchors:
+      - {x: -0.06434288, y: 0.5422236, z: 7.3999996}
+      - {x: -0.04644356, y: 0.54882246, z: 8.958845}
+      - {x: -0.04644356, y: 0.54882246, z: 8.958845}
+      - {x: -0.06434288, y: 0.5422236, z: 7.3999996}
+      - {x: -0.08171341, y: 0.53716797, z: 5.841154}
+      - {x: -0.08171341, y: 0.53716797, z: 5.841154}
+  - state: 13
+    clip:
+      _clipName: enemy_priest_death
+      _frames:
+      - {fileID: 21300000, guid: 49e3bdacdbe454d6c9e2ee193cec8022, type: 3}
+      - {fileID: 21300000, guid: f32d5ed84c82e40a1a329435ef24c48b, type: 3}
+      - {fileID: 21300000, guid: 4de610c3e3f3c4781ab4fcc23f7ae8f3, type: 3}
+      - {fileID: 21300000, guid: 449fef0547aac4ef68e4f351a4aeea49, type: 3}
+      - {fileID: 21300000, guid: 17bc4bd08b6ab4b8a82af2962e85c2e5, type: 3}
+      - {fileID: 21300000, guid: b4ef730d1972d4ed2a5afe4f27c06685, type: 3}
+      - {fileID: 21300000, guid: 08c2b485804ae4d26a26a7e581cf6fe3, type: 3}
+      - {fileID: 21300000, guid: c07080afa507d4c99b4844317aeeb91d, type: 3}
+      - {fileID: 21300000, guid: 2a777982489e641eca12687cf85314f5, type: 3}
+      - {fileID: 21300000, guid: fcd41931a5fc240c89afe56b5dd57530, type: 3}
+      - {fileID: 21300000, guid: 98ad0eb4a96ca49799f1ac2792f9e375, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 0
+      _anchors:
+      - {x: -0.10785889, y: 0.6333673, z: 11.6}
+      - {x: -0.10825661, y: 0.6129072, z: 11.012}
+      - {x: -0.108753964, y: 0.5575449, z: 9.416}
+      - {x: -0.10818024, y: 0.47804305, z: 7.0639997}
+      - {x: -0.106006086, y: 0.38596475, z: 4.2079997}
+      - {x: -0.102776185, y: 0.29183716, z: 1.0999994}
+      - {x: -0.09978195, y: 0.20356217, z: -2.008002}
+      - {x: -0.098233186, y: 0.12538469, z: -4.864}
+      - {x: -0.09845658, y: 0.057554856, z: -7.216001}
+      - {x: -0.099632114, y: -0.0034885884, z: -8.812001}
+      - {x: -0.1003064, y: -0.06474594, z: -9.400001}
+  _fallback:
+    _clipName: enemy_priest_idle
+    _frames:
+    - {fileID: 21300000, guid: 9cb9e0de1a60241f28d9103f2c533cca, type: 3}
+    - {fileID: 21300000, guid: d738a7edbcd02435988243d5acb1adb1, type: 3}
+    - {fileID: 21300000, guid: 21eb6864e10aa400b82bb25eec7b52bf, type: 3}
+    - {fileID: 21300000, guid: 79611249fbf664869b90d827d7aae9e3, type: 3}
+    - {fileID: 21300000, guid: ed9e990b6ba684e8684078db5a3c9ab6, type: 3}
+    - {fileID: 21300000, guid: f57c03d87025e4f5d89a689326bf746c, type: 3}
+    _framesPerSecond: 8
+    _isLooping: 1
+    _anchors:
+    - {x: -0.13767228, y: 0.6570093, z: 14.9}
+    - {x: -0.13767228, y: 0.6639374, z: 14.9}
+    - {x: -0.13767228, y: 0.6639374, z: 14.9}
+    - {x: -0.13767228, y: 0.6570093, z: 14.9}
+    - {x: -0.13767228, y: 0.65008104, z: 14.9}
+    - {x: -0.13767228, y: 0.65008104, z: 14.9}
+  _carriesShield: 0

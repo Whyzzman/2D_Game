@@ -1,0 +1,275 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 649169c22105a06499c9bc0695fd8d1d, type: 3}
+  m_Name: GargoyleAnimations
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.EnemyAnimationSet
+  _clips:
+  - state: 1
+    clip:
+      _clipName: enemy_gargoyle_idle
+      _frames:
+      - {fileID: 21300000, guid: fb2a6725e560f4399917a636bf58bef0, type: 3}
+      - {fileID: 21300000, guid: 17866296afbc8476eb1d832470d45843, type: 3}
+      _framesPerSecond: 2
+      _isLooping: 1
+      _anchors:
+      - {x: 0.011441726, y: 1.1552569, z: 38.8}
+      - {x: 0.011441726, y: 1.1552569, z: 38.8}
+  - state: 2
+    clip:
+      _clipName: enemy_gargoyle_patrol
+      _frames:
+      - {fileID: 21300000, guid: c265ee1581af445d68eb3144bc03dbe8, type: 3}
+      - {fileID: 21300000, guid: 88fdd72dd80244ed79d90a79263336c3, type: 3}
+      - {fileID: 21300000, guid: ff9ad45d39b3e470e8f9aaec2327a9fd, type: 3}
+      - {fileID: 21300000, guid: eecd17845a892412297d7e73085469bb, type: 3}
+      - {fileID: 21300000, guid: 250ee8d159b2a4e42b1de333e1e3b886, type: 3}
+      - {fileID: 21300000, guid: 05ec7a90a25504f7abb7654855e21d26, type: 3}
+      - {fileID: 21300000, guid: b7a80f8eb85aa4d7f8acb8db731b3fa7, type: 3}
+      - {fileID: 21300000, guid: 912d4fbea068342bb9959bc1af1346af, type: 3}
+      _framesPerSecond: 10
+      _isLooping: 1
+      _anchors:
+      - {x: -0.079451755, y: 1.3087083, z: 35.5}
+      - {x: -0.079451755, y: 1.327093, z: 35.5}
+      - {x: -0.079451755, y: 1.3347082, z: 35.5}
+      - {x: -0.079451755, y: 1.327093, z: 35.5}
+      - {x: -0.079451755, y: 1.3087083, z: 35.5}
+      - {x: -0.079451755, y: 1.327093, z: 35.5}
+      - {x: -0.079451755, y: 1.3347082, z: 35.5}
+      - {x: -0.079451755, y: 1.327093, z: 35.5}
+  - state: 3
+    clip:
+      _clipName: enemy_gargoyle_alert
+      _frames:
+      - {fileID: 21300000, guid: abda2f0c297f34b6b9b98bd6ec6e3ef7, type: 3}
+      - {fileID: 21300000, guid: 0277f1d90f88b4663bfc4927ddc9e69a, type: 3}
+      - {fileID: 21300000, guid: ee27c142cd80c429596dd39688d73a2e, type: 3}
+      - {fileID: 21300000, guid: 7c367a5eda12041778ccc8865fbd3f91, type: 3}
+      - {fileID: 21300000, guid: 80ce88e5eb3dc42eeb2157ab26ce28a6, type: 3}
+      - {fileID: 21300000, guid: 03d21c60606574804972e84d52fb9b55, type: 3}
+      - {fileID: 21300000, guid: 9d694c03ef27a41ceb6518dba171466a, type: 3}
+      - {fileID: 21300000, guid: 22e72ee5dbd0e4560b3a55495687ab4f, type: 3}
+      _framesPerSecond: 10
+      _isLooping: 0
+      _anchors:
+      - {x: -0.079451755, y: 1.3087083, z: 35.5}
+      - {x: -0.078091964, y: 1.3089367, z: 35.549854}
+      - {x: -0.07458214, y: 1.3095077, z: 35.678425}
+      - {x: -0.069776304, y: 1.3102459, z: 35.85423}
+      - {x: -0.06453186, y: 1.3109943, z: 36.045773}
+      - {x: -0.05971138, y: 1.3116297, z: 36.221573}
+      - {x: -0.056181945, y: 1.3120631, z: 36.350147}
+      - {x: -0.05481247, y: 1.3122241, z: 36.4}
+  - state: 4
+    clip:
+      _clipName: enemy_gargoyle_chase
+      _frames:
+      - {fileID: 21300000, guid: 66a34b5099e9a4a9ca070a138e0eedd8, type: 3}
+      - {fileID: 21300000, guid: dc3bcffd339e54600a3bc72bc550c1dc, type: 3}
+      - {fileID: 21300000, guid: 0a2ae471ee56248fb8bb043fed5b575f, type: 3}
+      - {fileID: 21300000, guid: c36ff0f2395dc4ddea124701a71f5b55, type: 3}
+      - {fileID: 21300000, guid: f3b9a5f14dfc04954a6c56cab5e3ec90, type: 3}
+      - {fileID: 21300000, guid: e3b71445b05a641bca7780303668ccba, type: 3}
+      - {fileID: 21300000, guid: 31c214ed42f104ad99292522a68c3845, type: 3}
+      - {fileID: 21300000, guid: 5d4bdf53abc2c4199b01a94402283fbe, type: 3}
+      _framesPerSecond: 10
+      _isLooping: 1
+      _anchors:
+      - {x: -0.021738358, y: 1.3148973, z: 37.6}
+      - {x: -0.021738358, y: 1.3361107, z: 37.6}
+      - {x: -0.021738358, y: 1.3448973, z: 37.6}
+      - {x: -0.021738358, y: 1.3361107, z: 37.6}
+      - {x: -0.021738358, y: 1.3148973, z: 37.6}
+      - {x: -0.021738358, y: 1.3361107, z: 37.6}
+      - {x: -0.021738358, y: 1.3448973, z: 37.6}
+      - {x: -0.021738358, y: 1.3361107, z: 37.6}
+  - state: 0
+    clip:
+      _clipName: enemy_gargoyle_attacklight
+      _frames:
+      - {fileID: 21300000, guid: 3f7ab89b4020843eabe7427466d48a5c, type: 3}
+      - {fileID: 21300000, guid: d51e3f908ff844876876473ec632f7b2, type: 3}
+      - {fileID: 21300000, guid: 32613787f672e404ab588c78fb8c22ff, type: 3}
+      - {fileID: 21300000, guid: 272dc8b5d5e094da7bca44f6185c94f7, type: 3}
+      - {fileID: 21300000, guid: 1e56cc0c200b740409323e83b059235e, type: 3}
+      - {fileID: 21300000, guid: a28dfba9157a74bbbb698b88e748bc48, type: 3}
+      - {fileID: 21300000, guid: 36fb99c70a9954d27b2e9c73176de07e, type: 3}
+      - {fileID: 21300000, guid: f20c55db640dd45e7b9d02460719f8f7, type: 3}
+      - {fileID: 21300000, guid: 1e89168044ff14758aff7f8d940d0965, type: 3}
+      - {fileID: 21300000, guid: 5e7a7fbf768284c619540586b199de32, type: 3}
+      - {fileID: 21300000, guid: da92b7e1840344f16a5e44f4a32ce16e, type: 3}
+      - {fileID: 21300000, guid: 2eff2db5ef13c44e8be987e635c5ca61, type: 3}
+      - {fileID: 21300000, guid: 3bfa5de652df5443cb22ec9bd9c42a75, type: 3}
+      - {fileID: 21300000, guid: cb80041822998456b92f1d8d658fcf59, type: 3}
+      - {fileID: 21300000, guid: cd7607f598ec04a4f9ea954fa2bf9b7b, type: 3}
+      - {fileID: 21300000, guid: d2c471ce9b6264d05a7fea10f11efe46, type: 3}
+      - {fileID: 21300000, guid: ef9e21b26f0214b15a4d22d7c98550c9, type: 3}
+      - {fileID: 21300000, guid: 657f821ca4fae4ce1a9cbf041f5e94ea, type: 3}
+      - {fileID: 21300000, guid: e96d6cb550a394705a58448aff37cdad, type: 3}
+      - {fileID: 21300000, guid: 11c35f0a18ec34ab7b8659c8da0c0685, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.23805511, y: 1.2721738, z: 31}
+      - {x: -0.239682, y: 1.2692658, z: 30.935238}
+      - {x: -0.24395576, y: 1.2615728, z: 30.764566}
+      - {x: -0.24996033, y: 1.2506304, z: 30.523407}
+      - {x: -0.25678718, y: 1.2379938, z: 30.24718}
+      - {x: -0.26354927, y: 1.2252644, z: 29.971308}
+      - {x: -0.2693878, y: 1.2140979, z: 29.73121}
+      - {x: -0.27346817, y: 1.2061937, z: 29.562311}
+      - {x: -0.2749462, y: 1.2032886, z: 29.500696}
+      - {x: -0.22888115, y: 1.2423857, z: 30.926132}
+      - {x: -0.13490158, y: 1.2950752, z: 33.573013}
+      - {x: -0.045312118, y: 1.3099511, z: 35.78256}
+      - {x: 0.027597351, y: 1.3148237, z: 37.54385}
+      - {x: 0.054848555, y: 1.3153666, z: 38.2}
+      - {x: 0.054848555, y: 1.3153666, z: 38.2}
+      - {x: 0.054848555, y: 1.3153666, z: 38.2}
+      - {x: 0.054848555, y: 1.3153666, z: 38.2}
+      - {x: 0.054848555, y: 1.3153666, z: 38.2}
+      - {x: 0.054848555, y: 1.3153666, z: 38.2}
+      - {x: 0.054848555, y: 1.3153666, z: 38.2}
+  - state: 9
+    clip:
+      _clipName: enemy_gargoyle_attackheavy
+      _frames:
+      - {fileID: 21300000, guid: 831d8f869025d4830a62c4c5f1582c64, type: 3}
+      - {fileID: 21300000, guid: de31f375d633b4cd6b7f3b49e46c676f, type: 3}
+      - {fileID: 21300000, guid: 378a64b35396344d29f9e657e755bc4f, type: 3}
+      - {fileID: 21300000, guid: 03f0f19b1636243c9aeeb271e5152eb5, type: 3}
+      - {fileID: 21300000, guid: 2a883183849744745811df6078acc1f7, type: 3}
+      - {fileID: 21300000, guid: ec34d647aaef445898189ac6a16c5c17, type: 3}
+      - {fileID: 21300000, guid: c2f44461f0d9047b7941695a2c3aac25, type: 3}
+      - {fileID: 21300000, guid: c42444a50f67e4d9195cff5538c73bb4, type: 3}
+      - {fileID: 21300000, guid: 0433466d51a784cd3855046e717573b3, type: 3}
+      - {fileID: 21300000, guid: 2e5ac8912030c45acb551035e6b077be, type: 3}
+      - {fileID: 21300000, guid: 9fd7fc6f0b23d4dce8c259e98dc91d70, type: 3}
+      - {fileID: 21300000, guid: 99b1e7a48895d4cf4b582d84d6082c4e, type: 3}
+      - {fileID: 21300000, guid: 0fae02483e12a4533930f4b1fffcfc92, type: 3}
+      - {fileID: 21300000, guid: a54430f4426804b1199da4f2109a879a, type: 3}
+      - {fileID: 21300000, guid: 42acc0b3884414cae959da8bdfab7b11, type: 3}
+      - {fileID: 21300000, guid: a751abf91e014450eb52a8683194993d, type: 3}
+      - {fileID: 21300000, guid: 0e6fc840b55904f4696b4cb719bd69d4, type: 3}
+      - {fileID: 21300000, guid: f23023dc0ecf24503bb7ca31e1f5a61c, type: 3}
+      - {fileID: 21300000, guid: 141e9b03744ee41289f41949e3290aaf, type: 3}
+      - {fileID: 21300000, guid: df03d1326ddfe4594964d94c0eed3c3c, type: 3}
+      - {fileID: 21300000, guid: 1bad746e943c04fbc9ebe59ff3fea9f9, type: 3}
+      - {fileID: 21300000, guid: d856f6cff0aad4034bd2fa0f1531ca89, type: 3}
+      - {fileID: 21300000, guid: dad3a5a58e8664014a29a62b4787ad9c, type: 3}
+      - {fileID: 21300000, guid: ebd4ef950db194440b3227efbe5aaebf, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.25990143, y: 1.2561073, z: 29.71}
+      - {x: -0.26196563, y: 1.252114, z: 29.624615}
+      - {x: -0.2672487, y: 1.2417953, z: 29.404985}
+      - {x: -0.27438042, y: 1.2276359, z: 29.105906}
+      - {x: -0.2820166, y: 1.21217, z: 28.782171}
+      - {x: -0.28886482, y: 1.19802, z: 28.488571}
+      - {x: -0.2936863, y: 1.1878924, z: 28.279902}
+      - {x: -0.29503456, y: 1.1848334, z: 28.220018}
+      - {x: -0.26870024, y: 1.2167692, z: 29.212051}
+      - {x: -0.21503906, y: 1.266062, z: 31.0959}
+      - {x: -0.15796493, y: 1.2914102, z: 32.903008}
+      - {x: -0.095687255, y: 1.3049313, z: 34.773285}
+      - {x: -0.02905609, y: 1.3132073, z: 36.736717}
+      - {x: 0.03497635, y: 1.3153554, z: 38.60699}
+      - {x: 0.08940765, y: 1.3127568, z: 40.197796}
+      - {x: 0.12766533, y: 1.3084738, z: 41.32282}
+      - {x: 0.14365189, y: 1.306073, z: 41.795746}
+      - {x: 0.1437954, y: 1.3060498, z: 41.8}
+      - {x: 0.1437954, y: 1.3060498, z: 41.8}
+      - {x: 0.1437954, y: 1.3060498, z: 41.8}
+      - {x: 0.1437954, y: 1.3060498, z: 41.8}
+      - {x: 0.1437954, y: 1.3060498, z: 41.8}
+      - {x: 0.1437954, y: 1.3060498, z: 41.8}
+      - {x: 0.1437954, y: 1.3060498, z: 41.8}
+  - state: 11
+    clip:
+      _clipName: enemy_gargoyle_hurt
+      _frames:
+      - {fileID: 21300000, guid: 2aea61f8e51ce489b899466e901495ac, type: 3}
+      - {fileID: 21300000, guid: 01a2695fc6f9640d8becaba3c8abd2b7, type: 3}
+      - {fileID: 21300000, guid: ea534421f56f643a886e3cb3736caa15, type: 3}
+      - {fileID: 21300000, guid: 3f6d28a504b2d4100b3484e98c0fcaa5, type: 3}
+      - {fileID: 21300000, guid: 8755162a07a504f6fa91435e9bab8576, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.12, y: 1.3, z: 34}
+      - {x: -0.2432666, y: 1.2675195, z: 30.605886}
+      - {x: -0.29214454, y: 1.2491039, z: 29.2}
+      - {x: -0.2432666, y: 1.2675195, z: 30.605886}
+      - {x: -0.12, y: 1.3, z: 34}
+  - state: 12
+    clip:
+      _clipName: enemy_gargoyle_stunned
+      _frames:
+      - {fileID: 21300000, guid: 0eb7ad7e8322a4a98a9309fbb0aac017, type: 3}
+      - {fileID: 21300000, guid: bd0391cb8459d4429891490bc6904591, type: 3}
+      - {fileID: 21300000, guid: ed56503913a2d46e2ac02d8fae35b06e, type: 3}
+      - {fileID: 21300000, guid: bfecc699f4b1e4c14b2127852ba3a54b, type: 3}
+      - {fileID: 21300000, guid: ceb97ff94d2e045fabc647658508b909, type: 3}
+      - {fileID: 21300000, guid: e0209fef96926404f879a97f6de9b053, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 1
+      _anchors:
+      - {x: -0.28358108, y: 1.1515517, z: 27.4}
+      - {x: -0.21321915, y: 1.1756665, z: 28.958845}
+      - {x: -0.21321915, y: 1.1756665, z: 28.958845}
+      - {x: -0.28358108, y: 1.1515517, z: 27.4}
+      - {x: -0.35161224, y: 1.1243011, z: 25.841154}
+      - {x: -0.35161224, y: 1.1243011, z: 25.841154}
+  - state: 13
+    clip:
+      _clipName: enemy_gargoyle_death
+      _frames:
+      - {fileID: 21300000, guid: e2089bb581bb34d579e0ffda169dbeeb, type: 3}
+      - {fileID: 21300000, guid: 57a422da00a15403aa8b4778d57cd673, type: 3}
+      - {fileID: 21300000, guid: b5fd643f8d9da4924a847ed2c6851c45, type: 3}
+      - {fileID: 21300000, guid: 6af49d96b06964b22a7bf727d685b6fa, type: 3}
+      - {fileID: 21300000, guid: d02ba55be3e474c6fb1ed89f348363a5, type: 3}
+      - {fileID: 21300000, guid: 4c7b84debd6b34932b2345781efca26e, type: 3}
+      - {fileID: 21300000, guid: fbbcd8fec50f942cb97bc05457a70900, type: 3}
+      - {fileID: 21300000, guid: f8a0c2ab63989463191dfb6f984e576a, type: 3}
+      - {fileID: 21300000, guid: 322d4750783104f48983aa05124c0679, type: 3}
+      - {fileID: 21300000, guid: cbc2aa64b85154d3ca55e8c6cd200a82, type: 3}
+      - {fileID: 21300000, guid: 61b54a02a4dae4c92a53bdc43925b617, type: 3}
+      - {fileID: 21300000, guid: f7c8b5eee4fb848d7a8701ac4b7f5f62, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 0
+      _anchors:
+      - {x: -0.18285187, y: 1.2788225, z: 31.6}
+      - {x: -0.19948906, y: 1.2536944, z: 31.110893}
+      - {x: -0.24273407, y: 1.1826513, z: 29.769796}
+      - {x: -0.300634, y: 1.0724895, z: 27.76604}
+      - {x: -0.36069587, y: 0.9320697, z: 25.288956}
+      - {x: -0.41240662, y: 0.7731207, z: 22.527874}
+      - {x: -0.44929597, y: 0.6092319, z: 19.672127}
+      - {x: -0.46983033, y: 0.45351845, z: 16.911043}
+      - {x: -0.47678116, y: 0.31606075, z: 14.433958}
+      - {x: -0.47543278, y: 0.20226692, z: 12.4302025}
+      - {x: -0.47150353, y: 0.11276723, z: 11.089106}
+      - {x: -0.4695321, y: 0.044758797, z: 10.599999}
+  _fallback:
+    _clipName: enemy_gargoyle_idle
+    _frames:
+    - {fileID: 21300000, guid: fb2a6725e560f4399917a636bf58bef0, type: 3}
+    - {fileID: 21300000, guid: 17866296afbc8476eb1d832470d45843, type: 3}
+    _framesPerSecond: 2
+    _isLooping: 1
+    _anchors:
+    - {x: 0.011441726, y: 1.1552569, z: 38.8}
+    - {x: 0.011441726, y: 1.1552569, z: 38.8}
+  _carriesShield: 0

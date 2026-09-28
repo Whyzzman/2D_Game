@@ -1,0 +1,265 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 649169c22105a06499c9bc0695fd8d1d, type: 3}
+  m_Name: CrossbowmanAnimations
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.EnemyAnimationSet
+  _clips:
+  - state: 1
+    clip:
+      _clipName: enemy_crossbowman_idle
+      _frames:
+      - {fileID: 21300000, guid: 1146cd6c3f6f148d2ab33d8deb74adb8, type: 3}
+      - {fileID: 21300000, guid: 1060816bd445b46998db1c330b0c3795, type: 3}
+      - {fileID: 21300000, guid: 7430687c5061b45a1878bbfc346cd9f8, type: 3}
+      - {fileID: 21300000, guid: 7895902c24e2f43a4aa178995c5ee34b, type: 3}
+      - {fileID: 21300000, guid: 7c5044d75f2b14781afd9f86cf3a8347, type: 3}
+      - {fileID: 21300000, guid: df49fb0692ec64c1ea4f0e725a5cfab8, type: 3}
+      _framesPerSecond: 8
+      _isLooping: 1
+      _anchors:
+      - {x: -0.08913979, y: 1.5466336, z: 28.9}
+      - {x: -0.08373131, y: 1.5560793, z: 29.289711}
+      - {x: -0.08373131, y: 1.5560793, z: 29.289711}
+      - {x: -0.08913979, y: 1.5466336, z: 28.9}
+      - {x: -0.094489746, y: 1.5370659, z: 28.510288}
+      - {x: -0.094489746, y: 1.5370659, z: 28.510288}
+  - state: 2
+    clip:
+      _clipName: enemy_crossbowman_patrol
+      _frames:
+      - {fileID: 21300000, guid: a1d440442746842b29b3b6cd27ecef9e, type: 3}
+      - {fileID: 21300000, guid: 670060997014d4ff2b4559c842cfaba1, type: 3}
+      - {fileID: 21300000, guid: 3a163ab3e8595484caa7c1f2809132b8, type: 3}
+      - {fileID: 21300000, guid: 2631fb800814a401b8919100da9c444c, type: 3}
+      - {fileID: 21300000, guid: 1baa079f6ba79481da53dcc9f9dd5940, type: 3}
+      - {fileID: 21300000, guid: 2e057eb9d664e4158923ae635f566f6c, type: 3}
+      - {fileID: 21300000, guid: 5bac50b4d5b8f49e2bc156df38550a3e, type: 3}
+      - {fileID: 21300000, guid: 340c19c904b8b45eba2a65acfc75fbec, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 1
+      _anchors:
+      - {x: -0.064424366, y: 1.5493141, z: 29.5}
+      - {x: -0.064424366, y: 1.567699, z: 29.5}
+      - {x: -0.064424366, y: 1.575314, z: 29.5}
+      - {x: -0.064424366, y: 1.567699, z: 29.5}
+      - {x: -0.064424366, y: 1.5493141, z: 29.5}
+      - {x: -0.064424366, y: 1.567699, z: 29.5}
+      - {x: -0.064424366, y: 1.575314, z: 29.5}
+      - {x: -0.064424366, y: 1.567699, z: 29.5}
+  - state: 3
+    clip:
+      _clipName: enemy_crossbowman_alert
+      _frames:
+      - {fileID: 21300000, guid: ce2b777dd4c824c67b0329f49ff52b72, type: 3}
+      - {fileID: 21300000, guid: 6a6c996e7b0bf43c48a0774f87185ad6, type: 3}
+      - {fileID: 21300000, guid: 58d68f9829bf249a8a41bc1a87d2ef76, type: 3}
+      - {fileID: 21300000, guid: 5ab1b1a625d6246f1a5d5aef3c1f9e26, type: 3}
+      - {fileID: 21300000, guid: e7222484034ff4d798b11ef9363a2c7f, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 0
+      _anchors:
+      - {x: -0.064424366, y: 1.5493141, z: 29.5}
+      - {x: -0.06387284, y: 1.547504, z: 29.265625}
+      - {x: -0.0625985, y: 1.543255, z: 28.75}
+      - {x: -0.061237108, y: 1.5386422, z: 28.234375}
+      - {x: -0.06058861, y: 1.5364261, z: 28}
+  - state: 4
+    clip:
+      _clipName: enemy_crossbowman_chase
+      _frames:
+      - {fileID: 21300000, guid: 5841a575459044c3e929e3eede93b4a7, type: 3}
+      - {fileID: 21300000, guid: 5dc96d7c568174fef884a14d107bdf84, type: 3}
+      - {fileID: 21300000, guid: bac5c282e68cd47b299597fb84ff4230, type: 3}
+      - {fileID: 21300000, guid: b254245a2cb2f4492977f24a94e5e22d, type: 3}
+      - {fileID: 21300000, guid: 55e912c77213943ef926fec5c9ffb3a8, type: 3}
+      - {fileID: 21300000, guid: 9d06dbd2437094750920f27ebd1e66b3, type: 3}
+      - {fileID: 21300000, guid: 9176092b7a3104afdb79c86b862a2632, type: 3}
+      - {fileID: 21300000, guid: 2c05ff29462004a8991c0e019896e783, type: 3}
+      _framesPerSecond: 14
+      _isLooping: 1
+      _anchors:
+      - {x: 0.013745499, y: 1.5490996, z: 31}
+      - {x: 0.013745499, y: 1.570313, z: 31}
+      - {x: 0.013745499, y: 1.5790995, z: 31}
+      - {x: 0.013745499, y: 1.570313, z: 31}
+      - {x: 0.013745499, y: 1.5490996, z: 31}
+      - {x: 0.013745499, y: 1.570313, z: 31}
+      - {x: 0.013745499, y: 1.5790995, z: 31}
+      - {x: 0.013745499, y: 1.570313, z: 31}
+  - state: 0
+    clip:
+      _clipName: enemy_crossbowman_attacklight
+      _frames:
+      - {fileID: 21300000, guid: 691d6f032e2dd42dba3604bf29196b29, type: 3}
+      - {fileID: 21300000, guid: c090b087f2be34c77b4ebae35622f923, type: 3}
+      - {fileID: 21300000, guid: f3dde5e3218e642e09fd212359a15159, type: 3}
+      - {fileID: 21300000, guid: 81d2422568d344a71a968d3d04ad8631, type: 3}
+      - {fileID: 21300000, guid: fb96365f02c3e4277bd777ac23a04488, type: 3}
+      - {fileID: 21300000, guid: 758cdb898295148ecbf3f226443addf5, type: 3}
+      - {fileID: 21300000, guid: 3abdb4c717bde4c8c9a002f9043487b3, type: 3}
+      - {fileID: 21300000, guid: f0abc4f3e90e34beda9c3506cb60dca1, type: 3}
+      - {fileID: 21300000, guid: 7ee81efc6eb1f4a43b91481751a34cc5, type: 3}
+      - {fileID: 21300000, guid: 5f8222da3d0874d7caa31ed2f19b9dfa, type: 3}
+      - {fileID: 21300000, guid: b8eff747960a245de8a3c861c616f9b4, type: 3}
+      - {fileID: 21300000, guid: d3490cd1269f84d519deeb5d3894649a, type: 3}
+      - {fileID: 21300000, guid: 9783aff17bb004502b96a0e464ba5147, type: 3}
+      - {fileID: 21300000, guid: fd22d835bc5824d4499f5e6a5ce8ab09, type: 3}
+      - {fileID: 21300000, guid: d05516179f16a4217ab629fa72a377b5, type: 3}
+      - {fileID: 21300000, guid: 4afbb90d8c1f441188992767f8cb35e3, type: 3}
+      - {fileID: 21300000, guid: 20f3e18bf0bca4ae99772e24615eddeb, type: 3}
+      - {fileID: 21300000, guid: 62c09fbd3022b43c78d34346d8be456a, type: 3}
+      - {fileID: 21300000, guid: 5a430c2fbffa04194ba288b4825f5bf0, type: 3}
+      - {fileID: 21300000, guid: bbfa31463be5d4a419e6ca1465ef0e8d, type: 3}
+      - {fileID: 21300000, guid: fe185eeaf35dd4fb483bedb04356071d, type: 3}
+      - {fileID: 21300000, guid: d7ec9fa9bb38244e49ddd1277e8d3f4e, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.10145866, y: 1.5449704, z: 28.6}
+      - {x: -0.10377823, y: 1.5439409, z: 28.536026}
+      - {x: -0.110300824, y: 1.5410107, z: 28.355907}
+      - {x: -0.1203627, y: 1.5363861, z: 28.077349}
+      - {x: -0.13329323, y: 1.5302551, z: 27.718054}
+      - {x: -0.14841972, y: 1.5228108, z: 27.29573}
+      - {x: -0.16507198, y: 1.5142702, z: 26.828083}
+      - {x: -0.18258853, y: 1.5048872, z: 26.332815}
+      - {x: -0.20032066, y: 1.4949623, z: 25.827633}
+      - {x: -0.21763794, y: 1.4848448, z: 25.33024}
+      - {x: -0.23393025, y: 1.4749326, z: 24.858343}
+      - {x: -0.24860927, y: 1.4656663, z: 24.429646}
+      - {x: -0.2611064, y: 1.4575205, z: 24.061853}
+      - {x: -0.2708678, y: 1.4509897, z: 23.77267}
+      - {x: -0.2773454, y: 1.4465729, z: 23.579805}
+      - {x: -0.27998593, y: 1.4447533, z: 23.50096}
+      - {x: -0.26330405, y: 1.4648137, z: 23.921001}
+      - {x: -0.22613712, y: 1.5035996, z: 24.758892}
+      - {x: -0.20920211, y: 1.514466, z: 25}
+      - {x: -0.20111099, y: 1.514466, z: 25}
+      - {x: -0.19463448, y: 1.514466, z: 25}
+      - {x: -0.1919841, y: 1.514466, z: 25}
+  - state: 10
+    clip:
+      _clipName: enemy_crossbowman_shieldbash
+      _frames:
+      - {fileID: 21300000, guid: b52eb660e83da4b74b173228b84f4684, type: 3}
+      - {fileID: 21300000, guid: 17ea1df7e016742c7af22d5c42ae7ee8, type: 3}
+      - {fileID: 21300000, guid: 8303352767d0648c19e831627587f6fc, type: 3}
+      - {fileID: 21300000, guid: 9fd2ae4ac34d843bfa474d3b59bffa51, type: 3}
+      - {fileID: 21300000, guid: 08a7d3722bbff432cb340b2178c4f023, type: 3}
+      - {fileID: 21300000, guid: cfb0636922a684998a3520b6ab6b8161, type: 3}
+      - {fileID: 21300000, guid: 7dd5d4821e0a1471f8f6e00c6354d129, type: 3}
+      - {fileID: 21300000, guid: ed38817718dd549d2ac527e9708273bd, type: 3}
+      - {fileID: 21300000, guid: d39a8ef8430fb4f76a602dec3dc96b29, type: 3}
+      - {fileID: 21300000, guid: 058ba67c92c234ae6a127d60323a8f69, type: 3}
+      - {fileID: 21300000, guid: f59d41c20d97c47d6baf225e1e31f864, type: 3}
+      - {fileID: 21300000, guid: 8e6b0a03124304f87ac1274ad0809498, type: 3}
+      - {fileID: 21300000, guid: ee4bf794d3b924b5a8c64cf53fae527b, type: 3}
+      - {fileID: 21300000, guid: dbc7161f478e64946822f06e44763d50, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.24233417, y: 1.5166421, z: 25.6}
+      - {x: -0.25322586, y: 1.5037178, z: 25.32257}
+      - {x: -0.27593085, y: 1.475966, z: 24.7391}
+      - {x: -0.29577664, y: 1.4507701, z: 24.222807}
+      - {x: -0.28726098, y: 1.4564891, z: 24.4157}
+      - {x: -0.1775521, y: 1.5291225, z: 26.886932}
+      - {x: -0.07588623, y: 1.5466592, z: 28.90496}
+      - {x: 0.017768936, y: 1.5521053, z: 30.730276}
+      - {x: 0.062330473, y: 1.5518826, z: 31.596714}
+      - {x: 0.062499467, y: 1.5518783, z: 31.6}
+      - {x: 0.062499467, y: 1.5518783, z: 31.6}
+      - {x: 0.062499467, y: 1.5518783, z: 31.6}
+      - {x: 0.062499467, y: 1.5518783, z: 31.6}
+      - {x: 0.062499467, y: 1.5518783, z: 31.6}
+  - state: 11
+    clip:
+      _clipName: enemy_crossbowman_hurt
+      _frames:
+      - {fileID: 21300000, guid: a13ea7c50e0054778a723f0ea420f9b8, type: 3}
+      - {fileID: 21300000, guid: 7be1be56036584db8a06363b4a4ed1ef, type: 3}
+      - {fileID: 21300000, guid: 1ddd0728646a7471ea14913f05eff7fe, type: 3}
+      - {fileID: 21300000, guid: 4dc523bad361940e28037e344e611942, type: 3}
+      - {fileID: 21300000, guid: 021d1a96f4cd1476183e65aa7d59a2af, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.12599999, y: 1.541, z: 28}
+      - {x: -0.26480561, y: 1.5253681, z: 27.151472}
+      - {x: -0.3213564, y: 1.5134408, z: 26.8}
+      - {x: -0.26480561, y: 1.5253681, z: 27.151472}
+      - {x: -0.12599999, y: 1.541, z: 28}
+  - state: 12
+    clip:
+      _clipName: enemy_crossbowman_stunned
+      _frames:
+      - {fileID: 21300000, guid: 50f50cd5790864fc5a6c81a54359d06d, type: 3}
+      - {fileID: 21300000, guid: 4e1c5485f0d924b5991c8e9e98a30069, type: 3}
+      - {fileID: 21300000, guid: d8a70e5f6c89f4ea4a786656f76d4073, type: 3}
+      - {fileID: 21300000, guid: 55cc61d020be34abcb4bd60813c3a1b5, type: 3}
+      - {fileID: 21300000, guid: abb8a725e16a5464289694a235729059, type: 3}
+      - {fileID: 21300000, guid: 40476823b76b644ffb1555e25ecd34e7, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 1
+      _anchors:
+      - {x: -0.2939266, y: 1.441033, z: 28.6}
+      - {x: -0.17853531, y: 1.4714496, z: 31.457884}
+      - {x: -0.17853531, y: 1.4714496, z: 31.457884}
+      - {x: -0.2939266, y: 1.441033, z: 28.6}
+      - {x: -0.40462005, y: 1.4005464, z: 25.742117}
+      - {x: -0.40462005, y: 1.4005464, z: 25.742117}
+  - state: 13
+    clip:
+      _clipName: enemy_crossbowman_death
+      _frames:
+      - {fileID: 21300000, guid: 9717b8ec17552479f8ac5d81ca4d7a69, type: 3}
+      - {fileID: 21300000, guid: 69919fd5a51c9444f8ca8e93eda8ed6c, type: 3}
+      - {fileID: 21300000, guid: 8acaf84c7137b4f5083fe517436a70f0, type: 3}
+      - {fileID: 21300000, guid: 5a5678e7efaaa4f768aecce81f85f935, type: 3}
+      - {fileID: 21300000, guid: 6f06dd1c0d30b455992aadccdccd7a14, type: 3}
+      - {fileID: 21300000, guid: 7f27e4535e3a84f089a314e2e6fcfeb0, type: 3}
+      - {fileID: 21300000, guid: f9aaf3a217fad4419af3b9a7cc8c4ccf, type: 3}
+      - {fileID: 21300000, guid: 3df590cc088ea4fd5b3c73509e5bf74a, type: 3}
+      - {fileID: 21300000, guid: e830ac09b393e4587a7ea3c5aab51ac4, type: 3}
+      - {fileID: 21300000, guid: 87a485147fe764dc5b26fe0de0b8999f, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 0
+      _anchors:
+      - {x: -0.19141136, y: 1.5364261, z: 28}
+      - {x: -0.22167076, y: 1.5017009, z: 27.650206}
+      - {x: -0.29856092, y: 1.4038876, z: 26.712757}
+      - {x: -0.39829788, y: 1.2535099, z: 25.355555}
+      - {x: -0.4977189, y: 1.0664779, z: 23.746502}
+      - {x: -0.5798351, y: 0.864627, z: 22.053497}
+      - {x: -0.637203, y: 0.671297, z: 20.444445}
+      - {x: -0.6711857, y: 0.50517195, z: 19.087242}
+      - {x: -0.6877908, y: 0.37631217, z: 18.149796}
+      - {x: -0.69269156, y: 0.286263, z: 17.8}
+  _fallback:
+    _clipName: enemy_crossbowman_idle
+    _frames:
+    - {fileID: 21300000, guid: 1146cd6c3f6f148d2ab33d8deb74adb8, type: 3}
+    - {fileID: 21300000, guid: 1060816bd445b46998db1c330b0c3795, type: 3}
+    - {fileID: 21300000, guid: 7430687c5061b45a1878bbfc346cd9f8, type: 3}
+    - {fileID: 21300000, guid: 7895902c24e2f43a4aa178995c5ee34b, type: 3}
+    - {fileID: 21300000, guid: 7c5044d75f2b14781afd9f86cf3a8347, type: 3}
+    - {fileID: 21300000, guid: df49fb0692ec64c1ea4f0e725a5cfab8, type: 3}
+    _framesPerSecond: 8
+    _isLooping: 1
+    _anchors:
+    - {x: -0.08913979, y: 1.5466336, z: 28.9}
+    - {x: -0.08373131, y: 1.5560793, z: 29.289711}
+    - {x: -0.08373131, y: 1.5560793, z: 29.289711}
+    - {x: -0.08913979, y: 1.5466336, z: 28.9}
+    - {x: -0.094489746, y: 1.5370659, z: 28.510288}
+    - {x: -0.094489746, y: 1.5370659, z: 28.510288}
+  _carriesShield: 0

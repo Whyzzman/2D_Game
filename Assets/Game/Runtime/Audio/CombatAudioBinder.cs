@@ -32,6 +32,8 @@ namespace ForgottenKingdom
         private readonly HashSet<PersistentDoor> _doors = new HashSet<PersistentDoor>();
         private readonly HashSet<Shortcut> _shortcuts = new HashSet<Shortcut>();
         private readonly HashSet<BossEncounter> _encounters = new HashSet<BossEncounter>();
+        private readonly HashSet<EnemyDormancy> _sleepers = new HashSet<EnemyDormancy>();
+        private readonly HashSet<EnemySupport> _priests = new HashSet<EnemySupport>();
 
         private void Start()
         {
@@ -55,6 +57,23 @@ namespace ForgottenKingdom
             BindEnemies();
             BindBoss();
             BindGates();
+            BindCapitalEnemies();
+        }
+
+        /// <summary>The capital's own moments: stone tearing loose, a wound closed, a step through ash.</summary>
+        private void BindCapitalEnemies()
+        {
+            foreach (var sleeper in ZoneObjects.New(_sleepers, includeInactive: true))
+            {
+                var captured = sleeper;
+                sleeper.Woke += () => AudioManager.Play(AudioId.GargoyleWake, captured.transform.position);
+            }
+
+            foreach (var priest in ZoneObjects.New(_priests, includeInactive: true))
+            {
+                priest.Healed += ally => AudioManager.Play(AudioId.PriestHeal, ally.transform.position);
+                priest.Blinked += (from, to) => AudioManager.Play(AudioId.PriestBlink, to);
+            }
         }
 
         private void OnDestroy()

@@ -220,6 +220,12 @@ namespace ForgottenKingdom
         // ---- the Ashen Capital (item 2 of the big list, appended) ----
         AmbienceCapitalBase,
         AmbienceBellToll,
-        AmbienceEmbers
+        AmbienceEmbers,
+
+        // ---- the capital's enemies (item 2, stage C, appended) ----
+        RavenCaw,
+        GargoyleWake,
+        PriestHeal,
+        PriestBlink
     }
 }

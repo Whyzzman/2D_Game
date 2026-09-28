@@ -142,6 +142,8 @@ namespace ForgottenKingdom.EditorTools
             // The Withered Forest's own assets. Built after the Tomb's, because it reuses every
             // one of its builders and only adds data on top of them.
             var forest = BuildForestContent();
+            // The capital's four (item 2, stage C); the level places them by prefab name.
+            BuildCapitalContent();
             var checkpointPrefab = BuildCheckpointPrefab();
             var dummyPrefab = BuildDummyPrefab();
             var attackerPrefab = BuildAttackerPrefab();
@@ -2815,6 +2817,10 @@ namespace ForgottenKingdom.EditorTools
                 priority: 8, spatial: 0.8f));
             events.Add(Sound(AudioId.AmbienceEmbers, clips, 0.3f, AudioBus.Ambience, voices: 2,
                 priority: 7, spatial: 0.6f));
+            events.Add(Sound(AudioId.RavenCaw, clips, 0.5f, voices: 2, priority: 60));
+            events.Add(Sound(AudioId.GargoyleWake, clips, 0.7f, voices: 2, priority: 80));
+            events.Add(Sound(AudioId.PriestHeal, clips, 0.55f, voices: 2, priority: 70));
+            events.Add(Sound(AudioId.PriestBlink, clips, 0.5f, voices: 2, priority: 60));
 
             // Interface. Quiet, flat, and spaced so fast navigation does not chatter.
             events.Add(Sound(AudioId.UiNavigate, clips, 0.3f, AudioBus.Ui, voices: 1, priority: 25,
