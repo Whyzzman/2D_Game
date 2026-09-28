@@ -47,8 +47,12 @@ namespace ForgottenKingdom
         // Collected during a frame and applied once at the end of it.
         private FeedbackProfile _frameOwner;
         private Vector2 _frameDirection;
-        private readonly List<CombatActor> _actors = new List<CombatActor>();
-        private readonly List<StatusEffects> _statuses = new List<StatusEffects>();
+        private readonly HashSet<CombatActor> _actors = new HashSet<CombatActor>();
+        private readonly HashSet<StatusEffects> _statuses = new HashSet<StatusEffects>();
+        private readonly HashSet<EnemyController> _enemies = new HashSet<EnemyController>();
+        private readonly HashSet<BossController> _bosses = new HashSet<BossController>();
+        private readonly HashSet<BossEncounter> _encounters = new HashSet<BossEncounter>();
+        private readonly HashSet<Checkpoint> _checkpoints = new HashSet<Checkpoint>();
 
         public static CombatFeedbackService Instance { get; private set; }
 
@@ -84,10 +88,15 @@ namespace ForgottenKingdom
                 Instance = null;
             }
 
+            ZoneStreamer.ZonesChanged -= SubscribeLevel;
             Unsubscribe();
         }
 
-        private void Start() => Subscribe();
+        private void Start()
+        {
+            Subscribe();
+            ZoneStreamer.ZonesChanged += SubscribeLevel;
+        }
 
         // ---------- the public entry point ----------
 
@@ -188,20 +197,7 @@ namespace ForgottenKingdom
 
         private void Subscribe()
         {
-            foreach (var actor in FindObjectsByType<CombatActor>())
-            {
-                _actors.Add(actor);
-                actor.DamageTaken += OnDamageTaken;
-                actor.AttackParried += OnParried;
-                actor.Killed += OnKilled;
-            }
-
-            foreach (var status in FindObjectsByType<StatusEffects>())
-            {
-                _statuses.Add(status);
-                status.Applied += type => OnStatusApplied(status, type);
-            }
-
+            SubscribeLevel();
             var player = FindAnyObjectByType<PlayerCharacter>();
             if (player != null)
             {
@@ -230,7 +226,33 @@ namespace ForgottenKingdom
                 respawner.PlayerDied += ClearAll;
             }
 
-            foreach (var enemy in FindObjectsByType<EnemyController>())
+            var shadow = FindAnyObjectByType<ShadowAbilities>();
+            if (shadow != null)
+            {
+                shadow.Started += _ => PlayAt(FeedbackKind.ShadowDashStart, shadow.transform);
+                shadow.Ended += () => PlayAt(FeedbackKind.ShadowDashEnd, shadow.transform);
+            }
+        }
+
+        /// <summary>
+        /// Everything of the level: the zones loaded since the last look bring their fighters,
+        /// arenas and altars, and each is hooked once (<see cref="ZoneStreamer.ZonesChanged"/>).
+        /// </summary>
+        private void SubscribeLevel()
+        {
+            foreach (var actor in ZoneObjects.New(_actors))
+            {
+                actor.DamageTaken += OnDamageTaken;
+                actor.AttackParried += OnParried;
+                actor.Killed += OnKilled;
+            }
+
+            foreach (var status in ZoneObjects.New(_statuses))
+            {
+                status.Applied += type => OnStatusApplied(status, type);
+            }
+
+            foreach (var enemy in ZoneObjects.New(_enemies))
             {
                 var captured = enemy;
                 enemy.GuardBrokenOpen += () => PlayAt(FeedbackKind.GuardBreak, captured.transform);
@@ -240,7 +262,7 @@ namespace ForgottenKingdom
             }
 
             // Every boss in the scene: the forest's Warden deserves the same weight as the Guardian.
-            foreach (var boss in FindObjectsByType<BossController>(FindObjectsInactive.Include))
+            foreach (var boss in ZoneObjects.New(_bosses, includeInactive: true))
             {
                 var bossSockets = boss.GetComponentInChildren<VisualSockets>(true);
                 var bossFlash = boss.GetComponent<HitFlash>();
@@ -252,26 +274,19 @@ namespace ForgottenKingdom
                 boss.Staggered += _ => PlayAt(FeedbackKind.StaggerBreak, boss.transform, 1.5f);
             }
 
-            foreach (var encounter in FindObjectsByType<BossEncounter>(FindObjectsInactive.Include))
+            foreach (var encounter in ZoneObjects.New(_encounters, includeInactive: true))
             {
                 ArenaSealGlow.Attach(encounter, _library, _effectMaterial, _lightTemplate);
             }
 
             // Lighting an altar: a warm flash at the flame. The altar's own light wave and the
             // flame catching are CheckpointVisual's; this is the burst over them.
-            foreach (var checkpoint in FindObjectsByType<Checkpoint>(FindObjectsInactive.Include))
+            foreach (var checkpoint in ZoneObjects.New(_checkpoints, includeInactive: true))
             {
                 var visual = checkpoint.GetComponent<CheckpointVisual>();
                 checkpoint.Activated += lit => PlayInternal(FeedbackKind.AltarKindle,
                     visual != null ? visual.FlamePosition : (Vector2)lit.transform.position,
                     Vector2.right, 1f);
-            }
-
-            var shadow = FindAnyObjectByType<ShadowAbilities>();
-            if (shadow != null)
-            {
-                shadow.Started += _ => PlayAt(FeedbackKind.ShadowDashStart, shadow.transform);
-                shadow.Ended += () => PlayAt(FeedbackKind.ShadowDashEnd, shadow.transform);
             }
         }
 

@@ -59,9 +59,8 @@ namespace ForgottenKingdom
 
         private void Start()
         {
-            _enemies = FindObjectsByType<EnemyController>();
-            _dummies = FindObjectsByType<TrainingDummy>();
-            _attackers = FindObjectsByType<TrainingAttacker>();
+            FindLevel();
+            ZoneStreamer.ZonesChanged += FindLevel;
             if (_player != null)
             {
                 _player.Actor.DamageTaken += OnPlayerDamaged;
@@ -80,8 +79,21 @@ namespace ForgottenKingdom
             _screen?.RemovePresenter(this);
         }
 
+        /// <summary>What the loaded zones hold; looked for again whenever a zone comes or goes.</summary>
+        private void FindLevel()
+        {
+            _enemies = FindObjectsByType<EnemyController>();
+            _dummies = FindObjectsByType<TrainingDummy>();
+            _attackers = FindObjectsByType<TrainingAttacker>();
+            if (_bossEncounter == null)
+            {
+                _bossEncounter = FindAnyObjectByType<BossEncounter>();
+            }
+        }
+
         private void OnDestroy()
         {
+            ZoneStreamer.ZonesChanged -= FindLevel;
             if (_player != null)
             {
                 _player.Actor.DamageTaken -= OnPlayerDamaged;

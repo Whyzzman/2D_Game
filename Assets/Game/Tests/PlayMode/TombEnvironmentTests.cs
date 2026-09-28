@@ -22,7 +22,7 @@ namespace ForgottenKingdom.Tests
         public IEnumerator SetUp()
         {
             SaveSystem.Delete();
-            yield return SceneManager.LoadSceneAsync("TombTrial");
+            yield return TestWorld.Load();
             _player = Object.FindAnyObjectByType<PlayerCharacter>();
             _progress = Object.FindAnyObjectByType<GameProgress>();
             yield return new WaitForFixedUpdate();

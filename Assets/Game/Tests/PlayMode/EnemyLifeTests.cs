@@ -17,7 +17,7 @@ namespace ForgottenKingdom.Tests
         public IEnumerator SetUp()
         {
             SaveSystem.Delete();
-            yield return SceneManager.LoadSceneAsync("TombTrial");
+            yield return TestWorld.Load();
             yield return null;
         }
 

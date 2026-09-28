@@ -120,9 +120,11 @@ namespace ForgottenKingdom.EditorTools
 
             json.Append("\"_zones\":[")
                 .Append(ZoneJson(TombZoneId, "Забута Гробниця", "Забута Гробниця",
-                    new Vector2(-12f, 0.85f), true, new Color(0.72f, 0.66f, 0.55f))).Append(',')
+                    new Vector2(-12f, 0.85f), true, new Color(0.72f, 0.66f, 0.55f),
+                    WorldScenes.TombSceneName)).Append(',')
                 .Append(ZoneJson(ForestZoneId, "Зів'ялий Ліс", "Зів'ялий Ліс",
-                    new Vector2(80f, 0.85f), true, new Color(0.5f, 0.66f, 0.46f))).Append(',')
+                    new Vector2(80f, 0.85f), true, new Color(0.5f, 0.66f, 0.46f),
+                    WorldScenes.ForestSceneName)).Append(',')
                 // Unnamed on purpose: the map shows a sealed road east, not what lies there.
                 .Append(ZoneJson(FutureZoneId, string.Empty, string.Empty, Vector2.zero, false,
                     new Color(0.4f, 0.4f, 0.42f)))
@@ -308,10 +310,11 @@ namespace ForgottenKingdom.EditorTools
         }
 
         private static string ZoneJson(string id, string name, string title, Vector2 spawn,
-            bool implemented, Color tint)
+            bool implemented, Color tint, string contentScene = "")
         {
             return "{" + Str("_zoneId", id) + "," + Str("_displayName", name) + ","
-                + Str("_titleCard", title) + "," + Str("_sceneName", "TombTrial") + ","
+                + Str("_titleCard", title) + "," + Str("_sceneName", WorldScenes.WorldSceneName) + ","
+                + Str("_contentScene", contentScene) + ","
                 + "\"_defaultSpawn\":" + Vec(spawn) + ","
                 + "\"_isImplemented\":" + Bool(implemented) + ","
                 + "\"_mapTint\":{\"r\":" + F(tint.r) + ",\"g\":" + F(tint.g) + ",\"b\":" + F(tint.b)

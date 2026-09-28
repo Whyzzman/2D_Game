@@ -59,6 +59,10 @@ namespace ForgottenKingdom
 
         private void Awake()
         {
+            // The arena is in its zone's scene, the services in the world scene: found, not wired.
+            if (_progress == null) { _progress = FindAnyObjectByType<GameProgress>(); }
+            if (_respawner == null) { _respawner = FindAnyObjectByType<PlayerRespawner>(); }
+            if (_progression == null) { _progression = FindAnyObjectByType<PlayerProgressionService>(); }
             if (_boss == null)
             {
                 Debug.LogError("BossEncounter requires a boss.", this);

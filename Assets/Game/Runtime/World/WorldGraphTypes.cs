@@ -132,9 +132,12 @@ namespace ForgottenKingdom
         [SerializeField] private string _displayName = string.Empty;
         [Tooltip("The short card shown the first time the zone is entered.")]
         [SerializeField] private string _titleCard = string.Empty;
-        [Tooltip("Scene holding the zone. Both zones share one scene today; the field is what "
-            + "lets that stop being true without hunting for scene names elsewhere.")]
+        [Tooltip("The world scene the zone's coordinates belong to: the one that holds the player, "
+            + "the camera and the services. Zones of one world share it.")]
         [SerializeField] private string _sceneName = string.Empty;
+        [Tooltip("The scene with the zone's own level — ground, enemies, altars, people. "
+            + "ZoneStreamer loads it next to the world scene; empty for a zone not built yet.")]
+        [SerializeField] private string _contentScene = string.Empty;
         [Tooltip("Where the player appears entering this zone with no altar lit in it.")]
         [SerializeField] private Vector2 _defaultSpawn;
         [Tooltip("False for a region that is only hinted at. Nothing in it can be travelled to.")]
@@ -146,6 +149,7 @@ namespace ForgottenKingdom
         public string DisplayName => _displayName;
         public string TitleCard => string.IsNullOrEmpty(_titleCard) ? _displayName : _titleCard;
         public string SceneName => _sceneName;
+        public string ContentScene => _contentScene;
         public Vector2 DefaultSpawn => _defaultSpawn;
         public bool IsImplemented => _isImplemented;
         public Color MapTint => _mapTint;

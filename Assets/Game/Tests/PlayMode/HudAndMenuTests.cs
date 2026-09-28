@@ -24,7 +24,7 @@ namespace ForgottenKingdom.Tests
         private static IEnumerator LoadGame()
         {
             SaveSystem.Delete();
-            yield return SceneManager.LoadSceneAsync(MainMenuController.GameSceneName);
+            yield return TestWorld.Load();
             yield return new WaitForSeconds(0.3f);
         }
 

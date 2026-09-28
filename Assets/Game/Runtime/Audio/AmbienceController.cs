@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace ForgottenKingdom
@@ -49,6 +50,7 @@ namespace ForgottenKingdom
 
         private AudioSource _bedSource;
         private AmbiencePalette _palette;
+        private readonly HashSet<BossEncounter> _encounters = new HashSet<BossEncounter>();
         private float _nextDetailAt;
         private bool _isSuppressed;
 
@@ -67,7 +69,16 @@ namespace ForgottenKingdom
 
             SetZone(_palettes != null && _palettes.Length > 0 ? _palettes[0].ZoneId : string.Empty);
 
-            foreach (var encounter in FindObjectsByType<BossEncounter>())
+            HookEncounters();
+            ZoneStreamer.ZonesChanged += HookEncounters;
+        }
+
+        private void OnDestroy() => ZoneStreamer.ZonesChanged -= HookEncounters;
+
+        /// <summary>Arenas of zones loaded since the last look; each is listened to once.</summary>
+        private void HookEncounters()
+        {
+            foreach (var encounter in ZoneObjects.New(_encounters))
             {
                 encounter.FightStarted += _ => Suppress(true);
                 encounter.FightEnded += _ => Suppress(false);

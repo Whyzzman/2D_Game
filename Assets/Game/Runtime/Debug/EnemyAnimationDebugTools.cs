@@ -25,7 +25,13 @@ namespace ForgottenKingdom
         private readonly StringBuilder _text = new StringBuilder();
         private GUIStyle _style;
 
-        private void Start() => Rescan();
+        private void Start()
+        {
+            Rescan();
+            ZoneStreamer.ZonesChanged += Rescan;
+        }
+
+        private void OnDestroy() => ZoneStreamer.ZonesChanged -= Rescan;
 
         /// <summary>Enemies are spawned and reset by the world, so the list is refreshed on demand.</summary>
         public void Rescan()

@@ -23,7 +23,7 @@ namespace ForgottenKingdom.Tests
         public IEnumerator SetUp()
         {
             SaveSystem.Delete();
-            yield return SceneManager.LoadSceneAsync("TombTrial");
+            yield return TestWorld.Load();
             _player = UnityEngine.Object.FindAnyObjectByType<PlayerCharacter>();
             _boss = TombScene.Guardian();
             _bossAnimation = _boss != null

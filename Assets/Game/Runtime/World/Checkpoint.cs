@@ -74,6 +74,11 @@ namespace ForgottenKingdom
 
         private void Awake()
         {
+            // An altar lives in its zone's scene and the services in the world scene; references
+            // across scenes are not saved, so they are found here.
+            if (_respawner == null) { _respawner = FindAnyObjectByType<PlayerRespawner>(); }
+            if (_progress == null) { _progress = FindAnyObjectByType<GameProgress>(); }
+            if (_combatStatus == null) { _combatStatus = FindAnyObjectByType<PlayerCombatStatus>(); }
             if (_respawner == null)
             {
                 Debug.LogError("Checkpoint requires a PlayerRespawner.", this);

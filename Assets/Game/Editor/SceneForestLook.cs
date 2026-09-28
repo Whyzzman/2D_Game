@@ -19,7 +19,6 @@ namespace ForgottenKingdom.EditorTools
     /// </summary>
     public static class SceneForestLook
     {
-        public const string ScenePath = "Assets/Game/Scenes/TombTrial.unity";
         public const string RootName = "ForestLook";
         public const string EdgePrefix = "ForestEdge";
         public const string ParallaxName = "ForestParallax";
@@ -42,11 +41,8 @@ namespace ForgottenKingdom.EditorTools
         [MenuItem("Forgotten Kingdom/Scene/Apply Forest Look")]
         public static void Apply()
         {
-            var scene = EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
-            Build();
-            EditorSceneManager.MarkSceneDirty(scene);
-            EditorSceneManager.SaveScene(scene);
-            Debug.Log("Forest look applied to TombTrial.");
+            WorldScenes.Edit(Build);
+            Debug.Log("Forest look applied to the world.");
         }
 
         /// <summary>The recipe, also for a scene rebuilt from scratch: run after the forest exists.</summary>

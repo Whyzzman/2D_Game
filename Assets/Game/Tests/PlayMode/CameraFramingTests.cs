@@ -50,7 +50,7 @@ namespace ForgottenKingdom.Tests
             _keyboard = InputSystem.AddDevice<Keyboard>("CameraTestKeyboard");
 
             SaveSystem.Delete();
-            yield return SceneManager.LoadSceneAsync("TombTrial");
+            yield return TestWorld.Load();
             _motor = Object.FindAnyObjectByType<PlayerMotor2D>();
             _follow = Object.FindAnyObjectByType<CameraFollow2D>();
             _camera = _follow.GetComponent<Camera>();

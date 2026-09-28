@@ -21,7 +21,7 @@ namespace ForgottenKingdom.Tests
         {
             SaveSystem.Delete();
             GameSettings.ResetToDefaults();
-            yield return SceneManager.LoadSceneAsync("TombTrial");
+            yield return TestWorld.Load();
             _player = Object.FindAnyObjectByType<PlayerCharacter>();
             yield return new WaitForFixedUpdate();
         }
@@ -92,7 +92,7 @@ namespace ForgottenKingdom.Tests
         [UnityTest]
         public IEnumerator ReloadingTheSceneDoesNotDoubleTheServices()
         {
-            yield return SceneManager.LoadSceneAsync("TombTrial");
+            yield return TestWorld.Load();
             yield return new WaitForFixedUpdate();
 
             // A service that survives a reload and is created again is the quiet way a game ends
@@ -351,7 +351,7 @@ namespace ForgottenKingdom.Tests
 
             Assume.That(encounter.IsBossDefeated, Is.True);
             Object.FindAnyObjectByType<GameProgress>().Save();
-            yield return SceneManager.LoadSceneAsync("TombTrial");
+            yield return TestWorld.Load();
             yield return new WaitForSeconds(0.4f);
 
             var reloaded = TombScene.GuardianEncounter();

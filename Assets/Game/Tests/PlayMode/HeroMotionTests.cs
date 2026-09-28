@@ -49,7 +49,7 @@ namespace ForgottenKingdom.Tests
             SaveSystem.Delete();
             KeyBindings.ResetAll();
             FeedbackSettings.ResetToDefaults();
-            yield return SceneManager.LoadSceneAsync("TombTrial");
+            yield return TestWorld.Load();
             _player = Object.FindAnyObjectByType<PlayerCharacter>();
             _motor = _player.GetComponent<PlayerMotor2D>();
             _animation = _player.GetComponent<PlayerAnimationController>();

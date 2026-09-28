@@ -26,6 +26,12 @@ namespace ForgottenKingdom
                 return;
             }
 
+            if (_respawner == null)
+            {
+                // A pit of a zone scene; the respawner is in the world scene.
+                _respawner = FindAnyObjectByType<PlayerRespawner>();
+            }
+
             if (_respawner != null)
             {
                 _respawner.Kill();

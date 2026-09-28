@@ -40,10 +40,18 @@ namespace ForgottenKingdom
         [SerializeField, Min(1)] private int _maxSimultaneousAttackers = 2;
         private readonly List<EnemyController> _enemies = new List<EnemyController>();
         private readonly List<EnemyController> _attackers = new List<EnemyController>();
+        // Who lies beaten since the last rest or death, by where they stand: a zone unloaded and
+        // loaded again brings its enemies back from the scene, and this keeps them beaten, as
+        // they would have stayed had the zone never gone.
+        private readonly Dictionary<string, EnemyResetPolicy> _beaten =
+            new Dictionary<string, EnemyResetPolicy>();
 
         public event Action<WorldResetReason> WorldReset;
 
         public int Count => _enemies.Count;
+
+        /// <summary>Whether the enemy that stands at this spawn is beaten until the next reset.</summary>
+        public bool IsBeaten(string spawnKey) => _beaten.ContainsKey(spawnKey);
 
         public int MaxSimultaneousAttackers => _maxSimultaneousAttackers;
 
@@ -98,17 +106,31 @@ namespace ForgottenKingdom
 
         public void Register(EnemyController enemy)
         {
-            if (enemy != null && !_enemies.Contains(enemy))
+            if (enemy == null || _enemies.Contains(enemy))
             {
-                _enemies.Add(enemy);
+                return;
+            }
+
+            _enemies.Add(enemy);
+            enemy.Died += OnEnemyDied;
+            if (_beaten.ContainsKey(enemy.SpawnKey))
+            {
+                enemy.LieBeaten();
             }
         }
 
         public void Unregister(EnemyController enemy)
         {
+            if (enemy != null)
+            {
+                enemy.Died -= OnEnemyDied;
+            }
+
             _enemies.Remove(enemy);
             _attackers.Remove(enemy);
         }
+
+        private void OnEnemyDied(EnemyController enemy) => _beaten[enemy.SpawnKey] = enemy.ResetPolicy;
 
         /// <summary>
         /// Puts every enemy whose policy allows it back at its spawn. Called under the fade, so the
@@ -131,6 +153,21 @@ namespace ForgottenKingdom
                 {
                     enemy.ResetEnemy();
                 }
+            }
+
+            // Those of zones not loaded now come back when their zone does.
+            var revived = new List<string>();
+            foreach (var beaten in _beaten)
+            {
+                if (ShouldRespawn(beaten.Value, reason))
+                {
+                    revived.Add(beaten.Key);
+                }
+            }
+
+            foreach (var key in revived)
+            {
+                _beaten.Remove(key);
             }
 
             WorldReset?.Invoke(reason);

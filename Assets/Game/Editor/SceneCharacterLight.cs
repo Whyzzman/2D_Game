@@ -16,7 +16,6 @@ namespace ForgottenKingdom.EditorTools
     /// </summary>
     public static class SceneCharacterLight
     {
-        public const string ScenePath = "Assets/Game/Scenes/TombTrial.unity";
         public const string FillName = "CharacterFill";
         public const string CharacterLayer = "Characters";
 
@@ -30,11 +29,9 @@ namespace ForgottenKingdom.EditorTools
         [MenuItem("Forgotten Kingdom/Scene/Apply Character Light")]
         public static void Apply()
         {
-            var scene = EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
-            Build();
-            EditorSceneManager.MarkSceneDirty(scene);
-            EditorSceneManager.SaveScene(scene);
-            Debug.Log("Character light applied to TombTrial.");
+            // Every light of the world, the zones' included.
+            WorldScenes.Edit(Build);
+            Debug.Log("Character light applied to the world.");
         }
 
         /// <summary>The recipe, also for a scene rebuilt from scratch: run after the lights exist.</summary>

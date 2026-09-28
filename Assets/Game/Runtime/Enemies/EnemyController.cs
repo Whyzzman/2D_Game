@@ -94,6 +94,12 @@ namespace ForgottenKingdom
         public bool IsAlive => _state != EnemyState.Dead && _actor.IsAlive;
         public EnemyGuard Guard => _guard;
         public EnemyResetPolicy ResetPolicy => _resetPolicy;
+
+        /// <summary>
+        /// Who this enemy is across a zone's unload and reload: its scene, its name and where it
+        /// was placed. <see cref="EnemyRegistry"/> keeps the beaten ones by it.
+        /// </summary>
+        public string SpawnKey { get; private set; } = string.Empty;
         public bool IsAttackReady => Time.time >= _attackReadyAt;
         public float AttackCooldownRemaining => Mathf.Max(0f, _attackReadyAt - Time.time);
 
@@ -130,6 +136,8 @@ namespace ForgottenKingdom
             _knockback = new EnemyKnockback(_motor, _bodyCollider, _motor.GroundMask);
             _spawnPosition = transform.position;
             _spawnFacing = _motor.FacingDirection;
+            SpawnKey = $"{gameObject.scene.name}/{name}@{Mathf.RoundToInt(_spawnPosition.x * 100f)},"
+                + $"{Mathf.RoundToInt(_spawnPosition.y * 100f)}";
             _idleDuration = RollIdleTime();
             _attackReadyPerOption = new float[_definition.AttackCount];
         }
@@ -291,6 +299,25 @@ namespace ForgottenKingdom
             _lastKnownTargetPosition = _spawnPosition;
             Enter(EnemyState.Idle, force: true);
             EnemyReset?.Invoke(this);
+        }
+
+        /// <summary>
+        /// Back in a zone that was unloaded while this enemy lay beaten: it stays beaten — no
+        /// body, no drop, no experience — until a rest or a death brings it back with the rest.
+        /// </summary>
+        public void LieBeaten()
+        {
+            _combat.Cancel();
+            _motor.Stop();
+            _motor.enabled = false;
+            if (_bodyCollider != null)
+            {
+                _bodyCollider.enabled = false;
+            }
+
+            _actor.Health.SetCurrent(0f);
+            Enter(EnemyState.Dead, force: true);
+            SetVisible(false);
         }
 
         public bool CanAttack()

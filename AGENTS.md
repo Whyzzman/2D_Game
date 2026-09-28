@@ -32,8 +32,12 @@
 - Код в `Assets/Game`, сборки `Game.Runtime`, `Game.Editor`, `Game.Tests.EditMode`,
   `Game.Tests.PlayMode`. Слои: Player 8, Ground 9, Enemy 10, PlayerAttack 11, EnemyAttack 12.
   `Light2D` требует ссылки на `Unity.RenderPipelines.Universal.2D.Runtime` в asmdef.
-- Сцены: `MainMenu` (первая), `TombTrial` (Гробница + Лес, зона — по границам областей
-  `Data/WorldGraph.asset`), `CoreMovement`. Сцены грузить **по имени**.
+- Сцены: `MainMenu` (первая), `TombTrial` — сцена мира (игрок, камера, службы), уровни зон —
+  `Scenes/Zones/Zone_*`, их грузит `ZoneStreamer` (`gamedesign/WORLD_SCENES.md`); `CoreMovement`.
+  Сцены грузить **по имени**; тест грузит мир через `TestWorld.Load()`. Весь мир для правки —
+  меню `Forgotten Kingdom/Scene/Open Whole World`. Службы сцены мира, ищущие объекты уровня,
+  обновляют списки по `ZoneStreamer.ZonesChanged`; объект зоны находит службы сам (ссылки
+  между сценами не сохраняются).
 - Документы разработки — в `gamedesign/`, вне `Assets/`. Текущее состояние и открытые
   задачи — `gamedesign/DEVELOPMENT_PLAN.md`; история — `gamedesign/archive/`.
 
@@ -75,7 +79,8 @@
   рецепт). `BuildWithScenes` стирает ручные правки сцен: только для восстановления.
 - Сценные правки — редакторские `Scene*.Apply` (`SceneAmbience`, `SceneMusic`,
   `SceneForestLook`, `SceneScreenGrade`, `SceneCharacterLight`, `SceneNpcs`): трогают только своё, повторный запуск безопасен; `BuildAtmosphere` зовёт
-  тот же рецепт. Сменил их арт — прогнать `Apply` после `Build` (второй `executeMethod` цикла).
+  тот же рецепт. Правящие уровень идут через `WorldScenes.Edit` (собрать мир → правка →
+  разрезать по зонам). Сменил их арт — прогнать `Apply` после `Build` (второй `executeMethod` цикла).
 - `Build` пересоздаёт дочерние объекты префабов врагов с новыми fileID — переопределения
   сцены на них пропадут; настраивать через генератор.
 - Весь арт и звук — процедурные плейсхолдеры, генератор перезаписывает их при каждой сборке.
@@ -102,7 +107,7 @@
   **до** следующей синхронизации (иначе `--delete` сотрёт сгенерированное — дважды так теряли
   контент) → откатить шум генератора (`git checkout` незатронутых префабов врагов и
   `Data/Skills/hunter_efficiency.asset`, `Prefabs/LostCurrencyMark.prefab`) → снова синхронизировать → тесты. Пока цикл идёт, не
-  править `Assets/Game` и не запускать второй. `Assets/Settings` копировать отдельно.
+  править `Assets/Game` и не запускать второй. `Assets/Settings` и `ProjectSettings/EditorBuildSettings.asset` (сцены зон) копировать отдельно.
   Сменились кадры персонажей — `Build` один раз идёт ~40 мин (атлас перепаковывается на каждый
   импорт); тогда префабы врагов — не шум, не откатывать.
 - Объём: после каждого пункта — весь EditMode и связанные PlayMode-наборы (`-testFilter`), затем

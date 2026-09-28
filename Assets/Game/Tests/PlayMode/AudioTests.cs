@@ -22,7 +22,7 @@ namespace ForgottenKingdom.Tests
         {
             SaveSystem.Delete();
             GameSettings.ResetToDefaults();
-            yield return SceneManager.LoadSceneAsync("TombTrial");
+            yield return TestWorld.Load();
             _player = Object.FindAnyObjectByType<PlayerCharacter>();
             _audio = Object.FindAnyObjectByType<AudioManager>();
             yield return new WaitForFixedUpdate();

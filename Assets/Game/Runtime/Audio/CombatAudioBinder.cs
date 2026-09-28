@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace ForgottenKingdom
@@ -26,6 +27,11 @@ namespace ForgottenKingdom
         private PlayerAnimationController _animation;
         private PlayerRespawner _respawner;
         private AudioSource _checkpointLoop;
+        private readonly HashSet<EnemyController> _enemies = new HashSet<EnemyController>();
+        private readonly HashSet<BossController> _bosses = new HashSet<BossController>();
+        private readonly HashSet<PersistentDoor> _doors = new HashSet<PersistentDoor>();
+        private readonly HashSet<Shortcut> _shortcuts = new HashSet<Shortcut>();
+        private readonly HashSet<BossEncounter> _encounters = new HashSet<BossEncounter>();
 
         private void Start()
         {
@@ -38,13 +44,22 @@ namespace ForgottenKingdom
             }
 
             BindPlayer();
+            BindLevel();
+            BindWorld();
+            ZoneStreamer.ZonesChanged += BindLevel;
+        }
+
+        /// <summary>What the zones loaded since the last look brought; each thing is hooked once.</summary>
+        private void BindLevel()
+        {
             BindEnemies();
             BindBoss();
-            BindWorld();
+            BindGates();
         }
 
         private void OnDestroy()
         {
+            ZoneStreamer.ZonesChanged -= BindLevel;
             if (_feedback != null)
             {
                 _feedback.Played -= OnFeedback;
@@ -262,7 +277,7 @@ namespace ForgottenKingdom
 
         private void BindEnemies()
         {
-            foreach (var enemy in FindObjectsByType<EnemyController>())
+            foreach (var enemy in ZoneObjects.New(_enemies))
             {
                 var captured = enemy;
                 var isGuard = enemy.Guard != null;
@@ -326,7 +341,7 @@ namespace ForgottenKingdom
         /// </summary>
         private void BindBoss()
         {
-            foreach (var found in FindObjectsByType<BossController>())
+            foreach (var found in ZoneObjects.New(_bosses))
             {
                 var boss = found;
                 var profile = boss.GetComponent<ActorAudioProfile>();
@@ -478,30 +493,33 @@ namespace ForgottenKingdom
             HazardZone.AnyTelegraphed += OnHazardTelegraphed;
             HazardZone.AnyActivated += OnHazardActivated;
 
-            // Doors opening and shortcuts coming down share one sound: stone and iron giving way.
-            // Neither fires for something a load finds already open.
-            foreach (var door in FindObjectsByType<PersistentDoor>(FindObjectsInactive.Include))
-            {
-                door.Opened += opened => AudioManager.Play(AudioId.GateOpen,
-                    opened.transform.position);
-            }
-
-            foreach (var shortcut in FindObjectsByType<Shortcut>(FindObjectsInactive.Include))
-            {
-                shortcut.Unlocked += unlocked => AudioManager.Play(AudioId.GateOpen,
-                    unlocked.transform.position);
-            }
-
-            foreach (var encounter in FindObjectsByType<BossEncounter>())
-            {
-                encounter.AbilityUnlocked += _ => AudioManager.Play2D(AudioId.AbilityUnlocked);
-            }
-
             var motor = _player != null ? _player.GetComponent<PlayerMotor2D>() : null;
             if (motor != null)
             {
                 motor.AirJumped += () =>
                     AudioManager.Play(AudioId.DoubleJump, _player.transform.position);
+            }
+        }
+
+        private void BindGates()
+        {
+            // Doors opening and shortcuts coming down share one sound: stone and iron giving way.
+            // Neither fires for something a load finds already open.
+            foreach (var door in ZoneObjects.New(_doors, includeInactive: true))
+            {
+                door.Opened += opened => AudioManager.Play(AudioId.GateOpen,
+                    opened.transform.position);
+            }
+
+            foreach (var shortcut in ZoneObjects.New(_shortcuts, includeInactive: true))
+            {
+                shortcut.Unlocked += unlocked => AudioManager.Play(AudioId.GateOpen,
+                    unlocked.transform.position);
+            }
+
+            foreach (var encounter in ZoneObjects.New(_encounters))
+            {
+                encounter.AbilityUnlocked += _ => AudioManager.Play2D(AudioId.AbilityUnlocked);
             }
         }
 

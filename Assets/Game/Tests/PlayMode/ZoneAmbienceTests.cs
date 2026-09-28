@@ -25,7 +25,7 @@ namespace ForgottenKingdom.Tests
         public IEnumerator SetUp()
         {
             SaveSystem.Delete();
-            yield return SceneManager.LoadSceneAsync("TombTrial");
+            yield return TestWorld.Load();
             _motor = Object.FindAnyObjectByType<PlayerCharacter>().GetComponent<PlayerMotor2D>();
             _air = Object.FindAnyObjectByType<ZoneAmbience>();
             _graph = Object.FindAnyObjectByType<GameProgress>().World;

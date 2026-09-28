@@ -50,7 +50,7 @@ namespace ForgottenKingdom.Tests
             _keyboard = InputSystem.AddDevice<Keyboard>("AnimationTestKeyboard");
 
             SaveSystem.Delete();
-            yield return SceneManager.LoadSceneAsync("TombTrial");
+            yield return TestWorld.Load();
             _player = UnityEngine.Object.FindAnyObjectByType<PlayerCharacter>();
             _animation = _player.GetComponent<PlayerAnimationController>();
             _motor = _player.GetComponent<PlayerMotor2D>();

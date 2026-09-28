@@ -16,7 +16,6 @@ namespace ForgottenKingdom.EditorTools
     /// </summary>
     public static class SceneAmbience
     {
-        public const string ScenePath = "Assets/Game/Scenes/TombTrial.unity";
         public const string RootName = "Ambience";
         private const string ArtFolder = "Assets/Game/Art/Environment/Foreground";
         private const string WorldGraphPath = "Assets/Game/Data/WorldGraph.asset";
@@ -31,18 +30,17 @@ namespace ForgottenKingdom.EditorTools
         [MenuItem("Forgotten Kingdom/Scene/Apply Zone Ambience")]
         public static void Apply()
         {
-            var scene = EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
-            var old = GameObject.Find(RootName);
-            if (old != null)
+            WorldScenes.Edit(() =>
             {
-                Object.DestroyImmediate(old);
-            }
+                var old = GameObject.Find(RootName);
+                if (old != null)
+                {
+                    Object.DestroyImmediate(old);
+                }
 
-            var root = new GameObject(RootName).transform;
-            Build(root);
-            EditorSceneManager.MarkSceneDirty(scene);
-            EditorSceneManager.SaveScene(scene);
-            Debug.Log("Zone ambience applied to TombTrial.");
+                Build(new GameObject(RootName).transform);
+            });
+            Debug.Log("Zone ambience applied to the world.");
         }
 
         /// <summary>The recipe, also for a scene rebuilt from scratch.</summary>

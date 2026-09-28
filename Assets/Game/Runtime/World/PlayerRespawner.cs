@@ -74,8 +74,9 @@ namespace ForgottenKingdom
         }
 
         /// <summary>
-        /// Every checkpoint has registered by now: Unity runs OnEnable for the whole scene before
-        /// any Start, so the saved id can be resolved against a complete registry.
+        /// The altars live in the zone scenes, which arrive a frame after this one: the saved
+        /// checkpoint is resolved once the streamer says the first zones are in, against a
+        /// complete registry.
         /// </summary>
         private void Start()
         {
@@ -88,6 +89,19 @@ namespace ForgottenKingdom
                 _player.ApplyProgression(_progress.Player);
             }
 
+            var streamer = ZoneStreamer.Current;
+            if (streamer != null && !streamer.IsReady)
+            {
+                streamer.Ready += OnZonesReady;
+                return;
+            }
+
+            ApplySavedCheckpoint();
+        }
+
+        private void OnZonesReady()
+        {
+            ZoneStreamer.Current.Ready -= OnZonesReady;
             ApplySavedCheckpoint();
         }
 
@@ -264,7 +278,13 @@ namespace ForgottenKingdom
             FadeOutRequested?.Invoke(_fadeOutDuration);
             yield return new WaitForSecondsRealtime(_fadeOutDuration);
 
-            // Under the fade: put the world back, then the player, so nothing is seen teleporting.
+            // Under the fade: the altar's zone first, if the death was far from it; then the
+            // world back, then the player, so nothing is seen teleporting.
+            if (ZoneStreamer.Current != null)
+            {
+                yield return ZoneStreamer.Current.PrepareAt(_respawnPosition);
+            }
+
             ResetWorld(WorldResetReason.PlayerDeath);
             RestorePlayer();
             _player.Actor.SetInvulnerable(ImmunitySource.Respawn, _spawnProtection);
@@ -298,12 +318,21 @@ namespace ForgottenKingdom
         /// </summary>
         public bool BeginTravel(Checkpoint destination, Action<bool> completed = null)
         {
-            if (_isSequenceRunning || destination == null || !_player.IsAlive)
+            return destination != null && BeginTravel(destination.CheckpointId, completed);
+        }
+
+        /// <summary>
+        /// The same by id, for an altar whose zone may not be loaded yet: it is loaded under the
+        /// fade and the altar looked up once it stands.
+        /// </summary>
+        public bool BeginTravel(string destinationId, Action<bool> completed = null)
+        {
+            if (_isSequenceRunning || string.IsNullOrEmpty(destinationId) || !_player.IsAlive)
             {
                 return false;
             }
 
-            StartCoroutine(TravelRoutine(destination, completed));
+            StartCoroutine(TravelRoutine(destinationId, completed));
             return true;
         }
 
@@ -313,7 +342,7 @@ namespace ForgottenKingdom
         /// save once the player is really standing there, then fade in. A destination that has
         /// vanished under the fade changes nothing and the player stays where they were.
         /// </summary>
-        private IEnumerator TravelRoutine(Checkpoint destination, Action<bool> completed)
+        private IEnumerator TravelRoutine(string destinationId, Action<bool> completed)
         {
             _isSequenceRunning = true;
             var input = _player.GetComponent<PlayerInputReader>();
@@ -324,8 +353,17 @@ namespace ForgottenKingdom
             FadeOutRequested?.Invoke(_fadeOutDuration);
             yield return new WaitForSecondsRealtime(_fadeOutDuration);
 
-            var arrived = destination != null && destination.isActiveAndEnabled
-                && FindCheckpoint(destination.CheckpointId) == destination;
+            var streamer = ZoneStreamer.Current;
+            var zone = _progress != null && _progress.World != null
+                ? _progress.World.ZoneForCheckpoint(destinationId)
+                : null;
+            if (streamer != null && zone != null)
+            {
+                yield return streamer.Prepare(zone.ZoneId);
+            }
+
+            var destination = FindCheckpoint(destinationId);
+            var arrived = destination != null && destination.isActiveAndEnabled;
             if (arrived)
             {
                 // A fast travel is a rest at the far end: enemies back, player refilled, nothing

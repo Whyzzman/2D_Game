@@ -44,7 +44,7 @@ namespace ForgottenKingdom.Tests
             _keyboard = InputSystem.AddDevice<Keyboard>("MenuKeyKeyboard");
 
             SaveSystem.Delete();
-            yield return SceneManager.LoadSceneAsync("TombTrial");
+            yield return TestWorld.Load();
             _inventory = Object.FindAnyObjectByType<InventoryScreen>();
             _map = Object.FindAnyObjectByType<WorldMapScreen>();
             yield return Keys();

@@ -43,7 +43,7 @@ namespace ForgottenKingdom.Tests
             _keyboard = InputSystem.AddDevice<Keyboard>("DefenseTestKeyboard");
 
             SaveSystem.Delete();
-            yield return SceneManager.LoadSceneAsync("TombTrial");
+            yield return TestWorld.Load();
             _player = Object.FindAnyObjectByType<PlayerCharacter>();
             _motor = _player.GetComponent<PlayerMotor2D>();
             _stamina = _player.Stamina;

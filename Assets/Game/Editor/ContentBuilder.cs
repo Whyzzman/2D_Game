@@ -156,8 +156,9 @@ namespace ForgottenKingdom.EditorTools
             {
                 BuildScene(playerPrefab, zombiePrefab, guardPrefab, bossPrefab, checkpointPrefab,
                     dummyPrefab, attackerPrefab, forest);
-                // The people stand by altars, so they are placed once the level is whole.
-                SceneNpcs.Apply();
+                // The people stand by altars, so they are placed once the level is whole; then the
+                // whole world is split into its world scene and one scene per zone.
+                WorldScenes.Rebuild(SceneNpcs.Build);
                 AssetDatabase.SaveAssets();
             }
             else

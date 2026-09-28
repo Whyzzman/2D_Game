@@ -675,7 +675,7 @@ namespace ForgottenKingdom.Tests
 
         private IEnumerator LoadLevel()
         {
-            yield return SceneManager.LoadSceneAsync("TombTrial");
+            yield return TestWorld.Load();
             _player = Object.FindAnyObjectByType<PlayerCharacter>();
             _motor = _player.GetComponent<PlayerMotor2D>();
             _respawner = Object.FindAnyObjectByType<PlayerRespawner>();

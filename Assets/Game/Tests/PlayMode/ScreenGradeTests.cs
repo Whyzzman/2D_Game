@@ -21,7 +21,7 @@ namespace ForgottenKingdom.Tests
         public IEnumerator SetUp()
         {
             SaveSystem.Delete();
-            yield return SceneManager.LoadSceneAsync("TombTrial");
+            yield return TestWorld.Load();
             _grade = Camera.main.GetComponent<ScreenGrade>();
             _motor = Object.FindAnyObjectByType<PlayerMotor2D>();
             Object.FindAnyObjectByType<PlayerCharacter>().GetComponent<CombatActor>()

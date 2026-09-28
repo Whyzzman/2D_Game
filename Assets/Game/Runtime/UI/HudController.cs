@@ -194,8 +194,14 @@ namespace ForgottenKingdom
 
         private void Start()
         {
-            _encounters = FindObjectsByType<BossEncounter>(FindObjectsInactive.Exclude);
+            FindEncounters();
+            ZoneStreamer.ZonesChanged += FindEncounters;
         }
+
+        private void OnDestroy() => ZoneStreamer.ZonesChanged -= FindEncounters;
+
+        /// <summary>The arenas of the zones loaded now; the boss bar reads the one fighting.</summary>
+        private void FindEncounters() => _encounters = ZoneObjects.All<BossEncounter>();
 
         private void ResolveMissingReferences()
         {

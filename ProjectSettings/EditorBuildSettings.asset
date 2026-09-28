@@ -12,6 +12,12 @@ EditorBuildSettings:
     path: Assets/Game/Scenes/TombTrial.unity
     guid: 149e1bbcb3409c1468574226b93bbec0
   - enabled: 1
+    path: Assets/Game/Scenes/Zones/Zone_Tomb.unity
+    guid: 04aeb20d03ea04392ac8df045c484cea
+  - enabled: 1
+    path: Assets/Game/Scenes/Zones/Zone_Forest.unity
+    guid: 7e5d8bc2e48264d419f1de9c3f970c21
+  - enabled: 1
     path: Assets/Game/Scenes/CoreMovement.unity
     guid: 551b01886707af04fa520af26b7e8408
   - enabled: 0

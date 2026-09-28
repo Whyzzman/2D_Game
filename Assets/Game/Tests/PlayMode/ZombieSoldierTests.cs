@@ -44,7 +44,7 @@ namespace ForgottenKingdom.Tests
             _keyboard = InputSystem.AddDevice<Keyboard>("ZombieTestKeyboard");
 
             SaveSystem.Delete();
-            yield return SceneManager.LoadSceneAsync("TombTrial");
+            yield return TestWorld.Load();
             _player = Object.FindAnyObjectByType<PlayerCharacter>();
             _motor = _player.GetComponent<PlayerMotor2D>();
             _zombies = Object.FindObjectsByType<EnemyController>()

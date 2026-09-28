@@ -45,7 +45,6 @@ namespace ForgottenKingdom
             _light = GetComponent<Light2D>();
             _toColor = _fromColor = _light.color;
             _toIntensity = _fromIntensity = _light.intensity;
-            _encounters = FindObjectsByType<BossEncounter>(FindObjectsInactive.Include);
             if (_zones.Length > 0)
             {
                 Apply(_zones[0], immediate: true);
@@ -60,11 +59,8 @@ namespace ForgottenKingdom
                 _world.ZoneEntered += OnZoneEntered;
             }
 
-            foreach (var encounter in _encounters)
-            {
-                encounter.FightStarted += OnFightStarted;
-                encounter.FightEnded += OnFightEnded;
-            }
+            ZoneStreamer.ZonesChanged += OnZonesChanged;
+            OnZonesChanged();
         }
 
         private void OnDisable()
@@ -74,12 +70,33 @@ namespace ForgottenKingdom
                 _world.ZoneEntered -= OnZoneEntered;
             }
 
+            ZoneStreamer.ZonesChanged -= OnZonesChanged;
+            HookEncounters(false);
+        }
+
+        /// <summary>The arenas come and go with their zones; listen to the ones there now.</summary>
+        private void OnZonesChanged()
+        {
+            HookEncounters(false);
+            _encounters = ZoneObjects.All<BossEncounter>(includeInactive: true);
+            HookEncounters(true);
+        }
+
+        private void HookEncounters(bool on)
+        {
             foreach (var encounter in _encounters)
             {
-                if (encounter != null)
+                if (encounter == null)
                 {
-                    encounter.FightStarted -= OnFightStarted;
-                    encounter.FightEnded -= OnFightEnded;
+                    continue;
+                }
+
+                encounter.FightStarted -= OnFightStarted;
+                encounter.FightEnded -= OnFightEnded;
+                if (on)
+                {
+                    encounter.FightStarted += OnFightStarted;
+                    encounter.FightEnded += OnFightEnded;
                 }
             }
         }

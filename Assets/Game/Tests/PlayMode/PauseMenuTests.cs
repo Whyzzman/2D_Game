@@ -47,7 +47,7 @@ namespace ForgottenKingdom.Tests
             _gamepad = InputSystem.AddDevice<Gamepad>("PauseTestGamepad");
 
             SaveSystem.Delete();
-            yield return SceneManager.LoadSceneAsync(MainMenuController.GameSceneName);
+            yield return TestWorld.Load();
             _pause = Object.FindAnyObjectByType<HudController>().Pause;
             _player = Object.FindAnyObjectByType<PlayerCharacter>();
             yield return Keys();

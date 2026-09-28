@@ -27,7 +27,13 @@ namespace ForgottenKingdom
         private readonly StringBuilder _text = new StringBuilder();
         private GUIStyle _style;
 
-        private void Start() => Rescan();
+        private void Start()
+        {
+            Rescan();
+            ZoneStreamer.ZonesChanged += Rescan;
+        }
+
+        private void OnDestroy() => ZoneStreamer.ZonesChanged -= Rescan;
 
         public void Rescan()
         {

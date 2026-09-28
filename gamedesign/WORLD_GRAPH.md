@@ -24,11 +24,14 @@ PHASE 25. Источник истины — `Assets/Game/Data/WorldGraph.asset`,
 
 ## Зоны
 
-| ZoneID | Имя | Сцена | Построена |
+| ZoneID | Имя | Сцена зоны (`ContentScene`) | Построена |
 | --- | --- | --- | --- |
-| `zone_forgotten_tomb` | Забута Гробниця | TombTrial | да |
-| `zone_withered_forest` | Зів'ялий Ліс | TombTrial | да |
+| `zone_forgotten_tomb` | Забута Гробниця | `Zone_Tomb` | да |
+| `zone_withered_forest` | Зів'ялий Ліс | `Zone_Forest` | да |
 | `zone_unknown_east` | — (без имени) | — | нет |
+
+Все зоны живут в пространстве сцены мира `TombTrial` (`SceneName`); как они грузятся —
+`WORLD_SCENES.md`.
 
 Идентификаторы зон оставлены из PHASE 24 (`zone_forgotten_tomb`, а не `zone_tomb`):
 их уже пишут сохранения версии 9.

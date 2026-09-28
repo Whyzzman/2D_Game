@@ -17,6 +17,7 @@ MonoBehaviour:
     _displayName: "\u0417\u0430\u0431\u0443\u0442\u0430 \u0413\u0440\u043E\u0431\u043D\u0438\u0446\u044F"
     _titleCard: "\u0417\u0430\u0431\u0443\u0442\u0430 \u0413\u0440\u043E\u0431\u043D\u0438\u0446\u044F"
     _sceneName: TombTrial
+    _contentScene: Zone_Tomb
     _defaultSpawn: {x: -12, y: 0.85}
     _isImplemented: 1
     _mapTint: {r: 0.72, g: 0.66, b: 0.55, a: 1}
@@ -24,6 +25,7 @@ MonoBehaviour:
     _displayName: "\u0417\u0456\u0432'\u044F\u043B\u0438\u0439 \u041B\u0456\u0441"
     _titleCard: "\u0417\u0456\u0432'\u044F\u043B\u0438\u0439 \u041B\u0456\u0441"
     _sceneName: TombTrial
+    _contentScene: Zone_Forest
     _defaultSpawn: {x: 80, y: 0.85}
     _isImplemented: 1
     _mapTint: {r: 0.5, g: 0.66, b: 0.46, a: 1}
@@ -31,6 +33,7 @@ MonoBehaviour:
     _displayName: 
     _titleCard: 
     _sceneName: TombTrial
+    _contentScene: 
     _defaultSpawn: {x: 0, y: 0}
     _isImplemented: 0
     _mapTint: {r: 0.4, g: 0.4, b: 0.42, a: 1}

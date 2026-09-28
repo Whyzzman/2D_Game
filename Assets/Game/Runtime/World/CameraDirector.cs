@@ -35,6 +35,7 @@ namespace ForgottenKingdom
         private GameProgress _progress;
         private PlayerMotor2D _motor;
         private CameraRooms _rooms = new CameraRooms();
+        private bool _hasGround;
         private int _room = -1;
 
         /// <summary>The rooms of this scene, for tests and debugging.</summary>
@@ -43,7 +44,6 @@ namespace ForgottenKingdom
         private void Awake()
         {
             _follow = GetComponent<CameraFollow2D>();
-            _encounters = FindObjectsByType<BossEncounter>(FindObjectsInactive.Include);
             _player = FindAnyObjectByType<PlayerCharacter>();
             _progress = FindAnyObjectByType<GameProgress>();
             _motor = _player != null ? _player.GetComponent<PlayerMotor2D>() : null;
@@ -64,11 +64,8 @@ namespace ForgottenKingdom
 
         private void OnEnable()
         {
-            foreach (var encounter in _encounters)
-            {
-                encounter.FightStarted += OnFightStarted;
-                encounter.FightEnded += OnFightEnded;
-            }
+            ZoneStreamer.ZonesChanged += OnZonesChanged;
+            HookEncounters(true);
 
             if (_player != null)
             {
@@ -83,14 +80,8 @@ namespace ForgottenKingdom
 
         private void OnDisable()
         {
-            foreach (var encounter in _encounters)
-            {
-                if (encounter != null)
-                {
-                    encounter.FightStarted -= OnFightStarted;
-                    encounter.FightEnded -= OnFightEnded;
-                }
-            }
+            ZoneStreamer.ZonesChanged -= OnZonesChanged;
+            HookEncounters(false);
 
             if (_player != null)
             {
@@ -125,6 +116,45 @@ namespace ForgottenKingdom
 
             _room = room;
             _follow.SetRoomBounds(room >= 0 ? _rooms.Rooms[room].View : (Rect?)null, blendTime);
+        }
+
+        /// <summary>
+        /// A zone came or went: the rooms are shaped by the ground that is there now, and the
+        /// arenas to listen to are the loaded ones.
+        /// </summary>
+        private void OnZonesChanged()
+        {
+            HookEncounters(false);
+            _encounters = ZoneObjects.All<BossEncounter>(includeInactive: true);
+            HookEncounters(true);
+            _rooms = BuildRooms();
+            _room = -1;
+            FollowRoom(_hasGround ? _roomChangeTime : 0f);
+            if (!_hasGround)
+            {
+                // The first zones have just arrived and the player has just been placed on them.
+                _hasGround = true;
+                _follow.SnapToTarget();
+            }
+        }
+
+        private void HookEncounters(bool on)
+        {
+            foreach (var encounter in _encounters)
+            {
+                if (encounter == null)
+                {
+                    continue;
+                }
+
+                encounter.FightStarted -= OnFightStarted;
+                encounter.FightEnded -= OnFightEnded;
+                if (on)
+                {
+                    encounter.FightStarted += OnFightStarted;
+                    encounter.FightEnded += OnFightEnded;
+                }
+            }
         }
 
         private void OnFightStarted(BossController boss)

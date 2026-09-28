@@ -25,7 +25,7 @@ namespace ForgottenKingdom.Tests
         public IEnumerator SetUp()
         {
             SaveSystem.Delete();
-            yield return SceneManager.LoadSceneAsync("TombTrial");
+            yield return TestWorld.Load();
             yield return null;
             _progress = Object.FindAnyObjectByType<GameProgress>();
             _dialogue = Object.FindAnyObjectByType<DialogueService>();

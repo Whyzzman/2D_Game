@@ -84,8 +84,13 @@ namespace ForgottenKingdom
 
         private void Start()
         {
-            _bosses = FindObjectsByType<BossController>(FindObjectsInactive.Include);
+            FindBosses();
+            ZoneStreamer.ZonesChanged += FindBosses;
         }
+
+        private void OnDestroy() => ZoneStreamer.ZonesChanged -= FindBosses;
+
+        private void FindBosses() => _bosses = ZoneObjects.All<BossController>(includeInactive: true);
 
         private void Update()
         {

@@ -22,7 +22,7 @@ namespace ForgottenKingdom.Tests
         public IEnumerator SetUp()
         {
             SaveSystem.Delete();
-            yield return SceneManager.LoadSceneAsync(MainMenuController.GameSceneName);
+            yield return TestWorld.Load();
             yield return new WaitForSeconds(0.3f);
             _hud = Object.FindAnyObjectByType<HudController>();
             _screen = Object.FindAnyObjectByType<InventoryScreen>();

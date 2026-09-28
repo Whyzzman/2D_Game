@@ -24,7 +24,7 @@ namespace ForgottenKingdom.Tests
         {
             SaveSystem.Delete();
             FeedbackSettings.ResetToDefaults();
-            yield return SceneManager.LoadSceneAsync("TombTrial");
+            yield return TestWorld.Load();
             _feedback = Object.FindAnyObjectByType<CombatFeedbackService>();
             _feedback.Played += OnPlayed;
             // The zombie furthest from the player, so nothing but the test touches it.

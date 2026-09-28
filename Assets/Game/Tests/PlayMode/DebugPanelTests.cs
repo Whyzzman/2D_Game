@@ -43,7 +43,7 @@ namespace ForgottenKingdom.Tests
             _keyboard = InputSystem.AddDevice<Keyboard>("DebugPanelKeyboard");
 
             SaveSystem.Delete();
-            yield return SceneManager.LoadSceneAsync("TombTrial");
+            yield return TestWorld.Load();
             _progress = Object.FindAnyObjectByType<GameProgress>();
             yield return Keys();
         }

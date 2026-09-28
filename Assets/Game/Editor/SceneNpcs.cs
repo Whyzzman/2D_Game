@@ -22,11 +22,8 @@ namespace ForgottenKingdom.EditorTools
         [MenuItem("Forgotten Kingdom/Scene/Apply Npcs")]
         public static void Apply()
         {
-            var scene = EditorSceneManager.OpenScene(SceneCharacterLight.ScenePath, OpenSceneMode.Single);
-            Build();
-            EditorSceneManager.MarkSceneDirty(scene);
-            EditorSceneManager.SaveScene(scene);
-            Debug.Log("Npcs placed in TombTrial.");
+            WorldScenes.Edit(Build);
+            Debug.Log("Npcs placed in the world.");
         }
 
         public static void Build()

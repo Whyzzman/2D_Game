@@ -46,6 +46,7 @@ namespace ForgottenKingdom.Tests
             SaveSystem.Delete();
             KeyBindings.ResetAll();
             yield return SceneManager.LoadSceneAsync(scene);
+            yield return TestWorld.WaitReady();
             _player = Object.FindAnyObjectByType<PlayerCharacter>();
             _motor = _player.GetComponent<PlayerMotor2D>();
             _combat = _player.GetComponent<PlayerCombat>();

@@ -92,9 +92,14 @@ namespace ForgottenKingdom
             if (_respawner == null) { _respawner = FindAnyObjectByType<PlayerRespawner>(); }
             if (_player == null) { _player = FindAnyObjectByType<PlayerCharacter>(); }
             _combatStatus = _player != null ? _player.GetComponent<PlayerCombatStatus>() : null;
-            // Arenas are fixed parts of the scene; found once, not per question.
-            _encounters = FindObjectsByType<BossEncounter>(FindObjectsInactive.Include);
+            // Arenas are fixed parts of their zones; found when the zones change, not per question.
+            FindEncounters();
+            ZoneStreamer.ZonesChanged += FindEncounters;
         }
+
+        private void OnDestroy() => ZoneStreamer.ZonesChanged -= FindEncounters;
+
+        private void FindEncounters() => _encounters = ZoneObjects.All<BossEncounter>(includeInactive: true);
 
         /// <summary>
         /// Every altar that could appear in the list, in database order, each with whether it can
@@ -192,9 +197,11 @@ namespace ForgottenKingdom
                 return TravelResult.InCombat;
             }
 
-            // Resolved before anything moves: a destination this scene cannot place the player
-            // at is refused here, so the last checkpoint is never overwritten with it.
-            if (_respawner.FindCheckpoint(destinationId) == null)
+            // Resolved before anything moves: a destination the world cannot place the player at
+            // is refused here, so the last checkpoint is never overwritten with it. An altar in a
+            // zone that is not loaded is fine as long as the zone can be — it comes under the fade.
+            if (_respawner.FindCheckpoint(destinationId) == null
+                && (ZoneStreamer.Current == null || !ZoneStreamingPlan.IsStreamed(graph, destination.ZoneId)))
             {
                 return TravelResult.NotInThisScene;
             }
@@ -212,9 +219,8 @@ namespace ForgottenKingdom
                 return result;
             }
 
-            var destination = _respawner.FindCheckpoint(destinationId);
             IsTraveling = true;
-            if (!_respawner.BeginTravel(destination, arrived => Finish(destinationId, arrived)))
+            if (!_respawner.BeginTravel(destinationId, arrived => Finish(destinationId, arrived)))
             {
                 IsTraveling = false;
                 Refuse(TravelResult.Busy);

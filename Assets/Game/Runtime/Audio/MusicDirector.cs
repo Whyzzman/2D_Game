@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace ForgottenKingdom
@@ -128,6 +129,9 @@ namespace ForgottenKingdom
         /// <summary>Which region's tracks are in use; empty before one is chosen.</summary>
         public string ZoneId => _palette != null ? _palette.ZoneId : string.Empty;
 
+        private readonly HashSet<BossEncounter> _encounters = new HashSet<BossEncounter>();
+        private readonly HashSet<BossController> _bosses = new HashSet<BossController>();
+
         private void Awake()
         {
             Instance = this;
@@ -139,6 +143,7 @@ namespace ForgottenKingdom
 
         private void OnDestroy()
         {
+            ZoneStreamer.ZonesChanged -= BindLevel;
             if (Instance == this)
             {
                 Instance = null;
@@ -169,9 +174,24 @@ namespace ForgottenKingdom
         /// </summary>
         private void Bind()
         {
+            BindLevel();
+            ZoneStreamer.ZonesChanged += BindLevel;
+            _combat = FindAnyObjectByType<PlayerCombatStatus>();
+            var respawner = FindAnyObjectByType<PlayerRespawner>();
+            if (respawner != null)
+            {
+                respawner.PlayerDied += () => TransitionTo(MusicState.Death);
+                // Boss music must never continue through a respawn as though nothing happened.
+                respawner.PlayerRespawned += () => TransitionTo(MusicState.Exploration);
+            }
+        }
+
+        /// <summary>The arenas and bosses of zones loaded since the last look, each hooked once.</summary>
+        private void BindLevel()
+        {
             // Every arena, not the first one found: with a boss per region, listening to one of
             // them left the other fight playing exploration music.
-            foreach (var encounter in FindObjectsByType<BossEncounter>())
+            foreach (var encounter in ZoneObjects.New(_encounters))
             {
                 encounter.FightStarted += _ => TransitionTo(MusicState.BossIntro);
                 encounter.BossDefeated += _ => TransitionTo(MusicState.BossVictory);
@@ -185,19 +205,10 @@ namespace ForgottenKingdom
                 };
             }
 
-            foreach (var boss in FindObjectsByType<BossController>(FindObjectsInactive.Include))
+            foreach (var boss in ZoneObjects.New(_bosses, includeInactive: true))
             {
                 boss.FightStarted += () => TransitionTo(MusicState.BossIntro);
                 boss.PhaseChanged += OnBossPhase;
-            }
-
-            _combat = FindAnyObjectByType<PlayerCombatStatus>();
-            var respawner = FindAnyObjectByType<PlayerRespawner>();
-            if (respawner != null)
-            {
-                respawner.PlayerDied += () => TransitionTo(MusicState.Death);
-                // Boss music must never continue through a respawn as though nothing happened.
-                respawner.PlayerRespawned += () => TransitionTo(MusicState.Exploration);
             }
         }
 
