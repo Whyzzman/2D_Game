@@ -128,6 +128,8 @@ namespace ForgottenKingdom
             var renderer = visual.AddComponent<SpriteRenderer>();
             renderer.sprite = Sprite.Create(texture, new Rect(0, 0, width, height),
                 new Vector2(0.5f, 0.5f), pixelsPerUnit);
+            // With the level, not on Default, where it would draw behind the backdrop.
+            renderer.sortingLayerName = "GameplayEnvironment";
             renderer.sortingOrder = 5;
         }
     }

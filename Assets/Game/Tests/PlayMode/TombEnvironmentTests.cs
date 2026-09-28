@@ -271,7 +271,11 @@ namespace ForgottenKingdom.Tests
         public IEnumerator TheLevelGeometryIsWhereGameplayLeftIt()
         {
             yield return null;
-            var floor = GameObject.Find("Floor").GetComponent<BoxCollider2D>();
+            // By place, not by name alone: the hidden rooms have floors called Floor too.
+            var floor = Object.FindObjectsByType<BoxCollider2D>()
+                .Where(b => b.name == "Floor")
+                .OrderBy(b => Mathf.Abs(b.transform.position.x - 2.75f) + Mathf.Abs(b.transform.position.y + 0.5f))
+                .First();
             var arena = GameObject.Find("ArenaFloor").GetComponent<BoxCollider2D>();
 
             Assert.That(floor.size, Is.EqualTo(new Vector2(35.5f, 1f)));

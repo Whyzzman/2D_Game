@@ -78,7 +78,7 @@
   трогает** — сцены источник истины уровня, правки делать в сцене (в генераторе — лишь
   рецепт). `BuildWithScenes` стирает ручные правки сцен: только для восстановления.
 - Сценные правки — редакторские `Scene*.Apply` (`SceneAmbience`, `SceneMusic`,
-  `SceneForestLook`, `SceneScreenGrade`, `SceneCharacterLight`, `SceneNpcs`): трогают только своё, повторный запуск безопасен; `BuildAtmosphere` зовёт
+  `SceneForestLook`, `SceneScreenGrade`, `SceneCharacterLight`, `SceneNpcs`, `SceneTombLook`): трогают только своё, повторный запуск безопасен; `BuildAtmosphere` зовёт
   тот же рецепт. Правящие уровень идут через `WorldScenes.Edit` (собрать мир → правка →
   разрезать по зонам). Сменил их арт — прогнать `Apply` после `Build` (второй `executeMethod` цикла).
 - `Build` пересоздаёт дочерние объекты префабов врагов с новыми fileID — переопределения

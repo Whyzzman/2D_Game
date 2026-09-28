@@ -37,6 +37,14 @@ namespace ForgottenKingdom.EditorTools
         private static readonly Color32 Corruption = new Color32(0x2B, 0x1F, 0x3A, 0xFF);
         private static readonly Color32 Carmine = new Color32(0x3A, 0x16, 0x20, 0xFF);
         private static readonly Color32 FadedGold = new Color32(0x8A, 0x74, 0x34, 0xFF);
+        // What can be stood on or run into: warmer and a step lighter than everything behind it,
+        // which is cold and blue, with a bright worn edge on top — the Hollow Knight rule of a dark
+        // world where the next foothold is never in doubt.
+        private static readonly Color32 SolidStone = new Color32(0x44, 0x3C, 0x33, 0xFF);
+        private static readonly Color32 SolidLit = new Color32(0x5C, 0x52, 0x45, 0xFF);
+        private static readonly Color32 SolidDark = new Color32(0x2C, 0x26, 0x20, 0xFF);
+        private static readonly Color32 SolidLip = new Color32(0xA6, 0x93, 0x72, 0xFF);
+        private static readonly Color32 SolidLipBright = new Color32(0xD2, 0xBE, 0x94, 0xFF);
         private static readonly Color32 WarmFlame = new Color32(0xF0, 0xB4, 0x41, 0xFF);
         private static readonly Color32 WarmPale = new Color32(0xFF, 0xE2, 0xA8, 0xFF);
 
@@ -61,6 +69,7 @@ namespace ForgottenKingdom.EditorTools
             Add(sprites, "Tiles", "env_tomb_platform_broken_01", PlatformTile(true),
                 centred: true);
             Add(sprites, "Tiles", "env_tomb_trim_01", TrimTile(), centred: true);
+            Add(sprites, "Tiles", "env_tomb_chain_tile_01", ChainTile(), centred: true);
 
             Add(sprites, "Backgrounds", "env_tomb_bg_far_01", GothicBackdrop.Layer(0));
             Add(sprites, "Backgrounds", "env_tomb_bg_mid_01", GothicBackdrop.Layer(1));
@@ -132,13 +141,10 @@ namespace ForgottenKingdom.EditorTools
         {
             var c = new Canvas(Unit * 4, Unit);
             var rng = new System.Random(101);
-            c.Rect(0, 0, c.Width, c.Height, Stone);
-            Courses(c, rng, 50, 25, StoneDark, StoneLit);
-
-            // The top edge catches what little light there is; below it the stone falls away.
-            c.Rect(0, c.Height - 7, c.Width, c.Height, StoneLit);
-            c.Rect(0, c.Height - 9, c.Width, c.Height - 7, ColdGrey);
-            Speckle(c, rng, 240, StoneDark, 0, c.Height - 10);
+            c.Rect(0, 0, c.Width, c.Height, SolidStone);
+            Courses(c, rng, 50, 25, SolidDark, SolidLit);
+            Speckle(c, rng, 240, SolidDark, 0, c.Height - 12);
+            Lip(c, rng);
             return c;
         }
 
@@ -147,15 +153,11 @@ namespace ForgottenKingdom.EditorTools
         {
             var c = new Canvas(Unit * 2, Unit * 2);
             var rng = new System.Random(202);
-            c.Rect(0, 0, c.Width, c.Height, StoneDark);
-            Courses(c, rng, 40, 34, Charcoal, Stone);
-            Speckle(c, rng, 300, Charcoal, 0, c.Height);
-            for (var i = 0; i < 5; i++)
-            {
-                var x = rng.Next(0, c.Width);
-                var y = rng.Next(0, c.Height);
-                Vein(c, rng, x, y, 26, Moss);
-            }
+            c.Rect(0, 0, c.Width, c.Height, Blend(SolidStone, SolidDark, 0.45f));
+            Courses(c, rng, 40, 34, SolidDark, SolidStone);
+            Speckle(c, rng, 300, SolidDark, 0, c.Height);
+            // One faint streak of moss: five bright ones read as scratches on the screen.
+            Vein(c, rng, rng.Next(0, c.Width), rng.Next(0, c.Height), 22, Blend(Moss, SolidDark, 0.5f));
 
             return c;
         }
@@ -181,10 +183,9 @@ namespace ForgottenKingdom.EditorTools
         {
             var c = new Canvas(Unit * 3, 60);
             var rng = new System.Random(broken ? 405 : 404);
-            c.Rect(0, 0, c.Width, c.Height, Stone);
-            Courses(c, rng, 46, 20, StoneDark, StoneLit);
-            c.Rect(0, c.Height - 8, c.Width, c.Height, StoneLit);
-            c.Rect(0, c.Height - 11, c.Width, c.Height - 8, ColdGrey);
+            c.Rect(0, 0, c.Width, c.Height, SolidStone);
+            Courses(c, rng, 46, 20, SolidDark, SolidLit);
+            Lip(c, rng);
             // Carried lip: the underside is cut back so the edge casts its own line.
             c.Rect(0, 0, c.Width, 10, Charcoal);
             if (broken)
@@ -197,7 +198,40 @@ namespace ForgottenKingdom.EditorTools
                 }
             }
 
-            Speckle(c, rng, 120, StoneDark, 0, c.Height - 12);
+            Speckle(c, rng, 120, SolidDark, 10, c.Height - 12);
+            return c;
+        }
+
+        /// <summary>
+        /// The worn top of anything that can be stood on: a pale band with a brighter line along
+        /// it, broken here and there by chips, and a dark line under it that lifts it off the
+        /// stone. It is what the eye looks for first.
+        /// </summary>
+        private static void Lip(Canvas c, System.Random rng)
+        {
+            c.Rect(0, c.Height - 13, c.Width, c.Height - 10, SolidDark);
+            c.Rect(0, c.Height - 10, c.Width, c.Height, SolidLip);
+            c.Rect(0, c.Height - 3, c.Width, c.Height, SolidLipBright);
+            for (var i = 0; i < c.Width / 40; i++)
+            {
+                var x = rng.Next(0, c.Width);
+                c.Rect(x, c.Height - 10, x + rng.Next(4, 12), c.Height - rng.Next(4, 8), SolidLit);
+            }
+        }
+
+        /// <summary>
+        /// A chain that repeats: four links to the tile, so it can hang any length from a
+        /// platform to the vault above it (SceneTombLook).
+        /// </summary>
+        private static Canvas ChainTile()
+        {
+            var c = new Canvas(24, 64);
+            for (var y = 8; y < 64; y += 16)
+            {
+                c.Ellipse(new Vector2(12, y), 7f, 8f, Blend(ColdGrey, SolidDark, 0.25f));
+                c.Ellipse(new Vector2(12, y), 3.5f, 4.5f, Clear);
+            }
+
             return c;
         }
 
@@ -278,7 +312,6 @@ namespace ForgottenKingdom.EditorTools
             Vault(c, new Vector2(210, 210), 170f, 86f, Stone);
             c.Rect(0, 200, 420, 216, StoneLit);
             Courses(c, rng, 40, 26, StoneDark, StoneLit);
-            Crest(c, new Vector2(210, 250), 22f, FadedGold, Stone);
             Speckle(c, rng, 320, StoneDark, 0, c.Height);
             return c;
         }
@@ -394,18 +427,21 @@ namespace ForgottenKingdom.EditorTools
 
         private static Canvas Rubble()
         {
+            // A heap of broken stones, largest at the bottom. Square chips here read as a
+            // rendering fault, so every piece is a rounded lump with a lit top.
             var c = new Canvas(220, 80);
             var rng = new System.Random(670);
-            for (var i = 0; i < 26; i++)
+            for (var i = 0; i < 14; i++)
             {
-                var x = rng.Next(10, 210);
-                var y = rng.Next(0, 44);
-                var w = rng.Next(8, 26);
-                var h = rng.Next(6, 18);
-                c.Rect(x, y, x + w, y + h, i % 3 == 0 ? StoneLit : Stone);
+                var t = i / 13f;
+                var x = 30f + (float)rng.NextDouble() * 160f;
+                var r = Mathf.Lerp(22f, 8f, t) * (0.8f + (float)rng.NextDouble() * 0.4f);
+                var y = r * 0.55f + t * 26f;
+                c.Ellipse(new Vector2(x, y), r, r * 0.7f, StoneDark);
+                c.Ellipse(new Vector2(x - r * 0.15f, y + r * 0.2f), r * 0.75f, r * 0.45f, Stone);
+                c.Ellipse(new Vector2(x - r * 0.25f, y + r * 0.38f), r * 0.4f, r * 0.18f, StoneLit);
             }
 
-            Speckle(c, rng, 160, StoneDark, 0, 50);
             return c;
         }
 

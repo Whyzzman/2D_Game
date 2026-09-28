@@ -156,8 +156,10 @@ namespace ForgottenKingdom.EditorTools
         private static Canvas Near()
         {
             var c = new Canvas(Width, Height);
-            var pier = new Color32(16, 15, 17, 255);
-            var rim = new Color32(52, 58, 72, 255);
+            // Cold and a little lifted, never near-black: a black pier reads as a wall to stop at,
+            // and the solid stone in front must be the only thing that does.
+            var pier = new Color32(27, 30, 40, 255);
+            var rim = new Color32(46, 52, 66, 255);
             var chain = new Color32(30, 30, 34, 255);
             const int bay = 512;
             for (var bayX = 0; bayX < Width; bayX += bay)

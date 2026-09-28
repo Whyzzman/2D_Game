@@ -400,16 +400,27 @@ namespace ForgottenKingdom.EditorTools
 
         private static Canvas Rubble()
         {
-            var c = new Canvas(340, 150);
+            // Low, with a cold rim along the top: without the rim a black heap at the bottom of
+            // the frame reads as a hole in the floor rather than stones in front of it.
+            var c = new Canvas(340, 110);
             var random = new System.Random(5801);
-            for (var i = 0; i < 9; i++)
+            var lumps = new (float x, float r)[9];
+            for (var i = 0; i < lumps.Length; i++)
             {
-                var x = 30f + (float)random.NextDouble() * 280f;
-                var r = 22f + (float)random.NextDouble() * 34f;
-                c.Ellipse(new Vector2(x, r * 0.6f), r, r * 0.75f, Shade);
+                lumps[i] = (30f + (float)random.NextDouble() * 280f, 14f + (float)random.NextDouble() * 22f);
             }
 
-            c.Ellipse(new Vector2(170f, 10f), 165f, 16f, Shade);
+            foreach (var (x, r) in lumps)
+            {
+                c.Ellipse(new Vector2(x, r * 0.6f + 2f), r + 2f, r * 0.75f + 2f, new Color32(62, 66, 84, 255));
+            }
+
+            foreach (var (x, r) in lumps)
+            {
+                c.Ellipse(new Vector2(x, r * 0.6f - 1f), r, r * 0.75f, Shade);
+            }
+
+            c.Ellipse(new Vector2(170f, 6f), 165f, 10f, Shade);
             return c;
         }
 

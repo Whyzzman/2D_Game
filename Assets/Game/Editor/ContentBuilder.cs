@@ -1755,6 +1755,15 @@ namespace ForgottenKingdom.EditorTools
             visual.sprite = Shape("shape_pickup_relic");
             visual.sharedMaterial = _material;
             SetSorting(visual, "Characters", 1);
+            // A soft halo behind it, so a find on a dark floor is seen from across the room. It
+            // bobs with the item (a child of the visual) and costs nothing like a light would.
+            var halo = FindOrCreateChild(visualObject, "Halo");
+            halo.transform.localScale = new Vector3(1.25f, 1.25f, 1f);
+            var haloRenderer = Ensure<SpriteRenderer>(halo);
+            haloRenderer.sprite = Tomb("env_tomb_glow_warm");
+            haloRenderer.sharedMaterial = _material;
+            haloRenderer.color = new Color(1f, 0.92f, 0.75f, 0.38f);
+            SetSorting(haloRenderer, "Characters", 0);
 
             var trigger = Ensure<CircleCollider2D>(root);
             trigger.isTrigger = true;

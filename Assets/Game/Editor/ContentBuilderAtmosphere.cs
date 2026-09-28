@@ -43,6 +43,8 @@ namespace ForgottenKingdom.EditorTools
             SceneForestLook.Build();
             // The characters' own fill light, and normal maps on every point light.
             SceneCharacterLight.Build();
+            // The Tomb's readability pass; the live scene gets it from SceneTombLook.Apply.
+            SceneTombLook.Build(level, Section(level, SceneTombLook.RootName));
         }
 
         // ---------- lights ----------
