@@ -34,6 +34,7 @@ namespace ForgottenKingdom
         [Tooltip("The shape of the world: which altar is in which zone, and what the map shows. "
             + "Without it everything reads as zone one and old saves gain no map.")]
         [SerializeField] private WorldGraph _world;
+        [SerializeField] private BestiaryCatalog _bestiary;
         private readonly HashSet<string> _activatedCheckpoints = new HashSet<string>();
         private readonly HashSet<string> _collectedPickups = new HashSet<string>();
         private readonly HashSet<string> _defeatedBosses = new HashSet<string>();
@@ -190,6 +191,7 @@ namespace ForgottenKingdom
             : null;
 
         public WorldGraph World => _world;
+        public BestiaryCatalog BestiaryCatalog => _bestiary;
 
         /// <summary>True when the saved checkpoint belongs to a zone this build still has.</summary>
         public bool HasKnownZone => _world == null

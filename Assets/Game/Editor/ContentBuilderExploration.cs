@@ -148,6 +148,64 @@ namespace ForgottenKingdom.EditorTools
 
             BuildArmsTrial(Section(root, "ArmsTrial"), pickup, progress);
             BuildThornCourse(Section(root, "ThornCourse"), pickup, progress);
+            if (progress != null)
+            {
+                SetReference(progress, "_bestiary", BuildBestiaryCatalog());
+            }
+        }
+
+        // ---------- the bestiary (stage D) ----------
+
+        private const string BestiaryCatalogPath = "Assets/Game/Data/BestiaryCatalog.asset";
+
+        /// <summary>Every kind by zone, in the order the road meets them, and the three bosses.</summary>
+        private static BestiaryCatalog BuildBestiaryCatalog()
+        {
+            var catalog = CreateAsset<BestiaryCatalog>(BestiaryCatalogPath);
+            var kinds = new[]
+            {
+                ("ZombieSoldier", TombZoneId), ("ShieldGuard", TombZoneId),
+                ("Forest/CorruptedHound", ForestZoneId), ("Forest/ForestArcher", ForestZoneId),
+                ("Forest/RootShaman", ForestZoneId), ("Forest/RoyalSpearman", ForestZoneId),
+                ("Capital/AshRaven", CapitalZoneId), ("Capital/StoneGargoyle", CapitalZoneId),
+                ("Capital/PalacePriest", CapitalZoneId), ("Capital/RoyalCrossbowman", CapitalZoneId)
+            };
+            var serialized = new SerializedObject(catalog);
+            var enemies = serialized.FindProperty("_enemies");
+            enemies.arraySize = kinds.Length;
+            for (var i = 0; i < kinds.Length; i++)
+            {
+                var definition = AssetDatabase.LoadAssetAtPath<EnemyDefinition>($"Assets/Game/Data/{kinds[i].Item1}.asset");
+                if (definition == null)
+                {
+                    Debug.LogError($"Bestiary: no enemy definition {kinds[i].Item1}.");
+                }
+
+                var element = enemies.GetArrayElementAtIndex(i);
+                element.FindPropertyRelative("Enemy").objectReferenceValue = definition;
+                element.FindPropertyRelative("ZoneId").stringValue = kinds[i].Item2;
+            }
+
+            var bossList = new[]
+            {
+                (GuardianBossId, "Страж Гробниці", TombZoneId),
+                (WardenBossId, "Порожній Вартовий", ForestZoneId),
+                (CapitalKingBossId, "Король-Заклятий", CapitalZoneId)
+            };
+            var bosses = serialized.FindProperty("_bosses");
+            bosses.arraySize = bossList.Length;
+            for (var i = 0; i < bossList.Length; i++)
+            {
+                var element = bosses.GetArrayElementAtIndex(i);
+                element.FindPropertyRelative("BossId").stringValue = bossList[i].Item1;
+                element.FindPropertyRelative("DisplayName").stringValue = bossList[i].Item2;
+                element.FindPropertyRelative("ZoneId").stringValue = bossList[i].Item3;
+            }
+
+            serialized.ApplyModifiedPropertiesWithoutUndo();
+            EditorUtility.SetDirty(catalog);
+            AssetDatabase.SaveAssets();
+            return catalog;
         }
 
         // ---------- trials (stage C) ----------

@@ -30719,6 +30719,7 @@ MonoBehaviour:
   _saveDebounce: 0.15
   _items: {fileID: 11400000, guid: 0b6188d1f4edae34e81ee7ade54aae17, type: 2}
   _world: {fileID: 11400000, guid: 448a888beae76ec418660021c388690f, type: 2}
+  _bestiary: {fileID: 11400000, guid: cc0269eb7cf6e45348cabd90b9cdb2b4, type: 2}
 --- !u!114 &2012626514
 MonoBehaviour:
   m_ObjectHideFlags: 0

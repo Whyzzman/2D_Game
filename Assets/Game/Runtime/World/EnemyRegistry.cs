@@ -39,6 +39,7 @@ namespace ForgottenKingdom
         [Tooltip("How many ordinary enemies may attack at the same time, ranged ones included.")]
         [SerializeField, Min(1)] private int _maxSimultaneousAttackers = 2;
         private readonly List<EnemyController> _enemies = new List<EnemyController>();
+        private GameProgress _progress;
         private readonly List<EnemyController> _attackers = new List<EnemyController>();
         // Who lies beaten since the last rest or death, by where they stand: a zone unloaded and
         // loaded again brings its enemies back from the scene, and this keeps them beaten, as
@@ -133,7 +134,12 @@ namespace ForgottenKingdom
             _attackers.Remove(enemy);
         }
 
-        private void OnEnemyDied(EnemyController enemy) => _beaten[enemy.SpawnKey] = enemy.ResetPolicy;
+        private void OnEnemyDied(EnemyController enemy)
+        {
+            _beaten[enemy.SpawnKey] = enemy.ResetPolicy;
+            if (_progress == null) { _progress = FindAnyObjectByType<GameProgress>(); }
+            Bestiary.Record(_progress, enemy.Definition);
+        }
 
         /// <summary>
         /// Lets go of an enemy for good, as if it had never stood here: a trial's wave, spawned

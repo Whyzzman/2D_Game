@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d979ca05f98ec43c58fd7638c1c6c9bb, type: 3}
+  m_Name: BestiaryCatalog
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.BestiaryCatalog
+  _enemies:
+  - Enemy: {fileID: 11400000, guid: b89f4fac219d719448d1009d949d8700, type: 2}
+    ZoneId: zone_forgotten_tomb
+  - Enemy: {fileID: 11400000, guid: 219b7b06901f1ec4dba1d7edc598ee23, type: 2}
+    ZoneId: zone_forgotten_tomb
+  - Enemy: {fileID: 11400000, guid: 0bc08939e662c674ea2c34b508a35d5b, type: 2}
+    ZoneId: zone_withered_forest
+  - Enemy: {fileID: 11400000, guid: 003db8c9f8be5124aa82989bc29344c5, type: 2}
+    ZoneId: zone_withered_forest
+  - Enemy: {fileID: 11400000, guid: 663bcebf1d7198148823f04c45e78eb7, type: 2}
+    ZoneId: zone_withered_forest
+  - Enemy: {fileID: 11400000, guid: 821f059b28153c648850f0c468e98da5, type: 2}
+    ZoneId: zone_withered_forest
+  - Enemy: {fileID: 11400000, guid: d0ab377dd8e154d829a51c294a1037f0, type: 2}
+    ZoneId: zone_ashen_capital
+  - Enemy: {fileID: 11400000, guid: b2f6fa4bf08004a3ebed9c8b7a596996, type: 2}
+    ZoneId: zone_ashen_capital
+  - Enemy: {fileID: 11400000, guid: f4a7a9267cdf54633b2e5c9b648c46c9, type: 2}
+    ZoneId: zone_ashen_capital
+  - Enemy: {fileID: 11400000, guid: 7b1cb97ac667e4a1db02bce95a6da7f9, type: 2}
+    ZoneId: zone_ashen_capital
+  _bosses:
+  - BossId: guardian-of-the-tomb
+    DisplayName: "\u0421\u0442\u0440\u0430\u0436 \u0413\u0440\u043E\u0431\u043D\u0438\u0446\u0456"
+    ZoneId: zone_forgotten_tomb
+  - BossId: hollow-warden
+    DisplayName: "\u041F\u043E\u0440\u043E\u0436\u043D\u0456\u0439 \u0412\u0430\u0440\u0442\u043E\u0432\u0438\u0439"
+    ZoneId: zone_withered_forest
+  - BossId: ashen-king
+    DisplayName: "\u041A\u043E\u0440\u043E\u043B\u044C-\u0417\u0430\u043A\u043B\u044F\u0442\u0438\u0439"
+    ZoneId: zone_ashen_capital

@@ -169,6 +169,12 @@ namespace ForgottenKingdom
         /// one of five colours. An older file has none, which is correct.
         /// </summary>
         public List<MapMark> mapMarks = new List<MapMark>();
+        /// <summary>
+        /// The bestiary (item 4): kills by enemy kind, and the kinds its page has already shown.
+        /// An older file has none, which is correct.
+        /// </summary>
+        public List<KillCount> kills = new List<KillCount>();
+        public List<string> bestiarySeen = new List<string>();
         public float totalPlayTimeSeconds;
         public string createdAtUtc = string.Empty;
         public string lastSavedAtUtc = string.Empty;
@@ -299,6 +305,9 @@ namespace ForgottenKingdom
             unlockedShortcuts ??= new List<string>();
             seenZoneIntros ??= new List<string>();
             mapMarks ??= new List<MapMark>();
+            kills ??= new List<KillCount>();
+            kills.RemoveAll(k => k == null || string.IsNullOrEmpty(k.id));
+            bestiarySeen ??= new List<string>();
             mapMarks.RemoveAll(mark => mark == null || string.IsNullOrEmpty(mark.areaId)
                 || mark.color < 0 || mark.color >= MapMark.Colors);
             player ??= PlayerProgressionData.CreateDefault();

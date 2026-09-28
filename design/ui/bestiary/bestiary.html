@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<title>Тінь Забутого Королівства — Бестіарій</title>
+<link rel="stylesheet" href="../_shared/ui.css">
+<style>
+  body { background: #050403; }
+  .sheet { display: flex; flex-wrap: wrap; gap: 28px; padding: 28px; }
+  .frame { position: relative; flex-shrink: 0; width: 912px; height: 513px; overflow: hidden; border: 1px solid var(--edge-mid); }
+  .frame > .stage-inner { position: absolute; width: 1920px; height: 1080px; transform: scale(0.475); transform-origin: top left; }
+  .frame__caption {
+    position: absolute; left: 0; right: 0; bottom: 0; z-index: 5; padding: 6px 10px;
+    font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--gold-dim); background: rgba(5,4,3,0.88); border-top: 1px solid var(--edge-mid);
+  }
+  .note { max-width: 1852px; margin: 28px 28px 0; color: var(--ink-muted); font-size: 14px; line-height: 1.6; }
+  .note b { color: var(--ink); }
+  .note ul { margin: 8px 0 0; padding-left: 20px; }
+  .world { position: absolute; inset: 0; filter: brightness(0.35);
+    background: radial-gradient(60% 50% at 50% 55%, rgba(92,70,40,0.25), transparent 70%), linear-gradient(180deg, #120f0c, #0a0807); }
+
+  /* Вкладки паузи: «Бестіарій» — нова, поруч із «Люди». */
+  .pause-tabs { position: absolute; left: 200px; right: 200px; top: 56px; display: flex; gap: var(--s5); justify-content: center; }
+  .pause-tabs span { font-family: var(--font-display); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); font-size: var(--fs-body); padding-bottom: 6px; }
+  .pause-tabs span.is-on { color: var(--gold-bright); border-bottom: 2px solid var(--gold); }
+
+  .bestiary { position: absolute; inset: 120px 360px; }
+  .bst-summary { display: flex; justify-content: space-between; align-items: baseline; padding: var(--s3) var(--s4); border-bottom: 1px solid var(--edge-mid); }
+  .bst-summary b { font-family: var(--font-display); letter-spacing: 0.12em; color: var(--gold); font-weight: 500; font-size: var(--fs-lead); }
+  .bst-summary span { color: var(--ink-muted); font-size: var(--fs-small); }
+  .bst-zone { padding: var(--s3) var(--s4) var(--s1); font-size: var(--fs-micro); color: var(--gold-dim); letter-spacing: 0.1em; text-transform: uppercase; }
+  .bst-row { display: grid; grid-template-columns: 1fr auto; align-items: baseline; padding: var(--s2) var(--s4); border-bottom: 1px solid rgba(58,47,37,0.6); }
+  .bst-row b { font-family: var(--font-display); letter-spacing: 0.08em; color: var(--ink-bright); font-size: var(--fs-body); font-weight: 500; }
+  .bst-row span { font-variant-numeric: tabular-nums; color: var(--ink); font-size: var(--fs-body); }
+  .bst-row.is-new b::after { content: "  •"; color: var(--gold); }
+  .bst-row.is-boss b { color: var(--gold-bright); }
+  .bst-row.is-focused { background: rgba(196,150,80,0.08); box-shadow: inset 3px 0 0 var(--gold); }
+  .bst-row.is-unknown b { color: var(--ink-dim); letter-spacing: 0.3em; }
+  .bst-empty { padding: var(--s7) var(--s4); text-align: center; color: var(--ink-muted); font-size: var(--fs-body); line-height: 1.6; }
+</style>
+</head>
+<body>
+
+<div class="note">
+  <b>Пункт 4, етап D · Бестіарій (Approval 1, версія 2).</b> Рішення користувача: список — ім'я й лічильник, без описів і порогів;
+  ще не вбиті показані рядком «???», щоб було видно, скільки лишилося.
+  <ul>
+    <li>Нова вкладка паузи <b>«Бестіарій»</b> поруч із «Люди». Ворог, якого ще не вбивали, — рядок «???» без лічильника; ім'я з'являється після першого вбивства.</li>
+    <li>Групи — лише зон, де герой уже побував: непройдена зона не видає, скільки в ній ворогів.</li>
+    <li>Групи за зонами в порядку проходження; у кожній — у сталому порядку. Боси — окремою групою «Боси», без лічильника; непереможений — «???».</li>
+    <li>Угорі — скільки видів переможено і скільки вбито всього. Крапка • — новий рядок з часу останнього перегляду вкладки.</li>
+    <li>Лічильник зберігається разом із прогресом; «Нова гра» його скидає.</li>
+  </ul>
+  Керування: ↑/↓ (стік) — гортати рядки; вкладки — як в інших сторінках паузи.
+</div>
+
+<div class="sheet">
+
+  <div class="frame">
+    <div class="stage-inner">
+      <div class="world"></div>
+      <div class="pause-tabs"><span>Спорядження</span><span>Екіпірування</span><span>Персонаж</span><span>Уміння</span><span>Закляття</span><span>Люди</span><span class="is-on">Бестіарій</span></div>
+      <div class="panel panel--royal bestiary">
+        <div class="panel__header"><h2 class="panel__title">Бестіарій</h2></div>
+        <div class="panel__body" style="padding:0">
+          <div class="bst-summary"><b>9 з 10 видів</b><span>Усього вбито: 214</span></div>
+          <div class="bst-zone">Забута Гробниця</div>
+          <div class="bst-row is-focused"><b>Зомбі-солдат</b><span>64</span></div>
+          <div class="bst-row"><b>Щитоносець</b><span>21</span></div>
+          <div class="bst-zone">Зів'ялий Ліс</div>
+          <div class="bst-row"><b>Зіпсутий Гончак</b><span>48</span></div>
+          <div class="bst-row"><b>Лісовий Лучник</b><span>30</span></div>
+          <div class="bst-row"><b>Кореневий Шаман</b><span>12</span></div>
+          <div class="bst-row"><b>Королівський Списник</b><span>17</span></div>
+          <div class="bst-zone">Попеляста Столиця</div>
+          <div class="bst-row"><b>Попелястий ворон</b><span>14</span></div>
+          <div class="bst-row"><b>Кам'яна горгуля</b><span>6</span></div>
+          <div class="bst-row is-new"><b>Палацовий жрець</b><span>2</span></div>
+          <div class="bst-row is-unknown"><b>???</b><span></span></div>
+          <div class="bst-zone">Боси</div>
+          <div class="bst-row is-boss"><b>Страж Гробниці</b><span></span></div>
+          <div class="bst-row is-boss"><b>Порожній Вартовий</b><span></span></div>
+          <div class="bst-row is-unknown"><b>???</b><span></span></div>
+        </div>
+      </div>
+    </div>
+    <div class="frame__caption">1 · Вкладка «Бестіарій»: убиті за зонами з лічильником, невбиті — «???», боси</div>
+  </div>
+
+  <div class="frame">
+    <div class="stage-inner">
+      <div class="world"></div>
+      <div class="pause-tabs"><span>Спорядження</span><span>Екіпірування</span><span>Персонаж</span><span>Уміння</span><span>Закляття</span><span>Люди</span><span class="is-on">Бестіарій</span></div>
+      <div class="panel panel--royal bestiary">
+        <div class="panel__header"><h2 class="panel__title">Бестіарій</h2></div>
+        <div class="panel__body" style="padding:0">
+          <div class="bst-summary"><b>0 з 2 видів</b><span>Усього вбито: 0</span></div>
+          <div class="bst-zone">Забута Гробниця</div>
+          <div class="bst-row is-unknown"><b>???</b><span></span></div>
+          <div class="bst-row is-unknown"><b>???</b><span></span></div>
+          <div class="bst-zone">Боси</div>
+          <div class="bst-row is-unknown"><b>???</b><span></span></div>
+        </div>
+      </div>
+    </div>
+    <div class="frame__caption">2 · На початку гри: лише Гробниця, усе «???»</div>
+  </div>
+
+</div>
+</body>
+</html>
