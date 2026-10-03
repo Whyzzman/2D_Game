@@ -144,6 +144,8 @@ namespace ForgottenKingdom.EditorTools
             var forest = BuildForestContent();
             // The capital's four (item 2, stage C); the level places them by prefab name.
             BuildCapitalContent();
+            // The Tomb's bone archer (item 3 of the 15 zones); its arrow is the forest's.
+            BuildTombEnemies();
             // Their king (stage D); the throne hall places him by prefab name too.
             BuildCapitalBoss();
             var checkpointPrefab = BuildCheckpointPrefab();

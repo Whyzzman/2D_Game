@@ -17,6 +17,8 @@ MonoBehaviour:
     ZoneId: zone_forgotten_tomb
   - Enemy: {fileID: 11400000, guid: 219b7b06901f1ec4dba1d7edc598ee23, type: 2}
     ZoneId: zone_forgotten_tomb
+  - Enemy: {fileID: 11400000, guid: 92f2537a50640497b932c7547a00d46a, type: 2}
+    ZoneId: zone_forgotten_tomb
   - Enemy: {fileID: 11400000, guid: 0bc08939e662c674ea2c34b508a35d5b, type: 2}
     ZoneId: zone_withered_forest
   - Enemy: {fileID: 11400000, guid: 003db8c9f8be5124aa82989bc29344c5, type: 2}

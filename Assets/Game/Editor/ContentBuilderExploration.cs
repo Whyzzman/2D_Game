@@ -168,7 +168,7 @@ namespace ForgottenKingdom.EditorTools
             var catalog = CreateAsset<BestiaryCatalog>(BestiaryCatalogPath);
             var kinds = new[]
             {
-                ("ZombieSoldier", TombZoneId), ("ShieldGuard", TombZoneId),
+                ("ZombieSoldier", TombZoneId), ("ShieldGuard", TombZoneId), ("Tomb/BoneArcher", TombZoneId),
                 ("Forest/CorruptedHound", ForestZoneId), ("Forest/ForestArcher", ForestZoneId),
                 ("Forest/RootShaman", ForestZoneId), ("Forest/RoyalSpearman", ForestZoneId),
                 ("Capital/AshRaven", CapitalZoneId), ("Capital/StoneGargoyle", CapitalZoneId),

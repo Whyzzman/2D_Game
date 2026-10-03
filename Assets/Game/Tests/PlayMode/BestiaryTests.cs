@@ -49,8 +49,8 @@ namespace ForgottenKingdom.Tests
             var page = Open();
             yield return null;
             Assert.That(page.Zones, Is.EqualTo(new[] { "Забута Гробниця", "Боси" }), "Only where the hero has been.");
-            Assert.That(page.Shown, Is.EqualTo(new[] { BestiaryPage.Unknown, BestiaryPage.Unknown, BestiaryPage.Unknown }));
-            Assert.That(page.KindsText, Is.EqualTo("0 з 2 видів"));
+            Assert.That(page.Shown, Is.EqualTo(new[] { BestiaryPage.Unknown, BestiaryPage.Unknown, BestiaryPage.Unknown, BestiaryPage.Unknown }), "Three Tomb kinds and its boss.");
+            Assert.That(page.KindsText, Is.EqualTo("0 з 3 видів"));
         }
 
         [UnityTest]
@@ -67,7 +67,7 @@ namespace ForgottenKingdom.Tests
             var page = Open();
             yield return null;
             Assert.That(page.Shown, Does.Contain($"{zombie.Definition.DisplayName} · 1"));
-            Assert.That(page.KindsText, Is.EqualTo("1 з 2 видів"));
+            Assert.That(page.KindsText, Is.EqualTo("1 з 3 видів"));
 
             _progress.SaveNow();
             _progress.LoadGame();
@@ -81,7 +81,7 @@ namespace ForgottenKingdom.Tests
         {
             var catalog = _progress.BestiaryCatalog;
             Assert.That(catalog, Is.Not.Null);
-            Assert.That(catalog.Enemies.Count, Is.EqualTo(10));
+            Assert.That(catalog.Enemies.Count, Is.EqualTo(11), "Three in the Tomb, four in the Forest, four in the Capital.");
             Assert.That(catalog.Enemies.All(e => e.Enemy != null), Is.True);
             Assert.That(catalog.Bosses.Select(b => b.BossId),
                 Is.EquivalentTo(new[] { TombScene.GuardianId, TombScene.WardenId, "ashen-king" }));

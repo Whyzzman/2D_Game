@@ -1,0 +1,265 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 649169c22105a06499c9bc0695fd8d1d, type: 3}
+  m_Name: BoneArcherAnimations
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.EnemyAnimationSet
+  _clips:
+  - state: 1
+    clip:
+      _clipName: enemy_bone_archer_idle
+      _frames:
+      - {fileID: 21300000, guid: 585cb0db6df904aa28ec6f854112aa69, type: 3}
+      - {fileID: 21300000, guid: 7023eead1f1eb4d15a9e67ac7b9b4f3a, type: 3}
+      - {fileID: 21300000, guid: c2dbb800d1127408095dc4eba78f1376, type: 3}
+      - {fileID: 21300000, guid: 3bbc556ba84914c3f8d14587f334cf91, type: 3}
+      - {fileID: 21300000, guid: caadb407af7d94d47bdec32d31f812d4, type: 3}
+      - {fileID: 21300000, guid: a851db216a6e746a082be175292c6130, type: 3}
+      _framesPerSecond: 8
+      _isLooping: 1
+      _anchors:
+      - {x: -0.08913979, y: 1.5466336, z: 28.9}
+      - {x: -0.08373131, y: 1.5560793, z: 29.289711}
+      - {x: -0.08373131, y: 1.5560793, z: 29.289711}
+      - {x: -0.08913979, y: 1.5466336, z: 28.9}
+      - {x: -0.094489746, y: 1.5370659, z: 28.510288}
+      - {x: -0.094489746, y: 1.5370659, z: 28.510288}
+  - state: 2
+    clip:
+      _clipName: enemy_bone_archer_patrol
+      _frames:
+      - {fileID: 21300000, guid: 28c47a79b96f147528f8b3fd150e5472, type: 3}
+      - {fileID: 21300000, guid: d2ca83ad65baa4bbaa43a2bcc6c1642c, type: 3}
+      - {fileID: 21300000, guid: 62892505d913144e0a51580463314ab5, type: 3}
+      - {fileID: 21300000, guid: fb49236af092041ad8fe08661df8329b, type: 3}
+      - {fileID: 21300000, guid: cb7158e68504f493cb243c821e439b6b, type: 3}
+      - {fileID: 21300000, guid: 97a73848a59664af0919c37f610260e6, type: 3}
+      - {fileID: 21300000, guid: cefea59a25778455d8f5a830ec68abb2, type: 3}
+      - {fileID: 21300000, guid: c288d1c858c8d4c5aa1090ca0d5ac49e, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 1
+      _anchors:
+      - {x: -0.064424366, y: 1.5493141, z: 29.5}
+      - {x: -0.064424366, y: 1.567699, z: 29.5}
+      - {x: -0.064424366, y: 1.575314, z: 29.5}
+      - {x: -0.064424366, y: 1.567699, z: 29.5}
+      - {x: -0.064424366, y: 1.5493141, z: 29.5}
+      - {x: -0.064424366, y: 1.567699, z: 29.5}
+      - {x: -0.064424366, y: 1.575314, z: 29.5}
+      - {x: -0.064424366, y: 1.567699, z: 29.5}
+  - state: 3
+    clip:
+      _clipName: enemy_bone_archer_alert
+      _frames:
+      - {fileID: 21300000, guid: 35543614f9a894615add8090f7e04146, type: 3}
+      - {fileID: 21300000, guid: 37c52f39ec5e54804bdb4e6460c7df4f, type: 3}
+      - {fileID: 21300000, guid: 8e7fbe24456554f228c763805c0ee007, type: 3}
+      - {fileID: 21300000, guid: 506a37d13bcfa4597aeea141e6eace53, type: 3}
+      - {fileID: 21300000, guid: fc6033a9b15cb4cf4818e0225ed48e77, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 0
+      _anchors:
+      - {x: -0.064424366, y: 1.5493141, z: 29.5}
+      - {x: -0.06387284, y: 1.547504, z: 29.265625}
+      - {x: -0.0625985, y: 1.543255, z: 28.75}
+      - {x: -0.061237108, y: 1.5386422, z: 28.234375}
+      - {x: -0.06058861, y: 1.5364261, z: 28}
+  - state: 4
+    clip:
+      _clipName: enemy_bone_archer_chase
+      _frames:
+      - {fileID: 21300000, guid: 72e89fc7aa3294fee90d6852443b2be3, type: 3}
+      - {fileID: 21300000, guid: 0bdba5473b42b40c08bc27eeb35dca0b, type: 3}
+      - {fileID: 21300000, guid: ba87a9f5661794becb8fc1f90475c19d, type: 3}
+      - {fileID: 21300000, guid: 1d8fa4158b3ff43c4a325269777290e1, type: 3}
+      - {fileID: 21300000, guid: 69dc13ccae62541ce95fa03ea07d4135, type: 3}
+      - {fileID: 21300000, guid: b5c0f76a507a6426897669b87cc95265, type: 3}
+      - {fileID: 21300000, guid: fdf18aede495645218f8db727080e506, type: 3}
+      - {fileID: 21300000, guid: 887844812701f449885c11eae44a50f1, type: 3}
+      _framesPerSecond: 14
+      _isLooping: 1
+      _anchors:
+      - {x: 0.013745499, y: 1.5490996, z: 31}
+      - {x: 0.013745499, y: 1.570313, z: 31}
+      - {x: 0.013745499, y: 1.5790995, z: 31}
+      - {x: 0.013745499, y: 1.570313, z: 31}
+      - {x: 0.013745499, y: 1.5490996, z: 31}
+      - {x: 0.013745499, y: 1.570313, z: 31}
+      - {x: 0.013745499, y: 1.5790995, z: 31}
+      - {x: 0.013745499, y: 1.570313, z: 31}
+  - state: 0
+    clip:
+      _clipName: enemy_bone_archer_attacklight
+      _frames:
+      - {fileID: 21300000, guid: 6dcf70663859d4a3ab5f59ce9aefe97d, type: 3}
+      - {fileID: 21300000, guid: 78d0c20f6fa9b4f8096077591d8a82ce, type: 3}
+      - {fileID: 21300000, guid: 2ced281b4edff4e7db424f406506d7d1, type: 3}
+      - {fileID: 21300000, guid: 541f3d508d24a47c29eee94600d631e2, type: 3}
+      - {fileID: 21300000, guid: 163f8f8c216d94ff487768def20abaa0, type: 3}
+      - {fileID: 21300000, guid: 809a732048fb943e5b751ae54b9a518d, type: 3}
+      - {fileID: 21300000, guid: d15829116c4c745238846c36acb79027, type: 3}
+      - {fileID: 21300000, guid: aa408d8c894fc4097a09ede58ed66346, type: 3}
+      - {fileID: 21300000, guid: 59c69a4caeafa4046acf59e3ae2a337a, type: 3}
+      - {fileID: 21300000, guid: 4f3900107d96540be89f0937f8916ac8, type: 3}
+      - {fileID: 21300000, guid: c187259e0e62b4cdc93f31fc8385a8c7, type: 3}
+      - {fileID: 21300000, guid: 7a18c9ac7624f4ced93a2da79c8e9b7e, type: 3}
+      - {fileID: 21300000, guid: 48b1e2aca03114959864fd4696973fc3, type: 3}
+      - {fileID: 21300000, guid: 2bff848b347cc488784d462f0c11a9e0, type: 3}
+      - {fileID: 21300000, guid: 7d17069d4965745d3b62a26a44c5c01f, type: 3}
+      - {fileID: 21300000, guid: d12b33400244d495694d2d5d5de7f21e, type: 3}
+      - {fileID: 21300000, guid: fcb52232e0c514abbb5a71918f14dc75, type: 3}
+      - {fileID: 21300000, guid: 722a0d6557bc34ebda537cd77326a69b, type: 3}
+      - {fileID: 21300000, guid: b1b7e02d1cac9473a87e31fc086cdd61, type: 3}
+      - {fileID: 21300000, guid: f66e179884bb6442597eaf844e3cc75e, type: 3}
+      - {fileID: 21300000, guid: 309dd50f52dc744e49fe98b86cf29ab8, type: 3}
+      - {fileID: 21300000, guid: bf5b257f52e1f4eb4a5dde8dad8a6a1e, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.10145866, y: 1.5449704, z: 28.6}
+      - {x: -0.10377823, y: 1.5439409, z: 28.536026}
+      - {x: -0.11030079, y: 1.5410107, z: 28.355907}
+      - {x: -0.12036266, y: 1.5363861, z: 28.077349}
+      - {x: -0.1332932, y: 1.5302551, z: 27.718054}
+      - {x: -0.14841968, y: 1.5228108, z: 27.29573}
+      - {x: -0.16507198, y: 1.5142702, z: 26.828083}
+      - {x: -0.18258853, y: 1.5048872, z: 26.332815}
+      - {x: -0.20032066, y: 1.4949623, z: 25.827633}
+      - {x: -0.21763794, y: 1.4848448, z: 25.33024}
+      - {x: -0.23393025, y: 1.4749326, z: 24.858343}
+      - {x: -0.24860927, y: 1.4656663, z: 24.429646}
+      - {x: -0.2611064, y: 1.4575205, z: 24.061853}
+      - {x: -0.2708678, y: 1.4509897, z: 23.77267}
+      - {x: -0.2773454, y: 1.4465729, z: 23.579805}
+      - {x: -0.27998593, y: 1.4447533, z: 23.50096}
+      - {x: -0.263304, y: 1.4648137, z: 23.921001}
+      - {x: -0.22613709, y: 1.5035996, z: 24.758892}
+      - {x: -0.20920211, y: 1.514466, z: 25}
+      - {x: -0.20111099, y: 1.514466, z: 25}
+      - {x: -0.19463448, y: 1.514466, z: 25}
+      - {x: -0.1919841, y: 1.514466, z: 25}
+  - state: 10
+    clip:
+      _clipName: enemy_bone_archer_shieldbash
+      _frames:
+      - {fileID: 21300000, guid: 95968739b4414413ca37bb18d12a97f6, type: 3}
+      - {fileID: 21300000, guid: 4caea2504be4d4d3ca92aceebaef8a4c, type: 3}
+      - {fileID: 21300000, guid: c0ff699b29aa64fe3b27e9a492f4a645, type: 3}
+      - {fileID: 21300000, guid: 944f251ae267f407ea83f4c09323eec6, type: 3}
+      - {fileID: 21300000, guid: 2d4e1df1d24c24481b5ee4d24e12fd92, type: 3}
+      - {fileID: 21300000, guid: 0588ee492f5924b21a5518095fc53800, type: 3}
+      - {fileID: 21300000, guid: 10eb7cd78f925466d870bcea34de3122, type: 3}
+      - {fileID: 21300000, guid: 763a94f390ebe4b95a5757987443a436, type: 3}
+      - {fileID: 21300000, guid: e87c05dba51114acbaca52a857a959e8, type: 3}
+      - {fileID: 21300000, guid: 71b712a7e406f4bdbabb033ac0cd467a, type: 3}
+      - {fileID: 21300000, guid: b799b5f30dd10419f951ebbd08531702, type: 3}
+      - {fileID: 21300000, guid: 50a8c357f420341239a860681508f1c8, type: 3}
+      - {fileID: 21300000, guid: 7fd19951e42a04787873787250e622dd, type: 3}
+      - {fileID: 21300000, guid: a64b86e9f71324674b94e9f86179a557, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.24233414, y: 1.5166421, z: 25.6}
+      - {x: -0.25322577, y: 1.5037178, z: 25.32257}
+      - {x: -0.27593085, y: 1.475966, z: 24.7391}
+      - {x: -0.29577664, y: 1.4507701, z: 24.222807}
+      - {x: -0.28726098, y: 1.4564891, z: 24.4157}
+      - {x: -0.1775521, y: 1.5291225, z: 26.886932}
+      - {x: -0.07588623, y: 1.5466592, z: 28.90496}
+      - {x: 0.017768936, y: 1.5521053, z: 30.730276}
+      - {x: 0.062330473, y: 1.5518826, z: 31.596714}
+      - {x: 0.062499467, y: 1.5518783, z: 31.6}
+      - {x: 0.062499467, y: 1.5518783, z: 31.6}
+      - {x: 0.062499467, y: 1.5518783, z: 31.6}
+      - {x: 0.062499467, y: 1.5518783, z: 31.6}
+      - {x: 0.062499467, y: 1.5518783, z: 31.6}
+  - state: 11
+    clip:
+      _clipName: enemy_bone_archer_hurt
+      _frames:
+      - {fileID: 21300000, guid: 5cf84d317aa0d4376bff42c4dac76c1f, type: 3}
+      - {fileID: 21300000, guid: bd6e8c08c9506472d9806577a2c7268f, type: 3}
+      - {fileID: 21300000, guid: 5ae39d4d519994b8baff2c616348650b, type: 3}
+      - {fileID: 21300000, guid: abd085ad813234ce98eac246b6a60040, type: 3}
+      - {fileID: 21300000, guid: af2e4c4fbe9ca4a6ca03b73eee1422d3, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.12599999, y: 1.541, z: 28}
+      - {x: -0.26480561, y: 1.5253681, z: 27.151472}
+      - {x: -0.3213564, y: 1.5134408, z: 26.8}
+      - {x: -0.26480561, y: 1.5253681, z: 27.151472}
+      - {x: -0.12599999, y: 1.541, z: 28}
+  - state: 12
+    clip:
+      _clipName: enemy_bone_archer_stunned
+      _frames:
+      - {fileID: 21300000, guid: 64d8dcfa5c187491c8e0e67d8fa348f0, type: 3}
+      - {fileID: 21300000, guid: fd36a5715af96422fa5f35e51e920772, type: 3}
+      - {fileID: 21300000, guid: 3c474a9c04190443c883b0111f6a0ddb, type: 3}
+      - {fileID: 21300000, guid: aa979ff8fb33345f78c38bb3a5f95191, type: 3}
+      - {fileID: 21300000, guid: 97f92271c3e8a4ffe81e49b7720fd4f4, type: 3}
+      - {fileID: 21300000, guid: f6c7402e1003d40d4af506035b0eb946, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 1
+      _anchors:
+      - {x: -0.2939266, y: 1.441033, z: 28.6}
+      - {x: -0.17853531, y: 1.4714496, z: 31.457884}
+      - {x: -0.17853531, y: 1.4714496, z: 31.457884}
+      - {x: -0.2939266, y: 1.441033, z: 28.6}
+      - {x: -0.40462005, y: 1.4005464, z: 25.742117}
+      - {x: -0.40462005, y: 1.4005464, z: 25.742117}
+  - state: 13
+    clip:
+      _clipName: enemy_bone_archer_death
+      _frames:
+      - {fileID: 21300000, guid: a3ab93921d66a4c84867cd7187abfab6, type: 3}
+      - {fileID: 21300000, guid: 96c69796a25e24e56bd7d5ff1d3bcffa, type: 3}
+      - {fileID: 21300000, guid: 922be079a63fb4099be0269df95383a8, type: 3}
+      - {fileID: 21300000, guid: 9457f7ca3bf88412096f8e325a137932, type: 3}
+      - {fileID: 21300000, guid: 45e5b9526352b4d3e8bab57f8e64f3ee, type: 3}
+      - {fileID: 21300000, guid: fd38ee4cf158341b8b885a6c084a76bc, type: 3}
+      - {fileID: 21300000, guid: e0cdb7d36569241229d754782447e130, type: 3}
+      - {fileID: 21300000, guid: c8d87c9837bf646ad8d1b0d1bfc7aa6e, type: 3}
+      - {fileID: 21300000, guid: 8d0b0c3860ed44dd996f8f849e0e85c4, type: 3}
+      - {fileID: 21300000, guid: 0dcba966a3fac40979f4a7a6ee71061a, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 0
+      _anchors:
+      - {x: -0.19141136, y: 1.5364261, z: 28}
+      - {x: -0.22167076, y: 1.5017009, z: 27.650206}
+      - {x: -0.29856092, y: 1.4038876, z: 26.712757}
+      - {x: -0.39829788, y: 1.2535099, z: 25.355555}
+      - {x: -0.4977189, y: 1.0664779, z: 23.746502}
+      - {x: -0.5798351, y: 0.864627, z: 22.053497}
+      - {x: -0.637203, y: 0.671297, z: 20.444445}
+      - {x: -0.6711857, y: 0.50517195, z: 19.087242}
+      - {x: -0.6877908, y: 0.37631217, z: 18.149796}
+      - {x: -0.69269156, y: 0.286263, z: 17.8}
+  _fallback:
+    _clipName: enemy_bone_archer_idle
+    _frames:
+    - {fileID: 21300000, guid: 585cb0db6df904aa28ec6f854112aa69, type: 3}
+    - {fileID: 21300000, guid: 7023eead1f1eb4d15a9e67ac7b9b4f3a, type: 3}
+    - {fileID: 21300000, guid: c2dbb800d1127408095dc4eba78f1376, type: 3}
+    - {fileID: 21300000, guid: 3bbc556ba84914c3f8d14587f334cf91, type: 3}
+    - {fileID: 21300000, guid: caadb407af7d94d47bdec32d31f812d4, type: 3}
+    - {fileID: 21300000, guid: a851db216a6e746a082be175292c6130, type: 3}
+    _framesPerSecond: 8
+    _isLooping: 1
+    _anchors:
+    - {x: -0.08913979, y: 1.5466336, z: 28.9}
+    - {x: -0.08373131, y: 1.5560793, z: 29.289711}
+    - {x: -0.08373131, y: 1.5560793, z: 29.289711}
+    - {x: -0.08913979, y: 1.5466336, z: 28.9}
+    - {x: -0.094489746, y: 1.5370659, z: 28.510288}
+    - {x: -0.094489746, y: 1.5370659, z: 28.510288}
+  _carriesShield: 0
