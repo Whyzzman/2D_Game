@@ -1,0 +1,219 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using UnityEditor;
+using UnityEngine;
+
+namespace ForgottenKingdom.EditorTools
+{
+    /// <summary>
+    /// The level tool's builder (item 1 of the 15-zone list): a zone written as text
+    /// (<see cref="LevelZone"/>, `Assets/Game/Levels/*.txt`) becomes blocks, things and graph data.
+    ///
+    /// The zone's own builder says how a block looks (its tiles); this file does everything that
+    /// is the same in every zone: merging cells into blocks, spikes, altars, finds, rings, enemies,
+    /// the discovery triggers of secret rooms, and the areas, connections and altars of the graph,
+    /// read from the same text the geometry came from — so the map cannot disagree with the level.
+    /// Format and rules — `gamedesign/LEVEL_TOOL.md`.
+    /// </summary>
+    public static partial class ContentBuilder
+    {
+        public const string LevelFolder = "Assets/Game/Levels";
+
+        /// <summary>How one zone dresses a block of its level.</summary>
+        public delegate GameObject LevelBlockMaker(Transform parent, string name, Rect world, LevelCell kind);
+
+        /// <summary>The scene objects a layout's things hook up to.</summary>
+        public sealed class LevelContext
+        {
+            public GameObject Checkpoint;
+            public GameObject Pickup;
+            public PlayerRespawner Respawner;
+            public GameProgress Progress;
+            public GameObject Player;
+
+            public static LevelContext FromScene() => new LevelContext
+            {
+                Checkpoint = AssetDatabase.LoadAssetAtPath<GameObject>($"{PrefabFolder}/Checkpoint.prefab"),
+                Pickup = AssetDatabase.LoadAssetAtPath<GameObject>(PickupPrefabPath),
+                Respawner = UnityEngine.Object.FindAnyObjectByType<PlayerRespawner>(),
+                Progress = UnityEngine.Object.FindAnyObjectByType<GameProgress>(),
+                Player = UnityEngine.Object.FindAnyObjectByType<PlayerCharacter>()?.gameObject
+            };
+        }
+
+        public static LevelZone LoadLayout(string fileName)
+        {
+            var path = Path.Combine(LevelFolder, fileName);
+            return LevelZone.Parse(File.Exists(path) ? File.ReadAllText(path) : string.Empty);
+        }
+
+        /// <summary>
+        /// Builds the zone under <paramref name="parent"/>, one child per room. Returns what could
+        /// not be built (an unknown thing, a missing prefab); an empty list means all of it was.
+        /// </summary>
+        public static List<string> BuildLayout(LevelZone zone, Transform parent, LevelBlockMaker block,
+            LevelContext context)
+        {
+            var problems = new List<string>(zone.Errors);
+            var rooms = new Dictionary<string, Transform>();
+            foreach (var room in zone.Rooms)
+            {
+                rooms[room.Id] = Section(parent, room.Id);
+                if (room.IsSecret)
+                {
+                    // Found by going in, not by brushing its edge: the trigger is the room less its walls.
+                    var inner = zone.WorldBounds(room);
+                    var wall = zone.CellSize;
+                    AreaTrigger(rooms[room.Id], room.Id, inner.center,
+                        new Vector2(Mathf.Max(wall, inner.width - wall * 4f), Mathf.Max(wall, inner.height - wall * 4f)));
+                }
+            }
+
+            foreach (var piece in LevelSolids.Blocks(zone))
+            {
+                var world = LevelSolids.World(zone, piece);
+                var name = $"{piece.Kind}_{piece.Cells.x}_{piece.Cells.y}";
+                if (piece.Kind == LevelCell.Spikes)
+                {
+                    LayoutSpikes(rooms[piece.RoomId], name, world, zone.CellSize);
+                    continue;
+                }
+
+                var made = block(rooms[piece.RoomId], name, world, piece.Kind);
+                if (made != null && piece.Kind == LevelCell.Smooth)
+                {
+                    Ensure<NonClimbableSurface>(made);
+                }
+            }
+
+            foreach (var marker in zone.Markers())
+            {
+                var problem = PlaceMarker(zone, marker, rooms[marker.RoomId], context);
+                if (problem != null)
+                {
+                    problems.Add($"room {marker.RoomId}, «{marker.Letter}»: {problem}");
+                }
+            }
+
+            return problems;
+        }
+
+        /// <summary>Spikes fill the bottom of their cells: a row of them reads as a row of teeth.</summary>
+        private static void LayoutSpikes(Transform parent, string name, Rect world, float cell)
+        {
+            for (var row = 0; row < Mathf.RoundToInt(world.height / cell); row++)
+            {
+                var spikes = new GameObject(row == 0 ? name : $"{name}_{row}");
+                spikes.transform.SetParent(parent);
+                spikes.transform.position = new Vector2(world.center.x, world.yMin + row * cell + cell * 0.4f);
+                var component = spikes.AddComponent<Spikes>();
+                SetVector(component, "_size", new Vector2(world.width, cell * 0.8f));
+            }
+        }
+
+        /// <summary>Where a lettered thing stands: the middle of its cell, on the cell's floor.</summary>
+        private static Vector2 MarkerFeet(LevelZone zone, LevelMarker marker) =>
+            zone.CellCorner(marker.Cell) + new Vector2(zone.CellSize * 0.5f, 0f);
+
+        private static string PlaceMarker(LevelZone zone, LevelMarker marker, Transform parent, LevelContext context)
+        {
+            var feet = MarkerFeet(zone, marker);
+            switch (marker.Kind)
+            {
+                case "start":
+                    return null;
+                case "altar":
+                    if (context.Checkpoint == null || context.Player == null)
+                    {
+                        return "no altar prefab or player in the scene";
+                    }
+
+                    PlaceCheckpoint(context.Checkpoint, feet + new Vector2(0f, 0.8f), marker.Arg(0), marker.Arg(1),
+                        context.Respawner, context.Progress, context.Player);
+                    Adopt(parent, c => c.GetComponent<Checkpoint>()?.CheckpointId == marker.Arg(0));
+                    return null;
+                case "gold":
+                case "item":
+                    if (context.Pickup == null)
+                    {
+                        return "no pickup prefab";
+                    }
+
+                    var gold = marker.Kind == "gold";
+                    PlacePickup(context.Pickup, feet + new Vector2(0f, 0.6f), context.Progress,
+                        gold ? string.Empty : marker.Arg(0), gold, gold ? int.Parse(marker.Arg(0)) : 1,
+                        marker.Arg(1), false);
+                    Adopt(parent, c => c.GetComponent<WorldPickup>()?.PersistentId == marker.Arg(1));
+                    return null;
+                case "ring":
+                    PlaceGrappleRing(parent, $"Ring_{marker.Cell.x}_{marker.Cell.y}", zone.CellCentre(marker.Cell));
+                    return null;
+                case "enemy":
+                    var prefab = AssetDatabase.LoadAssetAtPath<GameObject>($"{PrefabFolder}/{marker.Arg(0)}.prefab");
+                    if (prefab == null)
+                    {
+                        return $"no enemy prefab «{marker.Arg(0)}»";
+                    }
+
+                    SpawnEnemy(prefab, feet + new Vector2(0f, 0.9f)).transform.SetParent(parent, true);
+                    return null;
+                default:
+                    return $"unknown thing «{marker.Kind}»";
+            }
+        }
+
+        /// <summary>The helpers place at the scene root; the newest match moves into its room.</summary>
+        private static void Adopt(Transform parent, Func<GameObject, bool> match)
+        {
+            foreach (var root in UnityEngine.SceneManagement.SceneManager.GetActiveScene().GetRootGameObjects())
+            {
+                if (match(root))
+                {
+                    root.transform.SetParent(parent, true);
+                }
+            }
+        }
+
+        // ---------- the graph ----------
+
+        /// <summary>The zone's areas, connections and altars as the graph's JSON entries.</summary>
+        public static (List<string> areas, List<string> links, List<string> altars) LayoutGraphJson(LevelZone zone)
+        {
+            var areas = new List<string>();
+            foreach (var room in zone.Rooms)
+            {
+                var bounds = zone.WorldBounds(room);
+                var icon = !string.IsNullOrEmpty(room.BossId) ? MapIconType.Boss
+                    : room.IsSecret ? MapIconType.Secret : MapIconType.None;
+                areas.Add(AreaJson(room.Id, zone.ZoneId, room.Name, bounds.center * MapScale,
+                    new Vector2(Mathf.Max(0.3f, bounds.width * MapScale - 0.1f), Mathf.Max(0.3f, bounds.height * MapScale - 0.1f)),
+                    bounds, secret: room.IsSecret, optional: room.IsOptional, trigger: room.IsSecret,
+                    ability: room.NeedsAbility, icon: icon, boss: room.BossId));
+            }
+
+            var links = new List<string>();
+            foreach (var link in zone.Links)
+            {
+                links.Add(LinkJson(LinkId(link), link.From, link.To, link.Direction, link.Type, !link.OneWay,
+                    link.Ability, link.Boss, link.Shortcut, link.OpenedFrom));
+            }
+
+            var altars = new List<string>();
+            foreach (var marker in zone.Markers())
+            {
+                if (marker.Kind == "altar")
+                {
+                    altars.Add(AltarJson(marker.Arg(0), marker.Arg(1), zone.ZoneId, marker.RoomId));
+                }
+            }
+
+            return (areas, links, altars);
+        }
+
+        public static string LinkId(LevelLink link) =>
+            "conn_" + Short(link.From) + "_" + Short(link.To);
+
+        private static string Short(string roomId) => roomId.StartsWith("room_") ? roomId.Substring(5) : roomId;
+    }
+}
