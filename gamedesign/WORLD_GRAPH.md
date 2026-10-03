@@ -1,5 +1,7 @@
 # Граф мира
 
+План 15 зон (порядок, связи, способности) — `WORLD_DESIGN.md`; здесь — то, что уже в графе.
+
 PHASE 25. Источник истины — `Assets/Game/Data/WorldGraph.asset`, его собирает
 `ContentBuilder.BuildWorldGraph()` (`Assets/Game/Editor/ContentBuilderWorld.cs`).
 Код: `Runtime/World/WorldGraph.cs`, `WorldGraphTypes.cs`, `WorldRules.cs`,
