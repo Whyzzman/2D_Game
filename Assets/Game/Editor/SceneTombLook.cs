@@ -60,15 +60,18 @@ namespace ForgottenKingdom.EditorTools
             Physics2D.SyncTransforms();
             var previous = Physics2D.queriesHitTriggers;
             Physics2D.queriesHitTriggers = false;
+            var layout = level.Find(ContentBuilder.TombRootName);
             foreach (var box in Solids(level))
             {
                 var bounds = box.bounds;
                 var upright = bounds.size.y > bounds.size.x * 2f;
-                if (upright && bounds.min.y > 1f && wall != null)
+                // The Tomb built from its text has walls to its vaults already; only its slabs hang.
+                var fromText = layout != null && box.transform.IsChildOf(layout);
+                if (upright && bounds.min.y > 1f && wall != null && !fromText)
                 {
                     CarryUp(root, wall, box, bounds);
                 }
-                else if (!upright && bounds.size.y <= 0.7f && bounds.size.x <= 7f && bounds.min.y > 0.8f
+                else if (!upright && bounds.size.y <= 0.7f && bounds.size.x <= 7f && (bounds.min.y > 0.8f || fromText)
                     && chain != null)
                 {
                     Hang(root, chain, box, bounds.min.x + 0.35f, bounds.max.y);
@@ -145,7 +148,8 @@ namespace ForgottenKingdom.EditorTools
         /// <summary>The underside of the first solid thing over a point, or the vault.</summary>
         private static float Above(Vector2 point, Collider2D self)
         {
-            foreach (var hit in Physics2D.RaycastAll(point + Vector2.up * 0.02f, Vector2.up, VaultTop - point.y))
+            // Up to the old vault, or for the rooms of the rebuilt Tomb (up to 73 high) to their ceiling.
+            foreach (var hit in Physics2D.RaycastAll(point + Vector2.up * 0.02f, Vector2.up, Mathf.Max(VaultTop - point.y, 40f)))
             {
                 if (hit.collider != self && !hit.collider.isTrigger && hit.collider.gameObject.layer == GroundLayer)
                 {
@@ -153,7 +157,7 @@ namespace ForgottenKingdom.EditorTools
                 }
             }
 
-            return VaultTop;
+            return Mathf.Max(VaultTop, point.y);
         }
 
         private static void ThinTheFog()

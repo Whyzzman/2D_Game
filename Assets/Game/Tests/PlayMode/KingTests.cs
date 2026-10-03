@@ -169,11 +169,16 @@ namespace ForgottenKingdom.Tests
         }
 
         [UnityTest]
-        public IEnumerator FromTheBellLoftARingReachesTheMasonsCache()
+        public IEnumerator FromTheCavesHighGroundARingReachesTheNest()
         {
-            yield return ClimbByRing(new Vector2(-4.8f, 11.3f), Key.D, Key.A, 15.4f);
-            Assert.That(_player.transform.position.y, Is.GreaterThan(14.5f),
-                $"On the cache's shelf: at {_player.transform.position}.");
+            // The collapsed crypt's high ground; the ring hangs over it by the west wall, the nest
+            // opens in that wall ten cells over the ground (Levels/tomb.txt).
+            var nest = TombScene.Layout.WorldBounds(TombScene.Layout.Room("room_tomb_crypt_nest"));
+            var floor = nest.yMin + 1f;
+            yield return ClimbByRing(TombScene.Spot("grapple-hint") + new Vector2(0f, 0.85f), Key.A, Key.A, floor + 0.9f);
+            Assert.That(_player.transform.position.y, Is.GreaterThan(floor),
+                $"On the nest's floor: at {_player.transform.position}.");
+            Assert.That(_player.transform.position.x, Is.LessThan(nest.xMax), "Inside the nest.");
         }
 
         [UnityTest]
@@ -192,7 +197,8 @@ namespace ForgottenKingdom.Tests
             var shard = pickups.Single(p => p.PersistentId == "grapple-tomb-flask");
             var talon = pickups.Single(p => p.PersistentId == "grapple-forest-talon");
             var purse = pickups.Single(p => p.PersistentId == "grapple-forest-purse");
-            Assert.That(shard.transform.position.y, Is.GreaterThan(14.5f));
+            Assert.That(TombScene.Layout.WorldBounds(TombScene.Layout.Room("room_tomb_crypt_nest"))
+                .Contains(shard.transform.position), Is.True, "The flask shard lies in the Tomb's nest.");
             Assert.That(talon.transform.position.y, Is.GreaterThan(10f));
             Assert.That(purse.Amount, Is.EqualTo(400));
 
@@ -205,7 +211,7 @@ namespace ForgottenKingdom.Tests
             Assert.That(_progress.HasItem("hunter_talon"), Is.True);
 
             var rings = GrappleRing.All.Select(r => r.Anchor).ToList();
-            Assert.That(rings.Any(r => r.x < 0f && r.y > 14f), Is.True, "A ring over the bell loft.");
+            Assert.That(rings.Any(r => r.x < -60f && r.y > 10f), Is.True, "A ring over the collapsed crypt.");
             Assert.That(rings.Any(r => r.x > 160f && r.x < 172f && r.y > 10f), Is.True, "A ring over the grove.");
         }
     }

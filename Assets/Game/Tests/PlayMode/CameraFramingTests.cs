@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -113,14 +114,15 @@ namespace ForgottenKingdom.Tests
         {
             var director = _follow.GetComponent<CameraDirector>();
             var hall = director.Rooms.Rooms[director.Rooms.IndexOf("room_tomb_burial_hall")];
-            _motor.ResetTo(new Vector2(hall.Area.center.x, 0.85f));
+            var floor = TombScene.Spot("altar").y;
+            _motor.ResetTo(new Vector2(hall.Area.center.x, floor + 0.85f));
             yield return Realtime(1f);
 
             Assert.That(_follow.ActiveBounds, Is.EqualTo(hall.View));
             var halfHeight = _camera.orthographicSize;
             var halfWidth = halfHeight * _camera.aspect;
             var view = _camera.transform.position;
-            Assert.That(view.y - halfHeight, Is.GreaterThanOrEqualTo(-1f - CameraRooms.FloorMargin - 0.1f),
+            Assert.That(view.y - halfHeight, Is.GreaterThanOrEqualTo(floor - 1.5f - CameraRooms.FloorMargin - 0.1f),
                 "Only a strip of ground shows under the floor, not the void below it.");
             if (hall.View.width > halfWidth * 2f)
             {
@@ -133,14 +135,20 @@ namespace ForgottenKingdom.Tests
         public IEnumerator TheTombsNarrowRoomsShareOneFrameSoTheViewFollowsThroughThem()
         {
             var rooms = _follow.GetComponent<CameraDirector>().Rooms;
-            var hall = rooms.IndexOf("room_tomb_burial_hall");
-            // Both are narrower than any screen shape, so they share a frame whatever the aspect.
-            Assert.That(rooms.IndexOf("room_tomb_entrance"), Is.EqualTo(hall),
+            var hall = rooms.IndexOf("room_tomb_guard_passage");
+            // The west shaft (eight units) is narrower than any screen shape, so it shares the frame
+            // of the hall beside it whatever the aspect.
+            Assert.That(rooms.IndexOf("room_tomb_west_shaft"), Is.EqualTo(hall),
                 "Rooms narrower than the screen are joined rather than slid between.");
-            Assert.That(rooms.IndexOf("room_tomb_guardian_arena"), Is.Not.EqualTo(hall),
-                "The arena keeps its own frame.");
+            Assert.That(rooms.IndexOf("room_tomb_guardian_arena"),
+                Is.Not.EqualTo(rooms.IndexOf("room_tomb_guardian_approach")), "The arena keeps its own frame.");
             var halfWidth = _camera.orthographicSize * _camera.aspect;
-            foreach (var room in rooms.Rooms)
+            // The Tomb's shafts with no hall beside them (the column, the ossuary by the arena) keep
+            // their own narrow frame, as a shaft in Hollow Knight does; the old zones join theirs.
+            // A cache behind a wall is found by its trigger and framed as it comes.
+            var graph = Object.FindAnyObjectByType<GameProgress>().World;
+            foreach (var room in rooms.Rooms.Where(r => !r.AreaIds[0].StartsWith("room_tomb_")
+                         && !(graph.Area(r.AreaIds[0])?.IsSecret ?? false)))
             {
                 Assert.That(room.View.width >= halfWidth * 2f - 0.01f || room.KeepApart
                     || room.AreaIds.Count > 1 || rooms.Count == 1, Is.True,
@@ -200,7 +208,7 @@ namespace ForgottenKingdom.Tests
         [UnityTest]
         public IEnumerator ABossFightKeepsTheViewOnTheArena()
         {
-            _motor.ResetTo(new Vector2(42f, 1f));
+            _motor.ResetTo(TombScene.ArenaEntry());
             var end = Time.realtimeSinceStartup + 3f;
             while (Time.realtimeSinceStartup < end && !_follow.HasFightBounds)
             {

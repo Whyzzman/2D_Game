@@ -223,7 +223,7 @@ namespace ForgottenKingdom.Tests
 
             // Standing just outside the seal and walking into it must not pass through.
             var barrierX = encounter.Barrier.transform.position.x;
-            motor.ResetTo(new Vector2(barrierX - 2f, 0.85f));
+            motor.ResetTo(new Vector2(barrierX - 2f, TombScene.ArenaEntry().y - 0.15f));
             yield return new WaitForFixedUpdate();
 
             var deadline = Time.realtimeSinceStartup + 1.5f;

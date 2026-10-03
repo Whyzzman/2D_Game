@@ -65,10 +65,11 @@ namespace ForgottenKingdom.Tests
             }
         }
 
-        private IEnumerator EnterArena(float x = 42f)
+        /// <summary>Into the Guardian's hall, <paramref name="dx"/> past the trigger by his door.</summary>
+        private IEnumerator EnterArena(float dx = 0f)
         {
             _player.GetComponent<CombatActor>().SetInvulnerable(ImmunitySource.Script, 999f);
-            _motor.ResetTo(new Vector2(x, 1f));
+            _motor.ResetTo(TombScene.ArenaEntry() + new Vector2(dx, 0f));
             yield return WaitUntil(() => _encounter.IsArenaSealed, 2f);
         }
 
@@ -140,7 +141,7 @@ namespace ForgottenKingdom.Tests
             var flash = _boss.GetComponent<HitFlash>();
             var warned = false;
             // Six units off: in phase one only the charge reaches that far.
-            yield return EnterArena(44f);
+            yield return EnterArena(2f);
             GameTimeScale.SetBaseScale(2f);
             yield return WaitUntil(() =>
             {
@@ -158,7 +159,7 @@ namespace ForgottenKingdom.Tests
         [UnityTest]
         public IEnumerator ALeapsSlamPlaysWhereItLandsNotWhereItJumps()
         {
-            yield return EnterArena(40f);
+            yield return EnterArena(-1f);
             // Into phase two, where the leap lives.
             // In small blows, since armour takes its share of each one.
             for (var i = 0; i < 200 && _boss.Actor.Health.Normalized > 0.45f; i++)

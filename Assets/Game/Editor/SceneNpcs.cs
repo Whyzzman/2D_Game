@@ -48,14 +48,15 @@ namespace ForgottenKingdom.EditorTools
             var chest = Load(ContentBuilder.LockedChestPrefabPath);
             var warden = ContentBuilder.WardenBossId;
 
-            Place(root, gnat, "tomb-altar-01", 3.2f, null, GuardianBossId, "Гробниця · Вхід до Гробниці", dialogue);
+            Place(root, gnat, "tomb-altar-01", 3.2f, null, GuardianBossId, "Гробниця · Поховальна зала", dialogue);
             Place(root, gnat, "forest-entrance", 3.2f, GuardianBossId, warden, "Ліс · Узлісся", dialogue);
             Place(root, gnat, "capital-gate", 3.2f, warden, null, "Столиця · Міська брама", dialogue);
-            Place(root, myroslava, "tomb-altar-02", 2.2f, null, GuardianBossId, "Гробниця · Обвалений склеп", dialogue);
+            Place(root, myroslava, "tomb-altar-02", 2.2f, null, GuardianBossId, "Гробниця · Східна каплиця", dialogue);
             Place(root, myroslava, "royal-road-shrine", -2.6f, GuardianBossId, warden, "Ліс · Королівський шлях", dialogue);
             Place(root, myroslava, "deep-forest-shrine", -2.6f, warden, null, "Ліс · Глибокий ліс", dialogue);
-            Place(root, severyn, "tomb-altar-02", 8f, null, null, "Гробниця · Підступ до Стража", dialogue,
-                flip: true);
+            // Before the Guardian's door, where the Tomb's text puts him.
+            PlaceAt(root, severyn, "tomb-approach", ContentBuilder.TombSpot("severyn"), null, null,
+                "Гробниця · Підступ до Стража", dialogue, flip: true);
 
             Chest(root, chest, "tomb-altar-02", 4.6f, "chest-tomb-crypt", 180, "healing_herb");
             Chest(root, chest, "royal-road-shrine", 4.2f, "chest-forest-road", 260, "iron_scrap");
@@ -76,13 +77,22 @@ namespace ForgottenKingdom.EditorTools
         private static void Place(GameObject root, GameObject prefab, string altarId, float offset,
             string appears, string leaves, string place, DialogueService dialogue, bool flip = false)
         {
-            if (prefab == null || !Near(altarId, offset, out var position))
+            if (prefab != null && Near(altarId, offset, out var position))
+            {
+                PlaceAt(root, prefab, altarId, position, appears, leaves, place, dialogue, flip);
+            }
+        }
+
+        private static void PlaceAt(GameObject root, GameObject prefab, string tag, Vector3 position,
+            string appears, string leaves, string place, DialogueService dialogue, bool flip = false)
+        {
+            if (prefab == null)
             {
                 return;
             }
 
             var instance = (GameObject)PrefabUtility.InstantiatePrefab(prefab, root.transform);
-            instance.name = $"{prefab.name}_{altarId}";
+            instance.name = $"{prefab.name}_{tag}";
             instance.transform.position = position;
             if (flip)
             {

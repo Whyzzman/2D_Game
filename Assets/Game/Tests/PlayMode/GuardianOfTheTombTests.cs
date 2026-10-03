@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -282,18 +283,9 @@ namespace ForgottenKingdom.Tests
 
         private IEnumerator LightAltarBeforeArena()
         {
-            // The last altar before the Guardian, not the last one in the world.
-            var altars = TombScene.TombAltars();
-            Checkpoint nearest = null;
-            foreach (var altar in altars)
-            {
-                if (nearest == null || altar.transform.position.x > nearest.transform.position.x)
-                {
-                    nearest = altar;
-                }
-            }
-
-            _motor.ResetTo(new Vector2(nearest.transform.position.x, 0.9f));
+            // The last altar before the Guardian: the east chapel's, off the chain shaft.
+            var nearest = TombScene.TombAltars().Single(a => a.CheckpointId == "tomb-altar-02");
+            _motor.ResetTo((Vector2)nearest.transform.position + new Vector2(0f, 0.1f));
             yield return new WaitForFixedUpdate();
             nearest.Interact(_player);
             yield return new WaitForFixedUpdate();
@@ -301,7 +293,7 @@ namespace ForgottenKingdom.Tests
 
         private IEnumerator EnterArena()
         {
-            _motor.ResetTo(new Vector2(42f, 1f));
+            _motor.ResetTo(TombScene.ArenaEntry());
             yield return new WaitForFixedUpdate();
             yield return new WaitForFixedUpdate();
         }

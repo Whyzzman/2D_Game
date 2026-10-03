@@ -147,6 +147,33 @@ namespace ForgottenKingdom
         /// The area at a point of a scene. Trigger-only areas are skipped — they announce
         /// themselves — and where two areas overlap the smaller, more specific one wins.
         /// </summary>
+        /// <summary>
+        /// The zone a point of the scene lies in, secret rooms included: a room found only by its
+        /// trigger (a cache behind a wall) is still part of its zone's ground.
+        /// </summary>
+        public string ZoneAt(string sceneName, Vector2 position)
+        {
+            var area = AreaAt(sceneName, position);
+            if (area != null)
+            {
+                return area.ZoneId;
+            }
+
+            EnsureIndex();
+            foreach (var candidate in _areas)
+            {
+                var zone = candidate != null ? Zone(candidate.ZoneId) : null;
+                if (zone != null && candidate.WorldBounds.Contains(position)
+                    && (string.IsNullOrEmpty(sceneName) || string.IsNullOrEmpty(zone.SceneName)
+                        || string.Equals(zone.SceneName, sceneName, StringComparison.Ordinal)))
+                {
+                    return candidate.ZoneId;
+                }
+            }
+
+            return string.Empty;
+        }
+
         public WorldAreaDefinition AreaAt(string sceneName, Vector2 position)
         {
             EnsureIndex();

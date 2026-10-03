@@ -117,7 +117,7 @@ namespace ForgottenKingdom.Tests
             yield return LoadGame();
             var hud = Object.FindAnyObjectByType<HudController>();
             var motor = Object.FindAnyObjectByType<PlayerMotor2D>();
-            motor.ResetTo(new Vector2(43.5f, 0.85f));
+            motor.ResetTo(TombScene.ArenaEntry() + new Vector2(1.5f, 0f));
 
             var deadline = Time.realtimeSinceStartup + 6f;
             while (!hud.IsBossBarVisible && Time.realtimeSinceStartup < deadline)

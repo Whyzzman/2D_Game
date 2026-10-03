@@ -25,16 +25,8 @@ namespace ForgottenKingdom.EditorTools
 
         // Area ids. Stable: the save records them, so renaming one loses the player's map.
         private const string TombEntrance = "room_tomb_entrance";
-        private const string TombBurialHall = "room_tomb_burial_hall";
-        private const string TombGuardPassage = "room_tomb_guard_passage";
-        private const string TombCrypt = "room_tomb_collapsed_crypt";
-        private const string TombApproach = "room_tomb_guardian_approach";
-        private const string TombArena = "room_tomb_guardian_arena";
-        private const string TombOssuary = "room_tomb_royal_ossuary";
-        private const string TombBellShaft = "room_tomb_bell_shaft";
-        private const string TombMasonCache = "room_tomb_mason_cache";
+        private const string TombEastHall = "room_tomb_east_hall";
         private const string ForestHunterHollow = "room_forest_hunter_hollow";
-        private const string TombReliquary = "room_tomb_reliquary";
         private const string ForestTunnel = "room_forest_root_tunnel";
         private const string ForestEntrance = "room_forest_entrance";
         private const string ForestRoyalRoad = "room_forest_royal_road";
@@ -60,7 +52,6 @@ namespace ForgottenKingdom.EditorTools
         private const string CapitalGallery = "room_capital_royal_gallery";
         private const string BeyondCapital = "room_beyond_capital";
         // Rooms behind breakable walls (item 4, stage B).
-        private const string TombWalledCell = "room_tomb_walled_cell";
         private const string ForestGroveStash = "room_forest_grove_stash";
         private const string ForestFalconerNest = "room_forest_falconer_nest";
         private const string CapitalRoofCache = "room_capital_roof_cache";
@@ -68,7 +59,6 @@ namespace ForgottenKingdom.EditorTools
         // The Thorn Path's last perch (item 4, stage C).
         private const string ForestThornCourse = "room_forest_thorn_course";
 
-        public const string TombBridgeShortcut = "shortcut_tomb_crypt_bridge";
         public const string ForestRoadGateShortcut = "shortcut_forest_road_gate";
 
         /// <summary>World units to map units. The map is spatially honest, not 1:1.</summary>
@@ -140,24 +130,10 @@ namespace ForgottenKingdom.EditorTools
 
             json.Append(WorldZonesJson()).Append(WorldRoadsJson());
 
-            json.Append("\"_areas\":[").Append(string.Join(",", new[]
+            // The Tomb's rooms, links and altars come from its text (Levels/tomb.txt).
+            var tomb = LayoutGraphJson(LoadLayout(TombLayoutFile));
+            json.Append("\"_areas\":[").Append(string.Join(",", tomb.areas)).Append(",").Append(string.Join(",", new[]
             {
-                MainRoom(TombEntrance, TombZoneId, "Вхід до Гробниці", -22f, -7f),
-                MainRoom(TombBurialHall, TombZoneId, "Поховальна зала", -7f, 6f),
-                MainRoom(TombGuardPassage, TombZoneId, "Прохід варти", 6f, 20.5f),
-                MainRoom(TombCrypt, TombZoneId, "Обвалений склеп", 20.5f, 27f),
-                MainRoom(TombApproach, TombZoneId, "Підступ до Стража", 27f, 38.5f),
-                MainRoom(TombArena, TombZoneId, "Арена Стража", 38.5f, 62.5f,
-                    boss: GuardianBossId),
-                Pocket(TombOssuary, TombZoneId, "Королівська костниця", 12f, 15f, 7.2f,
-                    secret: true, ability: AbilityIds.DoubleJump),
-                Pocket(TombBellShaft, TombZoneId, "Дзвонова шахта", -6.8f, -2.8f, 10.4f,
-                    secret: true, ability: AbilityIds.WallRun),
-                // Over the bell loft, for the King's grapple (stage D).
-                Pocket(TombMasonCache, TombZoneId, "Сховок каменяра", -8f, -5f, 14.5f,
-                    secret: true, ability: AbilityIds.Grapple, mapRow: 3.1f),
-                Pocket(TombReliquary, TombZoneId, "Реліквіарій", 3f, 5f, 4f,
-                    secret: false, ability: AbilityIds.AirDash),
                 MainRoom(ForestTunnel, ForestZoneId, "Кореневий тунель", 62.5f, 81f),
                 MainRoom(ForestEntrance, ForestZoneId, "Узлісся", 81f, 110f),
                 MainRoom(ForestRoyalRoad, ForestZoneId, "Зруйнований королівський шлях", 110f, 134f),
@@ -193,8 +169,6 @@ namespace ForgottenKingdom.EditorTools
                     secret: true, ability: AbilityIds.Grapple),
                 MainRoom(CapitalThroneHall, CapitalZoneId, "Тронна зала", 512f, 545f,
                     boss: CapitalKingBossId),
-                Pocket(TombWalledCell, TombZoneId, "Замурована келія", -11.3f, -7.3f, 10.4f,
-                    secret: true, ability: string.Empty, mapRow: 2.3f),
                 Pocket(ForestGroveStash, ForestZoneId, "Схрон у гаю", 175f, 179f, 5.9f,
                     secret: true, ability: string.Empty),
                 Pocket(ForestFalconerNest, ForestZoneId, "Гніздо сокольника", 205.5f, 209.5f, 14.9f,
@@ -210,28 +184,10 @@ namespace ForgottenKingdom.EditorTools
                     Rect.MinMaxRect(545f, -8f, 557f, 16f), optional: true)
             })).Append("],");
 
-            json.Append("\"_connections\":[").Append(string.Join(",", new[]
+            json.Append("\"_connections\":[").Append(string.Join(",", tomb.links)).Append(",").Append(string.Join(",", new[]
             {
-                LinkJson("conn_tomb_entrance_hall", TombEntrance, TombBurialHall),
-                LinkJson("conn_tomb_hall_passage", TombBurialHall, TombGuardPassage),
-                // The pit: a jump every player can make. The bridge below is the easy way.
-                LinkJson("conn_tomb_passage_crypt", TombGuardPassage, TombCrypt),
-                LinkJson("conn_tomb_crypt_bridge", TombGuardPassage, TombCrypt,
-                    type: ConnectionType.Shortcut, shortcut: TombBridgeShortcut,
-                    openedFrom: TombCrypt),
-                LinkJson("conn_tomb_crypt_approach", TombCrypt, TombApproach),
-                LinkJson("conn_tomb_approach_arena", TombApproach, TombArena,
-                    type: ConnectionType.Door),
-                LinkJson("conn_tomb_to_forest", TombArena, ForestTunnel,
+                LinkJson("conn_tomb_to_forest", TombEastHall, ForestTunnel,
                     type: ConnectionType.ZoneTransition, boss: GuardianBossId),
-                LinkJson("conn_tomb_passage_ossuary", TombGuardPassage, TombOssuary,
-                    MapDirection.North, ConnectionType.AbilityGate, ability: AbilityIds.DoubleJump),
-                LinkJson("conn_tomb_hall_bellshaft", TombBurialHall, TombBellShaft,
-                    MapDirection.North, ConnectionType.AbilityGate, ability: AbilityIds.WallRun),
-                LinkJson("conn_tomb_bellshaft_cache", TombBellShaft, TombMasonCache,
-                    MapDirection.North, ConnectionType.AbilityGate, ability: AbilityIds.Grapple),
-                LinkJson("conn_tomb_passage_reliquary", TombGuardPassage, TombReliquary,
-                    MapDirection.West, ConnectionType.AbilityGate, ability: AbilityIds.AirDash),
                 LinkJson("conn_forest_tunnel_entrance", ForestTunnel, ForestEntrance),
                 LinkJson("conn_forest_entrance_road", ForestEntrance, ForestRoyalRoad),
                 // Over the archer's ledge and down past the barred arch: one way only, east.
@@ -276,7 +232,6 @@ namespace ForgottenKingdom.EditorTools
                     type: ConnectionType.Door),
                 // East of the throne the road goes on, sealed: what lies there is the ending's.
                 // Behind breakable walls: three blows open each for good (item 4, stage B).
-                LinkJson("conn_tomb_bellshaft_cell", TombBellShaft, TombWalledCell, MapDirection.West),
                 LinkJson("conn_forest_grove_stash", ForestGrove, ForestGroveStash),
                 LinkJson("conn_forest_perch_nest", ForestHuntersPerch, ForestFalconerNest),
                 LinkJson("conn_capital_nest_cache", CapitalBellNest, CapitalRoofCache),
@@ -288,10 +243,8 @@ namespace ForgottenKingdom.EditorTools
                     type: ConnectionType.Gate, boss: CapitalKingBossId, future: true)
             })).Append("],");
 
-            json.Append("\"_checkpoints\":[").Append(string.Join(",", new[]
+            json.Append("\"_checkpoints\":[").Append(string.Join(",", tomb.altars)).Append(",").Append(string.Join(",", new[]
             {
-                AltarJson("tomb-altar-01", "Вівтар входу", TombZoneId, TombEntrance),
-                AltarJson("tomb-altar-02", "Вівтар переходу", TombZoneId, TombCrypt),
                 AltarJson("forest-entrance", "Вівтар узлісся", ForestZoneId, ForestEntrance),
                 AltarJson("royal-road-shrine", "Придорожня святиня", ForestZoneId, ForestRoyalRoad),
                 AltarJson("deep-forest-shrine", "Святиня глибокого лісу", ForestZoneId, ForestDeep),
@@ -475,99 +428,6 @@ namespace ForgottenKingdom.EditorTools
             SetReference(debug, "_shrine", shrine);
             SetReference(debug, "_travel", travel);
             SetReference(debug, "_respawner", respawner);
-        }
-
-        // ---------- the Tomb, revisited ----------
-
-        /// <summary>
-        /// Three places in the Tomb that a first visit can see and cannot reach, and the bridge
-        /// that makes the pit safe to cross on the way back.
-        /// </summary>
-        private static void BuildTombWorld(Transform level, GameProgress progress,
-            GameObject pickupPrefab)
-        {
-            var root = new GameObject("TombWorld").transform;
-            root.SetParent(level);
-
-            // The Royal Ossuary: above the guards' ledge. From that ledge a jump reaches 6.4, a
-            // second jump 7.8; the shelf is at 7.2. Its faces are polished marble, so a wall run
-            // cannot climb what the second jump is for.
-            var ossuary = Block(root, "OssuaryShelf", new Vector2(13.5f, 6.95f),
-                new Vector2(3f, 0.5f), TombSurface.Platform);
-            Ensure<NonClimbableSurface>(ossuary);
-            Prop(root, "env_tomb_sarcophagus_01", new Vector2(14.2f, 7.2f), "EnvironmentBack", 4,
-                0.6f);
-            PlacePickup(pickupPrefab, new Vector2(13.1f, 7.7f), progress, "ossuary_signet", false,
-                1, "tomb-ossuary-signet", false);
-            // Inset from the shelf's edges: a failed jump pressed against its side is not "inside".
-            AreaTrigger(root, TombOssuary, new Vector2(13.4f, 8.2f), new Vector2(2.6f, 1.6f));
-            PlaceAbilityGate(root, "OssuaryHint", new Vector2(16.4f, 5.3f), AbilityIds.DoubleJump,
-                "conn_tomb_passage_ossuary", new Vector2(13.5f, 7.6f), progress);
-
-            // The Bell Shaft: two walls hanging over the burial hall, two units apart. Only a wall
-            // jump climbs it; the bell loft sits on the western wall, ten units up and far from
-            // anything a second jump could start from.
-            Block(root, "BellShaftWest", new Vector2(-3.2f, 6.3f), new Vector2(0.8f, 7.4f),
-                TombSurface.Wall);
-            Block(root, "BellShaftEast", new Vector2(-0.4f, 6.3f), new Vector2(0.8f, 7.4f),
-                TombSurface.Wall);
-            Block(root, "BellLoft", new Vector2(-4.8f, 10.2f), new Vector2(4f, 0.4f),
-                TombSurface.BrokenPlatform);
-            Prop(root, "env_tomb_chains_01", new Vector2(-1.8f, 10.5f), "EnvironmentBack", 3, 0.8f);
-            PlacePickup(pickupPrefab, new Vector2(-5.4f, 10.9f), progress, "bellringer_hood",
-                false, 1, "tomb-bell-hood", false);
-            PlacePickup(pickupPrefab, new Vector2(-4.2f, 10.8f), progress, string.Empty, true,
-                180, "tomb-bell-purse", true);
-            AreaTrigger(root, TombBellShaft, new Vector2(-4.8f, 11.3f), new Vector2(3.6f, 1.8f));
-            PlaceAbilityGate(root, "BellShaftHint", new Vector2(-1.8f, 0.8f), AbilityIds.WallRun,
-                "conn_tomb_hall_bellshaft", new Vector2(-4.8f, 10.9f), progress);
-
-            // The Reliquary: a shelf level with nothing, six units west of the second step. A
-            // running jump from the step falls a metre short; a jump and a dash in the air does
-            // not. From the floor below it is 0.7 higher than even a second jump.
-            var reliquary = Block(root, "ReliquaryShelf", new Vector2(4f, 3.75f),
-                new Vector2(2f, 0.5f), TombSurface.Platform);
-            Ensure<NonClimbableSurface>(reliquary);
-            Prop(root, "env_tomb_urn_01", new Vector2(4.5f, 4f), "EnvironmentBack", 4, 0.6f);
-            PlacePickup(pickupPrefab, new Vector2(3.8f, 4.5f), progress, "reliquary_charm", false,
-                1, "tomb-reliquary-charm", false);
-            AreaTrigger(root, TombReliquary, new Vector2(4f, 4.9f), new Vector2(1.6f, 1.2f));
-            PlaceAbilityGate(root, "ReliquaryHint", new Vector2(11.2f, 4.1f), AbilityIds.AirDash,
-                "conn_tomb_passage_reliquary", new Vector2(4f, 4.5f), progress);
-
-            BuildCryptBridge(root);
-        }
-
-        /// <summary>
-        /// The Tomb's shortcut: the old bridge over the collapsed crypt, hauled up from the rubble
-        /// by a winch on the altar side. The first crossing is a jump over a real pit; every one
-        /// after it, in either direction, is a walk.
-        /// </summary>
-        private static void BuildCryptBridge(Transform parent)
-        {
-            var bridge = Block(parent, "CryptBridge", new Vector2(21.75f, -0.25f),
-                new Vector2(2.5f, 0.5f), TombSurface.Platform);
-            var art = Object.Instantiate(bridge.transform.Find("Visual").gameObject, parent);
-            art.name = "CryptBridgeArt";
-            art.transform.position = bridge.transform.position;
-            // The swinging copy is the only one drawn; the collider's own art would double it.
-            bridge.transform.Find("Visual").gameObject.SetActive(false);
-            // The collider arrives only once the bridge is visibly in place.
-            bridge.SetActive(false);
-
-            var lever = new GameObject("CryptBridgeWinch");
-            lever.transform.SetParent(parent);
-            lever.transform.position = new Vector2(23.5f, 0.9f);
-            var trigger = lever.AddComponent<CircleCollider2D>();
-            trigger.isTrigger = true;
-            trigger.radius = 0.8f;
-            var handle = Prop(lever.transform, "env_tomb_chains_01", new Vector2(23.5f, 0.2f),
-                "GameplayEnvironment", 3, 0.5f);
-            var shortcut = lever.AddComponent<Shortcut>();
-            SetString(shortcut, "_shortcutId", TombBridgeShortcut);
-            SetString(shortcut, "_displayName", "лебідка мосту");
-            ConfigureShortcut(shortcut, new[] { bridge }, System.Array.Empty<GameObject>(),
-                art.transform, new Vector3(0f, -2.6f, 0f), handle != null ? handle.transform : null);
         }
 
         // ---------- helpers ----------

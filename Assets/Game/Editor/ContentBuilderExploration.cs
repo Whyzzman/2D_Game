@@ -35,9 +35,6 @@ namespace ForgottenKingdom.EditorTools
         /// <summary>Each lies on the same shelf as the pocket's find, a step to its side.</summary>
         private static readonly ShardSpot[] PocketShards =
         {
-            new ShardSpot(new Vector2(14.1f, 7.7f), VesselKind.Health, "tomb-ossuary"),
-            new ShardSpot(new Vector2(-6.2f, 10.9f), VesselKind.Mana, "tomb-bell-loft"),
-            new ShardSpot(new Vector2(4.5f, 4.5f), VesselKind.Mana, "tomb-reliquary"),
             new ShardSpot(new Vector2(194.5f, 12.3f), VesselKind.Health, "forest-ruin-top"),
             new ShardSpot(new Vector2(204.2f, 15.4f), VesselKind.Health, "forest-hunters-perch"),
             new ShardSpot(new Vector2(305.8f, 3.3f), VesselKind.Mana, "forest-overlook"),
@@ -83,8 +80,6 @@ namespace ForgottenKingdom.EditorTools
         /// </summary>
         private static readonly SecretRoom[] SecretRooms =
         {
-            // West of the bell loft (-6.8..-2.8, 10.4), under the mason's shelf.
-            new SecretRoom(TombWalledCell, 0, -11.3f, -7.3f, 10.4f, RoomSide.East, VesselKind.Health),
             // East of the grove's ledge (169.5..174.5, 5.9).
             new SecretRoom(ForestGroveStash, 1, 175f, 179f, 5.9f, RoomSide.West, VesselKind.Mana),
             // East of the hunters' perch (201..205, 14.9).
@@ -111,8 +106,15 @@ namespace ForgottenKingdom.EditorTools
                 Object.DestroyImmediate(old.gameObject);
             }
 
+            // The Tomb's shards are its text's (Levels/tomb.txt) and stay with its rooms.
+            var tomb = level.transform.Find(TombRootName);
             foreach (var find in Object.FindObjectsByType<WorldPickup>(FindObjectsInactive.Include))
             {
+                if (tomb != null && find.transform.IsChildOf(tomb))
+                {
+                    continue;
+                }
+
                 if (find.PersistentId != null && find.PersistentId.StartsWith(ExplorationIdPrefix))
                 {
                     Object.DestroyImmediate(find.gameObject);
@@ -428,7 +430,8 @@ namespace ForgottenKingdom.EditorTools
             var wallObject = RoomBlock(root, room.Zone, "BreakableWall",
                 new Vector2(nearX, room.FloorY + RoomHeight * 0.5f), new Vector2(RoomShell, RoomHeight), true);
             Ensure<NonClimbableSurface>(wallObject);
-            BuildBreakableWall(wallObject, room, progress, root);
+            BuildBreakableWall(wallObject, ExplorationIdPrefix + "wall-" + room.AreaId.Replace("room_", string.Empty),
+                Rect.MinMaxRect(room.X0, room.FloorY, room.X1, room.FloorY + RoomHeight), progress, root);
 
             AreaTrigger(root, room.AreaId, new Vector2((room.X0 + room.X1) * 0.5f, room.FloorY + 1f),
                 new Vector2(room.X1 - room.X0 - 0.6f, 1.6f));
@@ -451,9 +454,10 @@ namespace ForgottenKingdom.EditorTools
         /// The block becomes a wall that takes the hero's blows: an actor that cannot die, a
         /// hurtbox on the enemy layer a touch wider than the stone, a faint crack, and the veil.
         /// </summary>
-        private static void BuildBreakableWall(GameObject wallObject, SecretRoom room, GameProgress progress,
+        private static void BuildBreakableWall(GameObject wallObject, string wallId, Rect inside, GameProgress progress,
             Transform roomRoot)
         {
+            var height = wallObject.GetComponent<BoxCollider2D>().size.y;
             var actor = Ensure<CombatActor>(wallObject);
             SetFloat(Ensure<Health>(wallObject), "_maxHealth", 100000f);
             SetFloat(actor, "_hitInvulnerability", 0.05f);
@@ -465,7 +469,7 @@ namespace ForgottenKingdom.EditorTools
             crack.transform.SetParent(wallObject.transform, false);
             crack.transform.localPosition = new Vector3(0.02f, 0.25f, 0f);
             crack.transform.localRotation = Quaternion.Euler(0f, 0f, 18f);
-            crack.transform.localScale = new Vector3(0.05f, RoomHeight * 0.55f, 1f);
+            crack.transform.localScale = new Vector3(0.05f, height * 0.55f, 1f);
             var crackRenderer = crack.AddComponent<SpriteRenderer>();
             crackRenderer.sprite = _sprite;
             crackRenderer.sharedMaterial = _material;
@@ -478,13 +482,13 @@ namespace ForgottenKingdom.EditorTools
             hurtObject.layer = EnemyLayer;
             var hurtCollider = hurtObject.AddComponent<BoxCollider2D>();
             hurtCollider.isTrigger = true;
-            hurtCollider.size = new Vector2(RoomShell + 0.3f, RoomHeight);
+            hurtCollider.size = new Vector2(wallObject.GetComponent<BoxCollider2D>().size.x + 0.3f, height);
             SetReference(hurtObject.AddComponent<Hurtbox>(), "_owner", actor);
 
             var veil = new GameObject("Veil");
             veil.transform.SetParent(roomRoot, false);
-            veil.transform.position = new Vector3((room.X0 + room.X1) * 0.5f, room.FloorY + RoomHeight * 0.5f, 0f);
-            veil.transform.localScale = new Vector3(room.X1 - room.X0 + RoomShell * 2f, RoomHeight + RoomShell * 2f, 1f);
+            veil.transform.position = inside.center;
+            veil.transform.localScale = new Vector3(inside.width + RoomShell * 2f, inside.height + RoomShell * 2f, 1f);
             var veilRenderer = veil.AddComponent<SpriteRenderer>();
             veilRenderer.sprite = _sprite;
             veilRenderer.sharedMaterial = _material;
@@ -492,7 +496,7 @@ namespace ForgottenKingdom.EditorTools
             SetSorting(veilRenderer, "Foreground", 20);
 
             var wall = Ensure<BreakableWall>(wallObject);
-            SetString(wall, "_wallId", ExplorationIdPrefix + "wall-" + room.AreaId.Replace("room_", string.Empty));
+            SetString(wall, "_wallId", wallId);
             SetReference(wall, "_progress", progress);
             SetReference(wall, "_actor", actor);
             SetReference(wall, "_solid", wallObject.GetComponent<BoxCollider2D>());

@@ -230,7 +230,7 @@ namespace ForgottenKingdom.Tests
         {
             LearnAndEquip("arcane_burst", 0);
             LearnAndEquip("fire_bolt", 1);
-            _motor.ResetTo(new Vector2(-12f, 6f));
+            _motor.ResetTo(TombScene.Ground(5f) + new Vector2(0f, 5.15f));
             yield return new WaitForFixedUpdate();
             Assert.That(_motor.IsGrounded, Is.False);
 
@@ -253,7 +253,7 @@ namespace ForgottenKingdom.Tests
                 .OrderBy(target => target.transform.position.x).First();
             var target = dummy.GetComponent<CombatActor>();
             target.ClearInvulnerability();
-            _motor.ResetTo(new Vector2(dummy.transform.position.x - 4f, 0.85f));
+            _motor.ResetTo(new Vector2(dummy.transform.position.x - 4f, TombScene.StartFeet.y + 0.85f));
             yield return Land();
             Assert.That(_motor.FacingDirection, Is.EqualTo(1), "Facing the dummy.");
             var health = target.Health.Current;
@@ -280,9 +280,9 @@ namespace ForgottenKingdom.Tests
         {
             LearnAndEquip("fire_bolt", 0);
             // Facing the level's left wall, well away from any enemy.
-            _motor.ResetTo(new Vector2(-13.5f, 0.85f));
+            _motor.ResetTo(TombScene.Ground(-1f));
             yield return new WaitForFixedUpdate();
-            _motor.ResetTo(new Vector2(-14f, 0.85f));
+            _motor.ResetTo(TombScene.Ground(-1.5f));
             yield return new WaitForFixedUpdate();
 
             _player.TryCastSpell(0);
@@ -296,8 +296,8 @@ namespace ForgottenKingdom.Tests
         public IEnumerator AProjectileNeverOutlivesItsRange()
         {
             LearnAndEquip("fire_bolt", 0);
-            // Pointed down an empty corridor.
-            _motor.ResetTo(new Vector2(26f, 0.85f));
+            // Pointed down the empty burial hall, east of its altar.
+            _motor.ResetTo(TombScene.Spot("altar") + new Vector2(4f, 0.85f));
             yield return new WaitForFixedUpdate();
 
             _player.TryCastSpell(0);
@@ -331,7 +331,7 @@ namespace ForgottenKingdom.Tests
             var first = dummies[0].GetComponent<Health>();
             var second = dummies[1].GetComponent<Health>();
             _motor.ResetTo(new Vector2(
-                (dummies[0].transform.position.x + dummies[1].transform.position.x) * 0.5f, 0.85f));
+                (dummies[0].transform.position.x + dummies[1].transform.position.x) * 0.5f, TombScene.StartFeet.y + 0.85f));
             foreach (var dummy in dummies)
             {
                 dummy.GetComponent<CombatActor>().ClearInvulnerability();

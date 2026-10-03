@@ -166,6 +166,14 @@ namespace ForgottenKingdom.Tests
             // Showing an impact here would tell the player they were hit when they were not.
             var zombie = Enemy();
             zombie.Actor.SetInvulnerable(ImmunitySource.Script, 1f);
+            // Everyone settled first: a landing's dust is not an impact, but it would be heard here.
+            var motor = Object.FindAnyObjectByType<PlayerMotor2D>();
+            var settle = Time.realtimeSinceStartup + 3f;
+            while ((!motor.IsGrounded || !zombie.GetComponent<EnemyMotor2D>().IsGrounded) && Time.realtimeSinceStartup < settle)
+            {
+                yield return null;
+            }
+
             yield return new WaitForFixedUpdate();
 
             _played.Clear();

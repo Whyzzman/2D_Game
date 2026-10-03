@@ -103,7 +103,14 @@ namespace ForgottenKingdom.Tests
             Assert.That(oneWay, Is.EqualTo(new[]
             {
                 "conn_forest_road_ledge",
-                "conn_forest_watchtower_drop"
+                "conn_forest_watchtower_drop",
+                "conn_tomb_chain_shaft_falls",
+                "conn_tomb_column_burial_hall",
+                "conn_tomb_east_chapel_flooded_crypt",
+                "conn_tomb_entrance_guard_passage",
+                "conn_tomb_guard_passage_lower_chain",
+                "conn_tomb_lower_chain_lower_crypt",
+                "conn_tomb_west_shaft_collapsed_crypt"
             }), "A new one-way connection must be added to WORLD_GRAPH.md and here.");
         }
 
@@ -196,7 +203,7 @@ namespace ForgottenKingdom.Tests
         [Test]
         public void EveryAltarIsATravelDestinationInABuiltZone()
         {
-            Assert.That(_graph.Checkpoints.Count, Is.EqualTo(9));
+            Assert.That(_graph.Checkpoints.Count, Is.EqualTo(11), "Four in the Tomb, four in the Forest, three in the Capital.");
             foreach (var checkpoint in _graph.Checkpoints)
             {
                 Assert.That(checkpoint.CanFastTravel, Is.True, checkpoint.CheckpointId);
@@ -208,19 +215,18 @@ namespace ForgottenKingdom.Tests
         [Test]
         public void AreasAreFoundByPositionAndPocketsOnlyByTheirTriggers()
         {
-            Assert.That(_graph.AreaAt("TombTrial", new Vector2(-12f, 0.85f)).AreaId,
+            // The Tomb from its text (cell 0.5, origin -66.5 -19): the hero's start and the Guardian's floor.
+            Assert.That(_graph.AreaAt("TombTrial", new Vector2(-20.5f, 31.85f)).AreaId,
                 Is.EqualTo("room_tomb_entrance"));
-            Assert.That(_graph.AreaAt("TombTrial", new Vector2(50f, 1f)).AreaId,
+            Assert.That(_graph.AreaAt("TombTrial", new Vector2(43.5f, 51.5f)).AreaId,
                 Is.EqualTo("room_tomb_guardian_arena"));
             Assert.That(_graph.AreaAt("TombTrial", new Vector2(70f, 1f)).AreaId,
                 Is.EqualTo("room_forest_root_tunnel"));
             Assert.That(_graph.AreaAt("TombTrial", new Vector2(197f, 12.9f)).AreaId,
                 Is.EqualTo("room_forest_watchtower_top"), "The smaller area wins where they overlap.");
-            // Standing on the ossuary's shelf is still the passage by bounds; only its trigger
-            // reveals the secret.
-            Assert.That(_graph.AreaAt("TombTrial", new Vector2(13.5f, 8f)).AreaId,
-                Is.EqualTo("room_tomb_guard_passage"));
-            Assert.That(_graph.AreaAt("SomeOtherScene", new Vector2(-12f, 0.85f)), Is.Null);
+            // Inside the ossuary, behind its wall, no area by position: only its trigger reveals it.
+            Assert.That(_graph.AreaAt("TombTrial", new Vector2(59.5f, 51.5f)), Is.Null);
+            Assert.That(_graph.AreaAt("SomeOtherScene", new Vector2(-20.5f, 31.85f)), Is.Null);
         }
 
         // ---------- the validator catches what it claims to ----------
@@ -286,7 +292,7 @@ namespace ForgottenKingdom.Tests
             var data = GameProgressData.CreateNew();
             data.MarkAreaDiscovered("room_tomb_entrance");
             data.MarkAreaDiscovered("room_tomb_burial_hall");
-            data.UnlockShortcut("shortcut_tomb_crypt_bridge");
+            data.UnlockShortcut("shortcut_tomb_chain_gate");
             data.MarkZoneIntroSeen("zone_forgotten_tomb");
 
             Assert.That(SaveSystem.Write(data), Is.True);
@@ -295,7 +301,7 @@ namespace ForgottenKingdom.Tests
             Assert.That(loaded.version, Is.EqualTo(GameProgressData.CurrentVersion));
             Assert.That(loaded.discoveredAreas, Is.EquivalentTo(
                 new[] { "room_tomb_entrance", "room_tomb_burial_hall" }));
-            Assert.That(loaded.IsShortcutUnlocked("shortcut_tomb_crypt_bridge"), Is.True);
+            Assert.That(loaded.IsShortcutUnlocked("shortcut_tomb_chain_gate"), Is.True);
             Assert.That(loaded.HasSeenZoneIntro("zone_forgotten_tomb"), Is.True);
         }
 
@@ -322,8 +328,8 @@ namespace ForgottenKingdom.Tests
             Assert.That(data.discoveredAreas, Is.EquivalentTo(new[]
             {
                 "room_tomb_entrance", "room_tomb_burial_hall", "room_tomb_guard_passage",
-                "room_tomb_collapsed_crypt"
-            }), "The walk from the entrance to the second altar, and nothing past it.");
+                "room_tomb_chain_shaft", "room_tomb_east_chapel"
+            }), "The first altar's hall and the walk from the entrance to the second altar, nothing past it.");
             Assert.That(data.HasSeenZoneIntro("zone_forgotten_tomb"), Is.True);
             Assert.That(data.HasSeenZoneIntro("zone_withered_forest"), Is.False);
             Assert.That(data.checkpointId, Is.EqualTo("tomb-altar-02"), "The altar is untouched.");
@@ -410,22 +416,23 @@ namespace ForgottenKingdom.Tests
             var known = view.Nodes.Where(n => n.State == MapNodeState.Discovered).ToArray();
             Assert.That(known.Select(n => n.AreaId), Is.EqualTo(new[] { "room_tomb_entrance" }));
             Assert.That(known[0].IsCurrent, Is.True);
-            Assert.That(known[0].Icons.Any(i => i.Type == MapIconType.Checkpoint && !i.IsActive),
-                Is.True, "An unlit altar shows as unlit.");
             var silhouette = view.Node("room_tomb_burial_hall");
             Assert.That(silhouette.State, Is.EqualTo(MapNodeState.Unexplored));
             Assert.That(silhouette.Label, Is.Empty);
             Assert.That(view.Node("room_tomb_guardian_arena"), Is.Null);
-            Assert.That(view.Node("room_tomb_bell_shaft"), Is.Null,
-                "A secret next to a known room gets no silhouette.");
+            Assert.That(view.Node("room_tomb_royal_ossuary"), Is.Null, "A secret gets no silhouette.");
             Assert.That(view.ZoneHeader, Is.EqualTo("Забута Гробниця"));
+
+            data.MarkAreaDiscovered("room_tomb_burial_hall");
+            Assert.That(Map(data, "room_tomb_burial_hall").Node("room_tomb_burial_hall").Icons
+                .Any(i => i.Type == MapIconType.Checkpoint && !i.IsActive), Is.True, "An unlit altar shows as unlit.");
         }
 
         [Test]
         public void TheBossIconAppearsOnlyWithTheArenaAndGoesQuietWhenHeFalls()
         {
-            var data = Walked("room_tomb_entrance", "room_tomb_burial_hall",
-                "room_tomb_guard_passage", "room_tomb_collapsed_crypt", "room_tomb_guardian_approach");
+            var data = Walked("room_tomb_entrance", "room_tomb_burial_hall", "room_tomb_west_shaft",
+                "room_tomb_guard_passage", "room_tomb_chain_shaft", "room_tomb_guardian_approach");
             var before = Map(data, "room_tomb_guardian_approach");
             Assert.That(before.Node("room_tomb_guardian_arena").State,
                 Is.EqualTo(MapNodeState.Unexplored));
@@ -446,32 +453,31 @@ namespace ForgottenKingdom.Tests
         [Test]
         public void AClosedGateNeverNamesAnAbilityThePlayerHasNotMet()
         {
-            var data = Walked("room_tomb_entrance", "room_tomb_burial_hall", "room_tomb_guard_passage",
-                "room_tomb_royal_ossuary");
-            var view = Map(data, "room_tomb_guard_passage");
-            var gate = view.Links.Single(l => l.Connection.ConnectionId == "conn_tomb_passage_ossuary");
+            var data = Walked("room_tomb_entrance", "room_tomb_bell_shaft");
+            var view = Map(data, "room_tomb_entrance");
+            var gate = view.Links.Single(l => l.Connection.ConnectionId == "conn_tomb_entrance_bell_shaft");
 
             Assert.That(gate.State, Is.EqualTo(MapLinkState.Blocked));
             Assert.That(gate.Hint, Is.EqualTo(WorldMapBuilder.UnreachableHint));
             Assert.That(gate.Hint, Does.Not.Contain("стриб"));
 
             data.player.unlockedAbilities.Add(AbilityIds.DoubleJump);
-            var later = Map(data, "room_tomb_guard_passage");
-            Assert.That(later.Links.Single(l => l.Connection.ConnectionId == "conn_tomb_passage_ossuary")
+            var later = Map(data, "room_tomb_entrance");
+            Assert.That(later.Links.Single(l => l.Connection.ConnectionId == "conn_tomb_entrance_bell_shaft")
                 .State, Is.EqualTo(MapLinkState.Open));
         }
 
         [Test]
         public void AShortcutIsDrawnBrokenUntilItIsOpenedAndThenAsAnOrdinaryWay()
         {
-            var data = Walked("room_tomb_guard_passage", "room_tomb_collapsed_crypt");
-            var closed = Map(data, "room_tomb_collapsed_crypt").Links
-                .Single(l => l.Connection.ConnectionId == "conn_tomb_crypt_bridge");
+            var data = Walked("room_tomb_entrance", "room_tomb_chain_shaft");
+            var closed = Map(data, "room_tomb_chain_shaft").Links
+                .Single(l => l.Connection.ConnectionId == "conn_tomb_entrance_chain_shaft");
             Assert.That(closed.State, Is.EqualTo(MapLinkState.ShortcutLocked));
 
-            data.UnlockShortcut("shortcut_tomb_crypt_bridge");
-            var open = Map(data, "room_tomb_collapsed_crypt").Links
-                .Single(l => l.Connection.ConnectionId == "conn_tomb_crypt_bridge");
+            data.UnlockShortcut("shortcut_tomb_chain_gate");
+            var open = Map(data, "room_tomb_chain_shaft").Links
+                .Single(l => l.Connection.ConnectionId == "conn_tomb_entrance_chain_shaft");
             Assert.That(open.State, Is.EqualTo(MapLinkState.Open));
         }
 
@@ -498,27 +504,28 @@ namespace ForgottenKingdom.Tests
         [Test]
         public void AltarsBecomeTravelPointsOnceTravelIsOpen()
         {
-            var data = Walked("room_tomb_entrance");
+            var data = Walked("room_tomb_burial_hall");
             data.MarkCheckpointActivated("tomb-altar-01");
-            Assert.That(Map(data, "room_tomb_entrance").Node("room_tomb_entrance").Icons
+            Assert.That(Map(data, "room_tomb_burial_hall").Node("room_tomb_burial_hall").Icons
                 .Single(i => i.Id == "tomb-altar-01").Type, Is.EqualTo(MapIconType.Checkpoint));
 
             data.MarkBossDefeated(Guardian);
-            Assert.That(Map(data, "room_tomb_entrance").Node("room_tomb_entrance").Icons
+            Assert.That(Map(data, "room_tomb_burial_hall").Node("room_tomb_burial_hall").Icons
                 .Single(i => i.Id == "tomb-altar-01").Type, Is.EqualTo(MapIconType.FastTravel));
         }
 
         [Test]
         public void CompletionCountsOrdinaryRoomsAndSecretsApart()
         {
-            var data = Walked("room_tomb_entrance", "room_tomb_burial_hall", "room_tomb_bell_shaft");
+            var data = Walked("room_tomb_entrance", "room_tomb_burial_hall", "room_tomb_royal_ossuary");
             var completion = WorldMapBuilder.Completion(_graph, new ProgressDataWorldQuery(data),
                 "zone_forgotten_tomb");
 
             Assert.That(completion.Discovered, Is.EqualTo(2));
             Assert.That(completion.SecretsFound, Is.EqualTo(1));
-            Assert.That(completion.Total, Is.EqualTo(7), "Six rooms and the visible reliquary.");
-            Assert.That(completion.SecretsTotal, Is.EqualTo(4), "The ossuary, the bell shaft, the mason's cache and the walled cell.");
+            Assert.That(completion.Total, Is.EqualTo(22), "The Tomb's text: 27 rooms, five of them secret.");
+            Assert.That(completion.SecretsTotal, Is.EqualTo(5),
+                "The ossuary, the drowned and the buried caches, the walled cell and the crypt's nest.");
         }
 
         [Test]
@@ -541,14 +548,14 @@ namespace ForgottenKingdom.Tests
         public void TheCursorStepsToTheNearestKnownRoomInTheDirectionPushed()
         {
             var data = Walked("room_tomb_entrance", "room_tomb_burial_hall", "room_tomb_guard_passage");
-            var view = Map(data, "room_tomb_burial_hall");
+            var view = Map(data, "room_tomb_entrance");
 
-            Assert.That(WorldMapViewport.Step(view, "room_tomb_burial_hall", Vector2.right).AreaId,
+            Assert.That(WorldMapViewport.Step(view, "room_tomb_entrance", Vector2.left).AreaId,
+                Is.EqualTo("room_tomb_burial_hall"));
+            Assert.That(WorldMapViewport.Step(view, "room_tomb_entrance", Vector2.down).AreaId,
                 Is.EqualTo("room_tomb_guard_passage"));
             Assert.That(WorldMapViewport.Step(view, "room_tomb_burial_hall", Vector2.left).AreaId,
-                Is.EqualTo("room_tomb_entrance"));
-            Assert.That(WorldMapViewport.Step(view, "room_tomb_entrance", Vector2.left).AreaId,
-                Is.EqualTo("room_tomb_entrance"), "Nothing further west: the cursor stays.");
+                Is.EqualTo("room_tomb_burial_hall"), "Nothing further west: the cursor stays.");
         }
 
         // ---------- helpers ----------

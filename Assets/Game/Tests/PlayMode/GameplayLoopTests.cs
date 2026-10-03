@@ -45,13 +45,14 @@ namespace ForgottenKingdom.Tests
         [UnityTest]
         public IEnumerator TheLevelHasTwoAltarsAndARegisteredEnemyRoster()
         {
-            Assert.That(_checkpoints.Length, Is.EqualTo(2));
+            Assert.That(_checkpoints.Length, Is.EqualTo(4), "The Tomb's text has four altars.");
             Assert.That(_checkpoints[0].CheckpointId, Is.Not.EqualTo(_checkpoints[1].CheckpointId),
                 "A save has to be able to tell the altars apart.");
             Assert.That(_respawner, Is.Not.Null);
             Assert.That(_registry, Is.Not.Null);
-            Assert.That(TombScene.TombEnemies().Length, Is.EqualTo(5),
-                "Three zombies and two shield guards in the Tomb.");
+            Assert.That(TombScene.TombEnemies().Length,
+                Is.EqualTo(TombScene.Layout.Markers().Count(m => m.Kind == "enemy")),
+                "The Tomb's enemies are the ones its text places.");
             Assert.That(_registry.Count,
                 Is.EqualTo(Object.FindObjectsByType<EnemyController>(FindObjectsInactive.Include)
                     .Length), "Every enemy in the world is registered for resets, forest included.");
@@ -65,7 +66,7 @@ namespace ForgottenKingdom.Tests
         public IEnumerator DyingWithoutAnAltarReturnsThePlayerToTheDefaultSpawn()
         {
             var spawn = _respawner.RespawnPosition;
-            _motor.ResetTo(new Vector2(10f, 1f));
+            _motor.ResetTo(TombScene.Ground(10f));
             yield return new WaitForFixedUpdate();
 
             yield return KillPlayerAndWait();
@@ -125,7 +126,7 @@ namespace ForgottenKingdom.Tests
 
             for (var i = 0; i < 2; i++)
             {
-                _motor.ResetTo(new Vector2(10f, 1f));
+                _motor.ResetTo(TombScene.Ground(10f));
                 yield return new WaitForFixedUpdate();
                 yield return KillPlayerAndWait();
                 Assert.That(_respawner.ActiveCheckpointId, Is.EqualTo(_checkpoints[1].CheckpointId));
@@ -254,8 +255,9 @@ namespace ForgottenKingdom.Tests
             yield return new WaitForFixedUpdate();
 
             var deaths = _respawner.DeathCount;
-            // Straight into the gap between the floor and the corridor.
-            _motor.ResetTo(new Vector2(21.75f, -4f));
+            // Straight into a pit (the Tomb has none; the forest next door has).
+            var pit = Object.FindObjectsByType<KillZone>().OrderBy(k => k.transform.position.x).First();
+            _motor.ResetTo(pit.transform.position);
             yield return WaitUntil(() => _respawner.DeathCount > deaths, 4f);
 
             Assert.That(_respawner.DeathCount, Is.EqualTo(deaths + 1),

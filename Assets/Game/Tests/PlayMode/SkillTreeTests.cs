@@ -467,7 +467,7 @@ namespace ForgottenKingdom.Tests
         {
             LearnDashStrike();
             _activeSkills.AssignSlot(1, "hunter_dash_strike");
-            _motor.ResetTo(new Vector2(-9f, 0.85f));
+            _motor.ResetTo(TombScene.Ground(3f));
             yield return new WaitForFixedUpdate();
             var start = _player.transform.position.x;
 

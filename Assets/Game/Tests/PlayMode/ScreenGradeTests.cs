@@ -83,7 +83,7 @@ namespace ForgottenKingdom.Tests
         public IEnumerator ABossFightHardensThePicture()
         {
             var boss = Object.FindObjectsByType<BossController>();
-            _motor.ResetTo(new Vector2(42f, 1f));
+            _motor.ResetTo(TombScene.ArenaEntry());
             var until = Time.realtimeSinceStartup + 4f;
             while (Time.realtimeSinceStartup < until && !System.Array.Exists(boss, b => b.IsFighting))
             {

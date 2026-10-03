@@ -48,7 +48,7 @@ namespace ForgottenKingdom.Tests
             _motor = _player.GetComponent<PlayerMotor2D>();
             _stamina = _player.Stamina;
             // Open ground, away from the dummies and the sparring partner.
-            _motor.ResetTo(new Vector2(-12f, 0.85f));
+            _motor.ResetTo(TombScene.Ground(0f));
             yield return Neutral(6);
         }
 
@@ -135,7 +135,10 @@ namespace ForgottenKingdom.Tests
         [UnityTest]
         public IEnumerator ADashDoesNotPassThroughAWall()
         {
-            _motor.ResetTo(new Vector2(-13.5f, 0.85f));
+            // Three units from the burial hall's west wall, the Tomb's far west.
+            var hall = TombScene.Layout.WorldBounds(TombScene.Layout.Room("room_tomb_burial_hall"));
+            var face = hall.xMin + 1f;
+            _motor.ResetTo(new Vector2(face + 3f, TombScene.Spot("altar").y + 0.85f));
             yield return Neutral(4);
             InputSystem.QueueStateEvent(_keyboard, new KeyboardState(Key.A));
             yield return Realtime(0.1f);
@@ -143,7 +146,7 @@ namespace ForgottenKingdom.Tests
             yield return Realtime(0.4f);
             yield return Neutral(4);
 
-            Assert.That(_player.transform.position.x, Is.GreaterThan(-15.2f),
+            Assert.That(_player.transform.position.x, Is.GreaterThan(face - 0.2f),
                 "Invincibility is not a pass through level collision.");
         }
 
@@ -251,7 +254,7 @@ namespace ForgottenKingdom.Tests
             Assert.That(_player.Action, Is.EqualTo(PlayerAction.GuardBroken));
 
             yield return Neutral(2);
-            _player.Respawn(new Vector2(-12f, 0.85f));
+            _player.Respawn(TombScene.Ground(0f));
             yield return new WaitForFixedUpdate();
 
             Assert.That(_player.Action, Is.EqualTo(PlayerAction.None));
@@ -269,7 +272,7 @@ namespace ForgottenKingdom.Tests
             var attacker = Object.FindAnyObjectByType<TrainingAttacker>();
             Assert.That(attacker, Is.Not.Null, "The training area needs a sparring partner.");
 
-            _motor.ResetTo(new Vector2(attacker.transform.position.x - 1.6f, 0.85f));
+            _motor.ResetTo(new Vector2(attacker.transform.position.x - 1.6f, TombScene.StartFeet.y + 0.85f));
             yield return Neutral(4);
             InputSystem.QueueStateEvent(_keyboard, new KeyboardState(Key.Q));
 

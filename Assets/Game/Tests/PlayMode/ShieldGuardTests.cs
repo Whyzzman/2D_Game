@@ -306,7 +306,8 @@ namespace ForgottenKingdom.Tests
             _player = Object.FindAnyObjectByType<PlayerCharacter>();
             _motor = _player.GetComponent<PlayerMotor2D>();
             _guards = Object.FindObjectsByType<EnemyController>()
-                .Where(enemy => enemy.name.StartsWith("ShieldGuard") && TombScene.InTomb(enemy))
+                // The pair on the Tomb's east hall, on open ground.
+                .Where(enemy => enemy.name.StartsWith("ShieldGuard") && TombScene.InRoom(enemy, "room_tomb_east_hall"))
                 .OrderBy(enemy => enemy.transform.position.x)
                 .ToArray();
             yield return new WaitForFixedUpdate();
@@ -343,7 +344,7 @@ namespace ForgottenKingdom.Tests
         public IEnumerator TheGuardRaisesItsShieldWhenThePlayerClosesIn()
         {
             var shieldGuard = _guards[0];
-            _motor.ResetTo(new Vector2(shieldGuard.transform.position.x - 2.2f, 0.9f));
+            _motor.ResetTo(new Vector2(shieldGuard.transform.position.x - 2.2f, shieldGuard.transform.position.y));
 
             yield return WaitUntil(() => shieldGuard.Guard.IsRaised
                 || shieldGuard.State == EnemyState.Attack, 8f);
@@ -355,7 +356,7 @@ namespace ForgottenKingdom.Tests
         public IEnumerator TheGuardDoesNotHoldItsShieldForever()
         {
             var shieldGuard = _guards[0];
-            _motor.ResetTo(new Vector2(shieldGuard.transform.position.x - 2.2f, 0.9f));
+            _motor.ResetTo(new Vector2(shieldGuard.transform.position.x - 2.2f, shieldGuard.transform.position.y));
             yield return WaitUntil(() => shieldGuard.Guard.IsRaised, 8f);
             Assert.That(shieldGuard.Guard.IsRaised, Is.True);
 
@@ -391,7 +392,7 @@ namespace ForgottenKingdom.Tests
         {
             var shieldGuard = _guards[0];
             // Let the AI raise the shield itself; a manually raised one is lowered on its next tick.
-            _motor.ResetTo(new Vector2(shieldGuard.transform.position.x - 2.2f, 0.9f));
+            _motor.ResetTo(new Vector2(shieldGuard.transform.position.x - 2.2f, shieldGuard.transform.position.y));
             yield return WaitUntil(() => shieldGuard.Guard.IsGuarding, 10f);
             Assert.That(shieldGuard.Guard.IsGuarding, Is.True, "The AI has to raise its shield.");
 

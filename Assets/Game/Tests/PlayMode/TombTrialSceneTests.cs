@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -124,7 +125,8 @@ namespace ForgottenKingdom.Tests
             Assert.That(_boss, Is.Not.Null);
             Assert.That(Object.FindAnyObjectByType<Checkpoint>(), Is.Not.Null);
             Assert.That(TombScene.TombEnemies().Length,
-                Is.EqualTo(5), "Three zombie soldiers and two shield guards.");
+                Is.EqualTo(TombScene.Layout.Markers().Count(m => m.Kind == "enemy")),
+                "Every enemy the Tomb's text places, and no other.");
             Assert.That(Object.FindAnyObjectByType<CameraFollow2D>(), Is.Not.Null);
             Assert.That(_player.Health.Current, Is.EqualTo(_player.Health.Max));
 
@@ -160,7 +162,7 @@ namespace ForgottenKingdom.Tests
             checkpoint.Interact(_player);
             var altar = checkpoint.transform.position;
 
-            _motor.ResetTo(new Vector2(14f, 1f));
+            _motor.ResetTo(TombScene.Ground(10f));
             yield return new WaitForFixedUpdate();
             _player.Actor.ClearInvulnerability();
             _player.Actor.ApplyDamage(new DamageInfo(9999f, Vector2.right));
@@ -177,19 +179,20 @@ namespace ForgottenKingdom.Tests
         [UnityTest]
         public IEnumerator FallingOutOfTheLevelIsFatalAndSendsThePlayerBack()
         {
-            _motor.ResetTo(new Vector2(20f, -30f));
+            // Under the Tomb's lowest pool, past the world's floor (-30).
+            _motor.ResetTo(new Vector2(20f, -45f));
             yield return new WaitForFixedUpdate();
 
             // Out of bounds is a death, so it takes the death delay and the fade to come back.
             var deadline = Time.realtimeSinceStartup + 8f;
             while (Time.realtimeSinceStartup < deadline
-                && !(_player.IsAlive && _player.transform.position.y > -12f))
+                && !(_player.IsAlive && _player.transform.position.y > -25f))
             {
                 yield return null;
             }
 
             Assert.That(_player.IsAlive, Is.True);
-            Assert.That(_player.transform.position.y, Is.GreaterThan(-12f));
+            Assert.That(_player.transform.position.y, Is.GreaterThan(-25f));
         }
 
         [UnityTest]
@@ -199,7 +202,7 @@ namespace ForgottenKingdom.Tests
             var started = false;
             _arena.FightStarted += _ => started = true;
 
-            _motor.ResetTo(new Vector2(42f, 1f));
+            _motor.ResetTo(TombScene.ArenaEntry());
             yield return new WaitForFixedUpdate();
             yield return new WaitForFixedUpdate();
 
@@ -212,7 +215,7 @@ namespace ForgottenKingdom.Tests
         [UnityTest]
         public IEnumerator TheBossEntersItsSecondPhaseBelowHalfHealth()
         {
-            _motor.ResetTo(new Vector2(42f, 1f));
+            _motor.ResetTo(TombScene.ArenaEntry());
             yield return new WaitForFixedUpdate();
             yield return new WaitForFixedUpdate();
 
@@ -228,7 +231,7 @@ namespace ForgottenKingdom.Tests
         [UnityTest]
         public IEnumerator DefeatingTheBossOpensTheArenaAndIsWrittenToTheSave()
         {
-            _motor.ResetTo(new Vector2(42f, 1f));
+            _motor.ResetTo(TombScene.ArenaEntry());
             yield return new WaitForFixedUpdate();
             yield return new WaitForFixedUpdate();
 

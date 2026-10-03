@@ -57,7 +57,7 @@ namespace ForgottenKingdom.Tests
             _dummyHealth = _dummy.GetComponent<Health>();
 
             // Stand just within sword range of the dummy, facing it.
-            _motor.ResetTo(new Vector2(_dummy.transform.position.x - 1.1f, 0.85f));
+            _motor.ResetTo(new Vector2(_dummy.transform.position.x - 1.1f, TombScene.StartFeet.y + 0.85f));
             yield return Neutral(6);
         }
 
@@ -127,7 +127,7 @@ namespace ForgottenKingdom.Tests
             yield return WaitForSecondsRealtime(1.6f);
 
             // Step back into range so the test measures the combo index, not the distance.
-            _motor.ResetTo(new Vector2(_dummy.transform.position.x - 1.1f, 0.85f));
+            _motor.ResetTo(new Vector2(_dummy.transform.position.x - 1.1f, TombScene.StartFeet.y + 0.85f));
             yield return Neutral(4);
             var beforeRestart = _dummyHealth.Current;
             yield return PressLightAttack();

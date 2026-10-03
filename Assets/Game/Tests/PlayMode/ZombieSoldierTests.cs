@@ -48,7 +48,8 @@ namespace ForgottenKingdom.Tests
             _player = Object.FindAnyObjectByType<PlayerCharacter>();
             _motor = _player.GetComponent<PlayerMotor2D>();
             _zombies = Object.FindObjectsByType<EnemyController>()
-                .Where(enemy => enemy.name.StartsWith("ZombieSoldier") && TombScene.InTomb(enemy))
+                // The guards' passage: one on the open floor, one on a dais with two drops, one behind a pillar.
+                .Where(enemy => enemy.name.StartsWith("ZombieSoldier") && TombScene.InRoom(enemy, "room_tomb_guard_passage"))
                 .OrderBy(enemy => enemy.transform.position.x)
                 .ToArray();
             yield return Neutral(4);
@@ -95,7 +96,7 @@ namespace ForgottenKingdom.Tests
             var ledgeZombie = _zombies[1];
             var startY = ledgeZombie.transform.position.y;
             // Keep the player far away so the zombie keeps patrolling.
-            _motor.ResetTo(new Vector2(-12f, 0.85f));
+            _motor.ResetTo(TombScene.Ground(0f));
             yield return Realtime(6f);
 
             Assert.That(ledgeZombie.transform.position.y, Is.GreaterThan(startY - 1f),
@@ -108,7 +109,7 @@ namespace ForgottenKingdom.Tests
         {
             var hidden = _zombies[2];
             // Within detection range, but the pillar stands between the two.
-            _motor.ResetTo(new Vector2(hidden.transform.position.x - 6f, 0.85f));
+            _motor.ResetTo(new Vector2(hidden.transform.position.x - 6f, hidden.transform.position.y - 0.05f));
             yield return Realtime(1.5f);
 
             Assert.That(hidden.State, OneOf(EnemyState.Idle, EnemyState.Patrol),
@@ -299,7 +300,7 @@ namespace ForgottenKingdom.Tests
                 || zombie.State == EnemyState.Attack, 6f);
 
             // Leave the area entirely.
-            _motor.ResetTo(new Vector2(-12f, 0.85f));
+            _motor.ResetTo(TombScene.Ground(0f));
             yield return WaitUntil(() => zombie.State == EnemyState.ReturnToPatrol
                 || zombie.State == EnemyState.Idle || zombie.State == EnemyState.Patrol, 12f);
 

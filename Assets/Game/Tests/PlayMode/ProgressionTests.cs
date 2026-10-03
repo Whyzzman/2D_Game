@@ -409,7 +409,7 @@ namespace ForgottenKingdom.Tests
         public IEnumerator TheGuardianPaysAFortuneOnceAndNeverAgain()
         {
             var encounter = TombScene.GuardianEncounter();
-            _player.GetComponent<PlayerMotor2D>().ResetTo(new Vector2(42f, 1f));
+            _player.GetComponent<PlayerMotor2D>().ResetTo(TombScene.ArenaEntry());
             yield return new WaitForFixedUpdate();
             yield return new WaitForFixedUpdate();
 

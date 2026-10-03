@@ -268,7 +268,7 @@ namespace ForgottenKingdom.Tests
         public IEnumerator TheGuardianHandsOverItsCoreAndItsCoinsOnce()
         {
             var encounter = TombScene.GuardianEncounter();
-            _motor.ResetTo(new Vector2(42f, 1f));
+            _motor.ResetTo(TombScene.ArenaEntry());
             yield return new WaitForFixedUpdate();
             yield return new WaitForFixedUpdate();
 

@@ -200,8 +200,7 @@ namespace ForgottenKingdom
 
         public string ZoneAt(Vector2 position)
         {
-            var area = _graph != null ? _graph.AreaAt(_worldScene, position) : null;
-            return area != null ? area.ZoneId : string.Empty;
+            return _graph != null ? _graph.ZoneAt(_worldScene, position) : string.Empty;
         }
 
         private string StartZone()

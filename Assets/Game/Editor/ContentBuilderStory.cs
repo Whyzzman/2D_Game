@@ -43,6 +43,14 @@ namespace ForgottenKingdom.EditorTools
                 "«Моє слово — стіна. Поки я стою, королівство не забудуть». — Клятва Короля, викарбувана на дверях")
         };
 
+        private static readonly System.Collections.Generic.Dictionary<string, string> TombStones =
+            new System.Collections.Generic.Dictionary<string, string>
+            {
+                ["InscriptionUnsworn"] = "stone-unsworn",
+                ["InscriptionWardensKey"] = "stone-wardens-key",
+                ["InscriptionGuardian"] = "stone-guardian"
+            };
+
         private static void BuildInscriptions(Transform root)
         {
             Physics2D.SyncTransforms();
@@ -52,7 +60,9 @@ namespace ForgottenKingdom.EditorTools
             {
                 var stone = new GameObject(spot.Name);
                 stone.transform.SetParent(root);
-                stone.transform.position = FloorNear(spot.X);
+                // The Tomb's stones stand where its text puts them; the old zones' by x.
+                stone.transform.position = TombStones.TryGetValue(spot.Name, out var tombSpot)
+                    ? (Vector3)TombSpot(tombSpot) : (Vector3)FloorNear(spot.X);
                 var trigger = stone.AddComponent<BoxCollider2D>();
                 trigger.isTrigger = true;
                 trigger.size = new Vector2(2.2f, 2.6f);

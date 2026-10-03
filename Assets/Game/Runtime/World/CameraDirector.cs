@@ -116,6 +116,12 @@ namespace ForgottenKingdom
 
             _room = room;
             _follow.SetRoomBounds(room >= 0 ? _rooms.Rooms[room].View : (Rect?)null, blendTime);
+            // The view never shows past the zone the room belongs to. Zones lie at different
+            // heights since the Tomb was built from its map: the whole world's extent (up to the
+            // Guardian's hall) would let a short room of the forest show empty sky over its top.
+            var graph = _progress != null ? _progress.World : null;
+            var area = room >= 0 && graph != null ? graph.Area(_rooms.Rooms[room].AreaIds[0]) : null;
+            _follow.SetWorldBounds(area != null ? SceneExtent(area.ZoneId) : SceneExtent());
         }
 
         /// <summary>
@@ -234,12 +240,17 @@ namespace ForgottenKingdom
             }
         }
 
-        /// <summary>Every area of this scene put together, or nothing when there is no graph.</summary>
-        private Rect? SceneExtent()
+        /// <summary>Every area of this scene (of one zone, if named) put together, or nothing without a graph.</summary>
+        private Rect? SceneExtent(string zoneId = null)
         {
             Rect? extent = null;
             foreach (var area in SceneAreas())
             {
+                if (zoneId != null && area.ZoneId != zoneId)
+                {
+                    continue;
+                }
+
                 var bounds = area.WorldBounds;
                 extent = extent.HasValue
                     ? Rect.MinMaxRect(Mathf.Min(extent.Value.xMin, bounds.xMin),

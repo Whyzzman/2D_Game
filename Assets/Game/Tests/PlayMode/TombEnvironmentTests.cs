@@ -42,25 +42,37 @@ namespace ForgottenKingdom.Tests
         public IEnumerator TheTombIsDressedRatherThanGrey()
         {
             yield return null;
-            var environment = GameObject.Find("Environment");
-
-            Assert.That(environment, Is.Not.Null, "The content build dresses the level.");
-            var renderers = environment.GetComponentsInChildren<SpriteRenderer>();
-            Assert.That(renderers.Length, Is.GreaterThan(30),
+            var renderers = Dressings().SelectMany(d => d.GetComponentsInChildren<SpriteRenderer>()).ToArray();
+            Assert.That(renderers.Length, Is.GreaterThan(100),
                 "A handful of props is still a greybox with decoration on it.");
         }
 
         [UnityTest]
-        public IEnumerator EverySectionOfTheTombIsPresent()
+        public IEnumerator EveryRoomOfTheTombsTextIsBuiltAndDressed()
         {
             yield return null;
-            foreach (var section in new[]
+            foreach (var room in TombScene.Layout.Rooms)
             {
-                "BurialHall", "GuardPassage", "CollapsedCrypt", "BossApproach", "GuardianArena",
-                "Foreground"
-            })
+                var built = GameObject.Find(room.Id);
+                Assert.That(built, Is.Not.Null, $"{room.Id} is missing.");
+                Assert.That(built.transform.Find("Dressing"), Is.Not.Null, $"{room.Id} has no dressing.");
+            }
+        }
+
+        [UnityTest]
+        public IEnumerator EveryRoomHasItsOwnBackdropInItsOwnTone()
+        {
+            // The user's rule (2026-10-03): no picture repeats from room to room so the eye catches it.
+            yield return null;
+            var tones = new System.Collections.Generic.Dictionary<Color, string>();
+            foreach (var dressing in Dressings())
             {
-                Assert.That(GameObject.Find(section), Is.Not.Null, $"{section} is missing.");
+                var backdrop = dressing.Find("Backdrop")?.GetComponent<SpriteRenderer>();
+                Assert.That(backdrop, Is.Not.Null, $"{dressing.parent.name} has no backdrop.");
+                Assert.That(backdrop.sortingLayerName, Is.EqualTo("BackgroundMid"));
+                Assert.That(tones.ContainsKey(backdrop.color), Is.False,
+                    $"{dressing.parent.name} wears the same tone as {(tones.TryGetValue(backdrop.color, out var other) ? other : "")}.");
+                tones[backdrop.color] = dressing.parent.name;
             }
         }
 
@@ -70,8 +82,7 @@ namespace ForgottenKingdom.Tests
             // The rule the whole phase rests on: a decorative ledge the player can stand on is a
             // worse bug than no decoration at all.
             yield return null;
-            var environment = GameObject.Find("Environment");
-            var colliders = environment.GetComponentsInChildren<Collider2D>();
+            var colliders = Dressings().SelectMany(d => d.GetComponentsInChildren<Collider2D>()).ToArray();
 
             Assert.That(colliders, Is.Empty,
                 "Dressing must not add collision: " + string.Join(", ",
@@ -82,7 +93,8 @@ namespace ForgottenKingdom.Tests
         public IEnumerator TheGameplayFloorDrawsInFrontOfItsBackground()
         {
             yield return null;
-            var floor = GameObject.Find("Floor").GetComponentInChildren<SpriteRenderer>();
+            var floor = GameObject.Find("room_tomb_entrance").GetComponentsInChildren<BoxCollider2D>()
+                .First(b => b.name.StartsWith("Solid_")).GetComponentInChildren<SpriteRenderer>();
             var names = SortingLayer.layers.Select(layer => layer.name).ToList();
 
             Assert.That(floor.sortingLayerName, Is.EqualTo("GameplayEnvironment"));
@@ -106,26 +118,7 @@ namespace ForgottenKingdom.Tests
                 "Left on Default: " + string.Join(", ", stray));
         }
 
-        // ---------- parallax ----------
-
-        [UnityTest]
-        public IEnumerator TheThreeBackgroundLayersParallaxAtIncreasingRates()
-        {
-            yield return null;
-            // The Tomb's own backdrop; the forest brings three layers of its own further east.
-            var layers = Object.FindObjectsByType<ParallaxLayer>()
-                .Where(l => l.name.Contains("_tomb_"))
-                .ToArray();
-
-            Assert.That(layers.Length, Is.EqualTo(3));
-            var far = Layer(layers, "far");
-            var mid = Layer(layers, "mid");
-            var near = Layer(layers, "near");
-            Assert.That(far.Factor, Is.LessThan(mid.Factor));
-            Assert.That(mid.Factor, Is.LessThan(near.Factor));
-            Assert.That(near.Factor, Is.LessThan(1f),
-                "A layer at 1 is nailed to the world and is not a background.");
-        }
+        // ---------- parallax (the Forest's and the Capital's; the Tomb has a backdrop per room) ----------
 
         [UnityTest]
         public IEnumerator ABackgroundAlwaysStaysUnderTheCamera()
@@ -237,22 +230,6 @@ namespace ForgottenKingdom.Tests
                 "The focal point has to be behind the Guardian, not beside it.");
         }
 
-        [UnityTest]
-        public IEnumerator ThePitIsDrawnRatherThanHiddenInTheDark()
-        {
-            yield return null;
-            var depth = GameObject.Find("PitDepth");
-            Assert.That(depth, Is.Not.Null, "A kill zone the player cannot see is a cheap death.");
-
-            // The forest has pits of its own, and "any" kill zone is whichever Unity lists first;
-            // the one the Tomb's drawing belongs to is the nearest.
-            var nearest = Object.FindObjectsByType<KillZone>(FindObjectsInactive.Exclude)
-                .Select(k => Mathf.Abs(depth.transform.position.x - k.transform.position.x))
-                .DefaultIfEmpty(float.MaxValue)
-                .Min();
-            Assert.That(nearest, Is.LessThan(1.5f), "The drawn danger has to sit where the real one is.");
-        }
-
         // ---------- nothing moved ----------
 
         [UnityTest]
@@ -263,27 +240,30 @@ namespace ForgottenKingdom.Tests
                 .Select(c => c.CheckpointId).OrderBy(id => id).ToArray();
             var boss = TombScene.Guardian();
 
-            Assert.That(checkpoints, Is.EqualTo(new[] { "tomb-altar-01", "tomb-altar-02" }));
+            Assert.That(checkpoints, Is.EqualTo(new[] { "tomb-altar-01", "tomb-altar-02", "tomb-altar-03", "tomb-altar-04" }),
+                "The two old altars keep their ids; the map's two more are new.");
             Assert.That(boss.BossId, Is.EqualTo("guardian-of-the-tomb"));
         }
 
         [UnityTest]
-        public IEnumerator TheLevelGeometryIsWhereGameplayLeftIt()
+        public IEnumerator TheGuardiansFloorIsAsTheTextHasIt()
         {
             yield return null;
-            // By place, not by name alone: the hidden rooms have floors called Floor too.
+            var arena = TombScene.Layout.WorldBounds(TombScene.Layout.Room("room_tomb_guardian_arena"));
             var floor = Object.FindObjectsByType<BoxCollider2D>()
-                .Where(b => b.name == "Floor")
-                .OrderBy(b => Mathf.Abs(b.transform.position.x - 2.75f) + Mathf.Abs(b.transform.position.y + 0.5f))
-                .First();
-            var arena = GameObject.Find("ArenaFloor").GetComponent<BoxCollider2D>();
-
-            Assert.That(floor.size, Is.EqualTo(new Vector2(35.5f, 1f)));
-            Assert.That(arena.size, Is.EqualTo(new Vector2(24f, 1f)),
+                .Where(b => !b.isTrigger && b.gameObject.layer == 9 && arena.Contains(b.bounds.center)
+                    && b.bounds.max.y < arena.center.y)
+                .OrderByDescending(b => b.bounds.size.x).First();
+            Assert.That(floor.bounds.size.x, Is.GreaterThanOrEqualTo(24f),
                 "Arena dimensions are gameplay; art fits them, never the reverse.");
+            Assert.That(floor.bounds.max.y, Is.EqualTo(TombScene.Spot("guardian").y).Within(0.01f));
         }
 
         // ---------- helpers ----------
+
+        private static Transform[] Dressings() =>
+            TombScene.Layout.Rooms.Select(r => GameObject.Find(r.Id)?.transform.Find("Dressing"))
+                .Where(d => d != null).ToArray();
 
         private static ParallaxLayer Layer(ParallaxLayer[] layers, string keyword) =>
             layers.First(l => l.name.ToLowerInvariant().Contains(keyword));

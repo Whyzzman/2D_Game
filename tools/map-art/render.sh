@@ -43,8 +43,9 @@ if [[ "$WHAT" == all || "$WHAT" == rooms ]]; then
 import json, sys
 for r in json.load(open(sys.argv[1]))["rooms"]:
     w, h = round(r["w"]), round(r["h"])
-    q = f"room={r['id']}&art={r['art']}&w={w}&h={h}" + ("&boss=1" if r["boss"] else "")
-    print(f"{r['id']}\t{q}\t{w}\t{h}")
+    s = 2 if h < 100 else 1
+    q = f"room={r['id']}&art={r['art']}&w={w}&h={h}&s={s}" + ("&boss=1" if r["boss"] else "")
+    print(f"{r['id']}\t{q}\t{w * s}\t{h * s}")
 PY
 fi
 rm -rf "$PROFILE"

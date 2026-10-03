@@ -89,7 +89,9 @@ namespace ForgottenKingdom.EditorTools
 
             foreach (var marker in zone.Markers())
             {
-                var problem = PlaceMarker(zone, marker, rooms[marker.RoomId], context);
+                var problem = marker.Kind == "breakable"
+                    ? LayoutBreakableWall(zone, marker, rooms[marker.RoomId], block, context)
+                    : PlaceMarker(zone, marker, rooms[marker.RoomId], context);
                 if (problem != null)
                 {
                     problems.Add($"room {marker.RoomId}, «{marker.Letter}»: {problem}");
@@ -113,8 +115,56 @@ namespace ForgottenKingdom.EditorTools
         }
 
         /// <summary>Where a lettered thing stands: the middle of its cell, on the cell's floor.</summary>
-        private static Vector2 MarkerFeet(LevelZone zone, LevelMarker marker) =>
+        public static Vector2 MarkerFeet(LevelZone zone, LevelMarker marker) =>
             zone.CellCorner(marker.Cell) + new Vector2(zone.CellSize * 0.5f, 0f);
+
+        /// <summary>
+        /// A named point of the zone for the zone's own builder: a <c>spot name</c>, or the first
+        /// thing of that kind (<c>start</c>).
+        /// </summary>
+        public static Vector2 SpotFeet(LevelZone zone, string name)
+        {
+            foreach (var marker in zone.Markers())
+            {
+                if ((marker.Kind == "spot" && marker.Arg(0) == name) || marker.Kind == name)
+                {
+                    return MarkerFeet(zone, marker);
+                }
+            }
+
+            Debug.LogError($"Layout {zone.ZoneId} has no spot «{name}».");
+            return Vector2.zero;
+        }
+
+        /// <summary>
+        /// «breakable id height»: the secret room's wall, two cells wide from the marker to its
+        /// right and <c>height</c> cells up from its floor, built in the zone's stone and made to
+        /// break (<see cref="BreakableWall"/>), with a veil over the room until it does.
+        /// </summary>
+        private static string LayoutBreakableWall(LevelZone zone, LevelMarker marker, Transform parent,
+            LevelBlockMaker block, LevelContext context)
+        {
+            if (!int.TryParse(marker.Arg(1), out var cells) || cells < 4)
+            {
+                return "a breakable wall needs a height of at least four cells";
+            }
+
+            var corner = zone.CellCorner(marker.Cell);
+            var world = new Rect(corner, new Vector2(zone.CellSize * 2f, zone.CellSize * cells));
+            var made = block(parent, "BreakableWall", world, LevelCell.Solid);
+            if (made == null)
+            {
+                return "the zone made no block for the wall";
+            }
+
+            Ensure<NonClimbableSurface>(made);
+            var room = zone.Room(marker.RoomId);
+            var inside = zone.WorldBounds(room);
+            var shell = zone.CellSize * 2f;
+            inside = Rect.MinMaxRect(inside.xMin + shell, inside.yMin + shell, inside.xMax - shell, inside.yMax - shell);
+            BuildBreakableWall(made, marker.Arg(0), inside, context.Progress, parent);
+            return null;
+        }
 
         private static string PlaceMarker(LevelZone zone, LevelMarker marker, Transform parent, LevelContext context)
         {
@@ -122,6 +172,22 @@ namespace ForgottenKingdom.EditorTools
             switch (marker.Kind)
             {
                 case "start":
+                case "spot":
+                    return null;
+                case "shard":
+                    if (context.Pickup == null)
+                    {
+                        return "no pickup prefab";
+                    }
+
+                    var kind = marker.Arg(0) == "mana" ? VesselKind.Mana : VesselKind.Health;
+                    var shardId = ExplorationIdPrefix + (kind == VesselKind.Health ? "health-" : "mana-") + marker.Arg(1);
+                    PlacePickup(context.Pickup, feet + new Vector2(0f, 0.7f), context.Progress,
+                        VesselShards.Prefix(kind) + marker.Arg(1), false, 1, shardId, false);
+                    Adopt(parent, c => c.GetComponent<WorldPickup>()?.PersistentId == shardId);
+                    return null;
+                case "reward":
+                    PlaceTraversalReward(parent, feet + new Vector2(0f, 1f), marker.Arg(0), marker.Arg(1));
                     return null;
                 case "altar":
                     if (context.Checkpoint == null || context.Player == null)
@@ -143,7 +209,7 @@ namespace ForgottenKingdom.EditorTools
                     var gold = marker.Kind == "gold";
                     PlacePickup(context.Pickup, feet + new Vector2(0f, 0.6f), context.Progress,
                         gold ? string.Empty : marker.Arg(0), gold, gold ? int.Parse(marker.Arg(0)) : 1,
-                        marker.Arg(1), false);
+                        marker.Arg(1), gold);
                     Adopt(parent, c => c.GetComponent<WorldPickup>()?.PersistentId == marker.Arg(1));
                     return null;
                 case "ring":
@@ -211,8 +277,14 @@ namespace ForgottenKingdom.EditorTools
             return (areas, links, altars);
         }
 
-        public static string LinkId(LevelLink link) =>
-            "conn_" + Short(link.From) + "_" + Short(link.To);
+        /// <summary>«conn_tomb_entrance_guard_passage»: the zone's word once, as the graph's older ids have it.</summary>
+        public static string LinkId(LevelLink link)
+        {
+            var from = Short(link.From);
+            var to = Short(link.To);
+            var zone = from.Split('_')[0] + "_";
+            return "conn_" + from + "_" + (to.StartsWith(zone) ? to.Substring(zone.Length) : to);
+        }
 
         private static string Short(string roomId) => roomId.StartsWith("room_") ? roomId.Substring(5) : roomId;
     }

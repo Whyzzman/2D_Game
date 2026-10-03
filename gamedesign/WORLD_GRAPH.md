@@ -41,21 +41,14 @@ PHASE 25. Источник истины — `Assets/Game/Data/WorldGraph.asset`,
 
 ## Области
 
-Границы — по X в мировых координатах; по Y основные комнаты занимают −8…18.
+Границы старых зон — по X в мировых координатах; по Y основные комнаты занимают −8…18.
+Зоны из текста (`LEVEL_TOOL.md`) берут области, связи и алтари из своего текста.
 «Триггер» — открывается только своим `AreaDiscoveryTrigger`, а не попаданием в
 границы (секретные карманы рядом с путём).
 
 | AreaID | Имя | Зона | X | Вид |
 | --- | --- | --- | --- | --- |
-| `room_tomb_entrance` | Вхід до Гробниці | Гробница | −22…−7 | старт, алтарь |
-| `room_tomb_burial_hall` | Поховальна зала | Гробница | −7…6 | |
-| `room_tomb_guard_passage` | Прохід варти | Гробница | 6…20,5 | |
-| `room_tomb_collapsed_crypt` | Обвалений склеп | Гробница | 20,5…27 | алтарь |
-| `room_tomb_guardian_approach` | Підступ до Стража | Гробница | 27…38,5 | |
-| `room_tomb_guardian_arena` | Арена Стража | Гробница | 38,5…62,5 | босс |
-| `room_tomb_royal_ossuary` | Королівська костниця | Гробница | 12…15, y 7,2 | секрет, триггер |
-| `room_tomb_bell_shaft` | Дзвонова шахта | Гробница | −6,8…−2,8, y 10,4 | секрет, триггер |
-| `room_tomb_reliquary` | Реліквіарій | Гробница | 3…5, y 4 | необязательная, триггер |
+| Гробница — 27 комнат | | Гробница | −73,5…62,5, y −17…73 | из `Levels/tomb.txt` (п. 3 «Мира из 15 зон»): границы — прямоугольники комнат текста, тайные — по триггеру; старт `room_tomb_entrance` |
 | `room_forest_root_tunnel` | Кореневий тунель | Лес | 62,5…81 | переход зон |
 | `room_forest_entrance` | Узлісся | Лес | 81…110 | алтарь |
 | `room_forest_royal_road` | Зруйнований королівський шлях | Лес | 110…134 | алтарь |
@@ -78,16 +71,14 @@ PHASE 25. Источник истины — `Assets/Game/Data/WorldGraph.asset`,
 
 | ConnectionID | Из → в | Тип | Условие |
 | --- | --- | --- | --- |
-| `conn_tomb_entrance_hall` | вход ↔ зала | Normal | — |
-| `conn_tomb_hall_passage` | зала ↔ проход | Normal | — |
-| `conn_tomb_passage_crypt` | проход ↔ склеп | Normal | прыжок через провал |
-| `conn_tomb_crypt_bridge` | проход ↔ склеп | Shortcut | `shortcut_tomb_crypt_bridge`, открывается из склепа |
-| `conn_tomb_crypt_approach` | склеп ↔ подступ | Normal | — |
-| `conn_tomb_approach_arena` | подступ ↔ арена | Door | — |
-| `conn_tomb_to_forest` | арена ↔ тоннель | ZoneTransition | Страж побеждён |
-| `conn_tomb_passage_ossuary` | проход ↔ костница | AbilityGate | double-jump |
-| `conn_tomb_hall_bellshaft` | зала ↔ шахта | AbilityGate | wall-run |
-| `conn_tomb_passage_reliquary` | проход ↔ реликварий | AbilityGate | air-dash |
+| Гробница: связи по проёмам текста | | Normal | id `conn_tomb_<комната>_<комната>` |
+| `conn_tomb_entrance_chain_shaft` | вход ↔ цепная шахта | Shortcut | `shortcut_tomb_chain_gate`, решётка, лебёдка со стороны шахты |
+| `conn_tomb_guardian_approach_guardian_arena` | подступ ↔ арена | Door | — |
+| `conn_tomb_to_forest` | восточная зала ↔ тоннель | ZoneTransition | Страж побеждён |
+| `conn_tomb_entrance_bell_shaft` | вход ↔ колокольная шахта | AbilityGate | double-jump |
+| `conn_tomb_lower_chain_reliquary` | нижняя цепь ↔ реликварий | AbilityGate | air-dash |
+| `conn_tomb_collapsed_crypt_crypt_nest` | обвалений склеп ↔ гнездо | AbilityGate | grapple |
+| `conn_tomb_entrance_guard_passage`, `…_column_burial_hall`, `…_east_chapel_flooded_crypt`, `…_guard_passage_lower_chain`, `…_lower_chain_lower_crypt`, `…_chain_shaft_falls`, `…_west_shaft_collapsed_crypt` | | Drop | **односторонние**: спуски в провал |
 | `conn_forest_tunnel_entrance` | тоннель ↔ опушка | Normal | — |
 | `conn_forest_entrance_road` | опушка ↔ дорога | Normal | — |
 | `conn_forest_road_ledge` | дорога → арка | Drop | **одностороння**, через карниз лучника |
@@ -105,7 +96,7 @@ PHASE 25. Источник истины — `Assets/Game/Data/WorldGraph.asset`,
 | `conn_forest_far_beyond` | край → дальше | Gate, будущая | Вартовий + несуществующая зона: не открывается |
 
 Двусторонняя связь — одна запись, которая работает в обе стороны. Односторонних
-ровно две, обе задокументированы здесь и проверяются тестом
+девять (две лесные и семь спусков Гробницы), все задокументированы здесь и проверяются тестом
 `TheOnlyOneWayConnectionsAreTheDocumentedOnes`: новая односторонняя связь должна
 попасть и сюда, и в тест.
 

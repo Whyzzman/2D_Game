@@ -95,7 +95,11 @@ namespace ForgottenKingdom.Tests
             Assume.That(_progress.HasAbility(AbilityIds.AirDash), Is.False);
             Assume.That(_progress.HasAbility(AbilityIds.WallRun), Is.False);
             Assume.That(_progress.HasAbility(AbilityIds.DoubleJump), Is.False);
-            yield return null;
+            // The Tomb's halls lie above and below each other since item 3 of the 15-zone list: its
+            // main path is proven by its text, the hero's own movement stepped through every jump
+            // (TombLayoutTests). This walk starts at its way out, in the east hall.
+            var hall = TombScene.Spot("exit") + new Vector2(-6f, 0.85f);
+            yield return Place(hall);
 
             GameTimeScale.SetBaseScale(4f);
             // On through the road the Warden kept, across the capital to the sealed road east of
@@ -106,12 +110,12 @@ namespace ForgottenKingdom.Tests
             Assert.That(_progress.IsShortcutUnlocked(ContentBuilderIds.RoadGate), Is.False,
                 "East is walkable over the archer's ledge without the shortcut.");
 
-            yield return Walk(-1, -13f, "back west to the Tomb's first altar", pullWinches: true);
+            yield return Walk(-1, hall.x, "back west to the Tomb's east hall", pullWinches: true);
             Assert.That(_world.CurrentZoneId, Is.EqualTo("zone_forgotten_tomb"));
-            Assert.That(_world.CurrentAreaId, Is.EqualTo("room_tomb_entrance"));
+            Assert.That(_world.CurrentAreaId, Is.EqualTo("room_tomb_east_hall"));
             Assert.That(_progress.IsShortcutUnlocked(ContentBuilderIds.RoadGate), Is.True,
                 "West, the road gate's winch is what opened the way.");
-            foreach (var area in _progress.World.Areas.Where(a => !a.IsOptional
+            foreach (var area in _progress.World.Areas.Where(a => !a.IsOptional && a.ZoneId != "zone_forgotten_tomb"
                          && _progress.World.Zone(a.ZoneId).IsImplemented))
             {
                 Assert.That(_progress.IsAreaDiscovered(area.AreaId), Is.True,
@@ -122,49 +126,50 @@ namespace ForgottenKingdom.Tests
         // ---------- ability gates ----------
 
         [UnityTest]
-        public IEnumerator TheOssuaryShelfNeedsTheSecondJump()
+        public IEnumerator TheBellShaftNeedsTheSecondJump()
         {
-            // From the guards' ledge: up, and at the top of the jump, up again and left.
-            yield return JumpForShelf(hasDoubleJump: false);
-            Assert.That(_progress.IsAreaDiscovered("room_tomb_royal_ossuary"), Is.False,
-                "One jump and a wall run cannot reach it.");
+            // From the last slab under the shaft's mouth: up, and at the top of the jump, up again
+            // and right onto the shaft's first slab, five cells over the slab jumped from.
+            var slab = TombScene.Spot("bell-glow").y;
+            yield return JumpForBell(hasDoubleJump: false);
+            Assert.That(_motor.IsGrounded && _player.transform.position.y > slab + 0.5f, Is.False,
+                $"One jump cannot stand on the shaft's slab: ended at {_player.transform.position}.");
 
-            yield return JumpForShelf(hasDoubleJump: true);
-            Assert.That(_progress.IsAreaDiscovered("room_tomb_royal_ossuary"), Is.True,
-                $"Ended at {_player.transform.position} after the double jump.");
-            Assert.That(_player.transform.position.y, Is.GreaterThan(7.6f),
-                $"Standing on the shelf, not below it: ended at {_player.transform.position}.");
+            yield return JumpForBell(hasDoubleJump: true);
+            Assert.That(_player.transform.position.y, Is.GreaterThan(slab + 0.5f),
+                $"Standing in the shaft after the double jump: ended at {_player.transform.position}.");
             Assert.That(_motor.IsGrounded, Is.True, $"Landed; ended at {_player.transform.position}.");
+            Assert.That(_progress.IsAreaDiscovered("room_tomb_bell_shaft"), Is.True);
         }
 
         [UnityTest]
         public IEnumerator TheReliquaryNeedsADashInTheAir()
         {
             yield return LeapForReliquary(hasAirDash: false);
-            Assert.That(_progress.IsAreaDiscovered("room_tomb_reliquary"), Is.False,
-                "A running jump falls short.");
+            Assert.That(OnThePedestal(), Is.False, $"A running jump falls short: ended at {_player.transform.position}.");
 
             yield return LeapForReliquary(hasAirDash: true);
-            Assert.That(_progress.IsAreaDiscovered("room_tomb_reliquary"), Is.True,
-                $"Ended at {_player.transform.position} after the air dash.");
+            Assert.That(OnThePedestal(), Is.True, $"Ended at {_player.transform.position} after the air dash.");
+            Assert.That(_progress.IsAreaDiscovered("room_tomb_reliquary"), Is.True);
         }
 
         // ---------- helpers ----------
 
-        private IEnumerator JumpForShelf(bool hasDoubleJump)
+        private IEnumerator JumpForBell(bool hasDoubleJump)
         {
             SetAbility(AbilityIds.DoubleJump, hasDoubleJump);
-            SetAbility(AbilityIds.WallRun, true);
-            yield return Place(new Vector2(15.9f, 5.3f));
+            SetAbility(AbilityIds.WallRun, false);
+            // From the slab's east end: its west end lies under the shaft's next slab.
+            yield return Place(TombScene.Spot("double-jump-hint") + new Vector2(1f, 0.85f));
 
             yield return Keys(Key.Space);
             yield return UntilApex(0.2f);
             yield return Keys();
-            yield return Keys(Key.Space, Key.A);
-            yield return Hold(0.6f, Key.Space, Key.A);
-            // Let go once over the shelf. Holding left for another 0.8 s ran the player off the
-            // shelf's far edge (it is three units wide), so the room was reached but the landing
-            // was on the floor below — which is what this test failed on until PHASE 26.
+            // Straight up through the mouth first, then over onto the slab: the entrance's vault
+            // hangs right beside the mouth.
+            yield return Keys(Key.Space);
+            yield return UntilApex(1.5f);
+            yield return Hold(0.4f, Key.D);
             yield return Keys();
             yield return new WaitForSeconds(0.9f);
         }
@@ -173,16 +178,24 @@ namespace ForgottenKingdom.Tests
         {
             SetAbility(AbilityIds.AirDash, hasAirDash);
             SetAbility(AbilityIds.DoubleJump, false);
-            yield return Place(new Vector2(13.6f, 4.1f));
+            // The slab by the reliquary's door in the lower chain; the pedestal is twelve cells west.
+            yield return Place(TombScene.Spot("air-dash-hint") + new Vector2(0.6f, 0.85f));
 
-            // A run west along the second step, a jump off its end, a dash at the top.
-            yield return Hold(0.35f, Key.A);
+            yield return Hold(0.15f, Key.A);
             yield return Keys(Key.A, Key.Space);
             yield return UntilApex(0.5f);
             yield return Keys(Key.A, Key.Space, Key.L);
             yield return Hold(0.8f, Key.A);
             yield return Keys();
             yield return new WaitForSeconds(0.6f);
+        }
+
+        /// <summary>Standing on the reliquary's pedestal (two cells wide, west of the spikes).</summary>
+        private bool OnThePedestal()
+        {
+            var room = TombScene.Layout.WorldBounds(TombScene.Layout.Room("room_tomb_reliquary"));
+            return _player.IsAlive && _motor.IsGrounded && _player.transform.position.x < room.xMin + 2.6f
+                && room.Contains(_player.transform.position);
         }
 
         /// <summary>

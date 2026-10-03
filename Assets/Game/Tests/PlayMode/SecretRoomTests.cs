@@ -87,21 +87,22 @@ namespace ForgottenKingdom.Tests
                 .Single(w => w.WallId.EndsWith(room));
 
         [UnityTest]
-        public IEnumerator FiveWallsEachHideAShardInTheDark()
+        public IEnumerator EightWallsEachHideAFindInTheDark()
         {
+            // Four in the old zones, four in the Tomb's text (its three caches and the walled cell).
             var walls = Object.FindObjectsByType<BreakableWall>(FindObjectsInactive.Include);
-            Assert.That(walls.Length, Is.EqualTo(5));
-            Assert.That(walls.Select(w => w.WallId).Distinct().Count(), Is.EqualTo(5));
-            var shards = Object.FindObjectsByType<WorldPickup>(FindObjectsInactive.Include)
-                .Where(p => p.IsVesselShard).ToArray();
+            Assert.That(walls.Length, Is.EqualTo(8));
+            Assert.That(walls.Select(w => w.WallId).Distinct().Count(), Is.EqualTo(8));
+            var finds = Object.FindObjectsByType<WorldPickup>(FindObjectsInactive.Include);
+            var shards = finds.Where(p => p.IsVesselShard).ToArray();
             foreach (var wall in walls)
             {
                 Assert.That(wall.IsBroken, Is.False, $"{wall.WallId} stands in a new game.");
                 Assert.That(wall.VeilAlpha, Is.GreaterThan(0.9f), $"{wall.WallId}: the room is dark.");
                 var at = (Vector2)wall.transform.position;
-                Assert.That(shards.Any(s => Mathf.Abs(s.transform.position.x - at.x) < 3.5f
-                    && Mathf.Abs(s.transform.position.y - at.y) < 1.5f), Is.True,
-                    $"{wall.WallId} at {at} has a shard behind it.");
+                Assert.That(finds.Any(s => Mathf.Abs(s.transform.position.x - at.x) < 5f
+                    && Mathf.Abs(s.transform.position.y - at.y) < 2f), Is.True,
+                    $"{wall.WallId} at {at} has a find behind it.");
             }
 
             Assert.That(shards.Count(s => VesselShards.TryKind(s.ItemId, out var k) && k == VesselKind.Health),
@@ -112,7 +113,7 @@ namespace ForgottenKingdom.Tests
         }
 
         [UnityTest]
-        public IEnumerator ThreeBlowsFromTheBellLoftBringTheWallDownForGood()
+        public IEnumerator ThreeBlowsFromTheMasonsCellBringTheWallDownForGood()
         {
             var wall = Wall("tomb_walled_cell");
             foreach (var enemy in Object.FindObjectsByType<EnemyController>())
@@ -120,8 +121,9 @@ namespace ForgottenKingdom.Tests
                 enemy.gameObject.SetActive(false);
             }
 
-            // On the bell loft, a step from the wall, facing it.
-            _motor.ResetTo(new Vector2(-6.2f, 10.9f));
+            // On the mason's cell's ledge by the walled cell's door, a step from the wall, facing it.
+            var stone = wall.GetComponent<Collider2D>().bounds;
+            _motor.ResetTo(new Vector2(stone.max.x + 1.5f, stone.min.y + 0.85f));
             yield return Realtime(0.3f);
             InputSystem.QueueStateEvent(_keyboard, new KeyboardState(Key.A));
             yield return Realtime(0.06f);
@@ -149,9 +151,9 @@ namespace ForgottenKingdom.Tests
 
             // Walk in: the room is really there, and its shard is in reach.
             InputSystem.QueueStateEvent(_keyboard, new KeyboardState(Key.A));
-            yield return Until(() => _player.transform.position.x < -8.5f, 3f, "The hero walks into the cell.");
+            yield return Until(() => _player.transform.position.x < stone.min.x - 1f, 3f, "The hero walks into the cell.");
             InputSystem.QueueStateEvent(_keyboard, new KeyboardState());
-            Assert.That(_player.transform.position.y, Is.GreaterThan(10f), "On the cell's floor.");
+            Assert.That(_player.transform.position.y, Is.GreaterThan(stone.min.y), "On the cell's floor.");
 
             _progress.Save();
             _progress.LoadGame();

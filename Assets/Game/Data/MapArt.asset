@@ -79,16 +79,46 @@ MonoBehaviour:
     Texture: {fileID: 2800000, guid: 745ebb6ebaddb4e73af7391e9578b15d, type: 3}
   - Id: room_tomb_burial_hall
     Texture: {fileID: 2800000, guid: 40b9e4ef80e4140cdb845cb94b6cfbe9, type: 3}
+  - Id: room_tomb_west_shaft
+    Texture: {fileID: 2800000, guid: ea09635f68dea43edaf7b64f842e943c, type: 3}
   - Id: room_tomb_guard_passage
     Texture: {fileID: 2800000, guid: 120bd5d80c7a54a1d8ba776b941e3ce0, type: 3}
-  - Id: room_tomb_collapsed_crypt
-    Texture: {fileID: 2800000, guid: 8f184dbcf77c5470e9a7dd4ba7ba7f39, type: 3}
+  - Id: room_tomb_chain_shaft
+    Texture: {fileID: 2800000, guid: 5373a2d841c624a799a17648d98684a3, type: 3}
   - Id: room_tomb_guardian_approach
     Texture: {fileID: 2800000, guid: d5885e8c60fb845c1a087ad51bde830f, type: 3}
   - Id: room_tomb_guardian_arena
     Texture: {fileID: 2800000, guid: 4ffefdbeb0e234d3ba0e79e7d26ca69d, type: 3}
+  - Id: room_tomb_upper_passage
+    Texture: {fileID: 2800000, guid: 5225d9323e561458cbe9d13d58ff1392, type: 3}
+  - Id: room_tomb_statue_hall
+    Texture: {fileID: 2800000, guid: 7aa73fc16c1d44b6095afd50d3af3c4a, type: 3}
+  - Id: room_tomb_east_chapel
+    Texture: {fileID: 2800000, guid: 6042b722993dd4bd9850ee07ef76cf80, type: 3}
+  - Id: room_tomb_flooded_crypt
+    Texture: {fileID: 2800000, guid: 6c63b068aa0e048168167027907fd580, type: 3}
+  - Id: room_tomb_east_hall
+    Texture: {fileID: 2800000, guid: 01d22f49530e147c9a254cbfe595fa5b, type: 3}
+  - Id: room_tomb_falls
+    Texture: {fileID: 2800000, guid: a5350b4b67da44364b2f08fbb221b154, type: 3}
+  - Id: room_tomb_lower_crypt
+    Texture: {fileID: 2800000, guid: aa053ffa958d447bab99742edb8249f3, type: 3}
+  - Id: room_tomb_lower_chain
+    Texture: {fileID: 2800000, guid: 9c70fc8e87cc54f9b8bfe5eb3cb02c71, type: 3}
   - Id: room_tomb_reliquary
     Texture: {fileID: 2800000, guid: 3458dd14c449a4fd1a87588aa79984ee, type: 3}
+  - Id: room_tomb_rubble_slope
+    Texture: {fileID: 2800000, guid: 1b5833d5a7f434881bf5c1097a44ddeb, type: 3}
+  - Id: room_tomb_collapsed_crypt
+    Texture: {fileID: 2800000, guid: 8f184dbcf77c5470e9a7dd4ba7ba7f39, type: 3}
+  - Id: room_tomb_column
+    Texture: {fileID: 2800000, guid: b413e65caf6584fba9c5c32ed5b81cab, type: 3}
+  - Id: room_tomb_mason_cache
+    Texture: {fileID: 2800000, guid: f05e19713fdbb49ca8187cd68f644f48, type: 3}
+  - Id: room_tomb_bell_shaft
+    Texture: {fileID: 2800000, guid: a47c6fd0ea426441286778718d0f2a5e, type: 3}
+  - Id: room_tomb_arcade
+    Texture: {fileID: 2800000, guid: 3bcfb526ce9bb446491100037ce43718, type: 3}
   - Id: room_forest_root_tunnel
     Texture: {fileID: 2800000, guid: 5d5548b05fcd64f85876180f4b708724, type: 3}
   - Id: room_forest_entrance

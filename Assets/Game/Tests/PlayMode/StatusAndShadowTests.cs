@@ -376,7 +376,7 @@ namespace ForgottenKingdom.Tests
         public IEnumerator DashingInTheAirHasToBeEarned()
         {
             Assert.That(_progress.HasAbility(AbilityIds.AirDash), Is.False);
-            _motor.ResetTo(new Vector2(-12f, 6f));
+            _motor.ResetTo(TombScene.Ground(5f) + new Vector2(0f, 5.15f));
             yield return new WaitForFixedUpdate();
             Assert.That(_motor.IsGrounded, Is.False);
 
@@ -391,7 +391,7 @@ namespace ForgottenKingdom.Tests
         public IEnumerator AnEarnedAirDashIsStillOnlyOnePerJump()
         {
             _progress.UnlockAbility(AbilityIds.AirDash);
-            _motor.ResetTo(new Vector2(-12f, 8f));
+            _motor.ResetTo(TombScene.Ground(5f) + new Vector2(0f, 7.15f));
             yield return new WaitForFixedUpdate();
 
             Assert.That(_player.TryDash(), Is.True);
@@ -438,7 +438,7 @@ namespace ForgottenKingdom.Tests
             Learn("shadow_veiled_step");
             Learn("shadow_dash");
 
-            _motor.ResetTo(new Vector2(42f, 1f));
+            _motor.ResetTo(TombScene.ArenaEntry());
             yield return new WaitForFixedUpdate();
             yield return new WaitForFixedUpdate();
             Assert.That(encounter.IsArenaSealed, Is.True, "The way out is shut.");

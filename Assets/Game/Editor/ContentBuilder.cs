@@ -1937,34 +1937,14 @@ namespace ForgottenKingdom.EditorTools
             cameraObject.transform.position = new Vector3(0f, 2f, -10f);
 
             var level = new GameObject("Level").transform;
-            // Training area, steps, a jumpable gap, the corridor and the sealed arena. Positions
-            // and sizes are gameplay and are untouched; only the surface they wear is new.
-            Block(level, "Floor", new Vector2(2.75f, -0.5f), new Vector2(35.5f, 1f));
-            // Its top at 1.7, not 1.8: a jump really reaches 1.91 at 50 Hz, and a step on the only
-            // way forward should not ask for the last ten centimetres of it.
-            Block(level, "Step1", new Vector2(8f, 1.4f), new Vector2(3f, 0.6f),
-                TombSurface.Platform);
-            Block(level, "Step2", new Vector2(12.5f, 3f), new Vector2(3f, 0.6f),
-                TombSurface.Platform);
-            Block(level, "Ledge", new Vector2(18f, 4.2f), new Vector2(5f, 0.6f),
-                TombSurface.BrokenPlatform);
-            Block(level, "Corridor", new Vector2(30.5f, -0.5f), new Vector2(15f, 1f));
-            Block(level, "ArenaFloor", new Vector2(50f, -0.5f), new Vector2(24f, 1f));
-            // Flush with the left edge of the floor, so there is no gap to fall into.
-            Block(level, "LeftWall", new Vector2(-15.5f, 3f), new Vector2(1f, 8f),
-                TombSurface.Wall);
-            // The Tomb's far wall is also the way out. It stays solid until the Guardian falls and
-            // then opens, which is how a save made before the forest existed still gets through.
+            // The Tomb itself is built from its text further down (BuildTomb); its far wall is
+            // also the way out. It stays solid until the Guardian falls and then opens, which is
+            // how a save made before the forest existed still gets through.
             var tombExit = Block(level, "TombExitWall", new Vector2(62.5f, 3f), new Vector2(1f, 8f),
                 TombSurface.Wall);
 
-            var barrier = Block(level, "ArenaBarrier", new Vector2(38.5f, 2.5f),
-                new Vector2(1f, 7f), TombSurface.Wall);
-            DressBarrier(barrier);
-            barrier.SetActive(false);
-
             var spawn = new GameObject("Spawn");
-            spawn.transform.position = new Vector2(-12f, 0.85f);
+            spawn.transform.position = TombSpot("start") + new Vector2(0f, 0.85f);
 
             var player = (GameObject)PrefabUtility.InstantiatePrefab(playerPrefab);
             player.transform.position = spawn.transform.position;
@@ -2028,14 +2008,8 @@ namespace ForgottenKingdom.EditorTools
             SetReference(respawner, "_defaultSpawn", spawn.transform);
             SetReference(respawner, "_progress", progress);
             SetReference(respawner, "_enemies", enemyRegistry);
-            SetFloat(respawner, "_worldFloorY", -12f);
-
-            // The gap between the floor and the corridor is a real pit, not a soft edge.
-            var pit = new GameObject("KillZone") { transform = { position = new Vector3(21.75f, -5f, 0f) } };
-            var pitTrigger = pit.AddComponent<BoxCollider2D>();
-            pitTrigger.isTrigger = true;
-            pitTrigger.size = new Vector2(6f, 3f);
-            SetReference(pit.AddComponent<KillZone>(), "_respawner", respawner);
+            // Under the Tomb's lowest pool (the flooded crypt, -12) with room to spare.
+            SetFloat(respawner, "_worldFloorY", -30f);
 
             // Every debug readout lives on its own object, switched off in a release build. They
             // have to be in the real scene to be useful, but a player must never meet them.
@@ -2116,95 +2090,8 @@ namespace ForgottenKingdom.EditorTools
             SetReference(debug, "_mana", player.GetComponent<Mana>());
             SetReference(debug, "_screen", screen);
 
-            PlaceCheckpoint(checkpointPrefab, new Vector2(-13.8f, 0.8f), "tomb-altar-01",
-                "Вівтар входу", respawner, progress, player);
-            PlaceCheckpoint(checkpointPrefab, new Vector2(25f, 0.8f), "tomb-altar-02",
-                "Вівтар переходу", respawner, progress, player);
-
-            // Training area: two dummies to hit and one sparring partner that hits back, all well
-            // outside every patrol so the defensive mechanics can be tested undisturbed.
-            //
-            // They stand on the opening corridor, which is where a player begins — so they are
-            // marked developer-only. The automated tests still fight them in the Editor; a release
-            // build hides them rather than opening the game with a row of straw men.
-            MarkDeveloperOnly(SpawnEnemy(dummyPrefab, new Vector2(-8.5f, 1f)), "Training dummy");
-            MarkDeveloperOnly(SpawnEnemy(dummyPrefab, new Vector2(-5.5f, 1f)), "Training dummy");
-            MarkDeveloperOnly(SpawnEnemy(attackerPrefab, new Vector2(-2.5f, 1f)),
-                "Sparring partner for block and parry");
-
-            PlaceTraversalReward(level, new Vector2(-12f, 1f), AbilityIds.AirDash, "Air Dash");
-            PlaceTraversalReward(level, new Vector2(-10.5f, 1f), AbilityIds.WallRun, "Wall Run");
-            Block(level, "TraversalWall", new Vector2(-19f, 3f), new Vector2(0.6f, 6f));
-            Block(level, "TraversalLanding", new Vector2(-16f, 5f), new Vector2(3f, 0.5f));
-
-            // A pillar to break the line of sight for the zombie standing behind it. It stood 3.7
-            // tall until PHASE 25 — nearly twice the 1.91 a jump really reaches — so the corridor
-            // could only be crossed by running up it, with an ability the game never forces on
-            // anyone. At 1.6 it still hides a player from the zombie (sight runs centre to centre,
-            // under a unit off the floor) and it is a jump, like every other step in the Tomb.
-            Block(level, "SightWall", new Vector2(28f, 0.55f), new Vector2(0.8f, 2.1f));
-
-            // Zombie 1 on open ground, zombie 2 on a ledge with two drops, zombie 3 out of sight
-            // behind the pillar: patrol, edge detection and line of sight in one run.
-            SpawnEnemy(zombiePrefab, new Vector2(10f, 0.9f));
-            SpawnEnemy(zombiePrefab, new Vector2(18f, 5f));
-            SpawnEnemy(zombiePrefab, new Vector2(31f, 0.9f));
-            // Open ground with room to dash behind: one shield guard alone, and a pair further on
-            // next to a zombie so the two enemy kinds can be compared side by side.
-            SpawnEnemy(guardPrefab, new Vector2(33.5f, 0.9f));
-            SpawnEnemy(guardPrefab, new Vector2(36.5f, 0.9f));
-
-            // Hand-placed loot: coins and a material to walk over, and one unique weapon that has
-            // to be picked up on purpose and stays taken across sessions.
-            var pickupPrefab = pickupComponent.gameObject;
-            PlacePickup(pickupPrefab, new Vector2(-6.5f, 0.6f), progress,
-                string.Empty, true, 25, "tomb-purse-01", true);
-            PlacePickup(pickupPrefab, new Vector2(14f, 3.9f), progress,
-                "iron_scrap", false, 2, "tomb-scrap-01", true);
-            // The starter sword is already in hand, so the ledge holds something worth the climb.
-            PlacePickup(pickupPrefab, new Vector2(18f, 5.1f), progress,
-                "traveler_coat", false, 1, "tomb-coat", false);
-
-            // Equipment lies in the world and goes to the inventory, never straight into a slot:
-            // finding a greatsword is a choice to make, not a weapon swapped out from under you.
-            PlacePickup(pickupPrefab, new Vector2(27.5f, 0.6f), progress,
-                "iron_greatsword", false, 1, "tomb-greatsword", false);
-            PlacePickup(pickupPrefab, new Vector2(-9.5f, 0.6f), progress,
-                "traveler_hood", false, 1, "tomb-hood", false);
-            PlacePickup(pickupPrefab, new Vector2(35f, 0.6f), progress,
-                "guard_chestplate", false, 1, "tomb-chestplate", false);
-            PlacePickup(pickupPrefab, new Vector2(12.5f, 3.6f), progress,
-                "ring_of_life", false, 1, "tomb-ring-of-life", false);
-            PlacePickup(pickupPrefab, new Vector2(31.5f, 0.6f), progress,
-                "ring_of_endurance", false, 1, "tomb-ring-of-endurance", false);
-            PlacePickup(pickupPrefab, new Vector2(-4f, 0.6f), progress,
-                "iron_talisman", false, 1, "tomb-talisman", false);
-            // Past the shield guards: the ring that lets a greatsword be lifted early, and taken
-            // off again to feel what the requirement really costs.
-            PlacePickup(pickupPrefab, new Vector2(37.5f, 0.6f), progress,
-                "ring_of_might", false, 1, "tomb-ring-of-might", false);
-
-            var boss = (GameObject)PrefabUtility.InstantiatePrefab(bossPrefab);
-            boss.transform.position = new Vector2(55f, 1.4f);
-
-            var arenaObject = new GameObject("BossEncounter");
-            arenaObject.transform.position = new Vector2(42f, 2f);
-            var arenaTrigger = arenaObject.AddComponent<BoxCollider2D>();
-            arenaTrigger.isTrigger = true;
-            arenaTrigger.size = new Vector2(3f, 6f);
-            var arena = arenaObject.AddComponent<BossEncounter>();
-            SetReference(arena, "_boss", boss.GetComponent<BossController>());
-            SetReference(arena, "_barrier", barrier);
-            SetReference(arena, "_progress", progress);
-            SetReference(arena, "_respawner", respawner);
-            SetReference(arena, "_progression", progression);
-            SetString(arena, "_rewardId", "guardian_core");
-            SetString(arena, "_rewardName", "Ядро Стража");
-            SetReference(debug, "_bossEncounter", arena);
-
-            DressTomb(level, cameraObject.transform);
-            // What the Tomb keeps for later: three ledges out of reach and the crypt's bridge.
-            BuildTombWorld(level, progress, pickupPrefab);
+            // The Tomb from its text: stone, altars, finds, enemies, the Guardian and his door.
+            BuildTomb(level);
 
             // Everything past the Guardian's arena. It is built into the same scene and reached on
             // foot through a tunnel, so nothing is loaded and nothing teleports.
@@ -3167,241 +3054,6 @@ namespace ForgottenKingdom.EditorTools
         /// level's shape was decided long before this phase and the art fits itself to that shape,
         /// which is the rule the whole phase is built on.
         /// </summary>
-        private static void DressTomb(Transform level, Transform camera)
-        {
-            if (_tomb == null)
-            {
-                Debug.LogWarning("Tomb art is missing; the level keeps its grey surfaces.");
-                return;
-            }
-
-            var dressing = new GameObject("Environment").transform;
-            BuildParallax(dressing, camera);
-            BuildBurialHall(dressing);
-            BuildGuardPassage(dressing);
-            BuildCollapsedCrypt(dressing);
-            BuildBossApproach(dressing);
-            BuildArena(dressing);
-            BuildForeground(dressing);
-        }
-
-        /// <summary>
-        /// The three background layers. Each one is a wide tiled strip that follows a fraction of
-        /// the camera, so the level can never out-run its own backdrop however far a dash carries.
-        /// </summary>
-        private static void BuildParallax(Transform parent, Transform camera)
-        {
-            // Each layer is sixteen units tall with the floor line four units up, so it covers the
-            // view from below the floor to the vaults; nothing of the camera's clear colour shows.
-            // Far and mid are unlit — their values are the painting's, not the room light's —
-            // while the near piers catch the candles and the altar.
-            var layers = new[]
-            {
-                ("env_tomb_bg_far_01", "BackgroundFar", 0.15f, 0.05f, -4f, 1f),
-                ("env_tomb_bg_mid_01", "BackgroundMid", 0.35f, 0.1f, -4f, 1f),
-                ("env_tomb_bg_near_01", "BackgroundNear", 0.6f, 0.18f, -4f, 1f)
-            };
-
-            // Only while the player is in the Tomb: parallax wraps around the camera, and the
-            // forest's layers would otherwise be drawn over this nave everywhere.
-            var root = Section(parent, "TombParallax");
-            SetString(root.gameObject.AddComponent<ZoneBackdrop>(), "_zoneId", TombZoneId);
-
-            foreach (var (sprite, layer, factor, vertical, height, alpha) in layers)
-            {
-                var art = Tomb(sprite);
-                if (art == null)
-                {
-                    continue;
-                }
-
-                var strip = new GameObject(sprite);
-                strip.transform.SetParent(root);
-                strip.transform.position = new Vector3(20f, height, 0f);
-                var renderer = strip.AddComponent<SpriteRenderer>();
-                renderer.sprite = art;
-                renderer.drawMode = SpriteDrawMode.Tiled;
-                renderer.tileMode = SpriteTileMode.Continuous;
-                // Three screens wide, so a wrap never lands inside the view.
-                renderer.size = new Vector2(art.bounds.size.x * 3f, art.bounds.size.y);
-                renderer.color = new Color(1f, 1f, 1f, alpha);
-                if (layer != "BackgroundNear")
-                {
-                    renderer.sharedMaterial = _material;
-                }
-
-                SetSorting(renderer, layer, 0);
-
-                var parallax = strip.AddComponent<ParallaxLayer>();
-                SetFloat(parallax, "_factor", factor);
-                SetFloat(parallax, "_verticalFactor", vertical);
-                SetReference(parallax, "_camera", camera);
-            }
-        }
-
-        /// <summary>
-        /// The opening stretch: where the player learns to move and fight. Deliberately the least
-        /// decorated part of the level — coffins and statues along the back wall, and clear floor
-        /// where the training dummies stand.
-        /// </summary>
-        private static void BuildBurialHall(Transform parent)
-        {
-            var hall = Section(parent, "BurialHall");
-            Prop(hall, "env_tomb_arch_01", new Vector2(-14f, 0f), "EnvironmentBack", 0, 1.4f);
-            Prop(hall, "env_tomb_pillar_01", new Vector2(-17.5f, 0f), "EnvironmentBack", 1);
-            Prop(hall, "env_tomb_statue_knight_01", new Vector2(-7f, 0f), "EnvironmentBack", 2);
-            Prop(hall, "env_tomb_statue_broken_01", new Vector2(-3f, 0f), "EnvironmentBack", 2);
-            Prop(hall, "env_tomb_sarcophagus_01", new Vector2(-10f, 0f), "EnvironmentBack", 3);
-            Prop(hall, "env_tomb_sarcophagus_broken_01", new Vector2(1.5f, 0f),
-                "EnvironmentBack", 3);
-            Prop(hall, "env_tomb_grave_marker_01", new Vector2(4.5f, 0f), "EnvironmentBack", 3);
-            Prop(hall, "env_tomb_urn_01", new Vector2(-5f, 0f), "EnvironmentBack", 4);
-            Prop(hall, "env_tomb_candles_01", new Vector2(-12.6f, 0f), "GameplayEnvironment", 4);
-            Prop(hall, "env_tomb_bones_01", new Vector2(-1f, 0f), "GameplayEnvironment", 1);
-
-            // A fallen guard at his post, beside the first thing that will try to kill you.
-            Prop(hall, "env_tomb_memorial_01", new Vector2(6.5f, 0f), "EnvironmentBack", 3);
-            Prop(hall, "env_tomb_rubble_01", new Vector2(9f, 0f), "GameplayEnvironment", 1);
-            Prop(hall, "env_tomb_decal_crack_01", new Vector2(3f, 0.1f), "GameplayEnvironment", 1,
-                1.2f, alpha: 0.7f);
-            Prop(hall, "env_tomb_decal_moss_01", new Vector2(-8.5f, 0.05f), "GameplayEnvironment",
-                1, 1f, alpha: 0.6f);
-        }
-
-        /// <summary>
-        /// The climb and the ledge: more intact architecture, royal banners, the first real
-        /// traversal. Light and a banner mark the ledge so the route upward reads.
-        /// </summary>
-        private static void BuildGuardPassage(Transform parent)
-        {
-            var passage = Section(parent, "GuardPassage");
-            Prop(passage, "env_tomb_pillar_01", new Vector2(6f, 0f), "EnvironmentBack", 1);
-            Prop(passage, "env_tomb_arch_01", new Vector2(11f, 0f), "EnvironmentBack", 0, 1.5f);
-            Prop(passage, "env_tomb_banner_01", new Vector2(9.2f, 4.6f), "EnvironmentBack", 4);
-            Prop(passage, "env_tomb_banner_01", new Vector2(13.6f, 6.1f), "EnvironmentBack", 4,
-                flip: true);
-            Prop(passage, "env_tomb_candles_01", new Vector2(13.2f, 3.3f), "GameplayEnvironment",
-                4);
-            Prop(passage, "env_tomb_candles_01", new Vector2(19.4f, 4.5f), "GameplayEnvironment",
-                4);
-            Prop(passage, "env_tomb_memorial_01", new Vector2(16.5f, 4.5f), "EnvironmentBack", 3);
-            Prop(passage, "env_tomb_chains_01", new Vector2(15f, 7.5f), "EnvironmentBack", 2);
-            Prop(passage, "env_tomb_chains_01", new Vector2(20.5f, 8f), "EnvironmentBack", 2,
-                0.8f);
-            Prop(passage, "env_tomb_roots_01", new Vector2(7.5f, 1.8f), "EnvironmentBack", 5,
-                0.9f);
-        }
-
-        /// <summary>
-        /// The pit. Its danger is drawn rather than implied: a broken lip, depth that fades into
-        /// nothing, and roots reaching in. A kill zone hidden in darkness is a cheap death.
-        /// </summary>
-        private static void BuildCollapsedCrypt(Transform parent)
-        {
-            var crypt = Section(parent, "CollapsedCrypt");
-            var depth = Prop(crypt, "env_tomb_pit_depth", new Vector2(21.75f, -2.2f),
-                "EnvironmentBack", 6, 1.2f);
-            if (depth != null)
-            {
-                depth.name = "PitDepth";
-            }
-
-            Prop(crypt, "env_tomb_rubble_01", new Vector2(19.8f, 0f), "GameplayEnvironment", 1);
-            Prop(crypt, "env_tomb_rubble_01", new Vector2(23.6f, 0f), "GameplayEnvironment", 1,
-                0.9f, flip: true);
-            Prop(crypt, "env_tomb_roots_01", new Vector2(20.4f, -1.2f), "EnvironmentBack", 7,
-                0.8f);
-            Prop(crypt, "env_tomb_roots_01", new Vector2(23f, -1.4f), "EnvironmentBack", 7, 0.7f,
-                flip: true);
-            Prop(crypt, "env_tomb_pillar_broken_01", new Vector2(26f, 0f), "EnvironmentBack", 1);
-            Prop(crypt, "env_tomb_statue_broken_01", new Vector2(24.2f, 0f), "EnvironmentBack", 2);
-            Prop(crypt, "env_tomb_decal_crack_01", new Vector2(24.6f, 0.15f),
-                "GameplayEnvironment", 1, 1.4f, alpha: 0.75f);
-        }
-
-        /// <summary>
-        /// The approach to the Guardian. The architecture straightens out, the gold reappears and
-        /// the corruption thickens: the level says "something is ahead" without a word of text.
-        /// </summary>
-        private static void BuildBossApproach(Transform parent)
-        {
-            var approach = Section(parent, "BossApproach");
-            for (var x = 27f; x <= 37f; x += 5f)
-            {
-                Prop(approach, "env_tomb_pillar_01", new Vector2(x, 0f), "EnvironmentBack", 1);
-                Prop(approach, "env_tomb_banner_01", new Vector2(x + 1.6f, 3.4f),
-                    "EnvironmentBack", 4);
-            }
-
-            Prop(approach, "env_tomb_arch_01", new Vector2(32f, 0f), "EnvironmentBack", 0, 1.6f);
-            Prop(approach, "env_tomb_statue_knight_01", new Vector2(29.5f, 0f), "EnvironmentBack",
-                2);
-            Prop(approach, "env_tomb_statue_knight_01", new Vector2(34.5f, 0f), "EnvironmentBack",
-                2, flip: true);
-            Prop(approach, "env_tomb_candles_01", new Vector2(30.6f, 0f), "GameplayEnvironment",
-                4);
-            Prop(approach, "env_tomb_candles_01", new Vector2(35.4f, 0f), "GameplayEnvironment",
-                4);
-            Prop(approach, "env_tomb_decal_rune_01", new Vector2(33f, 2.6f), "EnvironmentBack", 5,
-                1f, alpha: 0.8f);
-
-            // The gate itself: the most important door in the level, standing open until the
-            // fight starts. The barrier that seals it is separate and gameplay owns it.
-            var gate = Prop(approach, "env_tomb_boss_gate", new Vector2(38.5f, -1f),
-                "EnvironmentBack", 8, 1.05f);
-            if (gate != null)
-            {
-                gate.name = "BossGate";
-            }
-        }
-
-        /// <summary>
-        /// The arena: the one room in the slice built to be looked at. The monumental tomb sits
-        /// behind the Guardian, the crest marks the centre of the floor, and the flanks stay clear
-        /// so a charge or a slam is never hidden by scenery.
-        /// </summary>
-        private static void BuildArena(Transform parent)
-        {
-            var arena = Section(parent, "GuardianArena");
-            var backdrop = Prop(arena, "env_tomb_arena_backdrop", new Vector2(50f, -1f),
-                "BackgroundNear", 5, 1.15f);
-            if (backdrop != null)
-            {
-                backdrop.name = "ArenaBackdrop";
-            }
-
-            // Flat and readable: the crest tells the player where the centre is during a slam.
-            // The floor crest is not placed: in a side view a floor medallion can only be drawn
-            // standing up, where it read as a debug ring over the fight.
-
-            Prop(arena, "env_tomb_pillar_01", new Vector2(41f, 0f), "EnvironmentBack", 1, 1.2f);
-            Prop(arena, "env_tomb_pillar_01", new Vector2(60f, 0f), "EnvironmentBack", 1, 1.2f);
-            Prop(arena, "env_tomb_statue_knight_01", new Vector2(43.5f, 0f), "EnvironmentBack", 2,
-                1.15f);
-            Prop(arena, "env_tomb_statue_knight_01", new Vector2(57.5f, 0f), "EnvironmentBack", 2,
-                1.15f, flip: true);
-            Prop(arena, "env_tomb_candles_01", new Vector2(44.8f, 0f), "GameplayEnvironment", 4);
-            Prop(arena, "env_tomb_candles_01", new Vector2(56.2f, 0f), "GameplayEnvironment", 4);
-        }
-
-        /// <summary>
-        /// The foreground, used sparingly and never over the fighting floor. Everything here is
-        /// dimmed and placed between encounters, because the brief's hard rule is that foreground
-        /// must not hide combat.
-        /// </summary>
-        private static void BuildForeground(Transform parent)
-        {
-            var front = Section(parent, "Foreground");
-            Prop(front, "env_tomb_chains_01", new Vector2(-16.5f, 8f), "Foreground", 0, 1.3f,
-                alpha: 0.85f);
-            Prop(front, "env_tomb_pillar_01", new Vector2(22f, -1f), "Foreground", 1, 1.35f,
-                alpha: 0.9f);
-            Prop(front, "env_tomb_roots_01", new Vector2(26.5f, 5.5f), "Foreground", 2, 1.1f,
-                alpha: 0.75f);
-            Prop(front, "env_tomb_chains_01", new Vector2(39.5f, 8.5f), "Foreground", 0, 1.2f,
-                alpha: 0.8f);
-        }
-
         private static Transform Section(Transform parent, string name)
         {
             var section = new GameObject(name).transform;

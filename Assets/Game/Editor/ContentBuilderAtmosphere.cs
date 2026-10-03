@@ -32,7 +32,6 @@ namespace ForgottenKingdom.EditorTools
             BuildArenaLights(root);
             BuildFoundations(level);
             BuildFog(root);
-            BuildLightShafts(root);
             BuildPlayerLight(player);
             BuildCheckpointLights();
             BuildBossLights();
@@ -136,7 +135,7 @@ namespace ForgottenKingdom.EditorTools
         }
 
         /// <summary>
-        /// The two arenas are the brightest, highest-contrast rooms of their zones: cold light
+        /// The Warden's arena (the Guardian's lights come with the Tomb, BuildTomb). The arenas are the brightest, highest-contrast rooms of their zones: cold light
         /// falling from above onto the fighting floor, and a deeper glow behind the boss.
         /// </summary>
         private static void BuildArenaLights(Transform root)
@@ -144,9 +143,6 @@ namespace ForgottenKingdom.EditorTools
             var arenas = Section(root, "ArenaLights");
             foreach (var (x, y, color, intensity, radius) in new[]
             {
-                (44f, 8f, new Color(0.7f, 0.8f, 1f), 1.0f, 9f),
-                (56f, 8f, new Color(0.7f, 0.8f, 1f), 1.0f, 9f),
-                (50f, 3f, new Color(0.9f, 0.72f, 0.45f), 0.55f, 7f),
                 (282f, 9f, new Color(0.72f, 0.88f, 0.92f), 1.0f, 11f),
                 (295f, 9f, new Color(0.72f, 0.88f, 0.92f), 0.9f, 10f)
             })
@@ -179,10 +175,15 @@ namespace ForgottenKingdom.EditorTools
         /// Every altar gets a real light and embers. Dead, it gives off the faintest cold glint —
         /// enough to be found — and lit, it is the warmest thing in the zone.
         /// </summary>
-        private static void BuildCheckpointLights()
+        private static void BuildCheckpointLights(Transform under = null)
         {
             foreach (var visual in Object.FindObjectsByType<CheckpointVisual>(FindObjectsInactive.Include))
             {
+                if (under != null && !visual.transform.IsChildOf(under))
+                {
+                    continue;
+                }
+
                 var host = FindOrCreateChild(visual.gameObject, "AltarLight");
                 host.transform.localPosition = new Vector3(0f, 1.1f, 0f);
                 var light = AddLight(host, Light2D.LightType.Point, new Color(1f, 0.72f, 0.36f),
@@ -252,10 +253,15 @@ namespace ForgottenKingdom.EditorTools
         }
 
         /// <summary>A boss carries its own light: a cold gleam, then the violet of its broken core.</summary>
-        private static void BuildBossLights()
+        private static void BuildBossLights(Transform under = null)
         {
             foreach (var boss in Object.FindObjectsByType<BossController>(FindObjectsInactive.Include))
             {
+                if (under != null && !boss.transform.IsChildOf(under))
+                {
+                    continue;
+                }
+
                 var host = FindOrCreateChild(boss.gameObject, "PhaseLight");
                 host.transform.localPosition = new Vector3(0f, boss.BossId == GuardianBossId ? 1.3f : 1.1f, 0f);
                 var light = AddLight(host, Light2D.LightType.Point, new Color(0.6f, 0.75f, 1f), 0.45f,
@@ -323,7 +329,7 @@ namespace ForgottenKingdom.EditorTools
         }
 
         /// <summary>
-        /// Two banks of fog per zone: a far one between the nave and the arcade, a low one lying
+        /// Two banks of fog for the Forest (the Tomb, a tall zone, has its fog and shafts per room): a far one between the nave and the arcade, a low one lying
         /// on the floor behind the fight. Slow drift; never on the line of combat.
         /// </summary>
         private static void BuildFog(Transform root)
@@ -336,7 +342,6 @@ namespace ForgottenKingdom.EditorTools
 
             foreach (var (zone, from, to, tone) in new[]
             {
-                (TombZoneId, -30f, 66f, new Color(0.55f, 0.62f, 0.78f)),
                 (ForestZoneId, 60f, 320f, new Color(0.58f, 0.72f, 0.7f))
             })
             {
@@ -369,34 +374,16 @@ namespace ForgottenKingdom.EditorTools
             SetFloat(band.AddComponent<FogDrift>(), "_speed", drift);
         }
 
-        /// <summary>Cold light falling through the vaults: guides the eye, lights nothing.</summary>
-        private static void BuildLightShafts(Transform root)
+        /// <summary>
+        /// The Tomb's own lights when it is rebuilt in a finished world (<see cref="SceneTomb"/>):
+        /// candles, altars and the Guardian, as BuildAtmosphere lights them in the generator.
+        /// </summary>
+        public static void LightTomb(Transform tomb)
         {
-            var shaft = Shape("shape_light_shaft");
-            if (shaft == null)
-            {
-                return;
-            }
-
-            var shafts = Section(root, "LightShafts");
-            SetString(shafts.gameObject.AddComponent<ZoneBackdrop>(), "_zoneId", TombZoneId);
-            foreach (var (x, tilt, width) in new[]
-            {
-                (-9f, 8f, 2.6f), (4f, -6f, 2.2f), (16f, 7f, 3f), (30f, -5f, 2.4f), (46f, 6f, 3.4f),
-                (54f, -7f, 3.4f)
-            })
-            {
-                var beam = new GameObject("LightShaft");
-                beam.transform.SetParent(shafts, false);
-                beam.transform.position = new Vector2(x, 5f);
-                beam.transform.rotation = Quaternion.Euler(0f, 0f, tilt);
-                beam.transform.localScale = new Vector3(width, 11f, 1f);
-                var renderer = beam.AddComponent<SpriteRenderer>();
-                renderer.sprite = shaft;
-                renderer.color = new Color(0.7f, 0.8f, 1f, 0.09f);
-                renderer.sharedMaterial = _material;
-                SetSorting(renderer, "BackgroundNear", 8);
-            }
+            BuildCandleLights(tomb);
+            BuildCheckpointLights(tomb);
+            BuildBossLights(tomb);
+            BuildFoundations(tomb);
         }
 
         // ---------- camera ----------

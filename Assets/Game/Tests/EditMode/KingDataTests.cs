@@ -64,14 +64,14 @@ namespace ForgottenKingdom.Tests
         public void TheGrappleReachesOneNewPlaceInEachOldZone()
         {
             var graph = AssetDatabase.LoadAssetAtPath<WorldGraph>("Assets/Game/Data/WorldGraph.asset");
-            var cache = graph.Area("room_tomb_mason_cache");
+            var cache = graph.Area("room_tomb_crypt_nest");
             var hollow = graph.Area("room_forest_hunter_hollow");
             Assert.That(cache.ZoneId, Is.EqualTo("zone_forgotten_tomb"));
             Assert.That(hollow.ZoneId, Is.EqualTo("zone_withered_forest"));
             Assert.That(cache.IsSecret && hollow.IsSecret, Is.True);
             Assert.That(cache.RequiredAbilityId, Is.EqualTo(AbilityIds.Grapple));
             Assert.That(hollow.RequiredAbilityId, Is.EqualTo(AbilityIds.Grapple));
-            Assert.That(graph.Connection("conn_tomb_bellshaft_cache").RequiredAbilityId, Is.EqualTo(AbilityIds.Grapple));
+            Assert.That(graph.Connection("conn_tomb_collapsed_crypt_crypt_nest").RequiredAbilityId, Is.EqualTo(AbilityIds.Grapple));
             Assert.That(graph.Connection("conn_forest_grove_hollow").RequiredAbilityId, Is.EqualTo(AbilityIds.Grapple));
             Assert.That(WorldGraphValidator.Validate(graph), Is.Empty);
 

@@ -8,7 +8,7 @@
 <body>
 <!-- Одна картинка для гри на прозорому тлі (tools/map-art/render.sh):
      ?island=<art> — острів зони (якір: точка острова в (230, 250) × 1,6);
-     ?card=<art> — картка зони; ?fog — туман світу; ?glow — м'яке світло; ?room=<id>&art=&w=&h=&boss=1 — кімната. -->
+     ?card=<art> — картка зони; ?fog — туман світу; ?glow — м'яке світло; ?room=<id>&art=&w=&h=&boss=1&s=2 — кімната (s — масштаб для низьких). -->
 <script src="towns.js"></script>
 <script src="islands.js"></script>
 <script src="rooms.js"></script>
@@ -48,8 +48,9 @@
     I.el("stop", { offset: "1", "stop-color": "#ffffff", "stop-opacity": 0 }, rad);
     I.el("circle", { cx: 64, cy: 64, r: 64, fill: "url(#gl)" }, g);
   } else if (q.has("room")) {
-    var w = +q.get("w"), h = +q.get("h");
-    var r = svg(w, h, "0 0 " + w + " " + h);
+    var w = +q.get("w"), h = +q.get("h"), s = +(q.get("s") || 1);
+    // s: a low room is drawn larger (headless Chrome will not shoot a window under ~100 px).
+    var r = svg(w * s, h * s, "0 0 " + w + " " + h);
     var palette = q.get("boss") ? window.RoomArt.palettes.boss : window.RoomArt.palettes[q.get("art")];
     var motif = q.get("motif") || window.RoomArt.motifFor(q.get("room"));
     window.RoomArt.paint(r, { x: 0, y: 0, w: w, h: h }, motif, palette, I.rng(I.hash(q.get("room"))));

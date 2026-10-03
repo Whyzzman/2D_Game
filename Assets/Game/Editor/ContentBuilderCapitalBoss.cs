@@ -326,10 +326,11 @@ namespace ForgottenKingdom.EditorTools
         private const string GrappleReturnsName = "GrappleReturns";
 
         /// <summary>
-        /// Two places in the old zones that only the King's gift reaches, so the way back is worth
-        /// walking: a stonemason's cache over the Tomb's bell loft (a flask shard) and a hunter's
-        /// hollow over the Poison Grove (a relic and a purse). Both lie higher than a second jump
-        /// reaches from anything below them, and the rings sit beside the shelves, not under them.
+        /// A place in the old zones that only the King's gift reaches, so the way back is worth
+        /// walking: a hunter's hollow over the Poison Grove (a relic and a purse). The Tomb's
+        /// mason's cache moved behind the bell shaft's second jump with the Tomb's rebuild (its flask
+        /// shard keeps the id <c>grapple-tomb-flask</c> and lives in the Tomb's text). The hollow lies
+        /// higher than a second jump reaches from anything below it; the ring sits beside the shelf.
         /// Kept in one folder of the level, which the world split hands to the zones by position.
         /// </summary>
         private static void BuildGrappleReturns(Transform level, GameProgress progress, GameObject pickup)
@@ -342,7 +343,7 @@ namespace ForgottenKingdom.EditorTools
 
             foreach (var find in Object.FindObjectsByType<WorldPickup>(FindObjectsInactive.Include))
             {
-                if (find.PersistentId != null && find.PersistentId.StartsWith("grapple-"))
+                if (find.PersistentId != null && find.PersistentId.StartsWith("grapple-forest"))
                 {
                     Object.DestroyImmediate(find.gameObject);
                 }
@@ -352,18 +353,6 @@ namespace ForgottenKingdom.EditorTools
             if (_tomb == null) { _tomb = PlaceholderTombArt.Generate(); }
             if (_forest == null) { _forest = PlaceholderForestArt.Generate(); }
             var root = Section(level, GrappleReturnsName);
-
-            // The line lets go 1.9 under a ring and the pop and a second jump carry the feet to 0.4
-            // under it, so each shelf sits under its ring. The Tomb: from the bell loft (10.4) the
-            // ring is 4.9 up; the cache at 14.5 is 0.7 over the loft's second jump (13.8).
-            var tomb = Section(root, "MasonCache");
-            var cache = Block(tomb, "MasonCacheShelf", new Vector2(-6.5f, 14.25f), new Vector2(3f, 0.5f),
-                TombSurface.Platform);
-            Ensure<NonClimbableSurface>(cache);
-            PlaceGrappleRing(tomb, "MasonCacheRing", new Vector2(-3f, 15.8f));
-            AreaTrigger(tomb, TombMasonCache, new Vector2(-6.5f, 15.4f), new Vector2(2.6f, 1.6f));
-            PlaceAbilityGate(tomb, "MasonCacheHint", new Vector2(-4.2f, 11.1f), AbilityIds.Grapple,
-                "conn_tomb_bellshaft_cache", new Vector2(-6.5f, 15f), progress);
 
             // The Forest: from the step (2.9) or the air-dash ledge (5.9) the ring at 10.9 is in
             // reach; the hollow at 10.0 is 0.7 over the ledge's second jump (9.3).
@@ -378,8 +367,6 @@ namespace ForgottenKingdom.EditorTools
 
             if (pickup != null)
             {
-                PlacePickup(pickup, new Vector2(-6.9f, 15.1f), progress,
-                    MerchantStock.FlaskShardPrefix + "tomb-mason-cache", false, 1, "grapple-tomb-flask", false);
                 PlacePickup(pickup, new Vector2(163.3f, 10.6f), progress, HunterRelicItemId, false, 1,
                     "grapple-forest-talon", false);
                 PlacePickup(pickup, new Vector2(164.9f, 10.5f), progress, string.Empty, true, 400,
@@ -389,9 +376,9 @@ namespace ForgottenKingdom.EditorTools
             // The helpers place finds at the scene's root; they belong with their shelves.
             foreach (var find in Object.FindObjectsByType<WorldPickup>(FindObjectsInactive.Include))
             {
-                if (find.PersistentId != null && find.PersistentId.StartsWith("grapple-"))
+                if (find.PersistentId != null && find.PersistentId.StartsWith("grapple-forest"))
                 {
-                    find.transform.SetParent(find.transform.position.x < 62.5f ? tomb : forest, true);
+                    find.transform.SetParent(forest, true);
                 }
             }
         }

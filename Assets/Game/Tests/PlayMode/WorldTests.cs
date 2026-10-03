@@ -130,9 +130,9 @@ namespace ForgottenKingdom.Tests
 
             for (var i = 0; i < 4; i++)
             {
-                yield return Place(new Vector2(-2f, 0.85f));
+                yield return Place(BurialHall());
                 Assert.That(_world.CurrentAreaId, Is.EqualTo("room_tomb_burial_hall"));
-                yield return Place(new Vector2(-12f, 0.85f));
+                yield return Place(TombScene.Ground(0f));
             }
 
             Assert.That(discoveries, Is.EqualTo(1));
@@ -142,11 +142,12 @@ namespace ForgottenKingdom.Tests
         [UnityTest]
         public IEnumerator ASecretIsFoundOnlyByGoingInside()
         {
-            // Standing on the passage floor right under the ossuary is not being in it.
-            yield return Place(new Vector2(13.5f, 0.85f));
+            // Standing on the Guardian's floor by the wall the ossuary hides behind is not being in it.
+            yield return Place(TombScene.ArenaFloor(6.5f));
             Assert.That(_progress.IsAreaDiscovered("room_tomb_royal_ossuary"), Is.False);
 
-            yield return Place(new Vector2(13.5f, 8f));
+            var ossuary = TombScene.Layout.WorldBounds(TombScene.Layout.Room("room_tomb_royal_ossuary"));
+            yield return Place(new Vector2(ossuary.center.x, ossuary.yMin + 1.85f));
             Assert.That(_progress.IsAreaDiscovered("room_tomb_royal_ossuary"), Is.True);
             Assert.That(_world.CurrentAreaId, Is.EqualTo("room_tomb_royal_ossuary"));
         }
@@ -155,6 +156,7 @@ namespace ForgottenKingdom.Tests
         public IEnumerator TheMapRedrawsOnlyWhenTheWorldChanges()
         {
             yield return null;
+            _progress.MarkAreaDiscovered("room_tomb_burial_hall");
             _map.Open();
             var builds = _map.BuildCount;
             yield return null;
@@ -164,7 +166,7 @@ namespace ForgottenKingdom.Tests
             _progress.MarkCheckpointActivated("tomb-altar-01");
             yield return null;
             Assert.That(_map.BuildCount, Is.EqualTo(builds + 1));
-            Assert.That(_map.View.Node("room_tomb_entrance").Icons
+            Assert.That(_map.View.Node("room_tomb_burial_hall").Icons
                 .Single(i => i.Id == "tomb-altar-01").IsActive, Is.True);
             _map.Close();
             Assert.That(_map.View, Is.Null, "A closed map keeps nothing built.");
@@ -201,8 +203,8 @@ namespace ForgottenKingdom.Tests
         [UnityTest]
         public IEnumerator DiscoveredRoomsSurviveAQuit()
         {
-            yield return Place(new Vector2(-2f, 0.85f));
-            yield return Place(new Vector2(13f, 0.85f));
+            yield return Place(BurialHall());
+            yield return Place(TombScene.Spot("stone-wardens-key") + new Vector2(2f, 0.85f));
             _progress.SaveNow();
 
             yield return LoadLevel();
@@ -222,7 +224,7 @@ namespace ForgottenKingdom.Tests
             Assert.That(door.IsOpen, Is.False);
 
             var guardian = TombScene.GuardianEncounter();
-            yield return Place(new Vector2(42f, 1f));
+            yield return Place(TombScene.ArenaEntry());
             guardian.Boss.Actor.ClearInvulnerability();
             guardian.Boss.Actor.ApplyDamage(new DamageInfo(float.MaxValue, Vector2.left,
                 isUnblockable: true, attacker: _player.gameObject));
@@ -562,20 +564,20 @@ namespace ForgottenKingdom.Tests
         // ---------- shortcuts ----------
 
         [UnityTest]
-        public IEnumerator TheCryptBridgeStaysDownThroughDeathAndReload()
+        public IEnumerator TheChainGateStaysOpenThroughDeathAndReload()
         {
+            // The Tomb's shortcut: bars across the door from the chain shaft into the entrance,
+            // wound up from the shaft's side.
             var winch = Object.FindObjectsByType<Shortcut>()
-                .Single(s => s.ShortcutId == "shortcut_tomb_crypt_bridge");
-            var bridge = GameObject.Find("Level/TombWorld/CryptBridge")
-                ?? Resources.FindObjectsOfTypeAll<GameObject>().First(g => g.name == "CryptBridge"
-                    && g.scene.IsValid());
-            Assert.That(bridge.activeSelf, Is.False, "No bridge before the winch.");
+                .Single(s => s.ShortcutId == "shortcut_tomb_chain_gate");
+            var bars = GameObject.Find("ChainGate");
+            Assert.That(bars, Is.Not.Null, "The bars stand in the door before the winch.");
 
-            yield return Place(new Vector2(23.8f, 0.85f));
+            yield return Place(TombScene.Spot("chain-winch") + new Vector2(0f, 0.85f));
             winch.Interact(_player);
-            Assert.That(_progress.IsShortcutUnlocked("shortcut_tomb_crypt_bridge"), Is.True);
+            Assert.That(_progress.IsShortcutUnlocked("shortcut_tomb_chain_gate"), Is.True);
             yield return new WaitForSeconds(1.5f);
-            Assert.That(bridge.activeSelf, Is.True);
+            Assert.That(bars.activeSelf, Is.False, "The way through is open.");
 
             var again = 0;
             _world.Changed += (flag, _) => again += flag == WorldFlag.ShortcutUnlocked ? 1 : 0;
@@ -584,13 +586,13 @@ namespace ForgottenKingdom.Tests
 
             _respawner.Kill();
             yield return new WaitForSeconds(3f);
-            Assert.That(bridge.activeSelf, Is.True, "Death does not raise the bridge.");
+            Assert.That(bars.activeSelf, Is.False, "Death does not drop the bars.");
 
             yield return new WaitForSeconds(0.5f);
             yield return LoadLevel();
             var reloaded = Resources.FindObjectsOfTypeAll<GameObject>()
-                .First(g => g.name == "CryptBridge" && g.scene.IsValid());
-            Assert.That(reloaded.activeSelf, Is.True, "Nor does quitting.");
+                .First(g => g.name == "ChainGate" && g.scene.IsValid());
+            Assert.That(reloaded.activeSelf, Is.False, "Nor does quitting.");
         }
 
         [UnityTest]
@@ -679,6 +681,9 @@ namespace ForgottenKingdom.Tests
         }
 
         // ---------- helpers ----------
+
+        /// <summary>The burial hall's floor, east of its altar.</summary>
+        private static Vector2 BurialHall() => TombScene.Spot("altar") + new Vector2(4f, 0.85f);
 
         private IEnumerator LoadLevel()
         {
