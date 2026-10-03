@@ -27,6 +27,10 @@ namespace ForgottenKingdom
         [SerializeField] private CheckpointDefinition[] _checkpoints =
             Array.Empty<CheckpointDefinition>();
         [SerializeField] private AbilityDefinition[] _abilities = Array.Empty<AbilityDefinition>();
+        [Tooltip("The world map's pictures: islands, cards, rooms, fog.")]
+        [SerializeField] private MapArt _mapArt;
+        [Tooltip("The roads of the world map between regions.")]
+        [SerializeField] private WorldRoad[] _roads = Array.Empty<WorldRoad>();
         [Tooltip("Where a new game begins; the only area known before the player has moved.")]
         [SerializeField] private string _startAreaId = string.Empty;
         [Tooltip("What must be true before altars offer fast travel.")]
@@ -48,6 +52,8 @@ namespace ForgottenKingdom
         public IReadOnlyList<WorldConnection> Connections => _connections;
         public IReadOnlyList<CheckpointDefinition> Checkpoints => _checkpoints;
         public IReadOnlyList<AbilityDefinition> Abilities => _abilities;
+        public IReadOnlyList<WorldRoad> Roads => _roads;
+        public MapArt MapArt => _mapArt;
         public string StartAreaId => _startAreaId;
         public WorldRequirement FastTravelRequirement => _fastTravelRequirement;
         public string FastTravelOverrideId => _fastTravelOverrideId;

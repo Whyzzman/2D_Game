@@ -541,12 +541,19 @@ namespace ForgottenKingdom.Tests
             yield return null;
 
             var root = hud.GetComponent<UnityEngine.UIElements.UIDocument>().rootVisualElement;
+            Assert.That(_map.Level, Is.EqualTo(MapLevel.World), "The map opens on the world (2026-10-03).");
+            Assert.That(_map.FocusZoneId, Is.EqualTo(_world.CurrentZoneId), "With the hero's region chosen.");
+            Assert.That(_map.EnterZone(), Is.True);
+            yield return null;
             var current = _map.View.Node(_map.SelectedAreaId);
             Assert.That(current, Is.Not.Null);
             Assert.That(current.IsCurrent, Is.True, "The cursor starts on the player.");
             Assert.That(UnityEngine.UIElements.UQueryExtensions.Q<UnityEngine.UIElements.Label>(root, "map-info-name").text, Is.EqualTo(current.Label));
 
-            hud.Pause.Toggle(); // Escape
+            hud.Pause.Toggle(); // Escape: out of the region, to the world.
+            Assert.That(_map.IsOpen, Is.True);
+            Assert.That(_map.Level, Is.EqualTo(MapLevel.World));
+            hud.Pause.Toggle(); // Escape again: the map closes.
             Assert.That(_map.IsOpen, Is.False);
             Assert.That(hud.Pause.IsOpen, Is.True, "Opened from the pause, the map returns there.");
             hud.Pause.Resume();

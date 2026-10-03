@@ -16,6 +16,13 @@ namespace ForgottenKingdom
     /// It follows the inventory's rules: it pauses the game, it cannot be opened by a dead player
     /// or in the middle of a transition, and it does not open on top of another menu.
     /// </summary>
+    /// <summary>Which map is up: the world of regions, or one region's rooms.</summary>
+    public enum MapLevel
+    {
+        World,
+        Zone
+    }
+
     [DisallowMultipleComponent]
     public sealed class WorldMapScreen : MonoBehaviour
     {
@@ -43,6 +50,21 @@ namespace ForgottenKingdom
         public bool IsOpen { get; private set; }
         public WorldMapView View { get; private set; }
         public WorldMapViewport Viewport => _viewport;
+
+        /// <summary>
+        /// The world of regions or one region's rooms (item 2 of the 15-zone list). The map opens
+        /// on the world with the hero's region chosen; Enter goes into a region, back comes out.
+        /// </summary>
+        public MapLevel Level { get; private set; } = MapLevel.World;
+
+        /// <summary>The region chosen on the world map, and the one whose rooms are shown.</summary>
+        public string FocusZoneId { get; private set; } = string.Empty;
+
+        /// <summary>The islands and roads; built with the room view.</summary>
+        public WorldAtlas Atlas { get; private set; }
+
+        /// <summary>Raised when the map goes from the world into a region or back.</summary>
+        public event Action LevelChanged;
 
         /// <summary>The room the cursor is on. Starts on the player.</summary>
         public string SelectedAreaId { get; private set; } = string.Empty;
@@ -170,6 +192,8 @@ namespace ForgottenKingdom
             }
 
             SelectedAreaId = _world.CurrentAreaId;
+            Level = MapLevel.World;
+            FocusZoneId = _world.CurrentZoneId;
             Rebuild();
             var current = View.Node(SelectedAreaId);
             _viewport.CenterOn(current != null ? current.Area.MapPosition : View.ContentBounds.center);
@@ -192,6 +216,7 @@ namespace ForgottenKingdom
             _input?.SetGameplayEnabled(true);
             // The view is dropped with the screen; nothing about the map is kept alive closed.
             View = null;
+            Atlas = null;
             Closed?.Invoke();
         }
 
@@ -215,7 +240,10 @@ namespace ForgottenKingdom
             }
         }
 
-        /// <summary>Moves the controller cursor to the next known room in a direction.</summary>
+        /// <summary>
+        /// Moves the controller cursor: to the next known region on the world map, to the next known
+        /// room of the region on its own map.
+        /// </summary>
         public void MoveCursor(Vector2 direction)
         {
             if (!IsOpen || View == null)
@@ -223,7 +251,14 @@ namespace ForgottenKingdom
                 return;
             }
 
-            var next = WorldMapViewport.Step(View, SelectedAreaId, direction);
+            if (Level == MapLevel.World)
+            {
+                var zone = Atlas?.Step(FocusZoneId, direction);
+                if (zone != null) { FocusZoneId = zone.ZoneId; }
+                return;
+            }
+
+            var next = WorldMapViewport.Step(View, SelectedAreaId, direction, InFocus);
             if (next != null)
             {
                 SelectedAreaId = next.AreaId;
@@ -231,11 +266,97 @@ namespace ForgottenKingdom
             }
         }
 
+        /// <summary>Chooses a region on the world map (a click on its island).</summary>
+        public void FocusZone(string zoneId)
+        {
+            if (IsOpen && Atlas?.Zone(zoneId) is { IsKnown: true })
+            {
+                FocusZoneId = zoneId;
+            }
+        }
+
+        /// <summary>
+        /// Into a region's own map: the chosen one, or <paramref name="zoneId"/>. Only a known, built
+        /// region has rooms to show. The cursor starts on the hero if he is there, else on the first
+        /// known room.
+        /// </summary>
+        public bool EnterZone(string zoneId = null)
+        {
+            var entry = Atlas?.Zone(zoneId ?? FocusZoneId);
+            if (!IsOpen || entry == null || !entry.CanEnter)
+            {
+                return false;
+            }
+
+            FocusZoneId = entry.ZoneId;
+            Level = MapLevel.Zone;
+            if (View.Node(SelectedAreaId)?.Area.ZoneId != FocusZoneId)
+            {
+                var first = View.Nodes.Find(n => n.IsKnown && n.Area.ZoneId == FocusZoneId);
+                SelectedAreaId = first != null ? first.AreaId : string.Empty;
+            }
+
+            ConfigureViewport();
+            var selected = View.Node(SelectedAreaId);
+            if (selected != null) { _viewport.CenterOn(selected.Area.MapPosition); }
+            LevelChanged?.Invoke();
+            return true;
+        }
+
+        /// <summary>From a region back out to the world.</summary>
+        public void ToWorld()
+        {
+            if (!IsOpen || Level == MapLevel.World)
+            {
+                return;
+            }
+
+            Level = MapLevel.World;
+            LevelChanged?.Invoke();
+        }
+
+        /// <summary>Escape or the pad's back: a region's map goes back to the world, the world closes.</summary>
+        public void Back()
+        {
+            if (Level == MapLevel.Zone)
+            {
+                ToWorld();
+            }
+            else
+            {
+                Close();
+            }
+        }
+
+        private bool InFocus(MapNode node) => Level != MapLevel.Zone || node.Area.ZoneId == FocusZoneId;
+
+        /// <summary>The room view's bounds of the chosen region: what its own map pans and zooms over.</summary>
+        public Rect ZoneBounds(string zoneId)
+        {
+            var bounds = new Rect();
+            var any = false;
+            foreach (var node in View.Nodes)
+            {
+                if (node.State == MapNodeState.Hidden || node.Area.ZoneId != zoneId) { continue; }
+                var rect = node.Rect;
+                bounds = any ? Rect.MinMaxRect(Mathf.Min(bounds.xMin, rect.xMin), Mathf.Min(bounds.yMin, rect.yMin),
+                    Mathf.Max(bounds.xMax, rect.xMax), Mathf.Max(bounds.yMax, rect.yMax)) : rect;
+                any = true;
+            }
+
+            return any ? bounds : View.ContentBounds;
+        }
+
+        private void ConfigureViewport()
+        {
+            _viewport.Configure(Level == MapLevel.Zone ? ZoneBounds(FocusZoneId) : View.ContentBounds, _viewSize);
+        }
+
         /// <summary>Points the cursor at a room the mouse clicked; ignored for rooms not drawn.</summary>
         public void Select(string areaId)
         {
             var node = View?.Node(areaId);
-            if (node != null && node.IsKnown)
+            if (node != null && node.IsKnown && InFocus(node))
             {
                 SelectedAreaId = areaId;
             }
@@ -277,7 +398,8 @@ namespace ForgottenKingdom
             View = WorldMapBuilder.Build(_world.Graph, _world, _world.CurrentAreaId,
                 _world.CurrentZoneId, _world.IsFastTravelUnlocked, RevealAll,
                 Progress != null ? Progress.MapMarks : null);
-            _viewport.Configure(View.ContentBounds, _viewSize);
+            Atlas = WorldAtlas.Build(_world.Graph, _world, View, _world.CurrentZoneId);
+            ConfigureViewport();
             BuildCount++;
             ViewChanged?.Invoke(View);
         }

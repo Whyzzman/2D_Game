@@ -1,10 +1,11 @@
 /*
- * The world map, the altar's menu and the travel list, from design/ui/map/map.html.
- * Reference 1920x1080. The map sheet itself (rooms, routes, symbols) is drawn by MapCanvas;
- * USS has no gradients or shadows, so the parchment is its darker middle tone.
+ * The world map (design/ui/world-map/world-map.html) and the altar's menu and travel list (map.html).
+ * Reference 1920x1080. The islands, the rooms and the fog are pictures (MapArt); routes, corridors,
+ * doors and symbols are drawn by WorldMapCanvas and MapCanvas. USS has no gradients: soft light is
+ * the glow picture, tinted.
  */
 
-/* ---------- map (frames 1 and 4) ---------- */
+/* ---------- the window ---------- */
 
 .map {
     position: absolute;
@@ -12,7 +13,7 @@
     top: 0;
     right: 0;
     bottom: 0;
-    background-color: rgb(11, 9, 7);
+    background-color: rgb(13, 12, 10);
     display: none;
 }
 
@@ -20,66 +21,222 @@
     display: flex;
 }
 
-.map__header {
+.map__frame {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    right: 10px;
+    bottom: 10px;
+    border-width: 1px;
+    border-color: rgb(74, 60, 42);
+}
+
+.map__corner {
+    position: absolute;
+    width: 90px;
+    height: 90px;
+    border-color: rgb(138, 116, 52);
+}
+
+.map__corner--a {
+    left: -2px;
+    top: -2px;
+    border-left-width: 2px;
+    border-top-width: 2px;
+}
+
+.map__corner--b {
+    right: -2px;
+    bottom: -2px;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+}
+
+.map__candle {
+    position: absolute;
+    width: 10px;
+    height: 46px;
+    background-color: rgb(196, 182, 152);
+    border-radius: 2px;
+}
+
+.map__candle--tl { left: 30px; top: 150px; }
+.map__candle--bl { left: 30px; top: 930px; }
+.map__candle--tr { right: 30px; top: 150px; }
+.map__candle--br { right: 30px; top: 930px; }
+
+.map__halo {
+    position: absolute;
+    left: -60px;
+    top: -82px;
+    width: 130px;
+    height: 130px;
+    -unity-background-image-tint-color: rgba(255, 160, 60, 0.35);
+}
+
+.map__flame {
+    position: absolute;
+    left: -3px;
+    top: -18px;
+    width: 16px;
+    height: 20px;
+    border-radius: 8px;
+    background-color: rgb(255, 196, 96);
+}
+
+/* ---------- tabs ---------- */
+
+.map__tabs {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 18px;
+    height: 52px;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.map__shoulder {
+    min-width: 34px;
+    height: 26px;
+    margin: 0 18px;
+    padding: 0 8px;
+    font-size: 13px;
+    -unity-text-align: middle-center;
+    color: rgb(216, 203, 180);
+    background-color: rgba(34, 28, 23, 0.8);
+    border-width: 1px;
+    border-color: rgb(107, 90, 66);
+    border-radius: 7px;
+}
+
+.map__tab,
+.map__tab:hover,
+.map__tab:active {
+    margin: 0;
+    padding: 10px 26px;
+    background-color: rgba(0, 0, 0, 0);
+    border-width: 0;
+    border-left-width: 1px;
+    border-left-color: rgb(58, 47, 37);
+    border-radius: 0;
+}
+
+.map__tab-text {
+    font-size: 19px;
+    letter-spacing: 3px;
+    color: rgb(142, 131, 117);
+    margin: 0;
+    padding: 0;
+}
+
+.map__tab:hover > .map__tab-text {
+    color: rgb(216, 203, 180);
+}
+
+.map__tab--active {
+    border-bottom-width: 2px;
+    border-bottom-color: rgb(201, 161, 74);
+}
+
+.map__tab--active > .map__tab-text,
+.map__tab--active:hover > .map__tab-text {
+    color: rgb(232, 205, 138);
+}
+
+/* ---------- title ---------- */
+
+.map__title {
     position: absolute;
     left: 64px;
-    right: 64px;
-    top: 18px;
+    top: 92px;
     flex-direction: row;
-    align-items: flex-end;
-    justify-content: space-between;
+    align-items: center;
 }
 
-.map__zone {
-    font-size: 28px;
-    letter-spacing: 4px;
-    color: rgb(240, 230, 210);
+.map__compass {
+    width: 86px;
+    height: 86px;
+    margin-right: 18px;
+}
+
+.map__heading {
+    font-size: 56px;
+    color: rgb(227, 211, 176);
     margin: 0;
     padding: 0;
+    -unity-font-style: bold;
 }
 
-.map__meta {
-    flex-direction: row;
-    padding-bottom: 4px;
-}
-
-.map__meta-item {
-    flex-direction: row;
-    margin-left: 24px;
-}
-
-.map__meta-name {
-    font-size: 15px;
-    color: rgb(142, 131, 117);
-    margin: 0 6px 0 0;
+.map__sub {
+    font-size: 21px;
+    letter-spacing: 2px;
+    color: rgb(216, 203, 180);
+    margin: 6px 0 0 4px;
     padding: 0;
 }
 
-.map__meta-value {
-    font-size: 15px;
-    color: rgb(201, 161, 74);
-    margin: 0;
-    padding: 0;
-}
+/* ---------- canvases ---------- */
 
 .map__sheet {
     position: absolute;
-    left: 64px;
-    top: 72px;
-    right: 64px;
-    bottom: 96px;
-    background-color: rgb(23, 19, 15);
-    border-width: 1px;
-    border-color: rgb(58, 47, 37);
-    overflow: hidden;
+    left: 30px;
+    top: 70px;
+    width: 1470px;
+    height: 900px;
 }
 
+.world-canvas {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1470px;
+    height: 900px;
+}
+
+/* The zone's canvas fills what holds it: the map's sheet, or the altar's small map. */
 .map-canvas {
     position: absolute;
     left: 0;
     top: 0;
     right: 0;
     bottom: 0;
+    overflow: hidden;
+}
+
+.world-canvas__layer,
+.map-canvas__layer,
+.world-canvas__fog,
+.world-canvas__veil {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.world-canvas__fog { opacity: 0.32; }
+.world-canvas__veil { opacity: 0.2; }
+
+.world-canvas__island,
+.map-canvas__room {
+    position: absolute;
+    -unity-background-scale-mode: stretch-to-fill;
+}
+
+.world-canvas__plaque {
+    position: absolute;
+    translate: -50% 0;
+    padding: 3px 22px 4px 22px;
+    font-size: 17px;
+    letter-spacing: 1px;
+    color: rgb(232, 220, 195);
+    background-color: rgba(14, 12, 10, 0.88);
+    border-width: 1px;
+    border-color: rgb(138, 116, 52);
+    margin: 0;
+    white-space: nowrap;
 }
 
 .map-canvas__label {
@@ -90,40 +247,89 @@
     padding: 0;
 }
 
-.map__info {
+/* ---------- the side: card, room, numbers, legend ---------- */
+
+.map__side {
     position: absolute;
-    left: 88px;
-    bottom: 120px;
-    width: 420px;
-    padding: 16px 24px;
-    background-color: rgba(11, 9, 7, 0.86);
-    border-width: 1px;
-    border-color: rgb(107, 90, 66);
+    right: 44px;
+    top: 82px;
+    width: 372px;
+    bottom: 112px;
 }
 
-.map__info-name {
-    font-size: 20px;
-    letter-spacing: 1px;
-    color: rgb(240, 230, 210);
-    margin: 0 0 8px 0;
+.map__card {
+    height: 196px;
+    margin-bottom: 14px;
+    border-width: 1px;
+    border-color: rgb(107, 90, 66);
+    background-color: rgb(13, 12, 10);
+    -unity-background-scale-mode: scale-and-crop;
+}
+
+.map__card--none {
+    display: none;
+}
+
+.map__name {
+    font-size: 32px;
+    color: rgb(234, 223, 200);
+    margin: 0;
     padding: 0;
     white-space: normal;
 }
 
-.map__info-line {
-    font-size: 15px;
-    color: rgb(142, 131, 117);
+.map__rule {
+    height: 1px;
+    margin: 10px 0 12px 0;
+    background-color: rgb(74, 62, 46);
+}
+
+.map__lines {
+    margin-bottom: 12px;
+}
+
+.map__line {
+    font-size: 16px;
+    color: rgb(216, 203, 180);
     white-space: normal;
-    margin: 0 0 2px 0;
+    margin: 0 0 4px 0;
+    padding: 0;
+}
+
+.map__line--hint {
+    color: rgb(138, 116, 52);
+    -unity-font-style: italic;
+}
+
+.map__stat {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 3px 4px;
+    border-bottom-width: 1px;
+    border-bottom-color: rgb(58, 47, 37);
+}
+
+.map__stat-name {
+    font-size: 17px;
+    color: rgb(216, 203, 180);
+    margin: 0;
+    padding: 0;
+}
+
+.map__stat-value {
+    font-size: 17px;
+    color: rgb(240, 230, 210);
+    margin: 0;
     padding: 0;
 }
 
 .map__legend {
     position: absolute;
-    right: 88px;
-    bottom: 120px;
-    padding: 12px 16px;
-    background-color: rgba(11, 9, 7, 0.82);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 14px 18px;
+    background-color: rgba(11, 9, 7, 0.7);
     border-width: 1px;
     border-color: rgb(58, 47, 37);
 }
@@ -131,29 +337,41 @@
 .map__legend-row {
     flex-direction: row;
     align-items: center;
-    margin: 3px 0;
+    margin-bottom: 7px;
 }
 
 .map__legend-text {
-    font-size: 13px;
-    color: rgb(142, 131, 117);
+    font-size: 15px;
+    color: rgb(216, 203, 180);
     margin: 0 0 0 12px;
     padding: 0;
 }
 
 .map-glyph {
-    width: 22px;
-    height: 22px;
-    flex-shrink: 0;
+    width: 28px;
+    height: 24px;
 }
 
-.map__footer {
+/* ---------- key hints ---------- */
+
+.map__hints {
     position: absolute;
-    left: 64px;
-    right: 64px;
-    bottom: 30px;
+    left: 0;
+    right: 0;
+    bottom: 26px;
     flex-direction: row;
+    justify-content: center;
     align-items: center;
+}
+
+.map__hints > .hint {
+    margin: 0 35px;
+}
+
+.map__hints .hint__text {
+    font-size: 18px;
+    color: rgb(216, 203, 180);
+    margin-left: 8px;
 }
 
 /* ---------- altar's menu and travel (frames 2 and 3) ---------- */

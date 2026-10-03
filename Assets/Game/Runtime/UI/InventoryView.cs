@@ -132,6 +132,8 @@ namespace ForgottenKingdom
 
             _characterPip = _overlay.Q("inv-character-pip");
             _skillsPip = _overlay.Q("inv-skills-pip");
+            var mapTab = _overlay.Q<Button>("inv-page-map");
+            if (mapTab != null) { mapTab.clicked += () => { if (IsOpen && SwitchToMap != null) { SwitchToMap(Handoff()); } }; }
             _character = new CharacterPage(_pages[(int)Page.Character], Redraw);
             _skillsPage = new SkillsPage(_pages[(int)Page.Skills], Redraw);
             _spellsPage = new SpellsPage(_pages[(int)Page.Spells], Redraw);
@@ -274,6 +276,35 @@ namespace ForgottenKingdom
 
         public void Back() => Close();
 
+        /// <summary>
+        /// Set by the HUD: turn to the map tab, carrying the way back (the pause) along. Without it
+        /// the pages wrap round as before.
+        /// </summary>
+        public Action<Action> SwitchToMap { get; set; }
+
+        /// <summary>
+        /// Q/E or LB/RB. The map is the window's first tab: past either end of the pages lies the map.
+        /// </summary>
+        public void TurnPage(int turn)
+        {
+            if (SwitchToMap != null && ((turn < 0 && _page == Page.Items) || (turn > 0 && _page == Page.Bestiary)))
+            {
+                SwitchToMap(Handoff());
+                return;
+            }
+
+            ShowPage((Page)(((int)_page + turn + _pages.Length) % _pages.Length));
+        }
+
+        /// <summary>Closes the window for another tab and hands it the way back.</summary>
+        public Action Handoff()
+        {
+            var onClosed = _onClosed;
+            _onClosed = null;
+            _screen?.Close();
+            return onClosed;
+        }
+
         private void OnOpened()
         {
             _overlay.AddToClassList(OpenClass);
@@ -337,7 +368,7 @@ namespace ForgottenKingdom
                 : Pressed(keyboard?.eKey, pad?.rightShoulder) ? 1 : 0;
             if (turn != 0)
             {
-                ShowPage((Page)(((int)_page + turn + _pages.Length) % _pages.Length));
+                TurnPage(turn);
                 return;
             }
 

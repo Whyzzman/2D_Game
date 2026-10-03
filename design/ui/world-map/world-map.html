@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<title>Тінь Забутого Королівства — Карта світу</title>
+<link rel="stylesheet" href="../_shared/ui.css">
+<style>
+  body { background: #050403; }
+  .note { max-width: 1852px; margin: 28px 28px 0; color: var(--ink-muted); font-size: 14px; line-height: 1.6; }
+  .note b { color: var(--ink); }
+  .sheet { display: flex; flex-wrap: wrap; gap: 28px; padding: 28px; }
+  .frame { position: relative; flex-shrink: 0; width: 1852px; height: 1041px; overflow: hidden; border: 1px solid var(--edge-mid); }
+  .frame--small { width: 912px; height: 513px; }
+  .frame > .stage-inner { position: absolute; width: 1920px; height: 1080px; transform: scale(0.964); transform-origin: top left; }
+  .frame--small > .stage-inner { transform: scale(0.475); }
+  .frame__caption {
+    position: absolute; left: 0; right: 0; bottom: 0; z-index: 20; padding: 6px 10px;
+    font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--gold-dim); background: rgba(5,4,3,0.88); border-top: 1px solid var(--edge-mid);
+  }
+
+  /* ------------------------------------------------------------ рамка екрана
+     Готична рамка й свічки по боках, як на референсі; усе інше — темрява й туман. */
+  .wm { position: absolute; inset: 0; overflow: hidden;
+    background: radial-gradient(70% 60% at 42% 48%, #1b1915 0%, #0d0c0a 60%, #060505 100%); }
+  .wm__frame { position: absolute; inset: 10px; border: 1px solid #4a3c2a; pointer-events: none; z-index: 6;
+    box-shadow: inset 0 0 0 4px #0a0807, inset 0 0 0 5px #3a2f25, inset 0 0 90px rgba(0,0,0,0.9); }
+  .wm__frame::before, .wm__frame::after { content: ""; position: absolute; width: 90px; height: 90px; border: 2px solid var(--gold-dim); }
+  .wm__frame::before { left: -2px; top: -2px; border-right: 0; border-bottom: 0; }
+  .wm__frame::after { right: -2px; bottom: -2px; border-left: 0; border-top: 0; }
+  .candle { position: absolute; width: 10px; height: 46px; background: linear-gradient(180deg, #d9c9a8, #8a7a5e); border-radius: 2px; z-index: 7; }
+  .candle::before { content: ""; position: absolute; left: -3px; top: -18px; width: 16px; height: 20px; border-radius: 50% 50% 45% 45%;
+    background: radial-gradient(circle at 50% 70%, #fff3c4 0%, #ffb347 45%, rgba(255,120,30,0) 75%); }
+  .candle::after { content: ""; position: absolute; left: -60px; top: -80px; width: 130px; height: 130px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,170,70,0.20) 0%, rgba(255,140,40,0) 70%); }
+
+  /* ------------------------------------------------------------ вкладки */
+  .tabs { position: absolute; left: 0; right: 0; top: 18px; height: 52px; z-index: 8;
+    display: flex; justify-content: center; align-items: center; gap: 4px; }
+  .tabs__tab { position: relative; padding: 10px 26px; font-family: var(--font-display); font-size: 19px; letter-spacing: 0.16em;
+    color: var(--ink-muted); text-transform: uppercase; }
+  .tabs__tab + .tabs__tab::before { content: ""; position: absolute; left: -2px; top: 16px; width: 1px; height: 18px; background: var(--edge-light); }
+  .tabs__tab.is-active { color: var(--gold-bright); text-shadow: 0 0 14px rgba(201,161,74,0.5); }
+  .tabs__tab.is-active::after { content: ""; position: absolute; left: 18px; right: 18px; bottom: 2px; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+  .key { display: inline-grid; place-items: center; min-width: 34px; height: 26px; padding: 0 6px; border: 1px solid var(--edge-light);
+    border-radius: 7px; font-family: var(--font-body); font-size: 13px; letter-spacing: 0.04em; color: var(--ink); background: rgba(34,28,23,0.8); }
+  .key--round { border-radius: 50%; min-width: 34px; height: 34px; font-size: 15px; }
+  .tabs .key { margin: 0 18px; }
+
+  /* ------------------------------------------------------------ заголовок */
+  .wm__title { position: absolute; left: 64px; top: 92px; z-index: 5; display: flex; align-items: center; gap: 18px; }
+  .wm__compass { width: 86px; height: 86px; }
+  .wm__title h1 { margin: 0; font-family: var(--font-display); font-size: 56px; font-weight: 600; letter-spacing: 0.04em; line-height: 1;
+    color: #e3d3b0; text-shadow: 0 2px 0 #000, 0 0 30px rgba(201,161,74,0.25); }
+  .wm__title .sub { display: flex; align-items: center; gap: 12px; margin-top: 8px; font-family: var(--font-display); font-size: 21px;
+    letter-spacing: 0.08em; color: var(--ink); }
+  .wm__title .sub::before, .wm__title .sub::after { content: ""; width: 50px; height: 1px; background: linear-gradient(90deg, transparent, var(--gold-dim)); }
+  .wm__title .sub::after { transform: scaleX(-1); }
+  .crumbs { font-family: var(--font-display); font-size: 21px; letter-spacing: 0.08em; color: var(--ink-muted); margin-top: 10px; }
+  .crumbs b { color: var(--ink-bright); font-weight: 500; }
+
+  /* ------------------------------------------------------------ полотно */
+  .wm__map { position: absolute; left: 30px; top: 70px; width: 1470px; height: 900px; z-index: 2; }
+  .wm__map svg { width: 100%; height: 100%; overflow: visible; }
+  .label { font-family: var(--font-display); font-size: 17px; letter-spacing: 0.06em; fill: #e8dcc3; }
+
+  /* ------------------------------------------------------------ панель зони */
+  .side { position: absolute; right: 44px; top: 82px; width: 372px; bottom: 112px; z-index: 5; display: flex; flex-direction: column; gap: 14px; }
+  .vignette { height: 196px; border: 1px solid var(--edge-light); box-shadow: 0 0 0 3px #0a0807, 0 0 0 4px #3a2f25; overflow: hidden; background: #0d0c0a; }
+  .vignette svg { width: 100%; height: 100%; display: block; }
+  .side h2 { margin: 6px 0 0; font-family: var(--font-display); font-size: 32px; font-weight: 500; letter-spacing: 0.03em; color: #eadfc8; }
+  .side .desc { margin: 0; font-size: 16px; line-height: 1.55; color: var(--ink); }
+  .rule { height: 1px; background: linear-gradient(90deg, transparent, var(--edge-light), transparent); margin: 2px 0; }
+  .stat { display: flex; justify-content: space-between; font-size: 17px; color: var(--ink); padding: 3px 4px; }
+  .stat b { font-weight: 500; color: var(--ink-bright); font-variant-numeric: tabular-nums; }
+  .legend { margin-top: auto; border: 1px solid var(--edge-mid); background: rgba(11,9,7,0.7); padding: 14px 18px;
+    display: grid; grid-template-columns: 30px 1fr; gap: 7px 12px; align-items: center; font-size: 15px; color: var(--ink); }
+  .legend svg { width: 28px; height: 22px; overflow: visible; }
+
+  /* ------------------------------------------------------------ підказки */
+  .hints { position: absolute; left: 0; right: 0; bottom: 26px; z-index: 8; display: flex; justify-content: center; gap: 70px; align-items: center;
+    font-size: 18px; letter-spacing: 0.04em; color: var(--ink); }
+  .hints span { display: inline-flex; align-items: center; gap: 12px; }
+  .hints .key { min-width: 38px; height: 30px; }
+</style>
+</head>
+<body>
+
+<div class="note">
+  <b>Пункт 2 «Миру з 15 зон» · Карта світу — Approval 1 отримано 2026-10-03, перенесено в гру.</b> За референсом користувача
+  (<code>gamedesign/reference/maps/00_world_map.webp</code>): світ — острови зон у тумані, кожна свого кольору;
+  стежки з вузлами кімнат; праворуч — картка зони з картинкою, описом, дослідженням, вівтарями й босами;
+  легенда; підказки клавіш унизу. Наближення переводить у карту зони — кімнати як вирізані зали в стилі карт
+  <code>01…15</code>. <b>Острови й кімнати тут намальовано процедурно</b> (так їх малюватиме гра, доки художник не дасть
+  мальовану карту світу); композиція, підписи, панелі й іконки — остаточні. Нове: карта стає першою вкладкою вікна
+  паузи (Q/E, LB/RB) — як на референсі.
+</div>
+
+<div class="sheet">
+  <div class="frame"><div class="stage-inner"><div class="wm" data-view="world" data-state="mid"></div></div>
+    <div class="frame__caption">1 · Світ — середина гри: герой у Зів'ялому Лісі; відкриті п'ять зон, сусідні — силуети з «?», решта в тумані</div></div>
+  <div class="frame"><div class="stage-inner"><div class="wm" data-view="zone" data-state="mid"></div></div>
+    <div class="frame__caption">2 · Зона — наближення в Зів'ялий Ліс: кімнати, вівтарі, бос, таємниці, ворота; праворуч — обрана кімната</div></div>
+  <div class="frame frame--small"><div class="stage-inner"><div class="wm" data-view="world" data-state="early"></div></div>
+    <div class="frame__caption">3 · Світ — нова гра: відома лише Гробниця, Ліс — силует</div></div>
+  <div class="frame frame--small"><div class="stage-inner"><div class="wm" data-view="world" data-state="late"></div></div>
+    <div class="frame__caption">4 · Світ — перед фіналом: усе відкрито, переможені боси погасли</div></div>
+</div>
+
+<script src="towns.js"></script>
+<script src="islands.js"></script>
+<script src="rooms.js"></script>
+<script>
+(function () {
+  "use strict";
+  var NS = "http://www.w3.org/2000/svg";
+
+  // ---------------------------------------------------------------- дані
+  // x, y — центр острова на полотні 1470×900 (з референсу, Обсерваторія — у небі між Бастіоном і Палацом).
+  var ZONES = [
+    { id: "tomb",    name: "Забута Гробниця",     x: 200,  y: 690, w: 250, tint: "#9fb0c8", glow: "#f0d9a0", kind: "tomb" },
+    { id: "forest",  name: "Зів'ялий Ліс",        x: 545,  y: 715, w: 290, tint: "#d9862f", glow: "#ffb35a", kind: "forest" },
+    { id: "village", name: "Занепале Село",       x: 830,  y: 745, w: 240, tint: "#a27a58", glow: "#ff9c4a", kind: "village" },
+    { id: "marsh",   name: "Чумні Болота",        x: 1075, y: 790, w: 240, tint: "#7fa83c", glow: "#b6ff5a", kind: "marsh" },
+    { id: "depths",  name: "Попелясті Глибини",   x: 1300, y: 735, w: 230, tint: "#c4552f", glow: "#ff6a2a", kind: "depths" },
+    { id: "caverns", name: "Кришталеві Печери",   x: 190,  y: 470, w: 240, tint: "#5a7cff", glow: "#7fb6ff", kind: "crystal" },
+    { id: "citadel", name: "Залізна Цитадель",    x: 500,  y: 455, w: 250, tint: "#a33a32", glow: "#ff5a3a", kind: "citadel" },
+    { id: "capital", name: "Зруйнована Столиця",  x: 830,  y: 450, w: 300, tint: "#b6aa94", glow: "#ffd27a", kind: "capital" },
+    { id: "cathedral", name: "Затоплений Собор",  x: 1060, y: 555, w: 250, tint: "#6aa0b0", glow: "#9ee0ff", kind: "cathedral" },
+    { id: "aqueducts", name: "Королівські Акведуки", x: 1300, y: 505, w: 250, tint: "#3fa3b5", glow: "#6ff0ff", kind: "aqueducts" },
+    { id: "bastion", name: "Крижаний Бастіон",    x: 250,  y: 255, w: 280, tint: "#b9d4f0", glow: "#e8f6ff", kind: "ice" },
+    { id: "observatory", name: "Таємна Обсерваторія", x: 545, y: 185, w: 220, tint: "#7d5ad6", glow: "#c9a6ff", kind: "observatory" },
+    { id: "palace",  name: "Королівський Палац",  x: 830,  y: 225, w: 300, tint: "#e8d6a4", glow: "#ffe6a0", kind: "palace" },
+    { id: "shadow",  name: "Царство Тіні",        x: 1155, y: 300, w: 270, tint: "#8a4dff", glow: "#b47aff", kind: "shadow" },
+    { id: "throne",  name: "Трон Забуття",        x: 1290, y: 200, w: 260, tint: "#c0303f", glow: "#ff4a6a", kind: "throne" }
+  ];
+  var ROADS = [
+    ["tomb", "forest"], ["forest", "village"], ["forest", "caverns"], ["village", "marsh"], ["marsh", "depths"],
+    ["village", "capital"], ["capital", "citadel"], ["caverns", "citadel"], ["citadel", "bastion"],
+    ["capital", "cathedral"], ["cathedral", "aqueducts"], ["aqueducts", "depths"], ["capital", "palace"],
+    ["bastion", "observatory"], ["observatory", "palace"], ["observatory", "shadow"], ["aqueducts", "shadow"],
+    ["palace", "throne"], ["shadow", "throne"]
+  ];
+  // Ворота на дорозі (що відчиняє — не пишеться, лише замок).
+  var GATED = { "forest|caverns": 1, "village|capital": 1, "capital|palace": 1, "marsh|depths": 1, "palace|throne": 1 };
+
+  var STATES = {
+    early: { known: ["tomb"], here: "tomb", beaten: [], shrines: { tomb: [1, 4] } },
+    mid: { known: ["tomb", "forest", "village", "capital", "marsh"], here: "forest", beaten: ["tomb", "village"],
+      shrines: { tomb: [4, 4], forest: [1, 3], village: [2, 3], capital: [1, 4], marsh: [0, 3] } },
+    late: { known: ZONES.map(function (z) { return z.id; }), here: "palace",
+      beaten: ZONES.filter(function (z) { return z.id !== "throne"; }).map(function (z) { return z.id; }), shrines: {} }
+  };
+
+  var DESCRIPTIONS = {
+    forest: "Цвинтар прадавніх дерев, де життя чіпляється за гниль. Коріння оплітає забуті руїни, а повітря густе від пам'яті про те, що було.",
+    tomb: "Тут лежать ті, хто не присягнув. Склепи й шахти під землею, де прокинулася тінь без імені.",
+    palace: "Мармур, золото й місячний сад. Двір досі чекає на короля, що не повернеться."
+  };
+
+  var rng = window.Islands.rng, hash = window.Islands.hash, el = window.Islands.el,
+    defs = window.Islands.defs, island = window.Islands.island;
+
+  // ---------------------------------------------------------------- іконки
+  function icon(parent, kind, x, y, size, state) {
+    var g = el("g", { transform: "translate(" + x + "," + y + ") scale(" + (size / 24) + ")" }, parent);
+    var off = state === "off";
+    switch (kind) {
+      case "boss":
+        el("circle", { r: 13, fill: off ? "#2a2522" : "#5a1018", stroke: off ? "#5f574c" : "#e04a4a", "stroke-width": 1.6 }, g);
+        el("path", { d: "M-6,-2 Q-6,-9 0,-9 Q6,-9 6,-2 L5,3 L2,3 L2,6 L-2,6 L-2,3 L-5,3 Z", fill: off ? "#5f574c" : "#f2c7c0" }, g);
+        el("circle", { cx: -2.6, cy: -2.5, r: 1.7, fill: off ? "#2a2522" : "#5a1018" }, g);
+        el("circle", { cx: 2.6, cy: -2.5, r: 1.7, fill: off ? "#2a2522" : "#5a1018" }, g);
+        el("path", { d: "M-9,-8 L-6,-12 L-5,-7 M9,-8 L6,-12 L5,-7", stroke: off ? "#5f574c" : "#e04a4a", "stroke-width": 1.4, fill: "none" }, g);
+        break;
+      case "shrine":
+        el("circle", { r: 13, fill: off ? "#1d2228" : "#132433", stroke: off ? "#5f574c" : "#7fc4ff", "stroke-width": 1.6 }, g);
+        el("path", { d: "M0,-9 L5,-2 L3,8 L-3,8 L-5,-2 Z", fill: "none", stroke: off ? "#5f574c" : "#bfe3ff", "stroke-width": 1.6 }, g);
+        el("path", { d: "M0,-4 L2,1 L0,4 L-2,1 Z", fill: off ? "#5f574c" : "#e9f6ff" }, g);
+        break;
+      case "here":
+        el("path", { d: "M0,-15 L7,0 L0,15 L-7,0 Z", fill: "#f0b441", stroke: "#fff1c4", "stroke-width": 1.3 }, g);
+        el("path", { d: "M0,-8 L3,0 L0,8 L-3,0 Z", fill: "#fff6d8" }, g);
+        el("circle", { r: 20, fill: "#f0b441", opacity: 0.25, filter: "url(#blur3)" }, g);
+        break;
+      case "gate":
+        el("rect", { x: -10, y: -11, width: 20, height: 22, rx: 3, fill: "#1b150d", stroke: "#c9a14a", "stroke-width": 1.5 }, g);
+        el("path", { d: "M-5,10 L-5,-2 Q-5,-7 0,-7 Q5,-7 5,-2 L5,10 M-2,10 L-2,-1 M2,10 L2,-1", stroke: "#e8cd8a", "stroke-width": 1.4, fill: "none" }, g);
+        break;
+      case "shortcut-open": case "shortcut-shut":
+        el("rect", { x: -8, y: -10, width: 16, height: 20, fill: kind === "shortcut-open" ? "#13293b" : "#14161a", stroke: kind === "shortcut-open" ? "#7fc4ff" : "#5f6670", "stroke-width": 1.5 }, g);
+        for (var i = -1; i <= 1; i++) { el("line", { x1: -8, x2: 8, y1: i * 5, y2: i * 5, stroke: kind === "shortcut-open" ? "#bfe3ff" : "#5f6670", "stroke-width": 1.4 }, g); }
+        break;
+      case "poi":
+        el("circle", { r: 12, fill: "#151310", stroke: "#d8cbb4", "stroke-width": 1.5 }, g);
+        el("path", { d: "M0,-6 L0,2 M0,5 L0,6", stroke: "#f0e6d2", "stroke-width": 2.4, "stroke-linecap": "round" }, g);
+        break;
+      case "unknown":
+        el("circle", { r: 13, fill: "#121110", stroke: "#5f574c", "stroke-width": 1.4, "stroke-dasharray": "3 3" }, g);
+        var q = el("text", { x: 0, y: 6, "text-anchor": "middle", "font-size": 17, fill: "#8e8375", "font-family": "Georgia,serif" }, g);
+        q.textContent = "?";
+        break;
+      case "secret":
+        el("rect", { x: -11, y: -9, width: 22, height: 18, fill: "#1a1410", stroke: "#c9a14a", "stroke-width": 1.2, "stroke-dasharray": "3 2" }, g);
+        el("path", { d: "M-5,-1 Q-5,-6 0,-6 Q5,-6 5,-1 L4,3 L-4,3 Z", fill: "#e8dcc3" }, g);
+        el("circle", { cx: -2, cy: -1.5, r: 1.2, fill: "#1a1410" }, g); el("circle", { cx: 2, cy: -1.5, r: 1.2, fill: "#1a1410" }, g);
+        break;
+      case "ability":
+        el("rect", { x: -10, y: -10, width: 20, height: 20, transform: "rotate(45)", fill: "#2b1d09", stroke: "#f0a83a", "stroke-width": 1.6 }, g);
+        el("path", { d: "M0,-5 L0,5 M-4,-1 L0,-5 L4,-1", stroke: "#ffd27a", "stroke-width": 1.8, fill: "none" }, g);
+        break;
+      case "ring":
+        el("circle", { r: 12, fill: "#0f2330", stroke: "#6fd0ff", "stroke-width": 1.6 }, g);
+        el("circle", { r: 5, fill: "none", stroke: "#bfeaff", "stroke-width": 2 }, g);
+        el("path", { d: "M0,5 L0,9", stroke: "#bfeaff", "stroke-width": 2 }, g);
+        break;
+    }
+    return g;
+  }
+
+  function label(parent, text, x, y, dim) {
+    var g = el("g", {}, parent);
+    var w = text.length * 9.6 + 34;
+    el("path", { d: "M" + (x - w / 2) + "," + y + " l10,-14 h" + (w - 20) + " l10,14 l-10,14 h" + (-(w - 20)) + " Z",
+      fill: "rgba(14,12,10,0.88)", stroke: dim ? "#4a3f33" : "#8a7434", "stroke-width": 1.2 }, g);
+    var t = el("text", { x: x, y: y + 6, "text-anchor": "middle", "class": "label" }, g);
+    if (dim) { t.setAttribute("fill", "#8e8375"); }
+    t.textContent = text;
+  }
+
+  // ---------------------------------------------------------------- світ
+  function world(host, state) {
+    var s = STATES[state];
+    var svg = el("svg", { viewBox: "0 0 1470 900" }, host);
+    defs(svg);
+    var known = function (id) { return s.known.indexOf(id) >= 0; };
+    var near = function (id) {
+      return !known(id) && ROADS.some(function (r) { return (r[0] === id && known(r[1])) || (r[1] === id && known(r[0])); });
+    };
+    var zone = function (id) { return ZONES.filter(function (z) { return z.id === id; })[0]; };
+
+    // Туман унизу і між островами.
+    el("rect", { x: -40, y: -40, width: 1550, height: 980, filter: "url(#fog)", opacity: 0.32 }, svg);
+
+    // Дороги з вузлами кімнат.
+    ROADS.forEach(function (road) {
+      var a = zone(road[0]), b = zone(road[1]);
+      var shown = known(road[0]) && known(road[1]);
+      var hinted = (known(road[0]) || known(road[1])) && !shown;
+      if (!shown && !hinted) { return; }
+      var mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2 + 26;
+      var d = "M" + a.x + "," + (a.y + 18) + " Q" + mx + "," + my + " " + b.x + "," + (b.y + 18);
+      el("path", { d: d, fill: "none", stroke: "#000", "stroke-width": 5, opacity: 0.6 }, svg);
+      el("path", { d: d, fill: "none", stroke: shown ? "#d8cbb4" : "#6f665a", "stroke-width": shown ? 2.4 : 1.6,
+        "stroke-dasharray": shown ? "none" : "2 7", "stroke-linecap": "round" }, svg);
+      var nodes = shown ? 4 : 2;
+      for (var i = 1; i <= nodes; i++) {
+        var t = i / (nodes + 1);
+        var px = (1 - t) * (1 - t) * a.x + 2 * (1 - t) * t * mx + t * t * b.x;
+        var py = (1 - t) * (1 - t) * (a.y + 18) + 2 * (1 - t) * t * my + t * t * (b.y + 18);
+        var explored = shown && (i % 3 !== 0);
+        el("circle", { cx: px, cy: py, r: 6, fill: explored ? "#d8cbb4" : "#151310", stroke: shown ? "#d8cbb4" : "#6f665a", "stroke-width": 1.6 }, svg);
+        if (explored) { el("circle", { cx: px, cy: py, r: 2.4, fill: "#151310" }, svg); }
+      }
+      if (GATED[road[0] + "|" + road[1]] && (shown || hinted)) {
+        var gx = (a.x + 2 * mx + b.x) / 4, gy = (a.y + 18 + 2 * my + b.y + 18) / 4;
+        icon(svg, "gate", gx, gy, 24);
+      }
+    });
+    if (state === "mid") { icon(svg, "shortcut-open", 372, 742, 22); icon(svg, "poi", 945, 640, 24); }
+
+    // Острови.
+    ZONES.forEach(function (z) {
+      if (known(z.id)) {
+        island(svg, z, "lit");
+      } else if (near(z.id)) {
+        var g = island(svg, z, "silhouette");
+        g.setAttribute("opacity", "0.7");
+      }
+    });
+    // Ще раз туман поверх силуетів — вони в глибині.
+    var veil = el("g", { opacity: 0.28 }, svg);
+    el("rect", { x: -40, y: 560, width: 1550, height: 400, filter: "url(#fog)" }, veil);
+
+    // Підписи й іконки.
+    ZONES.forEach(function (z) {
+      if (known(z.id)) {
+        label(svg, z.name, z.x, z.y + 34, false);
+        var beaten = s.beaten.indexOf(z.id) >= 0;
+        icon(svg, "boss", z.x + (z.id === "forest" ? -40 : 0), z.y + 72, 26, beaten ? "off" : "on");
+        if (z.id === "forest") { icon(svg, "shrine", z.x + 0, z.y + 72, 26); }
+        if (z.id === "tomb" || z.id === "capital") { icon(svg, "shrine", z.x + 40, z.y + 72, 26); }
+      } else if (near(z.id)) {
+        icon(svg, "unknown", z.x, z.y + 30, 28);
+      }
+    });
+    var here = zone(s.here);
+    icon(svg, "here", here.x + (state === "mid" ? 40 : 0), here.y - (state === "mid" ? 0 : 6), 34);
+    if (state === "mid") {
+      // Обраний острів — тонка золота рамка-сяйво.
+      el("ellipse", { cx: here.x, cy: here.y + 8, rx: here.w * 0.62, ry: 92, fill: "none", stroke: "#c9a14a", "stroke-opacity": 0.5, "stroke-width": 1.4, "stroke-dasharray": "1 6", "stroke-linecap": "round" }, svg);
+    }
+  }
+
+  // ---------------------------------------------------------------- зона: Зів'ялий Ліс
+  // Кімнати лежать на сітці (клітинка = 8,6 px) і ніколи не торкаються: між сусідами — зазор, у
+  // зазорі — короткий прямий коридор між стінами, що дивляться одна на одну. Двері — на стіні
+  // кожної кімнати, ворота й кільця — на самому коридорі. Так гра малюватиме зону з тексту рівня:
+  // і кімнати, і переходи беруться з тих самих клітинок.
+  var U = 8.6, OX = 22, OY = 128;
+  var ROOMS = {
+    entrance: { name: "Узлісся", r: [6, 40, 26, 11], motif: "gate", icon: "shrine", entry: true },
+    tunnel:   { name: "Кореневий тунель", r: [34, 43, 9, 6], motif: "roots" },
+    road:     { name: "Зруйнований шлях", r: [45, 37, 24, 14], motif: "road" },
+    perch:    { name: "Мисливський поміст", r: [47, 28, 12, 6], unexplored: true },
+    grove:    { name: "Отруйний гай", r: [61, 18, 22, 14], motif: "thorns" },
+    tower:    { name: "Сторожова вежа", r: [85, 6, 16, 26], motif: "tower" },
+    tree:     { name: "Серце лісу", r: [71, 37, 26, 20], motif: "bigtree", icon: "here", selected: true },
+    deep:     { name: "Глибокий ліс", r: [103, 27, 20, 11], motif: "vines", icon: "shrine" },
+    ruin:     { name: "Руїна", r: [103, 17, 18, 8], motif: "columns" },
+    bridge:   { name: "Підступ до Вартового", r: [125, 30, 18, 6], motif: "bridge" },
+    arena:    { name: "Галявина Вартового", r: [145, 24, 20, 17], motif: "antlers", boss: true },
+    pools:    { name: "Зелені купелі", r: [99, 42, 26, 11], unexplored: true },
+    east:     { name: "Схил", r: [127, 46, 22, 12], unexplored: true },
+    low:      { name: "Нижній яр", r: [24, 55, 19, 8], motif: "stalactites" },
+    arch:     { name: "Зламана арка", r: [45, 53, 24, 12], motif: "arch" },
+    lower:    { name: "Корені", r: [36, 67, 52, 7], motif: "log" },
+    mush:     { name: "Грибна печера", r: [44, 76, 26, 13], motif: "mushrooms", icon: "shrine-off" },
+    pond:     { name: "Ставок", r: [90, 64, 22, 14], motif: "pond" },
+    hang:     { name: "Висячі корені", r: [114, 62, 32, 16], motif: "waterfall" },
+    roots:    { name: "Дно", r: [124, 80, 16, 9], unexplored: true },
+    stash:    { name: "Схованка", r: [34, 27, 9, 6], secret: "found" },
+    rumour:   { name: "?", r: [123, 17, 9, 8], secret: "rumour" }
+  };
+  // [з, до, що на коридорі]
+  var LINKS = [["entrance", "tunnel"], ["tunnel", "road"], ["road", "perch", "ability"], ["perch", "stash"],
+    ["perch", "grove"], ["grove", "tower"], ["road", "tree"], ["grove", "tree", "ring"], ["tower", "deep"],
+    ["deep", "ruin", "ability"], ["ruin", "rumour"], ["deep", "bridge"], ["bridge", "arena", "door"],
+    ["tree", "pools"], ["pools", "east"], ["low", "arch"], ["entrance", "low"], ["arch", "tree"],
+    ["arch", "lower"], ["lower", "mush"], ["lower", "pond"], ["pond", "hang", "shortcut"], ["hang", "roots"], ["east", "hang", "ring"]];
+
+  function box(room) { var r = room.r; return { x: OX + r[0] * U, y: OY + r[1] * U, w: r[2] * U, h: r[3] * U }; }
+
+  // Прямий коридор між двома кімнатами: по горизонталі, якщо вони поруч, по вертикалі — якщо одна над одною.
+  function corridor(a, b) {
+    var A = box(a), B = box(b), W = 2.2 * U;
+    if (A.x + A.w <= B.x || B.x + B.w <= A.x) {
+      var left = A.x < B.x ? A : B, right = left === A ? B : A;
+      var top = Math.max(A.y, B.y), bottom = Math.min(A.y + A.h, B.y + B.h);
+      var cy = Math.min(bottom - W, Math.max(top + W, (top + bottom) / 2));
+      return { horizontal: true, x0: left.x + left.w, x1: right.x, y: cy, w: W };
+    }
+    var upper = A.y < B.y ? A : B, lower = upper === A ? B : A;
+    var l = Math.max(A.x, B.x), r = Math.min(A.x + A.w, B.x + B.w);
+    var cx = Math.min(r - W, Math.max(l + W, (l + r) / 2));
+    return { horizontal: false, y0: upper.y + upper.h, y1: lower.y, x: cx, w: W };
+  }
+
+  function drawCorridor(svg, c, hidden, tint) {
+    var g = el("g", {}, svg);
+    var x = c.horizontal ? c.x0 : c.x - c.w / 2, y = c.horizontal ? c.y - c.w / 2 : c.y0;
+    var w = c.horizontal ? c.x1 - c.x0 : c.w, h = c.horizontal ? c.w : c.y1 - c.y0;
+    if (hidden) {
+      el("rect", { x: x, y: y, width: w, height: h, fill: "rgba(20,24,22,0.5)", stroke: "#7d8a80", "stroke-width": 1.2, "stroke-dasharray": "4 4" }, g);
+      return;
+    }
+    el("rect", { x: x - (c.horizontal ? 0 : 3), y: y - (c.horizontal ? 3 : 0), width: w + (c.horizontal ? 0 : 6), height: h + (c.horizontal ? 6 : 0), fill: "#0b0d0c" }, g);
+    el("rect", { x: x, y: y, width: w, height: h, fill: tint.mid }, g);
+    // Дві світлі кромки вздовж коридору — як стіни прохідки на картах зон.
+    if (c.horizontal) {
+      el("line", { x1: x, x2: x + w, y1: y, y2: y, stroke: "#cfd3c4", "stroke-width": 1.6, opacity: 0.85 }, g);
+      el("line", { x1: x, x2: x + w, y1: y + h, y2: y + h, stroke: "#cfd3c4", "stroke-width": 1.6, opacity: 0.85 }, g);
+    } else {
+      el("line", { x1: x, x2: x, y1: y, y2: y + h, stroke: "#cfd3c4", "stroke-width": 1.6, opacity: 0.85 }, g);
+      el("line", { x1: x + w, x2: x + w, y1: y, y2: y + h, stroke: "#cfd3c4", "stroke-width": 1.6, opacity: 0.85 }, g);
+    }
+  }
+
+  // Двері — світла планка точно на стіні кімнати, поперек коридору.
+  function door(svg, c, end, hidden) {
+    var t = 5, len = c.w + 6;
+    var fill = hidden ? "#55605a" : "#efe6cf";
+    if (c.horizontal) {
+      var x = end === 0 ? c.x0 : c.x1;
+      el("rect", { x: x - t / 2, y: c.y - len / 2, width: t, height: len, fill: fill, stroke: "#2a241c", "stroke-width": 1 }, svg);
+    } else {
+      var y = end === 0 ? c.y0 : c.y1;
+      el("rect", { x: c.x - len / 2, y: y - t / 2, width: len, height: t, fill: fill, stroke: "#2a241c", "stroke-width": 1 }, svg);
+    }
+  }
+
+  function chamber(svg, room, tint, r) {
+    var B = box(room);
+    var g = el("g", {}, svg);
+    if (room.unexplored) {
+      el("rect", { x: B.x, y: B.y, width: B.w, height: B.h, fill: "rgba(20,24,22,0.55)", stroke: "#7d8a80", "stroke-width": 1.4, "stroke-dasharray": "6 5" }, g);
+      return;
+    }
+    if (room.secret) {
+      el("rect", { x: B.x, y: B.y, width: B.w, height: B.h, fill: "rgba(14,12,10,0.85)", stroke: "#c9a14a", "stroke-width": 1.4, "stroke-dasharray": "5 4" }, g);
+      icon(svg, room.secret === "rumour" ? "poi" : "secret", B.x + B.w / 2, B.y + B.h / 2, 24);
+      return;
+    }
+    var dark = room.boss ? "#2a0d10" : tint.dark, mid = room.boss ? "#4a141a" : tint.mid;
+    var id = "rg" + room.name.length + Math.round(B.x) + Math.round(B.y);
+    var grad = el("linearGradient", { id: id, x1: 0, y1: 0, x2: 0, y2: 1 }, svg.querySelector("defs"));
+    el("stop", { offset: "0", "stop-color": dark }, grad);
+    el("stop", { offset: "1", "stop-color": mid }, grad);
+    // Кам'яна оболонка: темна товща навколо порожнини.
+    el("rect", { x: B.x - 4, y: B.y - 4, width: B.w + 8, height: B.h + 8, fill: "#0b0d0c" }, g);
+    el("rect", { x: B.x, y: B.y, width: B.w, height: B.h, fill: "url(#" + id + ")" }, g);
+    // Всередині — свій мотив і своя підлога (rooms.js): жодна картинка не повторюється.
+    window.RoomArt.draw(g, B, room.motif, room.boss ? { dark: "#2a0d10", mid: "#5a1a20", ink: "#120406", glow: "#ff5a5a" } : tint, r, svg);
+    // Світла рамка кімнати; обрана — золота.
+    el("rect", { x: B.x, y: B.y, width: B.w, height: B.h, fill: "none", stroke: room.selected ? "#c9a14a" : "#cfd3c4", "stroke-width": room.selected ? 2.4 : 1.8, opacity: 0.9 }, g);
+    if (room.selected) {
+      el("rect", { x: B.x - 7, y: B.y - 7, width: B.w + 14, height: B.h + 14, fill: "none", stroke: "#c9a14a", "stroke-width": 1, opacity: 0.45, "stroke-dasharray": "2 5" }, g);
+    }
+  }
+
+  function zoneView(host) {
+    var svg = el("svg", { viewBox: "0 0 1470 900" }, host);
+    defs(svg);
+    var r = rng(12345);
+    var tint = { dark: "#123029", mid: "#2a5a4e", ink: "#040908", glow: "#a8ff5a" };
+    var shown = function (room) { return !(room.secret === "hidden"); };
+    var corridors = LINKS.map(function (link) {
+      var a = ROOMS[link[0]], b = ROOMS[link[1]];
+      return { a: a, b: b, kind: link[2], c: corridor(a, b), hidden: a.unexplored || b.unexplored };
+    });
+    // Спершу коридори, потім кімнати поверх, потім двері — і нічого не перетинається.
+    corridors.forEach(function (k) { if (shown(k.a) && shown(k.b)) { drawCorridor(svg, k.c, k.hidden || !!k.a.secret || !!k.b.secret, tint); } });
+    Object.keys(ROOMS).forEach(function (id) { chamber(svg, ROOMS[id], tint, r); });
+    corridors.forEach(function (k) {
+      if (!shown(k.a) || !shown(k.b)) { return; }
+      var hidden = k.hidden || !!k.a.secret || !!k.b.secret;
+      door(svg, k.c, 0, hidden);
+      door(svg, k.c, 1, hidden);
+      if (k.kind) {
+        var cx = k.c.horizontal ? (k.c.x0 + k.c.x1) / 2 : k.c.x, cy = k.c.horizontal ? k.c.y : (k.c.y0 + k.c.y1) / 2;
+        var kind = k.kind === "door" ? "gate" : k.kind === "shortcut" ? "shortcut-open" : k.kind;
+        icon(svg, kind, cx, cy, 22);
+      }
+    });
+    // Іконки кімнат — у центрі, бос — гербом і черепом.
+    Object.keys(ROOMS).forEach(function (id) {
+      var room = ROOMS[id], B = box(room), cx = B.x + B.w / 2, cy = B.y + B.h / 2;
+      if (room.boss) {
+        el("path", { d: "M" + cx + "," + (cy - 22) + " m-30,-14 l12,18 l-6,4 l14,10 l10,-6 l10,6 l14,-10 l-6,-4 l12,-18 l-18,14 l-12,-6 l-12,6 Z",
+          fill: "none", stroke: "#ff6a6a", "stroke-width": 2.2, opacity: 0.9 }, svg);
+        icon(svg, "boss", cx, cy + 26, 30);
+      } else if (room.icon === "here") {
+        icon(svg, "here", cx, cy, 38);
+      } else if (room.icon) {
+        icon(svg, "shrine", cx, cy, 28, room.icon === "shrine-off" ? "off" : "on");
+      }
+      if (room.entry) {
+        var y = B.y + B.h / 2;
+        el("path", { d: "M" + (B.x - 34) + "," + y + " l20,0 l0,-9 l15,13 l-15,13 l0,-9 l-20,0 Z", fill: "#efe6cf" }, svg);
+      }
+    });
+    // Мітка гравця пером картографа — у недослідженій кімнаті.
+    var E = box(ROOMS.east), m = [E.x + E.w * 0.6, E.y + E.h * 0.7];
+    el("path", { d: "M" + m[0] + "," + m[1] + " l-9,-22 a10,10 0 1 1 18,0 Z", fill: "#3e6fa8", stroke: "#bfe3ff", "stroke-width": 1.5 }, svg);
+    el("circle", { cx: m[0], cy: m[1] - 27, r: 3.5, fill: "#bfe3ff" }, svg);
+  }
+
+  // ---------------------------------------------------------------- рамка екрана, панель
+  function compass() {
+    return '<svg class="wm__compass" viewBox="-50 -50 100 100"><circle r="40" fill="none" stroke="#8a7434" stroke-width="1.5"/>'
+      + '<circle r="31" fill="none" stroke="#5c4c2c" stroke-width="1"/><path d="M0,-46 L7,0 L0,46 L-7,0 Z" fill="#c9a14a"/>'
+      + '<path d="M-46,0 L0,-7 L46,0 L0,7 Z" fill="#8a7434"/><path d="M0,-46 L7,0 L0,0 Z" fill="#e8cd8a"/><circle r="4" fill="#0d0c0a" stroke="#e8cd8a"/></svg>';
+  }
+
+  function vignette(zoneId) {
+    var z = ZONES.filter(function (x) { return x.id === zoneId; })[0];
+    var host = document.createElement("div");
+    host.className = "vignette";
+    var svg = el("svg", { viewBox: "-190 -150 380 196", preserveAspectRatio: "xMidYMid slice" }, host);
+    defs(svg);
+    var sky = el("linearGradient", { id: "sky" + zoneId, x1: 0, y1: 0, x2: 0, y2: 1 }, svg.querySelector("defs"));
+    el("stop", { offset: "0", "stop-color": "#151416" }, sky); el("stop", { offset: "1", "stop-color": z.tint, "stop-opacity": 0.55 }, sky);
+    el("rect", { x: -190, y: -150, width: 380, height: 196, fill: "url(#sky" + zoneId + ")" }, svg);
+    var big = { id: z.id, kind: z.kind, tint: z.tint, glow: z.glow, x: 0, y: 30, w: 420 };
+    island(svg, big, "big", "vignette");
+    return host;
+  }
+
+  function legendRow(kind, text) {
+    var holder = document.createElement("div");
+    var svg = el("svg", { viewBox: "-14 -11 28 22" });
+    holder.appendChild(svg);
+    if (kind === "explored" || kind === "unexplored") {
+      el("line", { x1: -14, x2: 14, y1: 0, y2: 0, stroke: "#d8cbb4", "stroke-width": 1.6 }, svg);
+      el("circle", { r: 6, fill: kind === "explored" ? "#d8cbb4" : "#151310", stroke: "#d8cbb4", "stroke-width": 1.6 }, svg);
+      if (kind === "explored") { el("circle", { r: 2.4, fill: "#151310" }, svg); }
+    } else if (kind === "path" || kind === "hidden") {
+      el("line", { x1: -14, x2: 14, y1: 0, y2: 0, stroke: kind === "path" ? "#d8cbb4" : "#8e8375", "stroke-width": kind === "path" ? 2.4 : 1.8, "stroke-dasharray": kind === "path" ? "none" : "2 5" }, svg);
+    } else {
+      var g = el("g", {}, svg);
+      icon(g, kind, 0, 0, kind === "here" ? 22 : 20, kind === "boss-off" ? "off" : "on");
+      if (kind === "boss-off") { g.firstChild.remove(); icon(g, "boss", 0, 0, 20, "off"); }
+    }
+    var span = document.createElement("span");
+    span.textContent = text;
+    return [holder, span];
+  }
+
+  function frame(host, view, state) {
+    var s = STATES[state];
+    host.innerHTML =
+      '<div class="wm__frame"></div>'
+      + '<div class="candle" style="left:30px;top:150px"></div><div class="candle" style="left:30px;top:930px"></div>'
+      + '<div class="candle" style="right:30px;top:150px"></div><div class="candle" style="right:30px;top:930px"></div>'
+      + '<div class="tabs"><span class="key">Q · LB</span>'
+      + ["Карта", "Спорядження", "Екіпірування", "Персонаж", "Уміння", "Закляття", "Люди", "Бестіарій"].map(function (t, i) {
+          return '<span class="tabs__tab' + (i === 0 ? " is-active" : "") + '">' + t + "</span>"; }).join("")
+      + '<span class="key">E · RB</span></div>'
+      + '<div class="wm__map"></div><div class="side"></div><div class="hints"></div>'
+      + '<div class="wm__title">' + compass() + "<div><h1>" + (view === "world" ? "Карта світу" : "Зів'ялий Ліс") + "</h1>"
+      + (view === "world" ? '<div class="sub">' + ZONES.filter(function (z) { return z.id === s.here; })[0].name + "</div>"
+        : '<div class="crumbs">Карта світу › <b>Зів\'ялий Ліс</b></div>') + "</div></div>";
+
+    var map = host.querySelector(".wm__map");
+    if (view === "world") { world(map, state); } else { zoneView(map); }
+
+    var side = host.querySelector(".side");
+    if (view === "world") {
+      var id = state === "early" ? "tomb" : state === "late" ? "palace" : "forest";
+      var z = ZONES.filter(function (x) { return x.id === id; })[0];
+      side.appendChild(vignette(id));
+      var shrines = { tomb: state === "early" ? "1 / 4" : "4 / 4", forest: "1 / 3", palace: "4 / 4" }[id];
+      var info = document.createElement("div");
+      info.innerHTML = "<h2>" + z.name + '</h2><div class="rule" style="margin:10px 0 12px"></div><p class="desc">' + DESCRIPTIONS[id] + "</p>";
+      side.appendChild(info);
+      var stats = document.createElement("div");
+      stats.innerHTML = '<div class="rule"></div>'
+        + '<div class="stat">Дослідження <b>' + (id === "forest" ? "42%" : id === "tomb" ? "8%" : "96%") + "</b></div>"
+        + '<div class="rule"></div><div class="stat">Вівтарі <b>' + shrines + "</b></div>"
+        + '<div class="rule"></div><div class="stat">Боси <b>' + (id === "palace" ? "1 / 1" : "0 / 1") + "</b></div>"
+        + '<div class="stat">Таємниці <b>' + (id === "forest" ? "1 / 3" : id === "tomb" ? "0 / 4" : "3 / 3") + '</b></div><div class="rule"></div>';
+      side.appendChild(stats);
+      var legend = document.createElement("div");
+      legend.className = "legend";
+      [["here", "Ви тут"], ["explored", "Кімната (досліджена)"], ["unexplored", "Кімната (не досліджена)"], ["path", "Шлях (відкритий)"],
+       ["hidden", "Шлях (прихований)"], ["shrine", "Вівтар"], ["boss", "Бос"], ["gate", "Ворота (потрібен прогрес)"],
+       ["shortcut-open", "Шорткат (відкритий)"], ["shortcut-shut", "Шорткат (закритий)"], ["poi", "Цікаве місце"], ["unknown", "Невідома зона"]]
+        .forEach(function (row) { legendRow(row[0], row[1]).forEach(function (n) { legend.appendChild(n); }); });
+      side.appendChild(legend);
+    } else {
+      var card = document.createElement("div");
+      card.innerHTML = '<h2>Серце лісу</h2><div class="rule" style="margin:10px 0 12px"></div>'
+        + '<p class="desc">Ви тут. Під коренями старого дуба — прохід униз, до Коренів.</p>'
+        + '<div class="rule" style="margin:14px 0 6px"></div>'
+        + '<div class="stat">Вівтар <b>немає</b></div><div class="rule"></div>'
+        + '<div class="stat">Виходи <b>5</b></div><div class="rule"></div>'
+        + '<p class="desc" style="color:var(--gold-dim);font-style:italic;margin-top:10px">На схід — «Поки що не дістатися».</p>';
+      side.appendChild(card);
+      var stats2 = document.createElement("div");
+      stats2.style.marginTop = "18px";
+      stats2.innerHTML = '<div class="rule"></div><div class="stat">Дослідження <b>42%</b></div><div class="rule"></div>'
+        + '<div class="stat">Вівтарі <b>1 / 3</b></div><div class="rule"></div><div class="stat">Боси <b>0 / 1</b></div><div class="rule"></div>'
+        + '<div class="stat">Таємниці <b>1 / 3</b></div><div class="rule"></div><div class="stat">Мітки пера <b>1 / 5</b></div><div class="rule"></div>';
+      side.appendChild(stats2);
+      var legend2 = document.createElement("div");
+      legend2.className = "legend";
+      [["here", "Ви тут"], ["shrine", "Вівтар"], ["boss", "Бос"], ["secret", "Таємниця"], ["poi", "Чутка торговця"],
+       ["ability", "Потрібна здібність"], ["ring", "Кільця гака"]].forEach(function (row) { legendRow(row[0], row[1]).forEach(function (n) { legend2.appendChild(n); }); });
+      side.appendChild(legend2);
+    }
+
+    var hints = host.querySelector(".hints");
+    hints.innerHTML = view === "world"
+      ? '<span><span class="key key--round">L</span> Зсув</span><span><span class="key">PgUp/PgDn</span> Масштаб</span>'
+        + '<span><span class="key">Enter · A</span> До зони</span><span><span class="key">R · Y</span> Мітка</span><span><span class="key">M · B</span> Назад</span>'
+      : '<span><span class="key key--round">L</span> Кімнати</span><span><span class="key key--round">R</span> Зсув</span><span><span class="key">PgUp/PgDn</span> Масштаб</span>'
+        + '<span><span class="key">R · Y</span> Мітка</span><span><span class="key">Esc · B</span> До світу</span>';
+  }
+
+  document.querySelectorAll(".wm").forEach(function (host) {
+    frame(host, host.getAttribute("data-view"), host.getAttribute("data-state"));
+  });
+})();
+</script>
+</body>
+</html>

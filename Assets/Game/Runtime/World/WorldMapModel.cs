@@ -494,7 +494,11 @@ namespace ForgottenKingdom
         /// The next discovered room in a stick direction: the nearest one within a cone, so a push
         /// right never jumps to a room far above.
         /// </summary>
-        public static MapNode Step(WorldMapView view, string fromAreaId, Vector2 direction)
+        public static MapNode Step(WorldMapView view, string fromAreaId, Vector2 direction) =>
+            Step(view, fromAreaId, direction, null);
+
+        /// <summary>The same, among the rooms <paramref name="among"/> accepts (one zone's, on its map).</summary>
+        public static MapNode Step(WorldMapView view, string fromAreaId, Vector2 direction, Func<MapNode, bool> among)
         {
             var from = view?.Node(fromAreaId);
             if (from == null || direction.sqrMagnitude < 0.01f)
@@ -507,7 +511,7 @@ namespace ForgottenKingdom
             var bestScore = float.MaxValue;
             foreach (var node in view.Nodes)
             {
-                if (node == from || !node.IsKnown)
+                if (node == from || !node.IsKnown || (among != null && !among(node)))
                 {
                     continue;
                 }

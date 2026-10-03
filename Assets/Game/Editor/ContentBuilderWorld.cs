@@ -138,20 +138,7 @@ namespace ForgottenKingdom.EditorTools
             var graph = CreateAsset<WorldGraph>(WorldGraphPath);
             var json = new StringBuilder("{");
 
-            json.Append("\"_zones\":[")
-                .Append(ZoneJson(TombZoneId, "Забута Гробниця", "Забута Гробниця",
-                    new Vector2(-12f, 0.85f), true, new Color(0.72f, 0.66f, 0.55f),
-                    WorldScenes.TombSceneName)).Append(',')
-                .Append(ZoneJson(ForestZoneId, "Зів'ялий Ліс", "Зів'ялий Ліс",
-                    new Vector2(80f, 0.85f), true, new Color(0.5f, 0.66f, 0.46f),
-                    WorldScenes.ForestSceneName)).Append(',')
-                .Append(ZoneJson(CapitalZoneId, "Попеляста Столиця", "Попеляста Столиця",
-                    new Vector2(330f, 0.85f), true, new Color(0.7f, 0.56f, 0.5f),
-                    WorldScenes.CapitalSceneName)).Append(',')
-                // Unnamed on purpose: the map shows a sealed road east, not what lies there.
-                .Append(ZoneJson(FutureZoneId, string.Empty, string.Empty, Vector2.zero, false,
-                    new Color(0.4f, 0.4f, 0.42f)))
-                .Append("],");
+            json.Append(WorldZonesJson()).Append(WorldRoadsJson());
 
             json.Append("\"_areas\":[").Append(string.Join(",", new[]
             {
@@ -360,6 +347,7 @@ namespace ForgottenKingdom.EditorTools
 
             serialized.ApplyModifiedPropertiesWithoutUndo();
             _pendingBounds.Clear();
+            BuildMapArt(graph);
             EditorUtility.SetDirty(graph);
             AssetDatabase.SaveAssets();
 
@@ -396,18 +384,6 @@ namespace ForgottenKingdom.EditorTools
                 Rect.MinMaxRect(fromX, floorY, toX, floorY + 2.2f), secret: secret, optional: true,
                 trigger: true, ability: ability,
                 icon: secret ? MapIconType.Secret : MapIconType.None);
-        }
-
-        private static string ZoneJson(string id, string name, string title, Vector2 spawn,
-            bool implemented, Color tint, string contentScene = "")
-        {
-            return "{" + Str("_zoneId", id) + "," + Str("_displayName", name) + ","
-                + Str("_titleCard", title) + "," + Str("_sceneName", WorldScenes.WorldSceneName) + ","
-                + Str("_contentScene", contentScene) + ","
-                + "\"_defaultSpawn\":" + Vec(spawn) + ","
-                + "\"_isImplemented\":" + Bool(implemented) + ","
-                + "\"_mapTint\":{\"r\":" + F(tint.r) + ",\"g\":" + F(tint.g) + ",\"b\":" + F(tint.b)
-                + ",\"a\":1}}";
         }
 
         private static string AreaJson(string id, string zone, string name, Vector2 mapPosition,

@@ -4,49 +4,50 @@ using UnityEngine.UIElements;
 
 namespace ForgottenKingdom
 {
-    /// <summary>The map's symbols (design/ui/map/map.html), shared by the rooms and the legend.</summary>
-    public enum MapGlyph
-    {
-        Altar,
-        Travel,
-        Boss,
-        Secret,
-        Gate,
-        Player,
-        Here,
-        /// <summary>A place a bought rumour points to: a gold diamond with a question.</summary>
-        Rumour
-    }
-
     /// <summary>
-    /// Draws a <see cref="WorldMapView"/> as the approved map sheet: cartography rather than a
-    /// navigator — dark stone, faint route lines, room silhouettes, gold only where the player is
-    /// and at the altars. Rooms, links and symbols come from the same coordinates as the
-    /// WorldGraph asset; names are labels laid over the drawing, shown only where they fit.
+    /// One zone's map (design/ui/world-map/world-map.html, frame 2): rooms as painted halls cut out of
+    /// the dark, each its own picture (<see cref="MapArt"/>, never repeated); between neighbours a
+    /// short straight corridor from wall to facing wall (<see cref="MapCorridors"/>), a door on each
+    /// wall, what bars the way on the corridor itself. Unexplored rooms and the ways to them are
+    /// dashed; secrets a gold dashed hiding place; the chosen room has a gold frame.
+    ///
+    /// Drawn in three layers: corridors under everything, the rooms' pictures as children, then
+    /// frames, doors and symbols on top. The altar's travel list shows the same canvas small.
     /// </summary>
     public sealed class MapCanvas : VisualElement
     {
-        private static readonly Color Grid = new Color(138f / 255f, 116f / 255f, 52f / 255f, 0.06f);
-        private static readonly Color Route = new Color32(138, 116, 52, 255);
-        private static readonly Color Border = new Color32(201, 161, 74, 255);
-        private static readonly Color Shut = new Color32(107, 90, 66, 255);
-        private static readonly Color Dim = new Color32(95, 87, 76, 255);
-        private static readonly Color Fog = new Color(142f / 255f, 131f / 255f, 117f / 255f, 0.35f);
-        private static readonly Color FogFill = new Color(90f / 255f, 80f / 255f, 64f / 255f, 0.10f);
-        private static readonly Color Selection = new Color32(232, 205, 138, 255);
+        private static readonly Color Frame = new Color32(207, 211, 196, 230);
+        private static readonly Color Shell = new Color32(11, 13, 12, 255);
+        private static readonly Color DoorFill = new Color32(239, 230, 207, 255);
+        private static readonly Color DoorDim = new Color32(85, 96, 90, 255);
+        private static readonly Color FogLine = new Color32(125, 138, 128, 255);
+        private static readonly Color FogFill = new Color(20f / 255f, 24f / 255f, 22f / 255f, 0.55f);
+        private static readonly Color Secret = new Color32(201, 161, 74, 255);
+        private static readonly Color BossFill = new Color32(74, 20, 26, 255);
+        private const float CorridorWidth = 0.13f;
 
-        private readonly List<Label> _labels = new List<Label>();
+        private readonly VisualElement _rooms = new VisualElement { pickingMode = PickingMode.Ignore };
+        private readonly VisualElement _top = new VisualElement { pickingMode = PickingMode.Ignore };
+        private readonly Dictionary<string, VisualElement> _pictures = new Dictionary<string, VisualElement>();
         private WorldMapView _view;
         private Rect _visible;
         private string _selected = string.Empty;
-        private bool _showLabels;
+        private string _zoneId;
 
         public MapCanvas()
         {
             AddToClassList("map-canvas");
-            generateVisualContent += Draw;
-            RegisterCallback<GeometryChangedEvent>(_ => PlaceLabels());
+            _rooms.AddToClassList("map-canvas__layer");
+            _top.AddToClassList("map-canvas__layer");
+            Add(_rooms);
+            Add(_top);
+            generateVisualContent += DrawCorridors;
+            _top.generateVisualContent += DrawTop;
+            RegisterCallback<GeometryChangedEvent>(_ => PlacePictures());
         }
+
+        /// <summary>The rooms' pictures; without it the halls are drawn as plain tinted shapes.</summary>
+        public MapArt Art { get; set; }
 
         /// <summary>Screen pixels per map unit right now.</summary>
         public float Scale
@@ -60,14 +61,19 @@ namespace ForgottenKingdom
             }
         }
 
-        public void Show(WorldMapView view, Rect visible, string selectedAreaId, bool showLabels)
+        /// <summary>
+        /// Shows <paramref name="view"/> through <paramref name="visible"/>. With a zone, only that
+        /// zone's rooms are drawn (its own map); without one, every room in view (the travel list).
+        /// </summary>
+        public void Show(WorldMapView view, Rect visible, string selectedAreaId, bool showLabels, string zoneId = null)
         {
             _view = view;
             _visible = visible;
             _selected = selectedAreaId ?? string.Empty;
-            _showLabels = showLabels;
-            PlaceLabels();
+            _zoneId = zoneId;
+            PlacePictures();
             MarkDirtyRepaint();
+            _top.MarkDirtyRepaint();
         }
 
         public Vector2 ToScreen(Vector2 point)
@@ -88,7 +94,7 @@ namespace ForgottenKingdom
             return Rect.MinMaxRect(topLeft.x, topLeft.y, bottomRight.x, bottomRight.y);
         }
 
-        /// <summary>The discovered room under a point of this element, for mouse clicks.</summary>
+        /// <summary>The known room under a point of this element, for mouse clicks.</summary>
         public string AreaAt(Vector2 local)
         {
             if (_view == null)
@@ -98,7 +104,7 @@ namespace ForgottenKingdom
 
             foreach (var node in _view.Nodes)
             {
-                if (node.IsKnown && ToScreen(node.Rect).Contains(local))
+                if (node.IsKnown && Shown(node) && ToScreen(node.Rect).Contains(local))
                 {
                     return node.AreaId;
                 }
@@ -107,131 +113,200 @@ namespace ForgottenKingdom
             return null;
         }
 
-        private void PlaceLabels()
+        private bool Shown(MapNode node) =>
+            node != null && node.State != MapNodeState.Hidden && (_zoneId == null || node.Area.ZoneId == _zoneId);
+
+        private bool HasPicture(MapNode node) =>
+            node.State == MapNodeState.Discovered && !node.Area.IsSecret && Art != null && Art.Room(node.AreaId) != null;
+
+        // ---------- pictures ----------
+
+        private void PlacePictures()
         {
-            foreach (var label in _labels)
+            var keep = new HashSet<string>();
+            if (_view != null && contentRect.width > 1f)
             {
-                label.RemoveFromHierarchy();
+                foreach (var node in _view.Nodes)
+                {
+                    if (!Shown(node) || !HasPicture(node))
+                    {
+                        continue;
+                    }
+
+                    if (!_pictures.TryGetValue(node.AreaId, out var picture))
+                    {
+                        picture = new VisualElement { pickingMode = PickingMode.Ignore };
+                        picture.AddToClassList("map-canvas__room");
+                        picture.style.backgroundImage = Art.Room(node.AreaId);
+                        _rooms.Add(picture);
+                        _pictures[node.AreaId] = picture;
+                    }
+
+                    var box = ToScreen(node.Rect);
+                    picture.style.left = box.x;
+                    picture.style.top = box.y;
+                    picture.style.width = box.width;
+                    picture.style.height = box.height;
+                    keep.Add(node.AreaId);
+                }
             }
 
-            _labels.Clear();
-            if (_view == null || !_showLabels || contentRect.width < 1f)
+            foreach (var id in new List<string>(_pictures.Keys))
             {
-                return;
+                if (!keep.Contains(id))
+                {
+                    _pictures[id].RemoveFromHierarchy();
+                    _pictures.Remove(id);
+                }
+            }
+        }
+
+        // ---------- corridors (under the rooms) ----------
+
+        private IEnumerable<(MapLink link, MapNode from, MapNode to, MapCorridor corridor)> Corridors()
+        {
+            if (_view == null)
+            {
+                yield break;
             }
 
-            foreach (var node in _view.Nodes)
+            var seen = new HashSet<string>();
+            foreach (var link in _view.Links)
             {
-                var box = ToScreen(node.Rect);
-                var name = node.Label;
-                // A name that does not fit is not squeezed in: the selected room's panel carries it.
-                if (string.IsNullOrEmpty(name) || name.Length * 7.4f > box.width - 16f || box.height < 26f)
+                var from = _view.Node(link.Connection.FromAreaId);
+                var to = _view.Node(link.Connection.ToAreaId);
+                if (link.State == MapLinkState.Hidden || !Shown(from) || !Shown(to))
                 {
                     continue;
                 }
 
-                var label = UiParts.Text(name, "map-canvas__label");
-                label.style.left = box.x + 8f;
-                label.style.top = box.y + 6f;
-                Add(label);
-                _labels.Add(label);
+                // Two connections between the same rooms (a drop and a shortcut) share one corridor.
+                var pair = string.CompareOrdinal(from.AreaId, to.AreaId) < 0 ? from.AreaId + "|" + to.AreaId : to.AreaId + "|" + from.AreaId;
+                if (!seen.Add(pair))
+                {
+                    continue;
+                }
+
+                yield return (link, from, to, MapCorridors.Between(from.Rect, to.Rect, CorridorWidth));
             }
         }
 
-        private void Draw(MeshGenerationContext context)
+        private static bool IsFaint(MapLink link, MapNode from, MapNode to) =>
+            link.State != MapLinkState.Open || from.State != MapNodeState.Discovered || to.State != MapNodeState.Discovered;
+
+        private void DrawCorridors(MeshGenerationContext context)
         {
             var painter = context.painter2D;
-            var rect = contentRect;
-            DrawGrid(painter, rect);
+            foreach (var (link, from, to, corridor) in Corridors())
+            {
+                var box = CorridorBox(corridor);
+                if (IsFaint(link, from, to))
+                {
+                    MapIcons.Rectangle(painter, box);
+                    painter.fillColor = FogFill;
+                    painter.Fill();
+                    MapIcons.DashedRect(painter, box, FogLine, 1.2f, 4f, 4f);
+                    continue;
+                }
+
+                var tint = Tint(from.Area.ZoneId);
+                var shell = corridor.IsHorizontal ? new Rect(box.x, box.y - 3f, box.width, box.height + 6f) : new Rect(box.x - 3f, box.y, box.width + 6f, box.height);
+                MapIcons.Rectangle(painter, shell);
+                painter.fillColor = Shell;
+                painter.Fill();
+                MapIcons.Rectangle(painter, box);
+                painter.fillColor = tint;
+                painter.Fill();
+                // Two pale edges along it, as the passages of the zone maps have.
+                if (corridor.IsHorizontal)
+                {
+                    MapIcons.Line(painter, new Vector2(box.xMin, box.yMin), new Vector2(box.xMax, box.yMin), Frame, 1.6f);
+                    MapIcons.Line(painter, new Vector2(box.xMin, box.yMax), new Vector2(box.xMax, box.yMax), Frame, 1.6f);
+                }
+                else
+                {
+                    MapIcons.Line(painter, new Vector2(box.xMin, box.yMin), new Vector2(box.xMin, box.yMax), Frame, 1.6f);
+                    MapIcons.Line(painter, new Vector2(box.xMax, box.yMin), new Vector2(box.xMax, box.yMax), Frame, 1.6f);
+                }
+            }
+        }
+
+        private Rect CorridorBox(MapCorridor corridor)
+        {
+            var a = ToScreen(corridor.From);
+            var b = ToScreen(corridor.To);
+            var width = Mathf.Clamp(corridor.Width * Scale, 7f, 22f);
+            return corridor.IsHorizontal
+                ? Rect.MinMaxRect(Mathf.Min(a.x, b.x), a.y - width * 0.5f, Mathf.Max(a.x, b.x), a.y + width * 0.5f)
+                : Rect.MinMaxRect(a.x - width * 0.5f, Mathf.Min(a.y, b.y), a.x + width * 0.5f, Mathf.Max(a.y, b.y));
+        }
+
+        // ---------- frames, doors, symbols (over the rooms) ----------
+
+        private void DrawTop(MeshGenerationContext context)
+        {
+            var painter = context.painter2D;
             if (_view == null)
             {
                 return;
             }
 
-            foreach (var link in _view.Links)
+            foreach (var node in _view.Nodes)
             {
-                DrawLink(painter, link);
+                if (Shown(node)) { DrawRoom(painter, node); }
+            }
+
+            foreach (var (link, from, to, corridor) in Corridors())
+            {
+                var faint = IsFaint(link, from, to);
+                Door(painter, corridor, true, faint);
+                Door(painter, corridor, false, faint);
+                var glyph = GlyphOf(link);
+                if (glyph.HasValue)
+                {
+                    var box = CorridorBox(corridor);
+                    MapIcons.Draw(painter, glyph.Value, box.center, Mathf.Clamp(Scale * 0.2f, 16f, 24f));
+                }
             }
 
             foreach (var node in _view.Nodes)
             {
-                DrawRoom(painter, node);
+                if (Shown(node)) { DrawSymbols(painter, node); }
             }
         }
 
-        private static void DrawGrid(Painter2D painter, Rect rect)
+        /// <summary>A pale bar exactly on the room's wall, across the corridor.</summary>
+        private void Door(Painter2D painter, MapCorridor corridor, bool atFrom, bool faint)
         {
-            painter.strokeColor = Grid;
-            painter.lineWidth = 1f;
-            painter.BeginPath();
-            for (var x = 199.5f; x < rect.width; x += 200f)
-            {
-                painter.MoveTo(new Vector2(x, 0f));
-                painter.LineTo(new Vector2(x, rect.height));
-            }
-
-            for (var y = 199.5f; y < rect.height; y += 200f)
-            {
-                painter.MoveTo(new Vector2(0f, y));
-                painter.LineTo(new Vector2(rect.width, y));
-            }
-
-            painter.Stroke();
+            var at = ToScreen(atFrom ? corridor.From : corridor.To);
+            var across = Mathf.Clamp(corridor.Width * Scale, 7f, 22f) + 6f;
+            var bar = corridor.IsHorizontal ? new Rect(at.x - 2.5f, at.y - across * 0.5f, 5f, across) : new Rect(at.x - across * 0.5f, at.y - 2.5f, across, 5f);
+            MapIcons.Rectangle(painter, bar);
+            painter.fillColor = faint ? DoorDim : DoorFill;
+            painter.Fill();
+            MapIcons.Stroke(painter, new Color32(42, 36, 28, 255), 1f);
         }
 
-        private void DrawLink(Painter2D painter, MapLink link)
+        private static MapGlyph? GlyphOf(MapLink link)
         {
-            var from = _view.Node(link.Connection.FromAreaId);
-            var to = _view.Node(link.Connection.ToAreaId);
-            if (from == null || to == null)
+            var connection = link.Connection;
+            if (connection.IsShortcut)
             {
-                return;
+                return link.State == MapLinkState.ShortcutLocked ? MapGlyph.ShortcutShut : MapGlyph.ShortcutOpen;
             }
 
-            var a = ToScreen(from.Area.MapPosition);
-            var b = ToScreen(to.Area.MapPosition);
-            if (link.Connection.IsShortcut)
+            if (link.State == MapLinkState.Sealed || connection.Type == ConnectionType.BossGate
+                || connection.Type == ConnectionType.Door || connection.Type == ConnectionType.Gate)
             {
-                // A shortcut runs beside the main route between the same rooms, not over it.
-                a.y -= 6f;
-                b.y -= 6f;
+                return link.State == MapLinkState.Open && connection.Type == ConnectionType.Door ? (MapGlyph?)null : MapGlyph.Gate;
             }
 
-            switch (link.State)
+            if (connection.RequiredAbilityId == AbilityIds.Grapple)
             {
-                case MapLinkState.Open:
-                    Line(painter, a, b, link.IsZoneTransition ? Border : Route, link.IsZoneTransition ? 3.2f : 1.4f);
-                    break;
-                case MapLinkState.ShortcutLocked:
-                    Dashed(painter, a, b, Shut, 1.4f, 4f, 5f);
-                    break;
-                case MapLinkState.Blocked:
-                    Dashed(painter, a, b, Dim, 1.2f, 2f, 4f);
-                    break;
-                default:
-                    Dashed(painter, a, b, Dim, 1.4f, 6f, 6f);
-                    break;
+                return MapGlyph.Ring;
             }
 
-            var middle = (a + b) * 0.5f;
-            if (link.IsOneWay && link.State == MapLinkState.Open)
-            {
-                var direction = (b - a).normalized;
-                var normal = new Vector2(-direction.y, direction.x);
-                var tip = middle - normal * 10f + direction * 4f;
-                painter.strokeColor = Route;
-                painter.lineWidth = 1.3f;
-                painter.BeginPath();
-                painter.MoveTo(tip - direction * 8f + normal * 4f);
-                painter.LineTo(tip);
-                painter.LineTo(tip - direction * 8f - normal * 4f);
-                painter.Stroke();
-            }
-
-            if (link.ShowsGateIcon || link.State == MapLinkState.Sealed)
-            {
-                DrawGlyph(painter, MapGlyph.Gate, middle, true);
-            }
+            return link.State == MapLinkState.Blocked || link.ShowsGateIcon ? MapGlyph.Ability : (MapGlyph?)null;
         }
 
         private void DrawRoom(Painter2D painter, MapNode node)
@@ -239,10 +314,19 @@ namespace ForgottenKingdom
             var box = ToScreen(node.Rect);
             if (node.State == MapNodeState.Unexplored)
             {
-                Rectangle(painter, box);
+                MapIcons.Rectangle(painter, box);
                 painter.fillColor = FogFill;
                 painter.Fill();
-                DashedRect(painter, box, Fog, 1f, 3f, 5f);
+                MapIcons.DashedRect(painter, box, FogLine, 1.4f, 6f, 5f);
+                return;
+            }
+
+            if (node.Area.IsSecret)
+            {
+                MapIcons.Rectangle(painter, box);
+                painter.fillColor = new Color(14f / 255f, 12f / 255f, 10f / 255f, 0.85f);
+                painter.Fill();
+                MapIcons.DashedRect(painter, box, Secret, 1.4f, 5f, 4f);
                 return;
             }
 
@@ -250,269 +334,80 @@ namespace ForgottenKingdom
             if (node.State == MapNodeState.Charted)
             {
                 // From a bought map: a pale dashed outline, never as solid as a room walked through.
-                Rectangle(painter, box);
-                painter.fillColor = new Color(tint.r, tint.g, tint.b, 0.04f);
+                MapIcons.Rectangle(painter, box);
+                painter.fillColor = new Color(tint.r, tint.g, tint.b, 0.25f);
                 painter.Fill();
-                DashedRect(painter, box, new Color(tint.r, tint.g, tint.b, 0.5f), 1.2f, 6f, 4f);
+                MapIcons.DashedRect(painter, box, new Color(Frame.r, Frame.g, Frame.b, 0.55f), 1.4f, 7f, 4f);
+                return;
             }
-            else
+
+            if (!HasPicture(node))
             {
-                Rectangle(painter, box);
-                painter.fillColor = new Color(tint.r, tint.g, tint.b, 0.16f);
+                MapIcons.Rectangle(painter, box);
+                painter.fillColor = node.Area.IsBossArena ? BossFill : tint;
                 painter.Fill();
-                painter.strokeColor = new Color(tint.r, tint.g, tint.b, 0.75f);
-                painter.lineWidth = 1.2f;
-                painter.Stroke();
             }
 
-            if (node.MarkColor >= 0)
+            MapIcons.Rectangle(painter, box);
+            var selected = node.AreaId == _selected;
+            MapIcons.Stroke(painter, selected ? MapIcons.Gold : Frame, selected ? 2.4f : 1.8f);
+            if (selected)
             {
-                DrawMark(painter, new Vector2(box.xMin + 14f, box.yMin + 16f), node.MarkColor);
-            }
-
-            var at = new Vector2(box.xMax - 16f, box.yMax - 16f);
-            foreach (var icon in node.Icons)
-            {
-                var glyph = GlyphFor(icon.Type);
-                if (glyph == null)
-                {
-                    continue;
-                }
-
-                DrawGlyph(painter, glyph.Value, at, icon.IsActive);
-                at.x -= 26f;
-            }
-
-            if (node.IsCurrent)
-            {
-                DrawGlyph(painter, MapGlyph.Player, box.center + new Vector2(0f, 4f), true);
-            }
-
-            if (node.AreaId == _selected)
-            {
-                var ring = new Rect(box.x - 4f, box.y - 4f, box.width + 8f, box.height + 8f);
-                Rectangle(painter, ring);
-                painter.strokeColor = Selection;
-                painter.lineWidth = 2f;
-                painter.Stroke();
+                MapIcons.DashedRect(painter, new Rect(box.x - 7f, box.y - 7f, box.width + 14f, box.height + 14f),
+                    new Color(MapIcons.Gold.r, MapIcons.Gold.g, MapIcons.Gold.b, 0.5f), 1f, 2f, 5f);
             }
         }
 
-        private static MapGlyph? GlyphFor(MapIconType type)
+        private void DrawSymbols(Painter2D painter, MapNode node)
         {
-            switch (type)
-            {
-                case MapIconType.Checkpoint: return MapGlyph.Altar;
-                case MapIconType.FastTravel: return MapGlyph.Travel;
-                case MapIconType.Boss: return MapGlyph.Boss;
-                case MapIconType.Secret: return MapGlyph.Secret;
-                case MapIconType.Gate:
-                case MapIconType.SpecialDoor: return MapGlyph.Gate;
-                case MapIconType.Rumour: return MapGlyph.Rumour;
-                default: return null;
-            }
-        }
-
-        /// <summary>Zone tints from the mockup: bone for the Tomb, moss for the Forest.</summary>
-        private static Color Tint(string zoneId)
-        {
-            zoneId ??= string.Empty;
-            if (zoneId.Contains("tomb")) { return new Color32(184, 168, 138, 255); }
-            if (zoneId.Contains("forest")) { return new Color32(143, 168, 120, 255); }
-            return new Color32(106, 106, 112, 255);
-        }
-
-        /// <summary>One symbol, centred on a point, in the mockup's pixel sizes.</summary>
-        public static void DrawGlyph(Painter2D painter, MapGlyph glyph, Vector2 c, bool active)
-        {
-            var gold = new Color32(232, 205, 138, 255);
-            var flame = new Color32(240, 180, 65, 255);
-            var dim = new Color32(111, 100, 82, 255);
-            painter.lineJoin = LineJoin.Round;
-            switch (glyph)
-            {
-                case MapGlyph.Altar:
-                    Poly(painter, c, 0f, -9f, 6f, 0f, 0f, 9f, -6f, 0f);
-                    if (active) { painter.fillColor = flame; painter.Fill(); }
-                    painter.strokeColor = active ? (Color)gold : dim;
-                    painter.lineWidth = 1.5f;
-                    painter.Stroke();
-                    break;
-                case MapGlyph.Travel:
-                    painter.BeginPath();
-                    painter.Arc(c, 9f, Angle.Degrees(0f), Angle.Degrees(360f));
-                    painter.strokeColor = gold;
-                    painter.lineWidth = 1.5f;
-                    painter.Stroke();
-                    Poly(painter, c, 0f, -5f, 4f, 0f, 0f, 5f, -4f, 0f);
-                    painter.fillColor = flame;
-                    painter.Fill();
-                    break;
-                case MapGlyph.Boss:
-                    Poly(painter, c, -9f, 6f, -9f, -6f, -4f, -1f, 0f, -8f, 4f, -1f, 9f, -6f, 9f, 6f);
-                    painter.strokeColor = active ? new Color32(192, 48, 63, 255) : dim;
-                    painter.lineWidth = 1.6f;
-                    painter.Stroke();
-                    if (!active)
-                    {
-                        Line(painter, c + new Vector2(-10f, 8f), c + new Vector2(10f, -8f), dim, 1.4f);
-                    }
-
-                    break;
-                case MapGlyph.Secret:
-                    Poly(painter, c, 0f, -8f, 2.5f, -2.5f, 8f, 0f, 2.5f, 2.5f, 0f, 8f, -2.5f, 2.5f, -8f, 0f, -2.5f, -2.5f);
-                    painter.fillColor = new Color32(155, 143, 106, 255);
-                    painter.Fill();
-                    break;
-                case MapGlyph.Gate:
-                    Rectangle(painter, new Rect(c.x - 7f, c.y - 7f, 14f, 14f));
-                    painter.fillColor = new Color32(15, 13, 11, 255);
-                    painter.Fill();
-                    painter.strokeColor = new Color32(142, 131, 117, 255);
-                    painter.lineWidth = 1.2f;
-                    painter.Stroke();
-                    Line(painter, c + new Vector2(-3f, -7f), c + new Vector2(-3f, 7f), new Color32(142, 131, 117, 255), 1.2f);
-                    Line(painter, c + new Vector2(3f, -7f), c + new Vector2(3f, 7f), new Color32(142, 131, 117, 255), 1.2f);
-                    break;
-                case MapGlyph.Rumour:
-                    Poly(painter, c, 0f, -10f, 10f, 0f, 0f, 10f, -10f, 0f);
-                    painter.fillColor = new Color(0.06f, 0.05f, 0.04f, 0.9f);
-                    painter.Fill();
-                    painter.strokeColor = gold;
-                    painter.lineWidth = 1.8f;
-                    painter.Stroke();
-                    // The question: a hook and a dot.
-                    painter.BeginPath();
-                    painter.Arc(c + new Vector2(0f, -2.5f), 3f, Angle.Degrees(180f), Angle.Degrees(420f));
-                    painter.Stroke();
-                    Poly(painter, c + new Vector2(0f, 5f), -1.2f, -1.2f, 1.2f, -1.2f, 1.2f, 1.2f, -1.2f, 1.2f);
-                    painter.fillColor = gold;
-                    painter.Fill();
-                    break;
-                case MapGlyph.Player:
-                    painter.BeginPath();
-                    painter.Arc(c, 14f, Angle.Degrees(0f), Angle.Degrees(360f));
-                    painter.strokeColor = new Color(232f / 255f, 205f / 255f, 138f / 255f, 0.45f);
-                    painter.lineWidth = 1f;
-                    painter.Stroke();
-                    Poly(painter, c, 0f, -10f, 7f, 0f, 0f, 10f, -7f, 0f);
-                    painter.fillColor = gold;
-                    painter.Fill();
-                    painter.strokeColor = new Color32(11, 9, 7, 255);
-                    painter.lineWidth = 1.5f;
-                    painter.Stroke();
-                    break;
-                default:
-                    Poly(painter, c, 0f, -8f, 6f, 0f, 0f, 8f, -6f, 0f);
-                    painter.fillColor = gold;
-                    painter.Fill();
-                    break;
-            }
-        }
-
-        /// <summary>The quill's five colours, in the order the marks take them.</summary>
-        public static readonly Color[] MarkColors =
-        {
-            new Color32(196, 85, 47, 255),
-            new Color32(111, 168, 214, 255),
-            new Color32(127, 168, 92, 255),
-            new Color32(201, 161, 74, 255),
-            new Color32(216, 203, 180, 255)
-        };
-
-        /// <summary>A pin in one of the quill's colours, its point on <paramref name="c"/>'s foot.</summary>
-        public static void DrawMark(Painter2D painter, Vector2 c, int color)
-        {
-            Poly(painter, c, 0f, 9f, -6f, -1f, -4f, -8f, 4f, -8f, 6f, -1f);
-            painter.fillColor = MarkColors[Mathf.Clamp(color, 0, MarkColors.Length - 1)];
-            painter.Fill();
-            painter.strokeColor = new Color32(11, 9, 7, 255);
-            painter.lineWidth = 1.2f;
-            painter.Stroke();
-        }
-
-        private static void Poly(Painter2D painter, Vector2 c, params float[] xy)
-        {
-            painter.BeginPath();
-            painter.MoveTo(c + new Vector2(xy[0], xy[1]));
-            for (var i = 2; i + 1 < xy.Length; i += 2)
-            {
-                painter.LineTo(c + new Vector2(xy[i], xy[i + 1]));
-            }
-
-            painter.ClosePath();
-        }
-
-        private static void Rectangle(Painter2D painter, Rect box)
-        {
-            painter.BeginPath();
-            painter.MoveTo(new Vector2(box.xMin, box.yMin));
-            painter.LineTo(new Vector2(box.xMax, box.yMin));
-            painter.LineTo(new Vector2(box.xMax, box.yMax));
-            painter.LineTo(new Vector2(box.xMin, box.yMax));
-            painter.ClosePath();
-        }
-
-        private static void Line(Painter2D painter, Vector2 a, Vector2 b, Color color, float width)
-        {
-            painter.strokeColor = color;
-            painter.lineWidth = width;
-            painter.BeginPath();
-            painter.MoveTo(a);
-            painter.LineTo(b);
-            painter.Stroke();
-        }
-
-        /// <summary>Painter2D has no dash pattern; the dashes are laid by hand.</summary>
-        private static void Dashed(Painter2D painter, Vector2 a, Vector2 b, Color color, float width,
-            float on, float off)
-        {
-            var length = Vector2.Distance(a, b);
-            if (length < 0.5f)
+            if (node.State == MapNodeState.Unexplored)
             {
                 return;
             }
 
-            var direction = (b - a) / length;
-            painter.strokeColor = color;
-            painter.lineWidth = width;
-            painter.BeginPath();
-            for (var t = 0f; t < length; t += on + off)
+            var box = ToScreen(node.Rect);
+            var size = Mathf.Clamp(Mathf.Min(box.width, box.height) * 0.42f, 16f, 30f);
+            if (node.Area.IsSecret)
             {
-                painter.MoveTo(a + direction * t);
-                painter.LineTo(a + direction * Mathf.Min(length, t + on));
+                MapIcons.Draw(painter, node.Icons.Exists(i => i.Type == MapIconType.Rumour) && node.State != MapNodeState.Discovered
+                    ? MapGlyph.Rumour : MapGlyph.Secret, box.center, size);
+                return;
             }
 
-            painter.Stroke();
+            var symbols = new List<(MapGlyph glyph, bool active)>();
+            foreach (var icon in node.Icons)
+            {
+                switch (icon.Type)
+                {
+                    case MapIconType.Checkpoint: symbols.Add((MapGlyph.Altar, icon.IsActive)); break;
+                    case MapIconType.FastTravel: symbols.Add((MapGlyph.Travel, icon.IsActive)); break;
+                    case MapIconType.Boss: symbols.Add((icon.IsActive ? MapGlyph.Boss : MapGlyph.BossBeaten, icon.IsActive)); break;
+                    case MapIconType.Rumour: symbols.Add((MapGlyph.Rumour, true)); break;
+                }
+            }
+
+            if (node.IsCurrent)
+            {
+                symbols.Insert(0, (MapGlyph.Player, true));
+            }
+
+            var at = box.center - new Vector2((symbols.Count - 1) * size * 0.6f, 0f);
+            foreach (var (glyph, active) in symbols)
+            {
+                MapIcons.Draw(painter, glyph, at, glyph == MapGlyph.Player ? size * 1.3f : size, active);
+                at.x += size * 1.2f;
+            }
+
+            if (node.MarkColor >= 0)
+            {
+                MapIcons.DrawMark(painter, new Vector2(box.xMax - 12f, box.yMin + 14f), node.MarkColor);
+            }
         }
 
-        private static void DashedRect(Painter2D painter, Rect box, Color color, float width, float on, float off)
-        {
-            var a = new Vector2(box.xMin, box.yMin);
-            var b = new Vector2(box.xMax, box.yMin);
-            var c = new Vector2(box.xMax, box.yMax);
-            var d = new Vector2(box.xMin, box.yMax);
-            Dashed(painter, a, b, color, width, on, off);
-            Dashed(painter, b, c, color, width, on, off);
-            Dashed(painter, c, d, color, width, on, off);
-            Dashed(painter, d, a, color, width, on, off);
-        }
-    }
+        /// <summary>The zone's room colour from the graph; a corridor takes it too.</summary>
+        private Color Tint(string zoneId) => TintOf != null ? TintOf(zoneId) : (Color)new Color32(42, 90, 78, 255);
 
-    /// <summary>One map symbol on its own, for the legend and the travel list.</summary>
-    public sealed class MapGlyphElement : VisualElement
-    {
-        private readonly MapGlyph _glyph;
-        private readonly bool _active;
-
-        public MapGlyphElement(MapGlyph glyph, bool active = true)
-        {
-            _glyph = glyph;
-            _active = active;
-            pickingMode = PickingMode.Ignore;
-            AddToClassList("map-glyph");
-            generateVisualContent += context =>
-                MapCanvas.DrawGlyph(context.painter2D, _glyph, contentRect.center, _active);
-        }
+        /// <summary>Set by the map: a zone's room colour (<see cref="ZoneDefinition.MapTint"/>).</summary>
+        public System.Func<string, Color> TintOf { get; set; }
     }
 }

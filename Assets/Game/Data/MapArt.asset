@@ -1,0 +1,133 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9cf6fd65d84b4298953300047bde3ae, type: 3}
+  m_Name: MapArt
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.MapArt
+  _islands:
+  - Id: tomb
+    Texture: {fileID: 2800000, guid: b68829eaf7a934bc68d4a68da0b898bf, type: 3}
+  - Id: forest
+    Texture: {fileID: 2800000, guid: e353a951e9a8a42a3b677bb4b67bd6db, type: 3}
+  - Id: village
+    Texture: {fileID: 2800000, guid: 95d370a4d314f4311a7f24ed3d0b195d, type: 3}
+  - Id: marsh
+    Texture: {fileID: 2800000, guid: 9326e76de7b364fe0afd99c0c1a81489, type: 3}
+  - Id: depths
+    Texture: {fileID: 2800000, guid: fd358531b735b4cfea3c6b2eaf3878dd, type: 3}
+  - Id: crystal
+    Texture: {fileID: 2800000, guid: 0bb512095eddd4378ac269a465d4f4a9, type: 3}
+  - Id: citadel
+    Texture: {fileID: 2800000, guid: 2b1b75941addf4841ac9fd7e6130b77d, type: 3}
+  - Id: capital
+    Texture: {fileID: 2800000, guid: af7fe463c6fd44258a256536b520b494, type: 3}
+  - Id: cathedral
+    Texture: {fileID: 2800000, guid: 2594f22d55dab45ecbd9c3869a5c8020, type: 3}
+  - Id: aqueducts
+    Texture: {fileID: 2800000, guid: 3dfe286790a074350ac24215842a63c8, type: 3}
+  - Id: ice
+    Texture: {fileID: 2800000, guid: 711ecc087f063413aac51b1f5315b08e, type: 3}
+  - Id: observatory
+    Texture: {fileID: 2800000, guid: 0af0048588f95491dbf6a6f1ac23ae22, type: 3}
+  - Id: palace
+    Texture: {fileID: 2800000, guid: f8cc6b6eb0c4c40f28f0185b8c9fb57c, type: 3}
+  - Id: shadow
+    Texture: {fileID: 2800000, guid: 03cd38a00f71e4c2685bc26732c1819d, type: 3}
+  - Id: throne
+    Texture: {fileID: 2800000, guid: fd8432f9ddc29449b9d7f0b641e990d2, type: 3}
+  _cards:
+  - Id: tomb
+    Texture: {fileID: 2800000, guid: e5db469cba38a4a7bba0fe3437cd3ac8, type: 3}
+  - Id: forest
+    Texture: {fileID: 2800000, guid: 05380799ec3d24102a2a4dc6f0280367, type: 3}
+  - Id: village
+    Texture: {fileID: 2800000, guid: 19d809fdbf6dd4ac4b2ea5276de93d70, type: 3}
+  - Id: marsh
+    Texture: {fileID: 2800000, guid: 380de5d3f88254151939b13b2c0246ec, type: 3}
+  - Id: depths
+    Texture: {fileID: 2800000, guid: 15b04f7f5b0db4fcea9985a32c9fbc08, type: 3}
+  - Id: crystal
+    Texture: {fileID: 2800000, guid: e134c430ae0f442adac0545d395ff63e, type: 3}
+  - Id: citadel
+    Texture: {fileID: 2800000, guid: 65ee15f8445fb436e89499f9c8b3253d, type: 3}
+  - Id: capital
+    Texture: {fileID: 2800000, guid: 6444f5b39edd04977ab797b1514e0e51, type: 3}
+  - Id: cathedral
+    Texture: {fileID: 2800000, guid: 5440f68ecd2cb4d60aa75c1682c3329d, type: 3}
+  - Id: aqueducts
+    Texture: {fileID: 2800000, guid: 29dfed5c9daff4852a0f6e364c093ada, type: 3}
+  - Id: ice
+    Texture: {fileID: 2800000, guid: 367a54dfb6a6e45aea30cdc08945d27c, type: 3}
+  - Id: observatory
+    Texture: {fileID: 2800000, guid: 299ee8bcfdd1943be90fa927a6e34ba0, type: 3}
+  - Id: palace
+    Texture: {fileID: 2800000, guid: 365a13f09c7104380a526b445a214c6c, type: 3}
+  - Id: shadow
+    Texture: {fileID: 2800000, guid: 458d4d840851945eb84bba4d678437a0, type: 3}
+  - Id: throne
+    Texture: {fileID: 2800000, guid: d17deee3f68be4b26b0803878f0b55e7, type: 3}
+  _rooms:
+  - Id: room_tomb_entrance
+    Texture: {fileID: 2800000, guid: 745ebb6ebaddb4e73af7391e9578b15d, type: 3}
+  - Id: room_tomb_burial_hall
+    Texture: {fileID: 2800000, guid: 40b9e4ef80e4140cdb845cb94b6cfbe9, type: 3}
+  - Id: room_tomb_guard_passage
+    Texture: {fileID: 2800000, guid: 120bd5d80c7a54a1d8ba776b941e3ce0, type: 3}
+  - Id: room_tomb_collapsed_crypt
+    Texture: {fileID: 2800000, guid: 8f184dbcf77c5470e9a7dd4ba7ba7f39, type: 3}
+  - Id: room_tomb_guardian_approach
+    Texture: {fileID: 2800000, guid: d5885e8c60fb845c1a087ad51bde830f, type: 3}
+  - Id: room_tomb_guardian_arena
+    Texture: {fileID: 2800000, guid: 4ffefdbeb0e234d3ba0e79e7d26ca69d, type: 3}
+  - Id: room_tomb_reliquary
+    Texture: {fileID: 2800000, guid: 3458dd14c449a4fd1a87588aa79984ee, type: 3}
+  - Id: room_forest_root_tunnel
+    Texture: {fileID: 2800000, guid: 5d5548b05fcd64f85876180f4b708724, type: 3}
+  - Id: room_forest_entrance
+    Texture: {fileID: 2800000, guid: 2904df2862510486e884a6d7325619df, type: 3}
+  - Id: room_forest_royal_road
+    Texture: {fileID: 2800000, guid: 57bd98bd5edef4eae82e611b3d4c5492, type: 3}
+  - Id: room_forest_broken_arch
+    Texture: {fileID: 2800000, guid: 191d3694d0fa743629e960ad010f28b1, type: 3}
+  - Id: room_forest_poison_grove
+    Texture: {fileID: 2800000, guid: 6641b78be8bc94a05a547534211166c7, type: 3}
+  - Id: room_forest_watchtower
+    Texture: {fileID: 2800000, guid: 9e6bbec20909e4f8ca204b2c865d3029, type: 3}
+  - Id: room_forest_watchtower_top
+    Texture: {fileID: 2800000, guid: 78a1a9cd9f1fb4f14afbb470331bca41, type: 3}
+  - Id: room_forest_deep
+    Texture: {fileID: 2800000, guid: 4a2bb751a726f4bd387b068064aa99c7, type: 3}
+  - Id: room_forest_warden_approach
+    Texture: {fileID: 2800000, guid: a5f67d38e7fb24c0b825b1d3b79799bc, type: 3}
+  - Id: room_forest_warden_arena
+    Texture: {fileID: 2800000, guid: 11f68539390c24158a3a2f6e8240bbfd, type: 3}
+  - Id: room_forest_far_gate
+    Texture: {fileID: 2800000, guid: a16334eea14f64788a25e45809d2881a, type: 3}
+  - Id: room_capital_ash_road
+    Texture: {fileID: 2800000, guid: 4ec3411aef4ee45d4962dfda136e3015, type: 3}
+  - Id: room_capital_city_gate
+    Texture: {fileID: 2800000, guid: 13ec9a051f2f043f98366ff0c3385d50, type: 3}
+  - Id: room_capital_market
+    Texture: {fileID: 2800000, guid: 5309fd5ca2e2e415497d5b8d8fa7390f, type: 3}
+  - Id: room_capital_bell_tower
+    Texture: {fileID: 2800000, guid: c035c26236fc34b6eafa0e6a80434624, type: 3}
+  - Id: room_capital_temple
+    Texture: {fileID: 2800000, guid: 79a3e0e4f73d84d5da6dc6d7ad1bea2e, type: 3}
+  - Id: room_capital_gardens
+    Texture: {fileID: 2800000, guid: 1b40d1000b0654c8593504fb21070274, type: 3}
+  - Id: room_capital_palace_approach
+    Texture: {fileID: 2800000, guid: 12a44626950b343c6837f443357b6940, type: 3}
+  - Id: room_capital_throne_hall
+    Texture: {fileID: 2800000, guid: 6efcdd2901edb4c0381979b912463125, type: 3}
+  - Id: room_forest_thorn_course
+    Texture: {fileID: 2800000, guid: c4922ef5f55624b8cad643305c6b2a76, type: 3}
+  _fog: {fileID: 2800000, guid: 91b3a940e917a46a6aa7b9bd0fae3632, type: 3}
+  _glow: {fileID: 2800000, guid: 15b96ee5584434f6bb7f4223a097a3bc, type: 3}

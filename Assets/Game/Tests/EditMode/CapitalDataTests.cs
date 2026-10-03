@@ -29,7 +29,7 @@ namespace ForgottenKingdom.Tests
             var zone = _graph.Zone(Capital);
             Assert.That(zone, Is.Not.Null);
             Assert.That(zone.IsImplemented, Is.True);
-            Assert.That(zone.DisplayName, Is.EqualTo("Попеляста Столиця"));
+            Assert.That(zone.DisplayName, Is.EqualTo("Зруйнована Столиця"), "Named as on the user's map (WORLD_DESIGN.md).");
             Assert.That(zone.ContentScene, Is.EqualTo("Zone_Capital"));
 
             var areas = _graph.AreasIn(Capital);

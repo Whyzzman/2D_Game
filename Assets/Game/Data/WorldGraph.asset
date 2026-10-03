@@ -20,7 +20,15 @@ MonoBehaviour:
     _contentScene: Zone_Tomb
     _defaultSpawn: {x: -12, y: 0.85}
     _isImplemented: 1
-    _mapTint: {r: 0.72, g: 0.66, b: 0.55, a: 1}
+    _mapTint: {r: 0.1686275, g: 0.227451, b: 0.2901961, a: 1}
+    _worldPosition: {x: 200, y: 690}
+    _art: tomb
+    _glow: {r: 0.9411765, g: 0.8509804, b: 0.627451, a: 1}
+    _description: "\u0422\u0443\u0442 \u043B\u0435\u0436\u0430\u0442\u044C \u0442\u0456,
+      \u0445\u0442\u043E \u043D\u0435 \u043F\u0440\u0438\u0441\u044F\u0433\u043D\u0443\u0432.
+      \u0421\u043A\u043B\u0435\u043F\u0438 \u0439 \u0448\u0430\u0445\u0442\u0438
+      \u043F\u0456\u0434 \u0437\u0435\u043C\u043B\u0435\u044E, \u0434\u0435 \u043F\u0440\u043E\u043A\u0438\u043D\u0443\u043B\u0430\u0441\u044F
+      \u0442\u0456\u043D\u044C \u0431\u0435\u0437 \u0456\u043C\u0435\u043D\u0456."
   - _zoneId: zone_withered_forest
     _displayName: "\u0417\u0456\u0432'\u044F\u043B\u0438\u0439 \u041B\u0456\u0441"
     _titleCard: "\u0417\u0456\u0432'\u044F\u043B\u0438\u0439 \u041B\u0456\u0441"
@@ -28,15 +36,232 @@ MonoBehaviour:
     _contentScene: Zone_Forest
     _defaultSpawn: {x: 80, y: 0.85}
     _isImplemented: 1
-    _mapTint: {r: 0.5, g: 0.66, b: 0.46, a: 1}
+    _mapTint: {r: 0.1647059, g: 0.3529412, b: 0.3058824, a: 1}
+    _worldPosition: {x: 545, y: 715}
+    _art: forest
+    _glow: {r: 1, g: 0.7019608, b: 0.3529412, a: 1}
+    _description: "\u0426\u0432\u0438\u043D\u0442\u0430\u0440 \u043F\u0440\u0430\u0434\u0430\u0432\u043D\u0456\u0445
+      \u0434\u0435\u0440\u0435\u0432, \u0434\u0435 \u0436\u0438\u0442\u0442\u044F
+      \u0447\u0456\u043F\u043B\u044F\u0454\u0442\u044C\u0441\u044F \u0437\u0430 \u0433\u043D\u0438\u043B\u044C.
+      \u041A\u043E\u0440\u0456\u043D\u043D\u044F \u043E\u043F\u043B\u0456\u0442\u0430\u0454
+      \u0437\u0430\u0431\u0443\u0442\u0456 \u0440\u0443\u0457\u043D\u0438, \u0430
+      \u043F\u043E\u0432\u0456\u0442\u0440\u044F \u0433\u0443\u0441\u0442\u0435 \u0432\u0456\u0434
+      \u043F\u0430\u043C'\u044F\u0442\u0456 \u043F\u0440\u043E \u0442\u0435, \u0449\u043E
+      \u0431\u0443\u043B\u043E."
+  - _zoneId: zone_fallen_village
+    _displayName: "\u0417\u0430\u043D\u0435\u043F\u0430\u043B\u0435 \u0421\u0435\u043B\u043E"
+    _titleCard: "\u0417\u0430\u043D\u0435\u043F\u0430\u043B\u0435 \u0421\u0435\u043B\u043E"
+    _sceneName: TombTrial
+    _contentScene: 
+    _defaultSpawn: {x: 0, y: 0}
+    _isImplemented: 0
+    _mapTint: {r: 0.2901961, g: 0.2039216, b: 0.1411765, a: 1}
+    _worldPosition: {x: 830, y: 745}
+    _art: village
+    _glow: {r: 1, g: 0.6117647, b: 0.2901961, a: 1}
+    _description: "\u0425\u0430\u0442\u0438 \u043D\u0430 \u043F\u0430\u043B\u044F\u0445,
+      \u043A\u043E\u043B\u043E\u0434\u044F\u0437\u044C \u043D\u0430 \u043F\u043B\u043E\u0449\u0456
+      \u0439 \u0434\u0437\u0432\u0456\u043D\u0438\u0446\u044F, \u0449\u043E \u0431'\u0454
+      \u0441\u0430\u043C\u0430 \u043F\u043E \u0441\u043E\u0431\u0456. \u041B\u044E\u0434\u0438
+      \u043F\u0456\u0448\u043B\u0438, \u0430 \u0432\u043E\u0433\u043D\u0456 \u0434\u043E\u0441\u0456
+      \u0433\u043E\u0440\u044F\u0442\u044C."
+  - _zoneId: zone_plague_marsh
+    _displayName: "\u0427\u0443\u043C\u043D\u0456 \u0411\u043E\u043B\u043E\u0442\u0430"
+    _titleCard: "\u0427\u0443\u043C\u043D\u0456 \u0411\u043E\u043B\u043E\u0442\u0430"
+    _sceneName: TombTrial
+    _contentScene: 
+    _defaultSpawn: {x: 0, y: 0}
+    _isImplemented: 0
+    _mapTint: {r: 0.1843137, g: 0.2901961, b: 0.1176471, a: 1}
+    _worldPosition: {x: 1075, y: 790}
+    _art: marsh
+    _glow: {r: 0.7137255, g: 1, b: 0.3529412, a: 1}
+    _description: "\u041E\u0442\u0440\u0443\u0439\u043D\u0430 \u0432\u043E\u0434\u0430,
+      \u0433\u043D\u0438\u043B\u0456 \u043C\u0456\u0441\u0442\u043A\u0438 \u0439
+      \u0445\u0438\u0436\u0456 \u043D\u0430 \u043F\u0430\u043B\u044F\u0445. \u0422\u0443\u0442
+      \u043B\u0456\u043A\u0443\u0432\u0430\u043B\u0438 \u0447\u0443\u043C\u0443,
+      \u0434\u043E\u043A\u0438 \u0432\u043E\u043D\u0430 \u043D\u0435 \u0441\u0442\u0430\u043B\u0430
+      \u0433\u043E\u0441\u043F\u043E\u0434\u0430\u0440\u0435\u043C."
+  - _zoneId: zone_ashen_depths
+    _displayName: "\u041F\u043E\u043F\u0435\u043B\u044F\u0441\u0442\u0456 \u0413\u043B\u0438\u0431\u0438\u043D\u0438"
+    _titleCard: "\u041F\u043E\u043F\u0435\u043B\u044F\u0441\u0442\u0456 \u0413\u043B\u0438\u0431\u0438\u043D\u0438"
+    _sceneName: TombTrial
+    _contentScene: 
+    _defaultSpawn: {x: 0, y: 0}
+    _isImplemented: 0
+    _mapTint: {r: 0.2901961, g: 0.1176471, b: 0.07058824, a: 1}
+    _worldPosition: {x: 1300, y: 735}
+    _art: depths
+    _glow: {r: 1, g: 0.4156863, b: 0.1647059, a: 1}
+    _description: "\u041A\u0443\u0437\u043D\u0456 \u043F\u0456\u0434 \u0437\u0435\u043C\u043B\u0435\u044E,
+      \u0434\u0435 \u043B\u0430\u0432\u0430 \u0442\u0435\u0447\u0435 \u0437\u0430\u043C\u0456\u0441\u0442\u044C
+      \u0432\u043E\u0434\u0438. \u041F\u0435\u0440\u0448\u0438\u0439 \u0456\u0437
+      \u041F\u0440\u0438\u0441\u044F\u0436\u043D\u0438\u0445 \u0431\u0435\u0440\u0435\u0436\u0435
+      \u0442\u0443\u0442 \u043F\u0435\u0447\u0430\u0442\u043A\u0443 \u0432\u043E\u0433\u043D\u044E."
+  - _zoneId: zone_crystal_caverns
+    _displayName: "\u041A\u0440\u0438\u0448\u0442\u0430\u043B\u0435\u0432\u0456 \u041F\u0435\u0447\u0435\u0440\u0438"
+    _titleCard: "\u041A\u0440\u0438\u0448\u0442\u0430\u043B\u0435\u0432\u0456 \u041F\u0435\u0447\u0435\u0440\u0438"
+    _sceneName: TombTrial
+    _contentScene: 
+    _defaultSpawn: {x: 0, y: 0}
+    _isImplemented: 0
+    _mapTint: {r: 0.1176471, g: 0.172549, b: 0.3529412, a: 1}
+    _worldPosition: {x: 190, y: 470}
+    _art: crystal
+    _glow: {r: 0.4980392, g: 0.7137255, b: 1, a: 1}
+    _description: "\u0428\u0430\u0445\u0442\u0438, \u0449\u043E \u043F\u0440\u043E\u0440\u043E\u0441\u043B\u0438
+      \u043A\u0440\u0438\u0441\u0442\u0430\u043B\u043E\u043C. \u0421\u0432\u0456\u0442\u043B\u043E
+      \u0442\u0443\u0442 \u0445\u043E\u043B\u043E\u0434\u043D\u0435 \u0439 \u0440\u0456\u0436\u0435,
+      \u044F\u043A \u043B\u0435\u0437\u043E."
+  - _zoneId: zone_iron_citadel
+    _displayName: "\u0417\u0430\u043B\u0456\u0437\u043D\u0430 \u0426\u0438\u0442\u0430\u0434\u0435\u043B\u044C"
+    _titleCard: "\u0417\u0430\u043B\u0456\u0437\u043D\u0430 \u0426\u0438\u0442\u0430\u0434\u0435\u043B\u044C"
+    _sceneName: TombTrial
+    _contentScene: 
+    _defaultSpawn: {x: 0, y: 0}
+    _isImplemented: 0
+    _mapTint: {r: 0.2901961, g: 0.1019608, b: 0.09411765, a: 1}
+    _worldPosition: {x: 500, y: 455}
+    _art: citadel
+    _glow: {r: 1, g: 0.3529412, b: 0.227451, a: 1}
+    _description: "\u0422\u044E\u0440\u043C\u0430 \u043A\u043E\u0440\u043E\u043B\u0456\u0432\u0441\u0442\u0432\u0430:
+      \u043A\u0430\u043C\u0435\u0440\u0438, \u043B\u0430\u043D\u0446\u044E\u0433\u0438
+      \u0439 \u0430\u0440\u0435\u043D\u0430, \u0434\u0435 \u0432'\u044F\u0437\u043D\u0456
+      \u0431\u0438\u043B\u0438\u0441\u044F \u0437\u0430 \u0432\u043E\u043B\u044E,
+      \u044F\u043A\u043E\u0457 \u043D\u0435 \u0431\u0443\u043B\u043E."
   - _zoneId: zone_ashen_capital
-    _displayName: "\u041F\u043E\u043F\u0435\u043B\u044F\u0441\u0442\u0430 \u0421\u0442\u043E\u043B\u0438\u0446\u044F"
-    _titleCard: "\u041F\u043E\u043F\u0435\u043B\u044F\u0441\u0442\u0430 \u0421\u0442\u043E\u043B\u0438\u0446\u044F"
+    _displayName: "\u0417\u0440\u0443\u0439\u043D\u043E\u0432\u0430\u043D\u0430 \u0421\u0442\u043E\u043B\u0438\u0446\u044F"
+    _titleCard: "\u0417\u0440\u0443\u0439\u043D\u043E\u0432\u0430\u043D\u0430 \u0421\u0442\u043E\u043B\u0438\u0446\u044F"
     _sceneName: TombTrial
     _contentScene: Zone_Capital
     _defaultSpawn: {x: 330, y: 0.85}
     _isImplemented: 1
-    _mapTint: {r: 0.7, g: 0.56, b: 0.5, a: 1}
+    _mapTint: {r: 0.227451, g: 0.2117647, b: 0.1803922, a: 1}
+    _worldPosition: {x: 830, y: 450}
+    _art: capital
+    _glow: {r: 1, g: 0.8235294, b: 0.4784314, a: 1}
+    _description: "\u041F\u043E\u043F\u0435\u043B\u044F\u0441\u0442\u0456 \u0432\u0443\u043B\u0438\u0446\u0456
+      \u043F\u0456\u0434 \u0441\u043E\u0431\u043E\u0440\u043E\u043C \u0456 \u0432\u0435\u0436\u0435\u044E.
+      \u041C\u0456\u0441\u0442\u043E \u0433\u043E\u0440\u0456\u043B\u043E \u0440\u043E\u043A\u0430\u043C\u0438,
+      \u0431\u043E \u041A\u043E\u0440\u043E\u043B\u044C \u0437\u0430\u0431\u043E\u0440\u043E\u043D\u0438\u0432
+      \u0439\u043E\u043C\u0443 \u0437\u0433\u0430\u0441\u0430\u0442\u0438."
+  - _zoneId: zone_sunken_cathedral
+    _displayName: "\u0417\u0430\u0442\u043E\u043F\u043B\u0435\u043D\u0438\u0439 \u0421\u043E\u0431\u043E\u0440"
+    _titleCard: "\u0417\u0430\u0442\u043E\u043F\u043B\u0435\u043D\u0438\u0439 \u0421\u043E\u0431\u043E\u0440"
+    _sceneName: TombTrial
+    _contentScene: 
+    _defaultSpawn: {x: 0, y: 0}
+    _isImplemented: 0
+    _mapTint: {r: 0.1176471, g: 0.227451, b: 0.2666667, a: 1}
+    _worldPosition: {x: 1060, y: 555}
+    _art: cathedral
+    _glow: {r: 0.6196079, g: 0.8784314, b: 1, a: 1}
+    _description: "\u041D\u0435\u0444, \u0434\u0435 \u0432\u043E\u0434\u0430 \u043F\u0456\u0434\u043D\u044F\u043B\u0430\u0441\u044F
+      \u0434\u043E \u0432\u0456\u0432\u0442\u0430\u0440\u044F. \u0421\u0432\u0456\u0447\u043A\u0438
+      \u0434\u043E\u0441\u0456 \u0433\u043E\u0440\u044F\u0442\u044C \u043D\u0430\u0434
+      \u043D\u0435\u044E, \u0456 \u0445\u0442\u043E\u0441\u044C \u0434\u043E\u0441\u0456
+      \u0441\u043F\u0456\u0432\u0430\u0454."
+  - _zoneId: zone_royal_aqueducts
+    _displayName: "\u041A\u043E\u0440\u043E\u043B\u0456\u0432\u0441\u044C\u043A\u0456
+      \u0410\u043A\u0432\u0435\u0434\u0443\u043A\u0438"
+    _titleCard: "\u041A\u043E\u0440\u043E\u043B\u0456\u0432\u0441\u044C\u043A\u0456
+      \u0410\u043A\u0432\u0435\u0434\u0443\u043A\u0438"
+    _sceneName: TombTrial
+    _contentScene: 
+    _defaultSpawn: {x: 0, y: 0}
+    _isImplemented: 0
+    _mapTint: {r: 0.07843138, g: 0.2509804, b: 0.2901961, a: 1}
+    _worldPosition: {x: 1300, y: 505}
+    _art: aqueducts
+    _glow: {r: 0.4352941, g: 0.9411765, b: 1, a: 1}
+    _description: "\u041A\u0430\u043D\u0430\u043B\u0438, \u0448\u043B\u044E\u0437\u0438
+      \u0439 \u0432\u043E\u0434\u043E\u0441\u043F\u0430\u0434\u0438 \u043F\u0456\u0434
+      \u043C\u0456\u0441\u0442\u043E\u043C. \u0412\u043B\u0430\u0434\u0430\u0440
+      \u0432\u043E\u0434\u0438 \u0442\u0440\u0438\u043C\u0430\u0454 \u0442\u0443\u0442
+      \u0434\u0440\u0443\u0433\u0443 \u043F\u0435\u0447\u0430\u0442\u043A\u0443."
+  - _zoneId: zone_frozen_bastion
+    _displayName: "\u041A\u0440\u0438\u0436\u0430\u043D\u0438\u0439 \u0411\u0430\u0441\u0442\u0456\u043E\u043D"
+    _titleCard: "\u041A\u0440\u0438\u0436\u0430\u043D\u0438\u0439 \u0411\u0430\u0441\u0442\u0456\u043E\u043D"
+    _sceneName: TombTrial
+    _contentScene: 
+    _defaultSpawn: {x: 0, y: 0}
+    _isImplemented: 0
+    _mapTint: {r: 0.1647059, g: 0.227451, b: 0.3215686, a: 1}
+    _worldPosition: {x: 250, y: 255}
+    _art: ice
+    _glow: {r: 0.9098039, g: 0.9647059, b: 1, a: 1}
+    _description: "\u0424\u043E\u0440\u0442\u0435\u0446\u044F \u043D\u0430 \u043F\u0435\u0440\u0435\u0432\u0430\u043B\u0456,
+      \u0432\u043A\u0440\u0438\u0442\u0430 \u043A\u0440\u0438\u0433\u043E\u044E.
+      \u0422\u0440\u0435\u0442\u044F \u041F\u0440\u0438\u0441\u044F\u0436\u043D\u0430
+      \u0447\u0435\u043A\u0430\u0454 \u0443 \u0442\u0440\u043E\u043D\u043D\u0456\u0439
+      \u0437\u0430\u043B\u0456, \u0434\u0435 \u043D\u0456\u0445\u0442\u043E \u043D\u0435
+      \u043C\u0435\u0440\u0437\u043D\u0435, \u043A\u0440\u0456\u043C \u0436\u0438\u0432\u0438\u0445."
+  - _zoneId: zone_arcane_observatory
+    _displayName: "\u0422\u0430\u0454\u043C\u043D\u0430 \u041E\u0431\u0441\u0435\u0440\u0432\u0430\u0442\u043E\u0440\u0456\u044F"
+    _titleCard: "\u0422\u0430\u0454\u043C\u043D\u0430 \u041E\u0431\u0441\u0435\u0440\u0432\u0430\u0442\u043E\u0440\u0456\u044F"
+    _sceneName: TombTrial
+    _contentScene: 
+    _defaultSpawn: {x: 0, y: 0}
+    _isImplemented: 0
+    _mapTint: {r: 0.1647059, g: 0.1176471, b: 0.3529412, a: 1}
+    _worldPosition: {x: 545, y: 185}
+    _art: observatory
+    _glow: {r: 0.7882353, g: 0.6509804, b: 1, a: 1}
+    _description: "\u041A\u0443\u043F\u043E\u043B\u0438 \u043D\u0430\u0434 \u0445\u043C\u0430\u0440\u0430\u043C\u0438
+      \u0439 \u043E\u0441\u0442\u0440\u043E\u0432\u0438, \u0449\u043E \u0432\u0438\u0441\u044F\u0442\u044C
+      \u0443 \u043F\u043E\u0432\u0456\u0442\u0440\u0456. \u0417\u0432\u0456\u0434\u0441\u0438
+      \u0432\u0438\u0434\u043D\u043E \u043D\u0430\u0432\u0456\u0442\u044C \u0442\u0435,
+      \u0447\u043E\u0433\u043E \u043D\u0435\u043C\u0430\u0454."
+  - _zoneId: zone_royal_palace
+    _displayName: "\u041A\u043E\u0440\u043E\u043B\u0456\u0432\u0441\u044C\u043A\u0438\u0439
+      \u041F\u0430\u043B\u0430\u0446"
+    _titleCard: "\u041A\u043E\u0440\u043E\u043B\u0456\u0432\u0441\u044C\u043A\u0438\u0439
+      \u041F\u0430\u043B\u0430\u0446"
+    _sceneName: TombTrial
+    _contentScene: 
+    _defaultSpawn: {x: 0, y: 0}
+    _isImplemented: 0
+    _mapTint: {r: 0.2901961, g: 0.2588235, b: 0.1882353, a: 1}
+    _worldPosition: {x: 830, y: 225}
+    _art: palace
+    _glow: {r: 1, g: 0.9019608, b: 0.627451, a: 1}
+    _description: "\u041C\u0430\u0440\u043C\u0443\u0440, \u0437\u043E\u043B\u043E\u0442\u043E
+      \u0439 \u043C\u0456\u0441\u044F\u0447\u043D\u0438\u0439 \u0441\u0430\u0434.
+      \u0414\u0432\u0456\u0440 \u0434\u043E\u0441\u0456 \u0447\u0435\u043A\u0430\u0454
+      \u043D\u0430 \u043A\u043E\u0440\u043E\u043B\u044F, \u0449\u043E \u043D\u0435
+      \u043F\u043E\u0432\u0435\u0440\u043D\u0435\u0442\u044C\u0441\u044F."
+  - _zoneId: zone_shadow_realm
+    _displayName: "\u0426\u0430\u0440\u0441\u0442\u0432\u043E \u0422\u0456\u043D\u0456"
+    _titleCard: "\u0426\u0430\u0440\u0441\u0442\u0432\u043E \u0422\u0456\u043D\u0456"
+    _sceneName: TombTrial
+    _contentScene: 
+    _defaultSpawn: {x: 0, y: 0}
+    _isImplemented: 0
+    _mapTint: {r: 0.172549, g: 0.1019608, b: 0.2901961, a: 1}
+    _worldPosition: {x: 1155, y: 300}
+    _art: shadow
+    _glow: {r: 0.7058824, g: 0.4784314, b: 1, a: 1}
+    _description: "\u0420\u0443\u0457\u043D\u0438, \u0449\u043E \u0432\u0438\u0441\u044F\u0442\u044C
+      \u0443 \u043F\u043E\u0440\u043E\u0436\u043D\u0435\u0447\u0456. \u0422\u0443\u0442
+      \u0436\u0438\u0432\u0435 \u0442\u0456\u043D\u044C, \u044F\u043A\u0430 \u043F\u0430\u043C'\u044F\u0442\u0430\u0454
+      \u0433\u0435\u0440\u043E\u044F \u043A\u0440\u0430\u0449\u0435, \u043D\u0456\u0436
+      \u0432\u0456\u043D \u0441\u0430\u043C."
+  - _zoneId: zone_throne_of_oblivion
+    _displayName: "\u0422\u0440\u043E\u043D \u0417\u0430\u0431\u0443\u0442\u0442\u044F"
+    _titleCard: "\u0422\u0440\u043E\u043D \u0417\u0430\u0431\u0443\u0442\u0442\u044F"
+    _sceneName: TombTrial
+    _contentScene: 
+    _defaultSpawn: {x: 0, y: 0}
+    _isImplemented: 0
+    _mapTint: {r: 0.2901961, g: 0.07058824, b: 0.1019608, a: 1}
+    _worldPosition: {x: 1290, y: 200}
+    _art: throne
+    _glow: {r: 1, g: 0.2901961, b: 0.4156863, a: 1}
+    _description: "\u0427\u043E\u0440\u043D\u0456 \u0448\u043F\u0438\u043B\u0456
+      \u043F\u0456\u0434 \u0437\u0430\u0442\u0435\u043C\u043D\u0435\u043D\u043D\u044F\u043C.
+      \u0422\u0443\u0442 \u041A\u043E\u0440\u043E\u043B\u044C \u0442\u0440\u0438\u043C\u0430\u0454
+      \u0441\u0432\u043E\u044E \u043A\u043B\u044F\u0442\u0432\u0443, \u0456 \u0442\u0443\u0442
+      \u0432\u043E\u043D\u0430 \u0441\u043A\u0456\u043D\u0447\u0438\u0442\u044C\u0441\u044F."
   - _zoneId: zone_unknown_east
     _displayName: 
     _titleCard: 
@@ -45,6 +270,10 @@ MonoBehaviour:
     _defaultSpawn: {x: 0, y: 0}
     _isImplemented: 0
     _mapTint: {r: 0.4, g: 0.4, b: 0.42, a: 1}
+    _worldPosition: {x: 0, y: 0}
+    _art: 
+    _glow: {r: 1, g: 1, b: 1, a: 1}
+    _description: 
   _areas:
   - _areaId: room_tomb_entrance
     _zoneId: zone_forgotten_tomb
@@ -1382,6 +1611,65 @@ MonoBehaviour:
     _displayName: "\u0413\u0430\u043A-\u043A\u0456\u0448\u043A\u0430"
     _kind: 0
     _guaranteedByBossId: ashen-king
+  _mapArt: {fileID: 11400000, guid: 1cbbad76b74834d338f979f5b0e4a7e7, type: 2}
+  _roads:
+  - _fromZoneId: zone_forgotten_tomb
+    _toZoneId: zone_withered_forest
+    _isGated: 0
+  - _fromZoneId: zone_withered_forest
+    _toZoneId: zone_fallen_village
+    _isGated: 0
+  - _fromZoneId: zone_withered_forest
+    _toZoneId: zone_crystal_caverns
+    _isGated: 1
+  - _fromZoneId: zone_fallen_village
+    _toZoneId: zone_plague_marsh
+    _isGated: 0
+  - _fromZoneId: zone_plague_marsh
+    _toZoneId: zone_ashen_depths
+    _isGated: 1
+  - _fromZoneId: zone_fallen_village
+    _toZoneId: zone_ashen_capital
+    _isGated: 1
+  - _fromZoneId: zone_ashen_capital
+    _toZoneId: zone_iron_citadel
+    _isGated: 0
+  - _fromZoneId: zone_crystal_caverns
+    _toZoneId: zone_iron_citadel
+    _isGated: 1
+  - _fromZoneId: zone_iron_citadel
+    _toZoneId: zone_frozen_bastion
+    _isGated: 1
+  - _fromZoneId: zone_ashen_capital
+    _toZoneId: zone_sunken_cathedral
+    _isGated: 0
+  - _fromZoneId: zone_sunken_cathedral
+    _toZoneId: zone_royal_aqueducts
+    _isGated: 1
+  - _fromZoneId: zone_royal_aqueducts
+    _toZoneId: zone_ashen_depths
+    _isGated: 1
+  - _fromZoneId: zone_ashen_capital
+    _toZoneId: zone_royal_palace
+    _isGated: 1
+  - _fromZoneId: zone_frozen_bastion
+    _toZoneId: zone_arcane_observatory
+    _isGated: 1
+  - _fromZoneId: zone_arcane_observatory
+    _toZoneId: zone_royal_palace
+    _isGated: 1
+  - _fromZoneId: zone_arcane_observatory
+    _toZoneId: zone_shadow_realm
+    _isGated: 1
+  - _fromZoneId: zone_royal_aqueducts
+    _toZoneId: zone_shadow_realm
+    _isGated: 1
+  - _fromZoneId: zone_royal_palace
+    _toZoneId: zone_throne_of_oblivion
+    _isGated: 1
+  - _fromZoneId: zone_shadow_realm
+    _toZoneId: zone_throne_of_oblivion
+    _isGated: 1
   _startAreaId: room_tomb_entrance
   _fastTravelRequirement:
     _kind: 2

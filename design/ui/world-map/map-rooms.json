@@ -1,0 +1,31 @@
+{
+  "rooms": [
+    {"id":"room_tomb_entrance","art":"tomb","w":202,"h":180,"boss":false},
+    {"id":"room_tomb_burial_hall","art":"tomb","w":172,"h":180,"boss":false},
+    {"id":"room_tomb_guard_passage","art":"tomb","w":195,"h":180,"boss":false},
+    {"id":"room_tomb_collapsed_crypt","art":"tomb","w":90,"h":180,"boss":false},
+    {"id":"room_tomb_guardian_approach","art":"tomb","w":150,"h":180,"boss":false},
+    {"id":"room_tomb_guardian_arena","art":"tomb","w":338,"h":180,"boss":true},
+    {"id":"room_tomb_reliquary","art":"tomb","w":105,"h":90,"boss":false},
+    {"id":"room_forest_root_tunnel","art":"forest","w":255,"h":180,"boss":false},
+    {"id":"room_forest_entrance","art":"forest","w":412,"h":180,"boss":false},
+    {"id":"room_forest_royal_road","art":"forest","w":338,"h":180,"boss":false},
+    {"id":"room_forest_broken_arch","art":"forest","w":172,"h":180,"boss":false},
+    {"id":"room_forest_poison_grove","art":"forest","w":488,"h":180,"boss":false},
+    {"id":"room_forest_watchtower","art":"forest","w":442,"h":180,"boss":false},
+    {"id":"room_forest_watchtower_top","art":"forest","w":240,"h":135,"boss":false},
+    {"id":"room_forest_deep","art":"forest","w":518,"h":180,"boss":false},
+    {"id":"room_forest_warden_approach","art":"forest","w":345,"h":180,"boss":false},
+    {"id":"room_forest_warden_arena","art":"forest","w":420,"h":180,"boss":true},
+    {"id":"room_forest_far_gate","art":"forest","w":218,"h":180,"boss":false},
+    {"id":"room_capital_ash_road","art":"capital","w":382,"h":180,"boss":false},
+    {"id":"room_capital_city_gate","art":"capital","w":382,"h":180,"boss":false},
+    {"id":"room_capital_market","art":"capital","w":458,"h":180,"boss":false},
+    {"id":"room_capital_bell_tower","art":"capital","w":278,"h":180,"boss":false},
+    {"id":"room_capital_temple","art":"capital","w":488,"h":180,"boss":false},
+    {"id":"room_capital_gardens","art":"capital","w":488,"h":180,"boss":false},
+    {"id":"room_capital_palace_approach","art":"capital","w":278,"h":180,"boss":false},
+    {"id":"room_capital_throne_hall","art":"capital","w":472,"h":180,"boss":true},
+    {"id":"room_forest_thorn_course","art":"forest","w":105,"h":90,"boss":false}
+  ]
+}

@@ -171,6 +171,15 @@ namespace ForgottenKingdom
             _inscription.Attach();
             _ending = new EndingView(_root);
             _ending.Attach(FindAnyObjectByType<EndingSequence>(), _player);
+            // The map and the inventory are tabs of one window: each hands the other its way back.
+            _map.SwitchToInventory = (page, onClosed) =>
+            {
+                if (!_inventory.Open(page, onClosed)) { onClosed?.Invoke(); }
+            };
+            _inventory.SwitchToMap = onClosed =>
+            {
+                if (!_map.Open(onClosed)) { onClosed?.Invoke(); }
+            };
             _pause = new PauseMenu(_root, _inventory, _map, _shrine, _dialogue, _shop, _ending);
             _pause.Attach(_player, _progress);
             _keyGlyphs = new HudKeyGlyphs(_root);

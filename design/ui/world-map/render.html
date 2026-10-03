@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<title>Рендер арту карти</title>
+<style>html, body { margin: 0; background: transparent; overflow: hidden; } svg { display: block; }</style>
+</head>
+<body>
+<!-- Одна картинка для гри на прозорому тлі (tools/map-art/render.sh):
+     ?island=<art> — острів зони (якір: точка острова в (230, 250) × 1,6);
+     ?card=<art> — картка зони; ?fog — туман світу; ?glow — м'яке світло; ?room=<id>&art=&w=&h=&boss=1 — кімната. -->
+<script src="towns.js"></script>
+<script src="islands.js"></script>
+<script src="rooms.js"></script>
+<script>
+(function () {
+  "use strict";
+  var I = window.Islands, q = new URLSearchParams(location.search);
+  var NS = "http://www.w3.org/2000/svg";
+  function svg(w, h, view) {
+    var s = document.createElementNS(NS, "svg");
+    s.setAttribute("width", w); s.setAttribute("height", h); s.setAttribute("viewBox", view);
+    document.body.appendChild(s);
+    I.defs(s);
+    return s;
+  }
+  var ISLAND_SCALE = 1.6;
+  if (q.has("island")) {
+    var art = q.get("island"), look = I.looks[art];
+    var s = svg(460 * ISLAND_SCALE, 380 * ISLAND_SCALE, "-230 -250 460 380");
+    I.island(s, { id: art, kind: art, tint: look.tint, glow: look.glow, x: 0, y: 0, w: look.w }, "lit");
+  } else if (q.has("card")) {
+    var a = q.get("card"), l = I.looks[a];
+    var c = svg(744, 392, "-190 -150 380 196");
+    var sky = I.el("linearGradient", { id: "sky", x1: 0, y1: 0, x2: 0, y2: 1 }, c.querySelector("defs"));
+    I.el("stop", { offset: "0", "stop-color": "#151416" }, sky);
+    I.el("stop", { offset: "1", "stop-color": l.tint, "stop-opacity": 0.55 }, sky);
+    I.el("rect", { x: -190, y: -150, width: 380, height: 196, fill: "url(#sky)" }, c);
+    I.island(c, { id: a, kind: a, tint: l.tint, glow: l.glow, x: 0, y: 30, w: 420 }, "big", "vignette");
+  } else if (q.has("fog")) {
+    var f = svg(1470, 900, "0 0 1470 900");
+    I.el("rect", { x: -40, y: -40, width: 1550, height: 980, filter: "url(#fog)" }, f);
+  } else if (q.has("glow")) {
+    var g = svg(128, 128, "0 0 128 128");
+    var rad = I.el("radialGradient", { id: "gl" }, g.querySelector("defs"));
+    I.el("stop", { offset: "0", "stop-color": "#ffffff", "stop-opacity": 1 }, rad);
+    I.el("stop", { offset: "0.4", "stop-color": "#ffffff", "stop-opacity": 0.45 }, rad);
+    I.el("stop", { offset: "1", "stop-color": "#ffffff", "stop-opacity": 0 }, rad);
+    I.el("circle", { cx: 64, cy: 64, r: 64, fill: "url(#gl)" }, g);
+  } else if (q.has("room")) {
+    var w = +q.get("w"), h = +q.get("h");
+    var r = svg(w, h, "0 0 " + w + " " + h);
+    var palette = q.get("boss") ? window.RoomArt.palettes.boss : window.RoomArt.palettes[q.get("art")];
+    var motif = q.get("motif") || window.RoomArt.motifFor(q.get("room"));
+    window.RoomArt.paint(r, { x: 0, y: 0, w: w, h: h }, motif, palette, I.rng(I.hash(q.get("room"))));
+  }
+  document.title = "ready";
+})();
+</script>
+</body>
+</html>

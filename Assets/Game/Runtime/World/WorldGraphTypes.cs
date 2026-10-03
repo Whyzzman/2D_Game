@@ -144,6 +144,15 @@ namespace ForgottenKingdom
         [SerializeField] private bool _isImplemented = true;
         [Tooltip("Tint the map uses for this region's rooms.")]
         [SerializeField] private Color _mapTint = new Color(0.78f, 0.7f, 0.52f);
+        [Tooltip("Where the region's island stands on the world map: the canvas of 1470 × 900, y down. "
+            + "Zero for a region the world map does not draw.")]
+        [SerializeField] private Vector2 _worldPosition;
+        [Tooltip("The island's picture (Art/Map/Islands/<art>.png) and the card's (Art/Map/Cards/<art>.png).")]
+        [SerializeField] private string _art = string.Empty;
+        [Tooltip("The region's own light on the world map: its glow, its windows, its road.")]
+        [SerializeField] private Color _glow = new Color(1f, 0.82f, 0.48f);
+        [Tooltip("The few lines on the region's card.")]
+        [SerializeField] private string _description = string.Empty;
 
         public string ZoneId => _zoneId;
         public string DisplayName => _displayName;
@@ -153,6 +162,30 @@ namespace ForgottenKingdom
         public Vector2 DefaultSpawn => _defaultSpawn;
         public bool IsImplemented => _isImplemented;
         public Color MapTint => _mapTint;
+        public Vector2 WorldPosition => _worldPosition;
+        public bool IsOnWorldMap => _worldPosition != Vector2.zero;
+        public string Art => _art;
+        public Color Glow => _glow;
+        public string Description => _description;
+    }
+
+    /// <summary>
+    /// A road between two regions on the world map — the picture of how the kingdom hangs
+    /// together, not a passage: the rooms' connections say how the hero really crosses.
+    /// </summary>
+    [Serializable]
+    public sealed class WorldRoad
+    {
+        [SerializeField] private string _fromZoneId = string.Empty;
+        [SerializeField] private string _toZoneId = string.Empty;
+        [Tooltip("Shut by progress (an ability, a boss, the seals): drawn with a gate on it.")]
+        [SerializeField] private bool _isGated;
+
+        public string FromZoneId => _fromZoneId;
+        public string ToZoneId => _toZoneId;
+        public bool IsGated => _isGated;
+        public bool Touches(string zoneId) => _fromZoneId == zoneId || _toZoneId == zoneId;
+        public string Other(string zoneId) => _fromZoneId == zoneId ? _toZoneId : _fromZoneId;
     }
 
     /// <summary>

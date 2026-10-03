@@ -253,6 +253,8 @@ namespace ForgottenKingdom
 
             var view = WorldMapBuilder.Build(_world.Graph, _world, _world.CurrentAreaId,
                 _world.CurrentZoneId, _world.IsFastTravelUnlocked);
+            _miniMap.Art = _world.Graph.MapArt;
+            _miniMap.TintOf = zoneId => _world.Graph.Zone(zoneId)?.MapTint ?? Color.gray;
             var destination = _destinations[_row];
             // About twenty map units across, centred on the chosen altar, as in the mockup.
             var size = new Vector2(20f, 20f * 820f / 1100f);
