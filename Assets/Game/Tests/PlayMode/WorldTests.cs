@@ -77,7 +77,8 @@ namespace ForgottenKingdom.Tests
         [UnityTest]
         public IEnumerator EveryTriggerShortcutAndMarkerNamesSomethingInTheGraph()
         {
-            yield return null;
+            // Every zone's pieces, the ones of zones not loaded around the Tomb included.
+            yield return TestWorld.LoadEveryZone();
             var graph = _progress.World;
             foreach (var trigger in Object.FindObjectsByType<AreaDiscoveryTrigger>())
             {

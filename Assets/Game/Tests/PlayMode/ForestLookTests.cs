@@ -72,7 +72,8 @@ namespace ForgottenKingdom.Tests
         [UnityTest]
         public IEnumerator EveryWalkableForestLedgeHasALivingEdge()
         {
-            yield return null;
+            // Every zone: the forest's edge is covered by the Village's hill above it.
+            yield return TestWorld.LoadEveryZone();
             var blocks = Object.FindObjectsByType<BoxCollider2D>()
                 .Where(b => b.gameObject.layer == 9 && !b.isTrigger && b.bounds.center.x > 62.5f
                     && b.bounds.size.x >= 0.8f && b.GetComponent<NonClimbableSurface>() == null)

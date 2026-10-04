@@ -148,6 +148,8 @@ namespace ForgottenKingdom.EditorTools
             BuildTombEnemies();
             // Their king (stage D); the throne hall places him by prefab name too.
             BuildCapitalBoss();
+            // The Fallen Village's bell-keeper (item 5 of the 15 zones); the village places him by name.
+            BuildVillageBoss();
             var checkpointPrefab = BuildCheckpointPrefab();
             var dummyPrefab = BuildDummyPrefab();
             var attackerPrefab = BuildAttackerPrefab();
@@ -2095,9 +2097,12 @@ namespace ForgottenKingdom.EditorTools
             // Everything past the Guardian's arena. It is built into the same scene and reached on
             // foot through a tunnel, so nothing is loaded and nothing teleports.
             BuildForest(level);
+            // Over the capital, up the hill from the forest's edge (item 5 of the 15 zones).
+            BuildVillage(level);
             ConfigureZoneAudio(systems);
             // Last, because it lights and grounds what is already placed.
             BuildAtmosphere(level, systems, cameraObject, player);
+            ConfigureVillageAtmosphere();
             BuildHud(systems, player, respawner, progress, spellbook);
 
             EditorSceneManager.MarkSceneDirty(scene);

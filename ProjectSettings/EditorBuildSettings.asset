@@ -18,6 +18,9 @@ EditorBuildSettings:
     path: Assets/Game/Scenes/Zones/Zone_Forest.unity
     guid: 7e5d8bc2e48264d419f1de9c3f970c21
   - enabled: 1
+    path: Assets/Game/Scenes/Zones/Zone_Village.unity
+    guid: a051f21656706491ebadf51038dad486
+  - enabled: 1
     path: Assets/Game/Scenes/Zones/Zone_Capital.unity
     guid: e2e96b3303676439ebcbc4193940f0ef
   - enabled: 1

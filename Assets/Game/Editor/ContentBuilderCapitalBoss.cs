@@ -257,7 +257,7 @@ namespace ForgottenKingdom.EditorTools
 
         /// <summary>
         /// The King waits before his throne; stepping past the hall's threshold seals it behind the
-        /// hero. His death opens it again and hands over the grapple with the seal and the coin.
+        /// hero. His death opens it again and hands over the seal and the coin.
         /// </summary>
         private static void BuildKingEncounter(Transform section, GameObject barrier, GameProgress progress,
             PlayerRespawner respawner)
@@ -289,8 +289,8 @@ namespace ForgottenKingdom.EditorTools
             SetString(encounter, "_rewardName", "Печать Короля");
             SetInt(encounter, "_rewardCurrency", 1200);
             SetInt(encounter, "_rewardExperience", 2000);
-            // Every ring in the kingdom asks for it; granted once, inside the kill's own guard.
-            SetString(encounter, "_rewardAbilityId", AbilityIds.Grapple);
+            // The grapple moved to the Village's Bellringer (item 5 of the 15 zones): the capital is
+            // reached by it now, so its King has nothing of the kind to hand over.
         }
 
         // ---------- rings and what they reach ----------

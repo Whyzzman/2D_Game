@@ -28,7 +28,7 @@ namespace ForgottenKingdom.EditorTools
         /// <summary>What the content build hands the scene: every track and layer, by name.</summary>
         public sealed class Score
         {
-            public AudioClip Menu, Tomb, TombPulse, Forest, ForestPulse, Capital, CapitalPulse, Boss, BossDrums, Victory;
+            public AudioClip Menu, Tomb, TombPulse, Forest, ForestPulse, Capital, CapitalPulse, Village, VillagePulse, Boss, BossDrums, Victory;
         }
 
         public static Score Generate()
@@ -43,6 +43,8 @@ namespace ForgottenKingdom.EditorTools
                 ForestPulse = Write("music_forest_pulse", PulseLayer(ForestSong, 12)),
                 Capital = Write("music_capital", CapitalTrack()),
                 CapitalPulse = Write("music_capital_pulse", PulseLayer(CapitalSong, 14)),
+                Village = Write("music_village", VillageTrack()),
+                VillagePulse = Write("music_village_pulse", PulseLayer(VillageSong, 15)),
                 Boss = Write("music_boss", BossTrack()),
                 BossDrums = Write("music_boss_drums", BossDrums()),
                 Victory = Write("music_victory", VictoryTrack())
@@ -91,6 +93,11 @@ namespace ForgottenKingdom.EditorTools
         private static readonly Song CapitalSong = new Song(56f, 12, 2,
             new[] { 46, 49, 53 }, new[] { 42, 46, 49 }, new[] { 44, 48, 51 },
             new[] { 46, 49, 53 }, new[] { 41, 45, 48 }, new[] { 44, 47, 51 });
+
+        // The village: a folk lament, between the forest's pace and the capital's, in a minor key.
+        private static readonly Song VillageSong = new Song(64f, 12, 2,
+            new[] { 50, 53, 57 }, new[] { 46, 50, 53 }, new[] { 48, 52, 55 },
+            new[] { 45, 48, 52 }, new[] { 46, 50, 53 }, new[] { 43, 46, 50 });
 
         private static readonly Song BossSong = new Song(104f, 16, 2,
             new[] { 48, 51, 55 }, new[] { 44, 48, 51 }, new[] { 41, 44, 48 },
@@ -146,6 +153,23 @@ namespace ForgottenKingdom.EditorTools
             Pads(buffer, song, PadTone.Organ, 0.16f);
             Melody(buffer, song, new System.Random(17), new[] { 58, 61, 63, 65, 68, 70 },
                 Voice.Bell, 0.18f, phraseEvery: 4, notesPerPhrase: 2);
+            return Finish(buffer);
+        }
+
+        /// <summary>An empty village at dusk: a drone, a pipe singing a few notes, the odd far bell.</summary>
+        private static float[] VillageTrack()
+        {
+            var song = VillageSong;
+            var buffer = new float[song.Length];
+            Drone(buffer, song, 0.18f);
+            Pads(buffer, song, PadTone.Soft, 0.15f);
+            Melody(buffer, song, new System.Random(23), new[] { 62, 65, 67, 69, 70, 72 },
+                Voice.Pipe, 0.17f, phraseEvery: 3, notesPerPhrase: 4);
+            for (var bar = 0; bar < song.Bars; bar += song.BarsPerChord * 3)
+            {
+                Note(buffer, bar * song.Bar, 3f, Midi(song.ChordAt(bar)[0] + 12), 0.1f, Voice.Bell);
+            }
+
             return Finish(buffer);
         }
 

@@ -95,23 +95,23 @@ namespace ForgottenKingdom.Tests
             Assume.That(_progress.HasAbility(AbilityIds.AirDash), Is.False);
             Assume.That(_progress.HasAbility(AbilityIds.WallRun), Is.False);
             Assume.That(_progress.HasAbility(AbilityIds.DoubleJump), Is.False);
-            // The Tomb's and the Forest's halls lie above and below each other since items 3 and 4
-            // of the 15-zone list: their main paths are proven by their texts, the hero's own movement
-            // stepped through every jump (TombLayoutTests, ForestLayoutTests). This walk starts at
-            // the Forest's way out, at the foot of its edge, on the road the Warden kept.
-            var edge = ForestScene.Spot("capital-seal") + new Vector2(-1.5f, 0.85f);
-            yield return Place(edge);
+            // The zones built from text (the Tomb, the Forest, the Village) have their main paths proven
+            // by their texts, the hero's own movement stepped through every jump (TombLayoutTests,
+            // ForestLayoutTests, VillageLayoutTests). Since item 5 of the 15 zones the capital is
+            // entered from the Village above it; this walk starts on its old road, by the forest's bars.
+            var road = ForestScene.Spot("capital-seal") + new Vector2(5.5f, 0.85f);
+            // The capital is two crossings from the Tomb: it is loaded before the hero stands in it.
+            yield return TestWorld.LoadEveryZone();
+            Quiet();
+            yield return Place(road);
 
             GameTimeScale.SetBaseScale(4f);
-            // Across the capital to the sealed road east of the throne; the capital is loaded on
-            // the way, as the forest's neighbour.
             yield return Walk(+1, 543f, "east through the capital to the sealed road beyond the throne",
                 pullWinches: false);
             Assert.That(_world.CurrentAreaId, Is.EqualTo("room_capital_throne_hall"));
 
-            yield return Walk(-1, edge.x, "back west to the forest's edge", pullWinches: true);
-            Assert.That(_world.CurrentZoneId, Is.EqualTo("zone_withered_forest"));
-            Assert.That(_world.CurrentAreaId, Is.EqualTo("room_forest_far_gate"));
+            yield return Walk(-1, road.x, "back west to the old road by the forest's bars", pullWinches: false);
+            Assert.That(_world.CurrentZoneId, Is.EqualTo("zone_ashen_capital"));
             foreach (var area in _progress.World.Areas.Where(a => !a.IsOptional && a.ZoneId == "zone_ashen_capital"))
             {
                 Assert.That(_progress.IsAreaDiscovered(area.AreaId), Is.True,

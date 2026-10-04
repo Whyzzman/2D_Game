@@ -169,7 +169,7 @@ namespace ForgottenKingdom.EditorTools
         /// What hangs from the front hand. The Tomb only ever needed a blade; the forest needs a
         /// bow, a staff and a polearm, and a spear drawn as a long thin sword reads as a mistake.
         /// </summary>
-        private enum WeaponShape { Blade, Bow, Staff, Spear, Glaive }
+        private enum WeaponShape { Blade, Bow, Staff, Spear, Glaive, Maul }
 
         /// <summary>What the actor has instead of a visored helm.</summary>
         private enum HeadGear { Helm, Hood, Mask, Antlers }

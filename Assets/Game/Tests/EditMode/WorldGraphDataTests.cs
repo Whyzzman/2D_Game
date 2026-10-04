@@ -114,7 +114,8 @@ namespace ForgottenKingdom.Tests
                 "conn_tomb_entrance_guard_passage",
                 "conn_tomb_guard_passage_lower_chain",
                 "conn_tomb_lower_chain_lower_crypt",
-                "conn_tomb_west_shaft_collapsed_crypt"
+                "conn_tomb_west_shaft_collapsed_crypt",
+                "conn_village_to_capital"
             }), "A new one-way connection must be added to WORLD_GRAPH.md and here.");
         }
 
@@ -207,7 +208,8 @@ namespace ForgottenKingdom.Tests
         [Test]
         public void EveryAltarIsATravelDestinationInABuiltZone()
         {
-            Assert.That(_graph.Checkpoints.Count, Is.EqualTo(11), "Four in the Tomb, four in the Forest, three in the Capital.");
+            Assert.That(_graph.Checkpoints.Count, Is.EqualTo(14),
+                "Four in the Tomb, four in the Forest, three in the Village, three in the Capital.");
             foreach (var checkpoint in _graph.Checkpoints)
             {
                 Assert.That(checkpoint.CanFastTravel, Is.True, checkpoint.CheckpointId);
@@ -490,7 +492,7 @@ namespace ForgottenKingdom.Tests
         public void TheRoadBeyondTheCapitalIsSealedAndTheBorderIsDrawnHeavier()
         {
             var data = Walked("room_tomb_guardian_arena", "room_forest_root_tunnel",
-                "room_forest_warden_arena", "room_forest_far_gate", "room_capital_ash_road",
+                "room_forest_warden_arena", "room_forest_far_gate", "room_village_hill", "room_capital_ash_road",
                 "room_capital_palace_approach", "room_capital_throne_hall");
             data.MarkBossDefeated(Guardian);
             data.MarkBossDefeated(Warden);
@@ -500,7 +502,7 @@ namespace ForgottenKingdom.Tests
             var future = view.Links.Single(l => l.Connection.IsFuture);
             Assert.That(future.State, Is.EqualTo(MapLinkState.Sealed));
             Assert.That(view.Node("room_beyond_capital").Label, Is.Empty);
-            Assert.That(view.Links.Single(l => l.Connection.ConnectionId == "conn_forest_to_capital")
+            Assert.That(view.Links.Single(l => l.Connection.ConnectionId == "conn_forest_to_village")
                 .IsZoneTransition, Is.True);
             Assert.That(view.Links.Single(l => l.Connection.ConnectionId == "conn_tomb_to_forest")
                 .IsZoneTransition, Is.True);

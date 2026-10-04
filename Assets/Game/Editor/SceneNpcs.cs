@@ -6,11 +6,12 @@ namespace ForgottenKingdom.EditorTools
 {
     /// <summary>
     /// Places the people of the world and the merchant's chests in TombTrial (item 70, the user's
-    /// choices of 2026-09-28): Hnat by the first altar, then by the forest's first once the
-    /// Guardian falls and by the capital's gate once the Warden does; Myroslava by the crypt's altar, the royal road's, then the deep forest's;
-    /// Severyn's ghost before the Guardian's door; one locked chest in the Tomb and two in the
-    /// Forest. Everything goes under one root, <c>Npcs</c>, which is replaced whole, so running it
-    /// again is safe and nothing else in the scene is touched.
+    /// choices of 2026-09-28; the Village joined in item 5 of the 15 zones): Hnat by the first altar,
+    /// by the forest's first once the Guardian falls, by the village well once the Warden does and by
+    /// the capital's gate once the Bellringer does; Myroslava by the crypt's altar, the royal road's,
+    /// the deep forest's, then the village church's; Severyn's ghost before the Guardian's door; a
+    /// locked chest by Myroslava's altars. Everything goes under one root, <c>Npcs</c>, which is
+    /// replaced whole, so running it again is safe and nothing else in the scene is touched.
     /// Run: -executeMethod ForgottenKingdom.EditorTools.SceneNpcs.Apply
     /// </summary>
     public static class SceneNpcs
@@ -49,11 +50,15 @@ namespace ForgottenKingdom.EditorTools
             var warden = ContentBuilder.WardenBossId;
 
             Place(root, gnat, "tomb-altar-01", 3.2f, null, GuardianBossId, "Гробниця · Поховальна зала", dialogue);
+            var bellringer = ContentBuilder.BellringerBossId;
             Place(root, gnat, "forest-entrance", 3.2f, GuardianBossId, warden, "Ліс · Узлісся", dialogue);
-            Place(root, gnat, "capital-gate", 3.2f, warden, null, "Столиця · Міська брама", dialogue);
+            // His stall by the village well (item 5 of the 15 zones), then on to the capital.
+            Place(root, gnat, "village-well", 3.2f, warden, bellringer, "Село · Площа з колодязем", dialogue);
+            Place(root, gnat, "capital-gate", 3.2f, bellringer, null, "Столиця · Міська брама", dialogue);
             Place(root, myroslava, "tomb-altar-02", 2.2f, null, GuardianBossId, "Гробниця · Східна каплиця", dialogue);
             Place(root, myroslava, "royal-road-shrine", -2.6f, GuardianBossId, warden, "Ліс · Королівський шлях", dialogue);
-            Place(root, myroslava, "deep-forest-shrine", -2.6f, warden, null, "Ліс · Глибокий ліс", dialogue);
+            Place(root, myroslava, "deep-forest-shrine", -2.6f, warden, bellringer, "Ліс · Глибокий ліс", dialogue);
+            Place(root, myroslava, "village-church", -2.6f, bellringer, null, "Село · Церква", dialogue);
             // Before the Guardian's door, where the Tomb's text puts him.
             PlaceAt(root, severyn, "tomb-approach", ContentBuilder.TombSpot("severyn"), null, null,
                 "Гробниця · Підступ до Стража", dialogue, flip: true);
@@ -61,6 +66,7 @@ namespace ForgottenKingdom.EditorTools
             Chest(root, chest, "tomb-altar-02", 4.6f, "chest-tomb-crypt", 180, "healing_herb");
             Chest(root, chest, "royal-road-shrine", 4.2f, "chest-forest-road", 260, "iron_scrap");
             Chest(root, chest, "deep-forest-shrine", 4.2f, "chest-forest-deep", 320, "healing_herb");
+            Chest(root, chest, "village-church", 4.4f, "chest-village-church", 360, "iron_scrap");
         }
 
         private static GameObject Load(string path)

@@ -143,12 +143,12 @@ namespace ForgottenKingdom.Tests
             Assert.That(rooms.IndexOf("room_tomb_guardian_arena"),
                 Is.Not.EqualTo(rooms.IndexOf("room_tomb_guardian_approach")), "The arena keeps its own frame.");
             var halfWidth = _camera.orthographicSize * _camera.aspect;
-            // The zones built from text (the Tomb, the Forest) keep a shaft with no hall beside it in
+            // The zones built from text (the Tomb, the Forest, the Village) keep a shaft with no hall beside it in
             // its own narrow frame, as a shaft in Hollow Knight does; the old zones join theirs.
             // A cache behind a wall is found by its trigger and framed as it comes.
             var graph = Object.FindAnyObjectByType<GameProgress>().World;
             foreach (var room in rooms.Rooms.Where(r => !r.AreaIds[0].StartsWith("room_tomb_")
-                         && !r.AreaIds[0].StartsWith("room_forest_") && !(graph.Area(r.AreaIds[0])?.IsSecret ?? false)))
+                         && !r.AreaIds[0].StartsWith("room_forest_") && !r.AreaIds[0].StartsWith("room_village_") && !(graph.Area(r.AreaIds[0])?.IsSecret ?? false)))
             {
                 Assert.That(room.View.width >= halfWidth * 2f - 0.01f || room.KeepApart
                     || room.AreaIds.Count > 1 || rooms.Count == 1, Is.True,

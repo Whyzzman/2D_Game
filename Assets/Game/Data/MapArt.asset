@@ -177,6 +177,42 @@ MonoBehaviour:
     Texture: {fileID: 2800000, guid: c4922ef5f55624b8cad643305c6b2a76, type: 3}
   - Id: room_forest_mushroom_pool
     Texture: {fileID: 2800000, guid: b3553c20a2c8844819b99cc8efe0cd0a, type: 3}
+  - Id: room_village_hill
+    Texture: {fileID: 2800000, guid: 4d9344e79ddc6475492c8cfa884e9d19, type: 3}
+  - Id: room_village_lower_street
+    Texture: {fileID: 2800000, guid: b16715aa9efa842c2a8562c99e75d84d, type: 3}
+  - Id: room_village_feather
+    Texture: {fileID: 2800000, guid: dae199d4ae8c94f93bba1747b46ad029, type: 3}
+  - Id: room_village_market
+    Texture: {fileID: 2800000, guid: dc1792f072c824b0e97de5c040edc5b4, type: 3}
+  - Id: room_village_cellar
+    Texture: {fileID: 2800000, guid: 6d479372e05074c8889d1fd371faa442, type: 3}
+  - Id: room_village_bridge
+    Texture: {fileID: 2800000, guid: 6e86204c9d1e648cb927066a612a1d85, type: 3}
+  - Id: room_village_stair
+    Texture: {fileID: 2800000, guid: 4da00b8019f414719bddfe9b2cbf67e2, type: 3}
+  - Id: room_village_church
+    Texture: {fileID: 2800000, guid: 6eea15f5a20994d6b85ed534ab71cba8, type: 3}
+  - Id: room_village_forge
+    Texture: {fileID: 2800000, guid: 248de7a8b1755458b98484c6d026867e, type: 3}
+  - Id: room_village_square
+    Texture: {fileID: 2800000, guid: 34168996eef8b4e7cad47e868870b278, type: 3}
+  - Id: room_village_stilt_houses
+    Texture: {fileID: 2800000, guid: 72f92e1450a9b4640a78ee097253a833, type: 3}
+  - Id: room_village_belfry_base
+    Texture: {fileID: 2800000, guid: 3bc906f9b1553441788e943a3dfbed77, type: 3}
+  - Id: room_village_east_lane
+    Texture: {fileID: 2800000, guid: 9d453fed17c4f456aab52899b4cb7de8, type: 3}
+  - Id: room_village_marsh_road
+    Texture: {fileID: 2800000, guid: 46d2047221101491ea559fba0f21865b, type: 3}
+  - Id: room_village_bell_shaft
+    Texture: {fileID: 2800000, guid: c96d90b96e51d444385837c571f2e83c, type: 3}
+  - Id: room_village_bell
+    Texture: {fileID: 2800000, guid: 9a8563957a5464898ad05d02e2e68ea2, type: 3}
+  - Id: room_village_upper_houses
+    Texture: {fileID: 2800000, guid: e72796404ca7343249460d8b0a2ecd6d, type: 3}
+  - Id: room_village_upper_street
+    Texture: {fileID: 2800000, guid: 90e36a25f18104f6d8df83addac1b0f5, type: 3}
   - Id: room_capital_ash_road
     Texture: {fileID: 2800000, guid: 4ec3411aef4ee45d4962dfda136e3015, type: 3}
   - Id: room_capital_city_gate

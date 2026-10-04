@@ -35,6 +35,7 @@ namespace ForgottenKingdom.EditorTools
         public const string TombSceneName = "Zone_Tomb";
         public const string ForestSceneName = "Zone_Forest";
         public const string CapitalSceneName = "Zone_Capital";
+        public const string VillageSceneName = "Zone_Village";
         private const string WorldGraphPath = "Assets/Game/Data/WorldGraph.asset";
 
         /// <summary>What stays in the world scene, by path from a root.</summary>

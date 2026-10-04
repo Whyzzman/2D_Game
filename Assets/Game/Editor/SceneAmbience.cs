@@ -23,6 +23,7 @@ namespace ForgottenKingdom.EditorTools
         private const string TombZone = "zone_forgotten_tomb";
         private const string ForestZone = "zone_withered_forest";
         private const string CapitalZone = "zone_ashen_capital";
+        private const string VillageZone = "zone_fallen_village";
         private const int GroundLayer = 9;
 
         private static readonly Color32 Shade = new Color32(13, 11, 15, 255);
@@ -87,12 +88,23 @@ namespace ForgottenKingdom.EditorTools
                     color: new Color(1f, 0.55f, 0.25f, 0.7f), speed: 0.1f, gravity: -0.02f, noise: 0.25f)
             };
 
+            var village = new[]
+            {
+                // Smoke from the chimneys nobody feeds, drifting low and slow.
+                Motes(host, "VillageSmoke", material, rate: 3f, life: (8f, 12f), size: (0.1f, 0.2f),
+                    color: new Color(0.55f, 0.48f, 0.42f, 0.3f), speed: 0.12f, gravity: -0.008f, noise: 0.18f),
+                // Sparks from the fires still burning in the hearths.
+                Motes(host, "VillageSparks", material, rate: 1.6f, life: (3f, 5f), size: (0.03f, 0.06f),
+                    color: new Color(1f, 0.62f, 0.3f, 0.75f), speed: 0.12f, gravity: -0.025f, noise: 0.3f)
+            };
+
             var serialized = new SerializedObject(ambience);
             var zones = serialized.FindProperty("_zones");
-            zones.arraySize = 3;
+            zones.arraySize = 4;
             Fill(zones.GetArrayElementAtIndex(0), TombZone, tomb);
             Fill(zones.GetArrayElementAtIndex(1), ForestZone, forest);
             Fill(zones.GetArrayElementAtIndex(2), CapitalZone, capital);
+            Fill(zones.GetArrayElementAtIndex(3), VillageZone, village);
             var camera = Camera.main;
             serialized.FindProperty("_camera").objectReferenceValue = camera != null ? camera.transform : null;
             serialized.ApplyModifiedPropertiesWithoutUndo();

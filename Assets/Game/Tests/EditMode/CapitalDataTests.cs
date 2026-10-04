@@ -42,16 +42,22 @@ namespace ForgottenKingdom.Tests
         }
 
         [Test]
-        public void TheWardensDeathOpensTheRoadAndTheKingGivesTheGrapple()
+        public void TheVillageLeadsIntoTheCapitalAndTheBellringerGivesTheGrapple()
         {
+            // Since item 5 of the 15 zones: up the hill to the Village, over its wall by the grapple's
+            // ring and down into the capital; the old road from the forest is a shortcut opened from
+            // the capital's side.
+            var drop = _graph.Connection("conn_village_to_capital");
+            Assert.That(drop.IsBidirectional, Is.False);
+            Assert.That(_graph.Area(drop.FromAreaId).RequiredAbilityId, Is.EqualTo(AbilityIds.Grapple));
+            Assert.That(_graph.Area(drop.ToAreaId).ZoneId, Is.EqualTo(Capital));
             var road = _graph.Connection("conn_forest_to_capital");
-            Assert.That(road.IsZoneTransition, Is.True);
-            Assert.That(road.RequiredBossId, Is.EqualTo(Warden));
+            Assert.That(road.IsShortcut, Is.True);
             Assert.That(_graph.Area(road.ToAreaId).ZoneId, Is.EqualTo(Capital));
 
             var grapple = _graph.Ability(AbilityIds.Grapple);
             Assert.That(grapple.Kind, Is.EqualTo(AbilityKind.TraversalProgression));
-            Assert.That(grapple.GuaranteedByBossId, Is.EqualTo(King));
+            Assert.That(grapple.GuaranteedByBossId, Is.EqualTo("bellringer"));
             Assert.That(WorldGraphValidator.Validate(_graph), Is.Empty,
                 "The main path, the capital's included, needs no optional ability.");
         }

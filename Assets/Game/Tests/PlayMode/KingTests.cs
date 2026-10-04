@@ -12,8 +12,9 @@ namespace ForgottenKingdom.Tests
 {
     /// <summary>
     /// «Король-Заклятий» in play (item 2 of the big list, stage D): the throne hall seals behind
-    /// the hero, the King's death opens it and hands over the grapple; with it a ring lifts the
-    /// hero onto the royal gallery, and the finds it reaches in the old zones are really there.
+    /// the hero and the King's death opens it; with the grapple (the Bellringer's since item 5 of
+    /// the 15 zones) a ring lifts the hero onto the royal gallery, and the finds it reaches in the
+    /// old zones are really there.
     /// </summary>
     public sealed class KingTests
     {
@@ -87,7 +88,7 @@ namespace ForgottenKingdom.Tests
         }
 
         [UnityTest]
-        public IEnumerator TheHallSealsAndTheKingsDeathOpensItAndGivesTheGrapple()
+        public IEnumerator TheHallSealsAndTheKingsDeathOpensIt()
         {
             var encounter = Object.FindObjectsByType<BossEncounter>().Single(e => e.BossId == King);
             var king = Object.FindObjectsByType<BossController>().Single(b => b.BossId == King);
@@ -102,14 +103,9 @@ namespace ForgottenKingdom.Tests
             king.Actor.ApplyDamage(new DamageInfo(float.MaxValue, Vector2.left, isUnblockable: true,
                 attacker: _player.gameObject));
             yield return Until(() => _progress.IsBossDefeated(King), 6f, "He dies.");
-            Assert.That(_progress.HasAbility(AbilityIds.Grapple), Is.True, "The King's gift is the grapple.");
             Assert.That(_progress.AcquiredRewards, Does.Contain("king_seal"));
-
-            // The card that teaches the grapple holds the game until it is read, as a player would.
-            var card = Object.FindAnyObjectByType<HudController>().AbilityCard;
-            yield return Until(() => card.IsOpen, 4f, "The grapple is announced on its card.");
-            Assert.That(card.Showing, Is.EqualTo(AbilityIds.Grapple));
-            card.Continue();
+            // The grapple is the Village's Bellringer's now (item 5 of the 15 zones, VillageTests).
+            Assert.That(_progress.HasAbility(AbilityIds.Grapple), Is.False, "The King hands over no ability.");
             yield return Until(() => !encounter.IsArenaSealed, 6f, "His death opens the hall.");
         }
 

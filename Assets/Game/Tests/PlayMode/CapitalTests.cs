@@ -49,20 +49,6 @@ namespace ForgottenKingdom.Tests
         }
 
         [UnityTest]
-        public IEnumerator TheRoadToTheCapitalOpensOnlyWithTheWardensDeath()
-        {
-            var road = Object.FindObjectsByType<PersistentDoor>(FindObjectsInactive.Include)
-                .Single(d => d.name == "CapitalRoadGate");
-            Assert.That(road.IsOpen, Is.False, "Sealed while the Warden stands.");
-            _progress.MarkBossDefeated(TombScene.GuardianId);
-            yield return null;
-            Assert.That(road.IsOpen, Is.False, "The Guardian is not the one who keeps it.");
-            _progress.MarkBossDefeated(TombScene.WardenId);
-            yield return null;
-            Assert.That(road.IsOpen, Is.True);
-        }
-
-        [UnityTest]
         public IEnumerator TheCapitalIsItsOwnSceneLoadedAsTheForestsNeighbour()
         {
             Assert.That(_streamer.IsLoaded(Capital), Is.False, "Two crossings from the Tomb: not loaded.");
@@ -83,12 +69,14 @@ namespace ForgottenKingdom.Tests
         }
 
         [UnityTest]
-        public IEnumerator TheMerchantMovesToTheCityGateOnceTheWardenFalls()
+        public IEnumerator TheMerchantMovesToTheCityGateOnceTheBellringerFalls()
         {
             _motor.ResetTo(new Vector2(300f, 1f));
             yield return Until(() => _streamer.IsLoaded(Capital) && !_streamer.IsBusy, 15f, "Capital loaded.");
             _progress.MarkBossDefeated(TombScene.GuardianId);
             _progress.MarkBossDefeated(TombScene.WardenId);
+            // The village's well is his stall between the Warden and the Bellringer (item 5 of the 15 zones).
+            _progress.MarkBossDefeated("bellringer");
             yield return null;
             var gnat = Object.FindObjectsByType<Npc>(FindObjectsInactive.Include)
                 .Where(n => n.Definition != null && n.Definition.NpcId == "gnat" && n.IsPresent)

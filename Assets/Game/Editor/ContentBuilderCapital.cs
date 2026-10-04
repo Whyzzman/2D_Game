@@ -65,7 +65,6 @@ namespace ForgottenKingdom.EditorTools
             var camera = Camera.main != null ? Camera.main.transform : null;
 
             var root = Section(level.transform, CapitalRootName);
-            OpenCapitalRoad(progress);
             BuildAshRoad(root);
             BuildCityGate(root, checkpoint, respawner, progress, player != null ? player.gameObject : null);
             BuildMarket(root, pickup, progress);
@@ -143,28 +142,6 @@ namespace ForgottenKingdom.EditorTools
             SpawnEnemy(crossbowman, new Vector2(488f, 0.9f));
             // Before the palace, one more stone guard.
             SpawnEnemy(gargoyle, new Vector2(507f, 0.9f));
-        }
-
-        /// <summary>
-        /// The Forest's sealed road becomes the way here: the same seal at x = 313.5, now opened by
-        /// the Warden's death instead of never. Found by either of its names, so running this on a
-        /// world built before the capital and on one built after gives the same door.
-        /// </summary>
-        private static void OpenCapitalRoad(GameProgress progress)
-        {
-            foreach (var door in Object.FindObjectsByType<PersistentDoor>(FindObjectsInactive.Include))
-            {
-                if (door.name != "FutureRoadGate" && door.name != CapitalRoadGateName)
-                {
-                    continue;
-                }
-
-                door.name = CapitalRoadGateName;
-                var serialized = new SerializedObject(door);
-                serialized.FindProperty("_requirement._kind").enumValueIndex = (int)RequirementKind.BossDefeated;
-                serialized.FindProperty("_requirement._id").stringValue = WardenBossId;
-                serialized.ApplyModifiedPropertiesWithoutUndo();
-            }
         }
 
         // ---------- rooms ----------

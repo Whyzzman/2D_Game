@@ -15,6 +15,7 @@ namespace ForgottenKingdom.Tests
         private const string Tomb = "zone_forgotten_tomb";
         private const string Forest = "zone_withered_forest";
         private const string Capital = "zone_ashen_capital";
+        private const string Village = "zone_fallen_village";
         private const string East = "zone_unknown_east";
         private WorldGraph _graph;
 
@@ -50,8 +51,11 @@ namespace ForgottenKingdom.Tests
             Assert.That(ZoneStreamingPlan.Needed(_graph, Tomb, 1), Is.EquivalentTo(new[] { Tomb, Forest }),
                 "The forest is loaded while the hero is still in the Tomb, so the tunnel never waits; "
                 + "the capital, two crossings away, is not.");
-            Assert.That(ZoneStreamingPlan.Needed(_graph, Forest, 1), Is.EquivalentTo(new[] { Forest, Tomb, Capital }));
-            Assert.That(ZoneStreamingPlan.Needed(_graph, Capital, 1), Is.EquivalentTo(new[] { Capital, Forest }),
+            // The Village over the capital (item 5 of the 15 zones): the forest's edge climbs to it,
+            // its drop falls into the capital, the old road from the forest is a shortcut.
+            Assert.That(ZoneStreamingPlan.Needed(_graph, Forest, 1), Is.EquivalentTo(new[] { Forest, Tomb, Village, Capital }));
+            Assert.That(ZoneStreamingPlan.Needed(_graph, Village, 1), Is.EquivalentTo(new[] { Village, Forest, Capital }));
+            Assert.That(ZoneStreamingPlan.Needed(_graph, Capital, 1), Is.EquivalentTo(new[] { Capital, Forest, Village }),
                 "The road east of the throne is a future connection with no scene.");
             Assert.That(ZoneStreamingPlan.Needed(_graph, Capital, 5), Has.No.Member(East));
             Assert.That(ZoneStreamingPlan.Needed(_graph, East, 1), Is.Empty);

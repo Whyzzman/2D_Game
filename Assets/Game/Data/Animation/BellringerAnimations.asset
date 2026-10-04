@@ -1,0 +1,751 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84f4db3b7222ee046a84610767e996ec, type: 3}
+  m_Name: BellringerAnimations
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.BossAnimationSet
+  _clips:
+  - state: 1
+    clip:
+      _clipName: boss_bellringer_dormant
+      _frames:
+      - {fileID: 21300000, guid: 3bf1f1d66540f4ca89e1ceed684d094d, type: 3}
+      - {fileID: 21300000, guid: 71b7ce29f645045818e39d5bf7c3d7ac, type: 3}
+      - {fileID: 21300000, guid: 5c59bc10143274620909496481be2e2d, type: 3}
+      - {fileID: 21300000, guid: 0184447935f4d443bb3c9cfbbd942ce1, type: 3}
+      _framesPerSecond: 8
+      _isLooping: 1
+      _anchors:
+      - {x: -0.3322171, y: 1.3975095, z: 13.2}
+      - {x: -0.3322171, y: 1.3975095, z: 13.2}
+      - {x: -0.3322171, y: 1.3975095, z: 13.2}
+      - {x: -0.3322171, y: 1.3975095, z: 13.2}
+  - state: 2
+    clip:
+      _clipName: boss_bellringer_intro
+      _frames:
+      - {fileID: 21300000, guid: 24c6cb1e59eb84038b32d3145b91b692, type: 3}
+      - {fileID: 21300000, guid: 081dea6472b6743e1bba7195ffe27eef, type: 3}
+      - {fileID: 21300000, guid: dc4fc7e1f09c04506a4eaec3d31f0df6, type: 3}
+      - {fileID: 21300000, guid: 9335030b47e62472bb8696e0e0aa158b, type: 3}
+      - {fileID: 21300000, guid: fbd485d7d274f495fb40260e5cec712d, type: 3}
+      - {fileID: 21300000, guid: be1a8f968704948d7a478cff1b07157d, type: 3}
+      - {fileID: 21300000, guid: 1a38e7f4fe8c94494bc8e8752fd28021, type: 3}
+      - {fileID: 21300000, guid: 5aa1042d51ce643a9a4805a8f5632eef, type: 3}
+      - {fileID: 21300000, guid: 63c899b274e8e4c7f866a4c4fd1647b6, type: 3}
+      - {fileID: 21300000, guid: 685eef439c2314e3583576b7a63a1d89, type: 3}
+      - {fileID: 21300000, guid: ea41ea0630b2b4602b08e3066be70b17, type: 3}
+      - {fileID: 21300000, guid: 1173b7301d1d44da7be4fb7f8fea3ef6, type: 3}
+      - {fileID: 21300000, guid: 5d98446bed82b405294c5e28613d2e1a, type: 3}
+      - {fileID: 21300000, guid: 1aca0e1dba7c14d76a53426fc47d4a83, type: 3}
+      - {fileID: 21300000, guid: 6529019c709e64ffcb3e219c72088440, type: 3}
+      - {fileID: 21300000, guid: da6f7b69844874c5397ec6ff6037ab4d, type: 3}
+      - {fileID: 21300000, guid: 2be60e446b0ae4ddbb2f232c7e3aacd7, type: 3}
+      - {fileID: 21300000, guid: 88a9fc1d5058b48bc94203d18302ee47, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 0
+      _anchors:
+      - {x: -0.3322171, y: 1.3975095, z: 13.2}
+      - {x: -0.33216926, y: 1.397625, z: 13.205984}
+      - {x: -0.33203307, y: 1.3979529, z: 13.2229595}
+      - {x: -0.33182007, y: 1.3984647, z: 13.249461}
+      - {x: -0.33154097, y: 1.3991317, z: 13.284022}
+      - {x: -0.33120698, y: 1.3999249, z: 13.325178}
+      - {x: -0.33082893, y: 1.4008163, z: 13.371464}
+      - {x: -0.33041823, y: 1.4017771, z: 13.421412}
+      - {x: -0.32998666, y: 1.4027787, z: 13.47356}
+      - {x: -0.32954574, y: 1.4037935, z: 13.526441}
+      - {x: -0.32910806, y: 1.4047924, z: 13.578588}
+      - {x: -0.328686, y: 1.4057482, z: 13.628536}
+      - {x: -0.3282924, y: 1.4066329, z: 13.674822}
+      - {x: -0.3279403, y: 1.4074185, z: 13.715978}
+      - {x: -0.32764322, y: 1.4080774, z: 13.75054}
+      - {x: -0.32741448, y: 1.4085824, z: 13.7770405}
+      - {x: -0.32726762, y: 1.4089057, z: 13.794016}
+      - {x: -0.32721573, y: 1.4090198, z: 13.8}
+  - state: 3
+    clip:
+      _clipName: boss_bellringer_idlep1
+      _frames:
+      - {fileID: 21300000, guid: 5319614f75a474c34b250a0c2d773b98, type: 3}
+      - {fileID: 21300000, guid: 5484981bf0c08474396d2251c1d5bae6, type: 3}
+      - {fileID: 21300000, guid: 21b7f321abda14a4db58d26a97fe9cea, type: 3}
+      - {fileID: 21300000, guid: 8cc5729971cc9455a96a6449f4bc0a77, type: 3}
+      - {fileID: 21300000, guid: d0aa0931cdffb411f942d8d4dd0a9473, type: 3}
+      - {fileID: 21300000, guid: 6e9d8449875ba4f9c95ddc955174bc57, type: 3}
+      _framesPerSecond: 8
+      _isLooping: 1
+      _anchors:
+      - {x: -0.32976663, y: 1.4032863, z: 13.5}
+      - {x: -0.32976663, y: 1.4119465, z: 13.5}
+      - {x: -0.32976663, y: 1.4119465, z: 13.5}
+      - {x: -0.32976663, y: 1.4032863, z: 13.5}
+      - {x: -0.32976663, y: 1.394626, z: 13.5}
+      - {x: -0.32976663, y: 1.394626, z: 13.5}
+  - state: 4
+    clip:
+      _clipName: boss_bellringer_walkp1
+      _frames:
+      - {fileID: 21300000, guid: 53129ddecb85742ecb039c83f12b417f, type: 3}
+      - {fileID: 21300000, guid: bb35c72594c6846959a4fca1e731213b, type: 3}
+      - {fileID: 21300000, guid: 0e814fdd6708342d2b71410fe57e1063, type: 3}
+      - {fileID: 21300000, guid: f83660a59c8bc48cbbff0e61361aa72d, type: 3}
+      - {fileID: 21300000, guid: 7042640964ea145d6be61c0dbeb1b209, type: 3}
+      - {fileID: 21300000, guid: 0937bb47d03274d86b854ad43381b683, type: 3}
+      - {fileID: 21300000, guid: 3a64b354049ab4a638558140dc7fbbe9, type: 3}
+      - {fileID: 21300000, guid: 88ccde8470b3e422d8bdc71fd7c7854e, type: 3}
+      _framesPerSecond: 10
+      _isLooping: 1
+      _anchors:
+      - {x: -0.3245651, y: 1.4147077, z: 14.1}
+      - {x: -0.3245651, y: 1.4387494, z: 14.1}
+      - {x: -0.3245651, y: 1.4487076, z: 14.1}
+      - {x: -0.3245651, y: 1.4387494, z: 14.1}
+      - {x: -0.3245651, y: 1.4147077, z: 14.1}
+      - {x: -0.3245651, y: 1.4387494, z: 14.1}
+      - {x: -0.3245651, y: 1.4487076, z: 14.1}
+      - {x: -0.3245651, y: 1.4387494, z: 14.1}
+  - state: 0
+    clip:
+      _clipName: boss_bellringer_slashp1
+      _frames:
+      - {fileID: 21300000, guid: 2524ec6cc6c1745a2bd891a4984cb755, type: 3}
+      - {fileID: 21300000, guid: 830fbc185131243f892691047495bfce, type: 3}
+      - {fileID: 21300000, guid: 0065272fceb8c41dfb1993c43f96aace, type: 3}
+      - {fileID: 21300000, guid: 7a83f7963aa5945feabb4d0db30c93a3, type: 3}
+      - {fileID: 21300000, guid: 5a688c85530054dd986faf66e867562c, type: 3}
+      - {fileID: 21300000, guid: e5c8b2f9a8fae4127bb8e7f4c702b092, type: 3}
+      - {fileID: 21300000, guid: 4cee5582e1c454e3191e87b582411aef, type: 3}
+      - {fileID: 21300000, guid: eb86edb95fb9a409c8da7436108565d6, type: 3}
+      - {fileID: 21300000, guid: 0080909d6bc474675aff6c883a808363, type: 3}
+      - {fileID: 21300000, guid: 81931fb43b8fb4c97a47c2a7f941aeaa, type: 3}
+      - {fileID: 21300000, guid: 69d327070c1d3412c9ab775c63cd7a45, type: 3}
+      - {fileID: 21300000, guid: c345aeca87f254894afe64f60899a71a, type: 3}
+      - {fileID: 21300000, guid: 42c62b825e3fa4f8fa9fbb9ffc8feb8c, type: 3}
+      - {fileID: 21300000, guid: bebeae9ea389b48cd9962e9341afc3b4, type: 3}
+      - {fileID: 21300000, guid: c82b04889b10047c99873522e5497595, type: 3}
+      - {fileID: 21300000, guid: 3af3d8f79be2f4e0d8fecc83a5f194af, type: 3}
+      - {fileID: 21300000, guid: ef8440d901e9f49f0af3b271104b730f, type: 3}
+      - {fileID: 21300000, guid: 3fd41d34be6ed43c6b4af7ff50390aad, type: 3}
+      - {fileID: 21300000, guid: 7b7dd7a8ee64549078618458ea464770, type: 3}
+      - {fileID: 21300000, guid: 0a94abadb961c418aaf8a71a86495c9d, type: 3}
+      - {fileID: 21300000, guid: 2fb86ec2f3d7d4c718ace8bc70f81164, type: 3}
+      - {fileID: 21300000, guid: d7b9b47f97fd7455788065bd4831b7dd, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.3855223, y: 1.3136746, z: 9.03}
+      - {x: -0.3855223, y: 1.3136746, z: 9.03}
+      - {x: -0.3855223, y: 1.3136746, z: 9.03}
+      - {x: -0.3855223, y: 1.3136746, z: 9.03}
+      - {x: -0.3855223, y: 1.3136746, z: 9.03}
+      - {x: -0.3855223, y: 1.3136746, z: 9.03}
+      - {x: -0.3855223, y: 1.3136746, z: 9.03}
+      - {x: -0.38341752, y: 1.3170786, z: 9.194687}
+      - {x: -0.3737654, y: 1.3319964, z: 9.919696}
+      - {x: -0.3571926, y: 1.3553592, z: 11.0683565}
+      - {x: -0.33485612, y: 1.383304, z: 12.471209}
+      - {x: -0.30871612, y: 1.4120362, z: 13.958791}
+      - {x: -0.2818286, y: 1.4380927, z: 15.361643}
+      - {x: -0.25826004, y: 1.4585526, z: 16.510303}
+      - {x: -0.2426915, y: 1.4710156, z: 17.235313}
+      - {x: -0.23908234, y: 1.4737953, z: 17.4}
+      - {x: -0.23908234, y: 1.4737953, z: 17.4}
+      - {x: -0.23908234, y: 1.4737953, z: 17.4}
+      - {x: -0.23908234, y: 1.4737953, z: 17.4}
+      - {x: -0.23908234, y: 1.4737953, z: 17.4}
+      - {x: -0.23908234, y: 1.4737953, z: 17.4}
+      - {x: -0.23908234, y: 1.4737953, z: 17.4}
+  - state: 6
+    clip:
+      _clipName: boss_bellringer_chargestart
+      _frames:
+      - {fileID: 21300000, guid: 076a3bb1c8636435192b534b587fb60e, type: 3}
+      - {fileID: 21300000, guid: cd53b9277936343618b876fe8dea89ea, type: 3}
+      - {fileID: 21300000, guid: 5c73f76fb61f547fa9bc3587c6e8263b, type: 3}
+      - {fileID: 21300000, guid: a907d6bb677bf499b8994af099251455, type: 3}
+      - {fileID: 21300000, guid: 40ec4bbebf41d4978aa14b0772c70908, type: 3}
+      - {fileID: 21300000, guid: caa911c24a09145238792379a32ebff9, type: 3}
+      - {fileID: 21300000, guid: cb330fca7256e41e4b5be3d64d1523bb, type: 3}
+      - {fileID: 21300000, guid: 4a6d3597bc99a48b8a47208e82d1fb3b, type: 3}
+      - {fileID: 21300000, guid: 6abb0c6724d4241d7aee7e6be3fe82f7, type: 3}
+      - {fileID: 21300000, guid: 6546d03e2317e4c18b2e977663bac5e0, type: 3}
+      - {fileID: 21300000, guid: 7780ed55051e7446796dbad6be42562a, type: 3}
+      - {fileID: 21300000, guid: b2e3849db90804573b16edcbd3cee938, type: 3}
+      - {fileID: 21300000, guid: f3c7063d0e65b4306919942a6cff5be3, type: 3}
+      - {fileID: 21300000, guid: fc4388e86632f4513a631e3cecbddce1, type: 3}
+      - {fileID: 21300000, guid: e02b806e9c4fd4f3eb5cc37a863e3e61, type: 3}
+      - {fileID: 21300000, guid: 2e01326ceed944624bcb383f43ebb44e, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.3368138, y: 1.3858314, z: 12.6}
+      - {x: -0.33596694, y: 1.3862916, z: 12.714666}
+      - {x: -0.33350357, y: 1.3875562, z: 13.0373335}
+      - {x: -0.32946578, y: 1.3894167, z: 13.536}
+      - {x: -0.32385367, y: 1.3916345, z: 14.178667}
+      - {x: -0.31668624, y: 1.3939589, z: 14.933333}
+      - {x: -0.30804884, y: 1.3961464, z: 15.768}
+      - {x: -0.298125, y: 1.3979834, z: 16.650667}
+      - {x: -0.28721398, y: 1.399309, z: 17.549334}
+      - {x: -0.27573302, y: 1.400036, z: 18.432001}
+      - {x: -0.26420724, y: 1.4001644, z: 19.266666}
+      - {x: -0.2532492, y: 1.3997864, z: 20.021334}
+      - {x: -0.2435315, y: 1.3990773, z: 20.664001}
+      - {x: -0.23575622, y: 1.3982731, z: 21.162666}
+      - {x: -0.2306189, y: 1.3976312, z: 21.485334}
+      - {x: -0.22877365, y: 1.3973801, z: 21.6}
+  - state: 7
+    clip:
+      _clipName: boss_bellringer_charge
+      _frames:
+      - {fileID: 21300000, guid: 214567e78ce744858909d8b4b1afb226, type: 3}
+      - {fileID: 21300000, guid: d6ceea8eb9f3d4694a1afae3f56d3250, type: 3}
+      - {fileID: 21300000, guid: eabe08d94259148328b62d0a5cc87354, type: 3}
+      - {fileID: 21300000, guid: 7fa69bd338ca44eda832bd04bf7ca4dd, type: 3}
+      - {fileID: 21300000, guid: 4fd22fd8540674dd1aa36e509e234311, type: 3}
+      - {fileID: 21300000, guid: 5d6f6147a2b494897a93395f583f4201, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 1
+      _anchors:
+      - {x: -0.18794341, y: 1.4665196, z: 24}
+      - {x: -0.18794341, y: 1.4925003, z: 24}
+      - {x: -0.18794341, y: 1.4925003, z: 24}
+      - {x: -0.18794341, y: 1.4665196, z: 24}
+      - {x: -0.18794341, y: 1.4925003, z: 24}
+      - {x: -0.18794341, y: 1.4925003, z: 24}
+  - state: 8
+    clip:
+      _clipName: boss_bellringer_chargerecover
+      _frames:
+      - {fileID: 21300000, guid: 34fc4490570dc452f83f1935a79f0e4b, type: 3}
+      - {fileID: 21300000, guid: caa8abee1a0884c4899be696d0c310b5, type: 3}
+      - {fileID: 21300000, guid: c26af97d224144ea49a66f736c2a00b1, type: 3}
+      - {fileID: 21300000, guid: d33105d912fbb4c0abdfdb36b2a00b6f, type: 3}
+      - {fileID: 21300000, guid: 8b0b074c71eda4af8a70cba0c338bac1, type: 3}
+      - {fileID: 21300000, guid: e916a0604f59e46c7b61813e1fe57d31, type: 3}
+      - {fileID: 21300000, guid: 47a97a73f278d4a1a9e3ed9c252c012c, type: 3}
+      - {fileID: 21300000, guid: b588d18b04e2d40c0b4808dc92aadd9d, type: 3}
+      - {fileID: 21300000, guid: af191cc12d0c74394a62c7677561a193, type: 3}
+      - {fileID: 21300000, guid: 4aaa93721000547f8abcf1c068d0c445, type: 3}
+      - {fileID: 21300000, guid: 8f58d9ec65e65442594943354d61181e, type: 3}
+      - {fileID: 21300000, guid: cc2e5381942d344728cf418c70f55928, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.09852615, y: 1.3997738, z: 23.4}
+      - {x: -0.104737855, y: 1.4008926, z: 23.176409}
+      - {x: -0.121592104, y: 1.4037038, z: 22.563337}
+      - {x: -0.14626603, y: 1.4072201, z: 21.647333}
+      - {x: -0.17586869, y: 1.4104798, z: 20.514952}
+      - {x: -0.20760529, y: 1.4127748, z: 19.252743}
+      - {x: -0.2389296, y: 1.4137683, z: 17.947258}
+      - {x: -0.26766968, y: 1.4135056, z: 16.68505}
+      - {x: -0.2920906, y: 1.4123416, z: 15.552667}
+      - {x: -0.31086227, y: 1.4108196, z: 14.636664}
+      - {x: -0.32292062, y: 1.4095368, z: 14.023591}
+      - {x: -0.32721573, y: 1.4090198, z: 13.8}
+  - state: 9
+    clip:
+      _clipName: boss_bellringer_combo1
+      _frames:
+      - {fileID: 21300000, guid: 624c1c171b3e34e54a62a0a9bf6ba917, type: 3}
+      - {fileID: 21300000, guid: 035bfefba853243f0a20230dcab378f2, type: 3}
+      - {fileID: 21300000, guid: 9b081b5a0212a45d7bb41389f4ad27b2, type: 3}
+      - {fileID: 21300000, guid: 2bb9cefb56c774d2fb3345dd6d245fd1, type: 3}
+      - {fileID: 21300000, guid: be6c9bedf1bf84d908a39ee40d1f017c, type: 3}
+      - {fileID: 21300000, guid: 7a25acbd2bd6a40a1820fa2fe92bc0a4, type: 3}
+      - {fileID: 21300000, guid: d40f26be9c6d64b63a34e50fbc7c8fdd, type: 3}
+      - {fileID: 21300000, guid: 15d122137c4324459b0dc770753771c7, type: 3}
+      - {fileID: 21300000, guid: 01fd962e199424a44a304ee0631a5752, type: 3}
+      - {fileID: 21300000, guid: bec0ba86598fa458698a62717f03bbcf, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.38184303, y: 1.334051, z: 10.0199995}
+      - {x: -0.38184303, y: 1.334051, z: 10.0199995}
+      - {x: -0.38184303, y: 1.334051, z: 10.0199995}
+      - {x: -0.37978867, y: 1.3362967, z: 10.129791}
+      - {x: -0.3493174, y: 1.3675803, z: 11.6774}
+      - {x: -0.2997302, y: 1.4117293, z: 13.9426}
+      - {x: -0.2625792, y: 1.4404238, z: 15.490209}
+      - {x: -0.2598465, y: 1.4424068, z: 15.6}
+      - {x: -0.2598465, y: 1.4424068, z: 15.6}
+      - {x: -0.2598465, y: 1.4424068, z: 15.6}
+  - state: 10
+    clip:
+      _clipName: boss_bellringer_combo2
+      _frames:
+      - {fileID: 21300000, guid: acaf834db1c594545abbe7b81bd73e2d, type: 3}
+      - {fileID: 21300000, guid: 528379dc9afde465ea52ca41c194a394, type: 3}
+      - {fileID: 21300000, guid: 0ecfc5b7bc0624b71a89467f4154f98e, type: 3}
+      - {fileID: 21300000, guid: a0e880720c05040af8970bb59aea9c7b, type: 3}
+      - {fileID: 21300000, guid: ed9bbd222cfdf483e911187ad2242b69, type: 3}
+      - {fileID: 21300000, guid: b3504286f00704e2ca134f9b2829cc74, type: 3}
+      - {fileID: 21300000, guid: a03e94638c66249a7b35f37dd24e4efa, type: 3}
+      - {fileID: 21300000, guid: decc019a6ef5449e0ade94dccd5b70e4, type: 3}
+      - {fileID: 21300000, guid: 5b446929aab5b4ad18b461fdd7ef7855, type: 3}
+      - {fileID: 21300000, guid: d93f887e288b04aa5868a241aeceb65b, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.38442627, y: 1.3204898, z: 9.36}
+      - {x: -0.38442627, y: 1.3204898, z: 9.36}
+      - {x: -0.38442627, y: 1.3204898, z: 9.36}
+      - {x: -0.38232422, y: 1.3235061, z: 9.506389}
+      - {x: -0.34998366, y: 1.3654318, z: 11.569866}
+      - {x: -0.2937845, y: 1.4238985, z: 14.590134}
+      - {x: -0.24966477, y: 1.4610448, z: 16.653612}
+      - {x: -0.24636757, y: 1.4635761, z: 16.8}
+      - {x: -0.24636757, y: 1.4635761, z: 16.8}
+      - {x: -0.24636757, y: 1.4635761, z: 16.8}
+  - state: 11
+    clip:
+      _clipName: boss_bellringer_combo3
+      _frames:
+      - {fileID: 21300000, guid: df56b0456af5849d98026e563ab1331f, type: 3}
+      - {fileID: 21300000, guid: a69d2a8d214534b278b8ed8455eeb69f, type: 3}
+      - {fileID: 21300000, guid: 29f6a24611a0d46968b522ce7dbfd1dd, type: 3}
+      - {fileID: 21300000, guid: ad8d4bcb799354808819515bbdb4f079, type: 3}
+      - {fileID: 21300000, guid: 12ddd98b23dbf44c1a01b4eb6ee85dd4, type: 3}
+      - {fileID: 21300000, guid: 7655a252eb7424d2eaeaadab217b4932, type: 3}
+      - {fileID: 21300000, guid: e727a6e5e743f4b75a28b3c013949867, type: 3}
+      - {fileID: 21300000, guid: a749dd5296e9c4741a207cfe095ae455, type: 3}
+      - {fileID: 21300000, guid: a6bfb72e933dd4689964bd07b5764e64, type: 3}
+      - {fileID: 21300000, guid: 703edb1b4f3634683a1be2651f2b9703, type: 3}
+      - {fileID: 21300000, guid: 00285bc5db49443b089dd2aef7f903e6, type: 3}
+      - {fileID: 21300000, guid: f1f793e251e1343ac93f536371f9d12c, type: 3}
+      - {fileID: 21300000, guid: c6bd5169447bd4c7e965a5de7e0779d6, type: 3}
+      - {fileID: 21300000, guid: e847f5d66559d40468c6d7cfed5d2a5c, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.38903, y: 1.2793521, z: 7.3799996}
+      - {x: -0.38903, y: 1.2793521, z: 7.3799996}
+      - {x: -0.38903, y: 1.2793521, z: 7.3799996}
+      - {x: -0.38903, y: 1.2793521, z: 7.3799996}
+      - {x: -0.38892624, y: 1.2796501, z: 7.39426}
+      - {x: -0.37674806, y: 1.3105987, z: 8.881381}
+      - {x: -0.34216172, y: 1.3746994, z: 12.035264}
+      - {x: -0.28690338, y: 1.4450091, z: 15.744736}
+      - {x: -0.22859299, y: 1.4981552, z: 18.898619}
+      - {x: -0.19786926, y: 1.5205405, z: 20.38574}
+      - {x: -0.1975653, y: 1.5207458, z: 20.4}
+      - {x: -0.1975653, y: 1.5207458, z: 20.4}
+      - {x: -0.1975653, y: 1.5207458, z: 20.4}
+      - {x: -0.1975653, y: 1.5207458, z: 20.4}
+  - state: 12
+    clip:
+      _clipName: boss_bellringer_stunned
+      _frames:
+      - {fileID: 21300000, guid: 1b89c431420554d90b1534792b876aed, type: 3}
+      - {fileID: 21300000, guid: 55b5fc3d8a9814296b92377f19c4772f, type: 3}
+      - {fileID: 21300000, guid: 440677c702b3340638d8f237e48d0898, type: 3}
+      - {fileID: 21300000, guid: 99cb12f1831494f06b888868da5d29c6, type: 3}
+      - {fileID: 21300000, guid: 8547289568d2b46c5adf4e086ef2284e, type: 3}
+      - {fileID: 21300000, guid: 4217155e986d0450cacd6f9578a23b80, type: 3}
+      - {fileID: 21300000, guid: fc213f98705d9406bb8201551254591f, type: 3}
+      - {fileID: 21300000, guid: ff2321727d4aa4e58b4dfa95774e25fc, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 1
+      _anchors:
+      - {x: -0.35788703, y: 1.085447, z: 4.7999997}
+      - {x: -0.3594625, y: 1.1120182, z: 6.072792}
+      - {x: -0.35953826, y: 1.1230457, z: 6.6}
+      - {x: -0.3594625, y: 1.1120182, z: 6.072792}
+      - {x: -0.35788703, y: 1.085447, z: 4.7999997}
+      - {x: -0.35435006, y: 1.0590651, z: 3.5272071}
+      - {x: -0.35231468, y: 1.048227, z: 2.9999995}
+      - {x: -0.35435006, y: 1.0590651, z: 3.5272079}
+  - state: 13
+    clip:
+      _clipName: boss_bellringer_recoil
+      _frames:
+      - {fileID: 21300000, guid: da2d736f0a3fc4f638ef7f46b0d80f06, type: 3}
+      - {fileID: 21300000, guid: cfbbe110d88e749ffb745f0372f0ac62, type: 3}
+      - {fileID: 21300000, guid: e3d0a9ee413e64f4b9f8529b5befa543, type: 3}
+      - {fileID: 21300000, guid: c3f3d5892a421493aa415ab67c27db01, type: 3}
+      - {fileID: 21300000, guid: f86b0062beabc4104987ee970f612156, type: 3}
+      - {fileID: 21300000, guid: ccd12fc2e0e524337827a37c830024ca, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.34100005, y: 1.374, z: 12}
+      - {x: -0.39727935, y: 1.3094506, z: 8.825959}
+      - {x: -0.4260229, y: 1.2685733, z: 6.864294}
+      - {x: -0.4260228, y: 1.2685733, z: 6.864295}
+      - {x: -0.39727935, y: 1.3094506, z: 8.82596}
+      - {x: -0.34100005, y: 1.374, z: 12}
+  - state: 14
+    clip:
+      _clipName: boss_bellringer_phasetransition
+      _frames:
+      - {fileID: 21300000, guid: c4222f2e0cf384de19d8f17006a4b976, type: 3}
+      - {fileID: 21300000, guid: ba0f70f3b11944ac1babb21d8738180d, type: 3}
+      - {fileID: 21300000, guid: 46554c9e7d9eb4d2980e0124c972a10b, type: 3}
+      - {fileID: 21300000, guid: c30142cfc227f47e6b38aa1bcfd37004, type: 3}
+      - {fileID: 21300000, guid: 14978fc1aa7bc499c9e5f6bc02653aed, type: 3}
+      - {fileID: 21300000, guid: ca094d349122a493194defccc3892fc2, type: 3}
+      - {fileID: 21300000, guid: e7963bbc6b40c4668b412bfd251999e9, type: 3}
+      - {fileID: 21300000, guid: 209532dd5a421409da62cc32d742499d, type: 3}
+      - {fileID: 21300000, guid: bee12c0c4a74646458c62150e042d379, type: 3}
+      - {fileID: 21300000, guid: 2b2c7d33f7727424ab09f3c7b497169c, type: 3}
+      - {fileID: 21300000, guid: 3068b6a1baa924db59f948af49384370, type: 3}
+      - {fileID: 21300000, guid: 510ce65cc76504594ad4a32336491c76, type: 3}
+      - {fileID: 21300000, guid: 0ca817c59115a4d5f8f802e53fdd3cbb, type: 3}
+      - {fileID: 21300000, guid: dd792db03cf6e49d88c69a6bc90d256f, type: 3}
+      - {fileID: 21300000, guid: 605772408b1444ad19c0c75467b7f04a, type: 3}
+      - {fileID: 21300000, guid: f528e0dd336cf455492f6de878950522, type: 3}
+      - {fileID: 21300000, guid: 15a411df5c5ef4908ab8e7708fe72d62, type: 3}
+      - {fileID: 21300000, guid: 9b357be26d8e54eee873d663c3adb808, type: 3}
+      - {fileID: 21300000, guid: ed7bba858e45b4b939747eeabe8fd984, type: 3}
+      - {fileID: 21300000, guid: f462ec79aa9094d11a190876d5a083e0, type: 3}
+      - {fileID: 21300000, guid: fc4679daf9e614a8a8338e8ebb57d0c2, type: 3}
+      - {fileID: 21300000, guid: b492432923eec4b7895bf0bd473191f5, type: 3}
+      - {fileID: 21300000, guid: c57ca11c2672f4b59a88ce4f96c81df7, type: 3}
+      - {fileID: 21300000, guid: 05e20adad4d3a42c29dc4d8751cdf083, type: 3}
+      - {fileID: 21300000, guid: 380ba1788c1374e8ea22dc1ef84b3fde, type: 3}
+      - {fileID: 21300000, guid: dfbeff4cb0a5043399b34e331a22a2ac, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 0
+      _anchors:
+      - {x: -0.3322171, y: 1.3975095, z: 13.2}
+      - {x: -0.33338234, y: 1.391092, z: 13.052826}
+      - {x: -0.3364583, y: 1.3734066, z: 12.648389}
+      - {x: -0.3407184, y: 1.346774, z: 12.042311}
+      - {x: -0.3454154, y: 1.313528, z: 11.290218}
+      - {x: -0.34989142, y: 1.2760612, z: 10.447736}
+      - {x: -0.35365906, y: 1.2368374, z: 9.570488}
+      - {x: -0.35644853, y: 1.198383, z: 8.7141}
+      - {x: -0.35821944, y: 1.16326, z: 7.9341955}
+      - {x: -0.35913008, y: 1.1340369, z: 7.2863994}
+      - {x: -0.35946694, y: 1.1132665, z: 6.826337}
+      - {x: -0.35953644, y: 1.1034807, z: 6.609633}
+      - {x: -0.35951942, y: 1.1058048, z: 6.68257}
+      - {x: -0.35935172, y: 1.1173105, z: 7.026929}
+      - {x: -0.3587552, y: 1.1363925, z: 7.5984}
+      - {x: -0.35736075, y: 1.1615355, z: 8.352668}
+      - {x: -0.3548217, y: 1.1911936, z: 9.245417}
+      - {x: -0.35090148, y: 1.2237957, z: 10.232334}
+      - {x: -0.34553772, y: 1.2577653, z: 11.269106}
+      - {x: -0.33887878, y: 1.2915518, z: 12.311416}
+      - {x: -0.33129007, y: 1.3236649, z: 13.314952}
+      - {x: -0.32333648, y: 1.3527019, z: 14.235396}
+      - {x: -0.31573945, y: 1.3773602, z: 15.0284395}
+      - {x: -0.30931702, y: 1.396425, z: 15.649764}
+      - {x: -0.30490935, y: 1.4087329, z: 16.055056}
+      - {x: -0.30329177, y: 1.4131092, z: 16.2}
+  - state: 15
+    clip:
+      _clipName: boss_bellringer_idlep2
+      _frames:
+      - {fileID: 21300000, guid: 3f135041778dc4c7d82e16eb109b050c, type: 3}
+      - {fileID: 21300000, guid: b438fc4ceeebd470ba610a504fb3823a, type: 3}
+      - {fileID: 21300000, guid: b1698ccab6a3549ef8c536f46e456616, type: 3}
+      - {fileID: 21300000, guid: adb894edbf0b54915962598810e676a6, type: 3}
+      - {fileID: 21300000, guid: bb42b3a9f1a364f3ab37774d7c140554, type: 3}
+      - {fileID: 21300000, guid: b21f57bfe578141e4ada506ae1f5aa8d, type: 3}
+      _framesPerSecond: 10
+      _isLooping: 1
+      _anchors:
+      - {x: -0.29636756, y: 1.4635761, z: 16.8}
+      - {x: -0.29636756, y: 1.4739685, z: 16.8}
+      - {x: -0.29636756, y: 1.4739685, z: 16.8}
+      - {x: -0.29636756, y: 1.4635761, z: 16.8}
+      - {x: -0.29636756, y: 1.4531839, z: 16.8}
+      - {x: -0.29636756, y: 1.4531839, z: 16.8}
+  - state: 16
+    clip:
+      _clipName: boss_bellringer_movep2
+      _frames:
+      - {fileID: 21300000, guid: a95da8cf964ae4f6a9308624574c4f24, type: 3}
+      - {fileID: 21300000, guid: db5affe65681b458e9fe8816829838ef, type: 3}
+      - {fileID: 21300000, guid: 334f88a9ebc8441eda309c284adf7b59, type: 3}
+      - {fileID: 21300000, guid: bcab603e6c00148e4b89c7acdae94e6b, type: 3}
+      - {fileID: 21300000, guid: f54c1fdabcfa64fcdab12d622dd7ede7, type: 3}
+      - {fileID: 21300000, guid: da229b570c0b94b0e852b14a532cc9fe, type: 3}
+      - {fileID: 21300000, guid: a9694fa02902240b5929df6392acf60e, type: 3}
+      - {fileID: 21300000, guid: ba92c72a3093c419ab229eac20f41eb9, type: 3}
+      _framesPerSecond: 14
+      _isLooping: 1
+      _anchors:
+      - {x: -0.27346465, y: 1.4934398, z: 18.6}
+      - {x: -0.27346465, y: 1.5188956, z: 18.6}
+      - {x: -0.27346465, y: 1.5294398, z: 18.6}
+      - {x: -0.27346465, y: 1.5188956, z: 18.6}
+      - {x: -0.27346465, y: 1.4934398, z: 18.6}
+      - {x: -0.27346465, y: 1.5188956, z: 18.6}
+      - {x: -0.27346465, y: 1.5294398, z: 18.6}
+      - {x: -0.27346465, y: 1.5188956, z: 18.6}
+  - state: 17
+    clip:
+      _clipName: boss_bellringer_slashp2
+      _frames:
+      - {fileID: 21300000, guid: 1b83ab490e07242ce826a46c89b16402, type: 3}
+      - {fileID: 21300000, guid: 3b5b05ead9e0241f4bf779b634f7a848, type: 3}
+      - {fileID: 21300000, guid: 4c02aaf351fc04ad0bfe76213fe315ed, type: 3}
+      - {fileID: 21300000, guid: b329f8ea032234df2bfcb3bd4663cf14, type: 3}
+      - {fileID: 21300000, guid: 471a99bb9fe54417691bf33533ff110c, type: 3}
+      - {fileID: 21300000, guid: 459fa9a0001e64f469ddb1fadf9c6e31, type: 3}
+      - {fileID: 21300000, guid: 7b808f476b440403683e02ebeb782a18, type: 3}
+      - {fileID: 21300000, guid: adbf47f1f37e0464e80c847657fe12cb, type: 3}
+      - {fileID: 21300000, guid: 9449eea0c3813475ea7882ffe3f1e5df, type: 3}
+      - {fileID: 21300000, guid: 1c9d6afd01a394b36b9447b532fc40f2, type: 3}
+      - {fileID: 21300000, guid: 7ac7365c5ef7e4fdc85cbe958a33b3ab, type: 3}
+      - {fileID: 21300000, guid: b81cc25aef88d4b4a95848bb3b41a21f, type: 3}
+      - {fileID: 21300000, guid: 5ff633204a88247e18cd54f22aee915c, type: 3}
+      - {fileID: 21300000, guid: 2c7d5083005474b689c18ea232dc78d8, type: 3}
+      - {fileID: 21300000, guid: 494dcc54f36114121ae0981089a811a3, type: 3}
+      - {fileID: 21300000, guid: 71046dec82f22473fa4e75233f4df240, type: 3}
+      - {fileID: 21300000, guid: 442ce889a82f74e4ead5b7bba6fbabee, type: 3}
+      - {fileID: 21300000, guid: f73bc53e23853439d984c698761d1d0e, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.38802254, y: 1.2931204, z: 8.04}
+      - {x: -0.38802254, y: 1.2931204, z: 8.04}
+      - {x: -0.38802254, y: 1.2931204, z: 8.04}
+      - {x: -0.38802254, y: 1.2931204, z: 8.04}
+      - {x: -0.38802254, y: 1.2931204, z: 8.04}
+      - {x: -0.38802254, y: 1.2931204, z: 8.04}
+      - {x: -0.38298592, y: 1.3042405, z: 8.574731}
+      - {x: -0.36595047, y: 1.3370557, z: 10.166927}
+      - {x: -0.33702928, y: 1.3818643, z: 12.39799}
+      - {x: -0.29882646, y: 1.4285703, z: 14.84201}
+      - {x: -0.2583429, y: 1.4682586, z: 17.073072}
+      - {x: -0.2264093, y: 1.4944767, z: 18.665268}
+      - {x: -0.21515106, y: 1.5028414, z: 19.2}
+      - {x: -0.21515106, y: 1.5028414, z: 19.2}
+      - {x: -0.21515106, y: 1.5028414, z: 19.2}
+      - {x: -0.21515106, y: 1.5028414, z: 19.2}
+      - {x: -0.21515106, y: 1.5028414, z: 19.2}
+      - {x: -0.21515106, y: 1.5028414, z: 19.2}
+  - state: 18
+    clip:
+      _clipName: boss_bellringer_combop2
+      _frames:
+      - {fileID: 21300000, guid: 9bc77c222696a47febdc7452d66a5af4, type: 3}
+      - {fileID: 21300000, guid: 2750a615fbf404f9faafd4e2f1b282b9, type: 3}
+      - {fileID: 21300000, guid: af2ee78893cbd45328aebcb258fa94b7, type: 3}
+      - {fileID: 21300000, guid: 42e49068c6aa847b49819ebdcab2bd47, type: 3}
+      - {fileID: 21300000, guid: 23f6b4363fac6452d8bb35764c64344f, type: 3}
+      - {fileID: 21300000, guid: 3379bf6d166ec425b855b5a1ff668483, type: 3}
+      - {fileID: 21300000, guid: 05fad34e5dcd244468759926ae9b0112, type: 3}
+      - {fileID: 21300000, guid: a9b8007dcaca14015a3eeac3f7ccdb1e, type: 3}
+      - {fileID: 21300000, guid: a2958fb32fd514c1baaaa171b4ddf4e1, type: 3}
+      - {fileID: 21300000, guid: a924a264e65a24c40a565de6305e4050, type: 3}
+      - {fileID: 21300000, guid: 56be7f4c9250d459db21917102ce5b04, type: 3}
+      - {fileID: 21300000, guid: be7c8b2f42e704169ac713dcfbab1922, type: 3}
+      - {fileID: 21300000, guid: 31be572af54a24da483d0483e8f63f39, type: 3}
+      - {fileID: 21300000, guid: a3d965fd04ca14fc598f0b89127e124e, type: 3}
+      - {fileID: 21300000, guid: 59126b15f94424b9c8906ee95e1faf3d, type: 3}
+      - {fileID: 21300000, guid: 3c6826b02b66d410da508d72456e884c, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.38933533, y: 1.2724562, z: 7.0499997}
+      - {x: -0.38933533, y: 1.2724562, z: 7.0499997}
+      - {x: -0.38933533, y: 1.2724562, z: 7.0499997}
+      - {x: -0.38933533, y: 1.2724562, z: 7.0499997}
+      - {x: -0.38933533, y: 1.2724562, z: 7.0499997}
+      - {x: -0.38751647, y: 1.2781925, z: 7.324479}
+      - {x: -0.3723747, y: 1.317801, z: 9.229687}
+      - {x: -0.33888412, y: 1.3798825, z: 12.297395}
+      - {x: -0.2883075, y: 1.4451505, z: 15.752605}
+      - {x: -0.23295006, y: 1.4969257, z: 18.820312}
+      - {x: -0.1941574, y: 1.5253873, z: 20.725521}
+      - {x: -0.18831466, y: 1.529227, z: 21}
+      - {x: -0.18831466, y: 1.529227, z: 21}
+      - {x: -0.18831466, y: 1.529227, z: 21}
+      - {x: -0.18831466, y: 1.529227, z: 21}
+      - {x: -0.18831466, y: 1.529227, z: 21}
+  - state: 19
+    clip:
+      _clipName: boss_bellringer_jumpstart
+      _frames:
+      - {fileID: 21300000, guid: 9f08af5f78b35419a87c9b5e1dc5d612, type: 3}
+      - {fileID: 21300000, guid: bf2bfccc88e3848fdb2137da4c58261b, type: 3}
+      - {fileID: 21300000, guid: 7ba93501fb50944cca810f1f44fe3cb2, type: 3}
+      - {fileID: 21300000, guid: 34c96ed7ca2dd495c80d5a81a82f77b1, type: 3}
+      - {fileID: 21300000, guid: dd5c15ceb6e5a4f0586a3c49f8e02434, type: 3}
+      - {fileID: 21300000, guid: 2c1f095d8155b4db0b39f401c1a72c3d, type: 3}
+      - {fileID: 21300000, guid: 2c0c2cfc42f594fd9a560424d91727e7, type: 3}
+      - {fileID: 21300000, guid: a0193f0b65e834f6dbd522381939a2e1, type: 3}
+      - {fileID: 21300000, guid: c479654e46b5944b4afb5b6e3680c4da, type: 3}
+      - {fileID: 21300000, guid: 3341f2700bf874a56b87d2f800b45e5c, type: 3}
+      - {fileID: 21300000, guid: 7b7c53208f0cc4db3a1fd57e767786ae, type: 3}
+      - {fileID: 21300000, guid: 99161ba4b68984108991585918ff30a4, type: 3}
+      - {fileID: 21300000, guid: ce1588c3d36de4d56bf04c05c6b4e28d, type: 3}
+      - {fileID: 21300000, guid: 2522309c8138b423281d5839293caf91, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.30329177, y: 1.4531091, z: 16.2}
+      - {x: -0.30288497, y: 1.4441147, z: 16.280838}
+      - {x: -0.30181557, y: 1.4192226, z: 16.505873}
+      - {x: -0.3003633, y: 1.3816983, z: 16.848885}
+      - {x: -0.2988292, y: 1.3348721, z: 17.283659}
+      - {x: -0.29748413, y: 1.2820237, z: 17.783978}
+      - {x: -0.29653108, y: 1.226291, z: 18.323624}
+      - {x: -0.29608232, y: 1.1705999, z: 18.876377}
+      - {x: -0.29614884, y: 1.1176212, z: 19.416023}
+      - {x: -0.2966465, y: 1.0697554, z: 19.916342}
+      - {x: -0.29741195, y: 1.0291564, z: 20.351116}
+      - {x: -0.29822966, y: 0.99778944, z: 20.694128}
+      - {x: -0.29886672, y: 0.97753245, z: 20.919163}
+      - {x: -0.29911467, y: 0.9703183, z: 21}
+  - state: 20
+    clip:
+      _clipName: boss_bellringer_jump
+      _frames:
+      - {fileID: 21300000, guid: de0e52a6bb8714e3089db22144b84541, type: 3}
+      - {fileID: 21300000, guid: dd827e223bc9344839cabb630e6abb05, type: 3}
+      - {fileID: 21300000, guid: 5fa8d147f6ba54e68afd8faa2e1c0222, type: 3}
+      - {fileID: 21300000, guid: 34a6acc5b95ac430e88d04a0eeddf228, type: 3}
+      - {fileID: 21300000, guid: ddfac2a56730c44659093d02cffec349, type: 3}
+      - {fileID: 21300000, guid: 0fab0482606914c229eff60e1f420006, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 1
+      _anchors:
+      - {x: -0.30036575, y: 1.6262103, z: 15.6}
+      - {x: -0.30036575, y: 1.6262103, z: 15.6}
+      - {x: -0.30036575, y: 1.6262103, z: 15.6}
+      - {x: -0.30036575, y: 1.6262103, z: 15.6}
+      - {x: -0.30036575, y: 1.6262103, z: 15.6}
+      - {x: -0.30036575, y: 1.6262103, z: 15.6}
+  - state: 21
+    clip:
+      _clipName: boss_bellringer_slam
+      _frames:
+      - {fileID: 21300000, guid: 7bda1a577630f4b8c807175449f3a954, type: 3}
+      - {fileID: 21300000, guid: 356befc1f2c9844a39e22339332bf5ac, type: 3}
+      - {fileID: 21300000, guid: bcec96b723bd945f2a6fbae97fdd4e0c, type: 3}
+      - {fileID: 21300000, guid: 125d0671ecda7474cafb9da50db94c4d, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.27650422, y: 1.2261621, z: 19.800001}
+      - {x: -0.27611184, y: 1.16786, z: 20.6}
+      - {x: -0.27677628, y: 1.1114392, z: 21.4}
+      - {x: -0.278452, y: 1.0569855, z: 22.2}
+  - state: 22
+    clip:
+      _clipName: boss_bellringer_slamrecover
+      _frames:
+      - {fileID: 21300000, guid: 407842955c2d14c3a9c3c9b4d5fb705e, type: 3}
+      - {fileID: 21300000, guid: ac13843bdc8d344d9abc4005d2973959, type: 3}
+      - {fileID: 21300000, guid: 061022fc0cd27463289fbe4c9a719331, type: 3}
+      - {fileID: 21300000, guid: 3ca84502239fc4dd98f9dfdd490e4b3f, type: 3}
+      - {fileID: 21300000, guid: 690ebbd5becb34bf49a00f20a9db68c2, type: 3}
+      - {fileID: 21300000, guid: 61e86438049af4379821f23a9fc16e55, type: 3}
+      - {fileID: 21300000, guid: be14efd57674f45b998208374b9acc4b, type: 3}
+      - {fileID: 21300000, guid: 26e2dc1aeb0aa43d4bf839566bffe2e8, type: 3}
+      - {fileID: 21300000, guid: be57f5ed20e8e49a5be992e3e90cef32, type: 3}
+      - {fileID: 21300000, guid: e3c3c2144ea3649c1ae6fa9eb2724f6b, type: 3}
+      - {fileID: 21300000, guid: b8dbcbeedcc9f428391f2b8f9db1c11c, type: 3}
+      - {fileID: 21300000, guid: 5953ad524ec064ad0a3b9dcf7272d3a0, type: 3}
+      - {fileID: 21300000, guid: 06082390b7f9e42558304ca1d27d82c3, type: 3}
+      - {fileID: 21300000, guid: f1ab65c8f70a340bf96a1f2d0f4085ce, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.278452, y: 1.0569855, z: 22.2}
+      - {x: -0.2784961, y: 1.0631342, z: 22.109058}
+      - {x: -0.27866128, y: 1.0803854, z: 21.855894}
+      - {x: -0.27903458, y: 1.1070591, z: 21.470005}
+      - {x: -0.27972412, y: 1.1415162, z: 20.980883}
+      - {x: -0.2808258, y: 1.1820467, z: 20.418024}
+      - {x: -0.28239518, y: 1.2267936, z: 19.810925}
+      - {x: -0.2844245, y: 1.2737088, z: 19.189075}
+      - {x: -0.28682807, y: 1.3205383, z: 18.581976}
+      - {x: -0.2894368, y: 1.364836, z: 18.019117}
+      - {x: -0.2920053, y: 1.4040005, z: 17.529997}
+      - {x: -0.294232, y: 1.4353282, z: 17.144106}
+      - {x: -0.29578942, y: 1.4560823, z: 16.890942}
+      - {x: -0.29636756, y: 1.4635761, z: 16.8}
+  - state: 23
+    clip:
+      _clipName: boss_bellringer_death
+      _frames:
+      - {fileID: 21300000, guid: 3118a0a557a104aeb8ad34e13cd27316, type: 3}
+      - {fileID: 21300000, guid: d11e359dc6182419995d61305a05db81, type: 3}
+      - {fileID: 21300000, guid: dbf5841ebaa7e4c438fa70f882a058f1, type: 3}
+      - {fileID: 21300000, guid: 91333879c69c4401a83c2e45025337e9, type: 3}
+      - {fileID: 21300000, guid: a0c442eb91754408d86fe6fd0b4c4492, type: 3}
+      - {fileID: 21300000, guid: 6671a85566d524e3da5a13caa55bf310, type: 3}
+      - {fileID: 21300000, guid: 7ba3a0f6630064c7584f5daf54cdb078, type: 3}
+      - {fileID: 21300000, guid: 785107fd43ff84997915976a2ee782c7, type: 3}
+      - {fileID: 21300000, guid: 668c21e44d277438fba1670ee2052efa, type: 3}
+      - {fileID: 21300000, guid: d417eb828c76a4f939a55547bda7283b, type: 3}
+      - {fileID: 21300000, guid: 221033e71706e40f2bcb4a1a2ea29f0d, type: 3}
+      - {fileID: 21300000, guid: 82028cbf4150a4941893243cd8dcc456, type: 3}
+      - {fileID: 21300000, guid: b0e11d3122b8041a8a76c0732119a3a0, type: 3}
+      - {fileID: 21300000, guid: 2978d1d93ee63444db5379246085f61d, type: 3}
+      - {fileID: 21300000, guid: e34a897dc2cc24096925410613bc62eb, type: 3}
+      - {fileID: 21300000, guid: 4990a9abcee2d4721a8823feaec5dd70, type: 3}
+      - {fileID: 21300000, guid: 1626a5929443147d08d6e296e2676c51, type: 3}
+      - {fileID: 21300000, guid: 37ec7a395a7dc482783f49bb8929d4b3, type: 3}
+      - {fileID: 21300000, guid: 6683da169aa104bb68c6548e01de9df2, type: 3}
+      - {fileID: 21300000, guid: 8f005c6cf797a4aeba2bd8513f3c403e, type: 3}
+      - {fileID: 21300000, guid: 004885081c2164fa4947ffa038ba760e, type: 3}
+      - {fileID: 21300000, guid: 330e0e1a70ecf417591c94c5aea964e8, type: 3}
+      - {fileID: 21300000, guid: a4ebb563cec7c461c96824ed74e627b7, type: 3}
+      - {fileID: 21300000, guid: 7a2e4c695c0cd4dc78f6e0c630836804, type: 3}
+      - {fileID: 21300000, guid: ddbe3e5fb8d774124ad6c14bd5be02f7, type: 3}
+      - {fileID: 21300000, guid: 9905d9fc5a5dd4280b7e7338ba7264dc, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 0
+      _anchors:
+      - {x: -0.31602356, y: 1.4314822, z: 15}
+      - {x: -0.3187017, y: 1.4231513, z: 14.882266}
+      - {x: -0.3262239, y: 1.3988842, z: 14.541965}
+      - {x: -0.33755884, y: 1.3597634, z: 13.998451}
+      - {x: -0.35141006, y: 1.3069148, z: 13.271079}
+      - {x: -0.36631393, y: 1.2415777, z: 12.3792}
+      - {x: -0.38074127, y: 1.1651601, z: 11.34217}
+      - {x: -0.39319298, y: 1.0792786, z: 10.17934}
+      - {x: -0.40230134, y: 0.9857674, z: 8.910068}
+      - {x: -0.4069204, y: 0.8866561, z: 7.5537014}
+      - {x: -0.40620744, y: 0.78411883, z: 6.1295996}
+      - {x: -0.39968124, y: 0.68039244, z: 4.6571126}
+      - {x: -0.38725486, y: 0.5776757, z: 3.155597}
+      - {x: -0.36923614, y: 0.4780201, z: 1.6444035}
+      - {x: -0.34629533, y: 0.3832199, z: 0.14288588}
+      - {x: -0.31940567, y: 0.2947174, z: -1.3296026}
+      - {x: -0.28975967, y: 0.2135302, z: -2.753703}
+      - {x: -0.25867575, y: 0.14020996, z: -4.1100683}
+      - {x: -0.22750214, y: 0.07483391, z: -5.3793416}
+      - {x: -0.19753373, y: 0.017028466, z: -6.542169}
+      - {x: -0.16994782, y: -0.033977166, z: -7.5792007}
+      - {x: -0.1457663, y: -0.07927498, z: -8.471078}
+      - {x: -0.12584701, y: -0.12018761, z: -9.19845}
+      - {x: -0.110901944, y: -0.15816571, z: -9.741965}
+      - {x: -0.10153641, y: -0.19468021, z: -10.082267}
+      - {x: -0.098296665, y: -0.23110981, z: -10.200001}
+  _fallback:
+    _clipName: boss_bellringer_idlep1
+    _frames:
+    - {fileID: 21300000, guid: 5319614f75a474c34b250a0c2d773b98, type: 3}
+    - {fileID: 21300000, guid: 5484981bf0c08474396d2251c1d5bae6, type: 3}
+    - {fileID: 21300000, guid: 21b7f321abda14a4db58d26a97fe9cea, type: 3}
+    - {fileID: 21300000, guid: 8cc5729971cc9455a96a6449f4bc0a77, type: 3}
+    - {fileID: 21300000, guid: d0aa0931cdffb411f942d8d4dd0a9473, type: 3}
+    - {fileID: 21300000, guid: 6e9d8449875ba4f9c95ddc955174bc57, type: 3}
+    _framesPerSecond: 8
+    _isLooping: 1
+    _anchors:
+    - {x: -0.32976663, y: 1.4032863, z: 13.5}
+    - {x: -0.32976663, y: 1.4119465, z: 13.5}
+    - {x: -0.32976663, y: 1.4119465, z: 13.5}
+    - {x: -0.32976663, y: 1.4032863, z: 13.5}
+    - {x: -0.32976663, y: 1.394626, z: 13.5}
+    - {x: -0.32976663, y: 1.394626, z: 13.5}
+  _requiredStates: 0100000002000000030000000400000000000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f0000001000000011000000120000001300000014000000150000001600000017000000

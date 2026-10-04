@@ -11,6 +11,7 @@
 | `TombTrial` (сцена мира) | `Main Camera`, `Spawn`, `Player`, `Systems` (службы, HUD, `ZoneStreamer`), `Ambience/ZoneAir`, `Npcs/Services` |
 | `Scenes/Zones/Zone_Tomb` | всё остальное Гробницы: земля, окружение, враги, алтари, находки, Страж, люди |
 | `Scenes/Zones/Zone_Forest` | то же для Леса |
+| `Scenes/Zones/Zone_Capital`, `Zone_Village` | то же для Столицы и Села (Село — над Столицей, п. 5 «Мира из 15 зон») |
 
 Координаты общие: зона — это участок мира, не отдельное пространство. У зоны в графе
 `SceneName` = `TombTrial` (пространство, в нём `AreaAt`) и `ContentScene` — её сцена.

@@ -43,6 +43,8 @@ namespace ForgottenKingdom.EditorTools
         private const string CapitalHiddenTreasury = "room_capital_hidden_treasury";
 
         public const string ForestRoadGateShortcut = "shortcut_forest_road_gate";
+        public const string CapitalRoadShortcut = "shortcut_capital_forest_road";
+        private const string VillageHill = "room_village_hill";
 
         /// <summary>World units to map units. The map is spatially honest, not 1:1.</summary>
         private const float MapScale = 0.1f;
@@ -95,7 +97,11 @@ namespace ForgottenKingdom.EditorTools
                 BuildItem("verdant_heart", "Зелене Серце",
                     "Вузол живого дерева з-за Вартового. Воно ще б'ється.",
                     ItemCategory.Accessory, ItemRarity.Legendary, 1, true, true, 400,
-                    new Color(0.45f, 0.82f, 0.45f), heart)
+                    new Color(0.45f, 0.82f, 0.45f), heart),
+                BuildItem(BellringerRewardItemId, "Язик дзвона",
+                    "Бронзовий язик зі сільського дзвону. Коли тримаєш його, у вухах ще гуде.",
+                    ItemCategory.Progression, ItemRarity.Legendary, 1, true, true, 0,
+                    new Color(0.82f, 0.62f, 0.32f))
             };
         }
 
@@ -116,8 +122,10 @@ namespace ForgottenKingdom.EditorTools
             // The Tomb's and the Forest's rooms, links and altars come from their texts (Levels/*.txt).
             var tomb = LayoutGraphJson(LoadLayout(TombLayoutFile));
             var forest = LayoutGraphJson(LoadLayout(ForestLayoutFile));
+            var village = LayoutGraphJson(LoadLayout(VillageLayoutFile));
             json.Append("\"_areas\":[").Append(string.Join(",", tomb.areas)).Append(",")
-                .Append(string.Join(",", forest.areas)).Append(",").Append(string.Join(",", new[]
+                .Append(string.Join(",", forest.areas)).Append(",")
+                .Append(string.Join(",", village.areas)).Append(",").Append(string.Join(",", new[]
             {
                 MainRoom(CapitalAshRoad, CapitalZoneId, "Попелястий тракт", 318f, 345f),
                 MainRoom(CapitalCityGate, CapitalZoneId, "Міська брама", 345f, 372f),
@@ -142,13 +150,21 @@ namespace ForgottenKingdom.EditorTools
             })).Append("],");
 
             json.Append("\"_connections\":[").Append(string.Join(",", tomb.links)).Append(",")
-                .Append(string.Join(",", forest.links)).Append(",").Append(string.Join(",", new[]
+                .Append(string.Join(",", forest.links)).Append(",")
+                .Append(string.Join(",", village.links)).Append(",").Append(string.Join(",", new[]
             {
                 LinkJson("conn_tomb_to_forest", TombEastHall, ForestTunnel,
                     type: ConnectionType.ZoneTransition, boss: GuardianBossId),
-                // The road the Warden kept: sealed until he falls, then the way to the capital.
+                // Up the hill from the forest's edge, through the hatch the Warden kept.
+                LinkJson("conn_forest_to_village", "room_forest_far_gate", VillageHill,
+                    MapDirection.North, ConnectionType.ZoneTransition, boss: WardenBossId),
+                // Over the wall by the ring and down the drop: the village's way into the capital.
+                LinkJson("conn_village_to_capital", "room_village_feather", CapitalCityGate,
+                    MapDirection.South, ConnectionType.Drop, bidirectional: false),
+                // The old road from the forest's edge into the capital, barred; the winch is on
+                // the capital's side, so it is the way back, not the way in.
                 LinkJson("conn_forest_to_capital", "room_forest_far_gate", CapitalAshRoad,
-                    type: ConnectionType.ZoneTransition, boss: WardenBossId),
+                    type: ConnectionType.Shortcut, shortcut: CapitalRoadShortcut, openedFrom: CapitalAshRoad),
                 LinkJson("conn_capital_road_gate", CapitalAshRoad, CapitalCityGate),
                 LinkJson("conn_capital_gate_market", CapitalCityGate, CapitalMarket),
                 LinkJson("conn_capital_market_tower", CapitalMarket, CapitalBellTower),
@@ -171,7 +187,8 @@ namespace ForgottenKingdom.EditorTools
             })).Append("],");
 
             json.Append("\"_checkpoints\":[").Append(string.Join(",", tomb.altars)).Append(",")
-                .Append(string.Join(",", forest.altars)).Append(",").Append(string.Join(",", new[]
+                .Append(string.Join(",", forest.altars)).Append(",")
+                .Append(string.Join(",", village.altars)).Append(",").Append(string.Join(",", new[]
             {
                 AltarJson("capital-gate", "Вівтар міської брами", CapitalZoneId, CapitalCityGate),
                 AltarJson("capital-temple", "Храмовий вівтар", CapitalZoneId, CapitalTemple),
@@ -194,9 +211,10 @@ namespace ForgottenKingdom.EditorTools
                 // Bought on the skill tree. A build choice, so the world never asks for it.
                 AbilityJson(AbilityIds.ShadowDash, "Тіньовий ривок", AbilityKind.CombatSkill,
                     string.Empty),
-                // The Ashen King's: every ring in the kingdom asks for it, never the main path.
+                // The Bellringer's (item 5 of the 15 zones): the way on from the Village to the
+                // capital is over the wall under the feather, by its ring.
                 AbilityJson(AbilityIds.Grapple, "Гак-кішка", AbilityKind.TraversalProgression,
-                    CapitalKingBossId)
+                    BellringerBossId)
             })).Append("],");
 
             json.Append("\"_startAreaId\":\"").Append(TombEntrance).Append("\",");

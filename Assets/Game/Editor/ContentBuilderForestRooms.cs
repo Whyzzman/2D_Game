@@ -216,17 +216,41 @@ namespace ForgottenKingdom.EditorTools
         }
 
         /// <summary>
-        /// The two doors the Warden keeps: out of his clearing, and at the forest's edge onto the
-        /// road on (the Capital until the Village stands between). Both open for good when he falls.
+        /// The Warden's door out of his clearing, and the old road from the forest's edge into the
+        /// capital: barred, with the winch on the capital's side (the way in is through the Village
+        /// now, item 5 of the 15 zones), so it is the short way back, not the way in.
         /// </summary>
         private static void BuildForestExits(LevelZone zone, Dictionary<string, Transform> rooms, GameProgress progress)
         {
             var exit = DoorBlock(zone, rooms[ForestArenaRoom], "ForestExitWall", ForestSpot("exit-gate"), 10);
             PlaceDoor(rooms[ForestArenaRoom], "ForestExitGate", exit.transform.position, RequirementKind.BossDefeated,
                 WardenBossId, exit, progress);
-            var seal = DoorBlock(zone, rooms["room_forest_far_gate"], "FutureRoadSeal", ForestSpot("capital-seal"), 10);
-            PlaceDoor(rooms["room_forest_far_gate"], CapitalRoadGateName, seal.transform.position,
-                RequirementKind.BossDefeated, WardenBossId, seal, progress);
+
+            // Bars and winch both just past the forest's last cell (318), on the capital's road, so
+            // the split puts them in one scene and the winch keeps its hold on the bars.
+            var edge = rooms["room_forest_far_gate"];
+            var bars = DoorBlock(zone, edge, CapitalRoadGateName, ForestSpot("capital-seal") + new Vector2(2f, 0f), 10);
+            var art = Object.Instantiate(bars.transform.Find("Visual").gameObject, edge);
+            art.name = CapitalRoadGateName + "Bars";
+            art.transform.position = bars.transform.position;
+            bars.transform.Find("Visual").gameObject.SetActive(false);
+
+            // On the capital's road, a step past the bars; the split puts it in the capital by place.
+            var winchAt = new Vector2(ForestSpot("capital-seal").x + 3.5f, ForestSpot("capital-seal").y);
+            var winch = new GameObject("CapitalRoadWinch");
+            winch.transform.SetParent(edge);
+            winch.transform.position = winchAt + new Vector2(0f, 0.9f);
+            var trigger = winch.AddComponent<CircleCollider2D>();
+            trigger.isTrigger = true;
+            trigger.radius = 0.8f;
+            var handle = ForestProp(winch.transform, "env_forest_stump_01", winchAt, "GameplayEnvironment", 3, 0.6f);
+            var shortcut = winch.AddComponent<Shortcut>();
+            SetString(shortcut, "_shortcutId", CapitalRoadShortcut);
+            SetString(shortcut, "_displayName", "лебідка старої дороги");
+            SetReference(shortcut, "_progress", progress);
+            art.transform.position += new Vector3(0f, 5f, 0f);
+            ConfigureShortcut(shortcut, System.Array.Empty<GameObject>(), new[] { bars },
+                art.transform, new Vector3(0f, -5f, 0f), handle != null ? handle.transform : null);
         }
 
         /// <summary>Roots grown across a doorway: two cells wide from the spot, <paramref name="cells"/> high.</summary>

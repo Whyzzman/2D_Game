@@ -556,6 +556,104 @@
       layer();
       el("ellipse", { cx: B.x + B.w * 0.38, cy: f - 4, rx: B.w * 0.12, ry: 3, fill: C.glow, opacity: 0.25, filter: "url(#soft)" });
     },
+    hut: function (B, f) {
+      layer("far"); ridge(B, B.y + B.h * 0.6, 10, C.far);
+      layer("paint");
+      for (var k = 0; k < 2; k++) {
+        var x = B.x + B.w * (0.22 + k * 0.5), w = B.w * 0.18, h = B.h * 0.38;
+        el("path", { d: "M" + (x - w) + "," + f + " L" + (x - w) + "," + (f - h) + " " + smooth([[x - w - 6, f - h], [x, f - h - B.h * 0.3], [x + w + 6, f - h]], false).slice(1) + " L" + (x + w) + "," + (f - h) + " L" + (x + w) + "," + f + " Z", fill: C.ink });
+      }
+      layer();
+      el("rect", { x: B.x + B.w * 0.26, y: f - B.h * 0.26, width: 6, height: 6, fill: C.glow, opacity: 0.8 });
+    },
+    hillroad: function (B, f) {
+      layer("far"); ridge(B, B.y + B.h * 0.4, 18, C.far);
+      layer("paint");
+      el("path", { d: smooth([[B.x, f], [B.x + B.w * 0.3, f - B.h * 0.2], [B.x + B.w * 0.55, f - B.h * 0.45], [B.x + B.w, f - B.h * 0.7]], false) + " L" + (B.x + B.w) + "," + f + " Z", fill: C.ink });
+      var t = trunk(B.x + B.w * 0.2, f - 2, B.h * 0.5, 4, -8, C.ink); bough(t[0], t[1] + 6, 14, -8, 2, C.ink);
+    },
+    barn: function (B, f) {
+      layer("paint");
+      el("ellipse", { cx: B.x + B.w * 0.35, cy: f - 2, rx: B.w * 0.22, ry: B.h * 0.4, fill: C.ink });
+      el("ellipse", { cx: B.x + B.w * 0.68, cy: f - 2, rx: B.w * 0.14, ry: B.h * 0.28, fill: C.ink });
+    },
+    lane: function (B, f) {
+      layer("far"); ridge(B, B.y + B.h * 0.55, 8, C.far);
+      layer("paint");
+      for (var k = 0; k < 4; k++) { var x = B.x + B.w * (0.12 + k * 0.25); el("path", { d: smooth([[x - 7, f], [x - 6, f - 22], [x, f - 30], [x + 6, f - 22], [x + 7, f]], false) + " Z", fill: C.ink }); }
+      el("path", { d: smooth([[B.x + 4, B.y + 10], [B.x + B.w * 0.5, B.y + 22], [B.x + B.w - 4, B.y + 10]], false), stroke: C.ink, "stroke-width": 1.2, fill: "none" });
+      layer(); el("circle", { cx: B.x + B.w * 0.6, cy: f - 24, r: 3, fill: C.glow });
+    },
+    feather: function (B, f) {
+      layer("paint");
+      var x = B.x + B.w * 0.5, y = B.y + B.h * 0.5, l = Math.min(B.h, B.w) * 0.4;
+      el("path", { d: smooth([[x - l * 0.3, y + l], [x - l * 0.5, y], [x, y - l], [x + l * 0.4, y - l * 0.1], [x - l * 0.3, y + l]], true), fill: C.ink });
+      layer(); el("path", { d: smooth([[x - l * 0.3, y + l], [x - l * 0.05, y], [x, y - l]], false), stroke: C.glow, "stroke-width": 1.2, fill: "none", opacity: 0.8 });
+    },
+    stalls: function (B, f) {
+      layer("paint");
+      for (var k = 0; k < 3; k++) {
+        var x = B.x + B.w * (0.18 + k * 0.32), w = B.w * 0.12;
+        el("path", { d: "M" + (x - w) + "," + f + " L" + (x - w) + "," + (f - 20) + " " + smooth([[x - w - 4, f - 20], [x, f - 30], [x + w + 4, f - 20]], false).slice(1) + " L" + (x + w) + "," + f + " Z", fill: C.ink });
+      }
+    },
+    barrels: function (B, f) {
+      layer("far"); ridge(B, B.y + B.h * 0.5, 6, C.far);
+      layer("paint");
+      for (var k = 0; k < 5; k++) { el("ellipse", { cx: B.x + B.w * (0.12 + k * 0.19), cy: f - 8, rx: 7, ry: 9, fill: C.ink }); }
+    },
+    moat: function (B, f) {
+      layer("paint");
+      el("path", { d: smooth([[B.x, f - 14], [B.x + B.w * 0.5, f - 10], [B.x + B.w, f - 14]], false), stroke: C.ink, "stroke-width": 3, fill: "none" });
+      for (var k = 0; k < 6; k++) { var x = B.x + B.w * (0.08 + k * 0.17); el("path", { d: "M" + x + "," + f + " L" + x + "," + (f - 14), stroke: C.ink, "stroke-width": 2 }); }
+      layer(); el("ellipse", { cx: B.x + B.w * 0.5, cy: f - 2, rx: B.w * 0.4, ry: 3, fill: C.glow, opacity: 0.2, filter: "url(#soft)" });
+    },
+    chapel2: function (B, f) {
+      layer("paint");
+      var x = B.x + B.w * 0.5, w = B.w * 0.26, h = B.h * 0.55;
+      el("path", { d: "M" + (x - w) + "," + f + " L" + (x - w) + "," + (f - h) + " L" + x + "," + (f - h - B.h * 0.3) + " L" + (x + w) + "," + (f - h) + " L" + (x + w) + "," + f + " Z", fill: C.ink });
+      layer(); el("circle", { cx: x, cy: f - h * 0.7, r: Math.min(w * 0.4, 9), fill: C.glow, opacity: 0.85 });
+    },
+    anvil: function (B, f) {
+      layer("paint");
+      var x = B.x + B.w * 0.6;
+      el("path", { d: smooth([[x - 14, f], [x - 6, f - 10], [x - 18, f - 16], [x + 16, f - 16], [x + 6, f - 10], [x + 14, f]], false) + " Z", fill: C.ink });
+      layer(); el("ellipse", { cx: B.x + B.w * 0.25, cy: f - 8, rx: 12, ry: 7, fill: C.glow, opacity: 0.6, filter: "url(#soft)" });
+    },
+    stilts: function (B, f) {
+      layer("paint");
+      for (var k = 0; k < 2; k++) {
+        var x = B.x + B.w * (0.28 + k * 0.45), w = B.w * 0.14, base = f - B.h * 0.25;
+        for (var p = -1; p <= 1; p += 2) { el("path", { d: "M" + (x + p * w * 0.7) + "," + f + " L" + (x + p * w * 0.7) + "," + base, stroke: C.ink, "stroke-width": 2 }); }
+        el("path", { d: "M" + (x - w) + "," + base + " L" + (x - w) + "," + (base - 16) + " L" + x + "," + (base - 28) + " L" + (x + w) + "," + (base - 16) + " L" + (x + w) + "," + base + " Z", fill: C.ink });
+      }
+    },
+    ropeshaft: function (B, f) {
+      layer("paint");
+      var x = B.x + B.w * 0.5;
+      el("path", { d: smooth([[x, B.y], [x + 2, B.y + B.h * 0.5], [x - 1, B.y + B.h]], false), stroke: C.ink, "stroke-width": 2, fill: "none" });
+      for (var k = 0; k < 4; k++) { var y = B.y + B.h * (0.2 + k * 0.2); el("path", { d: "M" + (B.x + 2) + "," + y + " L" + (B.x + B.w * 0.3) + "," + y, stroke: C.ink, "stroke-width": 2 }); }
+    },
+    bellfloor: function (B, f) {
+      layer("paint");
+      var x = B.x + B.w * 0.5, top = B.y + B.h * 0.2, w = B.w * 0.16;
+      el("path", { d: smooth([[x - w * 1.3, top + B.h * 0.45], [x - w * 0.9, top + B.h * 0.2], [x - w * 0.6, top], [x + w * 0.6, top], [x + w * 0.9, top + B.h * 0.2], [x + w * 1.3, top + B.h * 0.45]], false) + " Z", fill: C.ink });
+      layer(); el("circle", { cx: x, cy: top + B.h * 0.5, r: 4, fill: C.glow });
+    },
+    rooftops: function (B, f) {
+      layer("far"); ridge(B, B.y + B.h * 0.65, 8, C.far);
+      layer("paint");
+      var pts = [[B.x, f]];
+      for (var k = 0; k <= 6; k++) { var x = B.x + B.w * k / 6; pts.push([x, f - 8 - (k % 2) * 14]); }
+      pts.push([B.x + B.w, f]);
+      el("path", { d: "M" + pts.map(function (p) { return p[0] + "," + p[1]; }).join(" L") + " Z", fill: C.ink });
+    },
+    marshroad: function (B, f) {
+      layer("far"); ridge(B, B.y + B.h * 0.6, 6, C.far);
+      layer("paint");
+      var t = trunk(B.x + B.w * 0.3, f, B.h * 0.6, 4, 10, C.ink); bough(t[0], t[1] + 4, -14, -6, 2, C.ink);
+      layer(); el("ellipse", { cx: B.x + B.w * 0.7, cy: f - 3, rx: B.w * 0.2, ry: 3, fill: C.glow, opacity: 0.25, filter: "url(#soft)" });
+    },
     ashroad: function (B, f) {
       layer("far"); skyline(B, 6, C.far);
       layer("paint");
@@ -658,6 +756,7 @@
     tomb: { dark: "#0d131b", mid: "#212d3a", ink: "#04070b", glow: "#f0d9a0" },
     forest: { dark: "#123029", mid: "#2a5a4e", ink: "#040908", glow: "#a8ff5a" },
     capital: { dark: "#14120f", mid: "#2c2822", ink: "#070605", glow: "#ffd27a" },
+    village: { dark: "#1c120c", mid: "#4a3424", ink: "#080503", glow: "#ff9c4a" },
     boss: { dark: "#2a0d10", mid: "#5a1a20", ink: "#120406", glow: "#ff5a5a" }
   };
 
@@ -680,6 +779,11 @@
     room_forest_old_graves: "graves", room_forest_falconry: "perches", room_forest_deep_roots: "rootmass",
     room_forest_under_walkway: "hanging", room_forest_upper_path: "path", room_forest_ravine_foot: "hollowfloor",
     room_forest_walkway: "vines",
+    room_village_hill: "hillroad", room_village_lower_street: "lane", room_village_feather: "feather",
+    room_village_market: "stalls", room_village_cellar: "barrels", room_village_bridge: "moat",
+    room_village_church: "chapel2", room_village_forge: "anvil", room_village_square: "hut",
+    room_village_stilt_houses: "stilts", room_village_belfry_base: "barn", room_village_bell_shaft: "ropeshaft",
+    room_village_bell: "bellfloor", room_village_upper_street: "rooftops", room_village_marsh_road: "marshroad",
     room_capital_ash_road: "ashroad", room_capital_city_gate: "citygate", room_capital_market: "market",
     room_capital_bell_tower: "belltower", room_capital_temple: "temple", room_capital_gardens: "gardens",
     room_capital_palace_approach: "approach", room_capital_throne_hall: "throne"

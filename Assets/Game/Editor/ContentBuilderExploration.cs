@@ -99,12 +99,14 @@ namespace ForgottenKingdom.EditorTools
                 Object.DestroyImmediate(old.gameObject);
             }
 
-            // The Tomb's and the Forest's shards are their texts' (Levels/*.txt) and stay with their rooms.
+            // The shards of the zones built from text (Levels/*.txt) stay with their rooms.
             var tomb = level.transform.Find(TombRootName);
             var forest = level.transform.Find(ForestRootName);
+            var village = level.transform.Find(VillageRootName);
             foreach (var find in Object.FindObjectsByType<WorldPickup>(FindObjectsInactive.Include))
             {
-                if ((tomb != null && find.transform.IsChildOf(tomb)) || (forest != null && find.transform.IsChildOf(forest)))
+                if ((tomb != null && find.transform.IsChildOf(tomb)) || (forest != null && find.transform.IsChildOf(forest))
+                    || (village != null && find.transform.IsChildOf(village)))
                 {
                     continue;
                 }

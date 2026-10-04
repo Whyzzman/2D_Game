@@ -170,6 +170,18 @@ namespace ForgottenKingdom.EditorTools
                     canvas.Triangle(headBase - across, headBase + across, tip, build.Metal);
                     break;
 
+                case WeaponShape.Maul:
+                    // The Bellringer's hammer: a long haft and a heavy round bronze head across
+                    // its end, the weight all at the tip like the bell's own clapper.
+                    var neck = hand + direction * build.SwordLength * 0.84f;
+                    canvas.Thick(hand - direction * build.SwordLength * 0.2f, neck,
+                        build.SwordWidth * 0.7f, build.SwordWidth * 0.6f, build.Metal);
+                    var span = Canvas.Rotate(new Vector2(build.SwordWidth * 2.6f, 0f), -angle);
+                    canvas.Thick(neck - span, neck + span, build.SwordWidth * 2.2f, build.SwordWidth * 2.2f, build.Trim);
+                    canvas.Ellipse(neck - span, build.SwordWidth * 1.3f, build.SwordWidth * 1.3f, build.Trim);
+                    canvas.Ellipse(neck + span, build.SwordWidth * 1.3f, build.SwordWidth * 1.3f, build.Trim);
+                    break;
+
                 default:
                     // The glaive: a long haft with a heavy curved blade on the end. The weight is
                     // all at the tip, which is what the long windups are meant to sell.

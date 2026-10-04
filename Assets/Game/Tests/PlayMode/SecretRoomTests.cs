@@ -87,13 +87,14 @@ namespace ForgottenKingdom.Tests
                 .Single(w => w.WallId.EndsWith(room));
 
         [UnityTest]
-        public IEnumerator NineWallsEachHideAFindInTheDark()
+        public IEnumerator FourteenWallsEachHideAFindInTheDark()
         {
             // Two in the Capital, four in the Tomb's text (its three caches and the walled cell),
-            // three in the Forest's (the three skulls of the user's map).
+            // three in the Forest's (the three skulls of the user's map), five in the Village's (its red rooms).
+            yield return TestWorld.LoadEveryZone();
             var walls = Object.FindObjectsByType<BreakableWall>(FindObjectsInactive.Include);
-            Assert.That(walls.Length, Is.EqualTo(9));
-            Assert.That(walls.Select(w => w.WallId).Distinct().Count(), Is.EqualTo(9));
+            Assert.That(walls.Length, Is.EqualTo(14));
+            Assert.That(walls.Select(w => w.WallId).Distinct().Count(), Is.EqualTo(14));
             var finds = Object.FindObjectsByType<WorldPickup>(FindObjectsInactive.Include);
             var shards = finds.Where(p => p.IsVesselShard).ToArray();
             foreach (var wall in walls)
@@ -107,9 +108,9 @@ namespace ForgottenKingdom.Tests
             }
 
             Assert.That(shards.Count(s => VesselShards.TryKind(s.ItemId, out var k) && k == VesselKind.Health),
-                Is.EqualTo(9), "Nine health shards: four in pockets, four behind walls, one for a trial.");
+                Is.EqualTo(12), "Twelve health shards.");
             Assert.That(shards.Count(s => VesselShards.TryKind(s.ItemId, out var k) && k == VesselKind.Mana),
-                Is.EqualTo(6), "Six mana shards: three in pockets, two behind walls, one for a trial.");
+                Is.EqualTo(8), "Eight mana shards.");
             yield return null;
         }
 

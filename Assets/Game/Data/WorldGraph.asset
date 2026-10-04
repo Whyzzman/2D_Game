@@ -52,9 +52,9 @@ MonoBehaviour:
     _displayName: "\u0417\u0430\u043D\u0435\u043F\u0430\u043B\u0435 \u0421\u0435\u043B\u043E"
     _titleCard: "\u0417\u0430\u043D\u0435\u043F\u0430\u043B\u0435 \u0421\u0435\u043B\u043E"
     _sceneName: TombTrial
-    _contentScene: 
-    _defaultSpawn: {x: 0, y: 0}
-    _isImplemented: 0
+    _contentScene: Zone_Village
+    _defaultSpawn: {x: 320, y: 20.85}
+    _isImplemented: 1
     _mapTint: {r: 0.2901961, g: 0.2039216, b: 0.1411765, a: 1}
     _worldPosition: {x: 830, y: 745}
     _art: village
@@ -1166,14 +1166,14 @@ MonoBehaviour:
   - _areaId: room_forest_far_gate
     _zoneId: zone_withered_forest
     _displayName: "\u041A\u0440\u0430\u0439 \u043B\u0456\u0441\u0443"
-    _mapPosition: {x: 31.225, y: 0.65}
-    _mapSize: {x: 1.05, y: 1.4}
+    _mapPosition: {x: 31.225, y: 0.9}
+    _mapSize: {x: 1.05, y: 1.9}
     _worldBounds:
       serializedVersion: 2
       x: 306.5
       y: -1
       width: 11.5
-      height: 15
+      height: 20
     _isSecret: 0
     _isOptional: 0
     _discoveryRule: 0
@@ -1332,6 +1332,414 @@ MonoBehaviour:
     _discoveryRule: 1
     _requiredAbilityId: 
     _iconType: 5
+    _bossId: 
+  - _areaId: room_village_hill
+    _zoneId: zone_fallen_village
+    _displayName: "\u0421\u0445\u0438\u043B \u0434\u043E \u0441\u0435\u043B\u0430"
+    _mapPosition: {x: 32.1, y: 2.95}
+    _mapSize: {x: 2.3, y: 2}
+    _worldBounds:
+      serializedVersion: 2
+      x: 309
+      y: 19
+      width: 24
+      height: 21
+    _isSecret: 0
+    _isOptional: 0
+    _discoveryRule: 0
+    _requiredAbilityId: 
+    _iconType: 0
+    _bossId: 
+  - _areaId: room_village_hay_barn
+    _zoneId: zone_fallen_village
+    _displayName: "\u0421\u0456\u043D\u043D\u0438\u043A"
+    _mapPosition: {x: 34, y: 2.3}
+    _mapSize: {x: 1.3, y: 0.7}
+    _worldBounds:
+      serializedVersion: 2
+      x: 333
+      y: 19
+      width: 14
+      height: 8
+    _isSecret: 1
+    _isOptional: 0
+    _discoveryRule: 1
+    _requiredAbilityId: 
+    _iconType: 5
+    _bossId: 
+  - _areaId: room_village_lower_street
+    _zoneId: zone_fallen_village
+    _displayName: "\u041D\u0438\u0436\u043D\u044F \u0432\u0443\u043B\u0438\u0446\u044F"
+    _mapPosition: {x: 35.05, y: 3.45}
+    _mapSize: {x: 3.4, y: 1}
+    _worldBounds:
+      serializedVersion: 2
+      x: 333
+      y: 29
+      width: 35
+      height: 11
+    _isSecret: 0
+    _isOptional: 0
+    _discoveryRule: 0
+    _requiredAbilityId: 
+    _iconType: 0
+    _bossId: 
+  - _areaId: room_village_feather
+    _zoneId: zone_fallen_village
+    _displayName: "\u0423\u0440\u0432\u0438\u0449\u0435 \u043F\u0456\u0434 \u043F\u0435\u0440\u043E\u043C"
+    _mapPosition: {x: 37.35, y: 2.95}
+    _mapSize: {x: 1, y: 2}
+    _worldBounds:
+      serializedVersion: 2
+      x: 368
+      y: 19
+      width: 11
+      height: 21
+    _isSecret: 0
+    _isOptional: 1
+    _discoveryRule: 0
+    _requiredAbilityId: grapple
+    _iconType: 0
+    _bossId: 
+  - _areaId: room_village_market
+    _zoneId: zone_fallen_village
+    _displayName: "\u0422\u043E\u0440\u0433\u043E\u0432\u0438\u0439 \u0440\u044F\u0434"
+    _mapPosition: {x: 36.65, y: 4.55}
+    _mapSize: {x: 6.6, y: 1}
+    _worldBounds:
+      serializedVersion: 2
+      x: 333
+      y: 40
+      width: 67
+      height: 11
+    _isSecret: 0
+    _isOptional: 0
+    _discoveryRule: 0
+    _requiredAbilityId: 
+    _iconType: 0
+    _bossId: 
+  - _areaId: room_village_well_cache
+    _zoneId: zone_fallen_village
+    _displayName: "\u041F\u0456\u0434\u0432\u0430\u043B \u043F\u0456\u0434 \u043A\u043E\u043B\u043E\u0434\u044F\u0437\u0435\u043C"
+    _mapPosition: {x: 40.6, y: 4.5}
+    _mapSize: {x: 1.1, y: 0.7}
+    _worldBounds:
+      serializedVersion: 2
+      x: 400
+      y: 41
+      width: 12
+      height: 8
+    _isSecret: 1
+    _isOptional: 0
+    _discoveryRule: 1
+    _requiredAbilityId: 
+    _iconType: 5
+    _bossId: 
+  - _areaId: room_village_cellar
+    _zoneId: zone_fallen_village
+    _displayName: "\u041F\u043E\u0433\u0440\u0456\u0431"
+    _mapPosition: {x: 40.45, y: 3.4}
+    _mapSize: {x: 5, y: 1.1}
+    _worldBounds:
+      serializedVersion: 2
+      x: 379
+      y: 28
+      width: 51
+      height: 12
+    _isSecret: 0
+    _isOptional: 1
+    _discoveryRule: 0
+    _requiredAbilityId: 
+    _iconType: 0
+    _bossId: 
+  - _areaId: room_village_bridge
+    _zoneId: zone_fallen_village
+    _displayName: "\u041C\u0456\u0441\u0442 \u043D\u0430\u0434 \u0440\u043E\u0432\u043E\u043C"
+    _mapPosition: {x: 44.9, y: 3.4}
+    _mapSize: {x: 3.7, y: 1.1}
+    _worldBounds:
+      serializedVersion: 2
+      x: 430
+      y: 28
+      width: 38
+      height: 12
+    _isSecret: 0
+    _isOptional: 1
+    _discoveryRule: 0
+    _requiredAbilityId: 
+    _iconType: 0
+    _bossId: 
+  - _areaId: room_village_stair
+    _zoneId: zone_fallen_village
+    _displayName: "\u0421\u0445\u043E\u0434\u0438 \u0434\u043E \u0440\u043E\u0432\u0443"
+    _mapPosition: {x: 44.8, y: 4.55}
+    _mapSize: {x: 0.7, y: 1}
+    _worldBounds:
+      serializedVersion: 2
+      x: 444
+      y: 40
+      width: 8
+      height: 11
+    _isSecret: 0
+    _isOptional: 1
+    _discoveryRule: 0
+    _requiredAbilityId: 
+    _iconType: 0
+    _bossId: 
+  - _areaId: room_village_church
+    _zoneId: zone_fallen_village
+    _displayName: "\u0426\u0435\u0440\u043A\u0432\u0430"
+    _mapPosition: {x: 48.4, y: 3.35}
+    _mapSize: {x: 3.1, y: 2}
+    _worldBounds:
+      serializedVersion: 2
+      x: 468
+      y: 23
+      width: 32
+      height: 21
+    _isSecret: 0
+    _isOptional: 1
+    _discoveryRule: 0
+    _requiredAbilityId: grapple
+    _iconType: 0
+    _bossId: 
+  - _areaId: room_village_crypt_cache
+    _zoneId: zone_fallen_village
+    _displayName: "\u0421\u0445\u0440\u043E\u043D \u0443 \u043A\u0440\u0438\u043F\u0442\u0456"
+    _mapPosition: {x: 50.75, y: 2.7}
+    _mapSize: {x: 1.4, y: 0.7}
+    _worldBounds:
+      serializedVersion: 2
+      x: 500
+      y: 23
+      width: 15
+      height: 8
+    _isSecret: 1
+    _isOptional: 0
+    _discoveryRule: 1
+    _requiredAbilityId: grapple
+    _iconType: 5
+    _bossId: 
+  - _areaId: room_village_forge
+    _zoneId: zone_fallen_village
+    _displayName: "\u041A\u0443\u0437\u043D\u044F"
+    _mapPosition: {x: 35.05, y: 5.65}
+    _mapSize: {x: 3.4, y: 1}
+    _worldBounds:
+      serializedVersion: 2
+      x: 333
+      y: 51
+      width: 35
+      height: 11
+    _isSecret: 0
+    _isOptional: 1
+    _discoveryRule: 0
+    _requiredAbilityId: 
+    _iconType: 0
+    _bossId: 
+  - _areaId: room_village_forge_loft
+    _zoneId: zone_fallen_village
+    _displayName: "\u0413\u043E\u0440\u0438\u0449\u0435 \u043A\u0443\u0437\u043D\u0456"
+    _mapPosition: {x: 32.1, y: 6}
+    _mapSize: {x: 2.3, y: 0.7}
+    _worldBounds:
+      serializedVersion: 2
+      x: 309
+      y: 56
+      width: 24
+      height: 8
+    _isSecret: 1
+    _isOptional: 0
+    _discoveryRule: 1
+    _requiredAbilityId: grapple
+    _iconType: 5
+    _bossId: 
+  - _areaId: room_village_square
+    _zoneId: zone_fallen_village
+    _displayName: "\u041F\u043B\u043E\u0449\u0430 \u0437 \u043A\u043E\u043B\u043E\u0434\u044F\u0437\u0435\u043C"
+    _mapPosition: {x: 39.65, y: 6.1}
+    _mapSize: {x: 5.6, y: 1.9}
+    _worldBounds:
+      serializedVersion: 2
+      x: 368
+      y: 51
+      width: 57
+      height: 20
+    _isSecret: 0
+    _isOptional: 0
+    _discoveryRule: 0
+    _requiredAbilityId: 
+    _iconType: 0
+    _bossId: 
+  - _areaId: room_village_stilt_houses
+    _zoneId: zone_fallen_village
+    _displayName: "\u0425\u0430\u0442\u0438 \u043D\u0430 \u043F\u0430\u043B\u044F\u0445"
+    _mapPosition: {x: 44.65, y: 6.1}
+    _mapSize: {x: 4.2, y: 1.9}
+    _worldBounds:
+      serializedVersion: 2
+      x: 425
+      y: 51
+      width: 43
+      height: 20
+    _isSecret: 0
+    _isOptional: 0
+    _discoveryRule: 0
+    _requiredAbilityId: 
+    _iconType: 0
+    _bossId: 
+  - _areaId: room_village_belfry_base
+    _zoneId: zone_fallen_village
+    _displayName: "\u041F\u0456\u0434\u043D\u0456\u0436\u0436\u044F \u0434\u0437\u0432\u0456\u043D\u0438\u0446\u0456"
+    _mapPosition: {x: 48.4, y: 5.65}
+    _mapSize: {x: 3.1, y: 1}
+    _worldBounds:
+      serializedVersion: 2
+      x: 468
+      y: 51
+      width: 32
+      height: 11
+    _isSecret: 0
+    _isOptional: 0
+    _discoveryRule: 0
+    _requiredAbilityId: 
+    _iconType: 0
+    _bossId: 
+  - _areaId: room_village_east_lane
+    _zoneId: zone_fallen_village
+    _displayName: "\u0421\u0445\u0456\u0434\u043D\u0438\u0439 \u043F\u0440\u043E\u0432\u0443\u043B\u043E\u043A"
+    _mapPosition: {x: 48.95, y: 4.75}
+    _mapSize: {x: 4.2, y: 0.6}
+    _worldBounds:
+      serializedVersion: 2
+      x: 468
+      y: 44
+      width: 43
+      height: 7
+    _isSecret: 0
+    _isOptional: 1
+    _discoveryRule: 0
+    _requiredAbilityId: 
+    _iconType: 0
+    _bossId: 
+  - _areaId: room_village_east_cache
+    _zoneId: zone_fallen_village
+    _displayName: "\u0421\u0445\u0440\u043E\u043D \u0443 \u043F\u0440\u043E\u0432\u0443\u043B\u043A\u0443"
+    _mapPosition: {x: 51.7, y: 4.75}
+    _mapSize: {x: 1.1, y: 0.6}
+    _worldBounds:
+      serializedVersion: 2
+      x: 511
+      y: 44
+      width: 12
+      height: 7
+    _isSecret: 1
+    _isOptional: 0
+    _discoveryRule: 1
+    _requiredAbilityId: 
+    _iconType: 5
+    _bossId: 
+  - _areaId: room_village_marsh_road
+    _zoneId: zone_fallen_village
+    _displayName: "\u0414\u043E\u0440\u043E\u0433\u0430 \u043D\u0430 \u0431\u043E\u043B\u043E\u0442\u0430"
+    _mapPosition: {x: 51.15, y: 5.65}
+    _mapSize: {x: 2.2, y: 1}
+    _worldBounds:
+      serializedVersion: 2
+      x: 500
+      y: 51
+      width: 23
+      height: 11
+    _isSecret: 0
+    _isOptional: 0
+    _discoveryRule: 0
+    _requiredAbilityId: 
+    _iconType: 0
+    _bossId: 
+  - _areaId: room_village_bell_shaft
+    _zoneId: zone_fallen_village
+    _displayName: "\u0414\u0437\u0432\u0456\u043D\u0438\u0446\u044F"
+    _mapPosition: {x: 47.7, y: 7.8}
+    _mapSize: {x: 1.7, y: 3.1}
+    _worldBounds:
+      serializedVersion: 2
+      x: 468
+      y: 62
+      width: 18
+      height: 32
+    _isSecret: 0
+    _isOptional: 0
+    _discoveryRule: 0
+    _requiredAbilityId: 
+    _iconType: 0
+    _bossId: 
+  - _areaId: room_village_bell
+    _zoneId: zone_fallen_village
+    _displayName: "\u0414\u0437\u0432\u0456\u043D"
+    _mapPosition: {x: 48.25, y: 10.3}
+    _mapSize: {x: 3.4, y: 1.7}
+    _worldBounds:
+      serializedVersion: 2
+      x: 465
+      y: 94
+      width: 35
+      height: 18
+    _isSecret: 0
+    _isOptional: 0
+    _discoveryRule: 0
+    _requiredAbilityId: 
+    _iconType: 2
+    _bossId: bellringer
+  - _areaId: room_village_upper_houses
+    _zoneId: zone_fallen_village
+    _displayName: "\u0412\u0435\u0440\u0445\u043D\u0456 \u0445\u0430\u0442\u0438"
+    _mapPosition: {x: 35.9, y: 7.8}
+    _mapSize: {x: 5.1, y: 1.3}
+    _worldBounds:
+      serializedVersion: 2
+      x: 333
+      y: 71
+      width: 52
+      height: 14
+    _isSecret: 0
+    _isOptional: 1
+    _discoveryRule: 0
+    _requiredAbilityId: 
+    _iconType: 0
+    _bossId: 
+  - _areaId: room_village_attic
+    _zoneId: zone_fallen_village
+    _displayName: "\u0413\u043E\u0440\u0438\u0449\u0435"
+    _mapPosition: {x: 32.65, y: 7.5}
+    _mapSize: {x: 1.2, y: 0.7}
+    _worldBounds:
+      serializedVersion: 2
+      x: 320
+      y: 71
+      width: 13
+      height: 8
+    _isSecret: 1
+    _isOptional: 0
+    _discoveryRule: 1
+    _requiredAbilityId: 
+    _iconType: 5
+    _bossId: 
+  - _areaId: room_village_upper_street
+    _zoneId: zone_fallen_village
+    _displayName: "\u0412\u0435\u0440\u0445\u043D\u044F \u0432\u0443\u043B\u0438\u0446\u044F"
+    _mapPosition: {x: 42.65, y: 7.55}
+    _mapSize: {x: 8.2, y: 0.8}
+    _worldBounds:
+      serializedVersion: 2
+      x: 385
+      y: 71
+      width: 83
+      height: 9
+    _isSecret: 0
+    _isOptional: 1
+    _discoveryRule: 0
+    _requiredAbilityId: 
+    _iconType: 0
     _bossId: 
   - _areaId: room_capital_ash_road
     _zoneId: zone_ashen_capital
@@ -2505,6 +2913,331 @@ MonoBehaviour:
     _persistentUnlockId: 
     _openedFromAreaId: 
     _isFuture: 0
+  - _connectionId: conn_village_lower_street_feather
+    _fromAreaId: room_village_lower_street
+    _toAreaId: room_village_feather
+    _direction: 0
+    _type: 5
+    _isBidirectional: 1
+    _requiredAbilityId: grapple
+    _requiredProgressionId: 
+    _requiredBossId: 
+    _isShortcut: 0
+    _persistentUnlockId: 
+    _openedFromAreaId: 
+    _isFuture: 0
+  - _connectionId: conn_village_bridge_church
+    _fromAreaId: room_village_bridge
+    _toAreaId: room_village_church
+    _direction: 0
+    _type: 5
+    _isBidirectional: 1
+    _requiredAbilityId: grapple
+    _requiredProgressionId: 
+    _requiredBossId: 
+    _isShortcut: 0
+    _persistentUnlockId: 
+    _openedFromAreaId: 
+    _isFuture: 0
+  - _connectionId: conn_village_forge_forge_loft
+    _fromAreaId: room_village_forge
+    _toAreaId: room_village_forge_loft
+    _direction: 1
+    _type: 5
+    _isBidirectional: 1
+    _requiredAbilityId: grapple
+    _requiredProgressionId: 
+    _requiredBossId: 
+    _isShortcut: 0
+    _persistentUnlockId: 
+    _openedFromAreaId: 
+    _isFuture: 0
+  - _connectionId: conn_village_bell_shaft_bell
+    _fromAreaId: room_village_bell_shaft
+    _toAreaId: room_village_bell
+    _direction: 2
+    _type: 1
+    _isBidirectional: 1
+    _requiredAbilityId: 
+    _requiredProgressionId: 
+    _requiredBossId: 
+    _isShortcut: 0
+    _persistentUnlockId: 
+    _openedFromAreaId: 
+    _isFuture: 0
+  - _connectionId: conn_village_hay_barn_hill
+    _fromAreaId: room_village_hay_barn
+    _toAreaId: room_village_hill
+    _direction: 1
+    _type: 0
+    _isBidirectional: 1
+    _requiredAbilityId: 
+    _requiredProgressionId: 
+    _requiredBossId: 
+    _isShortcut: 0
+    _persistentUnlockId: 
+    _openedFromAreaId: 
+    _isFuture: 0
+  - _connectionId: conn_village_hill_lower_street
+    _fromAreaId: room_village_hill
+    _toAreaId: room_village_lower_street
+    _direction: 0
+    _type: 0
+    _isBidirectional: 1
+    _requiredAbilityId: 
+    _requiredProgressionId: 
+    _requiredBossId: 
+    _isShortcut: 0
+    _persistentUnlockId: 
+    _openedFromAreaId: 
+    _isFuture: 0
+  - _connectionId: conn_village_lower_street_market
+    _fromAreaId: room_village_lower_street
+    _toAreaId: room_village_market
+    _direction: 2
+    _type: 0
+    _isBidirectional: 1
+    _requiredAbilityId: 
+    _requiredProgressionId: 
+    _requiredBossId: 
+    _isShortcut: 0
+    _persistentUnlockId: 
+    _openedFromAreaId: 
+    _isFuture: 0
+  - _connectionId: conn_village_cellar_market
+    _fromAreaId: room_village_cellar
+    _toAreaId: room_village_market
+    _direction: 2
+    _type: 0
+    _isBidirectional: 1
+    _requiredAbilityId: 
+    _requiredProgressionId: 
+    _requiredBossId: 
+    _isShortcut: 0
+    _persistentUnlockId: 
+    _openedFromAreaId: 
+    _isFuture: 0
+  - _connectionId: conn_village_market_well_cache
+    _fromAreaId: room_village_market
+    _toAreaId: room_village_well_cache
+    _direction: 0
+    _type: 0
+    _isBidirectional: 1
+    _requiredAbilityId: 
+    _requiredProgressionId: 
+    _requiredBossId: 
+    _isShortcut: 0
+    _persistentUnlockId: 
+    _openedFromAreaId: 
+    _isFuture: 0
+  - _connectionId: conn_village_market_square
+    _fromAreaId: room_village_market
+    _toAreaId: room_village_square
+    _direction: 2
+    _type: 0
+    _isBidirectional: 1
+    _requiredAbilityId: 
+    _requiredProgressionId: 
+    _requiredBossId: 
+    _isShortcut: 0
+    _persistentUnlockId: 
+    _openedFromAreaId: 
+    _isFuture: 0
+  - _connectionId: conn_village_bridge_cellar
+    _fromAreaId: room_village_bridge
+    _toAreaId: room_village_cellar
+    _direction: 1
+    _type: 0
+    _isBidirectional: 1
+    _requiredAbilityId: 
+    _requiredProgressionId: 
+    _requiredBossId: 
+    _isShortcut: 0
+    _persistentUnlockId: 
+    _openedFromAreaId: 
+    _isFuture: 0
+  - _connectionId: conn_village_bridge_stair
+    _fromAreaId: room_village_bridge
+    _toAreaId: room_village_stair
+    _direction: 2
+    _type: 0
+    _isBidirectional: 1
+    _requiredAbilityId: 
+    _requiredProgressionId: 
+    _requiredBossId: 
+    _isShortcut: 0
+    _persistentUnlockId: 
+    _openedFromAreaId: 
+    _isFuture: 0
+  - _connectionId: conn_village_stair_stilt_houses
+    _fromAreaId: room_village_stair
+    _toAreaId: room_village_stilt_houses
+    _direction: 2
+    _type: 0
+    _isBidirectional: 1
+    _requiredAbilityId: 
+    _requiredProgressionId: 
+    _requiredBossId: 
+    _isShortcut: 0
+    _persistentUnlockId: 
+    _openedFromAreaId: 
+    _isFuture: 0
+  - _connectionId: conn_village_church_crypt_cache
+    _fromAreaId: room_village_church
+    _toAreaId: room_village_crypt_cache
+    _direction: 0
+    _type: 0
+    _isBidirectional: 1
+    _requiredAbilityId: 
+    _requiredProgressionId: 
+    _requiredBossId: 
+    _isShortcut: 0
+    _persistentUnlockId: 
+    _openedFromAreaId: 
+    _isFuture: 0
+  - _connectionId: conn_village_forge_square
+    _fromAreaId: room_village_forge
+    _toAreaId: room_village_square
+    _direction: 0
+    _type: 0
+    _isBidirectional: 1
+    _requiredAbilityId: 
+    _requiredProgressionId: 
+    _requiredBossId: 
+    _isShortcut: 0
+    _persistentUnlockId: 
+    _openedFromAreaId: 
+    _isFuture: 0
+  - _connectionId: conn_village_square_stilt_houses
+    _fromAreaId: room_village_square
+    _toAreaId: room_village_stilt_houses
+    _direction: 0
+    _type: 0
+    _isBidirectional: 1
+    _requiredAbilityId: 
+    _requiredProgressionId: 
+    _requiredBossId: 
+    _isShortcut: 0
+    _persistentUnlockId: 
+    _openedFromAreaId: 
+    _isFuture: 0
+  - _connectionId: conn_village_square_upper_houses
+    _fromAreaId: room_village_square
+    _toAreaId: room_village_upper_houses
+    _direction: 2
+    _type: 0
+    _isBidirectional: 1
+    _requiredAbilityId: 
+    _requiredProgressionId: 
+    _requiredBossId: 
+    _isShortcut: 0
+    _persistentUnlockId: 
+    _openedFromAreaId: 
+    _isFuture: 0
+  - _connectionId: conn_village_belfry_base_stilt_houses
+    _fromAreaId: room_village_belfry_base
+    _toAreaId: room_village_stilt_houses
+    _direction: 1
+    _type: 0
+    _isBidirectional: 1
+    _requiredAbilityId: 
+    _requiredProgressionId: 
+    _requiredBossId: 
+    _isShortcut: 0
+    _persistentUnlockId: 
+    _openedFromAreaId: 
+    _isFuture: 0
+  - _connectionId: conn_village_belfry_base_east_lane
+    _fromAreaId: room_village_belfry_base
+    _toAreaId: room_village_east_lane
+    _direction: 3
+    _type: 0
+    _isBidirectional: 1
+    _requiredAbilityId: 
+    _requiredProgressionId: 
+    _requiredBossId: 
+    _isShortcut: 0
+    _persistentUnlockId: 
+    _openedFromAreaId: 
+    _isFuture: 0
+  - _connectionId: conn_village_belfry_base_marsh_road
+    _fromAreaId: room_village_belfry_base
+    _toAreaId: room_village_marsh_road
+    _direction: 0
+    _type: 0
+    _isBidirectional: 1
+    _requiredAbilityId: 
+    _requiredProgressionId: 
+    _requiredBossId: 
+    _isShortcut: 0
+    _persistentUnlockId: 
+    _openedFromAreaId: 
+    _isFuture: 0
+  - _connectionId: conn_village_belfry_base_bell_shaft
+    _fromAreaId: room_village_belfry_base
+    _toAreaId: room_village_bell_shaft
+    _direction: 2
+    _type: 0
+    _isBidirectional: 1
+    _requiredAbilityId: 
+    _requiredProgressionId: 
+    _requiredBossId: 
+    _isShortcut: 0
+    _persistentUnlockId: 
+    _openedFromAreaId: 
+    _isFuture: 0
+  - _connectionId: conn_village_east_cache_east_lane
+    _fromAreaId: room_village_east_cache
+    _toAreaId: room_village_east_lane
+    _direction: 1
+    _type: 0
+    _isBidirectional: 1
+    _requiredAbilityId: 
+    _requiredProgressionId: 
+    _requiredBossId: 
+    _isShortcut: 0
+    _persistentUnlockId: 
+    _openedFromAreaId: 
+    _isFuture: 0
+  - _connectionId: conn_village_bell_shaft_upper_street
+    _fromAreaId: room_village_bell_shaft
+    _toAreaId: room_village_upper_street
+    _direction: 1
+    _type: 0
+    _isBidirectional: 1
+    _requiredAbilityId: 
+    _requiredProgressionId: 
+    _requiredBossId: 
+    _isShortcut: 0
+    _persistentUnlockId: 
+    _openedFromAreaId: 
+    _isFuture: 0
+  - _connectionId: conn_village_attic_upper_houses
+    _fromAreaId: room_village_attic
+    _toAreaId: room_village_upper_houses
+    _direction: 0
+    _type: 0
+    _isBidirectional: 1
+    _requiredAbilityId: 
+    _requiredProgressionId: 
+    _requiredBossId: 
+    _isShortcut: 0
+    _persistentUnlockId: 
+    _openedFromAreaId: 
+    _isFuture: 0
+  - _connectionId: conn_village_upper_houses_upper_street
+    _fromAreaId: room_village_upper_houses
+    _toAreaId: room_village_upper_street
+    _direction: 0
+    _type: 0
+    _isBidirectional: 1
+    _requiredAbilityId: 
+    _requiredProgressionId: 
+    _requiredBossId: 
+    _isShortcut: 0
+    _persistentUnlockId: 
+    _openedFromAreaId: 
+    _isFuture: 0
   - _connectionId: conn_tomb_to_forest
     _fromAreaId: room_tomb_east_hall
     _toAreaId: room_forest_root_tunnel
@@ -2518,10 +3251,10 @@ MonoBehaviour:
     _persistentUnlockId: 
     _openedFromAreaId: 
     _isFuture: 0
-  - _connectionId: conn_forest_to_capital
+  - _connectionId: conn_forest_to_village
     _fromAreaId: room_forest_far_gate
-    _toAreaId: room_capital_ash_road
-    _direction: 0
+    _toAreaId: room_village_hill
+    _direction: 2
     _type: 8
     _isBidirectional: 1
     _requiredAbilityId: 
@@ -2530,6 +3263,32 @@ MonoBehaviour:
     _isShortcut: 0
     _persistentUnlockId: 
     _openedFromAreaId: 
+    _isFuture: 0
+  - _connectionId: conn_village_to_capital
+    _fromAreaId: room_village_feather
+    _toAreaId: room_capital_city_gate
+    _direction: 3
+    _type: 4
+    _isBidirectional: 0
+    _requiredAbilityId: 
+    _requiredProgressionId: 
+    _requiredBossId: 
+    _isShortcut: 0
+    _persistentUnlockId: 
+    _openedFromAreaId: 
+    _isFuture: 0
+  - _connectionId: conn_forest_to_capital
+    _fromAreaId: room_forest_far_gate
+    _toAreaId: room_capital_ash_road
+    _direction: 0
+    _type: 7
+    _isBidirectional: 1
+    _requiredAbilityId: 
+    _requiredProgressionId: 
+    _requiredBossId: 
+    _isShortcut: 1
+    _persistentUnlockId: shortcut_capital_forest_road
+    _openedFromAreaId: room_capital_ash_road
     _isFuture: 0
   - _connectionId: conn_capital_road_gate
     _fromAreaId: room_capital_ash_road
@@ -2729,6 +3488,22 @@ MonoBehaviour:
     _zoneId: zone_withered_forest
     _areaId: room_forest_warden_approach
     _canFastTravel: 1
+  - _checkpointId: village-church
+    _displayName: "\u0426\u0435\u0440\u043A\u043E\u0432\u043D\u0438\u0439 \u0432\u0456\u0432\u0442\u0430\u0440"
+    _zoneId: zone_fallen_village
+    _areaId: room_village_church
+    _canFastTravel: 1
+  - _checkpointId: village-well
+    _displayName: "\u0412\u0456\u0432\u0442\u0430\u0440 \u0431\u0456\u043B\u044F
+      \u043A\u043E\u043B\u043E\u0434\u044F\u0437\u044F"
+    _zoneId: zone_fallen_village
+    _areaId: room_village_square
+    _canFastTravel: 1
+  - _checkpointId: village-belfry
+    _displayName: "\u0412\u0456\u0432\u0442\u0430\u0440 \u043F\u0456\u0434 \u0434\u0437\u0432\u0456\u043D\u0438\u0446\u0435\u044E"
+    _zoneId: zone_fallen_village
+    _areaId: room_village_belfry_base
+    _canFastTravel: 1
   - _checkpointId: capital-gate
     _displayName: "\u0412\u0456\u0432\u0442\u0430\u0440 \u043C\u0456\u0441\u044C\u043A\u043E\u0457
       \u0431\u0440\u0430\u043C\u0438"
@@ -2770,7 +3545,7 @@ MonoBehaviour:
   - _abilityId: grapple
     _displayName: "\u0413\u0430\u043A-\u043A\u0456\u0448\u043A\u0430"
     _kind: 0
-    _guaranteedByBossId: ashen-king
+    _guaranteedByBossId: bellringer
   _mapArt: {fileID: 11400000, guid: 1cbbad76b74834d338f979f5b0e4a7e7, type: 2}
   _roads:
   - _fromZoneId: zone_forgotten_tomb
