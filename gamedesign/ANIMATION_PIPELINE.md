@@ -31,7 +31,7 @@
 | `Runtime/Player/PlayerAnimationSet.cs` | `PlayerAnimationState`, `AnimationClipDefinition`, `PlayerAnimationSet` |
 | `Runtime/Player/WeaponAnimationSet.cs` | набір кліпів окремої зброї |
 | `Runtime/Player/PlayerAnimationController.cs` | єдине місце, що вирішує, як виглядає гравець |
-| `Runtime/Player/PlayerVisualSockets.cs` | точки кріплення ефектів |
+| `Runtime/Animation/VisualSockets.cs` | точки кріплення ефектів (гравець і вороги) |
 | `Runtime/Debug/AnimationDebugTools.cs` | інструменти перевірки |
 | `Editor/PlaceholderPlayerArt.cs` | генератор тимчасових силуетів |
 
@@ -112,7 +112,7 @@ Unity не виконує ініціалізатори полів, тож усе
 
 ## 7. Сокети ефектів
 
-`PlayerVisualSockets`: `Body`, `Ground`, `Weapon`, `Cast`, `Overhead`.
+`VisualSockets`: `Body`, `Ground`, `Weapon`, `Cast`, `Overhead`; у щитоносців ще `Shield`.
 
 Сокети живуть під `Visual` і успадковують поворот за напрямком — ефект біля руки
 сам опиняється з потрібного боку. Виняток — `Ground`: він лишається на лінії

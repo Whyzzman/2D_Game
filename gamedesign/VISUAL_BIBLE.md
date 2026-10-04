@@ -839,9 +839,9 @@ BackgroundFar → BackgroundMid → BackgroundNear → EnvironmentBack → Defau
 
 ### Події анімації
 
-`Footstep`, `AttackActiveStart`, `AttackActiveEnd`, `ProjectileRelease`,
-`SlamImpact`, `VFXSpawn`, `DeathComplete`. Геймплей не залежить від них без
-запасного шляху — вікна атак веде `AttackRunner` за даними.
+Подій анімації (Unity Animation Events) у грі **немає**: вікна атак веде `AttackRunner` за даними
+(`AttackDefinition`), звуки кроків і ударів — `CombatAudioBinder` за станами, ефекти —
+`CombatFeedbackService` за подіями бою. Кадри лише показують те, що вже вирішив геймплей.
 
 ### Найважливіше: арт не визначає хітбокс
 
