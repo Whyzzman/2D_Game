@@ -21,6 +21,9 @@ namespace ForgottenKingdom.EditorTools
         private const string GuardianPrefabPath = PrefabFolder + "/GuardianOfTheTomb.prefab";
 
         private static LevelZone _tombLayout;
+        private const string TombArtFolder = "Tomb";
+        /// <summary>The Tomb is drawn by the painter (2026-10-04): blocks are colliders only.</summary>
+        private static bool _tombPainted;
 
         /// <summary>The Tomb's layout, read once per build.</summary>
         public static LevelZone TombLayout => _tombLayout ?? (_tombLayout = LoadLayout(TombLayoutFile));
@@ -49,6 +52,7 @@ namespace ForgottenKingdom.EditorTools
             var zone = TombLayout;
             var root = Section(level, TombRootName);
             var context = LevelContext.FromScene();
+            _tombPainted = HasPaintedArt(TombArtFolder);
             var problems = BuildLayout(zone, root, TombBlock, context);
             foreach (var problem in problems)
             {
@@ -70,12 +74,35 @@ namespace ForgottenKingdom.EditorTools
                 DressTombRoom(zone, room, rooms[room.Id]);
             }
 
+            if (_tombPainted)
+            {
+                PlacePaintedArt(TombArtFolder, zone, root);
+            }
+
             return encounter;
         }
 
         /// <summary>How the Tomb's stone looks: ledges as slabs, the rest by its shape.</summary>
         private static GameObject TombBlock(Transform parent, string name, Rect world, LevelCell kind)
         {
+            if (_tombPainted)
+            {
+                // The painter draws the stone; the block is only what the hero stands on.
+                var solid = new GameObject(name);
+                solid.transform.SetParent(parent);
+                solid.transform.position = world.center;
+                solid.layer = GroundLayer;
+                solid.AddComponent<BoxCollider2D>().size = world.size;
+                if (name == "BreakableWall")
+                {
+                    // A secret's wall is its own painted piece over the opening, so breaking it
+                    // leaves the hole the stone around it was painted with.
+                    PlacePaintedBreakable(TombArtFolder, TombLayout, solid, world);
+                }
+
+                return solid;
+            }
+
             TombSurface surface;
             if (kind == LevelCell.Ledge)
             {
@@ -361,8 +388,12 @@ namespace ForgottenKingdom.EditorTools
             var shell = zone.CellSize * 2f;
             var inside = Rect.MinMaxRect(bounds.xMin + shell, bounds.yMin + shell, bounds.xMax - shell, bounds.yMax - shell);
             var dressing = Section(parent, "Dressing");
-            BuildRoomBackdrop(room, inside, dressing);
-            if (TombDressing.TryGetValue(room.Id, out var pieces))
+            if (!_tombPainted)
+            {
+                BuildRoomBackdrop(room, inside, dressing);
+            }
+
+            if (!_tombPainted && TombDressing.TryGetValue(room.Id, out var pieces))
             {
                 foreach (var piece in pieces)
                 {
@@ -381,7 +412,7 @@ namespace ForgottenKingdom.EditorTools
                 }
             }
 
-            if (room.Height * zone.CellSize >= 10f && !room.IsSecret)
+            if (room.Height * zone.CellSize >= 10f && !room.IsSecret && !_tombPainted)
             {
                 BuildRoomShaft(room, inside, dressing);
             }
@@ -511,8 +542,9 @@ namespace ForgottenKingdom.EditorTools
         /// <summary>The Guardian's tomb behind him and the arena's own light.</summary>
         private static void BuildTombArenaDressing(Rect inside, Transform parent)
         {
-            var backdrop = Prop(parent, "env_tomb_arena_backdrop", new Vector2(inside.center.x, inside.yMin - 1f),
-                "BackgroundNear", 5, 1.15f);
+            // The painted Tomb draws its arena's wall itself.
+            var backdrop = _tombPainted ? null : Prop(parent, "env_tomb_arena_backdrop",
+                new Vector2(inside.center.x, inside.yMin - 1f), "BackgroundNear", 5, 1.15f);
             if (backdrop != null)
             {
                 backdrop.name = "ArenaBackdrop";

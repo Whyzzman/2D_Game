@@ -32,8 +32,11 @@ namespace ForgottenKingdom.Tests
         {
             var dressing = Object.FindObjectsByType<SpriteRenderer>()
                 .Where(r => r.transform.parent != null && r.transform.parent.name == "TombLook").ToArray();
-            Assert.That(dressing.Count(r => r.name.EndsWith("_Chain")), Is.GreaterThanOrEqualTo(60),
-                "The slabs of the shafts hang from chains.");
+            // The painted Tomb (2026-10-04) draws each hanging slab's chains into its stone.
+            Assert.That(GameObject.Find("Tomb").transform.Find("Painted/Terrain"), Is.Not.Null,
+                "The slabs of the shafts hang from painted chains.");
+            Assert.That(dressing.Count(r => r.name.EndsWith("_Chain")), Is.Zero,
+                "No tiled chain is laid over the painted ones.");
             Assert.That(dressing.Where(r => r.name.EndsWith("_Up")), Is.Empty,
                 "The Tomb from its text has walls up to its vaults; nothing is carried into the dark.");
             Assert.That(dressing.Any(r => r.GetComponent<Collider2D>() != null), Is.False,

@@ -86,7 +86,8 @@
   Лес и Село уже такие: сцену из текста собирают `SceneTomb.Apply` / `SceneForest.Apply` /
   `SceneVillage.Apply` (после `Build`), тесты берут места из текста (`TombScene.Spot`, `ForestScene.Spot`),
   не числами. Новая зона — ещё `ProjectSettings/EditorBuildSettings.asset` из копии (сцена зоны). Картинки комнат карты — `ExportMapRooms` → `tools/map-art/render.sh
-  rooms` → `RefreshMapArt`.
+  rooms` → `RefreshMapArt`. Нарисованная зона (Гробница): сменил текст — `tools/level-art/render.sh <зона>`
+  → `RefreshLevelArt` → `Scene<Зона>.Apply` (`LEVEL_TOOL.md`, «Нарисованный уровень»).
 - `Build` пересоздаёт дочерние объекты префабов врагов с новыми fileID — переопределения
   сцены на них пропадут; настраивать через генератор.
 - Весь арт и звук — процедурные плейсхолдеры, генератор перезаписывает их при каждой сборке.

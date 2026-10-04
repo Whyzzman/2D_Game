@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Гробниця — новий вигляд</title>
+<style>
+  :root { --bg: #0b0c0f; --text: #d8cbb4; --muted: #8a8172; --gold: #c9a14a; }
+  html, body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.5 Georgia, serif; }
+  body.shot { overflow: hidden; }
+  main { max-width: 1280px; margin: 0 auto; padding: 24px 16px 48px; }
+  h1 { font-weight: normal; letter-spacing: .08em; color: var(--gold); margin: 0 0 4px; }
+  p.note { color: var(--muted); margin: 0 0 20px; }
+  figure { margin: 0 0 28px; }
+  figcaption { color: var(--muted); margin-top: 6px; }
+  canvas { width: 100%; height: auto; display: block; border: 1px solid #222; }
+  body.shot main { padding: 0; max-width: none; }
+  body.shot h1, body.shot p.note, body.shot figcaption { display: none; }
+  body.shot figure { margin: 0; }
+  body.shot canvas { border: 0; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Забута Гробниця — новий вигляд</h1>
+  <p class="note">Макет кадру гри (камера 32 × 18 юнітів). Пілот переробки зон: органічні маси каменю, світлий кант там, де можна стояти, п'ять планів глибини, промені й туман.</p>
+  <figure id="f-hall"><canvas id="hall" width="1920" height="1080"></canvas>
+    <figcaption>Велика поховальна зала: склепіння зі стрілчастих арок, пролом у стелі з променем, вівтар — єдине тепле світло.</figcaption></figure>
+  <figure id="f-crypt"><canvas id="crypt" width="1920" height="1080"></canvas>
+    <figcaption>Затоплений склеп: обвалена крипта, що стала печерою; вода внизу, струмінь зі стелі, уступи з канту.</figcaption></figure>
+</main>
+<script src="paint.js"></script>
+<script src="scenes.js"></script>
+</body>
+</html>

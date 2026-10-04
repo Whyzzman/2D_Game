@@ -61,6 +61,8 @@ namespace ForgottenKingdom.EditorTools
             var previous = Physics2D.queriesHitTriggers;
             Physics2D.queriesHitTriggers = false;
             var layout = level.Find(ContentBuilder.TombRootName);
+            // The painted Tomb hangs its slabs on painted chains.
+            var painted = layout != null && layout.Find(ContentBuilder.PaintedRootName) != null;
             foreach (var box in Solids(level))
             {
                 var bounds = box.bounds;
@@ -72,7 +74,7 @@ namespace ForgottenKingdom.EditorTools
                     CarryUp(root, wall, box, bounds);
                 }
                 else if (!upright && bounds.size.y <= 0.7f && bounds.size.x <= 7f && (bounds.min.y > 0.8f || fromText)
-                    && chain != null)
+                    && chain != null && !(fromText && painted))
                 {
                     Hang(root, chain, box, bounds.min.x + 0.35f, bounds.max.y);
                     Hang(root, chain, box, bounds.max.x - 0.35f, bounds.max.y);

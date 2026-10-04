@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<title>Painter рівнів</title>
+<style>
+  html, body { margin: 0; background: transparent; }
+  body.preview { background: #0a0b0e; }
+  canvas { display: block; }
+</style>
+</head>
+<body>
+<canvas id="out"></canvas>
+<script src="noise.js"></script>
+<script src="level-text.js"></script>
+<script src="looks.js"></script>
+<script src="terrain.js"></script>
+<script src="backdrop.js"></script>
+<script>
+// ?zone=tomb&what=terrain&x=-64&y=-16&size=16&ppu=48 — шматок каменю (прозорий фон)
+// ?zone=tomb&what=room&id=room_tomb_entrance&layer=mid|near&ppu=32 — тло кімнати
+// ?zone=tomb&what=preview&ppu=8 — уся зона разом, для перегляду
+(async function () {
+  const q = new URLSearchParams(location.search);
+  const zoneName = q.get("zone") || "tomb";
+  const text = await (await fetch(`/Assets/Game/Levels/${zoneName}.txt`)).text();
+  const zone = LevelText.parse(text);
+  const look = LevelLooks[zoneName];
+  const canvas = document.getElementById("out");
+  const what = q.get("what") || "preview";
+  const ppu = parseFloat(q.get("ppu") || "48");
+  const seed = PaintNoise.seedOf(zoneName);
+  if (what === "terrain") {
+    const size = parseFloat(q.get("size") || "16");
+    canvas.width = canvas.height = Math.round(size * ppu);
+    LevelTerrain.paintChunk(canvas, zone, parseFloat(q.get("x")), parseFloat(q.get("y")), size, size, ppu, look, seed);
+  } else if (what === "breakable") {
+    // стіна тайника: ті клітинки — камінь, решта як у камені площини
+    const cx = parseInt(q.get("cx"), 10), cy = parseInt(q.get("cy"), 10), h = parseInt(q.get("h"), 10);
+    const pad = parseFloat(q.get("pad") || "0.5");
+    for (let y = cy; y < cy + h; y++) for (let x = cx; x < cx + 2; x++) zone.cells.set(x * 100003 + y, "#");
+    const [wx, wy] = LevelText.world(zone, cx, cy);
+    const sx = 2 * zone.cell + 2 * pad, sy = h * zone.cell + 2 * pad;
+    canvas.width = Math.round(sx * ppu); canvas.height = Math.round(sy * ppu);
+    LevelTerrain.paintChunk(canvas, zone, wx - pad, wy - pad, sx, sy, ppu, look, seed);
+  } else if (what === "room") {
+    LevelBackdrop.paintRoom(canvas, zone, zone.rooms.find(r => r.id === q.get("id")), q.get("layer"), ppu, look);
+  } else if (what === "view") {
+    // кадр гри: x, y — лівий нижній кут, 32 × 18 юнітів
+    document.body.classList.add("preview");
+    LevelBackdrop.paintPreview(canvas, zone, ppu, look, seed,
+      { x: parseFloat(q.get("x")), y: parseFloat(q.get("y")), w: 32, h: 18 });
+  } else {
+    document.body.classList.add("preview");
+    LevelBackdrop.paintPreview(canvas, zone, ppu, look, seed);
+  }
+  if (what !== "preview" && what !== "view") PaintNoise.dither(canvas, seed);
+  document.title = "done";
+})();
+</script>
+</body>
+</html>

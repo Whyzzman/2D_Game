@@ -39,12 +39,19 @@ namespace ForgottenKingdom.Tests
         // ---------- the level is dressed ----------
 
         [UnityTest]
-        public IEnumerator TheTombIsDressedRatherThanGrey()
+        public IEnumerator TheTombIsPaintedRatherThanTiled()
         {
+            // Since the zones' rework (2026-10-04) the painter draws the Tomb: its stone in pieces
+            // over the whole zone, and the blocks keep only their colliders.
             yield return null;
-            var renderers = Dressings().SelectMany(d => d.GetComponentsInChildren<SpriteRenderer>()).ToArray();
-            Assert.That(renderers.Length, Is.GreaterThan(100),
-                "A handful of props is still a greybox with decoration on it.");
+            var painted = Painted();
+            Assert.That(painted, Is.Not.Null, "The Tomb has its painted art.");
+            var stone = painted.Find("Terrain").GetComponentsInChildren<SpriteRenderer>();
+            Assert.That(stone.Length, Is.GreaterThanOrEqualTo(40), "The stone covers the zone.");
+            Assert.That(stone.All(r => r.sprite != null && r.sortingLayerName == "GameplayEnvironment"), Is.True);
+            var tiled = GameObject.Find("room_tomb_entrance").GetComponentsInChildren<BoxCollider2D>()
+                .Where(b => b.name.StartsWith("Solid_")).SelectMany(b => b.GetComponentsInChildren<SpriteRenderer>());
+            Assert.That(tiled, Is.Empty, "A block is a collider; the picture is the painter's.");
         }
 
         [UnityTest]
@@ -60,20 +67,41 @@ namespace ForgottenKingdom.Tests
         }
 
         [UnityTest]
-        public IEnumerator EveryRoomHasItsOwnBackdropInItsOwnTone()
+        public IEnumerator EveryRoomHasItsOwnPaintedBackdrop()
         {
             // The user's rule (2026-10-03): no picture repeats from room to room so the eye catches it.
+            // Each room: a far layer sliding inside the room's mask, and its own wall in front.
             yield return null;
-            var tones = new System.Collections.Generic.Dictionary<Color, string>();
-            foreach (var dressing in Dressings())
+            var rooms = Painted().Find("Rooms");
+            var sprites = new System.Collections.Generic.HashSet<Sprite>();
+            foreach (var room in TombScene.Layout.Rooms)
             {
-                var backdrop = dressing.Find("Backdrop")?.GetComponent<SpriteRenderer>();
-                Assert.That(backdrop, Is.Not.Null, $"{dressing.parent.name} has no backdrop.");
-                Assert.That(backdrop.sortingLayerName, Is.EqualTo("BackgroundMid"));
-                Assert.That(tones.ContainsKey(backdrop.color), Is.False,
-                    $"{dressing.parent.name} wears the same tone as {(tones.TryGetValue(backdrop.color, out var other) ? other : "")}.");
-                tones[backdrop.color] = dressing.parent.name;
+                var holder = rooms.Find("Backdrop_" + room.Id);
+                Assert.That(holder, Is.Not.Null, $"{room.Id} has no backdrop.");
+                var far = holder.Find("Far").GetComponent<SpriteRenderer>();
+                var wall = holder.Find("Wall").GetComponent<SpriteRenderer>();
+                Assert.That(far.sortingLayerName, Is.EqualTo("BackgroundMid"));
+                Assert.That(far.maskInteraction, Is.EqualTo(SpriteMaskInteraction.VisibleInsideMask));
+                Assert.That(far.GetComponent<RoomParallax>(), Is.Not.Null);
+                Assert.That(wall.sortingLayerName, Is.EqualTo("BackgroundNear"));
+                Assert.That(sprites.Add(far.sprite) && sprites.Add(wall.sprite), Is.True, $"{room.Id} repeats a picture.");
             }
+        }
+
+        [UnityTest]
+        public IEnumerator ARoomsFarLayerSlidesWithTheCameraButNeverPastItsMargin()
+        {
+            var holder = Painted().Find("Rooms/Backdrop_room_tomb_burial_hall");
+            var far = holder.Find("Far");
+            var before = far.position;
+            _player.GetComponent<PlayerMotor2D>().ResetTo(TombScene.Spot("statue-west") + new Vector2(0f, 0.85f));
+            yield return new WaitForSeconds(0.6f);
+            Assert.That((far.position - before).magnitude, Is.GreaterThan(0.05f), "The far layer moves: there is depth.");
+            // Painted 3 units bigger than the room on every side, it rests with that margin round the room.
+            var rest = TombScene.Layout.WorldBounds(TombScene.Layout.Room("room_tomb_burial_hall")).min - Vector2.one * 3f;
+            var moved = (Vector2)far.position - rest;
+            Assert.That(Mathf.Abs(moved.x), Is.LessThanOrEqualTo(3.001f));
+            Assert.That(Mathf.Abs(moved.y), Is.LessThanOrEqualTo(3.001f), "Never past the painted margin.");
         }
 
         [UnityTest]
@@ -93,8 +121,7 @@ namespace ForgottenKingdom.Tests
         public IEnumerator TheGameplayFloorDrawsInFrontOfItsBackground()
         {
             yield return null;
-            var floor = GameObject.Find("room_tomb_entrance").GetComponentsInChildren<BoxCollider2D>()
-                .First(b => b.name.StartsWith("Solid_")).GetComponentInChildren<SpriteRenderer>();
+            var floor = Painted().Find("Terrain").GetComponentInChildren<SpriteRenderer>();
             var names = SortingLayer.layers.Select(layer => layer.name).ToList();
 
             Assert.That(floor.sortingLayerName, Is.EqualTo("GameplayEnvironment"));
@@ -219,7 +246,7 @@ namespace ForgottenKingdom.Tests
         public IEnumerator TheArenaHasItsMonumentalBackdropBehindTheBoss()
         {
             yield return null;
-            var backdrop = GameObject.Find("ArenaBackdrop");
+            var backdrop = Painted().Find("Rooms/Backdrop_room_tomb_guardian_arena/Wall");
             var boss = TombScene.Guardian();
 
             Assert.That(backdrop, Is.Not.Null);
@@ -260,6 +287,11 @@ namespace ForgottenKingdom.Tests
         }
 
         // ---------- helpers ----------
+
+        private static Transform Painted() =>
+            GameObject.Find(TombRoot)?.transform.Find("Painted");
+
+        private const string TombRoot = "Tomb";
 
         private static Transform[] Dressings() =>
             TombScene.Layout.Rooms.Select(r => GameObject.Find(r.Id)?.transform.Find("Dressing"))
