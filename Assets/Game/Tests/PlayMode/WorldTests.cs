@@ -328,8 +328,15 @@ namespace ForgottenKingdom.Tests
             yield return StandAt("warden-shrine");
 
             var warden = TombScene.WardenEncounter();
-            yield return Place(new Vector2(276f, 1f));
-            Assume.That(warden.IsFightActive, Is.True);
+            // Where the Warden's fight begins, wherever the Forest's text puts his arena.
+            yield return Place((Vector2)warden.transform.position + new Vector2(0f, -1f));
+            var until = Time.realtimeSinceStartup + 4f;
+            while (!warden.IsFightActive && Time.realtimeSinceStartup < until)
+            {
+                yield return null;
+            }
+
+            Assert.That(warden.IsFightActive, Is.True, "In his arena, the fight begins.");
             yield return StandAt("warden-shrine");
 
             Assert.That(_travel.Check("warden-shrine", "tomb-altar-01"),
