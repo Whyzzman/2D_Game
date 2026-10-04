@@ -1,6 +1,6 @@
 # Тінь Забутого Королівства — правила разработки
 
-Читать: этот файл → [общие правила](.agents/global-agent-rules/AGENTS.md) →
+Обзор игры, запуск, клавиши, устройство проекта — [`README.md`](README.md). Читать: этот файл → [общие правила](.agents/global-agent-rules/AGENTS.md) →
 [стиль C#](.agents/global-agent-rules/code-style.md) при работе с C# →
 [UI-пайплайн](.agents/global-agent-rules/pipelines/unity-ui-toolkit-interface-pipeline.md)
 при работе с интерфейсом → документ затрагиваемой функции (`gamedesign/DEVELOPMENT_PLAN.md`,
