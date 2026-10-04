@@ -114,7 +114,8 @@ namespace ForgottenKingdom.EditorTools
                 return;
             }
 
-            backdrop.transform.position = new Vector3(288f, -2f, 0f);
+            var arena = ContentBuilder.ForestRoomBounds(ContentBuilder.ForestArenaRoom);
+            backdrop.transform.position = new Vector3(arena.center.x, arena.yMin + 1f - 2f, 0f);
             backdrop.transform.localScale = new Vector3(2f, 2f, 1f);
             var renderer = backdrop.GetComponent<SpriteRenderer>();
             renderer.sprite = sprite;
@@ -167,11 +168,19 @@ namespace ForgottenKingdom.EditorTools
                 }
 
                 var topY = bounds.max.y;
+                // Only a top the hero can stand on: a block with rock on it is inside the rock.
+                var open = !Continues(blocks, box, new Vector2(bounds.center.x, topY + 0.1f));
+                if (!open)
+                {
+                    continue;
+                }
+
                 // The mat's top row (30 of 56 px) sits on the collider's top.
                 Strip(block, EdgePrefix + "Top", top, new Vector2(bounds.center.x, topY - 0.02f),
                     new Vector2(bounds.size.x + 0.1f, 0.56f), 2);
 
-                var floating = bounds.min.y > 0.2f;
+                var floating = !Continues(blocks, box, new Vector2(bounds.center.x, bounds.min.y - 0.1f))
+                    && bounds.size.y <= 1.1f;
                 if (floating && bounds.size.x >= 1.2f)
                 {
                     Strip(block, EdgePrefix + "Roots", roots,
@@ -262,8 +271,8 @@ namespace ForgottenKingdom.EditorTools
         // ---------- moonlight ----------
 
         /// <summary>
-        /// Shafts of moonlight slanting down through the trees from the upper right, where the
-        /// moon stands in the sky; one broad one straight down into the abbey. Guide the eye,
+        /// Shafts of moonlight slanting down through the trees of every open room, from the upper
+        /// right where the moon stands; one straight down into the abbey. Guide the eye,
         /// light nothing — like the Tomb's.
         /// </summary>
         private static void BuildMoonlight(Transform root, Material unlit)
@@ -276,19 +285,26 @@ namespace ForgottenKingdom.EditorTools
                 return;
             }
 
-            foreach (var (x, tilt, width, alpha) in new[]
+            // One shaft through the canopy of every open room, slanting from the moon's side.
+            var zone = ContentBuilder.ForestLayout;
+            foreach (var room in zone.Rooms)
             {
-                (74f, -13f, 2.8f, 0.075f), (93f, -10f, 2.2f, 0.06f), (117f, -15f, 3.4f, 0.08f),
-                (142f, -12f, 2.6f, 0.07f), (164f, -14f, 3f, 0.075f), (188f, -11f, 2.4f, 0.06f),
-                (214f, -15f, 3.2f, 0.08f), (238f, -12f, 2.6f, 0.07f), (259f, -13f, 3f, 0.075f),
-                (288f, 0f, 6f, 0.07f)
-            })
-            {
+                if (room.IsSecret || ContentBuilder.ForestEnclosedRooms.Contains(room.Id))
+                {
+                    continue;
+                }
+
+                var bounds = zone.WorldBounds(room);
+                var hash = Mathf.Abs(room.Id.GetHashCode());
+                var x = Mathf.Lerp(bounds.xMin, bounds.xMax, 0.3f + (hash % 40) / 100f);
+                var tilt = room.Id == ContentBuilder.ForestArenaRoom ? 0f : -10f - hash % 6;
+                var width = Mathf.Clamp(bounds.width * 0.12f, 2f, 6f);
+                var alpha = 0.06f + (hash % 3) * 0.01f;
                 var beam = new GameObject("Moonlight");
                 beam.transform.SetParent(root, false);
-                beam.transform.position = new Vector2(x, 6.5f);
+                beam.transform.position = new Vector2(x, bounds.center.y);
                 beam.transform.rotation = Quaternion.Euler(0f, 0f, tilt);
-                beam.transform.localScale = new Vector3(width, 15f, 1f);
+                beam.transform.localScale = new Vector3(width, bounds.height, 1f);
                 var renderer = beam.AddComponent<SpriteRenderer>();
                 renderer.sprite = shaft;
                 renderer.color = new Color(0.74f, 0.9f, 0.88f, alpha);

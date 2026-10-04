@@ -325,61 +325,15 @@ namespace ForgottenKingdom.EditorTools
 
         private const string GrappleReturnsName = "GrappleReturns";
 
-        /// <summary>
-        /// A place in the old zones that only the King's gift reaches, so the way back is worth
-        /// walking: a hunter's hollow over the Poison Grove (a relic and a purse). The Tomb's
-        /// mason's cache moved behind the bell shaft's second jump with the Tomb's rebuild (its flask
-        /// shard keeps the id <c>grapple-tomb-flask</c> and lives in the Tomb's text). The hollow lies
-        /// higher than a second jump reaches from anything below it; the ring sits beside the shelf.
-        /// Kept in one folder of the level, which the world split hands to the zones by position.
-        /// </summary>
+        /// <summary>Clears the old root of the grapple's places in the old zones.</summary>
         private static void BuildGrappleReturns(Transform level, GameProgress progress, GameObject pickup)
         {
+            // The rings are in the zones' texts now (the Tomb's crypt nest, the Forest's hollow,
+            // root nest and deep roots); only a world built before that still has this root.
             var old = level.Find(GrappleReturnsName);
             if (old != null)
             {
                 Object.DestroyImmediate(old.gameObject);
-            }
-
-            foreach (var find in Object.FindObjectsByType<WorldPickup>(FindObjectsInactive.Include))
-            {
-                if (find.PersistentId != null && find.PersistentId.StartsWith("grapple-forest"))
-                {
-                    Object.DestroyImmediate(find.gameObject);
-                }
-            }
-
-            // Built outside the full generator too (SceneCapital.Apply): the shelves need their art.
-            if (_tomb == null) { _tomb = PlaceholderTombArt.Generate(); }
-            if (_forest == null) { _forest = PlaceholderForestArt.Generate(); }
-            var root = Section(level, GrappleReturnsName);
-
-            // The Forest: from the step (2.9) or the air-dash ledge (5.9) the ring at 10.9 is in
-            // reach; the hollow at 10.0 is 0.7 over the ledge's second jump (9.3).
-            var forest = Section(root, "HunterHollow");
-            var hollow = ForestBlock(forest, "HunterHollowShelf", new Vector2(164f, 9.75f),
-                new Vector2(4f, 0.5f), ForestSurface.Ground);
-            Ensure<NonClimbableSurface>(hollow);
-            PlaceGrappleRing(forest, "HunterHollowRing", new Vector2(167.5f, 10.9f));
-            AreaTrigger(forest, ForestHunterHollow, new Vector2(164f, 10.9f), new Vector2(3.6f, 1.6f));
-            PlaceAbilityGate(forest, "HunterHollowHint", new Vector2(166f, 3.7f), AbilityIds.Grapple,
-                "conn_forest_grove_hollow", new Vector2(164f, 10.5f), progress);
-
-            if (pickup != null)
-            {
-                PlacePickup(pickup, new Vector2(163.3f, 10.6f), progress, HunterRelicItemId, false, 1,
-                    "grapple-forest-talon", false);
-                PlacePickup(pickup, new Vector2(164.9f, 10.5f), progress, string.Empty, true, 400,
-                    "grapple-forest-purse", true);
-            }
-
-            // The helpers place finds at the scene's root; they belong with their shelves.
-            foreach (var find in Object.FindObjectsByType<WorldPickup>(FindObjectsInactive.Include))
-            {
-                if (find.PersistentId != null && find.PersistentId.StartsWith("grapple-forest"))
-                {
-                    find.transform.SetParent(forest, true);
-                }
             }
         }
 

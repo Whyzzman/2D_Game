@@ -20,6 +20,10 @@ namespace ForgottenKingdom
         [SerializeField, Range(0f, 1f)] private float _factor = 0.5f;
         [Tooltip("Vertical share, kept smaller: strong vertical parallax reads as sliding.")]
         [SerializeField, Range(0f, 1f)] private float _verticalFactor = 0.15f;
+        [Tooltip("A tall zone: the layer keeps its height on the screen, offset from the view's "
+            + "centre, and only scrolls sideways.")]
+        [SerializeField] private bool _lockVertical;
+        [SerializeField] private float _verticalOffset = -8f;
         [SerializeField] private Transform _camera;
         private SpriteRenderer _renderer;
         private MaterialPropertyBlock _block;
@@ -54,7 +58,7 @@ namespace ForgottenKingdom
             // drifts at (factor - 1), which is the parallax.
             var delta = _camera.position - _origin;
             var x = _origin.x + delta.x * _factor;
-            var y = _origin.y + delta.y * _verticalFactor;
+            var y = _lockVertical ? _camera.position.y + _verticalOffset : _origin.y + delta.y * _verticalFactor;
 
             // Then it is wrapped by whole tile widths so it always covers the view. The content
             // tiles seamlessly, so a jump of exactly one tile is invisible — and a dash can never

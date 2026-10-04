@@ -29,9 +29,7 @@ namespace ForgottenKingdom.EditorTools
             var root = Section(level, "Atmosphere");
             BuildGlobalLight(systems);
             BuildCandleLights(level);
-            BuildArenaLights(root);
             BuildFoundations(level);
-            BuildFog(root);
             BuildPlayerLight(player);
             BuildCheckpointLights();
             BuildBossLights();
@@ -131,24 +129,6 @@ namespace ForgottenKingdom.EditorTools
                 host.transform.localScale = Vector3.one;
                 AddLight(host, Light2D.LightType.Point, CandleLight, 0.95f, 3.2f, 0.2f, 0.6f);
                 host.AddComponent<LightFlicker>();
-            }
-        }
-
-        /// <summary>
-        /// The Warden's arena (the Guardian's lights come with the Tomb, BuildTomb). The arenas are the brightest, highest-contrast rooms of their zones: cold light
-        /// falling from above onto the fighting floor, and a deeper glow behind the boss.
-        /// </summary>
-        private static void BuildArenaLights(Transform root)
-        {
-            var arenas = Section(root, "ArenaLights");
-            foreach (var (x, y, color, intensity, radius) in new[]
-            {
-                (282f, 9f, new Color(0.72f, 0.88f, 0.92f), 1.0f, 11f),
-                (295f, 9f, new Color(0.72f, 0.88f, 0.92f), 0.9f, 10f)
-            })
-            {
-                var host = LightChild(arenas, "ArenaLight", new Vector2(x, y));
-                AddLight(host, Light2D.LightType.Point, color, intensity, radius, 1.5f, 0.45f);
             }
         }
 
@@ -325,32 +305,6 @@ namespace ForgottenKingdom.EditorTools
                 shadeRenderer.sprite = depthSprite;
                 shadeRenderer.sharedMaterial = _material;
                 SetSorting(shadeRenderer, "GameplayEnvironment", -2);
-            }
-        }
-
-        /// <summary>
-        /// Two banks of fog for the Forest (the Tomb, a tall zone, has its fog and shafts per room): a far one between the nave and the arcade, a low one lying
-        /// on the floor behind the fight. Slow drift; never on the line of combat.
-        /// </summary>
-        private static void BuildFog(Transform root)
-        {
-            var fog = Shape("shape_fog_band");
-            if (fog == null)
-            {
-                return;
-            }
-
-            foreach (var (zone, from, to, tone) in new[]
-            {
-                (ForestZoneId, 60f, 320f, new Color(0.58f, 0.72f, 0.7f))
-            })
-            {
-                var bank = Section(root, "Fog_" + zone);
-                SetString(bank.gameObject.AddComponent<ZoneBackdrop>(), "_zoneId", zone);
-                FogLayer(bank, fog, (from + to) * 0.5f, to - from, 2.6f, 5f,
-                    new Color(tone.r, tone.g, tone.b, 0.2f), "BackgroundMid", 20, 0.25f);
-                FogLayer(bank, fog, (from + to) * 0.5f, to - from, 0.55f, 1.7f,
-                    new Color(tone.r, tone.g, tone.b, 0.14f), "EnvironmentBack", 40, 0.4f);
             }
         }
 

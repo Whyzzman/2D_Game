@@ -80,11 +80,23 @@ namespace ForgottenKingdom.Tests
                 .ToArray();
 
             Assert.That(blocks.Length, Is.GreaterThan(12), "The forest's ground was found.");
+            var ground = Object.FindObjectsByType<BoxCollider2D>()
+                .Where(b => b.gameObject.layer == 9 && !b.isTrigger).ToArray();
+            bool Covered(BoxCollider2D self, Vector2 probe) =>
+                ground.Any(other => other != self && other.bounds.Contains(new Vector3(probe.x, probe.y, other.bounds.center.z)));
             foreach (var block in blocks)
             {
+                // A top with rock on it is inside the rock: only a top the hero can stand on grows moss.
+                var bounds = block.bounds;
+                if (Covered(block, new Vector2(bounds.center.x, bounds.max.y + 0.1f)))
+                {
+                    continue;
+                }
+
                 Assert.That(block.transform.Find("ForestEdgeTop"), Is.Not.Null,
                     $"{block.name} is a bare slab with no moss on its edge.");
-                if (block.bounds.min.y > 0.2f && block.bounds.size.x >= 1.2f)
+                if (bounds.size.y <= 1.1f && bounds.size.x >= 1.2f
+                    && !Covered(block, new Vector2(bounds.center.x, bounds.min.y - 0.1f)))
                 {
                     Assert.That(block.transform.Find("ForestEdgeRoots"), Is.Not.Null,
                         $"{block.name} floats with nothing growing under it.");
@@ -113,11 +125,13 @@ namespace ForgottenKingdom.Tests
         {
             yield return null;
             var abbey = GameObject.Find("env_forest_arena_backdrop").GetComponent<SpriteRenderer>();
-            var floor = GameObject.Find("WardenArenaFloor").GetComponent<BoxCollider2D>().bounds;
+            // The arena of the Forest's text, less its walls: the fighting floor and the air over it.
+            var room = ForestScene.Room("room_forest_warden_arena");
+            var floor = Rect.MinMaxRect(room.xMin + 1f, room.yMin + 1f, room.xMax - 1f, room.yMax - 1f);
 
-            Assert.That(abbey.bounds.min.x, Is.LessThan(floor.min.x));
-            Assert.That(abbey.bounds.max.x, Is.GreaterThan(floor.max.x));
-            Assert.That(abbey.bounds.max.y, Is.GreaterThan(12f), "Its gable and sky fill the widened fight view.");
+            Assert.That(abbey.bounds.min.x, Is.LessThan(floor.xMin));
+            Assert.That(abbey.bounds.max.x, Is.GreaterThan(floor.xMax));
+            Assert.That(abbey.bounds.max.y, Is.GreaterThan(floor.yMin + 12f), "Its gable and sky fill the widened fight view.");
             var layers = SortingLayer.layers.Select(l => l.name).ToList();
             Assert.That(layers.IndexOf(abbey.sortingLayerName), Is.LessThan(layers.IndexOf("Characters")));
         }

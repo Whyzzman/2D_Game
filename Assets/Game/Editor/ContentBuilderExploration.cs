@@ -35,9 +35,6 @@ namespace ForgottenKingdom.EditorTools
         /// <summary>Each lies on the same shelf as the pocket's find, a step to its side.</summary>
         private static readonly ShardSpot[] PocketShards =
         {
-            new ShardSpot(new Vector2(194.5f, 12.3f), VesselKind.Health, "forest-ruin-top"),
-            new ShardSpot(new Vector2(204.2f, 15.4f), VesselKind.Health, "forest-hunters-perch"),
-            new ShardSpot(new Vector2(305.8f, 3.3f), VesselKind.Mana, "forest-overlook"),
             new ShardSpot(new Vector2(423.3f, 8.8f), VesselKind.Health, "capital-bell-nest")
         };
 
@@ -80,10 +77,6 @@ namespace ForgottenKingdom.EditorTools
         /// </summary>
         private static readonly SecretRoom[] SecretRooms =
         {
-            // East of the grove's ledge (169.5..174.5, 5.9).
-            new SecretRoom(ForestGroveStash, 1, 175f, 179f, 5.9f, RoomSide.West, VesselKind.Mana),
-            // East of the hunters' perch (201..205, 14.9).
-            new SecretRoom(ForestFalconerNest, 1, 205.5f, 209.5f, 14.9f, RoomSide.West, VesselKind.Health),
             // East of the bell nest (421..424, 8.2).
             new SecretRoom(CapitalRoofCache, 2, 424.5f, 428.5f, 8.2f, RoomSide.West, VesselKind.Mana),
             // West of the royal gallery (495..509, 6.8).
@@ -106,11 +99,12 @@ namespace ForgottenKingdom.EditorTools
                 Object.DestroyImmediate(old.gameObject);
             }
 
-            // The Tomb's shards are its text's (Levels/tomb.txt) and stay with its rooms.
+            // The Tomb's and the Forest's shards are their texts' (Levels/*.txt) and stay with their rooms.
             var tomb = level.transform.Find(TombRootName);
+            var forest = level.transform.Find(ForestRootName);
             foreach (var find in Object.FindObjectsByType<WorldPickup>(FindObjectsInactive.Include))
             {
-                if (tomb != null && find.transform.IsChildOf(tomb))
+                if ((tomb != null && find.transform.IsChildOf(tomb)) || (forest != null && find.transform.IsChildOf(forest)))
                 {
                     continue;
                 }
@@ -149,7 +143,6 @@ namespace ForgottenKingdom.EditorTools
             }
 
             BuildArmsTrial(Section(root, "ArmsTrial"), pickup, progress);
-            BuildThornCourse(Section(root, "ThornCourse"), pickup, progress);
             BuildInscriptions(Section(root, "Inscriptions"));
             if (progress != null)
             {
@@ -319,87 +312,6 @@ namespace ForgottenKingdom.EditorTools
             renderer.sharedMaterial = _material;
             renderer.color = color;
             SetSorting(renderer, "EnvironmentBack", 6);
-        }
-
-        /// <summary>A platform of the Thorn Path: its span and its top.</summary>
-        private readonly struct Perch
-        {
-            public readonly float X0;
-            public readonly float X1;
-            public readonly float Top;
-
-            public Perch(float x0, float x1, float top)
-            {
-                X0 = x0;
-                X1 = x1;
-                Top = top;
-            }
-        }
-
-        /// <summary>
-        /// The Thorn Path over the Deep Forest: six perches, each hop asking one thing — a jump,
-        /// a second jump, a dash in the air across nine units no jump spans (a jump and a second
-        /// jump carry about 7.4), then two more climbs. Under every gap a tray of thorns from
-        /// the second perch on (over 5 units up, out of a jump's reach from the road): falling short
-        /// puts the hero back on the perch they left, as spikes do in Hollow Knight. The
-        /// mana shard waits on the last.
-        /// </summary>
-        public static readonly Vector4[] ThornPerches =
-        {
-            new Vector4(214f, 216.5f, 1.6f, 0f),
-            new Vector4(219f, 220.5f, 3.2f, 0f),
-            new Vector4(223.5f, 225f, 6.2f, 0f),
-            new Vector4(234f, 235.5f, 6.2f, 0f),
-            new Vector4(238f, 239.5f, 8.6f, 0f),
-            new Vector4(242f, 245f, 10.4f, 0f)
-        };
-
-        private static void BuildThornCourse(Transform root, GameObject pickup, GameProgress progress)
-        {
-            for (var i = 0; i < ThornPerches.Length; i++)
-            {
-                var perch = new Perch(ThornPerches[i].x, ThornPerches[i].y, ThornPerches[i].z);
-                var block = ForestBlock(root, $"ThornPerch{i}", new Vector2((perch.X0 + perch.X1) * 0.5f, perch.Top - 0.25f),
-                    new Vector2(perch.X1 - perch.X0, 0.5f), ForestSurface.Plank);
-                Ensure<NonClimbableSurface>(block);
-                if (i == 0)
-                {
-                    continue;
-                }
-
-                // The thorns under the gap before this perch, a little below the lower of the two.
-                var previous = ThornPerches[i - 1];
-                var from = previous.y;
-                var to = perch.X0;
-                var trayY = Mathf.Min(previous.z, perch.Top) - 1.2f;
-                // Under the first two hops a fall only lands on the forest floor: thorns there
-                // would be in reach of an ordinary jump on the main path below.
-                if (i <= 2)
-                {
-                    continue;
-                }
-
-                var thorns = new GameObject($"Thorns{i}");
-                thorns.transform.SetParent(root);
-                thorns.transform.position = new Vector2((from + to) * 0.5f, trayY);
-                var spikes = thorns.AddComponent<Spikes>();
-                SetVector(spikes, "_size", new Vector2(to - from, 0.4f));
-                SetColor(spikes, "_color", new Color(0.36f, 0.3f, 0.22f));
-            }
-
-            var last = ThornPerches[ThornPerches.Length - 1];
-            PlacePickup(pickup, new Vector2((last.x + last.y) * 0.5f, last.z + 0.7f), progress,
-                VesselShards.ManaPrefix + "thorn-course", false, 1, ExplorationIdPrefix + "mana-thorn-course", false);
-            foreach (var find in Object.FindObjectsByType<WorldPickup>(FindObjectsInactive.Include))
-            {
-                if (find.PersistentId == ExplorationIdPrefix + "mana-thorn-course")
-                {
-                    find.transform.SetParent(root, true);
-                }
-            }
-
-            AreaTrigger(root, ForestThornCourse, new Vector2((last.x + last.y) * 0.5f, last.z + 1f),
-                new Vector2(last.y - last.x - 0.4f, 1.6f));
         }
 
         /// <summary>Floor, roof, far wall, the breakable wall, the veil over the inside, the shard.</summary>

@@ -48,7 +48,7 @@ namespace ForgottenKingdom.EditorTools
                 if (respawner != null)
                 {
                     var serialized = new SerializedObject(respawner);
-                    serialized.FindProperty("_worldFloorY").floatValue = -30f;
+                    serialized.FindProperty("_worldFloorY").floatValue = ContentBuilder.WorldFloorY;
                     serialized.ApplyModifiedPropertiesWithoutUndo();
                 }
 

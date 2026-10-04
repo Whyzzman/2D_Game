@@ -463,6 +463,99 @@
       }
     },
     // ---------------- Столиця
+    canopy: function (B, f) {
+      layer("far"); for (var i = 0; i < 5; i++) { canopy(B.x + B.w * (0.08 + i * 0.21), B.y + B.h * (0.18 + (i % 2) * 0.12), B.w * 0.16, B.h * 0.22, C.far); }
+      layer("paint");
+      for (var t = 0; t < 3; t++) {
+        var top = trunk(B.x + B.w * (0.2 + t * 0.3), f, B.h * (0.75 + C.r() * 0.2), 5 + t, (C.r() - 0.5) * 14, C.ink);
+        bough(top[0], top[1] + 6, -20, -6, 3, C.ink); bough(top[0], top[1] + 12, 22, -9, 3, C.ink);
+        canopy(top[0], top[1], 16 + C.r() * 8, 9, C.ink, 0.9);
+      }
+    },
+    gravetree: function (B, f) {
+      layer("far"); ridge(B, B.y + B.h * 0.6, 14, C.far);
+      layer("paint");
+      var top = trunk(B.x + B.w * 0.62, f, B.h * 0.85, 9, 6, C.ink);
+      bough(top[0], top[1] + 6, -30, -4, 5, C.ink); bough(top[0], top[1] + 14, 26, -12, 4, C.ink);
+      for (var r = 0; r < 5; r++) { el("path", { d: smooth([[B.x + B.w * 0.62, f - 6], [B.x + B.w * (0.5 + r * 0.06), f - 2], [B.x + B.w * (0.42 + r * 0.1), f]], false), stroke: C.ink, "stroke-width": 2, fill: "none" }); }
+      var gx = B.x + B.w * 0.3;
+      el("path", { d: smooth([[gx - 7, f], [gx - 7, f - 14], [gx - 4, f - 21], [gx, f - 23], [gx + 4, f - 21], [gx + 7, f - 14], [gx + 7, f]], false) + " Z", fill: C.ink });
+      layer();
+      el("ellipse", { cx: B.x + B.w * 0.45, cy: f - 3, rx: B.w * 0.3, ry: 4, fill: C.glow, opacity: 0.28, filter: "url(#soft)" });
+    },
+    drips: function (B, f) {
+      layer("far"); ridge(B, B.y + B.h * 0.55, 10, C.far);
+      layer("paint");
+      var pts = [[B.x - 6, B.y - 6]];
+      for (var i = 0; i <= 14; i++) { var x = B.x + B.w * i / 14; pts.push([x, B.y + 3 + (i % 3) * 3]); }
+      pts.push([B.x + B.w + 6, B.y - 6]);
+      el("path", { d: smooth(pts, true), fill: C.ink });
+      layer();
+      for (var k = 0; k < 6; k++) {
+        var dx = B.x + B.w * (0.1 + k * 0.16), l = B.h * (0.25 + C.r() * 0.4);
+        el("path", { d: smooth([[dx, B.y + 6], [dx + 1, B.y + 6 + l * 0.6], [dx, B.y + 6 + l]], false), stroke: C.glow, "stroke-width": 1.4, fill: "none", opacity: 0.6 });
+        mote(dx, B.y + 8 + l, 1.8);
+      }
+    },
+    stonearch: function (B, f) {
+      layer("far"); ridge(B, B.y + B.h * 0.65, 8, C.far);
+      layer("paint");
+      var a = B.x + B.w * 0.25, b = B.x + B.w * 0.75, top = f - B.h * 0.6, deck = f - B.h * 0.66;
+      el("path", { d: "M" + (B.x + B.w * 0.12) + "," + f + " L" + (B.x + B.w * 0.12) + "," + deck + " L" + (B.x + B.w * 0.88) + "," + deck + " L" + (B.x + B.w * 0.88) + "," + f
+        + " L" + b + "," + f + " " + smooth([[b, f], [b, top + 10], [(a + b) / 2, top], [a, top + 10], [a, f]], false).slice(1) + " Z", fill: C.ink });
+    },
+    graves: function (B, f) {
+      layer("far"); for (var i = 0; i < 3; i++) { canopy(B.x + B.w * (0.2 + i * 0.3), B.y + B.h * 0.3, B.w * 0.18, B.h * 0.18, C.far); }
+      layer("paint");
+      for (var k = 0; k < 6; k++) {
+        var gx = B.x + B.w * (0.12 + k * 0.15) + (C.r() - 0.5) * 6, h = 9 + C.r() * 8, w = 4 + C.r() * 2, tilt = (C.r() - 0.5) * 4;
+        el("path", { d: smooth([[gx - w, f], [gx - w + tilt, f - h * 0.7], [gx + tilt, f - h], [gx + w + tilt, f - h * 0.7], [gx + w, f]], false) + " Z", fill: C.ink });
+      }
+      el("path", { d: smooth([[B.x + 6, f - 6], [B.x + B.w * 0.5, f - 8], [B.x + B.w - 6, f - 6]], false), stroke: C.ink, "stroke-width": 1, fill: "none" });
+    },
+    perches: function (B, f) {
+      layer("far"); ridge(B, B.y + B.h * 0.6, 12, C.far);
+      layer("paint");
+      for (var k = 0; k < 3; k++) {
+        var px = B.x + B.w * (0.2 + k * 0.3), py = f - B.h * (0.35 + (k % 2) * 0.2);
+        el("path", { d: "M" + px + "," + f + " L" + px + "," + py, stroke: C.ink, "stroke-width": 2.4 });
+        el("path", { d: smooth([[px - 12, py], [px, py - 2], [px + 12, py]], false), stroke: C.ink, "stroke-width": 2.2, fill: "none" });
+        el("path", { d: smooth([[px - 3, py - 1], [px - 4, py - 7], [px, py - 11], [px + 4, py - 7], [px + 3, py - 1]], false) + " Z", fill: C.ink });
+      }
+    },
+    rootmass: function (B, f) {
+      layer("far"); ridge(B, B.y + B.h * 0.5, 16, C.far);
+      layer("paint");
+      for (var k = 0; k < 9; k++) {
+        var x0 = B.x + B.w * C.r(), x1 = B.x + B.w * C.r();
+        el("path", { d: smooth([[x0, B.y - 2], [x0 + (x1 - x0) * 0.3, B.y + B.h * 0.35], [x1 - (x1 - x0) * 0.2, B.y + B.h * 0.6], [x1, f]], false), stroke: C.ink, "stroke-width": 2 + C.r() * 3, fill: "none" });
+      }
+      layer();
+      for (var m = 0; m < 5; m++) { mote(B.x + B.w * C.r(), B.y + B.h * (0.3 + C.r() * 0.5), 1.4); }
+    },
+    hanging: function (B, f) {
+      layer("far"); ridge(B, B.y + B.h * 0.7, 6, C.far);
+      layer("paint");
+      el("path", { d: "M" + (B.x - 4) + "," + (B.y - 4) + " L" + (B.x + B.w + 4) + "," + (B.y - 4) + " L" + (B.x + B.w + 4) + "," + (B.y + 6) + " " + smooth([[B.x + B.w + 4, B.y + 6], [B.x + B.w * 0.5, B.y + 10], [B.x - 4, B.y + 6]], false).slice(1) + " Z", fill: C.ink });
+      for (var k = 0; k < 7; k++) {
+        var x = B.x + 6 + k * (B.w - 12) / 6, l = B.h * (0.2 + C.r() * 0.35);
+        el("path", { d: smooth([[x, B.y + 6], [x - 3, B.y + 6 + l * 0.5], [x + 2, B.y + 6 + l]], false), stroke: C.ink, "stroke-width": 1.8, fill: "none" });
+      }
+    },
+    path: function (B, f) {
+      layer("far"); for (var i = 0; i < 4; i++) { canopy(B.x + B.w * (0.12 + i * 0.25), B.y + B.h * 0.25, B.w * 0.14, B.h * 0.25, C.far); }
+      layer("paint");
+      el("path", { d: smooth([[B.x, f - 2], [B.x + B.w * 0.3, f - 5], [B.x + B.w * 0.6, f - 3], [B.x + B.w, f - 6]], false), stroke: C.ink, "stroke-width": 3, fill: "none" });
+      for (var k = 0; k < 4; k++) { var sx = B.x + B.w * (0.15 + k * 0.23); el("path", { d: smooth([[sx - 4, f], [sx, f - 7 - C.r() * 5], [sx + 4, f]], false), fill: C.ink }); }
+    },
+    hollowfloor: function (B, f) {
+      layer("far"); ridge(B, B.y + B.h * 0.55, 18, C.far);
+      layer("paint");
+      el("path", { d: smooth([[B.x + B.w * 0.35, B.y - 2], [B.x + B.w * 0.4, B.y + B.h * 0.4], [B.x + B.w * 0.37, f - 4]], false), stroke: C.ink, "stroke-width": 3, fill: "none" });
+      for (var k = 0; k < 4; k++) { var bx = B.x + B.w * (0.55 + k * 0.1); el("ellipse", { cx: bx, cy: f - 3, rx: 5 + C.r() * 4, ry: 3, fill: C.ink }); }
+      layer();
+      el("ellipse", { cx: B.x + B.w * 0.38, cy: f - 4, rx: B.w * 0.12, ry: 3, fill: C.glow, opacity: 0.25, filter: "url(#soft)" });
+    },
     ashroad: function (B, f) {
       layer("far"); skyline(B, 6, C.far);
       layer("paint");
@@ -579,9 +672,14 @@
     room_tomb_lower_crypt: "stalactites", room_tomb_lower_chain: "pulley", room_tomb_rubble_slope: "slope",
     room_tomb_column: "pillar", room_tomb_arcade: "arcadehall",
     room_forest_root_tunnel: "roots", room_forest_entrance: "gate", room_forest_royal_road: "road",
-    room_forest_broken_arch: "arch", room_forest_poison_grove: "thorns", room_forest_watchtower: "tower",
-    room_forest_watchtower_top: "columns", room_forest_deep: "vines", room_forest_warden_approach: "bridge",
-    room_forest_warden_arena: "antlers", room_forest_far_gate: "log", room_forest_thorn_course: "mushrooms",
+    room_forest_broken_arch: "arch", room_forest_poison_grove: "pond", room_forest_watchtower: "tower",
+    room_forest_deep: "bigtree", room_forest_crown: "canopy", room_forest_warden_approach: "columns",
+    room_forest_warden_bridge: "bridge", room_forest_warden_arena: "antlers", room_forest_far_gate: "log",
+    room_forest_thorn_course: "thorns", room_forest_mushroom_pool: "mushrooms",
+    room_forest_tree_grave: "gravetree", room_forest_lower_gallery: "drips", room_forest_stone_bridge: "stonearch",
+    room_forest_old_graves: "graves", room_forest_falconry: "perches", room_forest_deep_roots: "rootmass",
+    room_forest_under_walkway: "hanging", room_forest_upper_path: "path", room_forest_ravine_foot: "hollowfloor",
+    room_forest_walkway: "vines",
     room_capital_ash_road: "ashroad", room_capital_city_gate: "citygate", room_capital_market: "market",
     room_capital_bell_tower: "belltower", room_capital_temple: "temple", room_capital_gardens: "gardens",
     room_capital_palace_approach: "approach", room_capital_throne_hall: "throne"

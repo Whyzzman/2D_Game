@@ -470,8 +470,9 @@ namespace ForgottenKingdom.EditorTools
         }
 
         /// <summary>Water falling from the vault to a floor, as the map draws it.</summary>
-        private static void BuildWaterfall(Transform parent, Vector2 foot, float top)
+        private static void BuildWaterfall(Transform parent, Vector2 foot, float top, Color? tint = null)
         {
+            var water = tint ?? new Color(0.55f, 0.85f, 0.95f);
             var sprite = Shape("shape_light_shaft");
             if (sprite == null)
             {
@@ -484,10 +485,18 @@ namespace ForgottenKingdom.EditorTools
             fall.transform.localScale = new Vector3(1.6f, top - foot.y, 1f);
             var renderer = fall.AddComponent<SpriteRenderer>();
             renderer.sprite = sprite;
-            renderer.color = new Color(0.55f, 0.85f, 0.95f, 0.28f);
+            renderer.color = new Color(water.r, water.g, water.b, 0.28f);
             renderer.sharedMaterial = _material;
             SetSorting(renderer, "EnvironmentBack", 6);
+            BuildPool(parent, foot, tint);
+        }
 
+        /// <summary>Still water lying on a floor.</summary>
+        private static void BuildPool(Transform parent, Vector2 foot, Color? tint = null)
+        {
+            var water = tint.HasValue
+                ? new Color(tint.Value.r * 0.65f, tint.Value.g * 0.82f, tint.Value.b * 0.84f)
+                : new Color(0.35f, 0.7f, 0.8f);
             var pool = new GameObject("Pool");
             pool.transform.SetParent(parent, false);
             pool.transform.position = foot + new Vector2(0f, 0.12f);
@@ -495,7 +504,7 @@ namespace ForgottenKingdom.EditorTools
             var poolRenderer = pool.AddComponent<SpriteRenderer>();
             poolRenderer.sprite = _sprite;
             poolRenderer.sharedMaterial = _material;
-            poolRenderer.color = new Color(0.35f, 0.7f, 0.8f, 0.35f);
+            poolRenderer.color = new Color(water.r, water.g, water.b, 0.35f);
             SetSorting(poolRenderer, "GameplayEnvironment", 2);
         }
 

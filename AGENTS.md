@@ -83,8 +83,8 @@
   разрезать по зонам). Сменил их арт — прогнать `Apply` после `Build` (второй `executeMethod` цикла).
 - Новые зоны (и перестроенные по картам) пишутся текстом в `Assets/Game/Levels/*.txt`, проверяются
   `LevelCheck` и рисуются `LevelTools.RenderPreviews` до сборки (`gamedesign/LEVEL_TOOL.md`). Гробница
-  уже такая: сцену из текста собирает `SceneTomb.Apply` (после `Build`), тесты берут места из текста
-  (`TombScene.Spot`), не числами. Картинки комнат карты — `ExportMapRooms` → `tools/map-art/render.sh
+  и Лес уже такие: сцену из текста собирают `SceneTomb.Apply` / `SceneForest.Apply` (после `Build`),
+  тесты берут места из текста (`TombScene.Spot`, `ForestScene.Spot`), не числами. Картинки комнат карты — `ExportMapRooms` → `tools/map-art/render.sh
   rooms` → `RefreshMapArt`.
 - `Build` пересоздаёт дочерние объекты префабов врагов с новыми fileID — переопределения
   сцены на них пропадут; настраивать через генератор.

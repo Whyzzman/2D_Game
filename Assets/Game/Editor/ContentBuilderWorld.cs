@@ -26,20 +26,7 @@ namespace ForgottenKingdom.EditorTools
         // Area ids. Stable: the save records them, so renaming one loses the player's map.
         private const string TombEntrance = "room_tomb_entrance";
         private const string TombEastHall = "room_tomb_east_hall";
-        private const string ForestHunterHollow = "room_forest_hunter_hollow";
         private const string ForestTunnel = "room_forest_root_tunnel";
-        private const string ForestEntrance = "room_forest_entrance";
-        private const string ForestRoyalRoad = "room_forest_royal_road";
-        private const string ForestBrokenArch = "room_forest_broken_arch";
-        private const string ForestGrove = "room_forest_poison_grove";
-        private const string ForestWatchtower = "room_forest_watchtower";
-        private const string ForestWatchtowerTop = "room_forest_watchtower_top";
-        private const string ForestHuntersPerch = "room_forest_hunters_perch";
-        private const string ForestDeep = "room_forest_deep";
-        private const string ForestWardenApproach = "room_forest_warden_approach";
-        private const string ForestWardenArena = "room_forest_warden_arena";
-        private const string ForestFarGate = "room_forest_far_gate";
-        private const string ForestOverlook = "room_forest_warden_overlook";
         private const string CapitalAshRoad = "room_capital_ash_road";
         private const string CapitalCityGate = "room_capital_city_gate";
         private const string CapitalMarket = "room_capital_market";
@@ -52,12 +39,8 @@ namespace ForgottenKingdom.EditorTools
         private const string CapitalGallery = "room_capital_royal_gallery";
         private const string BeyondCapital = "room_beyond_capital";
         // Rooms behind breakable walls (item 4, stage B).
-        private const string ForestGroveStash = "room_forest_grove_stash";
-        private const string ForestFalconerNest = "room_forest_falconer_nest";
         private const string CapitalRoofCache = "room_capital_roof_cache";
         private const string CapitalHiddenTreasury = "room_capital_hidden_treasury";
-        // The Thorn Path's last perch (item 4, stage C).
-        private const string ForestThornCourse = "room_forest_thorn_course";
 
         public const string ForestRoadGateShortcut = "shortcut_forest_road_gate";
 
@@ -130,32 +113,12 @@ namespace ForgottenKingdom.EditorTools
 
             json.Append(WorldZonesJson()).Append(WorldRoadsJson());
 
-            // The Tomb's rooms, links and altars come from its text (Levels/tomb.txt).
+            // The Tomb's and the Forest's rooms, links and altars come from their texts (Levels/*.txt).
             var tomb = LayoutGraphJson(LoadLayout(TombLayoutFile));
-            json.Append("\"_areas\":[").Append(string.Join(",", tomb.areas)).Append(",").Append(string.Join(",", new[]
+            var forest = LayoutGraphJson(LoadLayout(ForestLayoutFile));
+            json.Append("\"_areas\":[").Append(string.Join(",", tomb.areas)).Append(",")
+                .Append(string.Join(",", forest.areas)).Append(",").Append(string.Join(",", new[]
             {
-                MainRoom(ForestTunnel, ForestZoneId, "Кореневий тунель", 62.5f, 81f),
-                MainRoom(ForestEntrance, ForestZoneId, "Узлісся", 81f, 110f),
-                MainRoom(ForestRoyalRoad, ForestZoneId, "Зруйнований королівський шлях", 110f, 134f),
-                MainRoom(ForestBrokenArch, ForestZoneId, "Зламана арка", 134f, 147f),
-                MainRoom(ForestGrove, ForestZoneId, "Отруйний гай", 147f, 181f),
-                Pocket(ForestHunterHollow, ForestZoneId, "Дупло мисливця", 162f, 166f, 10f,
-                    secret: true, ability: AbilityIds.Grapple, mapRow: 3.1f),
-                MainRoom(ForestWatchtower, ForestZoneId, "Руїни сторожової вежі", 181f, 212f,
-                    top: 11.9f),
-                AreaJson(ForestWatchtowerTop, ForestZoneId, "Вершина вежі",
-                    new Vector2(197f * MapScale, 1.9f), new Vector2(1.6f, 0.9f),
-                    Rect.MinMaxRect(186f, 11.9f, 210.5f, 18f), optional: true,
-                    ability: AbilityIds.WallRun),
-                Pocket(ForestHuntersPerch, ForestZoneId, "Мисливський поміст", 201f, 205f, 14.9f,
-                    secret: true, ability: AbilityIds.DoubleJump, mapRow: 3.1f),
-                MainRoom(ForestDeep, ForestZoneId, "Глибокий ліс", 212f, 248f),
-                MainRoom(ForestWardenApproach, ForestZoneId, "Підступ до Вартового", 248f, 272.5f),
-                MainRoom(ForestWardenArena, ForestZoneId, "Галявина Вартового", 272.5f, 302f,
-                    boss: WardenBossId),
-                MainRoom(ForestFarGate, ForestZoneId, "Край лісу", 302f, 318f),
-                Pocket(ForestOverlook, ForestZoneId, "Оглядовий виступ", 304.5f, 309.5f, 2.8f,
-                    secret: true, ability: AbilityIds.DoubleJump),
                 MainRoom(CapitalAshRoad, CapitalZoneId, "Попелястий тракт", 318f, 345f),
                 MainRoom(CapitalCityGate, CapitalZoneId, "Міська брама", 345f, 372f),
                 MainRoom(CapitalMarket, CapitalZoneId, "Ринкова площа", 372f, 404f),
@@ -169,54 +132,22 @@ namespace ForgottenKingdom.EditorTools
                     secret: true, ability: AbilityIds.Grapple),
                 MainRoom(CapitalThroneHall, CapitalZoneId, "Тронна зала", 512f, 545f,
                     boss: CapitalKingBossId),
-                Pocket(ForestGroveStash, ForestZoneId, "Схрон у гаю", 175f, 179f, 5.9f,
-                    secret: true, ability: string.Empty),
-                Pocket(ForestFalconerNest, ForestZoneId, "Гніздо сокольника", 205.5f, 209.5f, 14.9f,
-                    secret: true, ability: string.Empty, mapRow: 3.8f),
                 Pocket(CapitalRoofCache, CapitalZoneId, "Сховок під дахом", 424.5f, 428.5f, 8.2f,
                     secret: true, ability: string.Empty, mapRow: 2.3f),
                 Pocket(CapitalHiddenTreasury, CapitalZoneId, "Прихована скарбниця", 490.5f, 494.5f, 6.8f,
                     secret: true, ability: string.Empty),
-                Pocket(ForestThornCourse, ForestZoneId, "Терновий шлях", 242f, 245f, 10.4f,
-                    secret: false, ability: AbilityIds.DoubleJump, mapRow: 2.3f),
                 AreaJson(BeyondCapital, FutureZoneId, string.Empty,
                     new Vector2(551f * MapScale, 0f), new Vector2(0.8f, 1.2f),
                     Rect.MinMaxRect(545f, -8f, 557f, 16f), optional: true)
             })).Append("],");
 
-            json.Append("\"_connections\":[").Append(string.Join(",", tomb.links)).Append(",").Append(string.Join(",", new[]
+            json.Append("\"_connections\":[").Append(string.Join(",", tomb.links)).Append(",")
+                .Append(string.Join(",", forest.links)).Append(",").Append(string.Join(",", new[]
             {
                 LinkJson("conn_tomb_to_forest", TombEastHall, ForestTunnel,
                     type: ConnectionType.ZoneTransition, boss: GuardianBossId),
-                LinkJson("conn_forest_tunnel_entrance", ForestTunnel, ForestEntrance),
-                LinkJson("conn_forest_entrance_road", ForestEntrance, ForestRoyalRoad),
-                // Over the archer's ledge and down past the barred arch: one way only, east.
-                LinkJson("conn_forest_road_ledge", ForestRoyalRoad, ForestBrokenArch,
-                    type: ConnectionType.Drop, bidirectional: false),
-                LinkJson("conn_forest_road_gate", ForestRoyalRoad, ForestBrokenArch,
-                    type: ConnectionType.Shortcut, shortcut: ForestRoadGateShortcut,
-                    openedFrom: ForestBrokenArch),
-                LinkJson("conn_forest_arch_grove", ForestBrokenArch, ForestGrove),
-                LinkJson("conn_forest_grove_hollow", ForestGrove, ForestHunterHollow,
-                    MapDirection.North, ConnectionType.AbilityGate, ability: AbilityIds.Grapple),
-                LinkJson("conn_forest_grove_watchtower", ForestGrove, ForestWatchtower),
-                LinkJson("conn_forest_watchtower_deep", ForestWatchtower, ForestDeep),
-                LinkJson("conn_forest_watchtower_climb", ForestWatchtower, ForestWatchtowerTop,
-                    MapDirection.North, ConnectionType.AbilityGate, ability: AbilityIds.WallRun),
-                // The rotten lip at the top: a way down that is always open.
-                LinkJson("conn_forest_watchtower_drop", ForestWatchtowerTop, ForestWatchtower,
-                    MapDirection.South, ConnectionType.Drop, bidirectional: false),
-                LinkJson("conn_forest_top_perch", ForestWatchtowerTop, ForestHuntersPerch,
-                    MapDirection.North, ConnectionType.AbilityGate, ability: AbilityIds.DoubleJump),
-                LinkJson("conn_forest_deep_approach", ForestDeep, ForestWardenApproach),
-                LinkJson("conn_forest_approach_arena", ForestWardenApproach, ForestWardenArena,
-                    type: ConnectionType.Door),
-                LinkJson("conn_forest_arena_far", ForestWardenArena, ForestFarGate,
-                    type: ConnectionType.BossGate, boss: WardenBossId),
-                LinkJson("conn_forest_far_overlook", ForestFarGate, ForestOverlook,
-                    MapDirection.North, ConnectionType.AbilityGate, ability: AbilityIds.DoubleJump),
                 // The road the Warden kept: sealed until he falls, then the way to the capital.
-                LinkJson("conn_forest_to_capital", ForestFarGate, CapitalAshRoad,
+                LinkJson("conn_forest_to_capital", "room_forest_far_gate", CapitalAshRoad,
                     type: ConnectionType.ZoneTransition, boss: WardenBossId),
                 LinkJson("conn_capital_road_gate", CapitalAshRoad, CapitalCityGate),
                 LinkJson("conn_capital_gate_market", CapitalCityGate, CapitalMarket),
@@ -230,26 +161,18 @@ namespace ForgottenKingdom.EditorTools
                     MapDirection.North, ConnectionType.AbilityGate, ability: AbilityIds.Grapple),
                 LinkJson("conn_capital_approach_throne", CapitalPalaceApproach, CapitalThroneHall,
                     type: ConnectionType.Door),
-                // East of the throne the road goes on, sealed: what lies there is the ending's.
                 // Behind breakable walls: three blows open each for good (item 4, stage B).
-                LinkJson("conn_forest_grove_stash", ForestGrove, ForestGroveStash),
-                LinkJson("conn_forest_perch_nest", ForestHuntersPerch, ForestFalconerNest),
                 LinkJson("conn_capital_nest_cache", CapitalBellNest, CapitalRoofCache),
                 LinkJson("conn_capital_gallery_treasury", CapitalGallery, CapitalHiddenTreasury,
                     MapDirection.West),
-                LinkJson("conn_forest_deep_thorns", ForestDeep, ForestThornCourse,
-                    MapDirection.North, ConnectionType.AbilityGate, ability: AbilityIds.DoubleJump),
+                // East of the throne the road goes on, sealed: what lies there is the ending's.
                 LinkJson("conn_capital_throne_beyond", CapitalThroneHall, BeyondCapital,
                     type: ConnectionType.Gate, boss: CapitalKingBossId, future: true)
             })).Append("],");
 
-            json.Append("\"_checkpoints\":[").Append(string.Join(",", tomb.altars)).Append(",").Append(string.Join(",", new[]
+            json.Append("\"_checkpoints\":[").Append(string.Join(",", tomb.altars)).Append(",")
+                .Append(string.Join(",", forest.altars)).Append(",").Append(string.Join(",", new[]
             {
-                AltarJson("forest-entrance", "Вівтар узлісся", ForestZoneId, ForestEntrance),
-                AltarJson("royal-road-shrine", "Придорожня святиня", ForestZoneId, ForestRoyalRoad),
-                AltarJson("deep-forest-shrine", "Святиня глибокого лісу", ForestZoneId, ForestDeep),
-                AltarJson("warden-shrine", "Святиня Вартового", ForestZoneId,
-                    ForestWardenApproach),
                 AltarJson("capital-gate", "Вівтар міської брами", CapitalZoneId, CapitalCityGate),
                 AltarJson("capital-temple", "Храмовий вівтар", CapitalZoneId, CapitalTemple),
                 AltarJson("capital-palace", "Вівтар біля палацу", CapitalZoneId,

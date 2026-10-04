@@ -102,8 +102,12 @@ namespace ForgottenKingdom.Tests
                 .Select(c => c.ConnectionId).OrderBy(id => id).ToArray();
             Assert.That(oneWay, Is.EqualTo(new[]
             {
-                "conn_forest_road_ledge",
-                "conn_forest_watchtower_drop",
+                "conn_forest_arch_ledge_broken_arch",
+                "conn_forest_broken_arch_stone_bridge",
+                "conn_forest_crown_hollow_trunk",
+                "conn_forest_hollow_trunk_deep",
+                "conn_forest_ravine_ravine_foot",
+                "conn_forest_walkway_ravine",
                 "conn_tomb_chain_shaft_falls",
                 "conn_tomb_column_burial_hall",
                 "conn_tomb_east_chapel_flooded_crypt",
@@ -161,10 +165,10 @@ namespace ForgottenKingdom.Tests
                 .Where(c => !string.IsNullOrEmpty(c.RequiredAbilityId))
                 .GroupBy(c => c.RequiredAbilityId)
                 .ToDictionary(g => g.Key, g => g.Count());
-            Assert.That(gatesByAbility.Values.Sum(), Is.InRange(4, 12));
+            Assert.That(gatesByAbility.Values.Sum(), Is.InRange(4, 16));
             Assert.That(gatesByAbility.ContainsKey(AbilityIds.DoubleJump), Is.True);
             Assert.That(gatesByAbility.ContainsKey(AbilityIds.AirDash), Is.True);
-            Assert.That(gatesByAbility.ContainsKey(AbilityIds.WallRun), Is.True);
+            // The wall run is found, never asked for: the level tool's reach (LevelReach) gives walls nothing.
             Assert.That(_graph.Connections.Any(c => c.RequiredAbilityId == AbilityIds.DoubleJump
                 && _graph.Area(c.ToAreaId).ZoneId == "zone_forgotten_tomb"), Is.True,
                 "The second jump has something to find back in the Tomb.");
@@ -222,8 +226,9 @@ namespace ForgottenKingdom.Tests
                 Is.EqualTo("room_tomb_guardian_arena"));
             Assert.That(_graph.AreaAt("TombTrial", new Vector2(70f, 1f)).AreaId,
                 Is.EqualTo("room_forest_root_tunnel"));
-            Assert.That(_graph.AreaAt("TombTrial", new Vector2(197f, 12.9f)).AreaId,
-                Is.EqualTo("room_forest_watchtower_top"), "The smaller area wins where they overlap.");
+            // The Forest from its text (cell 0.5, origin 62.5 -63): the tower in the north.
+            Assert.That(_graph.AreaAt("TombTrial", new Vector2(200f, 30f)).AreaId,
+                Is.EqualTo("room_forest_watchtower"));
             // Inside the ossuary, behind its wall, no area by position: only its trigger reveals it.
             Assert.That(_graph.AreaAt("TombTrial", new Vector2(59.5f, 51.5f)), Is.Null);
             Assert.That(_graph.AreaAt("SomeOtherScene", new Vector2(-20.5f, 31.85f)), Is.Null);

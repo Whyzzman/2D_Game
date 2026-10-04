@@ -1939,11 +1939,8 @@ namespace ForgottenKingdom.EditorTools
             cameraObject.transform.position = new Vector3(0f, 2f, -10f);
 
             var level = new GameObject("Level").transform;
-            // The Tomb itself is built from its text further down (BuildTomb); its far wall is
-            // also the way out. It stays solid until the Guardian falls and then opens, which is
-            // how a save made before the forest existed still gets through.
-            var tombExit = Block(level, "TombExitWall", new Vector2(62.5f, 3f), new Vector2(1f, 8f),
-                TombSurface.Wall);
+            // The Tomb and the Forest are built from their texts further down (BuildTomb,
+            // BuildForest); the Forest's builder puts the Tomb's far wall, which is its first door.
 
             var spawn = new GameObject("Spawn");
             spawn.transform.position = TombSpot("start") + new Vector2(0f, 0.85f);
@@ -2010,8 +2007,8 @@ namespace ForgottenKingdom.EditorTools
             SetReference(respawner, "_defaultSpawn", spawn.transform);
             SetReference(respawner, "_progress", progress);
             SetReference(respawner, "_enemies", enemyRegistry);
-            // Under the Tomb's lowest pool (the flooded crypt, -12) with room to spare.
-            SetFloat(respawner, "_worldFloorY", -30f);
+            // Under the lowest room of any zone (the Forest's mushroom pool, -46) with room to spare.
+            SetFloat(respawner, "_worldFloorY", WorldFloorY);
 
             // Every debug readout lives on its own object, switched off in a release build. They
             // have to be in the real scene to be useful, but a player must never meet them.
@@ -2097,9 +2094,7 @@ namespace ForgottenKingdom.EditorTools
 
             // Everything past the Guardian's arena. It is built into the same scene and reached on
             // foot through a tunnel, so nothing is loaded and nothing teleports.
-            BuildForestLevel(level, forest, checkpointPrefab, respawner, progress, progression,
-                player, pickupComponent.gameObject, debug, zombiePrefab, guardPrefab, tombExit,
-                cameraObject.transform);
+            BuildForest(level);
             ConfigureZoneAudio(systems);
             // Last, because it lights and grounds what is already placed.
             BuildAtmosphere(level, systems, cameraObject, player);
@@ -2256,6 +2251,9 @@ namespace ForgottenKingdom.EditorTools
             _tomb != null && _tomb.TryGetValue(name, out var sprite) ? sprite : null;
 
         /// <summary>The first frame of one effect, for the single-sprite uses.</summary>
+        /// <summary>Under the lowest room of every zone: falling past it is falling out of the world.</summary>
+        public const float WorldFloorY = -60f;
+
         private static Sprite Vfx(string name) =>
             _vfx != null && _vfx.TryGetValue(name, out var frames) && frames.Length > 0
                 ? frames[0]

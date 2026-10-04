@@ -95,28 +95,24 @@ namespace ForgottenKingdom.Tests
             Assume.That(_progress.HasAbility(AbilityIds.AirDash), Is.False);
             Assume.That(_progress.HasAbility(AbilityIds.WallRun), Is.False);
             Assume.That(_progress.HasAbility(AbilityIds.DoubleJump), Is.False);
-            // The Tomb's halls lie above and below each other since item 3 of the 15-zone list: its
-            // main path is proven by its text, the hero's own movement stepped through every jump
-            // (TombLayoutTests). This walk starts at its way out, in the east hall.
-            var hall = TombScene.Spot("exit") + new Vector2(-6f, 0.85f);
-            yield return Place(hall);
+            // The Tomb's and the Forest's halls lie above and below each other since items 3 and 4
+            // of the 15-zone list: their main paths are proven by their texts, the hero's own movement
+            // stepped through every jump (TombLayoutTests, ForestLayoutTests). This walk starts at
+            // the Forest's way out, at the foot of its edge, on the road the Warden kept.
+            var edge = ForestScene.Spot("capital-seal") + new Vector2(-1.5f, 0.85f);
+            yield return Place(edge);
 
             GameTimeScale.SetBaseScale(4f);
-            // On through the road the Warden kept, across the capital to the sealed road east of
-            // the throne; the capital is loaded on the way, as the forest's neighbour.
+            // Across the capital to the sealed road east of the throne; the capital is loaded on
+            // the way, as the forest's neighbour.
             yield return Walk(+1, 543f, "east through the capital to the sealed road beyond the throne",
                 pullWinches: false);
             Assert.That(_world.CurrentAreaId, Is.EqualTo("room_capital_throne_hall"));
-            Assert.That(_progress.IsShortcutUnlocked(ContentBuilderIds.RoadGate), Is.False,
-                "East is walkable over the archer's ledge without the shortcut.");
 
-            yield return Walk(-1, hall.x, "back west to the Tomb's east hall", pullWinches: true);
-            Assert.That(_world.CurrentZoneId, Is.EqualTo("zone_forgotten_tomb"));
-            Assert.That(_world.CurrentAreaId, Is.EqualTo("room_tomb_east_hall"));
-            Assert.That(_progress.IsShortcutUnlocked(ContentBuilderIds.RoadGate), Is.True,
-                "West, the road gate's winch is what opened the way.");
-            foreach (var area in _progress.World.Areas.Where(a => !a.IsOptional && a.ZoneId != "zone_forgotten_tomb"
-                         && _progress.World.Zone(a.ZoneId).IsImplemented))
+            yield return Walk(-1, edge.x, "back west to the forest's edge", pullWinches: true);
+            Assert.That(_world.CurrentZoneId, Is.EqualTo("zone_withered_forest"));
+            Assert.That(_world.CurrentAreaId, Is.EqualTo("room_forest_far_gate"));
+            foreach (var area in _progress.World.Areas.Where(a => !a.IsOptional && a.ZoneId == "zone_ashen_capital"))
             {
                 Assert.That(_progress.IsAreaDiscovered(area.AreaId), Is.True,
                     $"The walk passed through {area.AreaId}, so the map has it.");

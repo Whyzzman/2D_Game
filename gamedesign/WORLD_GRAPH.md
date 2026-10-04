@@ -49,20 +49,7 @@ PHASE 25. Источник истины — `Assets/Game/Data/WorldGraph.asset`,
 | AreaID | Имя | Зона | X | Вид |
 | --- | --- | --- | --- | --- |
 | Гробница — 27 комнат | | Гробница | −73,5…62,5, y −17…73 | из `Levels/tomb.txt` (п. 3 «Мира из 15 зон»): границы — прямоугольники комнат текста, тайные — по триггеру; старт `room_tomb_entrance` |
-| `room_forest_root_tunnel` | Кореневий тунель | Лес | 62,5…81 | переход зон |
-| `room_forest_entrance` | Узлісся | Лес | 81…110 | алтарь |
-| `room_forest_royal_road` | Зруйнований королівський шлях | Лес | 110…134 | алтарь |
-| `room_forest_broken_arch` | Зламана арка | Лес | 134…147 | |
-| `room_forest_poison_grove` | Отруйний гай | Лес | 147…181 | |
-| `room_forest_watchtower` | Руїни сторожової вежі | Лес | 181…212 | |
-| `room_forest_watchtower_top` | Вершина вежі | Лес | 186…206, y ≥ 11,9 | необязательная |
-| `room_forest_hunters_perch` | Мисливський поміст | Лес | 201…205, y 14,9 | секрет, триггер |
-| `room_forest_deep` | Глибокий ліс | Лес | 212…248 | алтарь |
-| `room_forest_warden_approach` | Підступ до Вартового | Лес | 248…272,5 | алтарь |
-| `room_forest_warden_arena` | Галявина Вартового | Лес | 272,5…302 | босс |
-| `room_forest_far_gate` | Край лісу | Лес | 302…318 | |
-| `room_forest_warden_overlook` | Оглядовий виступ | Лес | 304,5…309,5, y 2,8 | секрет, триггер |
-| `room_beyond_forest` | — | неизвестная | 318…330 | будущая |
+| Лес — 35 комнат | | Лес | 62,5…318, y −46…54 | из `Levels/forest.txt` (п. 4): первая `room_forest_root_tunnel` (вход из Гробницы), последняя `room_forest_far_gate` (выход на восток) |
 
 Позиция на карте — мировой X × 0,1; основные комнаты в одном ряду (y = 0),
 карманы выше. Карта не 1:1, но относительные положения честные.
@@ -78,25 +65,21 @@ PHASE 25. Источник истины — `Assets/Game/Data/WorldGraph.asset`,
 | `conn_tomb_entrance_bell_shaft` | вход ↔ колокольная шахта | AbilityGate | double-jump |
 | `conn_tomb_lower_chain_reliquary` | нижняя цепь ↔ реликварий | AbilityGate | air-dash |
 | `conn_tomb_collapsed_crypt_crypt_nest` | обвалений склеп ↔ гнездо | AbilityGate | grapple |
+| Лес: связи по проёмам текста | | Normal | id `conn_forest_<комната>_<комната>` |
+| `conn_forest_gate_arch_broken_arch` | арка с решёткой ↔ зламана арка | Shortcut | `shortcut_forest_road_gate`, лебёдка со стороны арки |
+| `conn_forest_warden_approach_warden_bridge` | подступ ↔ мост | Door | — |
+| `conn_forest_warden_arena_far_gate` | арена ↔ край | BossGate | Вартовий побеждён |
+| двойной прыжок | подступ → драбина сокольника, кладка → отруйний гай, нижня галерея → терновий шлях, вежа → поміст | AbilityGate | double-jump |
+| гак | крона → дупло мисливця, під кладкою → гніздо в корінні, дно яру → глибоке коріння | AbilityGate | grapple |
+| `conn_forest_to_capital` | край → попелястий тракт | ZoneTransition | Вартовий побеждён |
 | `conn_tomb_entrance_guard_passage`, `…_column_burial_hall`, `…_east_chapel_flooded_crypt`, `…_guard_passage_lower_chain`, `…_lower_chain_lower_crypt`, `…_chain_shaft_falls`, `…_west_shaft_collapsed_crypt` | | Drop | **односторонние**: спуски в провал |
-| `conn_forest_tunnel_entrance` | тоннель ↔ опушка | Normal | — |
-| `conn_forest_entrance_road` | опушка ↔ дорога | Normal | — |
-| `conn_forest_road_ledge` | дорога → арка | Drop | **одностороння**, через карниз лучника |
-| `conn_forest_road_gate` | дорога ↔ арка | Shortcut | `shortcut_forest_road_gate`, открывается из арки |
-| `conn_forest_arch_grove` | арка ↔ гай | Normal | — |
-| `conn_forest_grove_watchtower` | гай ↔ вежа | Normal | — |
-| `conn_forest_watchtower_deep` | вежа ↔ глибокий ліс | Normal | — |
-| `conn_forest_watchtower_climb` | вежа ↔ вершина | AbilityGate | wall-run |
-| `conn_forest_watchtower_drop` | вершина → вежа | Drop | **одностороння**, гнилой край |
-| `conn_forest_top_perch` | вершина ↔ поміст | AbilityGate | double-jump |
-| `conn_forest_deep_approach` | глибокий ліс ↔ подступ | Normal | — |
-| `conn_forest_approach_arena` | подступ ↔ арена | Door | — |
-| `conn_forest_arena_far` | арена ↔ край | BossGate | Вартовий побеждён |
-| `conn_forest_far_overlook` | край ↔ виступ | AbilityGate | double-jump |
-| `conn_forest_far_beyond` | край → дальше | Gate, будущая | Вартовий + несуществующая зона: не открывается |
+
+Односторонние лесные (спуски): `conn_forest_arch_ledge_broken_arch` (через карниз над решёткой),
+`…_broken_arch_stone_bridge`, `…_crown_hollow_trunk`, `…_hollow_trunk_deep`, `…_walkway_ravine`,
+`…_ravine_ravine_foot`.
 
 Двусторонняя связь — одна запись, которая работает в обе стороны. Односторонних
-девять (две лесные и семь спусков Гробницы), все задокументированы здесь и проверяются тестом
+тринадцать (шесть лесных и семь спусков Гробницы), все задокументированы здесь и проверяются тестом
 `TheOnlyOneWayConnectionsAreTheDocumentedOnes`: новая односторонняя связь должна
 попасть и сюда, и в тест.
 
@@ -109,7 +92,7 @@ New Game
   ↓
 Страж Гробниці ── дверь из Гробницы открывается, мандри открываются
   ↓
-Кореневий тунель → Зів'ялий Ліс (опушка → дорога → арка → гай → вежа → глибокий ліс → подступ)
+Кореневий тунель → Зів'ялий Ліс (узлісся → дорога → карниз → арка → глибокий ліс → кладка → подступ → міст)
   ↓
 Порожній Вартовий ── Подвійний стрибок, дверь на край леса
   ↓
@@ -120,10 +103,8 @@ New Game
 
 - **Гробница по Подвійному стрибку.** После Вартового — назад пешком или мандрами к
   Вівтарю переходу, прыжок с уступа варты → Королівська костниця (Перстень Костниці).
-- **Вершина вежі.** С вершины — Мисливський поміст по Подвійному стрибку (Знак
-  Мисливця).
-- **За Вартовим.** Оглядовий виступ — первое, для чего нужен новый прыжок
-  (Зелене Серце).
+- **Лес по Подвійному стрибку.** Драбина сокольника от подступа к вежі, Отруйний гай за кладкой
+  (Зелене Серце), Терновий шлях из нижней галереи, Мисливський поміст с вершины вежи.
 - **Шорткаты.** Мост над провалом Гробницы и решётка арки на королевской дороге —
   оба открываются с дальней стороны и делают обратный путь коротким и безопасным.
 

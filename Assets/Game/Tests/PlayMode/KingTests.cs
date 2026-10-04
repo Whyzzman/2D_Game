@@ -182,12 +182,16 @@ namespace ForgottenKingdom.Tests
         }
 
         [UnityTest]
-        public IEnumerator FromTheGroveStepARingReachesTheHuntersHollow()
+        public IEnumerator FromTheCrownsHighGroundARingReachesTheHuntersHollow()
         {
-            yield return ClimbByRing(new Vector2(166f, 3.8f), Key.D, Key.A, 10.9f);
-            Assert.That(_player.transform.position.y, Is.GreaterThan(10f),
+            // The crown's high ground by its west wall; the ring hangs over it, the hollow opens in
+            // that wall ten cells over the ground (Levels/forest.txt).
+            var hollow = ForestScene.Room("room_forest_hunter_hollow");
+            var floor = hollow.yMin + 1f;
+            yield return ClimbByRing(ForestScene.Ground("grapple-hint"), Key.A, Key.A, floor + 0.9f);
+            Assert.That(_player.transform.position.y, Is.GreaterThan(floor),
                 $"In the hollow: at {_player.transform.position}.");
-            Assert.That(_player.transform.position.x, Is.InRange(162f, 166f));
+            Assert.That(_player.transform.position.x, Is.LessThan(hollow.xMax), "Inside the hollow.");
         }
 
         [UnityTest]
@@ -199,7 +203,7 @@ namespace ForgottenKingdom.Tests
             var purse = pickups.Single(p => p.PersistentId == "grapple-forest-purse");
             Assert.That(TombScene.Layout.WorldBounds(TombScene.Layout.Room("room_tomb_crypt_nest"))
                 .Contains(shard.transform.position), Is.True, "The flask shard lies in the Tomb's nest.");
-            Assert.That(talon.transform.position.y, Is.GreaterThan(10f));
+            Assert.That(ForestScene.InRoom(talon, "room_forest_hunter_hollow"), Is.True, "The relic lies in the hollow.");
             Assert.That(purse.Amount, Is.EqualTo(400));
 
             var shards = _player.GetComponent<FlaskShards>();
@@ -212,7 +216,7 @@ namespace ForgottenKingdom.Tests
 
             var rings = GrappleRing.All.Select(r => r.Anchor).ToList();
             Assert.That(rings.Any(r => r.x < -60f && r.y > 10f), Is.True, "A ring over the collapsed crypt.");
-            Assert.That(rings.Any(r => r.x > 160f && r.x < 172f && r.y > 10f), Is.True, "A ring over the grove.");
+            Assert.That(rings.Any(r => ForestScene.Room("room_forest_crown").Contains(r)), Is.True, "A ring over the crown.");
         }
     }
 }

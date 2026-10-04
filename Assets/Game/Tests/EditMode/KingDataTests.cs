@@ -72,7 +72,7 @@ namespace ForgottenKingdom.Tests
             Assert.That(cache.RequiredAbilityId, Is.EqualTo(AbilityIds.Grapple));
             Assert.That(hollow.RequiredAbilityId, Is.EqualTo(AbilityIds.Grapple));
             Assert.That(graph.Connection("conn_tomb_collapsed_crypt_crypt_nest").RequiredAbilityId, Is.EqualTo(AbilityIds.Grapple));
-            Assert.That(graph.Connection("conn_forest_grove_hollow").RequiredAbilityId, Is.EqualTo(AbilityIds.Grapple));
+            Assert.That(graph.Connection("conn_forest_crown_hunter_hollow").RequiredAbilityId, Is.EqualTo(AbilityIds.Grapple));
             Assert.That(WorldGraphValidator.Validate(graph), Is.Empty);
 
             var items = AssetDatabase.LoadAssetAtPath<ItemDatabase>("Assets/Game/Data/ItemDatabase.asset");

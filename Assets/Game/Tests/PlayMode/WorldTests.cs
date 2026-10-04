@@ -598,13 +598,13 @@ namespace ForgottenKingdom.Tests
         [UnityTest]
         public IEnumerator TheRoadGateOpensFromTheEastAndTheMapFollows()
         {
-            _progress.MarkAreaDiscovered("room_forest_royal_road");
+            _progress.MarkAreaDiscovered("room_forest_gate_arch");
             _progress.MarkAreaDiscovered("room_forest_broken_arch");
             var bars = GameObject.Find("RoadGate");
             Assert.That(bars, Is.Not.Null);
 
             _map.Open();
-            var before = _map.View.Links.Single(l => l.Connection.ConnectionId == "conn_forest_road_gate");
+            var before = _map.View.Links.Single(l => l.Connection.ConnectionId == "conn_forest_gate_arch_broken_arch");
             Assert.That(before.State, Is.EqualTo(MapLinkState.ShortcutLocked));
             _map.Close();
 
@@ -614,7 +614,7 @@ namespace ForgottenKingdom.Tests
             Assert.That(bars.activeSelf, Is.False, "The bars leave the road at once.");
 
             _map.Open();
-            var after = _map.View.Links.Single(l => l.Connection.ConnectionId == "conn_forest_road_gate");
+            var after = _map.View.Links.Single(l => l.Connection.ConnectionId == "conn_forest_gate_arch_broken_arch");
             Assert.That(after.State, Is.EqualTo(MapLinkState.Open));
             _map.Close();
             yield return null;

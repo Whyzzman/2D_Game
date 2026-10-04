@@ -51,6 +51,13 @@ namespace ForgottenKingdom.EditorTools
                 ["InscriptionGuardian"] = "stone-guardian"
             };
 
+        private static readonly System.Collections.Generic.Dictionary<string, string> ForestStones =
+            new System.Collections.Generic.Dictionary<string, string>
+            {
+                ["InscriptionRoots"] = "stone-roots",
+                ["InscriptionHunters"] = "stone-hunters"
+            };
+
         private static void BuildInscriptions(Transform root)
         {
             Physics2D.SyncTransforms();
@@ -60,9 +67,10 @@ namespace ForgottenKingdom.EditorTools
             {
                 var stone = new GameObject(spot.Name);
                 stone.transform.SetParent(root);
-                // The Tomb's stones stand where its text puts them; the old zones' by x.
-                stone.transform.position = TombStones.TryGetValue(spot.Name, out var tombSpot)
-                    ? (Vector3)TombSpot(tombSpot) : (Vector3)FloorNear(spot.X);
+                // The Tomb's and the Forest's stones stand where their texts put them; the Capital's by x.
+                stone.transform.position = TombStones.TryGetValue(spot.Name, out var tombSpot) ? (Vector3)TombSpot(tombSpot)
+                    : ForestStones.TryGetValue(spot.Name, out var forestSpot) ? (Vector3)ForestSpot(forestSpot)
+                    : (Vector3)FloorNear(spot.X);
                 var trigger = stone.AddComponent<BoxCollider2D>();
                 trigger.isTrigger = true;
                 trigger.size = new Vector2(2.2f, 2.6f);

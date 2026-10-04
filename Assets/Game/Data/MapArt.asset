@@ -125,22 +125,58 @@ MonoBehaviour:
     Texture: {fileID: 2800000, guid: 2904df2862510486e884a6d7325619df, type: 3}
   - Id: room_forest_royal_road
     Texture: {fileID: 2800000, guid: 57bd98bd5edef4eae82e611b3d4c5492, type: 3}
+  - Id: room_forest_gate_arch
+    Texture: {fileID: 2800000, guid: 37af4891770074e33b7d10755054039b, type: 3}
+  - Id: room_forest_arch_ledge
+    Texture: {fileID: 2800000, guid: 2e68ac835d7064345b93ec7eb8a803b2, type: 3}
+  - Id: room_forest_old_graves
+    Texture: {fileID: 2800000, guid: f62b42e8bead14c898841dcf7cc28e9b, type: 3}
   - Id: room_forest_broken_arch
     Texture: {fileID: 2800000, guid: 191d3694d0fa743629e960ad010f28b1, type: 3}
-  - Id: room_forest_poison_grove
-    Texture: {fileID: 2800000, guid: 6641b78be8bc94a05a547534211166c7, type: 3}
-  - Id: room_forest_watchtower
-    Texture: {fileID: 2800000, guid: 9e6bbec20909e4f8ca204b2c865d3029, type: 3}
-  - Id: room_forest_watchtower_top
-    Texture: {fileID: 2800000, guid: 78a1a9cd9f1fb4f14afbb470331bca41, type: 3}
+  - Id: room_forest_stone_bridge
+    Texture: {fileID: 2800000, guid: 91f11f4a32e5f4b19bfd7578a9ed1e0f, type: 3}
+  - Id: room_forest_upper_path
+    Texture: {fileID: 2800000, guid: 9565078f293994cdc8de46d247ceea09, type: 3}
+  - Id: room_forest_crown
+    Texture: {fileID: 2800000, guid: 04748db29fc95434bad7d482d9ab266f, type: 3}
+  - Id: room_forest_hollow_trunk
+    Texture: {fileID: 2800000, guid: fc065cd53c54c4dc189eada4fa830682, type: 3}
   - Id: room_forest_deep
     Texture: {fileID: 2800000, guid: 4a2bb751a726f4bd387b068064aa99c7, type: 3}
+  - Id: room_forest_watchtower
+    Texture: {fileID: 2800000, guid: 9e6bbec20909e4f8ca204b2c865d3029, type: 3}
+  - Id: room_forest_falconry
+    Texture: {fileID: 2800000, guid: 1db13b6483cf94f0a99229c280429c78, type: 3}
+  - Id: room_forest_falconer_ladder
+    Texture: {fileID: 2800000, guid: ad8be7a85fedd46debe787e40a611d29, type: 3}
+  - Id: room_forest_walkway
+    Texture: {fileID: 2800000, guid: b60f3f4b8c100424cb9c523af628aa0b, type: 3}
+  - Id: room_forest_under_walkway
+    Texture: {fileID: 2800000, guid: ed586ce0d1bca472a80297fb6baa1aab, type: 3}
   - Id: room_forest_warden_approach
     Texture: {fileID: 2800000, guid: a5f67d38e7fb24c0b825b1d3b79799bc, type: 3}
+  - Id: room_forest_warden_bridge
+    Texture: {fileID: 2800000, guid: e557bf8e94a214bc284059fb102ebac1, type: 3}
   - Id: room_forest_warden_arena
     Texture: {fileID: 2800000, guid: 11f68539390c24158a3a2f6e8240bbfd, type: 3}
   - Id: room_forest_far_gate
     Texture: {fileID: 2800000, guid: a16334eea14f64788a25e45809d2881a, type: 3}
+  - Id: room_forest_poison_grove
+    Texture: {fileID: 2800000, guid: 6641b78be8bc94a05a547534211166c7, type: 3}
+  - Id: room_forest_ravine
+    Texture: {fileID: 2800000, guid: 24f5cfb8ff3b04c78ac991ab2c98a3cb, type: 3}
+  - Id: room_forest_ravine_foot
+    Texture: {fileID: 2800000, guid: e79a975cd3d574c8883df93c5d3349f9, type: 3}
+  - Id: room_forest_deep_roots
+    Texture: {fileID: 2800000, guid: 873c80cb696c049349793461f2a83127, type: 3}
+  - Id: room_forest_tree_grave
+    Texture: {fileID: 2800000, guid: 3bd8df4f3329744b496ee7da087a34ff, type: 3}
+  - Id: room_forest_lower_gallery
+    Texture: {fileID: 2800000, guid: e8110074d4f5043beb180eae3ad09bec, type: 3}
+  - Id: room_forest_thorn_course
+    Texture: {fileID: 2800000, guid: c4922ef5f55624b8cad643305c6b2a76, type: 3}
+  - Id: room_forest_mushroom_pool
+    Texture: {fileID: 2800000, guid: b3553c20a2c8844819b99cc8efe0cd0a, type: 3}
   - Id: room_capital_ash_road
     Texture: {fileID: 2800000, guid: 4ec3411aef4ee45d4962dfda136e3015, type: 3}
   - Id: room_capital_city_gate
@@ -157,7 +193,5 @@ MonoBehaviour:
     Texture: {fileID: 2800000, guid: 12a44626950b343c6837f443357b6940, type: 3}
   - Id: room_capital_throne_hall
     Texture: {fileID: 2800000, guid: 6efcdd2901edb4c0381979b912463125, type: 3}
-  - Id: room_forest_thorn_course
-    Texture: {fileID: 2800000, guid: c4922ef5f55624b8cad643305c6b2a76, type: 3}
   _fog: {fileID: 2800000, guid: 91b3a940e917a46a6aa7b9bd0fae3632, type: 3}
   _glow: {fileID: 2800000, guid: 15b96ee5584434f6bb7f4223a097a3bc, type: 3}

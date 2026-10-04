@@ -248,20 +248,20 @@ namespace ForgottenKingdom.Tests
         }
 
         [UnityTest]
-        public IEnumerator FallingIntoThePitKillsThroughTheOrdinaryDeathFlow()
+        public IEnumerator FallingOutOfTheWorldKillsThroughTheOrdinaryDeathFlow()
         {
             yield return StandAt(_checkpoints[0]);
             _checkpoints[0].Interact(_player);
             yield return new WaitForFixedUpdate();
 
             var deaths = _respawner.DeathCount;
-            // Straight into a pit (the Tomb has none; the forest next door has).
-            var pit = Object.FindObjectsByType<KillZone>().OrderBy(k => k.transform.position.x).First();
-            _motor.ResetTo(pit.transform.position);
+            // Under every zone's lowest room (the zones of text have thorns, not pits): a fall
+            // that never lands is still a death, never a quiet teleport.
+            _motor.ResetTo(new Vector2(_checkpoints[0].RespawnPosition.x, -70f));
             yield return WaitUntil(() => _respawner.DeathCount > deaths, 4f);
 
             Assert.That(_respawner.DeathCount, Is.EqualTo(deaths + 1),
-                "The pit kills; it does not quietly teleport.");
+                "The fall kills; it does not quietly teleport.");
             yield return WaitUntil(() => _player.IsAlive && !_respawner.IsSequenceRunning, 8f);
             Assert.That(_player.IsAlive, Is.True, "The death flow has to finish on its own.");
             Assert.That(_player.transform.position.x,
