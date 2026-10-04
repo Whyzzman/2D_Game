@@ -3162,9 +3162,10 @@ namespace ForgottenKingdom.EditorTools
             // without taking any of the player's real components with it.
             var playerTools = FindOrCreateChild(root, "DeveloperTools");
             SetString(Ensure<DeveloperOnly>(playerTools), "_purpose",
-                "Animation debug readout: F2 panel, F3 slow motion, [ ] step state.");
+                "Animation debug readout: F2 panel, F3 slow motion, [ ] step state; Ctrl+N noclip flight.");
             var animationTools = Ensure<AnimationDebugTools>(playerTools);
             SetReference(animationTools, "_animation", controller);
+            Ensure<DeveloperNoclip>(playerTools);
         }
 
         /// <summary>

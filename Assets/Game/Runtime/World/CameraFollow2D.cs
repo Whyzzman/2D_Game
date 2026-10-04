@@ -78,6 +78,12 @@ namespace ForgottenKingdom
 
         public Vector2 FramingOffset => _framingOffset;
 
+        /// <summary>
+        /// The developer's flight (<see cref="DeveloperNoclip"/>): the view follows the hero in both
+        /// axes with no dead zone, room, arena or world limit.
+        /// </summary>
+        public bool IsFree { get; set; }
+
         private void Awake()
         {
             _depth = transform.position.z;
@@ -193,7 +199,7 @@ namespace ForgottenKingdom
             }
 
             var y = _target.transform.position.y;
-            if (!HasVerticalDeadZone || _target.IsGrounded)
+            if (!HasVerticalDeadZone || IsFree || _target.IsGrounded)
             {
                 _anchorY = y;
             }
@@ -221,7 +227,7 @@ namespace ForgottenKingdom
         private Vector2 Clamp(Vector2 center)
         {
             var bounds = ActiveBounds;
-            if (!bounds.HasValue || _camera == null)
+            if (!bounds.HasValue || _camera == null || IsFree)
             {
                 return center;
             }
@@ -255,6 +261,13 @@ namespace ForgottenKingdom
         {
             _zoomTarget = _baseSize * Mathf.Clamp(relativeSize, 0.6f, 1.6f);
             _zoomSmoothTime = Mathf.Max(0.05f, smoothTime);
+        }
+
+        /// <summary>The developer's flight looks wider than any fight would: quickly, up to five times.</summary>
+        public void SetFreeZoom(float relativeSize)
+        {
+            _zoomTarget = _baseSize * Mathf.Clamp(relativeSize, 0.6f, 5f);
+            _zoomSmoothTime = 0.1f;
         }
 
         /// <summary>A very short push in: the parry's camera beat. Real time, so hit-stop cannot hold it.</summary>

@@ -51,6 +51,8 @@ namespace ForgottenKingdom.Tests
         [UnityTearDown]
         public IEnumerator TearDown()
         {
+            var noclip = Object.FindAnyObjectByType<DeveloperNoclip>();
+            if (noclip != null) { noclip.SetActive(false); }
             var open = DebugPanels.Open;
             if (open is CombatDebugOverlay)
             {
@@ -100,6 +102,49 @@ namespace ForgottenKingdom.Tests
 
             yield return Tap(Key.F1);
             Assert.That(DebugPanels.Open, Is.Null);
+        }
+
+        [UnityTest]
+        public IEnumerator CtrlNFliesTheHeroThroughTheLevelAndLandsItAgain()
+        {
+            var noclip = Object.FindAnyObjectByType<DeveloperNoclip>();
+            Assume.That(noclip, Is.Not.Null, "Debug tools exist in the Editor.");
+            Assert.That(noclip.GetComponentInParent<DeveloperOnly>(true), Is.Not.Null,
+                "A release build never has it.");
+            var motor = Object.FindAnyObjectByType<PlayerMotor2D>();
+            var body = motor.GetComponent<Rigidbody2D>();
+            var camera = Object.FindAnyObjectByType<CameraFollow2D>();
+
+            yield return Keys(Key.N);
+            yield return Keys();
+            Assert.That(noclip.IsActive, Is.False, "N alone is no command.");
+
+            yield return Keys(Key.LeftCtrl, Key.N);
+            yield return Keys();
+            Assert.That(noclip.IsActive, Is.True);
+            Assert.That(body.simulated, Is.False, "Walls, spikes and enemies pass through.");
+            Assert.That(camera.IsFree, Is.True, "The view leaves its rooms.");
+
+            // Straight down, through the floor and past the bottom of the world, unharmed.
+            var start = (Vector2)motor.transform.position;
+            yield return Keys(Key.S, Key.LeftShift);
+            var until = Time.realtimeSinceStartup + 2f;
+            while (motor.transform.position.y > start.y - 15f && Time.realtimeSinceStartup < until)
+            {
+                yield return null;
+            }
+
+            yield return Keys();
+            Assert.That(motor.transform.position.y, Is.LessThan(start.y - 15f), "It flies through the ground.");
+            Assert.That(Mathf.Abs(motor.transform.position.x - start.x), Is.LessThan(0.01f));
+
+            motor.transform.position = start;
+            yield return Keys(Key.LeftCtrl, Key.N);
+            yield return Keys();
+            Assert.That(noclip.IsActive, Is.False);
+            Assert.That(body.simulated && motor.enabled, Is.True, "Landed, the hero walks again.");
+            Assert.That(camera.IsFree, Is.False);
+            Assert.That(Object.FindAnyObjectByType<PlayerCharacter>().IsAlive, Is.True);
         }
 
         private IEnumerator Tap(Key key)

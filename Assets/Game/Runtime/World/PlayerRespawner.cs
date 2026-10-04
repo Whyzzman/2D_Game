@@ -133,7 +133,7 @@ namespace ForgottenKingdom
 
         private void LateUpdate()
         {
-            if (!_isSequenceRunning && _player.IsAlive
+            if (!_isSequenceRunning && _player.IsAlive && !DeveloperNoclip.IsFlying
                 && _player.transform.position.y < _worldFloorY)
             {
                 // Out of the world is fatal, and it goes through the ordinary death flow.

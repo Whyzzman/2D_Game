@@ -380,6 +380,7 @@ GameObject:
   - component: {fileID: 895161164832120752}
   - component: {fileID: 4325386561729746236}
   - component: {fileID: 6207874115893079925}
+  - component: {fileID: 4218192736941337160}
   m_Layer: 8
   m_Name: DeveloperTools
   m_TagString: Untagged
@@ -414,7 +415,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f93a64a20e35fb24c840a05a7749701d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.DeveloperOnly
-  _purpose: 'Animation debug readout: F2 panel, F3 slow motion, [ ] step state.'
+  _purpose: 'Animation debug readout: F2 panel, F3 slow motion, [ ] step state; Ctrl+N
+    noclip flight.'
 --- !u!114 &6207874115893079925
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -433,6 +435,21 @@ MonoBehaviour:
   _sockets: {fileID: 0}
   _isVisible: 0
   _slowMotionScale: 0.2
+--- !u!114 &4218192736941337160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3177237936008942143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af2c75102c46446418570681b25bcb45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.DeveloperNoclip
+  _speed: 12
+  _fastMultiplier: 3
+  _maxZoomOut: 5
 --- !u!1 &3562994156081623633
 GameObject:
   m_ObjectHideFlags: 0
