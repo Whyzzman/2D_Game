@@ -48,6 +48,30 @@
       underground: ["room_forest_root_tunnel", "room_forest_hollow_trunk", "room_forest_root_nest"],
       poison: ["room_forest_poison_grove", "room_forest_mushroom_pool", "room_forest_deep_roots"],
       caves: []
+    },
+    // Село — погоджений макет design/levels/village-look (2026-10-19): присмерк із жаром над Столицею,
+    // темне дерево, глина й солома, бронза дзвону; тло — village-backdrop.js.
+    village: {
+      style: "village",
+      core: "#0c0907", stone: "#2a211a", rim: "#d79a5c",
+      lip: "#6a5640", lipDark: "#3a2e22", lipLight: "#d8c4a0", chain: "#24180f",
+      skyTop: "#1c1414", skyBottom: "#5a3424", ember: "#d0642a", smoke: "#4a3026", fog: "#5a3a2a",
+      towerStone: "#241a17", bell: "#6e522c", bellGlow: "#f2b05a",
+      farHouse: { wall: "#2a1d18", beam: "#1a120e", roof: "#24180f", roofLight: "#5a4028", window: "#1a110c", windowLit: "#e08a40", lit: 0.15, broken: 0.5 },
+      nearHouse: { wall: "#1e1813", beam: "#0b0806", roof: "#1b140e", roofLight: "#6a5634", window: "#070504", windowLit: "#f4a852", lit: 0.35, broken: 0.3 },
+      beam: "#f0c08a", warmBeam: "#f0b070", dust: "#f0c890",
+      innerTop: "#140f0d", innerBottom: "#0a0807", warmFog: "#4a3024",
+      nave: "#1d1714", naveHole: "#120e0c", naveColumn: "#231c18", naveColumnLight: "#2f2620", vault: "#1a1411",
+      glass: ["#a8452a", "#c98a3a", "#3a5a7a", "#7a2a3a", "#d9b45a"], flame: "#f4a852",
+      logFar: "#1c1510", beamWood: "#140e0a", barrel: "#2a1e14", secretGlow: "#d9b45a",
+      // як у генераторі (ContentBuilderVillage): відкриті вулиці — небо; кам'яні — церква, крипта, погреби
+      open: ["room_village_hill", "room_village_lower_street", "room_village_feather", "room_village_square",
+        "room_village_stilt_houses", "room_village_upper_houses", "room_village_upper_street",
+        "room_village_marsh_road", "room_village_bell"],
+      church: "room_village_church",
+      stone: ["room_village_church", "room_village_crypt_cache", "room_village_belfry_base", "room_village_bell_shaft",
+        "room_village_cellar", "room_village_well_cache", "room_village_bridge", "room_village_stair"],
+      caves: []
     }
   };
 })(window);

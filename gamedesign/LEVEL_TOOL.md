@@ -118,6 +118,11 @@ link room_a room_b door | oneway | ability=id | boss=id | shortcut=id from=room_
 Закрашенный Лес не строит тайлы, убранство комнат, землю и общий параллакс; `SceneForestLook` оставляет
 только лунный свет.
 
+**Село** (2026-10-19, макет `design/levels/village-look`): тло — `village-backdrop.js`: улицы (`open`) —
+сумерки с жаром над Столицей, ряды хат с огоньком в окне, колокольня, дым; церковь — неф и разбитый
+витраж со свечами; каменные (`stone`) — своды и бочки; остальные — бревенчатые стены и балки. Закрашенное
+Село не строит тайлы и тайловое тло комнат; реквизит и его тёплый свет (фонари, кузня) остаются.
+
 Порядок: правка текста → `tools/level-art/render.sh <зона>` (headless Chrome, ~1 мин) →
 `ContentBuilder.Build` → `ContentBuilder.RefreshLevelArt` (импорт) → `Scene<Зона>.Apply`. Просмотр без Unity:
 `node design/ui/_shared/serve.js` → `/design/levels/painter/index.html?zone=tomb&what=preview&ppu=12`

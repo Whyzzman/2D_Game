@@ -30,6 +30,11 @@ namespace ForgottenKingdom.EditorTools
         /// <summary>Where a named spot of the Village's layout stands, on its floor.</summary>
         public static Vector2 VillageSpot(string name) => SpotFeet(VillageLayout, name);
 
+        /// <summary>The Village's painted art (the zone rework, approved look — design/levels/village-look).</summary>
+        public const string VillageArtFolder = "Village";
+
+        private static bool _villagePainted;
+
         private static Sprite VillageArt(string name) =>
             _village != null && _village.TryGetValue(name, out var sprite) ? sprite : null;
 
@@ -69,6 +74,7 @@ namespace ForgottenKingdom.EditorTools
             var zone = VillageLayout;
             var root = Section(level, VillageRootName);
             var context = LevelContext.FromScene();
+            _villagePainted = HasPaintedArt(VillageArtFolder);
             foreach (var problem in BuildLayout(zone, root, VillageLayoutBlock, context))
             {
                 Debug.LogError($"Village layout: {problem}");
@@ -89,12 +95,33 @@ namespace ForgottenKingdom.EditorTools
                 DressVillageRoom(zone, room, rooms[room.Id]);
             }
 
+            if (_villagePainted)
+            {
+                PlacePaintedArt(VillageArtFolder, zone, root);
+            }
+
             return encounter;
         }
 
         /// <summary>How the Village's ground looks: planks on the ledges, cobbles on the square, timber or stone walls.</summary>
         private static GameObject VillageLayoutBlock(Transform parent, string name, Rect world, LevelCell kind)
         {
+            if (_villagePainted)
+            {
+                // The painter draws the ground; the block is only what the hero stands on.
+                var solid = new GameObject(name);
+                solid.transform.SetParent(parent);
+                solid.transform.position = world.center;
+                solid.layer = GroundLayer;
+                solid.AddComponent<BoxCollider2D>().size = world.size;
+                if (name == "BreakableWall")
+                {
+                    PlacePaintedBreakable(VillageArtFolder, VillageLayout, solid, world);
+                }
+
+                return solid;
+            }
+
             var stone = VillageStoneRooms.Contains(parent.name);
             Sprite tile;
             if (kind == LevelCell.Ledge)
@@ -337,7 +364,12 @@ namespace ForgottenKingdom.EditorTools
         {
             var inside = Inside(zone, room);
             var dressing = Section(parent, "Dressing");
-            BuildVillageBackdrop(room, inside, dressing);
+            // Painted, the room's backdrop is the painter's; the props and their warm lights stay.
+            if (!_villagePainted)
+            {
+                BuildVillageBackdrop(room, inside, dressing);
+            }
+
             if (VillageDressing.TryGetValue(room.Id, out var pieces))
             {
                 foreach (var piece in pieces)

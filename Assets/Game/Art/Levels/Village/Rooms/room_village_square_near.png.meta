@@ -1,0 +1,507 @@
+fileFormatVersion: 2
+guid: b55b47cff4b86445597131261f7648db
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -179663780240261317
+    second: room_village_square_near_0
+  - first:
+      213: -3094644048416255570
+    second: room_village_square_near_1
+  - first:
+      213: -2335556701678651267
+    second: room_village_square_near_2
+  - first:
+      213: -2798517725951334232
+    second: room_village_square_near_3
+  - first:
+      213: -4960611804881310588
+    second: room_village_square_near_4
+  - first:
+      213: -7604903931345649154
+    second: room_village_square_near_5
+  - first:
+      213: 8730017995484870423
+    second: room_village_square_near_6
+  - first:
+      213: 54764711637111287
+    second: room_village_square_near_7
+  - first:
+      213: 1549780979825576487
+    second: room_village_square_near_8
+  - first:
+      213: -7939520385801734524
+    second: room_village_square_near_9
+  - first:
+      213: -8964908532649361930
+    second: room_village_square_near_10
+  - first:
+      213: 1630080982376964393
+    second: room_village_square_near_11
+  - first:
+      213: 4876779019946120050
+    second: room_village_square_near_12
+  - first:
+      213: 3214257017469428768
+    second: room_village_square_near_13
+  - first:
+      213: 491104861345255064
+    second: room_village_square_near_14
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 0
+  alignment: 6
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 32
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: room_village_square_near_0
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 394
+        width: 220
+        height: 210
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b3f76c76eb4b18df0800000000000000
+      internalID: -179663780240261317
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_village_square_near_1
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 375
+        width: 15
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ea15fd352ad9d05d0800000000000000
+      internalID: -3094644048416255570
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_village_square_near_2
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 463
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d7839abdd8f669fd0800000000000000
+      internalID: -2335556701678651267
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_village_square_near_3
+      rect:
+        serializedVersion: 2
+        x: 167
+        y: 449
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8a8690794faa929d0800000000000000
+      internalID: -2798517725951334232
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_village_square_near_4
+      rect:
+        serializedVersion: 2
+        x: 206
+        y: 4
+        width: 834
+        height: 636
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 48ca07d88dd582bb0800000000000000
+      internalID: -4960611804881310588
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_village_square_near_5
+      rect:
+        serializedVersion: 2
+        x: 743
+        y: 400
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ef1cb2dba24f57690800000000000000
+      internalID: -7604903931345649154
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_village_square_near_6
+      rect:
+        serializedVersion: 2
+        x: 897
+        y: 404
+        width: 194
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 717b4affc11472970800000000000000
+      internalID: 8730017995484870423
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_village_square_near_7
+      rect:
+        serializedVersion: 2
+        x: 1066
+        y: 5
+        width: 286
+        height: 635
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7f15b5f073092c000800000000000000
+      internalID: 54764711637111287
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_village_square_near_8
+      rect:
+        serializedVersion: 2
+        x: 1338
+        y: 0
+        width: 478
+        height: 640
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 72a092e079de18510800000000000000
+      internalID: 1549780979825576487
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_village_square_near_9
+      rect:
+        serializedVersion: 2
+        x: 91
+        y: 328
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 486b055464821d190800000000000000
+      internalID: -7939520385801734524
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_village_square_near_10
+      rect:
+        serializedVersion: 2
+        x: 14
+        y: 22
+        width: 222
+        height: 268
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6fdf09b003f369380800000000000000
+      internalID: -8964908532649361930
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_village_square_near_11
+      rect:
+        serializedVersion: 2
+        x: 1219
+        y: 116
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 921e2b554063f9610800000000000000
+      internalID: 1630080982376964393
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_village_square_near_12
+      rect:
+        serializedVersion: 2
+        x: 232
+        y: 43
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 27357fb2eaccda340800000000000000
+      internalID: 4876779019946120050
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_village_square_near_13
+      rect:
+        serializedVersion: 2
+        x: 354
+        y: 25
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 024621f3ab55b9c20800000000000000
+      internalID: 3214257017469428768
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_village_square_near_14
+      rect:
+        serializedVersion: 2
+        x: 66
+        y: 10
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 89e83f7f441c0d600800000000000000
+      internalID: 491104861345255064
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      room_village_square_near_0: -179663780240261317
+      room_village_square_near_1: -3094644048416255570
+      room_village_square_near_10: -8964908532649361930
+      room_village_square_near_11: 1630080982376964393
+      room_village_square_near_12: 4876779019946120050
+      room_village_square_near_13: 3214257017469428768
+      room_village_square_near_14: 491104861345255064
+      room_village_square_near_2: -2335556701678651267
+      room_village_square_near_3: -2798517725951334232
+      room_village_square_near_4: -4960611804881310588
+      room_village_square_near_5: -7604903931345649154
+      room_village_square_near_6: 8730017995484870423
+      room_village_square_near_7: 54764711637111287
+      room_village_square_near_8: 1549780979825576487
+      room_village_square_near_9: -7939520385801734524
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

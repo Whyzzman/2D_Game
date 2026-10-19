@@ -394,8 +394,9 @@
     canvas.width = Math.round((rect.w + 2 * m) * ppu);
     canvas.height = Math.round((rect.h + 2 * m) * ppu);
     const f = new Frame(canvas, rect.x - m, rect.y - m, ppu);
-    // Ліс малює своє тло (design/levels/forest-look); решта зон — нави й аркади Гробниці.
-    const style = look.style === "forest" ? root.LevelBackdropForest : { paintMid, paintNear };
+    // Ліс і Село малюють своє тло (design/levels/forest-look, village-look); Гробниця — нави й аркади.
+    const style = look.style === "forest" ? root.LevelBackdropForest
+      : look.style === "village" ? root.LevelBackdropVillage : { paintMid, paintNear };
     (layer === "mid" ? style.paintMid : style.paintNear)(f, zone, room, look, rect, seed);
   }
 

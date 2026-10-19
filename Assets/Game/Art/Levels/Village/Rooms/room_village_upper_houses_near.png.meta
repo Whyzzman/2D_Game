@@ -1,0 +1,377 @@
+fileFormatVersion: 2
+guid: 389f3cb708c814fa3a48289ad4903cbe
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 6361574702181390261
+    second: room_village_upper_houses_near_0
+  - first:
+      213: -6071332421135781279
+    second: room_village_upper_houses_near_1
+  - first:
+      213: -5880585224488585022
+    second: room_village_upper_houses_near_2
+  - first:
+      213: 4780010955948158480
+    second: room_village_upper_houses_near_3
+  - first:
+      213: -7423635471857851630
+    second: room_village_upper_houses_near_4
+  - first:
+      213: -7291521220354270605
+    second: room_village_upper_houses_near_5
+  - first:
+      213: 968943282592511490
+    second: room_village_upper_houses_near_6
+  - first:
+      213: 2589586504692993332
+    second: room_village_upper_houses_near_7
+  - first:
+      213: 9112070394808432585
+    second: room_village_upper_houses_near_8
+  - first:
+      213: 4541400344245328766
+    second: room_village_upper_houses_near_9
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 0
+  alignment: 6
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 32
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: room_village_upper_houses_near_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 268
+        width: 181
+        height: 173
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5b712af8c7ad84850800000000000000
+      internalID: 6361574702181390261
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_village_upper_houses_near_1
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 347
+        width: 69
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 162b3ec845b4ebba0800000000000000
+      internalID: -6071332421135781279
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_village_upper_houses_near_2
+      rect:
+        serializedVersion: 2
+        x: 446
+        y: 0
+        width: 551
+        height: 448
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2c872fe15e6f36ea0800000000000000
+      internalID: -5880585224488585022
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_village_upper_houses_near_3
+      rect:
+        serializedVersion: 2
+        x: 1056
+        y: 0
+        width: 607
+        height: 448
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 01ee3cb83a2065240800000000000000
+      internalID: 4780010955948158480
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_village_upper_houses_near_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 22
+        width: 335
+        height: 237
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2136ce5ded2f9f890800000000000000
+      internalID: -7423635471857851630
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_village_upper_houses_near_5
+      rect:
+        serializedVersion: 2
+        x: 269
+        y: 188
+        width: 86
+        height: 138
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 37a9f8c05105fca90800000000000000
+      internalID: -7291521220354270605
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_village_upper_houses_near_6
+      rect:
+        serializedVersion: 2
+        x: 946
+        y: 228
+        width: 81
+        height: 97
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2067d6628c0627d00800000000000000
+      internalID: 968943282592511490
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_village_upper_houses_near_7
+      rect:
+        serializedVersion: 2
+        x: 1440
+        y: 22
+        width: 216
+        height: 217
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 43d0f5fa43f00f320800000000000000
+      internalID: 2589586504692993332
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_village_upper_houses_near_8
+      rect:
+        serializedVersion: 2
+        x: 1564
+        y: 278
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9c7f8ea0fb3947e70800000000000000
+      internalID: 9112070394808432585
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_village_upper_houses_near_9
+      rect:
+        serializedVersion: 2
+        x: 778
+        y: 172
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e7b549d3d8b460f30800000000000000
+      internalID: 4541400344245328766
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      room_village_upper_houses_near_0: 6361574702181390261
+      room_village_upper_houses_near_1: -6071332421135781279
+      room_village_upper_houses_near_2: -5880585224488585022
+      room_village_upper_houses_near_3: 4780010955948158480
+      room_village_upper_houses_near_4: -7423635471857851630
+      room_village_upper_houses_near_5: -7291521220354270605
+      room_village_upper_houses_near_6: 968943282592511490
+      room_village_upper_houses_near_7: 2589586504692993332
+      room_village_upper_houses_near_8: 9112070394808432585
+      room_village_upper_houses_near_9: 4541400344245328766
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

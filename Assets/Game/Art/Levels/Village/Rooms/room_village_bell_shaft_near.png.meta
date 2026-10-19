@@ -1,0 +1,429 @@
+fileFormatVersion: 2
+guid: 81ef375c2f87541e4a15df111efe2c26
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -9111699422920729437
+    second: room_village_bell_shaft_near_0
+  - first:
+      213: -8258977325793252906
+    second: room_village_bell_shaft_near_1
+  - first:
+      213: 2368012067129708910
+    second: room_village_bell_shaft_near_2
+  - first:
+      213: 8176485285520037322
+    second: room_village_bell_shaft_near_3
+  - first:
+      213: -7577715176778937366
+    second: room_village_bell_shaft_near_4
+  - first:
+      213: -5884882987860294470
+    second: room_village_bell_shaft_near_5
+  - first:
+      213: 137941656030955859
+    second: room_village_bell_shaft_near_6
+  - first:
+      213: -3654669005122872435
+    second: room_village_bell_shaft_near_7
+  - first:
+      213: 1280969902258238191
+    second: room_village_bell_shaft_near_8
+  - first:
+      213: 295793962523843731
+    second: room_village_bell_shaft_near_9
+  - first:
+      213: 2864278766729265029
+    second: room_village_bell_shaft_near_10
+  - first:
+      213: 3084159974964967760
+    second: room_village_bell_shaft_near_11
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 0
+  alignment: 6
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 32
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: room_village_bell_shaft_near_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 67
+        width: 570
+        height: 955
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3ac9da496adbc8180800000000000000
+      internalID: -9111699422920729437
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_village_bell_shaft_near_1
+      rect:
+        serializedVersion: 2
+        x: 13
+        y: 381
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6d9661051e7326d80800000000000000
+      internalID: -8258977325793252906
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_village_bell_shaft_near_2
+      rect:
+        serializedVersion: 2
+        x: 124
+        y: 0
+        width: 147
+        height: 107
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e61da15cd6edcd020800000000000000
+      internalID: 2368012067129708910
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_village_bell_shaft_near_3
+      rect:
+        serializedVersion: 2
+        x: 191
+        y: 718
+        width: 6
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ac551aadb06b87170800000000000000
+      internalID: 8176485285520037322
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_village_bell_shaft_near_4
+      rect:
+        serializedVersion: 2
+        x: 423
+        y: 31
+        width: 41
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aeb4107f13c86d690800000000000000
+      internalID: -7577715176778937366
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_village_bell_shaft_near_5
+      rect:
+        serializedVersion: 2
+        x: 450
+        y: 490
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ab409db1a12b45ea0800000000000000
+      internalID: -5884882987860294470
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_village_bell_shaft_near_6
+      rect:
+        serializedVersion: 2
+        x: 527
+        y: 702
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 359447f84311ae100800000000000000
+      internalID: 137941656030955859
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_village_bell_shaft_near_7
+      rect:
+        serializedVersion: 2
+        x: 559
+        y: 580
+        width: 14
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d8b550237e1084dc0800000000000000
+      internalID: -3654669005122872435
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_village_bell_shaft_near_8
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 31
+        width: 26
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fe2b118d65be6c110800000000000000
+      internalID: 1280969902258238191
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_village_bell_shaft_near_9
+      rect:
+        serializedVersion: 2
+        x: 66
+        y: 0
+        width: 22
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 39c50feaa0fda1400800000000000000
+      internalID: 295793962523843731
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_village_bell_shaft_near_10
+      rect:
+        serializedVersion: 2
+        x: 351
+        y: 11
+        width: 50
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 58f779cdc56ffb720800000000000000
+      internalID: 2864278766729265029
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_village_bell_shaft_near_11
+      rect:
+        serializedVersion: 2
+        x: 34
+        y: 0
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 059b34a18232dca20800000000000000
+      internalID: 3084159974964967760
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      room_village_bell_shaft_near_0: -9111699422920729437
+      room_village_bell_shaft_near_1: -8258977325793252906
+      room_village_bell_shaft_near_10: 2864278766729265029
+      room_village_bell_shaft_near_11: 3084159974964967760
+      room_village_bell_shaft_near_2: 2368012067129708910
+      room_village_bell_shaft_near_3: 8176485285520037322
+      room_village_bell_shaft_near_4: -7577715176778937366
+      room_village_bell_shaft_near_5: -5884882987860294470
+      room_village_bell_shaft_near_6: 137941656030955859
+      room_village_bell_shaft_near_7: -3654669005122872435
+      room_village_bell_shaft_near_8: 1280969902258238191
+      room_village_bell_shaft_near_9: 295793962523843731
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
