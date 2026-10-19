@@ -68,20 +68,25 @@ namespace ForgottenKingdom.EditorTools
         {
             // A slow breath: two seconds a cycle (hero animation 2.0, 2026-09-28).
             new StateSpec(PlayerAnimationState.Idle, 12, 6f, true),
-            new StateSpec(PlayerAnimationState.Run, 6, 12f, true),
-            new StateSpec(PlayerAnimationState.JumpStart, 2, 24f, false),
-            new StateSpec(PlayerAnimationState.JumpRise, 2, 12f, true),
-            new StateSpec(PlayerAnimationState.Fall, 2, 12f, true),
-            new StateSpec(PlayerAnimationState.Land, 2, 24f, false),
-            new StateSpec(PlayerAnimationState.Dash, 3, 24f, false),
-            new StateSpec(PlayerAnimationState.AirDash, 3, 24f, false),
+            // Smoother motion (2026-10-19, decided by Claude under the standing approval): the
+            // frame counts move to the budgets of ANIMATION_LIST.md. The run keeps its half-second
+            // stride, so ten frames play at 20 FPS; the feet strike on frames 0 and 5.
+            new StateSpec(PlayerAnimationState.Run, 10, 20f, true),
+            new StateSpec(PlayerAnimationState.JumpStart, 3, 24f, false),
+            new StateSpec(PlayerAnimationState.JumpRise, 3, 12f, true),
+            new StateSpec(PlayerAnimationState.Fall, 3, 12f, true),
+            new StateSpec(PlayerAnimationState.Land, 3, 24f, false),
+            new StateSpec(PlayerAnimationState.Dash, 5, 24f, false),
+            new StateSpec(PlayerAnimationState.AirDash, 5, 24f, false),
             new StateSpec(PlayerAnimationState.WallSlide, 2, 12f, true),
             new StateSpec(PlayerAnimationState.WallJump, 2, 24f, false),
             new StateSpec(PlayerAnimationState.WallRun, 4, 12f, true),
-            new StateSpec(PlayerAnimationState.Attack1, 4, 24f, false),
-            new StateSpec(PlayerAnimationState.Attack2, 4, 24f, false),
-            new StateSpec(PlayerAnimationState.Attack3, 5, 24f, false),
-            new StateSpec(PlayerAnimationState.Heavy, 6, 24f, false),
+            // Swings are stretched to the attack's real duration, so more frames only add
+            // in-betweens; the strike still lands where AttackDefinition puts it.
+            new StateSpec(PlayerAnimationState.Attack1, 7, 24f, false),
+            new StateSpec(PlayerAnimationState.Attack2, 7, 24f, false),
+            new StateSpec(PlayerAnimationState.Attack3, 9, 24f, false),
+            new StateSpec(PlayerAnimationState.Heavy, 12, 24f, false),
             new StateSpec(PlayerAnimationState.Block, 2, 12f, true),
             new StateSpec(PlayerAnimationState.BlockImpact, 2, 24f, false),
             new StateSpec(PlayerAnimationState.Parry, 3, 24f, false),
@@ -91,16 +96,16 @@ namespace ForgottenKingdom.EditorTools
             new StateSpec(PlayerAnimationState.Death, 6, 12f, false),
             new StateSpec(PlayerAnimationState.CastStart, 4, 12f, true),
             new StateSpec(PlayerAnimationState.CastRelease, 3, 24f, false),
-            new StateSpec(PlayerAnimationState.GroundBreaker, 6, 24f, false),
-            new StateSpec(PlayerAnimationState.DashStrike, 5, 24f, false),
+            new StateSpec(PlayerAnimationState.GroundBreaker, 10, 24f, false),
+            new StateSpec(PlayerAnimationState.DashStrike, 7, 24f, false),
             new StateSpec(PlayerAnimationState.ShadowDashStart, 3, 24f, false),
             new StateSpec(PlayerAnimationState.ShadowDashLoop, 2, 24f, true),
             new StateSpec(PlayerAnimationState.ShadowDashEnd, 3, 24f, false),
             new StateSpec(PlayerAnimationState.ShadowStrike, 5, 24f, false),
             new StateSpec(PlayerAnimationState.WeaponSwitch, 3, 24f, false),
             new StateSpec(PlayerAnimationState.ActiveSkill, 4, 24f, false),
-            new StateSpec(PlayerAnimationState.AttackUp, 4, 24f, false),
-            new StateSpec(PlayerAnimationState.AttackDown, 4, 24f, false),
+            new StateSpec(PlayerAnimationState.AttackUp, 6, 24f, false),
+            new StateSpec(PlayerAnimationState.AttackDown, 6, 24f, false),
             new StateSpec(PlayerAnimationState.Heal, 6, 12f, false),
             new StateSpec(PlayerAnimationState.IdleVariant, 10, 12f, false),
             new StateSpec(PlayerAnimationState.Turn, 2, 24f, false),
@@ -115,12 +120,12 @@ namespace ForgottenKingdom.EditorTools
         /// </summary>
         public static readonly StateSpec[] GreatswordStates =
         {
-            new StateSpec(PlayerAnimationState.Attack1, 5, 18f, false),
-            new StateSpec(PlayerAnimationState.Attack2, 5, 18f, false),
-            new StateSpec(PlayerAnimationState.Attack3, 6, 18f, false),
-            new StateSpec(PlayerAnimationState.Heavy, 7, 18f, false),
-            new StateSpec(PlayerAnimationState.AttackUp, 5, 18f, false),
-            new StateSpec(PlayerAnimationState.AttackDown, 5, 18f, false)
+            new StateSpec(PlayerAnimationState.Attack1, 7, 18f, false),
+            new StateSpec(PlayerAnimationState.Attack2, 7, 18f, false),
+            new StateSpec(PlayerAnimationState.Attack3, 9, 18f, false),
+            new StateSpec(PlayerAnimationState.Heavy, 12, 18f, false),
+            new StateSpec(PlayerAnimationState.AttackUp, 6, 18f, false),
+            new StateSpec(PlayerAnimationState.AttackDown, 6, 18f, false)
         };
 
         /// <summary>Writes every missing or changed frame and returns the sprites, per state.</summary>
@@ -140,9 +145,11 @@ namespace ForgottenKingdom.EditorTools
                 for (var i = 0; i < spec.Frames; i++)
                 {
                     var path = $"{folder}/{Name(spec.State)}_{i:00}.png";
-                    // The frame before, so a swing's fastest frame can be drawn as a smear.
-                    var previous = i > 0 ? FramePhase(spec, i - 1) : (float?)null;
-                    PlaceholderImport.WriteIfChanged(path, Render(spec.State, FramePhase(spec, i),
+                    // Where the blade was a fixed share of the clip ago, so a swing's fast frames
+                    // are drawn as a smear however many in-betweens the clip has.
+                    var phase = FramePhase(spec, i);
+                    var previous = i > 0 ? Mathf.Max(0f, phase - SmearSpan) : (float?)null;
+                    PlaceholderImport.WriteIfChanged(path, Render(spec.State, phase,
                         reachBonus, previous));
                     PlaceholderImport.ConfigureImporter(path);
                     sprites[i] = AssetDatabase.LoadAssetAtPath<Sprite>(path);
@@ -157,6 +164,12 @@ namespace ForgottenKingdom.EditorTools
 
             return result;
         }
+
+        /// <summary>
+        /// How much of the clip a smear looks back over: the arc the eye still holds from the last
+        /// third of a swing. It used to be one frame of four; with denser frames it stays the same arc.
+        /// </summary>
+        private const float SmearSpan = 0.3f;
 
         /// <summary>How far through its clip a frame is: a loop never repeats its first frame.</summary>
         private static float FramePhase(StateSpec spec, int frame)
@@ -280,6 +293,15 @@ namespace ForgottenKingdom.EditorTools
             public float Alpha;
             /// <summary>Drinking: the front hand holds a flask and the sword moves to the back hand.</summary>
             public bool Flask;
+            /// <summary>
+            /// The cloak's hem catching the air, -1..1: a tongue of cloth at the back corner that
+            /// flicks to one side or the other, a beat behind the body (overlapping action).
+            /// </summary>
+            public float CloakFlutter;
+            /// <summary>Speed streaks behind the body, 0..1: the dash's trail drawn into the frame.</summary>
+            public float Streak;
+            /// <summary>The streaks are the Shadow's violet rather than the hero's cold grey-blue.</summary>
+            public bool ShadowStreak;
 
             public static Pose Stand => new Pose
             {
@@ -351,23 +373,38 @@ namespace ForgottenKingdom.EditorTools
                     return HardLandPose(t);
 
                 case PlayerAnimationState.Run:
+                {
                     // Counter-swing: the arm opposite the leading leg comes forward, which is what
-                    // makes a run read as a run rather than a shuffle.
-                    pose.Lean = 14f;
-                    pose.HipY = 76f + Mathf.Abs(Sin01(t)) * 3f;
-                    pose.FrontThigh = Sin01(t) * 38f;
-                    pose.BackThigh = -Sin01(t) * 38f;
-                    pose.FrontShin = -Mathf.Max(0f, -Sin01(t)) * 45f - 6f;
-                    pose.BackShin = -Mathf.Max(0f, Sin01(t)) * 45f - 6f;
-                    pose.FrontArm = -Sin01(t) * 32f;
-                    pose.BackArm = Sin01(t) * 32f;
-                    pose.FrontForearm = 40f;
-                    pose.BackForearm = 35f;
-                    pose.CloakSway = -14f;
+                    // makes a run read as a run rather than a shuffle. A foot strikes at t = 0 and
+                    // 0.5: the body is lowest and a little squashed there, highest and stretched as
+                    // the legs pass. The leg swinging forward folds at the knee. The cloak flaps
+                    // once a step, a beat behind the bob.
+                    var stride = Mathf.Cos(t * Mathf.PI * 2f);
+                    var swing = Mathf.Sin(t * Mathf.PI * 2f);
+                    var lift = Mathf.Abs(swing);
+                    pose.Lean = 13f + (1f - lift) * 2f;
+                    pose.HipY = 75f + lift * 4f;
+                    pose.Squash = 0.96f + lift * 0.07f;
+                    pose.FrontThigh = stride * 38f;
+                    pose.BackThigh = -stride * 38f;
+                    pose.FrontShin = -Mathf.Max(0f, -swing) * 58f - 6f;
+                    pose.BackShin = -Mathf.Max(0f, swing) * 58f - 6f;
+                    pose.FrontArm = -stride * 34f;
+                    pose.BackArm = stride * 34f;
+                    pose.FrontForearm = 40f + lift * 6f;
+                    pose.BackForearm = 35f + lift * 6f;
+                    pose.HeadTilt = 1f - lift * 2f;
+                    pose.CloakSway = -16f + Mathf.Cos((t - 0.08f) * Mathf.PI * 4f) * 5f;
+                    pose.CloakFlutter = Mathf.Sin((t - 0.15f) * Mathf.PI * 4f);
                     break;
+                }
 
                 case PlayerAnimationState.JumpStart:
-                    pose.Squash = Mathf.Lerp(0.86f, 1.05f, t);
+                    // Anticipation, then launch: crouched and wide, then long and thin; the cloak
+                    // is still hanging when the body has already left.
+                    pose.Squash = Mathf.Lerp(0.84f, 1.08f, Mathf.SmoothStep(0f, 1f, t));
+                    pose.CloakSway = Mathf.Lerp(10f, -4f, t * t);
+                    pose.CloakFlutter = Mathf.Lerp(0f, -0.6f, t);
                     pose.HipY = Mathf.Lerp(62f, 84f, t);
                     pose.FrontThigh = Mathf.Lerp(34f, 12f, t);
                     pose.BackThigh = Mathf.Lerp(-30f, -10f, t);
@@ -378,6 +415,8 @@ namespace ForgottenKingdom.EditorTools
                     break;
 
                 case PlayerAnimationState.JumpRise:
+                    pose.Squash = 1.05f - Sin01(t) * 0.01f;
+                    pose.CloakFlutter = Sin01(t + 0.2f) * 0.8f;
                     pose.Lean = 8f;
                     pose.HipY = 80f + Sin01(t) * 1f;
                     pose.FrontThigh = 26f;
@@ -386,7 +425,7 @@ namespace ForgottenKingdom.EditorTools
                     pose.BackShin = -30f;
                     pose.FrontArm = 30f;
                     pose.BackArm = 24f;
-                    pose.CloakSway = -22f;
+                    pose.CloakSway = -22f + Sin01(t) * 3f;
                     break;
 
                 case PlayerAnimationState.Fall:
@@ -396,38 +435,55 @@ namespace ForgottenKingdom.EditorTools
                     pose.FrontShin = -20f;
                     pose.BackThigh = -20f;
                     pose.BackShin = -16f;
-                    pose.FrontArm = 42f;
-                    pose.BackArm = 36f;
-                    pose.CloakSway = 24f + Sin01(t) * 4f;
+                    // The air pushes the cloak up and makes it flutter; the arms ride the air too.
+                    pose.Squash = 1.03f;
+                    pose.FrontArm = 42f + Sin01(t) * 5f;
+                    pose.BackArm = 36f - Sin01(t) * 4f;
+                    pose.CloakSway = 26f + Sin01(t) * 6f;
+                    pose.CloakFlutter = Sin01(t + 0.25f);
                     break;
 
                 case PlayerAnimationState.Land:
-                    pose.Squash = Mathf.Lerp(0.82f, 0.96f, t);
-                    pose.HipY = Mathf.Lerp(58f, 72f, t);
+                    // Squashed flat on impact and widened, then springing back. The cloak keeps
+                    // falling after the body has stopped and settles last. MovementFeedback adds
+                    // its own small squash on top, so the frames stay a little short of the old 0.82.
+                    pose.Squash = Mathf.Lerp(0.84f, 1f, 1f - (1f - t) * (1f - t));
+                    pose.HipY = Mathf.Lerp(58f, 74f, t);
+                    pose.CloakFlutter = Mathf.Lerp(0.8f, 0f, t);
                     pose.Lean = 16f;
                     pose.FrontThigh = 40f;
                     pose.FrontShin = -62f;
                     pose.BackThigh = -34f;
                     pose.BackShin = -58f;
-                    pose.FrontArm = -34f;
-                    pose.BackArm = -28f;
-                    pose.CloakSway = 18f;
+                    pose.FrontArm = Mathf.Lerp(-34f, -14f, t);
+                    pose.BackArm = Mathf.Lerp(-28f, -12f, t);
+                    pose.CloakSway = Mathf.Lerp(30f, 8f, t);
                     break;
 
                 case PlayerAnimationState.Dash:
                 case PlayerAnimationState.AirDash:
-                    pose.Lean = 34f;
-                    pose.HipY = 68f;
+                {
+                    // A burst and a recovery: a quick gather, the body thrown long at a quarter of
+                    // the clip with the streaks at their brightest, then righting itself while the
+                    // cloak, left behind, whips forward over it.
+                    var burst = Mathf.Sin(Mathf.Clamp01(t / 0.35f) * Mathf.PI * 0.5f);
+                    var settle = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01((t - 0.45f) / 0.55f));
+                    pose.Lean = Mathf.Lerp(24f, 38f, burst) - 14f * settle;
+                    pose.HipY = 68f + 3f * settle;
+                    pose.Squash = Mathf.Lerp(0.94f, 0.92f, burst) + 0.07f * settle;
                     pose.FrontThigh = 30f;
                     pose.FrontShin = -20f;
-                    pose.BackThigh = -44f;
+                    pose.BackThigh = Mathf.Lerp(-30f, -48f, burst) + 16f * settle;
                     pose.BackShin = -26f;
-                    pose.FrontArm = -48f;
-                    pose.BackArm = -58f;
+                    pose.FrontArm = Mathf.Lerp(-30f, -52f, burst) + 26f * settle;
+                    pose.BackArm = Mathf.Lerp(-40f, -62f, burst) + 24f * settle;
                     pose.FrontForearm = 12f;
-                    pose.CloakSway = -40f;
+                    pose.CloakSway = Mathf.Lerp(-28f, -46f, burst) + 30f * settle;
+                    pose.CloakFlutter = Mathf.Sin(t * Mathf.PI * 3f);
+                    pose.Streak = burst * (1f - settle * 0.85f);
                     pose.Alpha = state == PlayerAnimationState.AirDash ? 0.9f : 1f;
                     break;
+                }
 
                 case PlayerAnimationState.WallSlide:
                     pose.Lean = -8f;
@@ -672,6 +728,9 @@ namespace ForgottenKingdom.EditorTools
                     pose.FrontArm = -56f;
                     pose.BackArm = -66f;
                     pose.CloakSway = -48f;
+                    pose.CloakFlutter = Sin01(t);
+                    pose.Streak = 0.8f;
+                    pose.ShadowStreak = true;
                     pose.Alpha = 0.3f + Sin01(t) * 0.05f;
                     break;
 
@@ -728,8 +787,12 @@ namespace ForgottenKingdom.EditorTools
             pose.BackThigh = Mathf.Lerp(12f, -30f * reach, eased);
             pose.BackShin = Mathf.Lerp(-16f, -24f, eased);
             pose.HeadTilt = Mathf.Lerp(-4f, 6f, eased);
-            pose.CloakSway = Mathf.Lerp(18f, -26f, eased);
-            pose.Squash = 1f;
+            // The cloak follows the body a beat late and overshoots before it settles.
+            var late = Commit(t - 0.12f);
+            pose.CloakSway = Mathf.Lerp(18f, -26f, late) - Mathf.Sin(late * Mathf.PI) * 6f;
+            pose.CloakFlutter = Mathf.Sin(late * Mathf.PI) * 0.8f;
+            // Gathered on the wind-up, long through the strike, back to the stance after.
+            pose.Squash = 1f - 0.035f * Plateau(t, 0f, 0.3f) + 0.03f * Plateau(t, 0.3f, 0.8f);
             pose.Alpha = alpha;
             return pose;
         }
@@ -855,9 +918,12 @@ namespace ForgottenKingdom.EditorTools
                 smearFrom = ForearmOf(PoseFor(state, previousT.Value, reachBonus));
             }
 
-            Draw(canvas, PoseFor(state, t, reachBonus), reachBonus > 0f, smearFrom);
+            var pose = PoseFor(state, t, reachBonus);
+            Draw(canvas, pose, reachBonus > 0f, smearFrom);
             // The player is the brightest, most outlined figure on screen (Visual Bible §13).
             canvas.Silhouette(new Color32(8, 7, 6, 235), Rim, 0.8f, 0.12f);
+            // After the outline, so the trail stays light and never reads as part of the body.
+            Streaks(canvas, pose);
             return canvas.EncodePng();
         }
 
@@ -883,11 +949,13 @@ namespace ForgottenKingdom.EditorTools
 
             canvas.Limb(hip, pose.BackThigh, 24f, pose.BackShin, 24f, 8f, Charcoal);
 
-            Cloak(canvas, shoulder, hip, lean, pose.CloakSway);
+            Cloak(canvas, shoulder, hip, lean, pose.CloakSway, pose.CloakFlutter);
 
-            // Torso, tapering from shoulders to hips.
-            canvas.Thick(hip, shoulder, 13f, 10f, Charcoal);
-            canvas.Thick(hip, hip + Canvas.Rotate(new Vector2(0f, 8f), lean), 14f, 14f, Leather);
+            // Torso, tapering from shoulders to hips. A squashed body widens and a stretched one
+            // thins, so the volume reads as kept (squash and stretch).
+            var girth = Mathf.Clamp(1f / Mathf.Sqrt(Mathf.Max(0.5f, pose.Squash)), 0.92f, 1.12f);
+            canvas.Thick(hip, shoulder, 13f * girth, 10f * girth, Charcoal);
+            canvas.Thick(hip, hip + Canvas.Rotate(new Vector2(0f, 8f), lean), 14f * girth, 14f * girth, Leather);
 
             canvas.Limb(hip, pose.FrontThigh, 24f, pose.FrontShin, 24f, 9f, CloakTone);
             canvas.Thick(shoulder + Canvas.Rotate(new Vector2(0f, -2f), lean),
@@ -1045,7 +1113,7 @@ namespace ForgottenKingdom.EditorTools
         /// drawn as one solid shape rather than as trailing strips that would break up at this size.
         /// </summary>
         private static void Cloak(Canvas canvas, Vector2 shoulder, Vector2 hip, float lean,
-            float sway)
+            float sway, float flutter = 0f)
         {
             CloakBackEdge(shoulder, hip, lean, sway, out var topBack, out var hemBack);
             var topFront = shoulder + Canvas.Rotate(new Vector2(3f, 4f), lean);
@@ -1058,6 +1126,65 @@ namespace ForgottenKingdom.EditorTools
             // The lining turned out along the back edge, where the cloak swings open.
             var inward = (hemFront - hemBack).normalized * 2.5f;
             canvas.Thick(topBack + inward, hemBack + inward, 2.5f, 4f, Lining);
+            if (Mathf.Abs(flutter) > 0.02f)
+            {
+                // A tongue of cloth at the back corner, flicked by the air: one smooth triangle
+                // that grows out of the hem, so the shape stays one piece.
+                var down = (hemBack - topBack).normalized;
+                var side = new Vector2(-down.y, down.x);
+                var hemMid = Vector2.Lerp(hemBack, hemFront, 0.45f);
+                var tip = hemBack + down * (4f + 5f * Mathf.Abs(flutter)) + side * flutter * 8f;
+                canvas.Triangle(hemBack - down * 6f, hemMid, tip, CloakTone);
+                canvas.Thick(hemBack + inward, tip + inward * 0.5f, 3f, 1.5f, Lining);
+            }
+        }
+
+        private static readonly Color32 StreakCold = new Color32(176, 196, 222, 0xFF);
+        private static readonly Color32 StreakShadow = new Color32(150, 92, 220, 0xFF);
+
+        /// <summary>
+        /// The dash's trail drawn into the frame: five tapered streaks reaching back from behind
+        /// the body, brightest at the body and gone at their ends. Painted only on empty pixels,
+        /// after the outline, so they sit behind the figure and never thicken its silhouette.
+        /// The runtime afterimages (DashAfterimages) still play over it.
+        /// </summary>
+        private static void Streaks(Canvas canvas, Pose pose)
+        {
+            if (pose.Streak <= 0.02f)
+            {
+                return;
+            }
+
+            Skeleton(pose, out var hip, out var shoulder);
+            var tone = pose.ShadowStreak ? StreakShadow : StreakCold;
+            var lines = new[]
+            {
+                // height between hip (0) and shoulder (1), length, width
+                (-0.35f, 70f, 3.2f), (0.05f, 96f, 3.8f), (0.4f, 82f, 3.4f), (0.75f, 60f, 2.6f), (1.05f, 44f, 2f)
+            };
+            foreach (var (along, length, width) in lines)
+            {
+                var start = Vector2.Lerp(hip, shoulder, along) + new Vector2(-14f, 0f);
+                var reach = length * pose.Streak;
+                var steps = Mathf.CeilToInt(reach);
+                for (var k = 0; k <= steps; k++)
+                {
+                    var u = k / (float)Mathf.Max(1, steps);
+                    var centre = start + new Vector2(-reach * u, 0f);
+                    var radius = Mathf.Lerp(width, 0.5f, u) * 0.5f;
+                    var alpha = (byte)Mathf.RoundToInt(170f * pose.Streak * (1f - u) * (1f - u));
+                    for (var y = Mathf.FloorToInt(centre.y - radius); y <= Mathf.CeilToInt(centre.y + radius); y++)
+                    {
+                        for (var x = Mathf.FloorToInt(centre.x - radius); x <= Mathf.CeilToInt(centre.x + radius); x++)
+                        {
+                            if (canvas.Alpha(x, y) == 0 && alpha > 0)
+                            {
+                                canvas.Set(x, y, new Color32(tone.r, tone.g, tone.b, alpha));
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         /// <summary>The cloak's back edge, from the shoulder to the long back corner of the hem.</summary>
