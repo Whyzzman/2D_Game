@@ -105,6 +105,7 @@
 | `cloud/mana-wisp` | искра маны от врага к полосе | `GAME_FEEL_IDEAS.md` № 5 |
 | `cloud/surfaces` | шаги и пыль по поверхности (камень, дерево, земля, вода, пепел) | `GAME_FEEL_IDEAS.md` № 4 |
 | `cloud/world-react` | качаются цепи и корни, огни дрожат от рывка, пыль с потолка, 22 урны с монетами | `GAME_FEEL_IDEAS.md` № 13–14 |
+| `cloud/ledge-forgiveness` | прощение на краю: промах стопой по углу уступа ≤ 0,1 — героя сдвигает на уступ | `TUNING.md`, `GAME_FEEL_IDEAS.md` № 2 |
 | `cloud/boss-death` | смерть босса с замедлением и светом из трещин; «вдох» и блик за 0,2 с до удара врага | `GAME_FEEL_IDEAS.md` № 11–12 |
 | `cloud/hitch-probe` | журнал долгих кадров (`HitchLog`, `-hitchLog`), A/B буфера загрузки текстур в пробе | `KNOWN_ISSUES.md` KI-012 |
 | `cloud/integration` | **все ветки выше одной веткой** | `INTEGRATION.md` |
