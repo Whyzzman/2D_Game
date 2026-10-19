@@ -238,6 +238,10 @@ namespace ForgottenKingdom
         // ---- exploration (item 4, stage B, appended) ----
         WallCrack,
         WallCrumble,
-        TrialGong
+        TrialGong,
+
+        // ---- the hero's death and return (GAME_FEEL_IDEAS item 22, appended) ----
+        HeroFall,
+        AltarCall
     }
 }

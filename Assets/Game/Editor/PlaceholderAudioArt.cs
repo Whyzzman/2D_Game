@@ -285,7 +285,10 @@ namespace ForgottenKingdom.EditorTools
             new Spec(AudioId.WallCrack, "SFX/World", "sfx_wall_crack", Recipe.Crack, 3, 0.35f, 0.9f),
             new Spec(AudioId.WallCrumble, "SFX/World", "sfx_wall_crumble", Recipe.Boom, 2, 1.2f, 0.6f),
             // ---- a trial's gong (stage C) ----
-            new Spec(AudioId.TrialGong, "SFX/World", "sfx_trial_gong", Recipe.MetalRing, 1, 2.2f, 0.35f)
+            new Spec(AudioId.TrialGong, "SFX/World", "sfx_trial_gong", Recipe.MetalRing, 1, 2.2f, 0.35f),
+            // ---- the hero falls into shadow (a long low breath); the altar answers (a low chime) ----
+            new Spec(AudioId.HeroFall, "SFX/Player", "sfx_player_fall_to_shadow", Recipe.Shadow, 2, 1.8f, 0.42f),
+            new Spec(AudioId.AltarCall, "SFX/World", "sfx_altar_call", Recipe.Chime, 2, 1.6f, 0.5f)
         };
 
         /// <summary>Writes every missing or changed clip and returns them, by sound.</summary>
