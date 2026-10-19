@@ -308,6 +308,9 @@ namespace ForgottenKingdom.EditorTools
             new Spec(AudioId.FootstepAsh, "SFX/Player", "sfx_player_footstep_ash", Recipe.Rustle, 6, 0.18f, 0.55f)
             // ---- an urn or a crate bursting: a short bright crack ----
             new Spec(AudioId.PropBreak, "SFX/World", "sfx_prop_break", Recipe.Crack, 4, 0.32f, 1.35f)
+            // ---- the hero falls into shadow (a long low breath); the altar answers (a low chime) ----
+            new Spec(AudioId.HeroFall, "SFX/Player", "sfx_player_fall_to_shadow", Recipe.Shadow, 2, 1.8f, 0.42f),
+            new Spec(AudioId.AltarCall, "SFX/World", "sfx_altar_call", Recipe.Chime, 2, 1.6f, 0.5f)
         };
 
         /// <summary>Writes every missing or changed clip and returns them, by sound.</summary>

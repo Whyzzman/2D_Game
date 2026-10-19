@@ -249,6 +249,9 @@ namespace ForgottenKingdom
         FootstepScuff,
         WallJumpKick,
         // ---- the world answering the hero (GAME_FEEL_IDEAS items 13-14, appended) ----
-        PropBreak
+        PropBreak,
+        // ---- the hero's death and return (GAME_FEEL_IDEAS item 22, appended) ----
+        HeroFall,
+        AltarCall
     }
 }
