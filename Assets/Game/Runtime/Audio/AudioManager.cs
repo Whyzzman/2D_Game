@@ -41,6 +41,7 @@ namespace ForgottenKingdom
         private readonly Queue<Voice> _idle = new Queue<Voice>();
         private readonly Dictionary<AudioId, float> _lastPlayedAt = new Dictionary<AudioId, float>();
         private readonly Dictionary<AudioId, int> _lastClipIndex = new Dictionary<AudioId, int>();
+        private readonly Dictionary<AudioId, int> _beforeClipIndex = new Dictionary<AudioId, int>();
         private readonly float[] _busVolume = new float[5];
         private readonly float[] _busDuck = new float[5];
         private Transform _root;
@@ -190,8 +191,10 @@ namespace ForgottenKingdom
             }
 
             var index = _lastClipIndex.TryGetValue(id, out var previous) ? previous : -1;
-            var clip = settings.PickClip(ref index);
+            var before = _beforeClipIndex.TryGetValue(id, out var earlier) ? earlier : -1;
+            var clip = settings.PickClip(ref index, ref before);
             _lastClipIndex[id] = index;
+            _beforeClipIndex[id] = before;
             _lastPlayedAt[id] = Time.unscaledTime;
 
             voice.Id = id;

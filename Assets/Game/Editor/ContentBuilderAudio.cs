@@ -36,6 +36,12 @@ namespace ForgottenKingdom.EditorTools
             events.Add(Sound(AudioId.WallSlide, clips, 0.35f, voices: 1, priority: 15,
                 interval: 0.35f));
             events.Add(Sound(AudioId.WallContact, clips, 0.45f, voices: 2, priority: 20));
+            // The skid of a start or a turn and the kick off a wall (2026-10-19): footwork, so as
+            // quiet and low in priority as the steps themselves.
+            events.Add(Sound(AudioId.FootstepScuff, clips, 0.3f, voices: 2, priority: 16,
+                interval: 0.12f, spatial: 0.4f));
+            events.Add(Sound(AudioId.WallJumpKick, clips, 0.42f, voices: 1, priority: 28,
+                spatial: 0.4f));
 
             // Weapons. The greatsword is louder and lower before a single clip is chosen.
             events.Add(Sound(AudioId.SwordSwingLight, clips, 0.5f, voices: 3, priority: 45));
@@ -182,10 +188,12 @@ namespace ForgottenKingdom.EditorTools
             // Interface. Quiet, flat, and spaced so fast navigation does not chatter.
             events.Add(Sound(AudioId.UiNavigate, clips, 0.3f, AudioBus.Ui, voices: 1, priority: 25,
                 interval: 0.05f, spatial: 0f));
+            // Confirm and cancel are heard from MenuInput, which several screens may ask in one
+            // frame; the interval keeps one press one sound.
             events.Add(Sound(AudioId.UiConfirm, clips, 0.45f, AudioBus.Ui, voices: 1, priority: 40,
-                spatial: 0f));
+                interval: 0.06f, spatial: 0f));
             events.Add(Sound(AudioId.UiCancel, clips, 0.4f, AudioBus.Ui, voices: 1, priority: 40,
-                spatial: 0f));
+                interval: 0.06f, spatial: 0f));
             events.Add(Sound(AudioId.UiOpen, clips, 0.45f, AudioBus.Ui, voices: 1, priority: 40,
                 spatial: 0f));
             events.Add(Sound(AudioId.UiClose, clips, 0.42f, AudioBus.Ui, voices: 1, priority: 40,

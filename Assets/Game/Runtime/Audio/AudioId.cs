@@ -238,6 +238,10 @@ namespace ForgottenKingdom
         // ---- exploration (item 4, stage B, appended) ----
         WallCrack,
         WallCrumble,
-        TrialGong
+        TrialGong,
+
+        // ---- footwork (2026-10-19, appended): the skid of a start or a turn, the kick off a wall ----
+        FootstepScuff,
+        WallJumpKick
     }
 }

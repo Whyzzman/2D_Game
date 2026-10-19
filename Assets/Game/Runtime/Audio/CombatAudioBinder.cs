@@ -130,6 +130,10 @@ namespace ForgottenKingdom
                 case FeedbackKind.EnemyDeath: return AudioId.ZombieDeath;
                 case FeedbackKind.Pickup: return AudioId.PickupCommon;
                 case FeedbackKind.Pogo: return AudioId.Pogo;
+                // Footwork (2026-10-19): the dust of a start or a turn is a skid, a wall jump a kick.
+                // Plain running dust stays silent; the steps are heard from the run's own frames.
+                case FeedbackKind.RunDust: return AudioId.FootstepScuff;
+                case FeedbackKind.WallJump: return AudioId.WallJumpKick;
                 // The seal shutting is covered by the boss waking; its breaking is a gate opening.
                 case FeedbackKind.ArenaOpen: return AudioId.GateOpen;
                 // A lit altar is already heard (CheckpointActivate); a lost spell has its own hiss.
