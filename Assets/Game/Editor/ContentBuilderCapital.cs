@@ -29,6 +29,11 @@ namespace ForgottenKingdom.EditorTools
             _capital != null && _capital.TryGetValue(name, out var sprite) ? sprite : null;
 
         public const string CapitalLayoutFile = "capital.txt";
+
+        /// <summary>The Capital's painted art (item 6e; approved look — design/levels/capital-look).</summary>
+        public const string CapitalArtFolder = "Capital";
+
+        private static bool _capitalPainted;
         private static LevelZone _capitalLayout;
 
         /// <summary>The Capital's text (Levels/capital.txt), read once per build.</summary>
@@ -69,6 +74,7 @@ namespace ForgottenKingdom.EditorTools
             var zone = CapitalLayout;
             var root = Section(level.transform, CapitalRootName);
             var context = LevelContext.FromScene();
+            _capitalPainted = HasPaintedArt(CapitalArtFolder);
             foreach (var problem in BuildLayout(zone, root, CapitalLayoutBlock, context))
             {
                 Debug.LogError($"Capital layout: {problem}");
@@ -95,7 +101,16 @@ namespace ForgottenKingdom.EditorTools
 
             var camera = Camera.main != null ? Camera.main.transform : null;
             BuildGrappleReturns(level.transform, context.Progress, null);
-            BuildCapitalParallax(root, camera);
+            if (_capitalPainted)
+            {
+                // The painter draws the stone and each room's sky and halls; the props and their fire stay.
+                PlacePaintedArt(CapitalArtFolder, zone, root);
+            }
+            else
+            {
+                BuildCapitalParallax(root, camera);
+            }
+
             BuildCapitalAsh(root);
         }
 
@@ -107,6 +122,22 @@ namespace ForgottenKingdom.EditorTools
         /// <summary>How the Capital's stone looks: ledges as slabs, walls as masonry, floors as flagstones.</summary>
         private static GameObject CapitalLayoutBlock(Transform parent, string name, Rect world, LevelCell kind)
         {
+            if (_capitalPainted)
+            {
+                // The painter draws the stone; the block is only what the hero stands on.
+                var solid = new GameObject(name);
+                solid.transform.SetParent(parent);
+                solid.transform.position = world.center;
+                solid.layer = GroundLayer;
+                solid.AddComponent<BoxCollider2D>().size = world.size;
+                if (name == "BreakableWall")
+                {
+                    PlacePaintedBreakable(CapitalArtFolder, CapitalLayout, solid, world);
+                }
+
+                return solid;
+            }
+
             var surface = kind == LevelCell.Ledge ? CapitalSurface.Ledge
                 : world.height > world.width ? CapitalSurface.Masonry : CapitalSurface.Flagstone;
             return CapitalBlock(parent, name, world.center, world.size, surface);

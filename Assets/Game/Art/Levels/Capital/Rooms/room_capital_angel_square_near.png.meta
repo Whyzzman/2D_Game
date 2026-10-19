@@ -1,0 +1,507 @@
+fileFormatVersion: 2
+guid: 89e2b5569b5b045c5bdc17e393f39d43
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -184499087549263644
+    second: room_capital_angel_square_near_0
+  - first:
+      213: -5235827886253449296
+    second: room_capital_angel_square_near_1
+  - first:
+      213: 7210398248639928588
+    second: room_capital_angel_square_near_2
+  - first:
+      213: 682984275133588414
+    second: room_capital_angel_square_near_3
+  - first:
+      213: -7639730889326724248
+    second: room_capital_angel_square_near_4
+  - first:
+      213: -209080787009940163
+    second: room_capital_angel_square_near_5
+  - first:
+      213: 6346505681310336341
+    second: room_capital_angel_square_near_6
+  - first:
+      213: -5096451303115270519
+    second: room_capital_angel_square_near_7
+  - first:
+      213: 1272451587414122761
+    second: room_capital_angel_square_near_8
+  - first:
+      213: -2693989137628402331
+    second: room_capital_angel_square_near_9
+  - first:
+      213: -6663159812217947287
+    second: room_capital_angel_square_near_10
+  - first:
+      213: -2835641808608301608
+    second: room_capital_angel_square_near_11
+  - first:
+      213: -84151253502627934
+    second: room_capital_angel_square_near_12
+  - first:
+      213: 1876987472008545914
+    second: room_capital_angel_square_near_13
+  - first:
+      213: 1097514247241536815
+    second: room_capital_angel_square_near_14
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 0
+  alignment: 6
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 32
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: room_capital_angel_square_near_0
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 335
+        width: 92
+        height: 137
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4e01e31be07807df0800000000000000
+      internalID: -184499087549263644
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_angel_square_near_1
+      rect:
+        serializedVersion: 2
+        x: 248
+        y: 360
+        width: 52
+        height: 89
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0bf57ce274a9657b0800000000000000
+      internalID: -5235827886253449296
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_angel_square_near_2
+      rect:
+        serializedVersion: 2
+        x: 343
+        y: 366
+        width: 136
+        height: 113
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c09184b310b701460800000000000000
+      internalID: 7210398248639928588
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_angel_square_near_3
+      rect:
+        serializedVersion: 2
+        x: 569
+        y: 376
+        width: 97
+        height: 102
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eb3e38264927a7900800000000000000
+      internalID: 682984275133588414
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_angel_square_near_4
+      rect:
+        serializedVersion: 2
+        x: 700
+        y: 418
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 86bf912bb393af590800000000000000
+      internalID: -7639730889326724248
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_angel_square_near_5
+      rect:
+        serializedVersion: 2
+        x: 792
+        y: 395
+        width: 139
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d35d9e8c122391df0800000000000000
+      internalID: -209080787009940163
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_angel_square_near_6
+      rect:
+        serializedVersion: 2
+        x: 1026
+        y: 394
+        width: 141
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 555408bba41531850800000000000000
+      internalID: 6346505681310336341
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_angel_square_near_7
+      rect:
+        serializedVersion: 2
+        x: 1215
+        y: 412
+        width: 30
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 986dcbeba84c549b0800000000000000
+      internalID: -5096451303115270519
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_angel_square_near_8
+      rect:
+        serializedVersion: 2
+        x: 905
+        y: 375
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 90163bd1af7a8a110800000000000000
+      internalID: 1272451587414122761
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_angel_square_near_9
+      rect:
+        serializedVersion: 2
+        x: 1017
+        y: 374
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 56de5e617270d9ad0800000000000000
+      internalID: -2693989137628402331
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_angel_square_near_10
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 1280
+        height: 358
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 96b37172473b783a0800000000000000
+      internalID: -6663159812217947287
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_angel_square_near_11
+      rect:
+        serializedVersion: 2
+        x: 698
+        y: 341
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8dde7a78cc6c5a8d0800000000000000
+      internalID: -2835641808608301608
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_angel_square_near_12
+      rect:
+        serializedVersion: 2
+        x: 967
+        y: 341
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2af629b71e805def0800000000000000
+      internalID: -84151253502627934
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_angel_square_near_13
+      rect:
+        serializedVersion: 2
+        x: 974
+        y: 345
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a768dec39266c0a10800000000000000
+      internalID: 1876987472008545914
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_angel_square_near_14
+      rect:
+        serializedVersion: 2
+        x: 641
+        y: 334
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f2513ca94672b3f00800000000000000
+      internalID: 1097514247241536815
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      room_capital_angel_square_near_0: -184499087549263644
+      room_capital_angel_square_near_1: -5235827886253449296
+      room_capital_angel_square_near_10: -6663159812217947287
+      room_capital_angel_square_near_11: -2835641808608301608
+      room_capital_angel_square_near_12: -84151253502627934
+      room_capital_angel_square_near_13: 1876987472008545914
+      room_capital_angel_square_near_14: 1097514247241536815
+      room_capital_angel_square_near_2: 7210398248639928588
+      room_capital_angel_square_near_3: 682984275133588414
+      room_capital_angel_square_near_4: -7639730889326724248
+      room_capital_angel_square_near_5: -209080787009940163
+      room_capital_angel_square_near_6: 6346505681310336341
+      room_capital_angel_square_near_7: -5096451303115270519
+      room_capital_angel_square_near_8: 1272451587414122761
+      room_capital_angel_square_near_9: -2693989137628402331
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

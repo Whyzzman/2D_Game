@@ -1,0 +1,429 @@
+fileFormatVersion: 2
+guid: 15354d3c15ef1484cbde165404ad6264
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -6029693545720016997
+    second: room_capital_kings_throne_near_0
+  - first:
+      213: 6684685867096658037
+    second: room_capital_kings_throne_near_1
+  - first:
+      213: 2134960098439783072
+    second: room_capital_kings_throne_near_2
+  - first:
+      213: -1527422095857066075
+    second: room_capital_kings_throne_near_3
+  - first:
+      213: -5830459054610187097
+    second: room_capital_kings_throne_near_4
+  - first:
+      213: -6365687063108250049
+    second: room_capital_kings_throne_near_5
+  - first:
+      213: -620025821715861036
+    second: room_capital_kings_throne_near_6
+  - first:
+      213: -620018126956442783
+    second: room_capital_kings_throne_near_7
+  - first:
+      213: 2601521996379071492
+    second: room_capital_kings_throne_near_8
+  - first:
+      213: -3011199485987932795
+    second: room_capital_kings_throne_near_9
+  - first:
+      213: 8216789835658464550
+    second: room_capital_kings_throne_near_10
+  - first:
+      213: -1903027062001769147
+    second: room_capital_kings_throne_near_11
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 0
+  alignment: 6
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 32
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: room_capital_kings_throne_near_0
+      rect:
+        serializedVersion: 2
+        x: 19
+        y: 276
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b9f84e6baa9325ca0800000000000000
+      internalID: -6029693545720016997
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_kings_throne_near_1
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 401
+        width: 54
+        height: 115
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 570de5f0166c4cc50800000000000000
+      internalID: 6684685867096658037
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_kings_throne_near_2
+      rect:
+        serializedVersion: 2
+        x: 95
+        y: 273
+        width: 188
+        height: 303
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0a2e225e5e6e0ad10800000000000000
+      internalID: 2134960098439783072
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_kings_throne_near_3
+      rect:
+        serializedVersion: 2
+        x: 293
+        y: 361
+        width: 51
+        height: 155
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5af5b5a42b18dcae0800000000000000
+      internalID: -1527422095857066075
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_kings_throne_near_4
+      rect:
+        serializedVersion: 2
+        x: 295
+        y: 0
+        width: 611
+        height: 576
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7acff74816c061fa0800000000000000
+      internalID: -5830459054610187097
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_kings_throne_near_5
+      rect:
+        serializedVersion: 2
+        x: 888
+        y: 472
+        width: 63
+        height: 63
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f36122cc75988a7a0800000000000000
+      internalID: -6365687063108250049
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_kings_throne_near_6
+      rect:
+        serializedVersion: 2
+        x: 698
+        y: 0
+        width: 262
+        height: 245
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4d17e09dcc93567f0800000000000000
+      internalID: -620025821715861036
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_kings_throne_near_7
+      rect:
+        serializedVersion: 2
+        x: 742
+        y: 238
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 16b457c6cc04567f0800000000000000
+      internalID: -620018126956442783
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_kings_throne_near_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 262
+        height: 227
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4042a85e8767a1420800000000000000
+      internalID: 2601521996379071492
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_kings_throne_near_9
+      rect:
+        serializedVersion: 2
+        x: 358
+        y: 150
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 585b9d185021636d0800000000000000
+      internalID: -3011199485987932795
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_kings_throne_near_10
+      rect:
+        serializedVersion: 2
+        x: 287
+        y: 77
+        width: 7
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 62d867432d6e70270800000000000000
+      internalID: 8216789835658464550
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_kings_throne_near_11
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 54
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 545ed6348f61795e0800000000000000
+      internalID: -1903027062001769147
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      room_capital_kings_throne_near_0: -6029693545720016997
+      room_capital_kings_throne_near_1: 6684685867096658037
+      room_capital_kings_throne_near_10: 8216789835658464550
+      room_capital_kings_throne_near_11: -1903027062001769147
+      room_capital_kings_throne_near_2: 2134960098439783072
+      room_capital_kings_throne_near_3: -1527422095857066075
+      room_capital_kings_throne_near_4: -5830459054610187097
+      room_capital_kings_throne_near_5: -6365687063108250049
+      room_capital_kings_throne_near_6: -620025821715861036
+      room_capital_kings_throne_near_7: -620018126956442783
+      room_capital_kings_throne_near_8: 2601521996379071492
+      room_capital_kings_throne_near_9: -3011199485987932795
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

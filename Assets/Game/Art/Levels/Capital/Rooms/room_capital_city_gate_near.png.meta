@@ -1,0 +1,507 @@
+fileFormatVersion: 2
+guid: d9db0fc1fef954b9d93f9cc65e2d25aa
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -1618239170291042123
+    second: room_capital_city_gate_near_0
+  - first:
+      213: 1835450837170525913
+    second: room_capital_city_gate_near_1
+  - first:
+      213: 4966537347992827700
+    second: room_capital_city_gate_near_2
+  - first:
+      213: 4366038169652761830
+    second: room_capital_city_gate_near_3
+  - first:
+      213: 7670571879699073014
+    second: room_capital_city_gate_near_4
+  - first:
+      213: -8068822559559059441
+    second: room_capital_city_gate_near_5
+  - first:
+      213: 2216341979600863851
+    second: room_capital_city_gate_near_6
+  - first:
+      213: -6771361927468788444
+    second: room_capital_city_gate_near_7
+  - first:
+      213: 6727841544704996205
+    second: room_capital_city_gate_near_8
+  - first:
+      213: -5227615874518585198
+    second: room_capital_city_gate_near_9
+  - first:
+      213: -7327809066560991344
+    second: room_capital_city_gate_near_10
+  - first:
+      213: 5772171767948358786
+    second: room_capital_city_gate_near_11
+  - first:
+      213: 7628506171001194625
+    second: room_capital_city_gate_near_12
+  - first:
+      213: -2641211018800483298
+    second: room_capital_city_gate_near_13
+  - first:
+      213: -4272035664019470369
+    second: room_capital_city_gate_near_14
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 0
+  alignment: 6
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 32
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: room_capital_city_gate_near_0
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 359
+        width: 180
+        height: 244
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5b8fd256c0cda89e0800000000000000
+      internalID: -1618239170291042123
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_city_gate_near_1
+      rect:
+        serializedVersion: 2
+        x: 217
+        y: 498
+        width: 79
+        height: 134
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9d61e30dfc4d87910800000000000000
+      internalID: 1835450837170525913
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_city_gate_near_2
+      rect:
+        serializedVersion: 2
+        x: 334
+        y: 362
+        width: 187
+        height: 271
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 437b2d6776face440800000000000000
+      internalID: 4966537347992827700
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_city_gate_near_3
+      rect:
+        serializedVersion: 2
+        x: 432
+        y: 356
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6e413f14598479c30800000000000000
+      internalID: 4366038169652761830
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_city_gate_near_4
+      rect:
+        serializedVersion: 2
+        x: 557
+        y: 369
+        width: 244
+        height: 248
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6f74091fb78537a60800000000000000
+      internalID: 7670571879699073014
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_city_gate_near_5
+      rect:
+        serializedVersion: 2
+        x: 593
+        y: 382
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f08f2dde1a8c50090800000000000000
+      internalID: -8068822559559059441
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_city_gate_near_6
+      rect:
+        serializedVersion: 2
+        x: 802
+        y: 416
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b6245eaa94702ce10800000000000000
+      internalID: 2216341979600863851
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_city_gate_near_7
+      rect:
+        serializedVersion: 2
+        x: 813
+        y: 455
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4255e93043a4702a0800000000000000
+      internalID: -6771361927468788444
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_city_gate_near_8
+      rect:
+        serializedVersion: 2
+        x: 863
+        y: 368
+        width: 245
+        height: 272
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d63b1414d381e5d50800000000000000
+      internalID: 6727841544704996205
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_city_gate_near_9
+      rect:
+        serializedVersion: 2
+        x: 864
+        y: 463
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 29070292f07c377b0800000000000000
+      internalID: -5227615874518585198
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_city_gate_near_10
+      rect:
+        serializedVersion: 2
+        x: 884
+        y: 460
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 09fceb57a746e4a90800000000000000
+      internalID: -7327809066560991344
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_city_gate_near_11
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 1120
+        height: 357
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 284b91304afda1050800000000000000
+      internalID: 5772171767948358786
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_city_gate_near_12
+      rect:
+        serializedVersion: 2
+        x: 68
+        y: 353
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 188c669e1f5edd960800000000000000
+      internalID: 7628506171001194625
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_city_gate_near_13
+      rect:
+        serializedVersion: 2
+        x: 1015
+        y: 334
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e14bc877298885bd0800000000000000
+      internalID: -2641211018800483298
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_city_gate_near_14
+      rect:
+        serializedVersion: 2
+        x: 937
+        y: 317
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fd7c152a23ea6b4c0800000000000000
+      internalID: -4272035664019470369
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      room_capital_city_gate_near_0: -1618239170291042123
+      room_capital_city_gate_near_1: 1835450837170525913
+      room_capital_city_gate_near_10: -7327809066560991344
+      room_capital_city_gate_near_11: 5772171767948358786
+      room_capital_city_gate_near_12: 7628506171001194625
+      room_capital_city_gate_near_13: -2641211018800483298
+      room_capital_city_gate_near_14: -4272035664019470369
+      room_capital_city_gate_near_2: 4966537347992827700
+      room_capital_city_gate_near_3: 4366038169652761830
+      room_capital_city_gate_near_4: 7670571879699073014
+      room_capital_city_gate_near_5: -8068822559559059441
+      room_capital_city_gate_near_6: 2216341979600863851
+      room_capital_city_gate_near_7: -6771361927468788444
+      room_capital_city_gate_near_8: 6727841544704996205
+      room_capital_city_gate_near_9: -5227615874518585198
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

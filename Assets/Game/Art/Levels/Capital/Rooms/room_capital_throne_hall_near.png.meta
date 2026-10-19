@@ -1,0 +1,507 @@
+fileFormatVersion: 2
+guid: 8217066721c66469e9a34d2e8bd1016a
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 4346279494514717682
+    second: room_capital_throne_hall_near_0
+  - first:
+      213: 4756799678793609839
+    second: room_capital_throne_hall_near_1
+  - first:
+      213: 5312981798409414090
+    second: room_capital_throne_hall_near_2
+  - first:
+      213: -4858787142255425743
+    second: room_capital_throne_hall_near_3
+  - first:
+      213: -5455489898836624998
+    second: room_capital_throne_hall_near_4
+  - first:
+      213: -6121672196695054769
+    second: room_capital_throne_hall_near_5
+  - first:
+      213: 6126294958196741363
+    second: room_capital_throne_hall_near_6
+  - first:
+      213: -2834739872756776017
+    second: room_capital_throne_hall_near_7
+  - first:
+      213: 6702253904123239583
+    second: room_capital_throne_hall_near_8
+  - first:
+      213: 8661893879479852417
+    second: room_capital_throne_hall_near_9
+  - first:
+      213: 4270125905264080426
+    second: room_capital_throne_hall_near_10
+  - first:
+      213: -8039521678529236265
+    second: room_capital_throne_hall_near_11
+  - first:
+      213: 2610777945672947173
+    second: room_capital_throne_hall_near_12
+  - first:
+      213: -8557333571867519697
+    second: room_capital_throne_hall_near_13
+  - first:
+      213: -381709946446148343
+    second: room_capital_throne_hall_near_14
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 0
+  alignment: 6
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 32
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: room_capital_throne_hall_near_0
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 298
+        width: 173
+        height: 267
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2f33d153c26115c30800000000000000
+      internalID: 4346279494514717682
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_throne_hall_near_1
+      rect:
+        serializedVersion: 2
+        x: 222
+        y: 284
+        width: 114
+        height: 232
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f627f22fa1c830240800000000000000
+      internalID: 4756799678793609839
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_throne_hall_near_2
+      rect:
+        serializedVersion: 2
+        x: 385
+        y: 0
+        width: 334
+        height: 576
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ac52f48dbc08bb940800000000000000
+      internalID: 5312981798409414090
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_throne_hall_near_3
+      rect:
+        serializedVersion: 2
+        x: 657
+        y: 451
+        width: 48
+        height: 97
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 13741aa46de129cb0800000000000000
+      internalID: -4858787142255425743
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_throne_hall_near_4
+      rect:
+        serializedVersion: 2
+        x: 706
+        y: 300
+        width: 133
+        height: 252
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a997c1867d43a44b0800000000000000
+      internalID: -5455489898836624998
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_throne_hall_near_5
+      rect:
+        serializedVersion: 2
+        x: 866
+        y: 466
+        width: 29
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f462b9432937b0ba0800000000000000
+      internalID: -6121672196695054769
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_throne_hall_near_6
+      rect:
+        serializedVersion: 2
+        x: 919
+        y: 300
+        width: 117
+        height: 216
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3f455945ec8f40550800000000000000
+      internalID: 6126294958196741363
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_throne_hall_near_7
+      rect:
+        serializedVersion: 2
+        x: 152
+        y: 361
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fa342b5da1bf8a8d0800000000000000
+      internalID: -2834739872756776017
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_throne_hall_near_8
+      rect:
+        serializedVersion: 2
+        x: 169
+        y: 307
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f9c9dbd6a60330d50800000000000000
+      internalID: 6702253904123239583
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_throne_hall_near_9
+      rect:
+        serializedVersion: 2
+        x: 1054
+        y: 295
+        width: 14
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 18dd688379a353870800000000000000
+      internalID: 8661893879479852417
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_throne_hall_near_10
+      rect:
+        serializedVersion: 2
+        x: 770
+        y: 0
+        width: 318
+        height: 257
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a26757103e8824b30800000000000000
+      internalID: 4270125905264080426
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_throne_hall_near_11
+      rect:
+        serializedVersion: 2
+        x: 886
+        y: 243
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7d2763be0a1ed6090800000000000000
+      internalID: -8039521678529236265
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_throne_hall_near_12
+      rect:
+        serializedVersion: 2
+        x: 887
+        y: 246
+        width: 10
+        height: 39
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5e5924785b85b3420800000000000000
+      internalID: 2610777945672947173
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_throne_hall_near_13
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 262
+        height: 230
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f25df40847e3e3980800000000000000
+      internalID: -8557333571867519697
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_throne_hall_near_14
+      rect:
+        serializedVersion: 2
+        x: 323
+        y: 87
+        width: 55
+        height: 98
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 90d08da73d4e3baf0800000000000000
+      internalID: -381709946446148343
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      room_capital_throne_hall_near_0: 4346279494514717682
+      room_capital_throne_hall_near_1: 4756799678793609839
+      room_capital_throne_hall_near_10: 4270125905264080426
+      room_capital_throne_hall_near_11: -8039521678529236265
+      room_capital_throne_hall_near_12: 2610777945672947173
+      room_capital_throne_hall_near_13: -8557333571867519697
+      room_capital_throne_hall_near_14: -381709946446148343
+      room_capital_throne_hall_near_2: 5312981798409414090
+      room_capital_throne_hall_near_3: -4858787142255425743
+      room_capital_throne_hall_near_4: -5455489898836624998
+      room_capital_throne_hall_near_5: -6121672196695054769
+      room_capital_throne_hall_near_6: 6126294958196741363
+      room_capital_throne_hall_near_7: -2834739872756776017
+      room_capital_throne_hall_near_8: 6702253904123239583
+      room_capital_throne_hall_near_9: 8661893879479852417
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

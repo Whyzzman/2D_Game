@@ -127,6 +127,11 @@ link room_a room_b door | oneway | ability=id | boss=id | shortcut=id from=room_
 витраж со свечами; каменные (`stone`) — своды и бочки; остальные — бревенчатые стены и балки. Закрашенное
 Село не строит тайлы и тайловое тло комнат; реквизит и его тёплый свет (фонари, кузня) остаются.
 
+**Столица** (2026-10-19, макет `design/levels/capital-look`): тло — `capital-backdrop.js`: открытые ярусы — пепельно-
+красное небо, шпили палаца, аркады; храм и крипты — каменные нефы; цистерна — вода и водопад; башня — шахта; арены
+Командора и Короля — тронные залы. Закрашенная Столица не строит тайлы и общий параллакс; реквизит, жаровни и
+печати со светом остаются. `render.sh` ждёт только свои снимки (раньше голый `wait` ждал и поднятый им сервер).
+
 Порядок: правка текста → `tools/level-art/render.sh <зона>` (headless Chrome, ~1 мин) →
 `ContentBuilder.Build` → `ContentBuilder.RefreshLevelArt` (импорт) → `Scene<Зона>.Apply`. Просмотр без Unity:
 `node design/ui/_shared/serve.js` → `/design/levels/painter/index.html?zone=tomb&what=preview&ppu=12`

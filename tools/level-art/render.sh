@@ -32,12 +32,13 @@ shot() { # shot <file> <w> <h> <query>
   rm -rf "$profile"
   [[ -s "$1" ]] || echo "failed: $1"
 }
-running=0
+# Чекати лише на свої знімки: голий wait чекав би й на сервер, піднятий вище у фоні, — вічно.
+pids=()
 node "$ROOT/tools/level-art/jobs.js" "$ZONE" | while read kind name w h query; do
   case $kind in terrain) dir=Terrain;; breakable) dir=Breakables;; *) dir=Rooms;; esac
   shot "$OUT/$dir/$name.png" "$w" "$h" "$query" &
-  running=$((running + 1))
-  if (( running >= JOBS )); then wait; running=0; fi
+  pids+=($!)
+  if (( ${#pids} >= JOBS )); then wait $pids; pids=(); fi
 done
-wait
+(( ${#pids} )) && wait $pids
 echo "level art: $(ls "$OUT/Terrain" | grep -c png) terrain, $(ls "$OUT/Rooms" | grep -c png) rooms, $(ls "$OUT/Breakables" | grep -c png) walls -> $OUT"
