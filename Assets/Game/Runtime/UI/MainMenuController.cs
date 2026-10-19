@@ -7,7 +7,10 @@ using UnityEngine.UIElements;
 namespace ForgottenKingdom
 {
     /// <summary>
-    /// The title screen: Continue, New Game, Settings, Quit over a lit view of the Tomb.
+    /// The title screen: Continue, New Game, Settings, Quit over a lit view of the Tomb
+    /// (design/ui/menus/menus.html, 2026-10-19). The title and the list unfold one line after
+    /// another (<see cref="MenuMotion"/>), the focused word carries the light and the crown's
+    /// flame (<see cref="MenuFocus"/>), and the camera behind breathes (<see cref="MenuCameraDrift"/>).
     ///
     /// Continue is disabled, not hidden, when there is no save (design/ui/menus). New Game deletes
     /// only the progress file — settings live in their own file and survive it. Keyboard and
@@ -29,6 +32,8 @@ namespace ForgottenKingdom
         private readonly List<System.Action> _actions = new List<System.Action>();
         private VisualElement _root;
         private VisualElement _fade;
+        private VisualElement _front;
+        private MenuFocus _focusMarks;
         private OptionsPanel _options;
         private ControlsPanel _controls;
         private Button _continue;
@@ -59,8 +64,11 @@ namespace ForgottenKingdom
 
             GameTimeScale.Reset();
             _fade = _root.Q("fade");
+            _front = _root.Q("front");
             _continue = _root.Q<Button>("continue");
+            _focusMarks = new MenuFocus(_root.Q("list"));
             Dress();
+            Breathe();
             BindButtons();
             _options = new OptionsPanel(_root, OnOptionsClosed);
             _controls = new ControlsPanel(_root, OnControlsClosed);
@@ -68,6 +76,21 @@ namespace ForgottenKingdom
             Refresh();
             // Opened by the next frame's layout, so the transition actually runs.
             _root.schedule.Execute(() => _fade?.AddToClassList("menu__fade--open")).ExecuteLater(50);
+            // The lines unfold while the black lifts, as in the HTML's 2.2 s intro.
+            if (_front != null)
+            {
+                MenuMotion.Stagger(_front.Query(className: "motion").ToList(), 400);
+            }
+        }
+
+        /// <summary>The camera behind the menu drifts a little; added here so the scene stays as built.</summary>
+        private static void Breathe()
+        {
+            var camera = Camera.main;
+            if (camera != null && camera.GetComponent<MenuCameraDrift>() == null)
+            {
+                camera.gameObject.AddComponent<MenuCameraDrift>();
+            }
         }
 
         private void Dress()
@@ -235,6 +258,11 @@ namespace ForgottenKingdom
             {
                 _items[i].EnableInClassList("menu-button--focused", i == _focus);
             }
+
+            if (_focus < _items.Count)
+            {
+                _focusMarks?.MoveTo(_items[_focus]);
+            }
         }
 
         public void Continue()
@@ -333,6 +361,9 @@ namespace ForgottenKingdom
                 : "Поточне проходження буде стерто назавжди.");
             SetConfirmText("confirm-erase-text", _confirmPlus ? "Почати" : "Стерти й почати");
             _confirm.AddToClassList("confirm--open");
+            MenuMotion.Reveal(_confirm);
+            MenuMotion.Reveal(_confirm.Q(className: "confirm__panel"));
+            Dim(true);
             // Cancel first, as in the mock-up: confirming by reflex keeps the save.
             SetConfirmFocus(0);
         }
@@ -341,6 +372,9 @@ namespace ForgottenKingdom
         {
             _confirmPlus = false;
             _confirm?.RemoveFromClassList("confirm--open");
+            MenuMotion.Hide(_confirm);
+            MenuMotion.Hide(_confirm?.Q(className: "confirm__panel"));
+            Dim(false);
         }
 
         private void SetConfirmText(string name, string text)
@@ -382,19 +416,25 @@ namespace ForgottenKingdom
         public void OpenOptions()
         {
             _options?.Open();
-            _root.Q("front")?.style.SetOpacity(0.15f);
+            Dim(true);
+        }
+
+        /// <summary>The title dims to 18 % under a panel rather than vanishing (menus.html).</summary>
+        private void Dim(bool dimmed)
+        {
+            _front?.style.SetOpacity(dimmed ? 0.18f : 1f);
         }
 
         /// <summary>The same controls screen as in the pause, to set the keys before playing.</summary>
         public void OpenControls()
         {
             _controls?.Open();
-            _root.Q("front")?.style.SetOpacity(0.15f);
+            Dim(true);
         }
 
         private void OnControlsClosed()
         {
-            _root.Q("front")?.style.SetOpacity(1f);
+            Dim(false);
         }
 
         public void CloseOptions()
@@ -405,7 +445,7 @@ namespace ForgottenKingdom
         /// <summary>The panel saved the settings on its way out; bring the title list back.</summary>
         private void OnOptionsClosed()
         {
-            _root.Q("front")?.style.SetOpacity(1f);
+            Dim(false);
         }
 
         public void Quit()
