@@ -152,12 +152,19 @@ namespace ForgottenKingdom
         public static void Play(AudioId id, Vector2 position, float volumeScale = 1f) =>
             Instance?.PlayInternal(id, position, volumeScale, false);
 
+        /// <summary>
+        /// The same, with the pitch scaled on top of the event's own variation: a hit climbing in a
+        /// streak (<see cref="HitStreak"/>). 1 is the sound as authored.
+        /// </summary>
+        public static void Play(AudioId id, Vector2 position, float volumeScale, float pitchScale) =>
+            Instance?.PlayInternal(id, position, volumeScale, false, pitchScale);
+
         /// <summary>Plays without a position; for interface and anything that is not in the world.</summary>
         public static void Play2D(AudioId id, float volumeScale = 1f) =>
             Instance?.PlayInternal(id, Vector2.zero, volumeScale, true);
 
         private AudioSource PlayInternal(AudioId id, Vector2 position, float volumeScale,
-            bool flat)
+            bool flat, float pitchScale = 1f)
         {
             if (_library == null)
             {
@@ -205,7 +212,7 @@ namespace ForgottenKingdom
             source.loop = settings.Loop;
             source.volume = settings.PickVolume() * Mathf.Max(0f, volumeScale)
                 * BusVolume(settings.Bus);
-            source.pitch = settings.PickPitch();
+            source.pitch = settings.PickPitch() * Mathf.Clamp(pitchScale, 0.5f, 2f);
             source.spatialBlend = flat ? 0f : settings.SpatialBlend;
             source.maxDistance = settings.MaxDistance;
             source.rolloffMode = AudioRolloffMode.Linear;

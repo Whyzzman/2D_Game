@@ -162,7 +162,7 @@ namespace ForgottenKingdom
             }
             else
             {
-                AudioManager.Play(id, position);
+                AudioManager.Play(id, position, 1f, _streak.PitchFor(kind, Time.unscaledTime));
             }
 
             // The loudest moments make room for themselves instead of shouting over the room.
@@ -185,6 +185,9 @@ namespace ForgottenKingdom
                     break;
             }
         }
+
+        /// <summary>Landed blows climb in pitch through a run (GAME_FEEL_IDEAS.md, item 8).</summary>
+        private readonly HitStreak _streak = new HitStreak();
 
         // ---------- the player ----------
 
