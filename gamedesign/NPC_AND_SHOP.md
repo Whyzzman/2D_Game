@@ -18,7 +18,7 @@
 тема «village» (после Вартового, до Дзвонаря) и «night-bell» (после Дзвонаря, о Нічному дзвоні);
 Мирослава в церкви — «church» (после Дзвонаря, о крипте), её лесная «end» — до Дзвонаря. Товары Села
 (после Вартового): карта 150, слухи о Сіннику и Горищі по 90, уламок фляги 450 — общей проверки цен
-(`TheCartIsPricedToChooseButNeverToGrind`) для Села нет, сверить в п. 18. Скрині у алтарей: `chest-tomb-crypt`,
+(`TheCartIsPricedToChooseButNeverToGrind`) для Села нет; п. 18 на бумаге (`BALANCE_WORLD.md` §5) — уламок 650 и тест. Скрині у алтарей: `chest-tomb-crypt`,
 `chest-forest-road`, `chest-forest-deep`, `chest-village-church`.
 
 - Данные — `NpcDefinition` (`Data/Npc/Npc_*.asset`): темы (`DialogueTopic`) с условиями
