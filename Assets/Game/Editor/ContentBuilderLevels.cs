@@ -42,6 +42,35 @@ namespace ForgottenKingdom.EditorTools
             };
         }
 
+        /// <summary>
+        /// What a block of a written zone is made of, for the feet (GAME_FEEL_IDEAS item 4): read from
+        /// the room's zone and the cell, as the zones' own builders already choose its tiles. Ledges
+        /// are planks where the zone builds with timber; the rest is the zone's ground.
+        /// </summary>
+        public static SurfaceKind SurfaceFor(string roomId, LevelCell kind)
+        {
+            var id = roomId ?? string.Empty;
+            var ledge = kind == LevelCell.Ledge;
+            if (id.StartsWith("room_forest") || id.StartsWith("room_marsh"))
+            {
+                return ledge ? SurfaceKind.Wood : SurfaceKind.Earth;
+            }
+
+            if (id.StartsWith("room_village"))
+            {
+                return ledge ? SurfaceKind.Wood
+                    : VillageStoneRooms.Contains(id) ? SurfaceKind.Stone : SurfaceKind.Earth;
+            }
+
+            if (id.StartsWith("room_capital"))
+            {
+                // The Capital's ledges are carved stone; its streets are deep in ash.
+                return ledge ? SurfaceKind.Stone : SurfaceKind.Ash;
+            }
+
+            return SurfaceKind.Stone;
+        }
+
         public static LevelZone LoadLayout(string fileName)
         {
             var path = Path.Combine(LevelFolder, fileName);
@@ -56,6 +85,8 @@ namespace ForgottenKingdom.EditorTools
             LevelContext context)
         {
             var problems = new List<string>(zone.Errors);
+            // Loaded fresh for each zone: asset references taken before a new scene are dead.
+            _breakables = null;
             var rooms = new Dictionary<string, Transform>();
             foreach (var room in zone.Rooms)
             {
@@ -84,6 +115,11 @@ namespace ForgottenKingdom.EditorTools
                 if (made != null && piece.Kind == LevelCell.Smooth)
                 {
                     Ensure<NonClimbableSurface>(made);
+                }
+
+                if (made != null)
+                {
+                    Ensure<GroundSurface>(made).Set(SurfaceFor(piece.RoomId, piece.Kind));
                 }
             }
 
@@ -212,6 +248,8 @@ namespace ForgottenKingdom.EditorTools
                         marker.Arg(1), gold);
                     Adopt(parent, c => c.GetComponent<WorldPickup>()?.PersistentId == marker.Arg(1));
                     return null;
+                case "urn":
+                    return PlaceBreakable(parent, marker, feet);
                 case "ring":
                     PlaceGrappleRing(parent, $"Ring_{marker.Cell.x}_{marker.Cell.y}", zone.CellCentre(marker.Cell));
                     return null;

@@ -256,21 +256,53 @@ namespace ForgottenKingdom.EditorTools
             return c;
         }
 
+        /// <summary>
+        /// The purse icon (2026-10-19, HUD feel): a little stack of three coins rather than one
+        /// disc — two behind, one in front — each with a dark rim, a bevel lit from the upper
+        /// left and the crown-flame struck on the front coin, so it reads as money at 30 px.
+        /// </summary>
         private static Canvas Currency()
         {
             var c = new Canvas(Size, Size);
-            c.Ellipse(new Vector2(48, 48), 34, 34, Under);
-            c.Ellipse(new Vector2(48, 48), 30, 30, new Color32(138, 116, 52, 255));
-            c.Ellipse(new Vector2(48, 50), 26, 26, Gold);
-            c.Ellipse(new Vector2(48, 50), 18, 18, new Color32(160, 128, 58, 255));
-            foreach (var x in new[] { 40f, 48f, 56f })
+            Coin(c, new Vector2(30, 58), 22, false);
+            Coin(c, new Vector2(64, 62), 21, false);
+            Coin(c, new Vector2(46, 40), 27, true);
+            return c;
+        }
+
+        private static void Coin(Canvas c, Vector2 centre, float r, bool front)
+        {
+            var rim = new Color32(70, 52, 22, 255);
+            var edge = new Color32(138, 108, 44, 255);
+            var face = front ? Gold : new Color32(176, 140, 62, 255);
+            var shine = front ? GoldBright : new Color32(214, 184, 112, 255);
+            c.Ellipse(centre, r + 3, r + 3, Under);
+            c.Ellipse(centre, r + 1, r + 1, rim);
+            c.Ellipse(centre + new Vector2(0, -1.5f), r - 1, r - 1, edge);
+            c.Ellipse(centre + new Vector2(0, 0.5f), r - 4, r - 4, face);
+            // Light from the upper left: a crescent of shine along that edge.
+            for (var a = 110; a <= 200; a += 6)
             {
-                c.Triangle(new Vector2(x - 4, 50), new Vector2(x + 4, 50),
-                    new Vector2(x, x == 48f ? 64 : 60), GoldBright);
+                var d = new Vector2(Mathf.Cos(a * Mathf.Deg2Rad), Mathf.Sin(a * Mathf.Deg2Rad));
+                c.Ellipse(centre + d * (r - 6), 2.2f, 2.2f, shine);
             }
 
-            c.Rect(38, 46, 58, 50, GoldBright);
-            return c;
+            if (!front)
+            {
+                return;
+            }
+
+            // The crown-flame struck in relief: three teeth, the middle one taller, a drop of flame.
+            var dark = new Color32(150, 118, 48, 255);
+            var baseY = centre.y - 8;
+            c.Rect(centre.x - 11, baseY - 3, centre.x + 11, baseY + 1, dark);
+            foreach (var (dx, top) in new[] { (-8f, 8f), (0f, 13f), (8f, 8f) })
+            {
+                c.Triangle(new Vector2(centre.x + dx - 4, baseY), new Vector2(centre.x + dx + 4, baseY),
+                    new Vector2(centre.x + dx, baseY + top), dark);
+            }
+
+            c.Ellipse(new Vector2(centre.x - 0.5f, baseY + 17), 2.6f, 3.6f, shine);
         }
 
         // ---------- frames ----------

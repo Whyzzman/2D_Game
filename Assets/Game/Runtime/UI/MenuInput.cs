@@ -7,6 +7,11 @@ namespace ForgottenKingdom
     /// Keyboard and gamepad reading shared by the title screen and the pause menu. The menus move
     /// a focus of their own rather than depending on an EventSystem; the mouse uses the buttons
     /// directly.
+    ///
+    /// It is also where the interface is heard (2026-10-19, AUDIO_DESIGN.md): a step of the focus
+    /// ticks, a confirm rises, a cancel falls. Every screen reads its keys here, so every screen
+    /// sounds alike without one of them naming a sound; the events' intervals keep two screens
+    /// asking in the same frame to one sound.
     /// </summary>
     public static class MenuInput
     {
@@ -48,16 +53,17 @@ namespace ForgottenKingdom
         {
             var keyboard = Keyboard.current;
             var pad = Gamepad.current;
-            return (keyboard != null && (keyboard.enterKey.wasPressedThisFrame
+            return Heard((keyboard != null && (keyboard.enterKey.wasPressedThisFrame
                     || keyboard.spaceKey.wasPressedThisFrame || keyboard.numpadEnterKey.wasPressedThisFrame))
-                || (pad != null && pad.buttonSouth.wasPressedThisFrame);
+                || (pad != null && pad.buttonSouth.wasPressedThisFrame), AudioId.UiConfirm);
         }
 
         /// <summary>Escape or the pad's back button.</summary>
         public static bool Cancelled()
         {
             var keyboard = Keyboard.current;
-            return (keyboard != null && keyboard.escapeKey.wasPressedThisFrame) || PadBackPressed();
+            return Heard((keyboard != null && keyboard.escapeKey.wasPressedThisFrame) || PadBackPressed(),
+                AudioId.UiCancel);
         }
 
         /// <summary>
@@ -67,7 +73,18 @@ namespace ForgottenKingdom
         public static bool PadBackPressed()
         {
             var pad = Gamepad.current;
-            return pad != null && pad.buttonEast.wasPressedThisFrame;
+            return Heard(pad != null && pad.buttonEast.wasPressedThisFrame, AudioId.UiCancel);
+        }
+
+        /// <summary>Plays the interface sound for a press that happened; passes the answer through.</summary>
+        private static bool Heard(bool pressed, AudioId sound)
+        {
+            if (pressed)
+            {
+                AudioManager.Play2D(sound);
+            }
+
+            return pressed;
         }
 
         /// <summary>
@@ -94,6 +111,7 @@ namespace ForgottenKingdom
                 }
 
                 _cooldown = Interval;
+                AudioManager.Play2D(AudioId.UiNavigate);
                 return direction;
             }
         }

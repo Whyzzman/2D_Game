@@ -63,32 +63,42 @@ namespace ForgottenKingdom.EditorTools
             Chime,      // progression cues
             Tick,       // interface
             Bed,        // long looping room tone
-            Drone       // slow moving air
+            Drone,      // slow moving air
+            // Richer recipes (2026-10-19): several layers each, and every variant draws its own
+            // parameters from its seed, so no two takes of a footstep or a swing are alike.
+            Footfall,   // heel thud, toe click a beat later, grit
+            Scuff,      // a boot dragged over stone: friction on a falling band
+            Slash,      // a blade through air: early peak, falling sweep, a thin singing edge
+            Impact,     // a blow landing: transient, falling thump, flesh, crunch, edge tick
+            DashBurst,  // a burst of air with the cloak fluttering in it
+            UiClick,    // a soft wooden tick with a faint ring
+            UiUp,       // two notes rising: confirm, open
+            UiDown      // two notes falling: cancel, close
         }
 
         private static readonly Spec[] Catalogue =
         {
             // ---- player movement ----
-            new Spec(AudioId.FootstepStone, "SFX/Player", "sfx_player_footstep_stone", Recipe.Step, 6, 0.16f, 1f),
-            new Spec(AudioId.Land, "SFX/Player", "sfx_player_land", Recipe.BodyHit, 3, 0.3f, 0.8f),
-            new Spec(AudioId.Jump, "SFX/Player", "sfx_player_jump", Recipe.Rustle, 3, 0.22f, 1.1f),
-            new Spec(AudioId.DashGround, "SFX/Player", "sfx_player_dash_ground", Recipe.Whoosh, 3, 0.3f, 1.2f),
-            new Spec(AudioId.DashAir, "SFX/Player", "sfx_player_dash_air", Recipe.Whoosh, 3, 0.3f, 1.5f),
+            new Spec(AudioId.FootstepStone, "SFX/Player", "sfx_player_footstep_stone", Recipe.Footfall, 8, 0.18f, 1f),
+            new Spec(AudioId.Land, "SFX/Player", "sfx_player_land", Recipe.Footfall, 4, 0.3f, 0.7f),
+            new Spec(AudioId.Jump, "SFX/Player", "sfx_player_jump", Recipe.Rustle, 4, 0.22f, 1.1f),
+            new Spec(AudioId.DashGround, "SFX/Player", "sfx_player_dash_ground", Recipe.DashBurst, 4, 0.32f, 1.2f),
+            new Spec(AudioId.DashAir, "SFX/Player", "sfx_player_dash_air", Recipe.DashBurst, 4, 0.32f, 1.5f),
             new Spec(AudioId.WallSlide, "SFX/Player", "sfx_player_wall_slide", Recipe.Rustle, 2, 0.4f, 0.7f),
             new Spec(AudioId.WallContact, "SFX/Player", "sfx_player_wall_contact", Recipe.Step, 3, 0.18f, 0.85f),
 
             // ---- weapons ----
-            new Spec(AudioId.SwordSwingLight, "SFX/Weapons", "sfx_player_sword_swing_light", Recipe.Whoosh, 4, 0.26f, 1.6f),
-            new Spec(AudioId.SwordSwingHeavy, "SFX/Weapons", "sfx_player_sword_swing_heavy", Recipe.Whoosh, 3, 0.38f, 1.1f),
-            new Spec(AudioId.GreatswordSwingLight, "SFX/Weapons", "sfx_player_greatsword_swing_light", Recipe.Whoosh, 3, 0.44f, 0.72f),
-            new Spec(AudioId.GreatswordSwingHeavy, "SFX/Weapons", "sfx_player_greatsword_swing_heavy", Recipe.Whoosh, 3, 0.6f, 0.52f),
+            new Spec(AudioId.SwordSwingLight, "SFX/Weapons", "sfx_player_sword_swing_light", Recipe.Slash, 6, 0.26f, 1.6f),
+            new Spec(AudioId.SwordSwingHeavy, "SFX/Weapons", "sfx_player_sword_swing_heavy", Recipe.Slash, 4, 0.38f, 1.1f),
+            new Spec(AudioId.GreatswordSwingLight, "SFX/Weapons", "sfx_player_greatsword_swing_light", Recipe.Slash, 4, 0.44f, 0.72f),
+            new Spec(AudioId.GreatswordSwingHeavy, "SFX/Weapons", "sfx_player_greatsword_swing_heavy", Recipe.Slash, 4, 0.6f, 0.52f),
             new Spec(AudioId.WeaponSwitch, "SFX/Weapons", "sfx_player_weapon_switch", Recipe.MetalHit, 3, 0.3f, 1.4f),
 
             // ---- impacts ----
-            new Spec(AudioId.HitFlesh, "SFX/Weapons", "sfx_hit_flesh", Recipe.BodyHit, 4, 0.26f, 1f),
-            new Spec(AudioId.HitArmor, "SFX/Weapons", "sfx_hit_armor", Recipe.MetalHit, 4, 0.34f, 1.15f),
-            new Spec(AudioId.HitHeavy, "SFX/Weapons", "sfx_hit_heavy", Recipe.BodyHit, 3, 0.42f, 0.66f),
-            new Spec(AudioId.HitCritical, "SFX/Weapons", "sfx_hit_critical", Recipe.MetalRing, 3, 0.5f, 1.9f),
+            new Spec(AudioId.HitFlesh, "SFX/Weapons", "sfx_hit_flesh", Recipe.Impact, 6, 0.28f, 1f),
+            new Spec(AudioId.HitArmor, "SFX/Weapons", "sfx_hit_armor", Recipe.MetalHit, 6, 0.34f, 1.15f),
+            new Spec(AudioId.HitHeavy, "SFX/Weapons", "sfx_hit_heavy", Recipe.Impact, 4, 0.45f, 0.66f),
+            new Spec(AudioId.HitCritical, "SFX/Weapons", "sfx_hit_critical", Recipe.MetalRing, 4, 0.5f, 1.9f),
 
             // ---- defence ----
             new Spec(AudioId.Block, "SFX/Weapons", "sfx_block", Recipe.MetalHit, 4, 0.3f, 0.95f),
@@ -170,11 +180,11 @@ namespace ForgottenKingdom.EditorTools
             new Spec(AudioId.SkillUnlock, "SFX/World", "sfx_skill_unlock", Recipe.Chime, 1, 1.1f, 1.05f),
 
             // ---- interface ----
-            new Spec(AudioId.UiNavigate, "UI", "ui_navigate", Recipe.Tick, 3, 0.1f, 1.8f),
-            new Spec(AudioId.UiConfirm, "UI", "ui_confirm", Recipe.Tick, 1, 0.2f, 1.3f),
-            new Spec(AudioId.UiCancel, "UI", "ui_cancel", Recipe.Tick, 1, 0.22f, 0.8f),
-            new Spec(AudioId.UiOpen, "UI", "ui_open", Recipe.Rustle, 1, 0.3f, 1.2f),
-            new Spec(AudioId.UiClose, "UI", "ui_close", Recipe.Rustle, 1, 0.28f, 0.9f),
+            new Spec(AudioId.UiNavigate, "UI", "ui_navigate", Recipe.UiClick, 5, 0.12f, 1f),
+            new Spec(AudioId.UiConfirm, "UI", "ui_confirm", Recipe.UiUp, 2, 0.32f, 1f),
+            new Spec(AudioId.UiCancel, "UI", "ui_cancel", Recipe.UiDown, 2, 0.3f, 1f),
+            new Spec(AudioId.UiOpen, "UI", "ui_open", Recipe.UiUp, 2, 0.4f, 0.75f),
+            new Spec(AudioId.UiClose, "UI", "ui_close", Recipe.UiDown, 2, 0.36f, 0.7f),
             new Spec(AudioId.UiError, "UI", "ui_error", Recipe.Tick, 1, 0.26f, 0.5f),
             new Spec(AudioId.UiSaveFailed, "UI", "ui_save_failed", Recipe.Tick, 1, 0.5f, 0.45f),
 
@@ -284,8 +294,23 @@ namespace ForgottenKingdom.EditorTools
             // ---- a breakable wall: stone giving under a blow, then the fall ----
             new Spec(AudioId.WallCrack, "SFX/World", "sfx_wall_crack", Recipe.Crack, 3, 0.35f, 0.9f),
             new Spec(AudioId.WallCrumble, "SFX/World", "sfx_wall_crumble", Recipe.Boom, 2, 1.2f, 0.6f),
+            // ---- footwork (2026-10-19, appended ids): the skid of a start or a turn, the kick off a wall ----
+            new Spec(AudioId.FootstepScuff, "SFX/Player", "sfx_player_footstep_scuff", Recipe.Scuff, 4, 0.22f, 1f),
+            new Spec(AudioId.WallJumpKick, "SFX/Player", "sfx_player_wall_kick", Recipe.Scuff, 3, 0.26f, 1.35f),
+
             // ---- a trial's gong (stage C) ----
-            new Spec(AudioId.TrialGong, "SFX/World", "sfx_trial_gong", Recipe.MetalRing, 1, 2.2f, 0.35f)
+            new Spec(AudioId.TrialGong, "SFX/World", "sfx_trial_gong", Recipe.MetalRing, 1, 2.2f, 0.35f),
+            // ---- steps by surface: a hollow knock on planks, a soft thud and rustle on loam, a splash,
+            // a dry crunch in ash (stone keeps the first footstep) ----
+            new Spec(AudioId.FootstepWood, "SFX/Player", "sfx_player_footstep_wood", Recipe.Step, 6, 0.2f, 0.72f),
+            new Spec(AudioId.FootstepEarth, "SFX/Player", "sfx_player_footstep_earth", Recipe.Rustle, 6, 0.15f, 0.8f),
+            new Spec(AudioId.FootstepWater, "SFX/Player", "sfx_player_footstep_water", Recipe.Whoosh, 6, 0.22f, 1.9f),
+            new Spec(AudioId.FootstepAsh, "SFX/Player", "sfx_player_footstep_ash", Recipe.Rustle, 6, 0.18f, 0.55f),
+            // ---- an urn or a crate bursting: a short bright crack ----
+            new Spec(AudioId.PropBreak, "SFX/World", "sfx_prop_break", Recipe.Crack, 4, 0.32f, 1.35f),
+            // ---- the hero falls into shadow (a long low breath); the altar answers (a low chime) ----
+            new Spec(AudioId.HeroFall, "SFX/Player", "sfx_player_fall_to_shadow", Recipe.Shadow, 2, 1.8f, 0.42f),
+            new Spec(AudioId.AltarCall, "SFX/World", "sfx_altar_call", Recipe.Chime, 2, 1.6f, 0.5f)
         };
 
         /// <summary>Writes every missing or changed clip and returns them, by sound.</summary>
@@ -350,6 +375,14 @@ namespace ForgottenKingdom.EditorTools
                 case Recipe.Tick: Tick(samples, random, spec.Tone); break;
                 case Recipe.Bed: Bed(samples, random, spec.Tone); break;
                 case Recipe.Drone: Drone(samples, random, spec.Tone); break;
+                case Recipe.Footfall: Footfall(samples, random, spec.Tone); break;
+                case Recipe.Scuff: Scuff(samples, random, spec.Tone); break;
+                case Recipe.Slash: Slash(samples, random, spec.Tone); break;
+                case Recipe.Impact: Impact(samples, random, spec.Tone); break;
+                case Recipe.DashBurst: DashBurst(samples, random, spec.Tone); break;
+                case Recipe.UiClick: UiClick(samples, random, spec.Tone); break;
+                case Recipe.UiUp: UiNotes(samples, random, spec.Tone, true); break;
+                case Recipe.UiDown: UiNotes(samples, random, spec.Tone, false); break;
             }
 
             Normalise(samples, spec.Kind == Recipe.Bed ? 0.16f : 0.82f);
@@ -675,6 +708,194 @@ namespace ForgottenKingdom.EditorTools
                 var rise = Mathf.Sin(2f * Mathf.PI * Mathf.Lerp(50f, 130f, progress) * tone * t);
                 samples[i] = (low.Low(noise, sweep) * 0.75f + rise * 0.35f)
                     * Mathf.Sin(progress * Mathf.PI);
+            }
+        }
+
+        // ---------- richer recipes (2026-10-19) ----------
+
+        private static float Range(System.Random random, float from, float to) =>
+            Mathf.Lerp(from, to, (float)random.NextDouble());
+
+        private static float Noise(System.Random random) => (float)(random.NextDouble() * 2.0 - 1.0);
+
+        /// <summary>
+        /// A boot on stone: the heel's low thud with its pitch dropping, the toe's dry click a
+        /// moment later, and a little grit under both. Heel pitch, toe delay, brightness and grit
+        /// are drawn per variant, so eight takes are eight different steps.
+        /// </summary>
+        private static void Footfall(float[] samples, System.Random random, float tone)
+        {
+            var heel = Range(random, 78f, 112f) * tone;
+            var toeAt = Range(random, 0.012f, 0.03f);
+            var bright = Range(random, 1500f, 2600f) * tone;
+            var grit = Range(random, 0.0015f, 0.005f);
+            var toeLevel = Range(random, 0.45f, 0.75f);
+            var low = new OnePole();
+            var toeLow = new OnePole();
+            var toeHigh = new OnePole();
+            var phase = 0f;
+            for (var i = 0; i < samples.Length; i++)
+            {
+                var t = i / (float)Rate;
+                var noise = Noise(random);
+                phase += 2f * Mathf.PI * heel * Mathf.Lerp(1.4f, 0.8f, Mathf.Clamp01(t * 25f)) / Rate;
+                var thud = (Mathf.Sin(phase) * 0.7f + low.Low(noise, 500f * tone) * 0.6f) * Mathf.Exp(-t * 48f);
+                var toe = 0f;
+                if (t >= toeAt)
+                {
+                    var local = t - toeAt;
+                    toe = (toeLow.Low(noise, bright) - toeHigh.Low(noise, bright * 0.25f))
+                        * Mathf.Exp(-local * 95f) * toeLevel;
+                }
+
+                var crumb = random.NextDouble() < grit ? Noise(random) * 0.35f * Mathf.Exp(-t * 18f) : 0f;
+                samples[i] = thud + toe + crumb;
+            }
+        }
+
+        /// <summary>A boot dragged across stone: friction flutter on a band of noise that falls in pitch.</summary>
+        private static void Scuff(float[] samples, System.Random random, float tone)
+        {
+            var flutter = Range(random, 28f, 60f);
+            var from = Range(random, 2400f, 3400f) * tone;
+            var to = Range(random, 700f, 1100f) * tone;
+            var low = new OnePole();
+            var high = new OnePole();
+            for (var i = 0; i < samples.Length; i++)
+            {
+                var t = i / (float)Rate;
+                var progress = i / (float)samples.Length;
+                var noise = Noise(random);
+                var cutoff = Mathf.Lerp(from, to, progress);
+                var band = low.Low(noise, cutoff) - high.Low(noise, cutoff * 0.3f);
+                var rub = 0.65f + 0.35f * Mathf.Sin(2f * Mathf.PI * flutter * t + (float)random.NextDouble() * 0.3f);
+                var envelope = Mathf.Clamp01(t / 0.012f) * Mathf.Pow(1f - progress, 1.6f);
+                samples[i] = band * rub * envelope;
+            }
+        }
+
+        /// <summary>
+        /// A blade through air: the swell peaks early (where the blade is fastest), the band sweeps
+        /// up then falls away, and a thin edge sings over it, rising. Peak, sweep and the edge's
+        /// pitch are drawn per variant.
+        /// </summary>
+        private static void Slash(float[] samples, System.Random random, float tone)
+        {
+            var peak = Range(random, 0.26f, 0.42f);
+            var top = Range(random, 3600f, 5200f) * tone;
+            var edge = Range(random, 2800f, 3900f) * tone;
+            var edgeLevel = Range(random, 0.08f, 0.16f);
+            var low = new OnePole();
+            var high = new OnePole();
+            var edgePhase = 0f;
+            for (var i = 0; i < samples.Length; i++)
+            {
+                var progress = i / (float)samples.Length;
+                var shape = progress < peak
+                    ? Mathf.Pow(progress / peak, 1.6f)
+                    : Mathf.Pow(1f - (progress - peak) / (1f - peak), 2.2f);
+                var cutoff = Mathf.Lerp(500f * tone, top, shape);
+                var noise = Noise(random);
+                var air = low.Low(noise, cutoff) - high.Low(noise, 220f * tone);
+                edgePhase += 2f * Mathf.PI * edge * Mathf.Lerp(0.85f, 1.15f, progress) / Rate;
+                var sing = Mathf.Sin(edgePhase) * edgeLevel * shape * shape * shape;
+                samples[i] = air * shape + sing;
+            }
+        }
+
+        /// <summary>
+        /// A blow landing: a hard transient, a thump whose pitch falls, wet flesh noise, a short
+        /// crunch and the blade's edge ticking on contact. Each layer's weight is drawn per
+        /// variant, so one hit is meatier and the next is sharper.
+        /// </summary>
+        private static void Impact(float[] samples, System.Random random, float tone)
+        {
+            var thumpFrom = Range(random, 130f, 170f) * tone;
+            var thumpTo = Range(random, 48f, 62f) * tone;
+            var flesh = Range(random, 0.5f, 0.85f);
+            var tick = Range(random, 0.12f, 0.3f);
+            var tickPitch = Range(random, 2200f, 3000f) * tone;
+            var crunch = Range(random, 4f, 9f);
+            var low = new OnePole();
+            var phase = 0f;
+            for (var i = 0; i < samples.Length; i++)
+            {
+                var t = i / (float)Rate;
+                var noise = Noise(random);
+                var transient = noise * Mathf.Exp(-t * 260f);
+                phase += 2f * Mathf.PI * Mathf.Lerp(thumpFrom, thumpTo, Mathf.Clamp01(t * 7f)) / Rate;
+                var thump = Mathf.Sin(phase) * Mathf.Exp(-t * 16f) * 0.75f;
+                var wet = low.Low(noise, 650f * tone) * Mathf.Exp(-t * 24f) * flesh;
+                var bits = t < 0.07f && random.NextDouble() < crunch * 0.0004 ? Noise(random) * 0.5f : 0f;
+                var edgeTick = Mathf.Sin(2f * Mathf.PI * tickPitch * t) * Mathf.Exp(-t * 70f) * tick;
+                samples[i] = transient + thump + wet + bits + edgeTick;
+            }
+        }
+
+        /// <summary>A burst of air with the cloak fluttering in it: a puff, then a sweep that flaps.</summary>
+        private static void DashBurst(float[] samples, System.Random random, float tone)
+        {
+            var flap = Range(random, 16f, 28f);
+            var depth = Range(random, 0.25f, 0.45f);
+            var top = Range(random, 2600f, 3600f) * tone;
+            var low = new OnePole();
+            var high = new OnePole();
+            var puff = new OnePole();
+            for (var i = 0; i < samples.Length; i++)
+            {
+                var t = i / (float)Rate;
+                var progress = i / (float)samples.Length;
+                var noise = Noise(random);
+                var swell = Mathf.Sin(Mathf.Pow(progress, 0.6f) * Mathf.PI);
+                var cutoff = Mathf.Lerp(700f * tone, top, swell);
+                var air = low.Low(noise, cutoff) - high.Low(noise, 160f * tone);
+                var cloth = 1f - depth + depth * Mathf.Abs(Mathf.Sin(2f * Mathf.PI * flap * t));
+                var start = puff.Low(noise, 380f) * Mathf.Exp(-t * 40f) * 0.9f;
+                samples[i] = air * swell * cloth + start;
+            }
+        }
+
+        /// <summary>The interface's tick: soft and wooden with a faint ring, each variant a hair off pitch.</summary>
+        private static void UiClick(float[] samples, System.Random random, float tone)
+        {
+            var pitch = Range(random, 1150f, 1320f) * tone;
+            for (var i = 0; i < samples.Length; i++)
+            {
+                var t = i / (float)Rate;
+                var wood = Mathf.Sin(2f * Mathf.PI * 310f * tone * t) * Mathf.Exp(-t * 55f) * 0.45f;
+                var ring = (Mathf.Sin(2f * Mathf.PI * pitch * t) + 0.35f * Mathf.Sin(2f * Mathf.PI * pitch * 2.71f * t))
+                    * Mathf.Exp(-t * 48f) * 0.35f;
+                var click = Noise(random) * Mathf.Exp(-t * 420f) * 0.35f;
+                samples[i] = wood + ring + click;
+            }
+        }
+
+        /// <summary>
+        /// Two soft bell notes a fifth apart, 45 ms between them: rising for confirm and open,
+        /// falling for cancel and close, so the ear hears in or out before the eye reads it.
+        /// </summary>
+        private static void UiNotes(float[] samples, System.Random random, float tone, bool rising)
+        {
+            var root = Range(random, 520f, 560f) * tone;
+            var notes = rising ? new[] { root, root * 1.5f } : new[] { root * 1.5f, root };
+            for (var i = 0; i < samples.Length; i++)
+            {
+                var t = i / (float)Rate;
+                var value = 0f;
+                for (var n = 0; n < notes.Length; n++)
+                {
+                    var local = t - n * 0.045f;
+                    if (local < 0f)
+                    {
+                        continue;
+                    }
+
+                    value += (Mathf.Sin(2f * Mathf.PI * notes[n] * local)
+                        + 0.25f * Mathf.Sin(2f * Mathf.PI * notes[n] * 2f * local))
+                        * Mathf.Exp(-local * 11f) * (n == 0 ? 0.8f : 1f);
+                }
+
+                samples[i] = value * 0.5f + Noise(random) * Mathf.Exp(-t * 500f) * 0.15f;
             }
         }
 

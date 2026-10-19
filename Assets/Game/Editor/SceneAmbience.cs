@@ -10,6 +10,10 @@ namespace ForgottenKingdom.EditorTools
     /// zone's air — dust and grit in the Tomb, leaves and spores in the forest — and sparse dark
     /// shapes in front of the play at the top and bottom of the frame, never in a boss arena.
     ///
+    /// Since 2026-10-19 (decided by Claude under the standing approval, ENVIRONMENT_TOMB.md
+    /// «Воздух зон»): every zone also has low mist and soft shafts of light in its own colour, the
+    /// forest and the village fireflies, and the capital the glow of embers still alive in the ash.
+    ///
     /// Scenes are the source of truth, so this is a scene edit, run once and again whenever the
     /// recipe changes: it replaces its own "Ambience" object and leaves everything else alone.
     /// Run: -executeMethod ForgottenKingdom.EditorTools.SceneAmbience.Apply
@@ -68,14 +72,21 @@ namespace ForgottenKingdom.EditorTools
                 Motes(host, "TombDust", material, rate: 4f, life: (7f, 11f), size: (0.05f, 0.1f),
                     color: new Color(0.86f, 0.8f, 0.7f, 0.42f), speed: 0.08f, gravity: -0.004f, noise: 0.12f),
                 // The odd crumb of grit from the vault, falling from above the frame.
-                Grit(host, material)
+                Grit(host, material),
+                // Cold mist lying on the crypt floor, and pale light falling from the vault's cracks.
+                Mist(host, "TombMist", material, new Color(0.62f, 0.68f, 0.8f, 0.07f), drift: 0.12f),
+                Shafts(host, "TombShafts", material, new Color(0.72f, 0.8f, 1f, 0.06f), tilt: 0.22f)
             };
             var forest = new[]
             {
                 Leaves(host, material),
                 // Spores rising slowly out of the undergrowth.
                 Motes(host, "ForestSpores", material, rate: 3f, life: (6f, 9f), size: (0.05f, 0.09f),
-                    color: new Color(0.78f, 0.86f, 0.62f, 0.42f), speed: 0.06f, gravity: -0.012f, noise: 0.15f)
+                    color: new Color(0.78f, 0.86f, 0.62f, 0.42f), speed: 0.06f, gravity: -0.012f, noise: 0.15f),
+                Fireflies(host, "ForestFireflies", material, new Color(0.86f, 1f, 0.48f, 0.9f), rate: 0.9f),
+                Mist(host, "ForestMist", material, new Color(0.6f, 0.72f, 0.6f, 0.07f), drift: 0.18f),
+                // Green-gold light through the canopy, leaning with the wind.
+                Shafts(host, "ForestShafts", material, new Color(0.86f, 0.95f, 0.62f, 0.07f), tilt: -0.28f)
             };
 
             var capital = new[]
@@ -85,7 +96,12 @@ namespace ForgottenKingdom.EditorTools
                     color: new Color(0.7f, 0.66f, 0.64f, 0.5f), speed: 0.1f, gravity: 0.01f, noise: 0.2f),
                 // The odd ember still rising from the ruins.
                 Motes(host, "CapitalEmbers", material, rate: 1.2f, life: (4f, 6f), size: (0.04f, 0.07f),
-                    color: new Color(1f, 0.55f, 0.25f, 0.7f), speed: 0.1f, gravity: -0.02f, noise: 0.25f)
+                    color: new Color(1f, 0.55f, 0.25f, 0.7f), speed: 0.1f, gravity: -0.02f, noise: 0.25f),
+                // Heat: coals still alive in the ash, swelling and dimming low in the frame.
+                Heat(host, material),
+                Mist(host, "CapitalSmoke", material, new Color(0.5f, 0.42f, 0.38f, 0.08f), drift: 0.15f),
+                // Ash-red light through the smoke over the ruined tiers.
+                Shafts(host, "CapitalShafts", material, new Color(1f, 0.62f, 0.4f, 0.06f), tilt: 0.3f)
             };
 
             var village = new[]
@@ -95,7 +111,11 @@ namespace ForgottenKingdom.EditorTools
                     color: new Color(0.55f, 0.48f, 0.42f, 0.3f), speed: 0.12f, gravity: -0.008f, noise: 0.18f),
                 // Sparks from the fires still burning in the hearths.
                 Motes(host, "VillageSparks", material, rate: 1.6f, life: (3f, 5f), size: (0.03f, 0.06f),
-                    color: new Color(1f, 0.62f, 0.3f, 0.75f), speed: 0.12f, gravity: -0.025f, noise: 0.3f)
+                    color: new Color(1f, 0.62f, 0.3f, 0.75f), speed: 0.12f, gravity: -0.025f, noise: 0.3f),
+                // Dusk over the fields: a few fireflies, warmer than the forest's, and low mist.
+                Fireflies(host, "VillageFireflies", material, new Color(1f, 0.9f, 0.5f, 0.85f), rate: 0.5f),
+                Mist(host, "VillageMist", material, new Color(0.7f, 0.62f, 0.56f, 0.06f), drift: 0.1f),
+                Shafts(host, "VillageShafts", material, new Color(1f, 0.8f, 0.55f, 0.05f), tilt: -0.35f)
             };
 
             var serialized = new SerializedObject(ambience);
@@ -221,6 +241,131 @@ namespace ForgottenKingdom.EditorTools
             noiseModule.frequency = 0.4f;
             FadeInOut(system, 0.1f, 0.85f);
             return system;
+        }
+
+        /// <summary>
+        /// Low mist: a few very large, very faint puffs along the bottom of the view, drifting
+        /// sideways and swelling a little, so the floor fades into air instead of ending in a line.
+        /// </summary>
+        private static ParticleSystem Mist(GameObject host, string name, Material material, Color color,
+            float drift)
+        {
+            var system = System(host, name, material, new Vector3(36f, 3f, 0.1f), new Vector3(0f, -5f, 0f), 14);
+            var main = system.main;
+            main.startLifetime = new ParticleSystem.MinMaxCurve(14f, 20f);
+            main.startSize = new ParticleSystem.MinMaxCurve(4f, 7f);
+            main.startSpeed = 0f;
+            main.startColor = color;
+            var emission = system.emission;
+            emission.rateOverTime = 0.7f;
+            var velocity = system.velocityOverLifetime;
+            velocity.enabled = true;
+            velocity.space = ParticleSystemSimulationSpace.World;
+            velocity.x = new ParticleSystem.MinMaxCurve(-drift, drift);
+            velocity.y = new ParticleSystem.MinMaxCurve(0f, 0.02f);
+            velocity.z = new ParticleSystem.MinMaxCurve(0f, 0f);
+            var size = system.sizeOverLifetime;
+            size.enabled = true;
+            size.size = new ParticleSystem.MinMaxCurve(1f, AnimationCurve.Linear(0f, 0.8f, 1f, 1.2f));
+            FadeInOut(system, 0.3f, 0.65f);
+            system.GetComponent<ParticleSystemRenderer>().sortingOrder = -6;
+            return system;
+        }
+
+        /// <summary>
+        /// Soft shafts of light: a few long, faint beams leaning at <paramref name="tilt"/> radians,
+        /// born above the view and fading in and out over many seconds, so the light seems to move
+        /// as clouds or smoke pass — never a hard edge, never a flicker.
+        /// </summary>
+        private static ParticleSystem Shafts(GameObject host, string name, Material material, Color color,
+            float tilt)
+        {
+            var system = System(host, name, material, new Vector3(30f, 0.1f, 0.1f), new Vector3(0f, 6.5f, 0f), 6);
+            var main = system.main;
+            main.startLifetime = new ParticleSystem.MinMaxCurve(12f, 18f);
+            main.startSize3D = true;
+            main.startSizeX = new ParticleSystem.MinMaxCurve(1.2f, 2.6f);
+            main.startSizeY = new ParticleSystem.MinMaxCurve(13f, 17f);
+            main.startSizeZ = 1f;
+            main.startRotation = tilt;
+            main.startSpeed = 0f;
+            main.startColor = color;
+            var emission = system.emission;
+            emission.rateOverTime = 0.3f;
+            var velocity = system.velocityOverLifetime;
+            velocity.enabled = true;
+            velocity.space = ParticleSystemSimulationSpace.World;
+            velocity.x = new ParticleSystem.MinMaxCurve(-0.05f, 0.05f);
+            velocity.y = new ParticleSystem.MinMaxCurve(0f, 0f);
+            velocity.z = new ParticleSystem.MinMaxCurve(0f, 0f);
+            FadeInOut(system, 0.35f, 0.6f);
+            system.GetComponent<ParticleSystemRenderer>().sortingOrder = -7;
+            return system;
+        }
+
+        /// <summary>
+        /// Fireflies: small bright points wandering on strong slow noise, each pulsing on and off
+        /// three times in its life; lives of different length keep the pulses out of step.
+        /// </summary>
+        private static ParticleSystem Fireflies(GameObject host, string name, Material material, Color color,
+            float rate)
+        {
+            var system = System(host, name, material, new Vector3(28f, 10f, 0.1f), new Vector3(0f, -1f, 0f), 18);
+            var main = system.main;
+            main.startLifetime = new ParticleSystem.MinMaxCurve(5f, 9f);
+            main.startSize = new ParticleSystem.MinMaxCurve(0.08f, 0.13f);
+            main.startSpeed = new ParticleSystem.MinMaxCurve(0f, 0.15f);
+            main.startColor = color;
+            main.gravityModifier = 0f;
+            var emission = system.emission;
+            emission.rateOverTime = rate;
+            var noiseModule = system.noise;
+            noiseModule.enabled = true;
+            noiseModule.strength = 0.6f;
+            noiseModule.frequency = 0.3f;
+            noiseModule.scrollSpeed = 0.15f;
+            Pulse(system, 0.12f, 0.45f, 0.78f);
+            return system;
+        }
+
+        /// <summary>
+        /// The capital's heat: coals low in the frame that swell and dim as they rise a little,
+        /// larger and slower than the embers, the glow of a city that never quite stopped burning.
+        /// </summary>
+        private static ParticleSystem Heat(GameObject host, Material material)
+        {
+            var system = System(host, "CapitalHeat", material, new Vector3(30f, 4f, 0.1f), new Vector3(0f, -4f, 0f), 16);
+            var main = system.main;
+            main.startLifetime = new ParticleSystem.MinMaxCurve(3f, 5f);
+            main.startSize = new ParticleSystem.MinMaxCurve(0.14f, 0.3f);
+            main.startSpeed = new ParticleSystem.MinMaxCurve(0f, 0.08f);
+            main.startColor = new ParticleSystem.MinMaxGradient(new Color(1f, 0.45f, 0.15f, 0.55f),
+                new Color(1f, 0.7f, 0.3f, 0.45f));
+            main.gravityModifier = -0.015f;
+            var emission = system.emission;
+            emission.rateOverTime = 2f;
+            var noiseModule = system.noise;
+            noiseModule.enabled = true;
+            noiseModule.strength = 0.2f;
+            noiseModule.frequency = 0.5f;
+            Pulse(system, 0.2f, 0.5f, 0.8f);
+            return system;
+        }
+
+        /// <summary>Alpha that rises and falls three times over a life: a flicker without a strobe.</summary>
+        private static void Pulse(ParticleSystem system, float a, float b, float c)
+        {
+            var fade = system.colorOverLifetime;
+            fade.enabled = true;
+            var gradient = new Gradient();
+            gradient.SetKeys(new[] { new GradientColorKey(Color.white, 0f), new GradientColorKey(Color.white, 1f) },
+                new[]
+                {
+                    new GradientAlphaKey(0f, 0f), new GradientAlphaKey(1f, a), new GradientAlphaKey(0.2f, (a + b) * 0.5f),
+                    new GradientAlphaKey(1f, b), new GradientAlphaKey(0.25f, (b + c) * 0.5f),
+                    new GradientAlphaKey(0.9f, c), new GradientAlphaKey(0f, 1f)
+                });
+            fade.color = gradient;
         }
 
         private static void FadeInOut(ParticleSystem system, float inAt, float outAt)

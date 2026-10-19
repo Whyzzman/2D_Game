@@ -25,6 +25,18 @@
     -unity-background-scale-mode: stretch-to-fill;
 }
 
+/* A blow taken: the screen's edges flush red; HudVitals sets the opacity and fades it. */
+.hurt-flash {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0;
+    -unity-background-scale-mode: stretch-to-fill;
+    -unity-background-image-tint-color: rgb(190, 24, 34);
+}
+
 .display {
     -unity-font-style: bold;
     letter-spacing: 2px;
@@ -63,6 +75,40 @@
 .bar__fill {
     width: 0;
     border-right-width: 2px;
+    transition-property: background-color, border-right-color;
+    transition-duration: 0.5s, 0.5s;
+    transition-timing-function: ease-in-out-sine, ease-in-out-sine;
+}
+
+/* ---------- HUD feel (2026-10-19, HudVitals) ---------- */
+
+/* The health bar the moment it is struck: the fill goes pale and the trough lights, then both
+   fall back over 0.14 s. Read without colour: the bar blinks bright. */
+.bar {
+    transition-property: background-color;
+    transition-duration: 0.14s;
+}
+
+.bar--struck {
+    background-color: rgba(120, 36, 30, 0.95);
+}
+
+.bar--struck > .bar__fill.bar__fill--hp {
+    background-color: rgb(255, 214, 196);
+    border-right-color: rgb(255, 255, 255);
+    transition-duration: 0.04s, 0.04s;
+}
+
+/* Low health breathes between two reds; the class flips every 0.6 s and this transition eases it. */
+.bar__fill--hp.bar__fill--low.bar__fill--breath {
+    background-color: rgb(168, 30, 38);
+    border-right-color: rgb(255, 130, 120);
+}
+
+/* Mana coming up full: its edge glints once. */
+.bar--brim > .bar__fill {
+    border-right-color: rgb(235, 248, 255);
+    background-color: rgb(96, 150, 210);
 }
 
 .bar__sheen {
@@ -427,7 +473,24 @@
     -unity-background-scale-mode: scale-to-fit;
 }
 
+/* Gold being counted in: the purse warms and its edge lights. */
+.purse {
+    transition-property: background-color, border-color;
+    transition-duration: 0.25s;
+}
+
+.purse--gain {
+    background-color: rgba(60, 46, 20, 0.82);
+    border-color: rgb(232, 205, 138);
+}
+
+.purse--gain > .purse__value {
+    color: rgb(255, 236, 180);
+}
+
 .purse__value {
+    transition-property: color;
+    transition-duration: 0.25s;
     font-size: 20px;
     -unity-font-style: bold;
     color: rgb(232, 205, 138);
@@ -597,57 +660,21 @@
     align-items: flex-end;
 }
 
+/* Each flask is drawn with curves (HudFlasks.FlaskIcon); the classes still carry its state. */
 .flask {
-    width: 26px;
-    height: 34px;
-    margin-right: 6px;
-    align-items: center;
+    width: 28px;
+    height: 38px;
+    margin-right: 5px;
 }
 
-.flask__neck {
-    width: 9px;
-    height: 8px;
-    background-color: rgb(34, 28, 23);
-    border-width: 1px;
-    border-bottom-width: 0;
-    border-color: rgb(107, 90, 66);
+/* A spent flask steps back; the full ones stand forward by light alone. */
+.flask--empty {
+    opacity: 0.75;
 }
 
-.flask__body {
-    flex-grow: 1;
-    width: 22px;
-    justify-content: flex-end;
-    overflow: hidden;
-    background-color: rgb(34, 28, 23);
-    border-width: 1px;
-    border-color: rgb(107, 90, 66);
-    border-radius: 3px;
-}
-
-.flask__liquid {
-    height: 70%;
-    background-color: rgb(201, 161, 74);
-    border-top-width: 3px;
-    border-top-color: rgb(232, 205, 138);
-}
-
-.flask--empty > .flask__neck,
-.flask--empty > .flask__body {
-    background-color: rgb(11, 9, 7);
-    border-color: rgb(58, 47, 37);
-}
-
-.flask--empty .flask__liquid {
-    display: none;
-}
-
-/* The one being drunk glows and runs low. */
-.flask--drinking > .flask__body {
-    border-color: rgb(232, 205, 138);
-}
-
-.flask--drinking .flask__liquid {
-    height: 35%;
+/* The one being drunk sits a little higher, as if lifted. */
+.flask--drinking {
+    translate: 0 -3px;
 }
 
 .flasks__key {
@@ -658,4 +685,42 @@
 
 .flasks--empty > .flasks__key {
     opacity: 0.5;
+}
+
+/* Mana made visible (GAME_FEEL_IDEAS item 5): a cold spark from the struck body to the bar,
+   and the bar brightening as it lands. Drawn by HudManaWisps. */
+.hud-wisps {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.hud-wisp {
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    border-top-left-radius: 11px;
+    border-top-right-radius: 11px;
+    border-bottom-left-radius: 11px;
+    border-bottom-right-radius: 11px;
+    background-color: rgba(111, 168, 214, 0.35);
+    align-items: center;
+    justify-content: center;
+}
+
+.hud-wisp__core {
+    width: 8px;
+    height: 8px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    background-color: rgb(225, 242, 255);
+}
+
+.bar--mana-flash .bar__fill--mana {
+    background-color: rgb(104, 160, 222);
+    border-right-color: rgb(240, 250, 255);
 }

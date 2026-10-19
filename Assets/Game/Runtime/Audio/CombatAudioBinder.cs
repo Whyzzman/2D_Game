@@ -20,8 +20,9 @@ namespace ForgottenKingdom
     {
         [SerializeField] private CombatFeedbackService _feedback;
         [SerializeField] private PlayerCharacter _player;
-        [Tooltip("Frames of the run cycle where a foot lands. Taken from the animation, not a timer.")]
-        [SerializeField] private int[] _footstepFrames = { 0, 3 };
+        [Tooltip("Where a foot lands in the run cycle, as a share of the loop (0 = first frame). Taken "
+            + "from the animation, not a timer, and independent of how many frames the run has.")]
+        [SerializeField] private float[] _footstepPhases = { 0f, 0.5f };
 
         private PlayerCombat _combat;
         private PlayerAnimationController _animation;
@@ -130,6 +131,10 @@ namespace ForgottenKingdom
                 case FeedbackKind.EnemyDeath: return AudioId.ZombieDeath;
                 case FeedbackKind.Pickup: return AudioId.PickupCommon;
                 case FeedbackKind.Pogo: return AudioId.Pogo;
+                // Footwork (2026-10-19): the dust of a start or a turn is a skid, a wall jump a kick.
+                // Plain running dust stays silent; the steps are heard from the run's own frames.
+                case FeedbackKind.RunDust: return AudioId.FootstepScuff;
+                case FeedbackKind.WallJump: return AudioId.WallJumpKick;
                 // The seal shutting is covered by the boss waking; its breaking is a gate opening.
                 case FeedbackKind.ArenaOpen: return AudioId.GateOpen;
                 // A lit altar is already heard (CheckpointActivate); a lost spell has its own hiss.
@@ -137,6 +142,12 @@ namespace ForgottenKingdom
                 case FeedbackKind.LostGoldRecovered: return AudioId.PickupCurrency;
                 default: return AudioId.None;
             }
+        }
+
+        private static System.Collections.IEnumerator Delayed(AudioId id, Vector2 position, float seconds)
+        {
+            yield return new WaitForSecondsRealtime(seconds);
+            AudioManager.Play(id, position);
         }
 
         private void OnFeedback(FeedbackKind kind, Vector2 position)
@@ -147,7 +158,16 @@ namespace ForgottenKingdom
                 return;
             }
 
-            AudioManager.Play(id, position);
+            if (kind == FeedbackKind.BossDeath && BossDeathMoment.CryDelay > 0.01f)
+            {
+                // The blow lands now; the cry waits for time to come back (GAME_FEEL_IDEAS item 11).
+                AudioManager.Play(AudioId.BossSlam, position);
+                StartCoroutine(Delayed(id, position, BossDeathMoment.CryDelay));
+            }
+            else
+            {
+                AudioManager.Play(id, position, 1f, _streak.PitchFor(kind, Time.unscaledTime));
+            }
 
             // The loudest moments make room for themselves instead of shouting over the room.
             var manager = AudioManager.Instance;
@@ -169,6 +189,9 @@ namespace ForgottenKingdom
                     break;
             }
         }
+
+        /// <summary>Landed blows climb in pitch through a run (GAME_FEEL_IDEAS.md, item 8).</summary>
+        private readonly HitStreak _streak = new HitStreak();
 
         // ---------- the player ----------
 
@@ -193,7 +216,7 @@ namespace ForgottenKingdom
                 _animation.FrameChanged += OnPlayerFrame;
                 _animation.StateChanged += OnPlayerState;
                 // Every landing is heard, including the running ones that skip the Land pose.
-                _animation.Landed += () => AudioManager.Play(AudioId.Land, _player.transform.position);
+                _animation.Landed += OnPlayerLanded;
             }
 
             var equipment = _player.GetComponent<PlayerEquipment>();
@@ -240,13 +263,32 @@ namespace ForgottenKingdom
                 return;
             }
 
-            foreach (var contact in _footstepFrames)
+            var count = _animation != null && _animation.Clip != null ? _animation.Clip.FrameCount : 0;
+            if (count <= 0)
             {
-                if (contact == frame)
+                return;
+            }
+
+            foreach (var phase in _footstepPhases)
+            {
+                if (Mathf.RoundToInt(phase * count) % count == frame)
                 {
-                    AudioManager.Play(AudioId.FootstepStone, _player.transform.position, 0.7f);
+                    var feet = (Vector2)_player.transform.position;
+                    AudioManager.Play(Surfaces.Footstep(Surfaces.Under(feet)), feet, 0.7f);
                     return;
                 }
+            }
+        }
+
+        /// <summary>The body's thud, and under it the ground's own sound: wood knocks, water splashes.</summary>
+        private void OnPlayerLanded()
+        {
+            var feet = (Vector2)_player.transform.position;
+            AudioManager.Play(AudioId.Land, feet);
+            var surface = Surfaces.Under(feet);
+            if (surface != SurfaceKind.Stone)
+            {
+                AudioManager.Play(Surfaces.Footstep(surface), feet);
             }
         }
 

@@ -1,6 +1,7 @@
 /*
- * Title screen. Follows design/ui/menus/menus.html (frames 1-2): the title, a vertical list,
- * quiet service information in the corners. The Tomb behind it is a real lit scene.
+ * Title screen. Follows design/ui/menus/menus.html (2026-10-19): the title, a list of words
+ * with MenuFocus behind the focused one, quiet service information in the corners. The Tomb
+ * behind it is a real lit scene; MenuCameraDrift makes it breathe.
  */
 
 .menu {
@@ -52,14 +53,18 @@
     position: absolute;
     left: 0;
     right: 0;
-    top: 16%;
+    top: 15%;
     align-items: center;
+    /* Dims under the settings and the confirmation rather than vanishing. */
+    transition-property: opacity;
+    transition-duration: 0.32s;
+    transition-timing-function: ease-out-cubic;
 }
 
 .title {
-    font-size: 96px;
-    letter-spacing: 18px;
-    color: rgb(240, 230, 210);
+    font-size: 124px;
+    letter-spacing: 20px;
+    color: rgb(236, 212, 150);
     -unity-text-align: middle-center;
     text-shadow: 0 6px 20px rgba(0, 0, 0, 0.95);
     -unity-text-outline-width: 0.5px;
@@ -69,9 +74,10 @@
 }
 
 .title--second {
-    font-size: 58px;
-    letter-spacing: 9px;
-    margin-top: -6px;
+    font-size: 54px;
+    letter-spacing: 12px;
+    margin-top: -4px;
+    color: rgb(240, 230, 210);
 }
 
 .title__rule {
@@ -83,11 +89,11 @@
     font-size: 22px;
     letter-spacing: 12px;
     color: rgb(138, 116, 52);
-    margin-bottom: 54px;
+    margin-bottom: 70px;
 }
 
 .menu-list {
-    width: 400px;
+    width: 560px;
 }
 
 .save-meta {
