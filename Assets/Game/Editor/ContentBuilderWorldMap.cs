@@ -89,6 +89,38 @@ namespace ForgottenKingdom.EditorTools
                 "Чорні шпилі під затемненням. Тут Король тримає свою клятву, і тут вона скінчиться.")
         };
 
+        /// <summary>
+        /// The fog that sweeps over the screen entering each region (GAME_FEEL_IDEAS.md item 19,
+        /// ZoneCurtain): the colour of WORLD_DESIGN.md's zone table at mist strength, lighter than the
+        /// map's rooms and darker than the glow. Chosen by Claude under the standing consent.
+        /// </summary>
+        private static readonly System.Collections.Generic.Dictionary<string, string> FogTints =
+            new System.Collections.Generic.Dictionary<string, string>
+            {
+                { TombZoneId, "#56677e" },        // blue-grey stone
+                { ForestZoneId, "#3e7a68" },      // teal-green
+                { VillageZoneId, "#7a5a3c" },     // sepia, embers
+                { CapitalZoneId, "#6e6656" },     // ash grey, gold
+                { MarshZoneId, "#5a7a2c" },       // poison green
+                { CathedralZoneId, "#3c707c" },   // grey stone, turquoise water
+                { CavernsZoneId, "#4c58a6" },     // blue and violet crystal
+                { CitadelZoneId, "#5e2a28" },     // black iron, blood red
+                { DepthsZoneId, "#94401e" },      // basalt, lava
+                { AqueductsZoneId, "#2e7c88" },   // turquoise water
+                { BastionZoneId, "#a8c0d8" },     // ice, snow
+                { ObservatoryZoneId, "#46389a" }, // indigo
+                { ShadowZoneId, "#563a86" },      // violet void
+                { PalaceZoneId, "#a49668" },      // marble, gold
+                { ThroneZoneId, "#6e1e3a" }       // crimson and violet
+            };
+
+        private static Color FogTint(string zoneId)
+        {
+            return FogTints.TryGetValue(zoneId, out var hex) && ColorUtility.TryParseHtmlString(hex, out var color)
+                ? color
+                : new Color(0.36f, 0.42f, 0.5f);
+        }
+
         /// <summary>[from, to, gated]: the map of WORLD_DESIGN.md, «Порядок и связи».</summary>
         private static readonly (string from, string to, bool gated)[] Roads =
         {
@@ -130,7 +162,8 @@ namespace ForgottenKingdom.EditorTools
                 + "\"_isImplemented\":" + Bool(implemented) + ","
                 + "\"_mapTint\":" + Col(tint) + ","
                 + "\"_worldPosition\":" + Vec(worldPosition) + "," + Str("_art", art) + ","
-                + "\"_glow\":" + Col(glow == default ? Color.white : glow) + "," + Str("_description", description) + "}";
+                + "\"_glow\":" + Col(glow == default ? Color.white : glow) + "," + Str("_description", description) + ","
+                + "\"_fogTint\":" + Col(FogTint(id)) + "}";
         }
 
         private static string Col(Color c) =>
