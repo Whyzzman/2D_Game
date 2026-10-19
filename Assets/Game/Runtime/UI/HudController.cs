@@ -57,6 +57,8 @@ namespace ForgottenKingdom
         [SerializeField] private GameProgress _progress;
         [SerializeField] private WorldState _world;
         [SerializeField] private HudArt _art = new HudArt();
+        [Tooltip("Pale edges and a heartbeat under a quarter of health (GAME_FEEL_IDEAS item 17).")]
+        [SerializeField] private LowHealthSettings _lowHealth = new LowHealthSettings();
 
         private readonly Meter _health = new Meter();
         private readonly Meter _manaMeter = new Meter();
@@ -108,6 +110,7 @@ namespace ForgottenKingdom
         private ShopView _shop;
         private AbilityCard _abilityCard;
         private HudKeyGlyphs _keyGlyphs;
+        private LowHealthCue _lowHealthCue;
         private VisualElement _flasks;
         private VisualElement _flaskRow;
         private readonly System.Collections.Generic.List<VisualElement> _flaskIcons =
@@ -147,6 +150,9 @@ namespace ForgottenKingdom
         /// <summary>For tests: the boss title card.</summary>
         public BossTitleCard BossTitle => _bossTitle;
 
+        /// <summary>For tests: the pale edge and heartbeat of low health.</summary>
+        public LowHealthCue LowHealth => _lowHealthCue;
+
         private void OnEnable()
         {
             _root = GetComponent<UIDocument>().rootVisualElement;
@@ -183,6 +189,8 @@ namespace ForgottenKingdom
             _pause = new PauseMenu(_root, _inventory, _map, _shrine, _dialogue, _shop, _ending);
             _pause.Attach(_player, _progress);
             _keyGlyphs = new HudKeyGlyphs(_root);
+            _lowHealthCue = new LowHealthCue(_root, _lowHealth);
+            _lowHealthCue.Beat += volume => AudioManager.Play2D(AudioId.Heartbeat, volume);
             _abilityCard = new AbilityCard(_root);
             _abilityCard.Attach(_player, _progress);
             _flasks = _root.Q("flasks");
@@ -370,6 +378,18 @@ namespace ForgottenKingdom
             UpdateFade(dt);
             _zoneTitle?.Tick(dt);
             _bossTitle?.Tick(dt);
+            TickLowHealth(dt);
+        }
+
+        private void TickLowHealth(float dt)
+        {
+            if (_lowHealthCue == null || _player == null || _player.Health == null)
+            {
+                return;
+            }
+
+            var health = _player.Health;
+            _lowHealthCue.Tick(dt, Share(health.Current, health.Max), _player.IsAlive);
         }
 
         private void UpdateResources(float dt)
@@ -649,6 +669,7 @@ namespace ForgottenKingdom
 
         private void OnPlayerRespawned()
         {
+            _lowHealthCue?.Clear();
             _death?.EnableInClassList("death--visible", false);
         }
 

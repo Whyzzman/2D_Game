@@ -63,7 +63,8 @@ namespace ForgottenKingdom.EditorTools
             Chime,      // progression cues
             Tick,       // interface
             Bed,        // long looping room tone
-            Drone       // slow moving air
+            Drone,      // slow moving air
+            Heart       // two soft low thumps — a heartbeat
         }
 
         private static readonly Spec[] Catalogue =
@@ -285,7 +286,9 @@ namespace ForgottenKingdom.EditorTools
             new Spec(AudioId.WallCrack, "SFX/World", "sfx_wall_crack", Recipe.Crack, 3, 0.35f, 0.9f),
             new Spec(AudioId.WallCrumble, "SFX/World", "sfx_wall_crumble", Recipe.Boom, 2, 1.2f, 0.6f),
             // ---- a trial's gong (stage C) ----
-            new Spec(AudioId.TrialGong, "SFX/World", "sfx_trial_gong", Recipe.MetalRing, 1, 2.2f, 0.35f)
+            new Spec(AudioId.TrialGong, "SFX/World", "sfx_trial_gong", Recipe.MetalRing, 1, 2.2f, 0.35f),
+            // ---- the heart at low health: lub-dub, felt more than heard ----
+            new Spec(AudioId.Heartbeat, "SFX/Player", "sfx_player_heartbeat", Recipe.Heart, 2, 0.6f, 1f)
         };
 
         /// <summary>Writes every missing or changed clip and returns them, by sound.</summary>
@@ -350,6 +353,7 @@ namespace ForgottenKingdom.EditorTools
                 case Recipe.Tick: Tick(samples, random, spec.Tone); break;
                 case Recipe.Bed: Bed(samples, random, spec.Tone); break;
                 case Recipe.Drone: Drone(samples, random, spec.Tone); break;
+                case Recipe.Heart: Heart(samples, random, spec.Tone); break;
             }
 
             Normalise(samples, spec.Kind == Recipe.Bed ? 0.16f : 0.82f);
@@ -630,6 +634,36 @@ namespace ForgottenKingdom.EditorTools
                 }
 
                 samples[i] = value * 0.7f;
+            }
+        }
+
+        /// <summary>
+        /// A heartbeat: two soft low thumps, the second weaker, each a sine falling in pitch under a
+        /// little filtered noise so it is a body and not a test tone.
+        /// </summary>
+        private static void Heart(float[] samples, System.Random random, float tone)
+        {
+            var low = new OnePole();
+            var beats = new[] { (start: 0f, weight: 1f), (start: 0.24f, weight: 0.7f) };
+            for (var i = 0; i < samples.Length; i++)
+            {
+                var t = i / (float)Rate;
+                var value = 0f;
+                foreach (var beat in beats)
+                {
+                    var local = t - beat.start;
+                    if (local < 0f)
+                    {
+                        continue;
+                    }
+
+                    var frequency = Mathf.Lerp(70f, 42f, Mathf.Clamp01(local * 8f)) * tone;
+                    value += Mathf.Sin(2f * Mathf.PI * frequency * local) * Mathf.Exp(-local * 16f)
+                        * Mathf.Clamp01(local / 0.006f) * beat.weight;
+                }
+
+                var noise = (float)(random.NextDouble() * 2.0 - 1.0);
+                samples[i] = value + low.Low(noise, 160f * tone) * value * 0.6f;
             }
         }
 

@@ -178,6 +178,9 @@ namespace ForgottenKingdom.EditorTools
             events.Add(Sound(AudioId.WallCrack, clips, 0.6f, voices: 2, priority: 50));
             events.Add(Sound(AudioId.WallCrumble, clips, 0.8f, voices: 1, priority: 80));
             events.Add(Sound(AudioId.TrialGong, clips, 0.85f, voices: 1, priority: 100, spatial: 0.3f));
+            // The heart at low health: quiet, flat (it is inside the hero), one at a time.
+            events.Add(Sound(AudioId.Heartbeat, clips, 0.45f, voices: 1, priority: 60, interval: 0.3f,
+                spatial: 0f));
 
             // Interface. Quiet, flat, and spaced so fast navigation does not chatter.
             events.Add(Sound(AudioId.UiNavigate, clips, 0.3f, AudioBus.Ui, voices: 1, priority: 25,

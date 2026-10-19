@@ -238,6 +238,9 @@ namespace ForgottenKingdom
         // ---- exploration (item 4, stage B, appended) ----
         WallCrack,
         WallCrumble,
-        TrialGong
+        TrialGong,
+
+        // ---- the heart heard at low health (GAME_FEEL_IDEAS item 17, appended) ----
+        Heartbeat
     }
 }
