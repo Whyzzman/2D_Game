@@ -15,6 +15,8 @@ namespace ForgottenKingdom
         [Range(0f, 1f)] public float screenShake = 1f;
         [Range(0f, 1f)] public float flashIntensity = 1f;
         [Range(0f, 1f)] public float hitStop = 1f;
+        /// <summary>Gamepad rumble; 0 turns it off (2026-10-19, appended so old files load with it on).</summary>
+        [Range(0f, 1f)] public float vibration = 1f;
         public bool showDamageNumbers = true;
         /// <summary>Bloom and vignette; the zones' colour grade stays either way.</summary>
         public bool postEffects = true;
@@ -116,6 +118,7 @@ namespace ForgottenKingdom
             FeedbackSettings.ScreenShakeMultiplier = data.screenShake;
             FeedbackSettings.FlashIntensity = data.flashIntensity;
             FeedbackSettings.HitStopMultiplier = data.hitStop;
+            FeedbackSettings.HapticsMultiplier = data.vibration;
             Changed?.Invoke();
         }
 
@@ -173,6 +176,7 @@ namespace ForgottenKingdom
             data.effectsVolume = Mathf.Clamp01(data.effectsVolume);
             data.screenShake = Mathf.Clamp01(data.screenShake);
             data.flashIntensity = Mathf.Clamp01(data.flashIntensity);
+            data.vibration = Mathf.Clamp01(data.vibration);
             data.hitStop = Mathf.Clamp01(data.hitStop);
             return data;
         }

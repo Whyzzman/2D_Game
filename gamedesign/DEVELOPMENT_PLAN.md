@@ -95,6 +95,7 @@
 | `cloud/music` | длиннее петли, виолончель, воздух, реверберация, тремоло, кроссфейд равной мощности | `MUSIC_SYSTEM.md` §4б |
 | `cloud/ambience` | туман, мягкие лучи, светлячки, жар в каждой зоне | `ENVIRONMENT_TOMB.md` §10а |
 | `cloud/hud` | живые полосы, вспышка удара, нарисованные фляги, стопка монет | `UI_UX_GUIDE.md` §2а |
+| `cloud/haptics` | вибрация геймпада по профилям; настройка `vibration` (ползунок — после `cloud/menus`). Проверить: `RumbleTests`, `CombatFeedbackDataTests`, на геймпаде | `COMBAT_FEEDBACK.md` §15а |
 
 Дальше по ощущению игры — `GAME_FEEL_IDEAS.md` (23 пункта по пользе).
 

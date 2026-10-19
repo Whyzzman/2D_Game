@@ -42,6 +42,7 @@ namespace ForgottenKingdom
 
         private VfxPool _bursts;
         private VfxPool _lights;
+        private readonly GamepadRumble _rumble = new GamepadRumble();
         private Transform _root;
 
         // Collected during a frame and applied once at the end of it.
@@ -62,6 +63,9 @@ namespace ForgottenKingdom
         public int LiveBursts => _bursts?.Live ?? 0;
         public int LiveLights => _lights?.Live ?? 0;
         public FeedbackLibrary Library => _library;
+
+        /// <summary>The gamepad's rumble, driven by the profiles' haptic strength.</summary>
+        public GamepadRumble Rumble => _rumble;
 
         private void Awake()
         {
@@ -90,6 +94,16 @@ namespace ForgottenKingdom
 
             ZoneStreamer.ZonesChanged -= SubscribeLevel;
             Unsubscribe();
+            _rumble.Stop();
+        }
+
+        private void OnApplicationFocus(bool focused)
+        {
+            // A pad left buzzing while the window is away is the one rumble bug nobody forgives.
+            if (!focused)
+            {
+                _rumble.Stop();
+            }
         }
 
         private void Start()
@@ -163,6 +177,7 @@ namespace ForgottenKingdom
 
         private void LateUpdate()
         {
+            _rumble.Tick();
             if (_frameOwner == null)
             {
                 return;
@@ -181,6 +196,9 @@ namespace ForgottenKingdom
             {
                 _flash.Flash(profile.FlashColor, profile.ScreenFlash);
             }
+
+            // One rumble a frame, the owner's: five sparks are still one jolt in the hands.
+            _rumble.Pulse(profile.Haptic);
         }
 
         /// <summary>Drops every running effect. Called on death, respawn and world reset.</summary>
@@ -190,6 +208,7 @@ namespace ForgottenKingdom
             _lights?.ClearAll();
             _shaker?.Clear();
             _flash?.Clear();
+            _rumble.Stop();
             _frameOwner = null;
         }
 

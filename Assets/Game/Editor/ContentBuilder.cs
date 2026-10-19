@@ -2188,6 +2188,26 @@ namespace ForgottenKingdom.EditorTools
             return library;
         }
 
+        /// <summary>
+        /// How hard each moment rumbles the pad, 0–1. Weight follows the screen's own ladder: a tap
+        /// for a light hit, a jolt for a parry, the longest shudder for a boss falling. Movement,
+        /// dust, statuses and pickups stay still — they fire too often to be felt.
+        /// </summary>
+        private static readonly System.Collections.Generic.Dictionary<FeedbackKind, float> Haptics =
+            new System.Collections.Generic.Dictionary<FeedbackKind, float>
+            {
+                { FeedbackKind.LightHit, 0.15f }, { FeedbackKind.HeavyHit, 0.3f },
+                { FeedbackKind.CriticalHit, 0.35f }, { FeedbackKind.Block, 0.25f },
+                { FeedbackKind.Parry, 0.6f }, { FeedbackKind.GuardBreak, 0.6f },
+                { FeedbackKind.StaggerBreak, 0.35f }, { FeedbackKind.PlayerHurt, 0.5f },
+                { FeedbackKind.FireImpact, 0.25f }, { FeedbackKind.FrostImpact, 0.25f },
+                { FeedbackKind.ArcaneBurst, 0.35f }, { FeedbackKind.ShadowImpact, 0.3f },
+                { FeedbackKind.GroundBreaker, 0.6f }, { FeedbackKind.DashStrike, 0.3f },
+                { FeedbackKind.BossSlam, 0.7f }, { FeedbackKind.BossPhase, 0.6f },
+                { FeedbackKind.BossDeath, 0.8f }, { FeedbackKind.EnemyDeath, 0.2f },
+                { FeedbackKind.Pogo, 0.15f }, { FeedbackKind.ArenaSeal, 0.2f }
+            };
+
         private static (FeedbackKind, FeedbackProfile) Feedback(FeedbackKind kind, string vfx,
             float hitStop = 0f, ShakeProfile shake = ShakeProfile.Tiny, float shakeScale = 1f,
             float verticalBias = 1f, float flash = 0f, Color flashColor = default,
@@ -2195,6 +2215,9 @@ namespace ForgottenKingdom.EditorTools
             bool facesDirection = true, string layer = "VFXFront", string sound = "",
             bool mirrors = false)
         {
+            // Rumble (GAME_FEEL_IDEAS.md, item 6, 2026-10-19): by kind rather than by argument, so
+            // the table of strengths reads in one place.
+            Haptics.TryGetValue(kind, out var haptic);
             var name = "feedback_" + kind.ToString().ToLowerInvariant();
             var profile = CreateAsset<FeedbackProfile>($"{FeedbackFolder}/{name}.asset");
             var serialized = new SerializedObject(profile);
@@ -2215,6 +2238,7 @@ namespace ForgottenKingdom.EditorTools
             serialized.FindProperty("_sortingLayer").stringValue = layer;
             serialized.FindProperty("_tint").colorValue = Color.white;
             serialized.FindProperty("_soundEvent").stringValue = sound;
+            serialized.FindProperty("_haptic").floatValue = haptic;
 
             var frames = _vfx != null && _vfx.TryGetValue(vfx, out var sprites)
                 ? sprites
