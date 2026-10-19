@@ -187,7 +187,7 @@ namespace ForgottenKingdom
             }
 
             _lastKick = Time.time;
-            CombatFeedbackService.Play(FeedbackKind.RunDust, Feet, new Vector2(facing, 0f));
+            CombatFeedbackService.Play(FeedbackKind.RunDust, Feet, new Vector2(facing, 0f), 1f, GroundTint);
         }
 
         private void TrackWallSlide()
@@ -223,7 +223,7 @@ namespace ForgottenKingdom
                 return;
             }
 
-            CombatFeedbackService.Play(FeedbackKind.JumpDust, Feet);
+            CombatFeedbackService.Play(FeedbackKind.JumpDust, Feet, Vector2.zero, 1f, GroundTint);
             StartSquash(JumpStretch);
         }
 
@@ -245,7 +245,7 @@ namespace ForgottenKingdom
 
             var weight = LandingWeight(fall);
             CombatFeedbackService.Play(FeedbackKind.LandDust, Feet, Vector2.right,
-                Mathf.Lerp(0.7f, 1.25f, weight));
+                Mathf.Lerp(0.7f, 1.25f, weight), GroundTint);
             StartSquash(-LandSquash * weight);
         }
 
@@ -259,6 +259,9 @@ namespace ForgottenKingdom
         }
 
         private bool IsQuiet => Time.time < _quietUntil;
+
+        /// <summary>The dust takes the colour of what it rose from (GAME_FEEL_IDEAS item 4).</summary>
+        private Color GroundTint => Surfaces.DustTint(Surfaces.Under(Feet));
 
         private Vector2 Feet => _capsule != null
             ? new Vector2(_capsule.bounds.center.x, _capsule.bounds.min.y)
