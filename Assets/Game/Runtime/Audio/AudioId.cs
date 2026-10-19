@@ -238,6 +238,12 @@ namespace ForgottenKingdom
         // ---- exploration (item 4, stage B, appended) ----
         WallCrack,
         WallCrumble,
-        TrialGong
+        TrialGong,
+
+        // ---- the ground under the feet (GAME_FEEL_IDEAS item 4, appended) ----
+        FootstepWood,
+        FootstepEarth,
+        FootstepWater,
+        FootstepAsh
     }
 }

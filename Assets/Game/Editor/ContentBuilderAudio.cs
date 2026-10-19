@@ -29,6 +29,15 @@ namespace ForgottenKingdom.EditorTools
             // Movement. Frequent and quiet: high voice counts, low priority, nothing spatial.
             events.Add(Sound(AudioId.FootstepStone, clips, 0.34f, voices: 4, priority: 15,
                 interval: 0.1f, spatial: 0.4f));
+            // The same step on the other surfaces (item 4): the same weight, its own material.
+            events.Add(Sound(AudioId.FootstepWood, clips, 0.36f, voices: 4, priority: 15,
+                interval: 0.1f, spatial: 0.4f));
+            events.Add(Sound(AudioId.FootstepEarth, clips, 0.3f, voices: 4, priority: 15,
+                interval: 0.1f, spatial: 0.4f));
+            events.Add(Sound(AudioId.FootstepWater, clips, 0.34f, voices: 4, priority: 15,
+                interval: 0.1f, spatial: 0.4f));
+            events.Add(Sound(AudioId.FootstepAsh, clips, 0.3f, voices: 4, priority: 15,
+                interval: 0.1f, spatial: 0.4f));
             events.Add(Sound(AudioId.Land, clips, 0.55f, voices: 2, priority: 30));
             events.Add(Sound(AudioId.Jump, clips, 0.3f, voices: 2, priority: 15));
             events.Add(Sound(AudioId.DashGround, clips, 0.5f, voices: 2, priority: 30));

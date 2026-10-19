@@ -193,7 +193,7 @@ namespace ForgottenKingdom
                 _animation.FrameChanged += OnPlayerFrame;
                 _animation.StateChanged += OnPlayerState;
                 // Every landing is heard, including the running ones that skip the Land pose.
-                _animation.Landed += () => AudioManager.Play(AudioId.Land, _player.transform.position);
+                _animation.Landed += OnPlayerLanded;
             }
 
             var equipment = _player.GetComponent<PlayerEquipment>();
@@ -244,9 +244,22 @@ namespace ForgottenKingdom
             {
                 if (contact == frame)
                 {
-                    AudioManager.Play(AudioId.FootstepStone, _player.transform.position, 0.7f);
+                    var feet = (Vector2)_player.transform.position;
+                    AudioManager.Play(Surfaces.Footstep(Surfaces.Under(feet)), feet, 0.7f);
                     return;
                 }
+            }
+        }
+
+        /// <summary>The body's thud, and under it the ground's own sound: wood knocks, water splashes.</summary>
+        private void OnPlayerLanded()
+        {
+            var feet = (Vector2)_player.transform.position;
+            AudioManager.Play(AudioId.Land, feet);
+            var surface = Surfaces.Under(feet);
+            if (surface != SurfaceKind.Stone)
+            {
+                AudioManager.Play(Surfaces.Footstep(surface), feet);
             }
         }
 

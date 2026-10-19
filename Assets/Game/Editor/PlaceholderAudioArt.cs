@@ -285,7 +285,13 @@ namespace ForgottenKingdom.EditorTools
             new Spec(AudioId.WallCrack, "SFX/World", "sfx_wall_crack", Recipe.Crack, 3, 0.35f, 0.9f),
             new Spec(AudioId.WallCrumble, "SFX/World", "sfx_wall_crumble", Recipe.Boom, 2, 1.2f, 0.6f),
             // ---- a trial's gong (stage C) ----
-            new Spec(AudioId.TrialGong, "SFX/World", "sfx_trial_gong", Recipe.MetalRing, 1, 2.2f, 0.35f)
+            new Spec(AudioId.TrialGong, "SFX/World", "sfx_trial_gong", Recipe.MetalRing, 1, 2.2f, 0.35f),
+            // ---- steps by surface: a hollow knock on planks, a soft thud and rustle on loam, a splash,
+            // a dry crunch in ash (stone keeps the first footstep) ----
+            new Spec(AudioId.FootstepWood, "SFX/Player", "sfx_player_footstep_wood", Recipe.Step, 6, 0.2f, 0.72f),
+            new Spec(AudioId.FootstepEarth, "SFX/Player", "sfx_player_footstep_earth", Recipe.Rustle, 6, 0.15f, 0.8f),
+            new Spec(AudioId.FootstepWater, "SFX/Player", "sfx_player_footstep_water", Recipe.Whoosh, 6, 0.22f, 1.9f),
+            new Spec(AudioId.FootstepAsh, "SFX/Player", "sfx_player_footstep_ash", Recipe.Rustle, 6, 0.18f, 0.55f)
         };
 
         /// <summary>Writes every missing or changed clip and returns them, by sound.</summary>

@@ -116,6 +116,12 @@ namespace ForgottenKingdom
             Instance?.PlayInternal(kind, position, Vector2.right, scale, tint);
         }
 
+        /// <summary>A directed moment, tinted: movement dust in the colour of the ground it rose from.</summary>
+        public static void Play(FeedbackKind kind, Vector2 position, Vector2 direction, float scale, Color tint)
+        {
+            Instance?.PlayInternal(kind, position, direction, scale, tint);
+        }
+
         private void PlayInternal(FeedbackKind kind, Vector2 position, Vector2 direction,
             float scale) => PlayInternal(kind, position, direction, scale, Color.white);
 
