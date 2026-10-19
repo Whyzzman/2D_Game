@@ -33,6 +33,15 @@ namespace ForgottenKingdom
         [SerializeField, Min(0f)] private float _hurtDuckHold = 0.6f;
         [Tooltip("How loud the thin ring over the blow is; 0 leaves only the muffling.")]
         [SerializeField, Range(0f, 1f)] private float _hurtRingVolume = 0.6f;
+        [Tooltip("Frames of the run cycle where a foot lands. Taken from the animation, not a timer.")]
+        [SerializeField] private int[] _footstepFrames = { 0, 3 };
+        [Header("Coins in a run (GAME_FEEL_IDEAS.md, item 15)")]
+        [Tooltip("Seconds between two coins that still continue the rising run.")]
+        [SerializeField, Min(0f)] private float _coinChimeWindow = 1f;
+        [Tooltip("Semitones each further coin in a run rings above the last.")]
+        [SerializeField, Min(0)] private int _coinChimeStep = 1;
+        [Tooltip("How many steps the run climbs before it holds its top note.")]
+        [SerializeField, Min(0)] private int _coinChimeMaxSteps = 7;
 
         private PlayerCombat _combat;
         private PlayerAnimationController _animation;
@@ -45,6 +54,7 @@ namespace ForgottenKingdom
         private readonly HashSet<BossEncounter> _encounters = new HashSet<BossEncounter>();
         private readonly HashSet<EnemyDormancy> _sleepers = new HashSet<EnemyDormancy>();
         private readonly HashSet<EnemySupport> _priests = new HashSet<EnemySupport>();
+        private CoinChime _coinChime;
 
         private void Start()
         {
@@ -104,6 +114,7 @@ namespace ForgottenKingdom
             // level play every hazard twice.
             HazardZone.AnyTelegraphed -= OnHazardTelegraphed;
             HazardZone.AnyActivated -= OnHazardActivated;
+            WorldPickup.Collected -= OnPickupCollected;
         }
 
         // ---------- combat, through the feedback service ----------
@@ -582,6 +593,9 @@ namespace ForgottenKingdom
             // A failed save is the one thing the interface must never let pass quietly.
             SaveSystem.SaveFailed += _ => AudioManager.Play2D(AudioId.UiSaveFailed);
 
+            _coinChime = new CoinChime(_coinChimeWindow, _coinChimeStep, _coinChimeMaxSteps);
+            WorldPickup.Collected += OnPickupCollected;
+
             BindForest();
         }
 
@@ -622,6 +636,28 @@ namespace ForgottenKingdom
             foreach (var encounter in ZoneObjects.New(_encounters))
             {
                 encounter.AbilityUnlocked += _ => AudioManager.Play2D(AudioId.AbilityUnlocked);
+            }
+        }
+
+        /// <summary>
+        /// Coins ring a little higher for each one taken in quick succession; anything else is the
+        /// plain pickup tick. Picking up used to be silent: the sounds existed but nothing played them.
+        /// </summary>
+        private void OnPickupCollected(WorldPickup pickup)
+        {
+            if (pickup == null)
+            {
+                return;
+            }
+
+            if (pickup.IsCurrency)
+            {
+                AudioManager.Play(AudioId.PickupCurrency, pickup.transform.position, 1f,
+                    _coinChime.Register(Time.unscaledTime));
+            }
+            else
+            {
+                AudioManager.Play(AudioId.PickupCommon, pickup.transform.position);
             }
         }
 

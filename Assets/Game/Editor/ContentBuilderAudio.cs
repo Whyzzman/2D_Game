@@ -156,9 +156,11 @@ namespace ForgottenKingdom.EditorTools
             events.Add(Sound(AudioId.PickupCommon, clips, 0.45f, voices: 2, priority: 35,
                 interval: 0.08f));
             events.Add(Sound(AudioId.PickupRare, clips, 0.6f, voices: 1, priority: 60));
-            // Bundled coins collapse into one tone rather than a rattle of fifty.
-            events.Add(Sound(AudioId.PickupCurrency, clips, 0.4f, voices: 2, priority: 30,
-                interval: 0.18f));
+            // Bundled coins collapse into one tone rather than a rattle of fifty, but the gap is
+            // short enough for coins flying in one after another to ring their rising run
+            // (CoinChime, GAME_FEEL_IDEAS.md item 15; 0.18 → 0.07, decided by Claude).
+            events.Add(Sound(AudioId.PickupCurrency, clips, 0.4f, voices: 3, priority: 30,
+                interval: 0.07f));
             events.Add(Sound(AudioId.LevelUp, clips, 0.7f, voices: 1, priority: 90, spatial: 0f));
             events.Add(Sound(AudioId.SkillUnlock, clips, 0.6f, voices: 1, priority: 70,
                 spatial: 0f));
