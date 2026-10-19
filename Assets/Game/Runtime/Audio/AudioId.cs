@@ -238,6 +238,9 @@ namespace ForgottenKingdom
         // ---- exploration (item 4, stage B, appended) ----
         WallCrack,
         WallCrumble,
-        TrialGong
+        TrialGong,
+
+        // ---- the world answering the hero (GAME_FEEL_IDEAS items 13-14, appended) ----
+        PropBreak
     }
 }
