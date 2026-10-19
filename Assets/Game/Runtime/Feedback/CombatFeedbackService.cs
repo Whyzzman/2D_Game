@@ -39,12 +39,18 @@ namespace ForgottenKingdom
         [Tooltip("A real 2D light cloned into each light pulse, so a parry lights the stone around "
             + "it rather than only drawing a halo. Built in the editor so it keeps its layers.")]
         [SerializeField] private UnityEngine.Rendering.Universal.Light2D _lightTemplate;
+        [Tooltip("The world's speed for a moment after a parry's freeze (GAME_FEEL_IDEAS item 9).")]
+        [SerializeField, Range(0.05f, 1f)] private float _parrySlowScale = 0.3f;
+        [Tooltip("Real seconds of that slow at full hit-stop setting; the setting scales it, "
+            + "reduced motion turns it off.")]
+        [SerializeField, Min(0f)] private float _parrySlowTime = 0.12f;
 
         private VfxPool _bursts;
         private VfxPool _lights;
         private BossDeathMoment _bossDeath;
         private TelegraphCues _telegraphs;
         private readonly GamepadRumble _rumble = new GamepadRumble();
+        private readonly SlowMotionMoment _slowMotion = new SlowMotionMoment();
         private Transform _root;
 
         // Collected during a frame and applied once at the end of it.
@@ -73,6 +79,8 @@ namespace ForgottenKingdom
         public int TelegraphsRunning => _telegraphs?.Count ?? 0;
         /// <summary>The gamepad's rumble, driven by the profiles' haptic strength.</summary>
         public GamepadRumble Rumble => _rumble;
+        /// <summary>True while a parry holds the world slow.</summary>
+        public bool IsSlowMotionRunning => _slowMotion.IsRunning;
 
         private void Awake()
         {
@@ -116,6 +124,7 @@ namespace ForgottenKingdom
             {
                 _rumble.Stop();
             }
+            _slowMotion.Stop();
         }
 
         private void Start()
@@ -198,6 +207,7 @@ namespace ForgottenKingdom
             _bossDeath?.Tick(Time.unscaledDeltaTime);
             _telegraphs?.Tick();
             _rumble.Tick();
+            _slowMotion.Tick(Time.unscaledDeltaTime);
             if (_frameOwner == null)
             {
                 return;
@@ -256,6 +266,7 @@ namespace ForgottenKingdom
             }
 
             return bounds ?? new Bounds(boss.transform.position + Vector3.up, new Vector3(1.5f, 2f, 0f));
+            _slowMotion.Stop();
         }
 
         // ---------- listening to combat ----------
@@ -273,6 +284,8 @@ namespace ForgottenKingdom
                 }
 
                 player.DashStarted += () => OnPlayerDash(player);
+                // Only the hero's own parry slows the world: it is the moment the player earned.
+                player.Parried += _ => _slowMotion.Begin(_parrySlowScale, _parrySlowTime);
                 var combat = player.GetComponent<PlayerCombat>();
                 if (combat != null)
                 {
