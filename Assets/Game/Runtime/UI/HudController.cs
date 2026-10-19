@@ -40,8 +40,6 @@ namespace ForgottenKingdom
     [RequireComponent(typeof(UIDocument))]
     public sealed class HudController : MonoBehaviour
     {
-        private const float LossDelay = 0.45f;
-        private const float LossSpeed = 0.9f;
         private const float LowShare = 0.3f;
         /// <summary>A change smaller than this (a twentieth of a percent) is not worth a relayout.</summary>
         private const float ShownEpsilon = 0.0005f;
@@ -58,10 +56,13 @@ namespace ForgottenKingdom
         [SerializeField] private WorldState _world;
         [SerializeField] private HudArt _art = new HudArt();
 
-        private readonly Meter _health = new Meter();
-        private readonly Meter _manaMeter = new Meter();
-        private readonly Meter _stamina = new Meter();
-        private readonly Meter _bossMeter = new Meter();
+        private readonly HudMeter _health = new HudMeter();
+        private readonly HudMeter _manaMeter = new HudMeter();
+        private readonly HudMeter _stamina = new HudMeter();
+        private readonly HudMeter _bossMeter = new HudMeter();
+        private HudVitals _vitals;
+        private HudFlasks _flaskRow;
+        private HudPurse _purse;
         private readonly Slot[] _skillSlots = new Slot[ActiveSkillController.SlotCount];
         private readonly Slot[] _spellSlots = new Slot[PlayerSpellbook.SlotCount];
         private readonly VisualElement[] _chips = new VisualElement[4];
@@ -74,7 +75,6 @@ namespace ForgottenKingdom
         private Label _bossPhase;
         private Label _bossValue;
         private Label _hpValue;
-        private Label _purse;
         private VisualElement _prompt;
         private Label _promptText;
         private BossTitleCard _bossTitle;
@@ -88,7 +88,6 @@ namespace ForgottenKingdom
         private float _fadeValue;
         private float _fadeTarget;
         private float _fadeSpeed = 1f;
-        private int _shownCurrency = -1;
         // What the labels and fills last showed. UI Toolkit re-lays out on every style or text
         // write, so the HUD writes only when a shown value actually changes.
         private int _shownHp = -1;
@@ -140,7 +139,7 @@ namespace ForgottenKingdom
         public HudKeyGlyphs KeyGlyphs => _keyGlyphs;
 
         /// <summary>Flask icons currently drawn, for tests and tools.</summary>
-        public int FlaskIconCount => _flaskIcons.Count;
+        public int FlaskIconCount => _flaskRow != null ? _flaskRow.Count : 0;
 
         /// <summary>For tests and tools: whether the boss bar is currently up.</summary>
         public bool IsBossBarVisible => _boss != null && _boss.ClassListContains("boss--visible");
@@ -190,15 +189,15 @@ namespace ForgottenKingdom
             _manaWisps = new HudManaWisps(_root, _player != null ? _player.GetComponent<WeaponManaGain>() : null);
             _abilityCard = new AbilityCard(_root);
             _abilityCard.Attach(_player, _progress);
-            _flasks = _root.Q("flasks");
-            _flaskRow = _root.Q("flask-row");
             Dress();
+            _vitals = new HudVitals(_root, _health, _manaMeter, _art.vignette);
             Subscribe(true);
         }
 
         private void OnDisable()
         {
             Subscribe(false);
+            _vitals?.Dispose();
             _pause?.Detach();
             _inventory?.Detach();
             _map?.Detach();
@@ -256,7 +255,8 @@ namespace ForgottenKingdom
             _bossPhase = _root.Q<Label>("boss-phase");
             _bossValue = _root.Q<Label>("boss-value");
             _hpValue = _root.Q<Label>("hp-value");
-            _purse = _root.Q<Label>("purse-value");
+            _purse = new HudPurse(_root);
+            _flaskRow = new HudFlasks(_root);
             _prompt = _root.Q("prompt");
             _promptText = _root.Q<Label>("prompt-text");
             _zoneTitle = new ZoneTitleBanner(_root);
@@ -371,10 +371,12 @@ namespace ForgottenKingdom
             UpdateResources(dt);
             _manaWisps?.Tick(dt);
             UpdateFlasks();
+            _flaskRow?.Update(_player != null ? _player.Flasks : null);
             UpdateBoss(dt);
             UpdateLoadout();
             UpdateConditions();
-            UpdatePurseAndPrompt();
+            _purse?.Update(_progress != null ? _progress.Currency : 0, dt);
+            UpdatePrompt();
             UpdateFade(dt);
             _zoneTitle?.Tick(dt);
             _bossTitle?.Tick(dt);
@@ -391,6 +393,7 @@ namespace ForgottenKingdom
             var share = Share(health.Current, health.Max);
             _health.Set(share, dt);
             _health.Fill?.EnableInClassList("bar__fill--low", share < LowShare);
+            _vitals?.Tick(dt, share, share < LowShare);
             var hp = Mathf.CeilToInt(health.Current);
             var hpMax = Mathf.CeilToInt(health.Max);
             if (_hpValue != null && (hp != _shownHp || hpMax != _shownHpMax))
@@ -412,63 +415,6 @@ namespace ForgottenKingdom
                 _stamina.Set(staminaShare, dt);
                 _stamina.Fill?.EnableInClassList("bar__fill--low", staminaShare < LowShare);
             }
-        }
-
-        /// <summary>
-        /// The flask row: full ones lit, spent ones only an outline, and the one being drunk
-        /// glowing and running low. Rebuilt only when the charge count or the drinking changes.
-        /// </summary>
-        private void UpdateFlasks()
-        {
-            var flasks = _player != null ? _player.Flasks : null;
-            if (flasks == null || _flaskRow == null)
-            {
-                return;
-            }
-
-            if (_flaskIcons.Count != flasks.MaxCharges)
-            {
-                _flaskRow.Clear();
-                _flaskIcons.Clear();
-                for (var i = 0; i < flasks.MaxCharges; i++)
-                {
-                    var flask = new VisualElement { pickingMode = PickingMode.Ignore };
-                    flask.AddToClassList("flask");
-                    var neck = new VisualElement { pickingMode = PickingMode.Ignore };
-                    neck.AddToClassList("flask__neck");
-                    var body = new VisualElement { pickingMode = PickingMode.Ignore };
-                    body.AddToClassList("flask__body");
-                    var liquid = new VisualElement { pickingMode = PickingMode.Ignore };
-                    liquid.AddToClassList("flask__liquid");
-                    body.Add(liquid);
-                    flask.Add(neck);
-                    flask.Add(body);
-                    _flaskRow.Add(flask);
-                    _flaskIcons.Add(flask);
-                }
-
-                _shownFlaskCharges = -1;
-            }
-
-            var charges = flasks.Charges;
-            var drinking = flasks.IsDrinking;
-            if (charges == _shownFlaskCharges && drinking == _shownFlaskDrinking)
-            {
-                return;
-            }
-
-            _shownFlaskCharges = charges;
-            _shownFlaskDrinking = drinking;
-            for (var i = 0; i < _flaskIcons.Count; i++)
-            {
-                // The charge is paid as the drink starts, so the one being drunk sits just past
-                // the remaining ones.
-                var isDrinking = drinking && i == charges;
-                _flaskIcons[i].EnableInClassList("flask--drinking", isDrinking);
-                _flaskIcons[i].EnableInClassList("flask--empty", i >= charges && !isDrinking);
-            }
-
-            _flasks?.EnableInClassList("flasks--empty", charges == 0 && !drinking);
         }
 
         private void UpdateBoss(float dt)
@@ -594,15 +540,8 @@ namespace ForgottenKingdom
             }
         }
 
-        private void UpdatePurseAndPrompt()
+        private void UpdatePrompt()
         {
-            var currency = _progress != null ? _progress.Currency : 0;
-            if (_purse != null && currency != _shownCurrency)
-            {
-                _shownCurrency = currency;
-                _purse.text = currency.ToString("N0").Replace(',', ' ');
-            }
-
             var prompt = _interactor != null ? _interactor.CurrentPrompt : string.Empty;
             var dead = _player != null && !_player.IsAlive;
             // The boss's name sits where the prompt does; for its few seconds the name wins.
@@ -730,78 +669,6 @@ namespace ForgottenKingdom
         }
 
         /// <summary>A bar with a delayed pale trail showing what was just lost.</summary>
-        private sealed class Meter
-        {
-            private VisualElement _loss;
-            private float _shown = -1f;
-            private float _trail;
-            private float _trailWait;
-            private float _writtenShown = -1f;
-            private float _writtenTrail = -1f;
-
-            public VisualElement Fill { get; private set; }
-
-            public void Bind(VisualElement root, string prefix)
-            {
-                Fill = root.Q($"{prefix}-fill");
-                _loss = root.Q($"{prefix}-loss");
-            }
-
-            public void Snap(float share)
-            {
-                _shown = share;
-                _trail = share;
-                _trailWait = 0f;
-                Write();
-            }
-
-            public void Set(float share, float dt)
-            {
-                if (_shown < 0f)
-                {
-                    Snap(share);
-                    return;
-                }
-
-                if (share < _shown)
-                {
-                    _trailWait = LossDelay;
-                }
-
-                _shown = share;
-                if (_trail < share)
-                {
-                    _trail = share;
-                }
-                else if (_trailWait > 0f)
-                {
-                    _trailWait -= dt;
-                }
-                else
-                {
-                    _trail = Mathf.MoveTowards(_trail, share, LossSpeed * dt);
-                }
-
-                Write();
-            }
-
-            private void Write()
-            {
-                if (Fill != null && Mathf.Abs(_shown - _writtenShown) > ShownEpsilon)
-                {
-                    _writtenShown = _shown;
-                    Fill.style.width = Length.Percent(_shown * 99f);
-                    Fill.style.borderRightWidth = _shown > 0.005f && _shown < 0.995f ? 2f : 0f;
-                }
-
-                if (_loss != null && Mathf.Abs(_trail - _writtenTrail) > ShownEpsilon)
-                {
-                    _writtenTrail = _trail;
-                    _loss.style.width = Length.Percent(_trail * 99f);
-                }
-            }
-        }
-
         private sealed class Slot
         {
             private readonly VisualElement _root;
