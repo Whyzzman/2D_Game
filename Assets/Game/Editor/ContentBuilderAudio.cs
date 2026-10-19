@@ -197,6 +197,9 @@ namespace ForgottenKingdom.EditorTools
             // The hero's death and return: never dropped, nearly flat — it is about the player.
             events.Add(Sound(AudioId.HeroFall, clips, 0.85f, voices: 1, priority: 120, spatial: 0.15f));
             events.Add(Sound(AudioId.AltarCall, clips, 0.7f, voices: 1, priority: 110, spatial: 0.15f));
+            // Ringing ears after a blow to the hero: quiet, flat (it is in the head), never stacked.
+            events.Add(Sound(AudioId.HurtRing, clips, 0.22f, voices: 1, priority: 85, interval: 0.3f,
+                spatial: 0f));
 
             // Interface. Quiet, flat, and spaced so fast navigation does not chatter.
             events.Add(Sound(AudioId.UiNavigate, clips, 0.3f, AudioBus.Ui, voices: 1, priority: 25,

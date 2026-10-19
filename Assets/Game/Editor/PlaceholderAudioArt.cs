@@ -74,6 +74,7 @@ namespace ForgottenKingdom.EditorTools
             UiClick,    // a soft wooden tick with a faint ring
             UiUp,       // two notes rising: confirm, open
             UiDown      // two notes falling: cancel, close
+            Ring        // thin high tone — ringing ears
         }
 
         private static readonly Spec[] Catalogue =
@@ -311,6 +312,8 @@ namespace ForgottenKingdom.EditorTools
             // ---- the hero falls into shadow (a long low breath); the altar answers (a low chime) ----
             new Spec(AudioId.HeroFall, "SFX/Player", "sfx_player_fall_to_shadow", Recipe.Shadow, 2, 1.8f, 0.42f),
             new Spec(AudioId.AltarCall, "SFX/World", "sfx_altar_call", Recipe.Chime, 2, 1.6f, 0.5f)
+            // ---- ringing ears after a blow to the hero ----
+            new Spec(AudioId.HurtRing, "SFX/Player", "sfx_player_hurt_ring", Recipe.Ring, 2, 0.9f, 1f)
         };
 
         /// <summary>Writes every missing or changed clip and returns them, by sound.</summary>
@@ -383,6 +386,7 @@ namespace ForgottenKingdom.EditorTools
                 case Recipe.UiClick: UiClick(samples, random, spec.Tone); break;
                 case Recipe.UiUp: UiNotes(samples, random, spec.Tone, true); break;
                 case Recipe.UiDown: UiNotes(samples, random, spec.Tone, false); break;
+                case Recipe.Ring: Ring(samples, random, spec.Tone); break;
             }
 
             Normalise(samples, spec.Kind == Recipe.Bed ? 0.16f : 0.82f);
@@ -663,6 +667,25 @@ namespace ForgottenKingdom.EditorTools
                 }
 
                 samples[i] = value * 0.7f;
+            }
+        }
+
+        /// <summary>
+        /// Ringing ears: a thin, almost pure high tone that swells in fast and thins away, with a
+        /// slight beat against a second tone a few hertz off so it is felt more than heard.
+        /// </summary>
+        private static void Ring(float[] samples, System.Random random, float tone)
+        {
+            var frequency = (3100f + (float)random.NextDouble() * 300f) * tone;
+            for (var i = 0; i < samples.Length; i++)
+            {
+                var t = i / (float)Rate;
+                var progress = i / (float)samples.Length;
+                var attack = Mathf.Clamp01(t / 0.04f);
+                var release = (1f - progress) * (1f - progress);
+                var value = Mathf.Sin(2f * Mathf.PI * frequency * t)
+                    + 0.6f * Mathf.Sin(2f * Mathf.PI * (frequency + 5f) * t);
+                samples[i] = value * attack * release * 0.5f;
             }
         }
 

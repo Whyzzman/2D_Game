@@ -24,6 +24,16 @@ namespace ForgottenKingdom
             + "from the animation, not a timer, and independent of how many frames the run has.")]
         [SerializeField] private float[] _footstepPhases = { 0f, 0.5f };
 
+        [Header("Ringing ears (GAME_FEEL_IDEAS item 10)")]
+        [Tooltip("How far the score steps back when the hero is hit.")]
+        [SerializeField, Range(0f, 0.85f)] private float _hurtMusicDuck = 0.55f;
+        [Tooltip("How far the room steps back when the hero is hit.")]
+        [SerializeField, Range(0f, 0.85f)] private float _hurtRoomDuck = 0.6f;
+        [Tooltip("Real seconds both stay down before they start to return.")]
+        [SerializeField, Min(0f)] private float _hurtDuckHold = 0.6f;
+        [Tooltip("How loud the thin ring over the blow is; 0 leaves only the muffling.")]
+        [SerializeField, Range(0f, 1f)] private float _hurtRingVolume = 0.6f;
+
         private PlayerCombat _combat;
         private PlayerAnimationController _animation;
         private PlayerRespawner _respawner;
@@ -83,6 +93,11 @@ namespace ForgottenKingdom
             if (_feedback != null)
             {
                 _feedback.Played -= OnFeedback;
+            }
+
+            if (_player != null && _player.Actor != null)
+            {
+                _player.Actor.DamageTaken -= OnPlayerDamaged;
             }
 
             // Static events outlive the scene, so leaving these attached would make a reloaded
@@ -227,9 +242,35 @@ namespace ForgottenKingdom
             }
 
             _player.Died += () => AudioManager.Play(AudioId.PlayerDeath, _player.transform.position);
+            if (_player.Actor != null)
+            {
+                _player.Actor.DamageTaken += OnPlayerDamaged;
+            }
+
             _player.Flasks.DrinkStarted += () => AudioManager.Play(
                 _player.Flasks.IsDrinkingFlask ? AudioId.FlaskDrink : AudioId.HerbEat,
                 _player.transform.position);
+        }
+
+        /// <summary>
+        /// A real blow to the hero: the world goes muffled for a moment and a thin ring sits over
+        /// it — the ears ringing (GAME_FEEL_IDEAS item 10). The hurt sound itself is the feedback
+        /// service's. Blocks, parries, invincibility and status ticks are not blows; a lethal one
+        /// belongs to death, which ducks on its own.
+        /// </summary>
+        private void OnPlayerDamaged(DamageInfo info, DamageResult result)
+        {
+            if (result.Outcome != DamageOutcome.Hit || result.IsLethal || info.IsStatusDamage)
+            {
+                return;
+            }
+
+            MusicDirector.Instance?.Duck(_hurtMusicDuck, _hurtDuckHold);
+            AudioManager.Instance?.Duck(AudioBus.Ambience, _hurtRoomDuck, _hurtDuckHold);
+            if (_hurtRingVolume > 0f && _player != null)
+            {
+                AudioManager.Play(AudioId.HurtRing, _player.transform.position, _hurtRingVolume);
+            }
         }
 
         /// <summary>

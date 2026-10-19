@@ -44,6 +44,7 @@ namespace ForgottenKingdom
         private readonly Dictionary<AudioId, int> _beforeClipIndex = new Dictionary<AudioId, int>();
         private readonly float[] _busVolume = new float[5];
         private readonly float[] _busDuck = new float[5];
+        private readonly float[] _duckHeldUntil = new float[5];
         private Transform _root;
 
         public static AudioManager Instance { get; private set; }
@@ -331,17 +332,28 @@ namespace ForgottenKingdom
         /// phase change, the boss dying and the player dying. It never mutes: a bus at zero is a
         /// bug that sounds like a crash.
         /// </summary>
-        public void Duck(AudioBus bus, float amount)
+        public void Duck(AudioBus bus, float amount) => Duck(bus, amount, 0f);
+
+        /// <summary>
+        /// The same, held down for <paramref name="hold"/> real seconds before it starts to come
+        /// back — a blow to the hero leaves the room muffled for a moment, not for a frame.
+        /// </summary>
+        public void Duck(AudioBus bus, float amount, float hold)
         {
             var index = (int)bus;
             _busDuck[index] = Mathf.Clamp(Mathf.Min(_busDuck[index], 1f - amount), 0.15f, 1f);
+            _duckHeldUntil[index] = Mathf.Max(_duckHeldUntil[index],
+                Time.unscaledTime + Mathf.Max(0f, hold));
         }
+
+        /// <summary>How far a bus is ducked right now: 1 is untouched.</summary>
+        public float BusDuck(AudioBus bus) => _busDuck[(int)bus];
 
         private void Update()
         {
             for (var i = 0; i < _busDuck.Length; i++)
             {
-                if (_busDuck[i] < 1f)
+                if (_busDuck[i] < 1f && Time.unscaledTime >= _duckHeldUntil[i])
                 {
                     _busDuck[i] = Mathf.Min(1f,
                         _busDuck[i] + Time.unscaledDeltaTime / _duckRecovery);
@@ -373,6 +385,7 @@ namespace ForgottenKingdom
             for (var i = 0; i < _busDuck.Length; i++)
             {
                 _busDuck[i] = 1f;
+                _duckHeldUntil[i] = 0f;
             }
         }
 

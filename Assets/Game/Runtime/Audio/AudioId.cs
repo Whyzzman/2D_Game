@@ -253,5 +253,7 @@ namespace ForgottenKingdom
         // ---- the hero's death and return (GAME_FEEL_IDEAS item 22, appended) ----
         HeroFall,
         AltarCall
+        // ---- ringing ears when the hero is hit (GAME_FEEL_IDEAS item 10, appended) ----
+        HurtRing
     }
 }

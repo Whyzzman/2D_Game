@@ -53,9 +53,15 @@ namespace ForgottenKingdom
         private readonly HashSet<BossEncounter> _encounters = new HashSet<BossEncounter>();
         private float _nextDetailAt;
         private bool _isSuppressed;
+        // The bus duck the bed's volume already carries: the manager applies a duck only when a
+        // sound starts, so the long bed follows it here, by ratio, as Suppress does.
+        private float _bedDuck = 1f;
 
         /// <summary>True while a boss fight has taken the room's space away.</summary>
         public bool IsSuppressed => _isSuppressed;
+
+        /// <summary>The room-bus duck the playing bed carries right now; 1 is untouched.</summary>
+        public float BedDuck => _bedDuck;
 
         /// <summary>Which palette is playing; empty before the first one is chosen.</summary>
         public string ZoneId => _palette != null ? _palette.ZoneId : string.Empty;
@@ -136,6 +142,7 @@ namespace ForgottenKingdom
             if (_bedSource != null)
             {
                 _bedSource.spatialBlend = 0f;
+                _bedDuck = manager.BusDuck(AudioBus.Ambience);
                 if (_isSuppressed)
                 {
                     // A bed started while a fight is running must arrive already quiet, or
@@ -171,6 +178,7 @@ namespace ForgottenKingdom
 
         private void Update()
         {
+            FollowDuck();
             if (_isSuppressed || _palette == null || _palette.Details == null
                 || _palette.Details.Length == 0)
             {
@@ -184,6 +192,28 @@ namespace ForgottenKingdom
 
             PlayDetail();
             ScheduleDetail();
+        }
+
+        /// <summary>
+        /// Keeps the bed under the room bus's duck while it plays, so a blow to the hero or a
+        /// boss's phase change muffles the room itself and not only the next detail.
+        /// </summary>
+        private void FollowDuck()
+        {
+            var manager = AudioManager.Instance;
+            if (_bedSource == null || manager == null)
+            {
+                return;
+            }
+
+            var duck = manager.BusDuck(AudioBus.Ambience);
+            if (Mathf.Approximately(duck, _bedDuck) || _bedDuck <= 0f)
+            {
+                return;
+            }
+
+            _bedSource.volume *= duck / _bedDuck;
+            _bedDuck = duck;
         }
 
         private void PlayDetail()
