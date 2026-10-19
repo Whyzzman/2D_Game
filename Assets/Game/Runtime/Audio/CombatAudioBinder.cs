@@ -20,8 +20,9 @@ namespace ForgottenKingdom
     {
         [SerializeField] private CombatFeedbackService _feedback;
         [SerializeField] private PlayerCharacter _player;
-        [Tooltip("Frames of the run cycle where a foot lands. Taken from the animation, not a timer.")]
-        [SerializeField] private int[] _footstepFrames = { 0, 3 };
+        [Tooltip("Where a foot lands in the run cycle, as a share of the loop (0 = first frame). Taken "
+            + "from the animation, not a timer, and independent of how many frames the run has.")]
+        [SerializeField] private float[] _footstepPhases = { 0f, 0.5f };
 
         private PlayerCombat _combat;
         private PlayerAnimationController _animation;
@@ -255,9 +256,15 @@ namespace ForgottenKingdom
                 return;
             }
 
-            foreach (var contact in _footstepFrames)
+            var count = _animation != null && _animation.Clip != null ? _animation.Clip.FrameCount : 0;
+            if (count <= 0)
             {
-                if (contact == frame)
+                return;
+            }
+
+            foreach (var phase in _footstepPhases)
+            {
+                if (Mathf.RoundToInt(phase * count) % count == frame)
                 {
                     var feet = (Vector2)_player.transform.position;
                     AudioManager.Play(Surfaces.Footstep(Surfaces.Under(feet)), feet, 0.7f);

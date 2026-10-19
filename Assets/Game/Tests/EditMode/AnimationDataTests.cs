@@ -79,14 +79,17 @@ namespace ForgottenKingdom.Tests
         }
 
         [Test]
-        public void CombatRunsAtTwiceTheFrameRateOfStances()
+        public void CombatRunsAt24AndTheRunKeepsItsHalfSecondStride()
         {
-            // The Visual Bible fixed 12 FPS for stances and 24 for combat; if this drifts the whole
-            // frame budget quoted to the artist stops meaning anything.
+            // The Visual Bible fixed 24 FPS for combat; if this drifts the whole frame budget
+            // quoted to the artist stops meaning anything. The run has the ten frames of
+            // ANIMATION_LIST.md over the half-second stride it always had (2026-10-19), so the
+            // feet do not slide against the ground speed.
             Assert.That(_set.Clip(PlayerAnimationState.Attack1, null).FramesPerSecond,
                 Is.EqualTo(24f));
-            Assert.That(_set.Clip(PlayerAnimationState.Run, null).FramesPerSecond,
-                Is.EqualTo(12f));
+            var run = _set.Clip(PlayerAnimationState.Run, null);
+            Assert.That(run.FrameCount, Is.EqualTo(10));
+            Assert.That(run.Duration, Is.EqualTo(0.5f).Within(0.001f));
         }
 
         [Test]
