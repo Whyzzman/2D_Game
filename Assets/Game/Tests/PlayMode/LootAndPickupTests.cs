@@ -144,6 +144,47 @@ namespace ForgottenKingdom.Tests
         }
 
         [UnityTest]
+        public IEnumerator CoinsNearTheHeroFlyToHimAndItemsDoNot()
+        {
+            var before = _progress.Currency;
+            var hero = (Vector2)_player.transform.position;
+            var near = _loot.Spawn(new DropResult(string.Empty, true, 5), hero + new Vector2(1.4f, 0.8f));
+            var far = _loot.Spawn(new DropResult(string.Empty, true, 7), hero + new Vector2(0f, 4f));
+            var item = _loot.Spawn(new DropResult("iron_scrap", false, 1), hero + new Vector2(-1.4f, 0.8f));
+            Assert.That(near.MagnetRadius, Is.EqualTo(2f).Within(0.001f), "GAME_FEEL_IDEAS.md item 15: 2 units.");
+            Assert.That(item.MagnetRadius, Is.Zero, "A find is chosen, not swept up.");
+
+            var deadline = Time.realtimeSinceStartup + 3f;
+            while (!near.IsCollected && Time.realtimeSinceStartup < deadline)
+            {
+                yield return null;
+            }
+
+            Assert.That(near.IsCollected, Is.True, "The near coin flew in on its own.");
+            Assert.That(_progress.Currency, Is.EqualTo(before + 5));
+            Assert.That(far.IsCollected || far.IsAttracted, Is.False, "Out of reach stays put.");
+            Assert.That(item.IsCollected, Is.False);
+        }
+
+        [UnityTest]
+        public IEnumerator TheMagnetRadiusScalesForTheAmberBeadCharm()
+        {
+            var coin = _loot.Spawn(new DropResult(string.Empty, true, 1),
+                (Vector2)_player.transform.position + new Vector2(0f, 6f));
+            try
+            {
+                WorldPickup.MagnetRadiusMultiplier = 2f;
+                Assert.That(coin.MagnetRadius, Is.EqualTo(4f).Within(0.001f), "CHARMS.md: 2 → 4 units.");
+            }
+            finally
+            {
+                WorldPickup.MagnetRadiusMultiplier = 1f;
+            }
+
+            yield return null;
+        }
+
+        [UnityTest]
         public IEnumerator AMaterialPickupLandsInTheInventory()
         {
             var pickup = _loot.Spawn(new DropResult("iron_scrap", false, 2),

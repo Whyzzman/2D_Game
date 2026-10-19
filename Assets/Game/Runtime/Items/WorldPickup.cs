@@ -24,11 +24,40 @@ namespace ForgottenKingdom
         [SerializeField] private SpriteRenderer _visual;
         [SerializeField, Min(0f)] private float _bobHeight = 0.12f;
         [SerializeField, Min(0f)] private float _bobSpeed = 2.5f;
+        [Header("Coin magnet (GAME_FEEL_IDEAS.md, item 15)")]
+        [Tooltip("Coins this close to the hero fly to him. Items never do: a find is chosen, not swept up.")]
+        [SerializeField, Min(0f)] private float _magnetRadius = 2f;
+        [Tooltip("Units per second gained every second of flight: a coin leaves slowly and arrives fast.")]
+        [SerializeField, Min(0f)] private float _magnetAcceleration = 40f;
+        [SerializeField, Min(0f)] private float _magnetMaxSpeed = 18f;
+        [Tooltip("Where on the hero the coin flies to, above his feet (his pivot).")]
+        [SerializeField] private float _magnetTargetHeight = 0.8f;
+        [Tooltip("Closer than this the coin counts as caught even if the trigger has not fired yet.")]
+        [SerializeField, Min(0.01f)] private float _magnetCatchDistance = 0.25f;
+        private const float PlayerSearchInterval = 1f;
         private Vector3 _restPosition;
         private bool _isCollected;
+        private PlayerCharacter _magnetTarget;
+        private float _nextPlayerSearch;
+        private float _magnetSpeed;
+        private bool _isAttracted;
 
         /// <summary>Raised with the id and amount actually taken; the hook for audio and VFX.</summary>
         public static event Action<WorldPickup> Collected;
+
+        /// <summary>
+        /// Scales every coin's magnet radius; 1 is the plain hero. Left for the charm
+        /// «Бурштинова намистина» (CHARMS.md: 2 → 4 units), which is not built yet.
+        /// </summary>
+        public static float MagnetRadiusMultiplier { get; set; } = 1f;
+
+        /// <summary>How close the hero must be for this pickup to fly to him; 0 for anything but coins.</summary>
+        public float MagnetRadius => _isCurrency && _autoCollect
+            ? _magnetRadius * Mathf.Max(0f, MagnetRadiusMultiplier)
+            : 0f;
+
+        /// <summary>True once a coin has started flying; it never stops halfway.</summary>
+        public bool IsAttracted => _isAttracted;
 
         public string ItemId => _itemId;
         public bool IsCurrency => _isCurrency;
@@ -64,6 +93,8 @@ namespace ForgottenKingdom
             _persistentId = persistentId;
             _autoCollect = autoCollect;
             _isCollected = false;
+            _isAttracted = false;
+            _magnetSpeed = 0f;
             ResolveDefinition();
             ApplyVisual();
         }
@@ -94,6 +125,11 @@ namespace ForgottenKingdom
 
         private void Update()
         {
+            if (UpdateMagnet())
+            {
+                return;
+            }
+
             if (_bobHeight <= 0f)
             {
                 return;
@@ -115,6 +151,68 @@ namespace ForgottenKingdom
             {
                 TryCollect(player);
             }
+        }
+
+        /// <summary>
+        /// Pulls a coin to the hero once he comes within <see cref="MagnetRadius"/>. The speed grows
+        /// every frame, so the coin peels off gently and lands with a snap; once it has started it
+        /// keeps going even if he walks away, as in Hollow Knight. Scaled time: a pause holds it.
+        /// Returns true while the coin is flying, so the bob does not fight the flight.
+        /// </summary>
+        private bool UpdateMagnet()
+        {
+            var radius = MagnetRadius;
+            if (radius <= 0f || _isCollected)
+            {
+                return false;
+            }
+
+            var player = FindMagnetTarget();
+            if (player == null || !player.IsAlive)
+            {
+                return _isAttracted;
+            }
+
+            var target = (Vector2)(player.transform.position + Vector3.up * _magnetTargetHeight);
+            var position = (Vector2)transform.position;
+            var distance = Vector2.Distance(position, target);
+            if (!_isAttracted)
+            {
+                if (distance > radius)
+                {
+                    return false;
+                }
+
+                _isAttracted = true;
+                _magnetSpeed = 0f;
+            }
+
+            _magnetSpeed = Mathf.Min(_magnetMaxSpeed,
+                _magnetSpeed + _magnetAcceleration * Time.deltaTime);
+            var next = Vector2.MoveTowards(position, target, _magnetSpeed * Time.deltaTime);
+            transform.position = new Vector3(next.x, next.y, transform.position.z);
+            if (Vector2.Distance(next, target) <= _magnetCatchDistance)
+            {
+                TryCollect(player);
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// The hero lives in the world scene and coins in zone scenes, so the reference cannot be
+        /// serialized; it is looked up once and, when there is no hero (menus, some tests), retried
+        /// at most once a second rather than every frame.
+        /// </summary>
+        private PlayerCharacter FindMagnetTarget()
+        {
+            if (_magnetTarget == null && Time.unscaledTime >= _nextPlayerSearch)
+            {
+                _magnetTarget = FindAnyObjectByType<PlayerCharacter>();
+                _nextPlayerSearch = Time.unscaledTime + PlayerSearchInterval;
+            }
+
+            return _magnetTarget;
         }
 
         public void Interact(PlayerCharacter player)
