@@ -1,0 +1,336 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 649169c22105a06499c9bc0695fd8d1d, type: 3}
+  m_Name: VillagerAnimations
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.EnemyAnimationSet
+  _clips:
+  - state: 1
+    clip:
+      _clipName: enemy_villager_idle
+      _frames:
+      - {fileID: 21300000, guid: a0b4f4947d8404747b2b6c8edb53f322, type: 3}
+      - {fileID: 21300000, guid: 7b7a5d2dd0d7345d0a2aeaadcacf8d2e, type: 3}
+      - {fileID: 21300000, guid: e2dcca6b461944b158a597e494a3bb13, type: 3}
+      - {fileID: 21300000, guid: 8619b92bcb2394ae1b9dffcd729b5c48, type: 3}
+      - {fileID: 21300000, guid: 17ad8a8943a2340c6b27afe2ad00cd9a, type: 3}
+      - {fileID: 21300000, guid: c6df8556e8f894658a1e01efc6e4a53d, type: 3}
+      _framesPerSecond: 8
+      _isLooping: 1
+      _anchors:
+      - {x: -0.053818587, y: 1.3034519, z: 34.9}
+      - {x: -0.053818587, y: 1.31038, z: 34.9}
+      - {x: -0.053818587, y: 1.31038, z: 34.9}
+      - {x: -0.053818587, y: 1.3034519, z: 34.9}
+      - {x: -0.053818587, y: 1.2965236, z: 34.9}
+      - {x: -0.053818587, y: 1.2965236, z: 34.9}
+  - state: 2
+    clip:
+      _clipName: enemy_villager_patrol
+      _frames:
+      - {fileID: 21300000, guid: 5491d33bfa6ab476486a2ca3b4788cef, type: 3}
+      - {fileID: 21300000, guid: e3bcb8da0300648169796a6df0e24d08, type: 3}
+      - {fileID: 21300000, guid: be29ab831821047cd9402ff169dff482, type: 3}
+      - {fileID: 21300000, guid: 5a3473ffad9f84f77ab01fa8c14f2e69, type: 3}
+      - {fileID: 21300000, guid: 34ffa1296b6364b42a5a9d241165fb48, type: 3}
+      - {fileID: 21300000, guid: 3bee850badeab455881906646a38d249, type: 3}
+      - {fileID: 21300000, guid: 2b01298caf0544a8ca7a7aff7428ca2b, type: 3}
+      - {fileID: 21300000, guid: 4a7830d8b6a7f4abb92700b8ce125f4e, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 1
+      _anchors:
+      - {x: -0.03761162, y: 1.3050478, z: 35.5}
+      - {x: -0.03761162, y: 1.3234324, z: 35.5}
+      - {x: -0.03761162, y: 1.3310477, z: 35.5}
+      - {x: -0.03761162, y: 1.3234324, z: 35.5}
+      - {x: -0.03761162, y: 1.3050478, z: 35.5}
+      - {x: -0.03761162, y: 1.3234324, z: 35.5}
+      - {x: -0.03761162, y: 1.3310477, z: 35.5}
+      - {x: -0.03761162, y: 1.3234324, z: 35.5}
+  - state: 3
+    clip:
+      _clipName: enemy_villager_alert
+      _frames:
+      - {fileID: 21300000, guid: ba1c2443ba7ef47469c54bd7a96f197b, type: 3}
+      - {fileID: 21300000, guid: 82aedf012a10245738356f01a09dc7f2, type: 3}
+      - {fileID: 21300000, guid: cfae3a6b574b842958139ffad215d211, type: 3}
+      - {fileID: 21300000, guid: 243256994f34c4d55883ac29277b2bec, type: 3}
+      - {fileID: 21300000, guid: aaa23a7a7f1f5417d8ecb010386e3a3a, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 0
+      _anchors:
+      - {x: -0.03761162, y: 1.3050478, z: 35.5}
+      - {x: -0.03380562, y: 1.3053399, z: 35.640625}
+      - {x: -0.02542511, y: 1.3058729, z: 35.95}
+      - {x: -0.017036362, y: 1.3062552, z: 36.259377}
+      - {x: -0.0132212825, y: 1.3063788, z: 36.4}
+  - state: 4
+    clip:
+      _clipName: enemy_villager_chase
+      _frames:
+      - {fileID: 21300000, guid: 5aafefacd9bc647139edfac534adae93, type: 3}
+      - {fileID: 21300000, guid: bb1fcc229d9b84f2d94b127bf6e98d15, type: 3}
+      - {fileID: 21300000, guid: ca5ea89fabdc24999ad84a1a4db683a4, type: 3}
+      - {fileID: 21300000, guid: 8e5f0395a0a1a4354b098397596c146a, type: 3}
+      - {fileID: 21300000, guid: aca1de069ea5b4b8fb07d79ae9ecfcd9, type: 3}
+      - {fileID: 21300000, guid: 0dc3f8eac8d994222b60dc5ce883d205, type: 3}
+      - {fileID: 21300000, guid: 74c8a1a0e38914ac98eea0a4bec3daaa, type: 3}
+      - {fileID: 21300000, guid: f814c91f33b2b494580d5d08b36831a7, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 1
+      _anchors:
+      - {x: 0.019343872, y: 1.306165, z: 37.6}
+      - {x: 0.019343872, y: 1.3273784, z: 37.6}
+      - {x: 0.019343872, y: 1.336165, z: 37.6}
+      - {x: 0.019343872, y: 1.3273784, z: 37.6}
+      - {x: 0.019343872, y: 1.306165, z: 37.6}
+      - {x: 0.019343872, y: 1.3273784, z: 37.6}
+      - {x: 0.019343872, y: 1.336165, z: 37.6}
+      - {x: 0.019343872, y: 1.3273784, z: 37.6}
+  - state: 0
+    clip:
+      _clipName: enemy_villager_attacklight
+      _frames:
+      - {fileID: 21300000, guid: 78b7836c8151940d4b3710acfa89a8f2, type: 3}
+      - {fileID: 21300000, guid: c822a0f9da9f740fbbde2277b2d1aa4a, type: 3}
+      - {fileID: 21300000, guid: 4b6a3080c48b7460a9773a52b7cc4696, type: 3}
+      - {fileID: 21300000, guid: 3d9968ac982cc4bbb8d7daad15a5cf85, type: 3}
+      - {fileID: 21300000, guid: 9ed0b81e327dd4f4f819961de07447a1, type: 3}
+      - {fileID: 21300000, guid: adc757c13d8b6427f9a0edb5dcbb5afa, type: 3}
+      - {fileID: 21300000, guid: 43ebb7852af34466d9f96c358355fd65, type: 3}
+      - {fileID: 21300000, guid: 55fca84a9173f40d692c7006d25e9552, type: 3}
+      - {fileID: 21300000, guid: a6440a37aa71a48adbde91c42459dc10, type: 3}
+      - {fileID: 21300000, guid: d8106e0f22acc4694b59e37107a3d3d6, type: 3}
+      - {fileID: 21300000, guid: 7a422f8be390a41d7b3133ccfcbd77de, type: 3}
+      - {fileID: 21300000, guid: 3feed8da3ddec416ba6b613d28a8f1db, type: 3}
+      - {fileID: 21300000, guid: 1bba0a1f538634b75ae9cce70bd90fd7, type: 3}
+      - {fileID: 21300000, guid: 5de08ff1d5ee845ebab506bc7050e7c7, type: 3}
+      - {fileID: 21300000, guid: 25b8c8450fc3a4c259b574858e53baa2, type: 3}
+      - {fileID: 21300000, guid: 66564bf90eb9742c3aaf15e0e6cd3646, type: 3}
+      - {fileID: 21300000, guid: f7ba9295764984b2185669fd27277beb, type: 3}
+      - {fileID: 21300000, guid: 3cda4703095d84dfeaf47bb9fba67918, type: 3}
+      - {fileID: 21300000, guid: 995496d96704142ba97ea2807321f47e, type: 3}
+      - {fileID: 21300000, guid: 854dd7e3d847e4b0386b65ab7bfb25a5, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.1966932, y: 1.279467, z: 31}
+      - {x: -0.19834778, y: 1.2767148, z: 30.935238}
+      - {x: -0.2026976, y: 1.269432, z: 30.764566}
+      - {x: -0.20881645, y: 1.2590675, z: 30.523407}
+      - {x: -0.21578422, y: 1.247091, z: 30.24718}
+      - {x: -0.22269768, y: 1.2350185, z: 29.971308}
+      - {x: -0.22867638, y: 1.2244215, z: 29.73121}
+      - {x: -0.23286018, y: 1.2169169, z: 29.562311}
+      - {x: -0.2343769, y: 1.2141573, z: 29.500696}
+      - {x: -0.18755096, y: 1.2498567, z: 30.926132}
+      - {x: -0.09291451, y: 1.2961183, z: 33.573013}
+      - {x: -0.0035377503, y: 1.3056031, z: 35.78256}
+      - {x: 0.06870788, y: 1.3062255, z: 37.54385}
+      - {x: 0.095601045, y: 1.3052058, z: 38.2}
+      - {x: 0.095601045, y: 1.3052058, z: 38.2}
+      - {x: 0.095601045, y: 1.3052058, z: 38.2}
+      - {x: 0.095601045, y: 1.3052058, z: 38.2}
+      - {x: 0.095601045, y: 1.3052058, z: 38.2}
+      - {x: 0.095601045, y: 1.3052058, z: 38.2}
+      - {x: 0.095601045, y: 1.3052058, z: 38.2}
+  - state: 9
+    clip:
+      _clipName: enemy_villager_attackheavy
+      _frames:
+      - {fileID: 21300000, guid: 48a39ee3f7cf049158fa8dc16fed9299, type: 3}
+      - {fileID: 21300000, guid: 3a4d9c18adea44c93a4d4a88e2750a1c, type: 3}
+      - {fileID: 21300000, guid: 28edd9154c0814bc8a7d979206cd36a5, type: 3}
+      - {fileID: 21300000, guid: 096f8d1a647414ec1a6d9ec6902bd2f1, type: 3}
+      - {fileID: 21300000, guid: 13a7b49aaefb94ff98bc37f621e9fa6f, type: 3}
+      - {fileID: 21300000, guid: edd591b6608354a6585a2ad71fd7e4c0, type: 3}
+      - {fileID: 21300000, guid: 4e23db998f17a4e2290ad47bc57b7825, type: 3}
+      - {fileID: 21300000, guid: a97d6812bce7249a086167ddc8a9f7a8, type: 3}
+      - {fileID: 21300000, guid: 5e21cd722eff940498e45a82a66b65b2, type: 3}
+      - {fileID: 21300000, guid: 7191c51832f8a4b73985aa0b4129e7ff, type: 3}
+      - {fileID: 21300000, guid: cd92200659fc6401baf2b922d24ef2bc, type: 3}
+      - {fileID: 21300000, guid: da317db454deb46b69551c8421eeb1b0, type: 3}
+      - {fileID: 21300000, guid: 8d383612186744998bcb7136036e8d6e, type: 3}
+      - {fileID: 21300000, guid: bbd5cbb1fcc8f489e9cee521d478f388, type: 3}
+      - {fileID: 21300000, guid: e0c5c1840d3f042e786c24a857d26c3c, type: 3}
+      - {fileID: 21300000, guid: 67654597103af427093d306972b35117, type: 3}
+      - {fileID: 21300000, guid: 07a69fa174d864dd2966989d32aa6cf2, type: 3}
+      - {fileID: 21300000, guid: a4a94163e09c940ecb5421338d1ffa76, type: 3}
+      - {fileID: 21300000, guid: b6e27ba5b6b2e4a7f8118b3e8d67b989, type: 3}
+      - {fileID: 21300000, guid: 524fe5755b857481ca673cdca4e4c332, type: 3}
+      - {fileID: 21300000, guid: e0746754db5ca4cd0adf4082d223e49a, type: 3}
+      - {fileID: 21300000, guid: 6b0ae3201e90a4cf39d474de2b849c74, type: 3}
+      - {fileID: 21300000, guid: 9d416773d8e534050a80c0dc137de78f, type: 3}
+      - {fileID: 21300000, guid: f7c3dab872d52457caedaf16a3e8c389, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.21920273, y: 1.2664813, z: 29.71}
+      - {x: -0.22131898, y: 1.2626901, z: 29.624615}
+      - {x: -0.2267405, y: 1.2528899, z: 29.404985}
+      - {x: -0.23407143, y: 1.2394334, z: 29.105906}
+      - {x: -0.24193695, y: 1.2247245, z: 28.782171}
+      - {x: -0.24900544, y: 1.2112575, z: 28.488571}
+      - {x: -0.25399056, y: 1.2016127, z: 28.279902}
+      - {x: -0.2553869, y: 1.198692, z: 28.220018}
+      - {x: -0.2283191, y: 1.2283177, z: 29.212051}
+      - {x: -0.17363709, y: 1.2731243, z: 31.0959}
+      - {x: -0.116050415, y: 1.2940888, z: 32.903008}
+      - {x: -0.053729706, y: 1.3030424, z: 34.773285}
+      - {x: 0.012412719, y: 1.3065484, z: 36.736717}
+      - {x: 0.07547676, y: 1.3042326, z: 38.60699}
+      - {x: 0.12870681, y: 1.2979388, z: 40.197796}
+      - {x: 0.16591118, y: 1.2911171, z: 41.32282}
+      - {x: 0.1814058, y: 1.2876707, z: 41.795746}
+      - {x: 0.18154472, y: 1.2876382, z: 41.8}
+      - {x: 0.18154472, y: 1.2876382, z: 41.8}
+      - {x: 0.18154472, y: 1.2876382, z: 41.8}
+      - {x: 0.18154472, y: 1.2876382, z: 41.8}
+      - {x: 0.18154472, y: 1.2876382, z: 41.8}
+      - {x: 0.18154472, y: 1.2876382, z: 41.8}
+      - {x: 0.18154472, y: 1.2876382, z: 41.8}
+  - state: 10
+    clip:
+      _clipName: enemy_villager_shieldbash
+      _frames:
+      - {fileID: 21300000, guid: de203176781fb4383bd3a2fccffec6b4, type: 3}
+      - {fileID: 21300000, guid: b63cb8c592c264ae7bf70a05382aa082, type: 3}
+      - {fileID: 21300000, guid: 189b405e27f664bb8943fb6189ca25a4, type: 3}
+      - {fileID: 21300000, guid: 7db120d10940d4688b6f7251ad63167f, type: 3}
+      - {fileID: 21300000, guid: e41fa0a0257fb46f99538d419af00a1d, type: 3}
+      - {fileID: 21300000, guid: 5456ecdf6ebd144408d470569050a72a, type: 3}
+      - {fileID: 21300000, guid: e07de1ffc5e82413182e6a01abd96e69, type: 3}
+      - {fileID: 21300000, guid: b9a42e4e460854ddabc62edfabce458f, type: 3}
+      - {fileID: 21300000, guid: e1265b68410d949ceaa44859752dc7c9, type: 3}
+      - {fileID: 21300000, guid: 417ce79559f6a47b8a90a30ed3051b17, type: 3}
+      - {fileID: 21300000, guid: 5edac2130f9274bf0aea34f2457b3310, type: 3}
+      - {fileID: 21300000, guid: 9cd4e86b587c740a2b9ad8a1bc822ea4, type: 3}
+      - {fileID: 21300000, guid: e54d4190edce94a07a0f37d7b7c544c6, type: 3}
+      - {fileID: 21300000, guid: d655e2f38af8642be915dbb4163b0a1f, type: 3}
+      - {fileID: 21300000, guid: 6fd78edff915d43ff80f07c92b20c7b6, type: 3}
+      - {fileID: 21300000, guid: 10ab9b9350e544fb099100a3997d462a, type: 3}
+      - {fileID: 21300000, guid: fe90d38d5240249f5b1eba17c45741da, type: 3}
+      - {fileID: 21300000, guid: b7411a49d040e492c8d3a45f8dc087b1, type: 3}
+      - {fileID: 21300000, guid: 94670825f9849487fb9baa132e566e25, type: 3}
+      - {fileID: 21300000, guid: e469b2a2a19da45128acbc91596b9698, type: 3}
+      - {fileID: 21300000, guid: 13eacf7c6a10345e0830e1b51e0f64a4, type: 3}
+      - {fileID: 21300000, guid: 21d4b8d54257441e3b8f243abbc4e00b, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.1966932, y: 1.279467, z: 31}
+      - {x: -0.19805962, y: 1.2771951, z: 30.946526}
+      - {x: -0.20170441, y: 1.2711011, z: 30.803593}
+      - {x: -0.2069416, y: 1.2622584, z: 30.597437}
+      - {x: -0.2130877, y: 1.2517484, z: 30.35429}
+      - {x: -0.21946861, y: 1.240681, z: 30.100388}
+      - {x: -0.22542496, y: 1.2302028, z: 29.861963}
+      - {x: -0.23031242, y: 1.2214956, z: 29.66525}
+      - {x: -0.2334983, y: 1.215766, z: 29.536486}
+      - {x: -0.23268852, y: 1.2154584, z: 29.552479}
+      - {x: -0.17263618, y: 1.2550164, z: 31.330013}
+      - {x: -0.06448387, y: 1.298784, z: 34.29453}
+      - {x: 0.04333946, y: 1.3065599, z: 36.976067}
+      - {x: 0.1362426, y: 1.3021104, z: 39.264572}
+      - {x: 0.18706772, y: 1.2961453, z: 40.52685}
+      - {x: 0.18999863, y: 1.2957239, z: 40.6}
+      - {x: 0.18999863, y: 1.2957239, z: 40.6}
+      - {x: 0.18999863, y: 1.2957239, z: 40.6}
+      - {x: 0.18999863, y: 1.2957239, z: 40.6}
+      - {x: 0.18999863, y: 1.2957239, z: 40.6}
+      - {x: 0.18999863, y: 1.2957239, z: 40.6}
+      - {x: 0.18999863, y: 1.2957239, z: 40.6}
+  - state: 11
+    clip:
+      _clipName: enemy_villager_hurt
+      _frames:
+      - {fileID: 21300000, guid: b6aaeb3e909e441b49096511b57d69c3, type: 3}
+      - {fileID: 21300000, guid: 49a4f9682e7e8467a9acd5feb565d80c, type: 3}
+      - {fileID: 21300000, guid: d53bcccab83694d24aa891a7ca52e318, type: 3}
+      - {fileID: 21300000, guid: 4f285201e71fa44aea8184d6543ba378, type: 3}
+      - {fileID: 21300000, guid: 17c174586a21f442dbdeb92b945bbc27, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.07800003, y: 1.3, z: 34}
+      - {x: -0.20208275, y: 1.2757591, z: 30.605886}
+      - {x: -0.25177154, y: 1.2606807, z: 29.2}
+      - {x: -0.20208275, y: 1.2757591, z: 30.605886}
+      - {x: -0.07800003, y: 1.3, z: 34}
+  - state: 12
+    clip:
+      _clipName: enemy_villager_stunned
+      _frames:
+      - {fileID: 21300000, guid: 61e1b64a4e9f04681af0281e9568af77, type: 3}
+      - {fileID: 21300000, guid: 1b2c2b9a1027a4c889a336a3dcc3507c, type: 3}
+      - {fileID: 21300000, guid: 3f98ce54affe647358d796467271a0b8, type: 3}
+      - {fileID: 21300000, guid: d7599efa43d834dacbf76f92920689f1, type: 3}
+      - {fileID: 21300000, guid: 3ef9f656db5154212b13bea7d31f7c98, type: 3}
+      - {fileID: 21300000, guid: 2fc6c20935ea340809768c1f77c445d3, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 1
+      _anchors:
+      - {x: -0.24463935, y: 1.1672852, z: 27.4}
+      - {x: -0.17301254, y: 1.1878085, z: 28.958845}
+      - {x: -0.17301254, y: 1.1878085, z: 28.958845}
+      - {x: -0.24463935, y: 1.1672852, z: 27.4}
+      - {x: -0.31425554, y: 1.1434968, z: 25.841154}
+      - {x: -0.31425554, y: 1.1434968, z: 25.841154}
+  - state: 13
+    clip:
+      _clipName: enemy_villager_death
+      _frames:
+      - {fileID: 21300000, guid: 4e1780815d79b4d8a90701764da2fe32, type: 3}
+      - {fileID: 21300000, guid: 0f4ccf59ea61949eab22bca5fc72fdca, type: 3}
+      - {fileID: 21300000, guid: 8e68ec4885b3f44759fb629524b62b38, type: 3}
+      - {fileID: 21300000, guid: bf9fd83f9acc44102ac41062c31a2f58, type: 3}
+      - {fileID: 21300000, guid: 10d0c5735a09a40a180ebc711e2a72ca, type: 3}
+      - {fileID: 21300000, guid: c9808af8dcec243f4a54ede667d802c6, type: 3}
+      - {fileID: 21300000, guid: 3a49212ddddea4156b4694a7eb0e1a5b, type: 3}
+      - {fileID: 21300000, guid: c30a28aed96964d10946e0a65b7c6d04, type: 3}
+      - {fileID: 21300000, guid: cea3cff9d47944677924b2fd3a30ec1e, type: 3}
+      - {fileID: 21300000, guid: 6fa7d6b46846243cdb433ca75d6639bd, type: 3}
+      - {fileID: 21300000, guid: d150880fcff9f4008b527f0ac4522832, type: 3}
+      - {fileID: 21300000, guid: eba1a0765182c4752b3d248508655a97, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 0
+      _anchors:
+      - {x: -0.14126061, y: 1.2846678, z: 31.6}
+      - {x: -0.15808098, y: 1.2607207, z: 31.110893}
+      - {x: -0.20199959, y: 1.1928836, z: 29.769796}
+      - {x: -0.26136604, y: 1.0873902, z: 27.76604}
+      - {x: -0.323975, y: 0.9524553, z: 25.288956}
+      - {x: -0.37941894, y: 0.79911715, z: 22.527874}
+      - {x: -0.4210617, y: 0.6403258, z: 19.672127}
+      - {x: -0.44693282, y: 0.48872787, z: 16.911043}
+      - {x: -0.45917758, y: 0.3541936, z: 14.433958}
+      - {x: -0.46238384, y: 0.24218841, z: 12.4302025}
+      - {x: -0.4616059, y: 0.15358435, z: 11.089106}
+      - {x: -0.4607998, y: 0.085841, z: 10.599999}
+  _fallback:
+    _clipName: enemy_villager_idle
+    _frames:
+    - {fileID: 21300000, guid: a0b4f4947d8404747b2b6c8edb53f322, type: 3}
+    - {fileID: 21300000, guid: 7b7a5d2dd0d7345d0a2aeaadcacf8d2e, type: 3}
+    - {fileID: 21300000, guid: e2dcca6b461944b158a597e494a3bb13, type: 3}
+    - {fileID: 21300000, guid: 8619b92bcb2394ae1b9dffcd729b5c48, type: 3}
+    - {fileID: 21300000, guid: 17ad8a8943a2340c6b27afe2ad00cd9a, type: 3}
+    - {fileID: 21300000, guid: c6df8556e8f894658a1e01efc6e4a53d, type: 3}
+    _framesPerSecond: 8
+    _isLooping: 1
+    _anchors:
+    - {x: -0.053818587, y: 1.3034519, z: 34.9}
+    - {x: -0.053818587, y: 1.31038, z: 34.9}
+    - {x: -0.053818587, y: 1.31038, z: 34.9}
+    - {x: -0.053818587, y: 1.3034519, z: 34.9}
+    - {x: -0.053818587, y: 1.2965236, z: 34.9}
+    - {x: -0.053818587, y: 1.2965236, z: 34.9}
+  _carriesShield: 0

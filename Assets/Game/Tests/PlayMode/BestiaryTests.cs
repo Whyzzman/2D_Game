@@ -81,7 +81,8 @@ namespace ForgottenKingdom.Tests
         {
             var catalog = _progress.BestiaryCatalog;
             Assert.That(catalog, Is.Not.Null);
-            Assert.That(catalog.Enemies.Count, Is.EqualTo(11), "Three in the Tomb, four in the Forest, four in the Capital.");
+            Assert.That(catalog.Enemies.Count, Is.EqualTo(14),
+                "Three in the Tomb, four in the Forest, three in the Village, four in the Capital.");
             Assert.That(catalog.Enemies.All(e => e.Enemy != null), Is.True);
             Assert.That(catalog.Bosses.Select(b => b.BossId),
                 Is.EquivalentTo(new[] { TombScene.GuardianId, TombScene.WardenId, "ashen-king" }));

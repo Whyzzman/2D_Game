@@ -1,0 +1,275 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 649169c22105a06499c9bc0695fd8d1d, type: 3}
+  m_Name: ScarecrowAnimations
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.EnemyAnimationSet
+  _clips:
+  - state: 1
+    clip:
+      _clipName: enemy_scarecrow_idle
+      _frames:
+      - {fileID: 21300000, guid: 45e56aa67445e448cb0fc9f2ee2f4761, type: 3}
+      - {fileID: 21300000, guid: e30a1f8d82eb54571a0b70e9aad91c6d, type: 3}
+      _framesPerSecond: 2
+      _isLooping: 1
+      _anchors:
+      - {x: -0.09, y: 1.36, z: 34}
+      - {x: -0.09, y: 1.36, z: 34}
+  - state: 2
+    clip:
+      _clipName: enemy_scarecrow_patrol
+      _frames:
+      - {fileID: 21300000, guid: de617f77b557a4971b0d8d2f218eac47, type: 3}
+      - {fileID: 21300000, guid: ce11179c091e44565995dbe94dc149d4, type: 3}
+      - {fileID: 21300000, guid: 5f9277809ff964fa282b74c0142e35d5, type: 3}
+      - {fileID: 21300000, guid: e7318a0890b1c44d093c7972afb7e920, type: 3}
+      - {fileID: 21300000, guid: 052b1090121c2492aacf865ad777cd52, type: 3}
+      - {fileID: 21300000, guid: f7bc129d6cc5047468d3c744e1085bb2, type: 3}
+      - {fileID: 21300000, guid: 3a69d3aa493534f5b968c85cfd0754a6, type: 3}
+      - {fileID: 21300000, guid: e31beeb4dd58443aba251a3849a3257d, type: 3}
+      _framesPerSecond: 10
+      _isLooping: 1
+      _anchors:
+      - {x: -0.04956589, y: 1.3060936, z: 35.5}
+      - {x: -0.04956589, y: 1.3244783, z: 35.5}
+      - {x: -0.04956589, y: 1.3320935, z: 35.5}
+      - {x: -0.04956589, y: 1.3244783, z: 35.5}
+      - {x: -0.04956589, y: 1.3060936, z: 35.5}
+      - {x: -0.04956589, y: 1.3244783, z: 35.5}
+      - {x: -0.04956589, y: 1.3320935, z: 35.5}
+      - {x: -0.04956589, y: 1.3244783, z: 35.5}
+  - state: 3
+    clip:
+      _clipName: enemy_scarecrow_alert
+      _frames:
+      - {fileID: 21300000, guid: f27aca644817440d99fef6fa30d42eb9, type: 3}
+      - {fileID: 21300000, guid: a920b1f8c537c49f386de5e069eb251f, type: 3}
+      - {fileID: 21300000, guid: f73335684dfa1448e906b2bede192d05, type: 3}
+      - {fileID: 21300000, guid: d68f3a13c97914c158634558c8f1ea25, type: 3}
+      - {fileID: 21300000, guid: 52e44e57ceaa7443baba23555c880964, type: 3}
+      - {fileID: 21300000, guid: 0c265d53e90e142c99ea32b36ab5ad8a, type: 3}
+      - {fileID: 21300000, guid: f9a71bf5d50664e479a49036ce0365c4, type: 3}
+      - {fileID: 21300000, guid: 32476d406aea54429b0ee86fa64d7096, type: 3}
+      _framesPerSecond: 10
+      _isLooping: 0
+      _anchors:
+      - {x: -0.04956589, y: 1.3060936, z: 35.5}
+      - {x: -0.048213884, y: 1.3062353, z: 35.549854}
+      - {x: -0.044725038, y: 1.3065829, z: 35.678425}
+      - {x: -0.039950714, y: 1.307016, z: 35.85423}
+      - {x: -0.03474411, y: 1.307432, z: 36.045773}
+      - {x: -0.029961623, y: 1.3077631, z: 36.221573}
+      - {x: -0.026461868, y: 1.3079741, z: 36.350147}
+      - {x: -0.025104446, y: 1.3080488, z: 36.4}
+  - state: 4
+    clip:
+      _clipName: enemy_scarecrow_chase
+      _frames:
+      - {fileID: 21300000, guid: a98bbcb481eb94b54b67d66a676921d3, type: 3}
+      - {fileID: 21300000, guid: d34c4fe101a1a44838818a3804202ecc, type: 3}
+      - {fileID: 21300000, guid: 31588faa3562748a8845d6fe289c0c04, type: 3}
+      - {fileID: 21300000, guid: 46863506e7b814daebde986f1052983c, type: 3}
+      - {fileID: 21300000, guid: 152f76ee6960846bf8d027b398b11974, type: 3}
+      - {fileID: 21300000, guid: 4bb938996fbd147d890f4f8fd8cf0b75, type: 3}
+      - {fileID: 21300000, guid: c4d9f275fe9614a54951dddc0605b9ae, type: 3}
+      - {fileID: 21300000, guid: 1556cc29b443140068c28a4252fac43b, type: 3}
+      _framesPerSecond: 10
+      _isLooping: 1
+      _anchors:
+      - {x: 0.0076060486, y: 1.30866, z: 37.6}
+      - {x: 0.0076060486, y: 1.3298733, z: 37.6}
+      - {x: 0.0076060486, y: 1.33866, z: 37.6}
+      - {x: 0.0076060486, y: 1.3298733, z: 37.6}
+      - {x: 0.0076060486, y: 1.30866, z: 37.6}
+      - {x: 0.0076060486, y: 1.3298733, z: 37.6}
+      - {x: 0.0076060486, y: 1.33866, z: 37.6}
+      - {x: 0.0076060486, y: 1.3298733, z: 37.6}
+  - state: 0
+    clip:
+      _clipName: enemy_scarecrow_attacklight
+      _frames:
+      - {fileID: 21300000, guid: f3ab0dacf66554524ae8b57846769af1, type: 3}
+      - {fileID: 21300000, guid: 7b18f8eb47050426bbc561711ec33dff, type: 3}
+      - {fileID: 21300000, guid: 847ce07e587994b23a989bfd946a38fc, type: 3}
+      - {fileID: 21300000, guid: 7b75e95f3bdf14da988178d3d71ae0b1, type: 3}
+      - {fileID: 21300000, guid: 71f4712cf4e7a448f9d16cf1e1ebcb7e, type: 3}
+      - {fileID: 21300000, guid: 58c6ad95fd55c44719fab5c128ee2a2a, type: 3}
+      - {fileID: 21300000, guid: 6074c0bc1f05b4fd9841a4b1aa075f80, type: 3}
+      - {fileID: 21300000, guid: e3c126242e7184a34b96427fc1635084, type: 3}
+      - {fileID: 21300000, guid: 800f842c7cb38496d8d87e997490768b, type: 3}
+      - {fileID: 21300000, guid: 4ce82c1d1cd1e4315b0daf7843b2864c, type: 3}
+      - {fileID: 21300000, guid: 717fad54614c4438b8da146d96ddfa5f, type: 3}
+      - {fileID: 21300000, guid: 69f73c1c00033415481011489543cc01, type: 3}
+      - {fileID: 21300000, guid: 929919979002547859547a7c1b33d2f3, type: 3}
+      - {fileID: 21300000, guid: 65885cac623e342ee936604975adb698, type: 3}
+      - {fileID: 21300000, guid: 89706e73625e14417a3d42bd028b09e8, type: 3}
+      - {fileID: 21300000, guid: 56e6c2683c28747598e5115156135534, type: 3}
+      - {fileID: 21300000, guid: eec67364d4ce64eb9822a8b5d831471d, type: 3}
+      - {fileID: 21300000, guid: 7752a16cdb2634666bd4788722d97d62, type: 3}
+      - {fileID: 21300000, guid: ec120ca76a12e45f0b099c319dc398bc, type: 3}
+      - {fileID: 21300000, guid: 88eea3883aa6d4bcfabc8c2aeb71bfde, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.20851089, y: 1.2773832, z: 31}
+      - {x: -0.21015754, y: 1.2745866, z: 30.935238}
+      - {x: -0.21448563, y: 1.2671864, z: 30.764566}
+      - {x: -0.2205719, y: 1.256657, z: 30.523407}
+      - {x: -0.2274993, y: 1.2444919, z: 30.24718}
+      - {x: -0.2343695, y: 1.2322316, z: 29.971308}
+      - {x: -0.24030815, y: 1.2214719, z: 29.73121}
+      - {x: -0.24446243, y: 1.2138531, z: 29.562311}
+      - {x: -0.24596809, y: 1.211052, z: 29.500696}
+      - {x: -0.1993596, y: 1.2477221, z: 30.926132}
+      - {x: -0.10491081, y: 1.2958204, z: 33.573013}
+      - {x: -0.015473251, y: 1.3068454, z: 35.78256}
+      - {x: 0.056961976, y: 1.3086822, z: 37.54385}
+      - {x: 0.08395744, y: 1.3081089, z: 38.2}
+      - {x: 0.08395744, y: 1.3081089, z: 38.2}
+      - {x: 0.08395744, y: 1.3081089, z: 38.2}
+      - {x: 0.08395744, y: 1.3081089, z: 38.2}
+      - {x: 0.08395744, y: 1.3081089, z: 38.2}
+      - {x: 0.08395744, y: 1.3081089, z: 38.2}
+      - {x: 0.08395744, y: 1.3081089, z: 38.2}
+  - state: 9
+    clip:
+      _clipName: enemy_scarecrow_attackheavy
+      _frames:
+      - {fileID: 21300000, guid: c42408618553f4dd8be66013f8d50265, type: 3}
+      - {fileID: 21300000, guid: 2ce3fae35c87947d0ad8dd156dd8e4da, type: 3}
+      - {fileID: 21300000, guid: 60d2fb71c4f3f42f0b53fbc5dd46a0f8, type: 3}
+      - {fileID: 21300000, guid: e6af66d915bec43fd9250fee6d48176d, type: 3}
+      - {fileID: 21300000, guid: 6226635b4679d4bd0b996ff2212fc595, type: 3}
+      - {fileID: 21300000, guid: 2a2e349bbea4b4b8197223142d42d5bb, type: 3}
+      - {fileID: 21300000, guid: 99936bd1b98a24498b6157c586a997da, type: 3}
+      - {fileID: 21300000, guid: 9b02abeba36d34955a1e8b0822974583, type: 3}
+      - {fileID: 21300000, guid: 44df1ab7dccec4143abdb66e3eea30b9, type: 3}
+      - {fileID: 21300000, guid: 99f7a9437db0e466282cf1b04e68408c, type: 3}
+      - {fileID: 21300000, guid: f5e984b6c8b5f430da02560df3781b80, type: 3}
+      - {fileID: 21300000, guid: 63184a90b756c4f70bc7fc52cd9c93c9, type: 3}
+      - {fileID: 21300000, guid: 88c74721cdd1b42d1abc92c083db5a9a, type: 3}
+      - {fileID: 21300000, guid: dcee8cf76aebd498a9c309ad4d9b30a1, type: 3}
+      - {fileID: 21300000, guid: 54b25524556054f719572ec87c6e24e0, type: 3}
+      - {fileID: 21300000, guid: 4b66207bcb8694c4cb1826e4d3eff4e9, type: 3}
+      - {fileID: 21300000, guid: 6db706e76677348e4bfbbe2f24c79dae, type: 3}
+      - {fileID: 21300000, guid: 647a2345244964f2a8381f3ce9d32b56, type: 3}
+      - {fileID: 21300000, guid: 06832be8eb7c54ea39c35b8ecb8843c0, type: 3}
+      - {fileID: 21300000, guid: 678b13de6791a4c73adaca0d42cc9670, type: 3}
+      - {fileID: 21300000, guid: 3897643259f3d4ba29ffa095cd8b2736, type: 3}
+      - {fileID: 21300000, guid: 3c9a8c77b502c4905bf989eabfc90722, type: 3}
+      - {fileID: 21300000, guid: 856bb7b9eee31432a8c089a3910d9026, type: 3}
+      - {fileID: 21300000, guid: a2d00abc380c842aa879d735df6bf63e, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.23083092, y: 1.2635173, z: 29.71}
+      - {x: -0.23293236, y: 1.2596682, z: 29.624615}
+      - {x: -0.23831429, y: 1.24972, z: 29.404985}
+      - {x: -0.24558823, y: 1.2360626, z: 29.105906}
+      - {x: -0.2533883, y: 1.2211375, z: 28.782171}
+      - {x: -0.26039383, y: 1.2074753, z: 28.488571}
+      - {x: -0.2653322, y: 1.1976925, z: 28.279902}
+      - {x: -0.26671478, y: 1.1947323, z: 28.220018}
+      - {x: -0.23985657, y: 1.2250181, z: 29.212051}
+      - {x: -0.18546616, y: 1.2711066, z: 31.0959}
+      - {x: -0.12802605, y: 1.2933236, z: 32.903008}
+      - {x: -0.06571762, y: 1.3035822, z: 34.773285}
+      - {x: 0.0005644989, y: 1.3084509, z: 36.736717}
+      - {x: 0.06390518, y: 1.3074106, z: 38.60699}
+      - {x: 0.11747848, y: 1.3021725, z: 40.197796}
+      - {x: 0.15498382, y: 1.2960762, z: 41.32282}
+      - {x: 0.17061897, y: 1.2929286, z: 41.795746}
+      - {x: 0.1707592, y: 1.2928987, z: 41.8}
+      - {x: 0.1707592, y: 1.2928987, z: 41.8}
+      - {x: 0.1707592, y: 1.2928987, z: 41.8}
+      - {x: 0.1707592, y: 1.2928987, z: 41.8}
+      - {x: 0.1707592, y: 1.2928987, z: 41.8}
+      - {x: 0.1707592, y: 1.2928987, z: 41.8}
+      - {x: 0.1707592, y: 1.2928987, z: 41.8}
+  - state: 11
+    clip:
+      _clipName: enemy_scarecrow_hurt
+      _frames:
+      - {fileID: 21300000, guid: 9d22dae720c6b4e659a5b0ff1a522a3e, type: 3}
+      - {fileID: 21300000, guid: 2b6759984362f40558440720df5936e9, type: 3}
+      - {fileID: 21300000, guid: da612fb0a8762485d84fc0df60d4c7bf, type: 3}
+      - {fileID: 21300000, guid: 9e5403695d43b4d369e6e8a2d2d31629, type: 3}
+      - {fileID: 21300000, guid: 33b206b172a2a4d3bbee36c0cadfd615, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.09, y: 1.3, z: 34}
+      - {x: -0.21384956, y: 1.273405, z: 30.605886}
+      - {x: -0.26330674, y: 1.2573731, z: 29.2}
+      - {x: -0.21384956, y: 1.273405, z: 30.605886}
+      - {x: -0.09, y: 1.3, z: 34}
+  - state: 12
+    clip:
+      _clipName: enemy_scarecrow_stunned
+      _frames:
+      - {fileID: 21300000, guid: 86326b614b48a435eb898c740916132e, type: 3}
+      - {fileID: 21300000, guid: 4e6c291ecc5844e74aa5d57ff9e2373a, type: 3}
+      - {fileID: 21300000, guid: 6759a7e898d214b4f9a9a8eaf641d5f3, type: 3}
+      - {fileID: 21300000, guid: 05fc6160628354be58640a1829c30ce1, type: 3}
+      - {fileID: 21300000, guid: e5eb1b2200c194ed791d98f17dc8e39c, type: 3}
+      - {fileID: 21300000, guid: efad7c57be6304c19b79ddd2848d67f6, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 1
+      _anchors:
+      - {x: -0.25576562, y: 1.16279, z: 27.4}
+      - {x: -0.18450013, y: 1.1843394, z: 28.958845}
+      - {x: -0.18450013, y: 1.1843394, z: 28.958845}
+      - {x: -0.25576562, y: 1.16279, z: 27.4}
+      - {x: -0.32492888, y: 1.1380123, z: 25.841154}
+      - {x: -0.32492888, y: 1.1380123, z: 25.841154}
+  - state: 13
+    clip:
+      _clipName: enemy_scarecrow_death
+      _frames:
+      - {fileID: 21300000, guid: 6d466b382726942668a48194a1182031, type: 3}
+      - {fileID: 21300000, guid: b90ea45fefba24967b22be153708836d, type: 3}
+      - {fileID: 21300000, guid: 12c0991c0fbc644efbb3c67d9b5c1924, type: 3}
+      - {fileID: 21300000, guid: e187fb28915c040ed9a4720d8cd8c6e3, type: 3}
+      - {fileID: 21300000, guid: 785260d1eaefc491c9a3fbbe7e4604a7, type: 3}
+      - {fileID: 21300000, guid: 10750208acfc848bda2343d43d7c53c8, type: 3}
+      - {fileID: 21300000, guid: 4fa0b6799fdd04ca9a0ae1ad1aeaf652, type: 3}
+      - {fileID: 21300000, guid: 7f3e750e230094946b9f8ed65e5a7332, type: 3}
+      - {fileID: 21300000, guid: c21962108015d4a3da8526936f239846, type: 3}
+      - {fileID: 21300000, guid: b28db98d60d7d42beb2c2981e9fa2c39, type: 3}
+      - {fileID: 21300000, guid: 29a8100499f9643b4af03b956a117370, type: 3}
+      - {fileID: 21300000, guid: 98a205704ff1648c4b9af1cbdd46f641, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 0
+      _anchors:
+      - {x: -0.15314376, y: 1.2829977, z: 31.6}
+      - {x: -0.1699118, y: 1.2587132, z: 31.110893}
+      - {x: -0.21363801, y: 1.1899601, z: 29.769796}
+      - {x: -0.27258545, y: 1.0831329, z: 27.76604}
+      - {x: -0.3344667, y: 0.94663084, z: 25.288956}
+      - {x: -0.38884398, y: 0.79168963, z: 22.527874}
+      - {x: -0.42912865, y: 0.63144183, z: 19.672127}
+      - {x: -0.45347497, y: 0.47866806, z: 16.911043}
+      - {x: -0.4642072, y: 0.3432985, z: 14.433958}
+      - {x: -0.4661121, y: 0.23078229, z: 12.4302025}
+      - {x: -0.46443382, y: 0.14192232, z: 11.089106}
+      - {x: -0.46329474, y: 0.07410323, z: 10.599999}
+  _fallback:
+    _clipName: enemy_scarecrow_idle
+    _frames:
+    - {fileID: 21300000, guid: 45e56aa67445e448cb0fc9f2ee2f4761, type: 3}
+    - {fileID: 21300000, guid: e30a1f8d82eb54571a0b70e9aad91c6d, type: 3}
+    _framesPerSecond: 2
+    _isLooping: 1
+    _anchors:
+    - {x: -0.09, y: 1.36, z: 34}
+    - {x: -0.09, y: 1.36, z: 34}
+  _carriesShield: 0

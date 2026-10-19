@@ -27,6 +27,12 @@ MonoBehaviour:
     ZoneId: zone_withered_forest
   - Enemy: {fileID: 11400000, guid: 821f059b28153c648850f0c468e98da5, type: 2}
     ZoneId: zone_withered_forest
+  - Enemy: {fileID: 11400000, guid: a7949ab73bd4949f88cd11661ae213ad, type: 2}
+    ZoneId: zone_fallen_village
+  - Enemy: {fileID: 11400000, guid: 93536d8676688440dbb8544d4852b729, type: 2}
+    ZoneId: zone_fallen_village
+  - Enemy: {fileID: 11400000, guid: 6aaa915da95ef4e1dab0cf50055eb12c, type: 2}
+    ZoneId: zone_fallen_village
   - Enemy: {fileID: 11400000, guid: d0ab377dd8e154d829a51c294a1037f0, type: 2}
     ZoneId: zone_ashen_capital
   - Enemy: {fileID: 11400000, guid: b2f6fa4bf08004a3ebed9c8b7a596996, type: 2}

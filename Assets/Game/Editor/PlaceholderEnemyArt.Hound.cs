@@ -48,9 +48,9 @@ namespace ForgottenKingdom.EditorTools
             };
         }
 
-        private static byte[] RenderHound(EnemyAnimationState state, float t)
+        private static byte[] RenderHound(EnemyAnimationState state, float t, Build look = null)
         {
-            var build = ForestBuildFor(Actor.Hound);
+            var build = look ?? ForestBuildFor(Actor.Hound);
             var canvas = new Canvas(build.Width, build.Height);
             DrawHound(canvas, build, HoundTelegraphed(state, t, HoundPoseFor(state, t)));
             canvas.Silhouette(new Color32(6, 5, 5, 225), EnemyRim, 0.42f);

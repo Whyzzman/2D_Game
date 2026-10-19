@@ -1,0 +1,269 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 649169c22105a06499c9bc0695fd8d1d, type: 3}
+  m_Name: WatchdogAnimations
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.EnemyAnimationSet
+  _clips:
+  - state: 1
+    clip:
+      _clipName: enemy_watchdog_idle
+      _frames:
+      - {fileID: 21300000, guid: 40d7d01eea6724324a6eb4e239b7092c, type: 3}
+      - {fileID: 21300000, guid: 78d72a720c4a647148ff0d808ffe6375, type: 3}
+      - {fileID: 21300000, guid: 8b1d5c6bb4be244b5bffe1a584230000, type: 3}
+      - {fileID: 21300000, guid: 92652d9736d8a4496803cca27b8c1fad, type: 3}
+      - {fileID: 21300000, guid: 057e992278adf454d82d6c192321b5b9, type: 3}
+      - {fileID: 21300000, guid: 51d6ba5e406cc4ad5a556f2bb0e1c82b, type: 3}
+      _framesPerSecond: 8
+      _isLooping: 1
+      _anchors:
+      - {x: -0.4226183, y: 0.40256822, z: 68.00001}
+      - {x: -0.42607582, y: 0.4232725, z: 74.92821}
+      - {x: -0.42607582, y: 0.4232725, z: 74.92821}
+      - {x: -0.4226183, y: 0.40256822, z: 68.00001}
+      - {x: -0.41794214, y: 0.3823563, z: 61.071796}
+      - {x: -0.41794214, y: 0.3823563, z: 61.071796}
+  - state: 2
+    clip:
+      _clipName: enemy_watchdog_patrol
+      _frames:
+      - {fileID: 21300000, guid: 19ba4205377da449bb027b1372a65185, type: 3}
+      - {fileID: 21300000, guid: d97abb266d98648d7b3a4aaaca5601b5, type: 3}
+      - {fileID: 21300000, guid: 18c851cff0a60435cbaacc61afeaf8d4, type: 3}
+      - {fileID: 21300000, guid: 18155b15222d74badaf6263ed4e722db, type: 3}
+      - {fileID: 21300000, guid: 8795cf0d35a6e462d818ee39f8eb30aa, type: 3}
+      - {fileID: 21300000, guid: 2b1f9100f31374745b371c2bd64bdd5c, type: 3}
+      - {fileID: 21300000, guid: e9d4c579359c740318258bc39b0af571, type: 3}
+      - {fileID: 21300000, guid: 83a0561b973ca4e1a9f65eaae2d1d7f1, type: 3}
+      _framesPerSecond: 14
+      _isLooping: 1
+      _anchors:
+      - {x: -0.4200632, y: 0.39682943, z: 64}
+      - {x: -0.4243047, y: 0.4212294, z: 71.07107}
+      - {x: -0.42568532, y: 0.43147546, z: 74}
+      - {x: -0.4243047, y: 0.4212294, z: 71.07107}
+      - {x: -0.4200632, y: 0.39682943, z: 64}
+      - {x: -0.41459125, y: 0.40131387, z: 56.928932}
+      - {x: -0.4119833, y: 0.40338215, z: 54.000004}
+      - {x: -0.41459125, y: 0.4013138, z: 56.928932}
+  - state: 3
+    clip:
+      _clipName: enemy_watchdog_alert
+      _frames:
+      - {fileID: 21300000, guid: a89b13573623842889fb6639101744d4, type: 3}
+      - {fileID: 21300000, guid: 7e24b5f2fa7224496beb8c821ac83645, type: 3}
+      - {fileID: 21300000, guid: 93f69f9a0947449748357250a88c7a2a, type: 3}
+      - {fileID: 21300000, guid: f626c62b39b924eaebfa3e0afbf7e7c9, type: 3}
+      - {fileID: 21300000, guid: cbbb37a2f495f46c2ab2db0d21ca05a2, type: 3}
+      _framesPerSecond: 14
+      _isLooping: 0
+      _anchors:
+      - {x: -0.42139083, y: 0.3996765, z: 66}
+      - {x: -0.42681503, y: 0.416751, z: 75.6875}
+      - {x: -0.42932916, y: 0.45596826, z: 97}
+      - {x: -0.41884214, y: 0.4936853, z: 118.3125}
+      - {x: -0.41009274, y: 0.5091267, z: 128}
+  - state: 4
+    clip:
+      _clipName: enemy_watchdog_chase
+      _frames:
+      - {fileID: 21300000, guid: 5d05b2641c60444d5bd3b9be9ba1ce67, type: 3}
+      - {fileID: 21300000, guid: 4959b616ce4014ea0859d5ab1d723181, type: 3}
+      - {fileID: 21300000, guid: 667589ad898dd413b8f11b48e330b6ce, type: 3}
+      - {fileID: 21300000, guid: 9b0825227ba364cffb760bfe5b62e612, type: 3}
+      - {fileID: 21300000, guid: 46d9b52a799ad4c749dc34990c71bfe0, type: 3}
+      - {fileID: 21300000, guid: ad13eb405911a4eb5bf4b60648b9e269, type: 3}
+      - {fileID: 21300000, guid: 72d325b91fb9c4ed090631e249fb33fc, type: 3}
+      - {fileID: 21300000, guid: bab9ea0f43b794e2db0343ce7bf6e31f, type: 3}
+      _framesPerSecond: 18
+      _isLooping: 1
+      _anchors:
+      - {x: -0.40708145, y: 0.39160946, z: 50}
+      - {x: -0.41430455, y: 0.46401024, z: 55.656853}
+      - {x: -0.41611725, y: 0.49417314, z: 58}
+      - {x: -0.41430455, y: 0.46401024, z: 55.656853}
+      - {x: -0.40708145, y: 0.39160946, z: 50}
+      - {x: -0.39589348, y: 0.32011825, z: 44.34315}
+      - {x: -0.39012226, y: 0.29086348, z: 42}
+      - {x: -0.39589348, y: 0.32011825, z: 44.34315}
+  - state: 0
+    clip:
+      _clipName: enemy_watchdog_attacklight
+      _frames:
+      - {fileID: 21300000, guid: 868ad20deafdf4579a957c4d69ecf0aa, type: 3}
+      - {fileID: 21300000, guid: 4e80167a166394c5e9a6882eae55084a, type: 3}
+      - {fileID: 21300000, guid: d5cd9245d8cd54ca5973731744185bd6, type: 3}
+      - {fileID: 21300000, guid: 8479cfa8742ca4dcbb566ffa4f96e422, type: 3}
+      - {fileID: 21300000, guid: 6cd9f08dbb36346138b365fd0d52c810, type: 3}
+      - {fileID: 21300000, guid: 5327a7659e3c143d5bb68267ebec8e1c, type: 3}
+      - {fileID: 21300000, guid: 0a7871d92eb31406c9ce535f7fdd5ff1, type: 3}
+      - {fileID: 21300000, guid: 528482be5f19f4ea2a43ddf372349ba2, type: 3}
+      - {fileID: 21300000, guid: d4844abd45b8c48388a22d2d1eb24663, type: 3}
+      - {fileID: 21300000, guid: b3e80f45b94ad431291a6fe86598a335, type: 3}
+      - {fileID: 21300000, guid: 8404cd754a3894e24a74e08d482b6f7a, type: 3}
+      - {fileID: 21300000, guid: f0a31eae550ca433baf7770d2f8ab4ad, type: 3}
+      - {fileID: 21300000, guid: 034adebd321334db38dcb4ab5243677e, type: 3}
+      - {fileID: 21300000, guid: 4a3d6169f62794cf1bb90df286d7591f, type: 3}
+      - {fileID: 21300000, guid: 64d4e3f6c89824d8aab94235bda4d3ef, type: 3}
+      - {fileID: 21300000, guid: e2a0baf72aebc4fd8bc51eb90038c994, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.44940698, y: 0.3701778, z: 70}
+      - {x: -0.44876793, y: 0.36323383, z: 69.598946}
+      - {x: -0.44715178, y: 0.34659737, z: 68.637024}
+      - {x: -0.44504467, y: 0.3265566, z: 67.47608}
+      - {x: -0.44309682, y: 0.30936217, z: 66.47798}
+      - {x: -0.44212905, y: 0.30121854, z: 66.004555}
+      - {x: -0.4366451, y: 0.34584877, z: 66.377785}
+      - {x: -0.41231206, y: 0.4071826, z: 64.23072}
+      - {x: -0.3804018, y: 0.43501595, z: 59.962273}
+      - {x: -0.36446175, y: 0.44784695, z: 58}
+      - {x: -0.36570793, y: 0.44784695, z: 58}
+      - {x: -0.37087554, y: 0.44784695, z: 58}
+      - {x: -0.37827864, y: 0.44784695, z: 58}
+      - {x: -0.38597327, y: 0.44784695, z: 58}
+      - {x: -0.3920157, y: 0.44784695, z: 58}
+      - {x: -0.39446175, y: 0.44784695, z: 58}
+  - state: 9
+    clip:
+      _clipName: enemy_watchdog_attackheavy
+      _frames:
+      - {fileID: 21300000, guid: a2d6ff6d0df754863bf3bf72bd66f3bb, type: 3}
+      - {fileID: 21300000, guid: 16bf5d51ae88d42f0b8933ca13f09f80, type: 3}
+      - {fileID: 21300000, guid: 1932b4ebb89e24a419e47e626809c3c6, type: 3}
+      - {fileID: 21300000, guid: 9cc76531d3dce4618a14e5651c3ade8d, type: 3}
+      - {fileID: 21300000, guid: ebe073cd59a9c4b5a875febe1f17ffd1, type: 3}
+      - {fileID: 21300000, guid: d3d3661d92fbc45858705463d024b9ff, type: 3}
+      - {fileID: 21300000, guid: 98a5e3179ec734ef0b68e42e7c02e1e0, type: 3}
+      - {fileID: 21300000, guid: 75d0c4e37dd814efe960277b460374b0, type: 3}
+      - {fileID: 21300000, guid: 6ba72d47a51b64ae892935718d33d156, type: 3}
+      - {fileID: 21300000, guid: 9100f9072036245e8beecfbe11318ede, type: 3}
+      - {fileID: 21300000, guid: 619ada18a663248cc9845f64b50e6c0e, type: 3}
+      - {fileID: 21300000, guid: 602ed6f1ac94e46d79c8303debfec586, type: 3}
+      - {fileID: 21300000, guid: f52b20dfd75ae44a6a40e3df03f25e1a, type: 3}
+      - {fileID: 21300000, guid: 345a10d7920524066bb5f1496a872d3f, type: 3}
+      - {fileID: 21300000, guid: f9c9640f37feb48f9ac49680fcce1bea, type: 3}
+      - {fileID: 21300000, guid: ba072104c578f47f9a8cf56a204e8ab9, type: 3}
+      - {fileID: 21300000, guid: e52da57dfd875419395fab819f36eccd, type: 3}
+      - {fileID: 21300000, guid: af90f10c51e334a859b3e0674efeb136, type: 3}
+      - {fileID: 21300000, guid: 9309a0f8380ad4401bd9f423de96d59e, type: 3}
+      - {fileID: 21300000, guid: c21627e8bef164b318e520ec45941116, type: 3}
+      - {fileID: 21300000, guid: b95d3733bef0d482dafbfbc774d7feef, type: 3}
+      - {fileID: 21300000, guid: 037413bccfec84aa9a4b755a554fa4f9, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.42139083, y: 0.3996765, z: 66}
+      - {x: -0.42161775, y: 0.38864738, z: 67.052315}
+      - {x: -0.42164665, y: 0.35980487, z: 69.822464}
+      - {x: -0.42027825, y: 0.31965226, z: 73.73022}
+      - {x: -0.41667804, y: 0.2745626, z: 78.19538}
+      - {x: -0.4109101, y: 0.23047502, z: 82.63773}
+      - {x: -0.4041021, y: 0.19272429, z: 86.477066}
+      - {x: -0.3982447, y: 0.16606943, z: 89.13316}
+      - {x: -0.3956585, y: 0.15497813, z: 90.026344}
+      - {x: -0.3946694, y: 0.19087669, z: 87.2013}
+      - {x: -0.37572518, y: 0.35572326, z: 74.21737}
+      - {x: -0.3294857, y: 0.52154845, z: 59.213657}
+      - {x: -0.30950263, y: 0.56978613, z: 54.000004}
+      - {x: -0.30950263, y: 0.56978613, z: 54.000004}
+      - {x: -0.30950263, y: 0.56978613, z: 54.000004}
+      - {x: -0.30950263, y: 0.56978613, z: 54.000004}
+      - {x: -0.3095198, y: 0.5673027, z: 54.200977}
+      - {x: -0.30948058, y: 0.5480057, z: 55.762676}
+      - {x: -0.3087857, y: 0.5171253, z: 58.260662}
+      - {x: -0.30716315, y: 0.48373005, z: 60.9577}
+      - {x: -0.30521423, y: 0.4569304, z: 63.116558}
+      - {x: -0.30425072, y: 0.44594038, z: 64}
+  - state: 11
+    clip:
+      _clipName: enemy_watchdog_hurt
+      _frames:
+      - {fileID: 21300000, guid: ee300fd5d4a0b42a99379d8de3bf760f, type: 3}
+      - {fileID: 21300000, guid: a96be8533f9a247b0b1b9855abc54c9a, type: 3}
+      - {fileID: 21300000, guid: 64f7de2e097a44210996f99116bab880, type: 3}
+      - {fileID: 21300000, guid: af5b3e5482d234fca852b4f8a11b7845, type: 3}
+      - {fileID: 21300000, guid: edd745db57d0e45ddabd48107de11e20, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.45546165, y: 0.320655, z: 80}
+      - {x: -0.44921166, y: 0.320655, z: 80}
+      - {x: -0.4354616, y: 0.320655, z: 80}
+      - {x: -0.42171162, y: 0.320655, z: 80}
+      - {x: -0.41546163, y: 0.320655, z: 80}
+  - state: 12
+    clip:
+      _clipName: enemy_watchdog_stunned
+      _frames:
+      - {fileID: 21300000, guid: 06032adbb200b4e84937b5d0a088e86f, type: 3}
+      - {fileID: 21300000, guid: f375bdf51af2141bdad2025a20676ca8, type: 3}
+      - {fileID: 21300000, guid: 430c18a248347426e82e0dc02bbcc09b, type: 3}
+      - {fileID: 21300000, guid: 0d0122683981c4a0784a1d97cc38e004, type: 3}
+      - {fileID: 21300000, guid: 266d00709d0464c78bf64d7f316affaa, type: 3}
+      - {fileID: 21300000, guid: b923a390039b247ffa9000b8c6f91ffa, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 1
+      _anchors:
+      - {x: -0.42929992, y: 0.37872657, z: 84}
+      - {x: -0.42980087, y: 0.40470514, z: 87.4641}
+      - {x: -0.42980087, y: 0.40470514, z: 87.4641}
+      - {x: -0.42929992, y: 0.37872657, z: 84}
+      - {x: -0.42723003, y: 0.35282585, z: 80.535904}
+      - {x: -0.42723003, y: 0.35282585, z: 80.535904}
+  - state: 13
+    clip:
+      _clipName: enemy_watchdog_death
+      _frames:
+      - {fileID: 21300000, guid: fef2b8025bca040958d67991cb7f2583, type: 3}
+      - {fileID: 21300000, guid: eb3b12b7f59a4463db6dd7df792e6fc1, type: 3}
+      - {fileID: 21300000, guid: 3d20f0392275f4e0dbc5790cd96fca06, type: 3}
+      - {fileID: 21300000, guid: ac21d8288badc42fba2474d06790f4d3, type: 3}
+      - {fileID: 21300000, guid: d6aeb299055a743bbb77e69249f25167, type: 3}
+      - {fileID: 21300000, guid: 5aaa0e0c1e3ff400e81a719578e722b2, type: 3}
+      - {fileID: 21300000, guid: 8d3666150902e453180a755a5b4febb2, type: 3}
+      - {fileID: 21300000, guid: 2d0beea3b706a425c8802555b32fe6d3, type: 3}
+      - {fileID: 21300000, guid: dc93e461c86a54cb99c7ac3a11295e89, type: 3}
+      - {fileID: 21300000, guid: fcdc103b6822b4f3db6976e5d0e33acb, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 0
+      _anchors:
+      - {x: -0.42139083, y: 0.3996765, z: 66}
+      - {x: -0.4225209, y: 0.39507258, z: 67.44033}
+      - {x: -0.42509443, y: 0.38330775, z: 71.300415}
+      - {x: -0.42763084, y: 0.3676984, z: 76.888885}
+      - {x: -0.4287876, y: 0.35124305, z: 83.514404}
+      - {x: -0.42781535, y: 0.3361451, z: 90.485596}
+      - {x: -0.42480668, y: 0.32371408, z: 97.111115}
+      - {x: -0.42069978, y: 0.31454727, z: 102.69959}
+      - {x: -0.4170346, y: 0.30886036, z: 106.55968}
+      - {x: -0.4154956, y: 0.30686498, z: 108.00001}
+  _fallback:
+    _clipName: enemy_watchdog_idle
+    _frames:
+    - {fileID: 21300000, guid: 40d7d01eea6724324a6eb4e239b7092c, type: 3}
+    - {fileID: 21300000, guid: 78d72a720c4a647148ff0d808ffe6375, type: 3}
+    - {fileID: 21300000, guid: 8b1d5c6bb4be244b5bffe1a584230000, type: 3}
+    - {fileID: 21300000, guid: 92652d9736d8a4496803cca27b8c1fad, type: 3}
+    - {fileID: 21300000, guid: 057e992278adf454d82d6c192321b5b9, type: 3}
+    - {fileID: 21300000, guid: 51d6ba5e406cc4ad5a556f2bb0e1c82b, type: 3}
+    _framesPerSecond: 8
+    _isLooping: 1
+    _anchors:
+    - {x: -0.4226183, y: 0.40256822, z: 68.00001}
+    - {x: -0.42607582, y: 0.4232725, z: 74.92821}
+    - {x: -0.42607582, y: 0.4232725, z: 74.92821}
+    - {x: -0.4226183, y: 0.40256822, z: 68.00001}
+    - {x: -0.41794214, y: 0.3823563, z: 61.071796}
+    - {x: -0.41794214, y: 0.3823563, z: 61.071796}
+  _carriesShield: 0

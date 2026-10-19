@@ -19,7 +19,8 @@ namespace ForgottenKingdom.Tests
         private static readonly string[] EnemyIdles =
         {
             "Enemies/ZombieSoldier", "Enemies/ShieldGuard", "Enemies/CorruptedHound",
-            "Enemies/ForestArcher", "Enemies/RootShaman", "Enemies/RoyalSpearman", "Enemies/BoneArcher"
+            "Enemies/ForestArcher", "Enemies/RootShaman", "Enemies/RoyalSpearman", "Enemies/BoneArcher",
+            "Enemies/PossessedVillager", "Enemies/Scarecrow", "Enemies/Watchdog"
         };
 
         [Test]

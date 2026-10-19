@@ -166,6 +166,8 @@ namespace ForgottenKingdom.EditorTools
                 ("ZombieSoldier", TombZoneId), ("ShieldGuard", TombZoneId), ("Tomb/BoneArcher", TombZoneId),
                 ("Forest/CorruptedHound", ForestZoneId), ("Forest/ForestArcher", ForestZoneId),
                 ("Forest/RootShaman", ForestZoneId), ("Forest/RoyalSpearman", ForestZoneId),
+                ("Village/PossessedVillager", VillageZoneId), ("Village/Scarecrow", VillageZoneId),
+                ("Village/Watchdog", VillageZoneId),
                 ("Capital/AshRaven", CapitalZoneId), ("Capital/StoneGargoyle", CapitalZoneId),
                 ("Capital/PalacePriest", CapitalZoneId), ("Capital/RoyalCrossbowman", CapitalZoneId)
             };

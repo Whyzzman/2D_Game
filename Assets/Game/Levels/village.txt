@@ -12,7 +12,7 @@ room room_village_hill «Схил до села» at 18 0
 flags exit=S
 key s start
 key i spot stone-village
-key z enemy ZombieSoldier
+key z enemy PossessedVillager
 grid
 ################################################
 ################################################
@@ -85,8 +85,8 @@ end
 room room_village_lower_street «Нижня вулиця» at 66 20
 key o ring
 key q spot feather-hint
-key h enemy CorruptedHound
-key z enemy ZombieSoldier
+key h enemy Watchdog
+key z enemy PossessedVillager
 key g gold 45 village-street-purse
 grid
 ####............######################################################
@@ -161,8 +161,8 @@ grid
 end
 
 room room_village_market «Торговий ряд» at 66 42
-key z enemy ZombieSoldier
-key r enemy AshRaven
+key z enemy PossessedVillager
+key r enemy Scarecrow
 key c item iron_scrap village-market-scrap
 key k spot stall
 grid
@@ -215,7 +215,7 @@ end
 
 room room_village_cellar «Погріб» at 158 18
 flags optional
-key h enemy CorruptedHound
+key h enemy Watchdog
 key g gold 90 village-cellar-purse
 key b item beast_fang village-cellar-fang
 grid
@@ -249,7 +249,7 @@ room room_village_bridge «Міст над ровом» at 260 18
 flags optional
 key o ring
 key q spot church-hint
-key z enemy ZombieSoldier
+key z enemy PossessedVillager
 grid
 ##############################............##################################
 ##############################====........##################################
@@ -433,8 +433,8 @@ end
 room room_village_square «Площа з колодязем» at 136 64
 key a altar village-well «Вівтар біля колодязя»
 key e spot well
-key z enemy ZombieSoldier
-key y enemy ZombieSoldier
+key z enemy PossessedVillager
+key y enemy PossessedVillager
 key r enemy AshRaven
 grid
 ####............##################################################################################################
@@ -480,8 +480,8 @@ grid
 end
 
 room room_village_stilt_houses «Хати на палях» at 250 64
-key h enemy CorruptedHound
-key g enemy StoneGargoyle
+key h enemy Watchdog
+key g enemy Scarecrow
 key u gold 80 village-stilt-purse
 grid
 ######################################################################################
@@ -528,7 +528,7 @@ end
 
 room room_village_belfry_base «Підніжжя дзвіниці» at 336 64
 key a altar village-belfry «Вівтар під дзвіницею»
-key z enemy ZombieSoldier
+key z enemy PossessedVillager
 grid
 ####............################################################
 ####............################################################
@@ -556,7 +556,7 @@ end
 
 room room_village_east_lane «Східний провулок» at 336 50
 flags optional
-key h enemy CorruptedHound
+key h enemy Watchdog
 key g gold 110 village-lane-purse
 grid
 ############################################............##############################
@@ -738,7 +738,7 @@ end
 
 room room_village_upper_houses «Верхні хати» at 66 104
 flags optional
-key z enemy ZombieSoldier
+key z enemy PossessedVillager
 key r enemy AshRaven
 key g item corrupted_hide village-upper-hide
 grid
@@ -797,7 +797,7 @@ end
 
 room room_village_upper_street «Верхня вулиця» at 170 104
 flags optional
-key h enemy CorruptedHound
+key h enemy Watchdog
 key g gold 150 village-upper-purse
 key d spot upper-hint
 grid

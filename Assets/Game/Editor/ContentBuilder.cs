@@ -146,6 +146,8 @@ namespace ForgottenKingdom.EditorTools
             BuildCapitalContent();
             // The Tomb's bone archer (item 3 of the 15 zones); its arrow is the forest's.
             BuildTombEnemies();
+            // The Fallen Village's own three (item 5b); the scarecrow lets out the capital's raven.
+            BuildVillageEnemies();
             // Their king (stage D); the throne hall places him by prefab name too.
             BuildCapitalBoss();
             // The Fallen Village's bell-keeper (item 5 of the 15 zones); the village places him by name.
