@@ -72,6 +72,29 @@
       stone: ["room_village_church", "room_village_crypt_cache", "room_village_belfry_base", "room_village_bell_shaft",
         "room_village_cellar", "room_village_well_cache", "room_village_bridge", "room_village_stair"],
       caves: []
+    },
+    // Столиця — погоджений макет design/levels/capital-look (2026-10-19): попелястий камінь під
+    // попелясто-червоним небом, згорілі шпилі, багряні стяги, жар лише в жаровнях; тло — capital-backdrop.js.
+    capital: {
+      style: "capital",
+      core: "#141213", stone: "#3a3635", rim: "#d8c2a8",
+      lip: "#7a726b", lipDark: "#3a3635", lipLight: "#cfc4b6", chain: "#1b1615",
+      skyTop: "#1e1416", skyBottom: "#6a2a1e", ember: "#c85a22", flame: "#f09a48", iron: "#1b1615",
+      palace: "#1c1414", smoke: "#3a2a28", fog: "#5a2e24", emberFog: "#4a2620", ash: "#b8aca0",
+      facade: "#221a1a", facadeHole: "#140f10", facadeColumn: "#2a2221", facadeColumnLight: "#3a302e",
+      banners: [["#5a1e22", "#8a7434"], ["#381417", "#8a7434"], ["#4a1a1e", "#6e5c2b"]],
+      statue: "#3a3433", beam: "#e0a070", secretGlow: "#d9b45a",
+      innerTop: "#161314", innerBottom: "#0a0909", vault: "#1e1b1b", throneWindow: "#3a1a14",
+      cisternTop: "#0e1012", cisternBottom: "#08090a", cisternRib: "#1c1c1e", cisternFog: "#1e3446",
+      water: "#1a2a36", deep: "#06090c", glint: "#7ab8e0", foam: "#a8c8dc", coldBeam: "#8aa8c0",
+      sealGlow: "#3a7ad8", sealLine: "#8ac4ff",
+      // як у capital.txt: верхній і середній яруси під небом; кам'яні — храм, крипти, майстерня
+      open: ["room_capital_ash_road", "room_capital_city_gate", "room_capital_angel_square",
+        "room_capital_palace_approach", "room_capital_cathedral_steps", "room_capital_market", "room_capital_gardens"],
+      angelRoom: "room_capital_angel_square",
+      crypts: ["room_capital_crypts"],
+      workshop: "room_capital_workshop", cistern: "room_capital_cistern", tower: "room_capital_bell_tower",
+      caves: []
     }
   };
 })(window);

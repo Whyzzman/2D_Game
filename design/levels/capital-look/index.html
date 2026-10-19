@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Столиця — новий вигляд</title>
+<style>
+  :root { --bg: #0e0b0a; --text: #d8cbb4; --muted: #8a7a68; --gold: #d9a25a; }
+  html, body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.5 Georgia, serif; }
+  body.shot { overflow: hidden; }
+  main { max-width: 1280px; margin: 0 auto; padding: 24px 16px 48px; }
+  h1 { font-weight: normal; letter-spacing: .08em; color: var(--gold); margin: 0 0 4px; }
+  p.note { color: var(--muted); margin: 0 0 20px; }
+  figure { margin: 0 0 28px; }
+  figcaption { color: var(--muted); margin-top: 6px; }
+  canvas { width: 100%; height: auto; display: block; border: 1px solid #241c18; }
+  body.shot main { padding: 0; max-width: none; }
+  body.shot h1, body.shot p.note, body.shot figcaption { display: none; }
+  body.shot figure { margin: 0; }
+  body.shot canvas { border: 0; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Зів'ялий Столиця — новий вигляд</h1>
+  <p class="note">Макет кадру гри (камера 32 × 18 юнітів), тим самим способом, що й погоджені Гробниця, Ліс і Село: органічні маси, світлий кант там, де можна стояти, плани глибини. Столиця — попелястий камінь під попелясто-червоним небом, згорілі шпилі палацу, багряні стяги; жар — лише в жаровнях і вікнах.</p>
+  <figure id="f-angel"><canvas id="angel" width="1920" height="1080"></canvas>
+    <figcaption>Площа з ангелом: кам'яний ангел зі зламаним крилом, згорілі шпилі палацу проти попелясто-червоного неба, багряні стяги, жаровні; карнизи й балкони — уступи.</figcaption></figure>
+  <figure id="f-cistern"><canvas id="cistern" width="1920" height="1080"></canvas>
+    <figcaption>Затоплена цистерна: склепіння на колонах, водоспад із пролому, темна вода, синя печать на стіні; світло — лише жаровня на помості.</figcaption></figure>
+</main>
+<script src="../tomb-look/paint.js"></script>
+<script src="../forest-look/forest.js"></script>
+<script src="../village-look/village.js"></script>
+<script src="capital.js"></script>
+<script src="scenes.js"></script>
+</body>
+</html>
