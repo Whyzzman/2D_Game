@@ -108,12 +108,6 @@ namespace ForgottenKingdom
         private AbilityCard _abilityCard;
         private HudKeyGlyphs _keyGlyphs;
         private HudManaWisps _manaWisps;
-        private VisualElement _flasks;
-        private VisualElement _flaskRow;
-        private readonly System.Collections.Generic.List<VisualElement> _flaskIcons =
-            new System.Collections.Generic.List<VisualElement>();
-        private int _shownFlaskCharges = -1;
-        private bool _shownFlaskDrinking;
 
         /// <summary>The pause over the game; it shares this document.</summary>
         public PauseMenu Pause => _pause;
@@ -370,7 +364,6 @@ namespace ForgottenKingdom
             var dt = Time.unscaledDeltaTime;
             UpdateResources(dt);
             _manaWisps?.Tick(dt);
-            UpdateFlasks();
             _flaskRow?.Update(_player != null ? _player.Flasks : null);
             UpdateBoss(dt);
             UpdateLoadout();
