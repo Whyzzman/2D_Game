@@ -31,6 +31,7 @@
 | Картка боса | `design/ui/boss-title/` | `BossTitleCard` |
 | Кузня Остапа (Approval 1, 2026-10-19) | `design/ui/forge/forge.html` | — (зараз `ShopView`; префікс `forge-`) |
 | Печатки клятви (Approval 1, 2026-10-19) | `design/ui/seals/seals.html` | — (нова вкладка паузи; префікс `seal-`) |
+| Три кінцівки й епілог (Approval 1, 2026-10-19) | `design/ui/endings/endings.html` | — (доповнює `EndingView`; префікс `end-`; правила — `QUESTS_AND_ENDINGS.md`) |
 | Намисто оберегів (Approval 1, 2026-10-19) | `design/ui/charms/charms.html` | — (нова вкладка паузи й екран вівтаря; префікс `charm-`; правила — `CHARMS.md`) |
 
 ## 2. Розкладка HUD
