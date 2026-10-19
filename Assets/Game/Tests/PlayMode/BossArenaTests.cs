@@ -74,6 +74,25 @@ namespace ForgottenKingdom.Tests
         }
 
         [UnityTest]
+        public IEnumerator ABossDiesSlowlyWithLightFromItsCracksAndTimeComesBack()
+        {
+            yield return EnterArena();
+            _boss.Actor.ClearInvulnerability();
+            var lights = _feedback.LiveLights;
+            _boss.Actor.ApplyDamage(new DamageInfo(float.MaxValue, Vector2.left, isUnblockable: true,
+                attacker: _player.gameObject));
+            yield return null;
+
+            Assert.That(_feedback.IsBossDeathRunning, Is.True);
+            Assert.That(Time.timeScale, Is.LessThan(1f), "The world slows as the boss falls.");
+            yield return WaitUntil(() => _feedback.LiveLights > lights, 0.5f);
+            Assert.That(_feedback.LiveLights, Is.GreaterThan(lights), "Light breaks out of the body.");
+
+            yield return WaitUntil(() => !_feedback.IsBossDeathRunning, 2f);
+            Assert.That(Time.timeScale, Is.EqualTo(1f).Within(0.001f), "Time comes back.");
+        }
+
+        [UnityTest]
         public IEnumerator TheArenaSealsWithRunesBurnsBrighterAndBreaksTheSealOnVictory()
         {
             Assert.That(_glow, Is.Not.Null, "The arena has no seal glow.");

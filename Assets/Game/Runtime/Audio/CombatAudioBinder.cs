@@ -139,6 +139,12 @@ namespace ForgottenKingdom
             }
         }
 
+        private static System.Collections.IEnumerator Delayed(AudioId id, Vector2 position, float seconds)
+        {
+            yield return new WaitForSecondsRealtime(seconds);
+            AudioManager.Play(id, position);
+        }
+
         private void OnFeedback(FeedbackKind kind, Vector2 position)
         {
             var id = ForFeedback(kind);
@@ -147,7 +153,16 @@ namespace ForgottenKingdom
                 return;
             }
 
-            AudioManager.Play(id, position);
+            if (kind == FeedbackKind.BossDeath && BossDeathMoment.CryDelay > 0.01f)
+            {
+                // The blow lands now; the cry waits for time to come back (GAME_FEEL_IDEAS item 11).
+                AudioManager.Play(AudioId.BossSlam, position);
+                StartCoroutine(Delayed(id, position, BossDeathMoment.CryDelay));
+            }
+            else
+            {
+                AudioManager.Play(id, position);
+            }
 
             // The loudest moments make room for themselves instead of shouting over the room.
             var manager = AudioManager.Instance;

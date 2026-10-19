@@ -42,6 +42,8 @@ namespace ForgottenKingdom
 
         private VfxPool _bursts;
         private VfxPool _lights;
+        private BossDeathMoment _bossDeath;
+        private TelegraphCues _telegraphs;
         private Transform _root;
 
         // Collected during a frame and applied once at the end of it.
@@ -63,6 +65,12 @@ namespace ForgottenKingdom
         public int LiveLights => _lights?.Live ?? 0;
         public FeedbackLibrary Library => _library;
 
+        /// <summary>True while a boss's death holds the world slow (GAME_FEEL_IDEAS item 11).</summary>
+        public bool IsBossDeathRunning => _bossDeath != null && _bossDeath.IsRunning;
+
+        /// <summary>Enemy windups being breathed through right now (GAME_FEEL_IDEAS item 12).</summary>
+        public int TelegraphsRunning => _telegraphs?.Count ?? 0;
+
         private void Awake()
         {
             Instance = this;
@@ -70,6 +78,9 @@ namespace ForgottenKingdom
             _root.SetParent(transform, false);
             _bursts = new VfxPool(_root, _burstCapacity, _effectMaterial);
             _lights = new VfxPool(_root, _lightCapacity, _effectMaterial, _lightTemplate);
+            _bossDeath = new BossDeathMoment(PlayCrackLight);
+            _telegraphs = new TelegraphCues(point =>
+                PlayInternal(FeedbackKind.EnemyTelegraph, point, Vector2.right, 0.8f, Color.white));
             if (_shaker == null && Camera.main != null)
             {
                 _shaker = Camera.main.GetComponent<CameraShaker>();
@@ -90,6 +101,8 @@ namespace ForgottenKingdom
 
             ZoneStreamer.ZonesChanged -= SubscribeLevel;
             Unsubscribe();
+            _bossDeath?.Stop();
+            _telegraphs?.Clear();
         }
 
         private void Start()
@@ -163,6 +176,8 @@ namespace ForgottenKingdom
 
         private void LateUpdate()
         {
+            _bossDeath?.Tick(Time.unscaledDeltaTime);
+            _telegraphs?.Tick();
             if (_frameOwner == null)
             {
                 return;
@@ -191,6 +206,30 @@ namespace ForgottenKingdom
             _shaker?.Clear();
             _flash?.Clear();
             _frameOwner = null;
+            _telegraphs?.Clear();
+        }
+
+        private void PlayCrackLight(Vector2 position, Color color, float radius, float duration)
+        {
+            if (_lightSprite == null) { return; }
+            _lights.Take().PlayLight(_lightSprite, color, radius, duration, position, _lights);
+        }
+
+        /// <summary>The body's drawn extent, so the light breaks out of the figure and not its feet.</summary>
+        private static Bounds BodyBounds(BossController boss)
+        {
+            var renderers = boss.GetComponentsInChildren<SpriteRenderer>();
+            if (renderers.Length == 0) { return new Bounds(boss.transform.position + Vector3.up, new Vector3(1.5f, 2f, 0f)); }
+
+            Bounds? bounds = null;
+            foreach (var renderer in renderers)
+            {
+                if (!renderer.enabled || renderer.sprite == null) { continue; }
+                if (bounds == null) { bounds = renderer.bounds; }
+                else { var grown = bounds.Value; grown.Encapsulate(renderer.bounds); bounds = grown; }
+            }
+
+            return bounds ?? new Bounds(boss.transform.position + Vector3.up, new Vector3(1.5f, 2f, 0f));
         }
 
         // ---------- listening to combat ----------
@@ -258,7 +297,11 @@ namespace ForgottenKingdom
                 enemy.GuardBrokenOpen += () => PlayAt(FeedbackKind.GuardBreak, captured.transform);
                 enemy.StaggerBroken += _ => PlayAt(FeedbackKind.StaggerBreak, captured.transform);
                 var sockets = enemy.GetComponentInChildren<VisualSockets>(true);
-                enemy.AttackTelegraphed += _ => OnEnemyTelegraph(captured, sockets);
+                enemy.AttackTelegraphed += attack =>
+                {
+                    OnEnemyTelegraph(captured, sockets);
+                    _telegraphs.Begin(captured, attack, sockets);
+                };
             }
 
             // Every boss in the scene: the forest's Warden deserves the same weight as the Guardian.
@@ -270,7 +313,11 @@ namespace ForgottenKingdom
                 boss.MovementBegan += movement => OnBossMovement(boss, movement, true);
                 boss.MovementEnded += movement => OnBossMovement(boss, movement, false);
                 boss.PhaseChanged += phase => OnBossPhase(boss, phase);
-                boss.Defeated += defeated => PlayAt(FeedbackKind.BossDeath, defeated.transform, 2f);
+                boss.Defeated += defeated =>
+                {
+                    PlayAt(FeedbackKind.BossDeath, defeated.transform, 2f);
+                    _bossDeath.Begin(BodyBounds(defeated));
+                };
                 boss.Staggered += _ => PlayAt(FeedbackKind.StaggerBreak, boss.transform, 1.5f);
             }
 

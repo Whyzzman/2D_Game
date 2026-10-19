@@ -132,6 +132,40 @@ namespace ForgottenKingdom.Tests
         }
 
         [UnityTest]
+        public IEnumerator TheWindUpDrawsABreathAndFlashesThePointJustBeforeTheBlow()
+        {
+            var attack = _zombie.Definition.Attack(0).Attack;
+            Assume.That(attack.Windup, Is.GreaterThan(TelegraphCues.FlashLead + 0.05f));
+            var body = _zombie.GetComponentInChildren<EnemyAnimationController>().Body.transform;
+            _played.Clear();
+            Assert.That(_zombie.Combat.TryStartAttack(attack, 0.1f), Is.True);
+            yield return null;
+            var glints = _played.FindAll(k => k == FeedbackKind.EnemyTelegraph).Count;
+
+            var started = Time.time;
+            var tallest = 1f;
+            var flashedAt = -1f;
+            while (Time.time - started < attack.Windup + 0.1f)
+            {
+                tallest = Mathf.Max(tallest, body.localScale.y);
+                if (flashedAt < 0f && _played.FindAll(k => k == FeedbackKind.EnemyTelegraph).Count > glints)
+                {
+                    flashedAt = Time.time - started;
+                }
+
+                yield return null;
+            }
+
+            Assert.That(tallest, Is.GreaterThan(1.01f), "The body draws a breath through the wind-up.");
+            Assert.That(flashedAt, Is.GreaterThan(0f), "The point flashed before the blow.");
+            Assert.That(flashedAt, Is.EqualTo(attack.Windup - TelegraphCues.FlashLead).Within(0.12f),
+                "About a fifth of a second before it lands.");
+            yield return WaitUntil(() => !_zombie.IsAttacking, 3f);
+            yield return null;
+            Assert.That(body.localScale, Is.EqualTo(Vector3.one), "The breath is let go.");
+        }
+
+        [UnityTest]
         public IEnumerator ABrokenBalanceShowsStarsUntilItRecovers()
         {
             var stars = _zombie.GetComponent<StunIndicator>();
