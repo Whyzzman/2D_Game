@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Болота — новий вигляд</title>
+<style>
+  :root { --bg: #070a08; --text: #cfd6c0; --muted: #7d8a72; --gold: #b7d36a; }
+  html, body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.5 Georgia, serif; }
+  body.shot { overflow: hidden; }
+  main { max-width: 1280px; margin: 0 auto; padding: 24px 16px 48px; }
+  h1 { font-weight: normal; letter-spacing: .08em; color: var(--gold); margin: 0 0 4px; }
+  p.note { color: var(--muted); margin: 0 0 20px; }
+  figure { margin: 0 0 28px; }
+  figcaption { color: var(--muted); margin-top: 6px; }
+  canvas { width: 100%; height: auto; display: block; border: 1px solid #18201a; }
+  body.shot main { padding: 0; max-width: none; }
+  body.shot h1, body.shot p.note, body.shot figcaption { display: none; }
+  body.shot figure { margin: 0; }
+  body.shot canvas { border: 0; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Чумні Болота — новий вигляд</h1>
+  <p class="note">Макет кадру гри (камера 32 × 18 юнітів) тими самими прийомами, що й погоджені Гробниця, Ліс, Село й Столиця: органічні маси, світлий кант там, де стоять, плани глибини. Болота — ядовито-зелене світло знизу, з води; чорна гнила деревина, мох-борода, туман на рівні колін. Вода світиться там, де отрута, — гравець читає небезпеку кольором і світлом.</p>
+  <figure id="f-tree"><canvas id="tree" width="1920" height="1080"></canvas>
+    <figcaption>Гниле дерево: велетенський мертвий стовбур із кліткою на ланцюгу, хата відьми на палях угорі праворуч, гниле дощате мощення над ядовитою водою, мох звисає з гілок.</figcaption></figure>
+  <figure id="f-wreck"><canvas id="wreck" width="1920" height="1080"></canvas>
+    <figcaption>Затонулий корабель: похилий корпус у чорній воді, палуба — підлога, щогла з кільцем гака; далеко — колони затопленого цвинтаря, світло отрути крізь туман.</figcaption></figure>
+</main>
+<script src="../tomb-look/paint.js"></script>
+<script src="../forest-look/forest.js"></script>
+<script src="../village-look/village.js"></script>
+<script src="../capital-look/capital.js"></script>
+<script src="marsh.js"></script>
+<script src="scenes.js"></script>
+</body>
+</html>
