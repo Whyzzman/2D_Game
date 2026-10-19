@@ -113,7 +113,7 @@ gamedesign/    документы разработки (по-русски; ча�
 | Визуальный стиль | `VISUAL_BIBLE.md`, `CONCEPT_BRIEFS.md`, `ART_REQUIREMENTS.md` |
 | Окружение Гробницы | `ENVIRONMENT_TOMB.md` |
 | Арт: список и замена на рисованный | `ART_ASSET_LIST.md`, `ANIMATION_LIST.md`, `ANIMATION_PIPELINE.md`, `VFX_LIST.md` |
-| Боевой фидбек | `COMBAT_FEEDBACK.md` |
+| Боевой фидбек | `COMBAT_FEEDBACK.md`; что улучшить в ощущении — `GAME_FEEL_IDEAS.md` |
 | Звук и музыка | `AUDIO_DESIGN.md`, `AUDIO_ASSET_LIST.md`, `MUSIC_SYSTEM.md` |
 | Интерфейс | `UI_UX_GUIDE.md`, макеты — `design/ui/` |
 | Известные проблемы, проверка | `KNOWN_ISSUES.md`, `VERTICAL_SLICE_QA.md` |
