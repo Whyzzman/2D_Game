@@ -28,7 +28,22 @@ namespace ForgottenKingdom.EditorTools
         private static Sprite CapitalArt(string name) =>
             _capital != null && _capital.TryGetValue(name, out var sprite) ? sprite : null;
 
-        /// <summary>The whole zone, from nothing; run inside a world opened whole.</summary>
+        public const string CapitalLayoutFile = "capital.txt";
+        private static LevelZone _capitalLayout;
+
+        /// <summary>The Capital's text (Levels/capital.txt), read once per build.</summary>
+        public static LevelZone CapitalLayout => _capitalLayout ?? (_capitalLayout = LoadLayout(CapitalLayoutFile));
+
+        /// <summary>A named spot of the Capital's text: its floor, mid-cell.</summary>
+        public static Vector2 CapitalSpot(string name) => SpotFeet(CapitalLayout, name);
+
+        /// <summary>
+        /// The whole zone from its text (item 6a of the 15 zones, the user's map
+        /// reference/maps/04_ruined_capital.webp): three tiers round the bell tower, the only way
+        /// between them; run inside a world opened whole. The trial of arms keeps the Ash Road's old
+        /// numbers, which the text keeps true; the King waits in the throne hall until the
+        /// Commander takes it (6b) and he moves to the Throne (6d).
+        /// </summary>
         public static void BuildCapital()
         {
             if (_sprite == null) { _sprite = AssetDatabase.LoadAssetAtPath<Sprite>(SpritePath); }
@@ -36,6 +51,7 @@ namespace ForgottenKingdom.EditorTools
             if (_shapes == null) { _shapes = ProductionSpriteArt.Generate(); }
             if (_vfx == null) { _vfx = PlaceholderVfxArt.Generate(); }
             _capital = PlaceholderCapitalArt.Generate();
+            _capitalLayout = null;
 
             var level = GameObject.Find("Level");
             if (level == null)
@@ -50,286 +66,127 @@ namespace ForgottenKingdom.EditorTools
                 Object.DestroyImmediate(old.gameObject);
             }
 
-            // Altars and finds are placed at the scene's root by their helpers; the capital's own
-            // are found by id and gathered under its root, so a rebuild replaces them too.
-            foreach (var stray in CapitalPlacements())
+            var zone = CapitalLayout;
+            var root = Section(level.transform, CapitalRootName);
+            var context = LevelContext.FromScene();
+            foreach (var problem in BuildLayout(zone, root, CapitalLayoutBlock, context))
             {
-                Object.DestroyImmediate(stray);
+                Debug.LogError($"Capital layout: {problem}");
             }
 
-            var progress = Object.FindAnyObjectByType<GameProgress>();
-            var respawner = Object.FindAnyObjectByType<PlayerRespawner>();
-            var player = Object.FindAnyObjectByType<PlayerCharacter>();
-            var checkpoint = AssetDatabase.LoadAssetAtPath<GameObject>($"{PrefabFolder}/Checkpoint.prefab");
-            var pickup = AssetDatabase.LoadAssetAtPath<GameObject>(PickupPrefabPath);
-            var camera = Camera.main != null ? Camera.main.transform : null;
+            var rooms = new Dictionary<string, Transform>();
+            foreach (var room in zone.Rooms)
+            {
+                rooms[room.Id] = root.Find(room.Id);
+            }
 
-            var root = Section(level.transform, CapitalRootName);
-            BuildAshRoad(root);
-            BuildCityGate(root, checkpoint, respawner, progress, player != null ? player.gameObject : null);
-            BuildMarket(root, pickup, progress);
-            BuildBellTower(root, pickup, progress);
-            BuildTempleQuarter(root, checkpoint, respawner, progress, player != null ? player.gameObject : null);
-            BuildBurntGardens(root, pickup, progress);
-            BuildPalaceApproach(root, checkpoint, pickup, respawner, progress, player != null ? player.gameObject : null);
-            BuildThroneHall(root, progress, respawner);
-            BuildGrappleReturns(level.transform, progress, pickup);
+            BuildCapitalDressing(rooms);
+            BuildThroneHall(rooms[CapitalThroneRoom], context.Progress, Object.FindAnyObjectByType<PlayerRespawner>());
+            foreach (var link in zone.Links)
+            {
+                if (link.Ability == AbilityIds.Grapple && link.To == CapitalGalleryArea)
+                {
+                    PlaceAbilityGate(rooms[link.From], "GalleryHint", CapitalSpot("gallery-hint") + new Vector2(0f, 0.8f),
+                        link.Ability, LinkId(link), Inside(zone, zone.Room(link.To)).center, context.Progress);
+                }
+            }
+
+            var camera = Camera.main != null ? Camera.main.transform : null;
+            BuildGrappleReturns(level.transform, context.Progress, null);
             BuildCapitalParallax(root, camera);
             BuildCapitalAsh(root);
-            PlaceCapitalEnemies();
-            var placed = Section(root, "Placed");
-            foreach (var placement in CapitalPlacements())
-            {
-                placement.transform.SetParent(placed, true);
-            }
         }
 
-        private static List<GameObject> CapitalPlacements()
+        private const string CapitalThroneRoom = "room_capital_throne_hall";
+
+        /// <summary>How the Capital's stone looks: ledges as slabs, walls as masonry, floors as flagstones.</summary>
+        private static GameObject CapitalLayoutBlock(Transform parent, string name, Rect world, LevelCell kind)
         {
-            var found = new List<GameObject>();
-            foreach (var altar in Object.FindObjectsByType<Checkpoint>(FindObjectsInactive.Include))
-            {
-                if (altar.CheckpointId.StartsWith("capital-")) { found.Add(altar.gameObject); }
-            }
-
-            foreach (var find in Object.FindObjectsByType<WorldPickup>(FindObjectsInactive.Include))
-            {
-                if (find.PersistentId != null && find.PersistentId.StartsWith("capital-")) { found.Add(find.gameObject); }
-            }
-
-            foreach (var enemy in Object.FindObjectsByType<EnemyController>(FindObjectsInactive.Include))
-            {
-                var x = enemy.transform.position.x;
-                if (x > 313.5f && x < 545f) { found.Add(enemy.gameObject); }
-            }
-
-            return found;
+            var surface = kind == LevelCell.Ledge ? CapitalSurface.Ledge
+                : world.height > world.width ? CapitalSurface.Masonry : CapitalSurface.Flagstone;
+            return CapitalBlock(parent, name, world.center, world.size, surface);
         }
 
-        /// <summary>
-        /// Who stands where (stage C): ravens over the market and the gardens, crossbowmen on the
-        /// balconies, gargoyles on the belfry's rubble, flanking the temple's dais and before the
-        /// palace, priests on the dais and the pergola. The gardens have one of each. Heights are
-        /// body centres: feet on the floor at 0 are 0.9 up, as the forest's are.
-        /// </summary>
-        private static void PlaceCapitalEnemies()
+        /// <summary>Each room's own props, placed by the text's spots; none of them carries collision.</summary>
+        private static void BuildCapitalDressing(Dictionary<string, Transform> rooms)
         {
-            var raven = CapitalEnemy(RavenPrefabName);
-            var gargoyle = CapitalEnemy(GargoylePrefabName);
-            var priest = CapitalEnemy(PriestPrefabName);
-            var crossbowman = CapitalEnemy(CrossbowmanPrefabName);
-            if (raven == null || gargoyle == null || priest == null || crossbowman == null)
+            Transform Dressing(string room) => Section(rooms[room], "Dressing");
+
+            var road = Dressing("room_capital_ash_road");
+            CapitalProp(road, "env_capital_cart_01", new Vector2(321f, 0f), "EnvironmentBack", 2);
+            CapitalProp(road, "env_capital_column_01", new Vector2(327f, 0f), "EnvironmentBack", 1, 1.1f);
+            CapitalProp(road, "env_capital_tree_burnt_01", new Vector2(343f, 0f), "EnvironmentBack", 1);
+            Brazier(road, new Vector2(335f, 0f));
+
+            var gate = Dressing("room_capital_city_gate");
+            CapitalProp(gate, "env_capital_gate_01", new Vector2(351f, 0f), "EnvironmentBack", 0, 1f);
+            Brazier(gate, new Vector2(364f, 0f));
+
+            var square = Dressing("room_capital_angel_square");
+            CapitalProp(square, "env_capital_statue_01", CapitalSpot("angel"), "EnvironmentBack", 2, 1.6f);
+            CapitalProp(square, "env_capital_house_01", new Vector2(384f, 0f), "EnvironmentBack", 0);
+            CapitalProp(square, "env_capital_house_02", new Vector2(415f, 0f), "EnvironmentBack", 0, 1f, flip: true);
+            Brazier(square, CapitalSpot("angel") + new Vector2(-3f, 0f));
+            Brazier(square, CapitalSpot("angel") + new Vector2(3f, 0f));
+
+            CapitalProp(Dressing("room_capital_bell_tower"), "env_capital_bell_01", CapitalSpot("bell"),
+                "GameplayEnvironment", 2, 0.8f);
+
+            var temple = Dressing("room_capital_temple");
+            CapitalProp(temple, "env_capital_temple_01", CapitalSpot("temple-dais"), "EnvironmentBack", 0);
+            Brazier(temple, CapitalSpot("temple-dais") + new Vector2(-5f, 0f));
+
+            var market = Dressing("room_capital_market");
+            CapitalProp(market, "env_capital_house_01", new Vector2(386f, -21f), "EnvironmentBack", 0);
+            CapitalProp(market, "env_capital_cart_01", new Vector2(401f, -21f), "EnvironmentBack", 3, 0.8f);
+
+            var gardens = Dressing("room_capital_gardens");
+            foreach (var x in new[] { 432f, 445f, 456f, 462f })
             {
-                Debug.LogError("The capital's enemies are not built; run ContentBuilder.Build first.");
-                return;
+                CapitalProp(gardens, "env_capital_tree_burnt_01", new Vector2(x, -19.5f),
+                    "EnvironmentBack", 1, 0.8f + (x % 3f) * 0.1f, flip: x == 456f);
             }
 
-            // The market.
-            SpawnEnemy(raven, new Vector2(383f, 6f));
-            SpawnEnemy(raven, new Vector2(395f, 6.5f));
-            SpawnEnemy(crossbowman, new Vector2(379.5f, 3.5f));
-            SpawnEnemy(crossbowman, new Vector2(397.5f, 3.5f));
-            // The bell tower: asleep on the fallen belfry.
-            SpawnEnemy(gargoyle, new Vector2(414f, 7.3f));
-            // The temple: two stone guardians either side of the dais, a priest upon it.
-            SpawnEnemy(gargoyle, new Vector2(437.5f, 0.9f));
-            SpawnEnemy(gargoyle, new Vector2(454f, 0.9f));
-            SpawnEnemy(priest, new Vector2(446f, 2.5f));
-            // The gardens: all four together.
-            SpawnEnemy(raven, new Vector2(466f, 6f));
-            SpawnEnemy(gargoyle, new Vector2(476f, 0.9f));
-            SpawnEnemy(priest, new Vector2(481f, 4.1f));
-            SpawnEnemy(crossbowman, new Vector2(488f, 0.9f));
-            // Before the palace, one more stone guard.
-            SpawnEnemy(gargoyle, new Vector2(507f, 0.9f));
-        }
+            Brazier(Dressing("room_capital_workshop"), CapitalSpot("smith") + new Vector2(2f, 0f));
+            CapitalProp(Dressing("room_capital_crypts"), "env_capital_column_01", new Vector2(396f, -42f),
+                "EnvironmentBack", 1, 1.2f);
+            CapitalProp(Dressing("room_capital_cistern"), "env_capital_column_01", new Vector2(444f, -40.5f),
+                "EnvironmentBack", 1, 1.3f);
 
-        // ---------- rooms ----------
-
-        private static void BuildAshRoad(Transform parent)
-        {
-            var section = Section(parent, "AshRoad");
-            CapitalBlock(section, "AshRoadFloor", new Vector2(329.25f, -0.5f), new Vector2(31.5f, 1f));
-            CapitalProp(section, "env_capital_cart_01", new Vector2(321f, 0f), "EnvironmentBack", 2);
-            CapitalProp(section, "env_capital_column_01", new Vector2(327f, 0f), "EnvironmentBack", 1, 1.1f);
-            CapitalProp(section, "env_capital_banner_01", new Vector2(331.5f, 1.2f), "EnvironmentBack", 3, 0.9f);
-            CapitalProp(section, "env_capital_cart_01", new Vector2(339f, 0f), "EnvironmentBack", 2, 0.9f, flip: true);
-            CapitalProp(section, "env_capital_tree_burnt_01", new Vector2(343f, 0f), "EnvironmentBack", 1);
-            Brazier(section, new Vector2(335f, 0f));
-        }
-
-        private static void BuildCityGate(Transform parent, GameObject checkpoint,
-            PlayerRespawner respawner, GameProgress progress, GameObject player)
-        {
-            var section = Section(parent, "CityGate");
-            CapitalBlock(section, "CityGateFloor", new Vector2(358.5f, -0.5f), new Vector2(27f, 1f));
-            CapitalProp(section, "env_capital_gate_01", new Vector2(351f, 0f), "EnvironmentBack", 0, 1f);
-            CapitalProp(section, "env_capital_statue_01", new Vector2(365f, 0f), "EnvironmentBack", 2);
-            Brazier(section, new Vector2(362f, 0f));
-            if (checkpoint != null)
+            // The three blue seals of the user's map: the palace's door, the ways to the Cathedral
+            // and the Citadel — shut until their zones exist.
+            foreach (var (spot, room) in new[] { ("seal-palace", CapitalThroneRoom), ("seal-cathedral", "room_capital_crypts"),
+                ("seal-citadel", "room_capital_cistern") })
             {
-                PlaceCheckpoint(checkpoint, new Vector2(358f, 0.8f), "capital-gate",
-                    "Вівтар міської брами", respawner, progress, player);
+                var seal = CapitalProp(Dressing(room), "env_capital_gate_01", CapitalSpot(spot), "EnvironmentBack", 1, 0.9f);
+                if (seal != null)
+                {
+                    seal.name = "Seal_" + spot;
+                    seal.GetComponent<SpriteRenderer>().color = new Color(0.62f, 0.78f, 1f);
+                    var host = LightChild(seal.transform, "SealLight", CapitalSpot(spot) + new Vector2(0f, 2.2f));
+                    AddLight(host, Light2D.LightType.Point, new Color(0.5f, 0.7f, 1f), 0.8f, 3.6f, 0.3f, 0.6f);
+                }
             }
         }
 
         /// <summary>
-        /// The market: the widest floor in the zone, with stone balconies either side where the
-        /// crossbowmen will stand. The high one holds a purse; nothing on the way needs them.
+        /// The Throne Hall: the King's arena, sealed behind the hero by his fight at the door from the
+        /// approach; the palace's seal stands at its far end.
         /// </summary>
-        private static void BuildMarket(Transform parent, GameObject pickup, GameProgress progress)
+        private static void BuildThroneHall(Transform room, GameProgress progress, PlayerRespawner respawner)
         {
-            var section = Section(parent, "Market");
-            CapitalBlock(section, "MarketFloor", new Vector2(388f, -0.5f), new Vector2(32f, 1f));
-            // Balconies high enough to walk under (their undersides at 2.1 and 3.7, the hero is
-            // 1.6), each reached from a heap of stalls at 1.2. The stalls stand 1.5 clear of the
-            // balconies: a jump onto them from under a balcony would strike its underside.
-            CapitalBlock(section, "StallsWest", new Vector2(375f, 0.6f), new Vector2(2f, 1.2f), CapitalSurface.Rubble);
-            CapitalBlock(section, "BalconyWest", new Vector2(379.75f, 2.35f), new Vector2(4.5f, 0.5f), CapitalSurface.Ledge);
-            CapitalBlock(section, "BalconyHigh", new Vector2(387.5f, 3.95f), new Vector2(5f, 0.5f), CapitalSurface.Ledge);
-            CapitalBlock(section, "BalconyEast", new Vector2(397.5f, 2.35f), new Vector2(4f, 0.5f), CapitalSurface.Ledge);
-            CapitalBlock(section, "StallsEast", new Vector2(402f, 0.6f), new Vector2(2f, 1.2f), CapitalSurface.Rubble);
-            CapitalProp(section, "env_capital_house_01", new Vector2(377f, 0f), "EnvironmentBack", 0);
-            CapitalProp(section, "env_capital_house_02", new Vector2(389f, 0f), "EnvironmentBack", 0);
-            CapitalProp(section, "env_capital_house_01", new Vector2(401f, 0f), "EnvironmentBack", 0, 1f, flip: true);
-            CapitalProp(section, "env_capital_cart_01", new Vector2(393f, 0f), "EnvironmentBack", 3, 0.8f);
-            if (pickup != null)
-            {
-                PlacePickup(pickup, new Vector2(387.5f, 4.9f), progress, string.Empty, true, 120,
-                    "capital-market-purse", false);
-            }
-        }
-
-        /// <summary>
-        /// The bell tower: the street is buried under the fallen belfry, so the way on is up the
-        /// stairs, over the rubble at 6.4 and down the other side — four steps of 1.6 each way.
-        /// The nest sits east of the rubble at 8.2, over the last steps: a jump from the top (1.97)
-        /// rises high enough but not far enough (the gap is 4, a jump is at its peak about 2.5
-        /// out and falling after); a dash at the top of that jump, or the second jump, makes it.
-        /// From the steps below it is out of reach of every jump.
-        /// </summary>
-        private static void BuildBellTower(Transform parent, GameObject pickup, GameProgress progress)
-        {
-            var section = Section(parent, "BellTower");
-            CapitalBlock(section, "TowerFloor", new Vector2(414f, -0.5f), new Vector2(20f, 1f));
-            var steps = new[] { (406f, 1.6f), (408f, 3.2f), (410f, 4.8f), (418f, 4.8f), (420f, 3.2f), (422f, 1.6f) };
-            foreach (var (x, top) in steps)
-            {
-                CapitalBlock(section, $"Stair_{x:0}", new Vector2(x, top * 0.5f), new Vector2(2f, top),
-                    CapitalSurface.Masonry);
-            }
-
-            var rubble = CapitalBlock(section, "FallenBelfry", new Vector2(414f, 3.2f), new Vector2(6f, 6.4f),
-                CapitalSurface.Rubble);
-            Ensure<NonClimbableSurface>(rubble);
-            CapitalProp(section, "env_capital_bell_01", new Vector2(414f, 6.4f), "GameplayEnvironment", 2, 0.8f);
-
-            var nest = CapitalBlock(section, "BellNest", new Vector2(422.5f, 7.95f), new Vector2(3f, 0.5f),
-                CapitalSurface.Ledge);
-            Ensure<NonClimbableSurface>(nest);
-            AreaTrigger(section, CapitalBellNestArea, new Vector2(422.5f, 9.1f), new Vector2(2.6f, 1.4f));
-            PlaceAbilityGate(section, "BellNestHint", new Vector2(416f, 7.2f), AbilityIds.AirDash,
-                "conn_capital_tower_nest", new Vector2(422.5f, 8.8f), progress);
-            if (pickup != null)
-            {
-                PlacePickup(pickup, new Vector2(422.5f, 8.8f), progress, string.Empty, true, 250,
-                    "capital-bell-nest", false);
-            }
-        }
-
-        private static void BuildTempleQuarter(Transform parent, GameObject checkpoint,
-            PlayerRespawner respawner, GameProgress progress, GameObject player)
-        {
-            var section = Section(parent, "TempleQuarter");
-            CapitalBlock(section, "TempleFloor", new Vector2(441f, -0.5f), new Vector2(34f, 1f));
-            CapitalBlock(section, "TempleDais", new Vector2(446f, 0.8f), new Vector2(12f, 1.6f), CapitalSurface.Masonry);
-            CapitalProp(section, "env_capital_temple_01", new Vector2(446f, 1.6f), "EnvironmentBack", 0);
-            Brazier(section, new Vector2(441f, 1.6f));
-            Brazier(section, new Vector2(451f, 1.6f));
-            if (checkpoint != null)
-            {
-                PlaceCheckpoint(checkpoint, new Vector2(430f, 0.8f), "capital-temple",
-                    "Храмовий вівтар", respawner, progress, player);
-            }
-        }
-
-        private static void BuildBurntGardens(Transform parent, GameObject pickup, GameProgress progress)
-        {
-            var section = Section(parent, "BurntGardens");
-            CapitalBlock(section, "GardensFloor", new Vector2(475f, -0.5f), new Vector2(34f, 1f));
-            CapitalBlock(section, "Terrace", new Vector2(470f, 0.8f), new Vector2(8f, 1.6f), CapitalSurface.Masonry);
-            CapitalBlock(section, "Pergola", new Vector2(481f, 2.95f), new Vector2(6f, 0.5f), CapitalSurface.Ledge);
-            foreach (var x in new[] { 462f, 468f, 476f, 486f })
-            {
-                CapitalProp(section, "env_capital_tree_burnt_01", new Vector2(x, x == 468f ? 1.6f : 0f),
-                    "EnvironmentBack", 1, 0.8f + (x % 3f) * 0.1f, flip: x == 476f);
-            }
-
-            CapitalProp(section, "env_capital_statue_01", new Vector2(489f, 0f), "EnvironmentBack", 2, 0.9f, flip: true);
-            if (pickup != null)
-            {
-                PlacePickup(pickup, new Vector2(481f, 3.6f), progress, "healing_herb", false, 1,
-                    "capital-gardens-herb", false);
-            }
-        }
-
-        /// <summary>
-        /// Before the throne: the last altar, and above it the royal gallery at 6.8 — twice what a
-        /// second jump reaches from this bare floor, with no wall or ledge near. Rings to it come with the King's own gift.
-        /// </summary>
-        private static void BuildPalaceApproach(Transform parent, GameObject checkpoint, GameObject pickup,
-            PlayerRespawner respawner, GameProgress progress, GameObject player)
-        {
-            var section = Section(parent, "PalaceApproach");
-            CapitalBlock(section, "ApproachFloor", new Vector2(502f, -0.5f), new Vector2(20f, 1f));
-            CapitalProp(section, "env_capital_column_01", new Vector2(494.5f, 0f), "EnvironmentBack", 1, 1.4f);
-            CapitalProp(section, "env_capital_column_01", new Vector2(509.5f, 0f), "EnvironmentBack", 1, 1.4f, flip: true);
-            CapitalProp(section, "env_capital_banner_01", new Vector2(502f, 4.5f), "EnvironmentBack", 3, 1.1f);
-            var gallery = CapitalBlock(section, "RoyalGallery", new Vector2(502f, 6.55f), new Vector2(14f, 0.5f),
-                CapitalSurface.Ledge);
-            Ensure<NonClimbableSurface>(gallery);
-            AreaTrigger(section, CapitalGalleryArea, new Vector2(502f, 7.7f), new Vector2(12f, 1.6f));
-            // Past the gallery's east end, above it: the line lets go 1.9 under the ring and the pop
-            // tops out at 1.1 under it, so the second jump (+1.5) is what clears the shelf, and a
-            // step west once over it puts the hero on top. Clear of its face, so it is no wall jump. Its underside would stop a line thrown through it.
-            PlaceGrappleRing(section, "GalleryRing", new Vector2(511f, 8f));
-            if (pickup != null)
-            {
-                PlacePickup(pickup, new Vector2(498f, 7.3f), progress, string.Empty, true, 300,
-                    "capital-gallery-purse", true);
-            }
-            PlaceAbilityGate(section, "GalleryHint", new Vector2(500f, 0.8f), AbilityIds.Grapple,
-                "conn_capital_approach_gallery", new Vector2(502f, 7.3f), progress);
-            if (checkpoint != null)
-            {
-                PlaceCheckpoint(checkpoint, new Vector2(496f, 0.8f), "capital-palace",
-                    "Вівтар біля палацу", respawner, progress, player);
-            }
-        }
-
-        /// <summary>
-        /// The Throne Hall: a flat arena 33 wide before the throne, sealed behind the hero by the
-        /// King's fight (stage D), and the road east sealed for the ending's sake.
-        /// </summary>
-        private static void BuildThroneHall(Transform parent, GameProgress progress, PlayerRespawner respawner)
-        {
-            var section = Section(parent, "ThroneHall");
-            CapitalBlock(section, "ThroneFloor", new Vector2(528.5f, -0.5f), new Vector2(33f, 1f));
-            var barrier = CapitalBlock(section, "ThroneBarrier", new Vector2(512f, 3.5f), new Vector2(1f, 9f),
+            var section = Section(room, "Throne");
+            var door = Inside(CapitalLayout, CapitalLayout.Room(CapitalThroneRoom));
+            var barrier = CapitalBlock(section, "ThroneBarrier", new Vector2(door.xMin - 0.5f, door.yMin + 4.5f), new Vector2(1f, 9f),
                 CapitalSurface.Rubble);
             barrier.SetActive(false);
-            BuildKingEncounter(section, barrier, progress, respawner);
-            CapitalProp(section, "env_capital_throne_01", new Vector2(539f, 0f), "EnvironmentBack", 1);
-            CapitalProp(section, "env_capital_banner_01", new Vector2(520f, 4f), "EnvironmentBack", 3);
-            CapitalProp(section, "env_capital_banner_01", new Vector2(532f, 4f), "EnvironmentBack", 3, 1f, flip: true);
-            Brazier(section, new Vector2(516f, 0f));
-            Brazier(section, new Vector2(541f, 0f));
-
-            var seal = CapitalBlock(section, "EastRoadSeal", new Vector2(545f, 4f), new Vector2(1f, 10f),
-                CapitalSurface.Rubble);
-            Ensure<NonClimbableSurface>(seal);
-            PlaceDoor(section, "EastRoadGate", new Vector2(545f, 4f), RequirementKind.Unavailable,
-                "zone_unknown_east", seal, progress);
+            BuildKingEncounter(section, barrier, progress, respawner, CapitalSpot("king") + new Vector2(0f, 1.4f),
+                new Vector2(door.xMin + 4f, door.yMin + 2f));
+            CapitalProp(section, "env_capital_throne_01", CapitalSpot("throne"), "EnvironmentBack", 1);
+            CapitalProp(section, "env_capital_banner_01", new Vector2(door.xMin + 8f, door.yMin + 4f), "EnvironmentBack", 3);
+            CapitalProp(section, "env_capital_banner_01", new Vector2(door.xMax - 10f, door.yMin + 4f), "EnvironmentBack", 3, 1f, flip: true);
+            Brazier(section, new Vector2(door.xMin + 4f, door.yMin));
+            Brazier(section, new Vector2(door.xMax - 2f, door.yMin));
         }
 
         /// <summary>

@@ -123,35 +123,21 @@ namespace ForgottenKingdom.EditorTools
             var tomb = LayoutGraphJson(LoadLayout(TombLayoutFile));
             var forest = LayoutGraphJson(LoadLayout(ForestLayoutFile));
             var village = LayoutGraphJson(LoadLayout(VillageLayoutFile));
+            var capital = LayoutGraphJson(LoadLayout(CapitalLayoutFile));
             json.Append("\"_areas\":[").Append(string.Join(",", tomb.areas)).Append(",")
                 .Append(string.Join(",", forest.areas)).Append(",")
-                .Append(string.Join(",", village.areas)).Append(",").Append(string.Join(",", new[]
+                .Append(string.Join(",", village.areas)).Append(",")
+                .Append(string.Join(",", capital.areas)).Append(",").Append(string.Join(",", new[]
             {
-                MainRoom(CapitalAshRoad, CapitalZoneId, "Попелястий тракт", 318f, 345f),
-                MainRoom(CapitalCityGate, CapitalZoneId, "Міська брама", 345f, 372f),
-                MainRoom(CapitalMarket, CapitalZoneId, "Ринкова площа", 372f, 404f),
-                MainRoom(CapitalBellTower, CapitalZoneId, "Дзвінниця", 404f, 424f),
-                Pocket(CapitalBellNest, CapitalZoneId, "Гніздо на дзвінниці", 421f, 424f, 8.2f,
-                    secret: true, ability: AbilityIds.AirDash),
-                MainRoom(CapitalTemple, CapitalZoneId, "Храмовий квартал", 424f, 458f),
-                MainRoom(CapitalGardens, CapitalZoneId, "Спалені сади", 458f, 492f),
-                MainRoom(CapitalPalaceApproach, CapitalZoneId, "Підступ до палацу", 492f, 512f),
-                Pocket(CapitalGallery, CapitalZoneId, "Королівська галерея", 494f, 510f, 6.8f,
-                    secret: true, ability: AbilityIds.Grapple),
-                MainRoom(CapitalThroneHall, CapitalZoneId, "Тронна зала", 512f, 545f,
-                    boss: CapitalKingBossId),
-                Pocket(CapitalRoofCache, CapitalZoneId, "Сховок під дахом", 424.5f, 428.5f, 8.2f,
-                    secret: true, ability: string.Empty, mapRow: 2.3f),
-                Pocket(CapitalHiddenTreasury, CapitalZoneId, "Прихована скарбниця", 490.5f, 494.5f, 6.8f,
-                    secret: true, ability: string.Empty),
                 AreaJson(BeyondCapital, FutureZoneId, string.Empty,
-                    new Vector2(551f * MapScale, 0f), new Vector2(0.8f, 1.2f),
-                    Rect.MinMaxRect(545f, -8f, 557f, 16f), optional: true)
+                    new Vector2(506f * MapScale, 0f), new Vector2(0.8f, 1.2f),
+                    Rect.MinMaxRect(500f, -1f, 512f, 17f), optional: true)
             })).Append("],");
 
             json.Append("\"_connections\":[").Append(string.Join(",", tomb.links)).Append(",")
                 .Append(string.Join(",", forest.links)).Append(",")
-                .Append(string.Join(",", village.links)).Append(",").Append(string.Join(",", new[]
+                .Append(string.Join(",", village.links)).Append(",")
+                .Append(string.Join(",", capital.links)).Append(",").Append(string.Join(",", new[]
             {
                 LinkJson("conn_tomb_to_forest", TombEastHall, ForestTunnel,
                     type: ConnectionType.ZoneTransition, boss: GuardianBossId),
@@ -165,22 +151,6 @@ namespace ForgottenKingdom.EditorTools
                 // the capital's side, so it is the way back, not the way in.
                 LinkJson("conn_forest_to_capital", "room_forest_far_gate", CapitalAshRoad,
                     type: ConnectionType.Shortcut, shortcut: CapitalRoadShortcut, openedFrom: CapitalAshRoad),
-                LinkJson("conn_capital_road_gate", CapitalAshRoad, CapitalCityGate),
-                LinkJson("conn_capital_gate_market", CapitalCityGate, CapitalMarket),
-                LinkJson("conn_capital_market_tower", CapitalMarket, CapitalBellTower),
-                LinkJson("conn_capital_tower_nest", CapitalBellTower, CapitalBellNest,
-                    MapDirection.North, ConnectionType.AbilityGate, ability: AbilityIds.AirDash),
-                LinkJson("conn_capital_tower_temple", CapitalBellTower, CapitalTemple),
-                LinkJson("conn_capital_temple_gardens", CapitalTemple, CapitalGardens),
-                LinkJson("conn_capital_gardens_approach", CapitalGardens, CapitalPalaceApproach),
-                LinkJson("conn_capital_approach_gallery", CapitalPalaceApproach, CapitalGallery,
-                    MapDirection.North, ConnectionType.AbilityGate, ability: AbilityIds.Grapple),
-                LinkJson("conn_capital_approach_throne", CapitalPalaceApproach, CapitalThroneHall,
-                    type: ConnectionType.Door),
-                // Behind breakable walls: three blows open each for good (item 4, stage B).
-                LinkJson("conn_capital_nest_cache", CapitalBellNest, CapitalRoofCache),
-                LinkJson("conn_capital_gallery_treasury", CapitalGallery, CapitalHiddenTreasury,
-                    MapDirection.West),
                 // East of the throne the road goes on, sealed: what lies there is the ending's.
                 LinkJson("conn_capital_throne_beyond", CapitalThroneHall, BeyondCapital,
                     type: ConnectionType.Gate, boss: CapitalKingBossId, future: true)
@@ -188,13 +158,8 @@ namespace ForgottenKingdom.EditorTools
 
             json.Append("\"_checkpoints\":[").Append(string.Join(",", tomb.altars)).Append(",")
                 .Append(string.Join(",", forest.altars)).Append(",")
-                .Append(string.Join(",", village.altars)).Append(",").Append(string.Join(",", new[]
-            {
-                AltarJson("capital-gate", "Вівтар міської брами", CapitalZoneId, CapitalCityGate),
-                AltarJson("capital-temple", "Храмовий вівтар", CapitalZoneId, CapitalTemple),
-                AltarJson("capital-palace", "Вівтар біля палацу", CapitalZoneId,
-                    CapitalPalaceApproach)
-            })).Append("],");
+                .Append(string.Join(",", village.altars)).Append(",")
+                .Append(string.Join(",", capital.altars)).Append("],");
 
             json.Append("\"_abilities\":[").Append(string.Join(",", new[]
             {

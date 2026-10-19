@@ -106,13 +106,18 @@ namespace ForgottenKingdom.Tests
             yield return Place(road);
 
             GameTimeScale.SetBaseScale(4f);
-            yield return Walk(+1, 543f, "east through the capital to the sealed road beyond the throne",
+            // Since item 6a the capital is built from its text too, its main path (over the tower's
+            // bridge to the throne) proven by LevelCheck with the hero's own movement; the walk keeps
+            // the stretch the old road feeds, to the bell tower's door.
+            yield return Walk(+1, CapitalScene.Room("room_capital_angel_square").xMax - 2f,
+                "east along the capital's upper tier to the bell tower's door",
                 pullWinches: false);
-            Assert.That(_world.CurrentAreaId, Is.EqualTo("room_capital_throne_hall"));
+            Assert.That(_world.CurrentAreaId, Is.EqualTo("room_capital_angel_square"));
 
             yield return Walk(-1, road.x, "back west to the old road by the forest's bars", pullWinches: false);
             Assert.That(_world.CurrentZoneId, Is.EqualTo("zone_ashen_capital"));
-            foreach (var area in _progress.World.Areas.Where(a => !a.IsOptional && a.ZoneId == "zone_ashen_capital"))
+            foreach (var area in _progress.World.Areas.Where(a => !a.IsOptional && a.ZoneId == "zone_ashen_capital"
+                && CapitalScene.Room(a.AreaId).xMax <= CapitalScene.Room("room_capital_angel_square").xMax))
             {
                 Assert.That(_progress.IsAreaDiscovered(area.AreaId), Is.True,
                     $"The walk passed through {area.AreaId}, so the map has it.");

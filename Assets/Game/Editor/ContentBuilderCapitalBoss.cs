@@ -260,7 +260,7 @@ namespace ForgottenKingdom.EditorTools
         /// hero. His death opens it again and hands over the seal and the coin.
         /// </summary>
         private static void BuildKingEncounter(Transform section, GameObject barrier, GameProgress progress,
-            PlayerRespawner respawner)
+            PlayerRespawner respawner, Vector2 kingAt, Vector2 triggerAt)
         {
             var prefab = AssetDatabase.LoadAssetAtPath<GameObject>($"{PrefabFolder}/{KingPrefabName}.prefab");
             if (prefab == null)
@@ -271,11 +271,11 @@ namespace ForgottenKingdom.EditorTools
 
             var king = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
             king.transform.SetParent(section);
-            king.transform.position = new Vector2(536f, 1.4f);
+            king.transform.position = kingAt;
 
             var encounterObject = new GameObject("KingEncounter");
             encounterObject.transform.SetParent(section);
-            encounterObject.transform.position = new Vector2(516f, 2f);
+            encounterObject.transform.position = triggerAt;
             var trigger = encounterObject.AddComponent<BoxCollider2D>();
             trigger.isTrigger = true;
             trigger.size = new Vector2(3f, 6f);

@@ -33,10 +33,8 @@ namespace ForgottenKingdom.EditorTools
         }
 
         /// <summary>Each lies on the same shelf as the pocket's find, a step to its side.</summary>
-        private static readonly ShardSpot[] PocketShards =
-        {
-            new ShardSpot(new Vector2(423.3f, 8.8f), VesselKind.Health, "capital-bell-nest")
-        };
+        /// <summary>Every zone's pockets come from its text now (the Capital's too, item 6a); none left here.</summary>
+        private static readonly ShardSpot[] PocketShards = System.Array.Empty<ShardSpot>();
 
         private enum RoomSide { West, East }
 
@@ -75,13 +73,7 @@ namespace ForgottenKingdom.EditorTools
         /// room's floor is at least four units over the ground below, so no jump from the main
         /// path meets its underside. Zones: 0 the Tomb, 1 the Forest, 2 the Capital.
         /// </summary>
-        private static readonly SecretRoom[] SecretRooms =
-        {
-            // East of the bell nest (421..424, 8.2).
-            new SecretRoom(CapitalRoofCache, 2, 424.5f, 428.5f, 8.2f, RoomSide.West, VesselKind.Mana),
-            // West of the royal gallery (495..509, 6.8).
-            new SecretRoom(CapitalHiddenTreasury, 2, 490.5f, 494.5f, 6.8f, RoomSide.East, VesselKind.Health)
-        };
+        private static readonly SecretRoom[] SecretRooms = System.Array.Empty<SecretRoom>();
 
         /// <summary>The whole layer, from nothing; run inside a world opened whole.</summary>
         public static void BuildExploration()
@@ -103,10 +95,12 @@ namespace ForgottenKingdom.EditorTools
             var tomb = level.transform.Find(TombRootName);
             var forest = level.transform.Find(ForestRootName);
             var village = level.transform.Find(VillageRootName);
+            var capital = level.transform.Find(CapitalRootName);
             foreach (var find in Object.FindObjectsByType<WorldPickup>(FindObjectsInactive.Include))
             {
                 if ((tomb != null && find.transform.IsChildOf(tomb)) || (forest != null && find.transform.IsChildOf(forest))
-                    || (village != null && find.transform.IsChildOf(village)))
+                    || (village != null && find.transform.IsChildOf(village))
+                    || (capital != null && find.transform.IsChildOf(capital)))
                 {
                     continue;
                 }

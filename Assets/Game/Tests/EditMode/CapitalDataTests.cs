@@ -24,7 +24,7 @@ namespace ForgottenKingdom.Tests
         }
 
         [Test]
-        public void TheCapitalIsABuiltZoneOfEightRoomsFourSecretsAndThreeAltars()
+        public void TheCapitalIsABuiltZoneOfThreeTiersFiveSecretsAndThreeAltars()
         {
             var zone = _graph.Zone(Capital);
             Assert.That(zone, Is.Not.Null);
@@ -33,10 +33,13 @@ namespace ForgottenKingdom.Tests
             Assert.That(zone.ContentScene, Is.EqualTo("Zone_Capital"));
 
             var areas = _graph.AreasIn(Capital);
-            Assert.That(areas.Count(a => !a.IsOptional), Is.EqualTo(8));
+            // Since item 6a it is built from its text by the user's map (Levels/capital.txt): eighteen
+            // rooms on three tiers round the bell tower, the main path along the upper one.
+            Assert.That(areas.Count, Is.EqualTo(18));
+            Assert.That(areas.Count(a => !a.IsOptional), Is.EqualTo(6));
             Assert.That(areas.Where(a => a.IsSecret).Select(a => a.RequiredAbilityId),
-                Is.EquivalentTo(new[] { AbilityIds.AirDash, AbilityIds.Grapple, string.Empty, string.Empty }),
-                "Two behind abilities, two behind breakable walls (item 4).");
+                Is.EquivalentTo(new[] { AbilityIds.Grapple, AbilityIds.Grapple, string.Empty, string.Empty, string.Empty }),
+                "The royal gallery behind the grapple and the treasury past it; three behind breakable walls alone.");
             Assert.That(_graph.Checkpoints.Count(c => c.ZoneId == Capital), Is.EqualTo(3));
             Assert.That(areas.Single(a => a.IsBossArena).BossId, Is.EqualTo(King));
         }

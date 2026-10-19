@@ -82,7 +82,7 @@ namespace ForgottenKingdom.Tests
                 .Where(n => n.Definition != null && n.Definition.NpcId == "gnat" && n.IsPresent)
                 .ToList();
             Assert.That(gnat.Count, Is.EqualTo(1));
-            Assert.That(gnat[0].transform.position.x, Is.InRange(345f, 372f), "By the city gate.");
+            Assert.That(gnat[0].transform.position.x, Is.InRange(CapitalScene.Room("room_capital_city_gate").xMin, CapitalScene.Room("room_capital_city_gate").xMax), "By the city gate.");
         }
     }
 }

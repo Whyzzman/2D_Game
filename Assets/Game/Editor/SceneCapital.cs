@@ -16,11 +16,15 @@ namespace ForgottenKingdom.EditorTools
         [MenuItem("Forgotten Kingdom/Scene/Apply Ashen Capital")]
         public static void Apply()
         {
+            // Built from its text since item 6a; the old root goes by name inside the build. The scene is
+            // not emptied: the forest's bars and winch on the old road stand in it by place.
             WorldScenes.Edit(() =>
             {
                 ContentBuilder.BuildCapital();
                 ContentBuilder.ConfigureCapitalAtmosphere();
+                ContentBuilder.BuildExploration();
                 SceneNpcs.Build();
+                SceneCharacterLight.Build();
             });
             SceneScreenGrade.Apply();
             SceneMusic.Apply();

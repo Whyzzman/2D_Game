@@ -69,13 +69,18 @@
     {"id":"room_village_bell","art":"village","w":510,"h":255,"boss":true},
     {"id":"room_village_upper_houses","art":"village","w":765,"h":195,"boss":false},
     {"id":"room_village_upper_street","art":"village","w":1230,"h":120,"boss":false},
-    {"id":"room_capital_ash_road","art":"capital","w":382,"h":180,"boss":false},
-    {"id":"room_capital_city_gate","art":"capital","w":382,"h":180,"boss":false},
-    {"id":"room_capital_market","art":"capital","w":458,"h":180,"boss":false},
-    {"id":"room_capital_bell_tower","art":"capital","w":278,"h":180,"boss":false},
-    {"id":"room_capital_temple","art":"capital","w":488,"h":180,"boss":false},
-    {"id":"room_capital_gardens","art":"capital","w":488,"h":180,"boss":false},
-    {"id":"room_capital_palace_approach","art":"capital","w":278,"h":180,"boss":false},
-    {"id":"room_capital_throne_hall","art":"capital","w":472,"h":180,"boss":true}
+    {"id":"room_capital_ash_road","art":"capital","w":390,"h":180,"boss":false},
+    {"id":"room_capital_city_gate","art":"capital","w":510,"h":285,"boss":false},
+    {"id":"room_capital_angel_square","art":"capital","w":585,"h":210,"boss":false},
+    {"id":"room_capital_bell_tower","art":"capital","w":105,"h":945,"boss":false},
+    {"id":"room_capital_palace_approach","art":"capital","w":555,"h":135,"boss":false},
+    {"id":"room_capital_throne_hall","art":"capital","w":495,"h":255,"boss":true},
+    {"id":"room_capital_cathedral_steps","art":"capital","w":390,"h":180,"boss":false},
+    {"id":"room_capital_temple","art":"capital","w":510,"h":240,"boss":false},
+    {"id":"room_capital_market","art":"capital","w":585,"h":210,"boss":false},
+    {"id":"room_capital_gardens","art":"capital","w":555,"h":210,"boss":false},
+    {"id":"room_capital_workshop","art":"capital","w":495,"h":180,"boss":false},
+    {"id":"room_capital_crypts","art":"capital","w":585,"h":210,"boss":false},
+    {"id":"room_capital_cistern","art":"capital","w":765,"h":240,"boss":false}
   ]
 }

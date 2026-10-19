@@ -6,7 +6,9 @@
 
 ROOT="${0:A:h:h:h}"
 OUT="$ROOT/Assets/Game/Art/Map"
-CHROME="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+# Інший Chromium: CHROME=<шлях>; для chrome-headless-shell (малює й при сплячому дисплеї) — HEADLESS=
+CHROME="${CHROME:-/Applications/Google Chrome.app/Contents/MacOS/Google Chrome}"
+HEADLESS="${HEADLESS---headless=new}"
 URL="http://localhost:8123/design/ui/world-map/render.html"
 WHAT="${1:-all}"
 if ! curl -s -o /dev/null "http://localhost:8123/design/ui/world-map/render.html"; then
@@ -19,7 +21,7 @@ PROFILE="$(mktemp -d)"
 shot() { # shot <file> <w> <h> <query>
   # Chrome writes the picture and then may not quit on its own: wait for the file, then stop it.
   rm -f "$1"
-  "$CHROME" --headless=new --disable-gpu --hide-scrollbars --default-background-color=00000000 \
+  "$CHROME" ${=HEADLESS} --disable-gpu --hide-scrollbars --default-background-color=00000000 \
     --user-data-dir="$PROFILE" --no-first-run --no-default-browser-check \
     --window-size="$2,$3" --virtual-time-budget=3000 --screenshot="$1" "$URL?$4" >/dev/null 2>&1 &
   local pid=$! waited=0

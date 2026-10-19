@@ -23,7 +23,7 @@ namespace ForgottenKingdom.EditorTools
             }
         }
 
-        public static readonly float[] InscriptionXs = { -17.5f, 22.5f, 34f, 86f, 212.5f, 319.5f, 508f };
+        public static readonly float[] InscriptionXs = { -17.5f, 22.5f, 34f, 86f, 212.5f, 319.5f, 352f };
 
         private static readonly StoneSpot[] Inscriptions =
         {

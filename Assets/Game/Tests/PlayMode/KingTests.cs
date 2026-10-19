@@ -94,7 +94,8 @@ namespace ForgottenKingdom.Tests
             var king = Object.FindObjectsByType<BossController>().Single(b => b.BossId == King);
             Assert.That(encounter.IsArenaSealed, Is.False);
 
-            _motor.ResetTo(new Vector2(517f, 1f));
+            var hall = CapitalScene.Room("room_capital_throne_hall");
+            _motor.ResetTo(new Vector2(hall.xMin + 7f, hall.yMin + 1.85f));
             yield return Until(() => encounter.IsFightActive, 4f, "Past the threshold, the fight begins.");
             Assert.That(encounter.IsArenaSealed, Is.True, "The hall seals behind the hero.");
 
@@ -158,10 +159,14 @@ namespace ForgottenKingdom.Tests
         [UnityTest]
         public IEnumerator ARingPastItsEndLiftsTheHeroOntoTheRoyalGallery()
         {
-            yield return ClimbByRing(new Vector2(509.5f, 1f), Key.D, Key.A, 7.8f);
-            Assert.That(_player.transform.position.y, Is.GreaterThan(6.8f),
+            // From the approach's high step (Levels/capital.txt) the line reaches the ring hung in the hole
+            // of the vault; the gallery's floor runs either side of the hole.
+            var gallery = CapitalScene.Room("room_capital_royal_gallery");
+            var floor = gallery.yMin + 1f;
+            yield return ClimbByRing(CapitalScene.Ground("gallery-climb"), Key.D, Key.A, floor + 0.9f);
+            Assert.That(_player.transform.position.y, Is.GreaterThan(floor),
                 $"On the gallery, not back on the floor: at {_player.transform.position}.");
-            Assert.That(_player.transform.position.x, Is.InRange(495f, 509.2f));
+            Assert.That(_player.transform.position.x, Is.InRange(gallery.xMin + 1f, gallery.xMax - 1f));
         }
 
         [UnityTest]

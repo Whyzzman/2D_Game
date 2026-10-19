@@ -217,17 +217,27 @@ MonoBehaviour:
     Texture: {fileID: 2800000, guid: 4ec3411aef4ee45d4962dfda136e3015, type: 3}
   - Id: room_capital_city_gate
     Texture: {fileID: 2800000, guid: 13ec9a051f2f043f98366ff0c3385d50, type: 3}
-  - Id: room_capital_market
-    Texture: {fileID: 2800000, guid: 5309fd5ca2e2e415497d5b8d8fa7390f, type: 3}
+  - Id: room_capital_angel_square
+    Texture: {fileID: 2800000, guid: 6d7f27d2def6a41389e8cbfc8987389a, type: 3}
   - Id: room_capital_bell_tower
     Texture: {fileID: 2800000, guid: c035c26236fc34b6eafa0e6a80434624, type: 3}
-  - Id: room_capital_temple
-    Texture: {fileID: 2800000, guid: 79a3e0e4f73d84d5da6dc6d7ad1bea2e, type: 3}
-  - Id: room_capital_gardens
-    Texture: {fileID: 2800000, guid: 1b40d1000b0654c8593504fb21070274, type: 3}
   - Id: room_capital_palace_approach
     Texture: {fileID: 2800000, guid: 12a44626950b343c6837f443357b6940, type: 3}
   - Id: room_capital_throne_hall
     Texture: {fileID: 2800000, guid: 6efcdd2901edb4c0381979b912463125, type: 3}
+  - Id: room_capital_cathedral_steps
+    Texture: {fileID: 2800000, guid: 81413913c2c064077999f610406aaa80, type: 3}
+  - Id: room_capital_temple
+    Texture: {fileID: 2800000, guid: 79a3e0e4f73d84d5da6dc6d7ad1bea2e, type: 3}
+  - Id: room_capital_market
+    Texture: {fileID: 2800000, guid: 5309fd5ca2e2e415497d5b8d8fa7390f, type: 3}
+  - Id: room_capital_gardens
+    Texture: {fileID: 2800000, guid: 1b40d1000b0654c8593504fb21070274, type: 3}
+  - Id: room_capital_workshop
+    Texture: {fileID: 2800000, guid: 13974d76f29ad4afc8024ee4cbc2397f, type: 3}
+  - Id: room_capital_crypts
+    Texture: {fileID: 2800000, guid: 37c63b10ab9bc4215a4e405c5a8b36f1, type: 3}
+  - Id: room_capital_cistern
+    Texture: {fileID: 2800000, guid: 131f0421c1e8e4fbb8667f6bef224869, type: 3}
   _fog: {fileID: 2800000, guid: 91b3a940e917a46a6aa7b9bd0fae3632, type: 3}
   _glow: {fileID: 2800000, guid: 15b96ee5584434f6bb7f4223a097a3bc, type: 3}
