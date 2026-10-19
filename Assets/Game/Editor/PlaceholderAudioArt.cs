@@ -73,8 +73,8 @@ namespace ForgottenKingdom.EditorTools
             DashBurst,  // a burst of air with the cloak fluttering in it
             UiClick,    // a soft wooden tick with a faint ring
             UiUp,       // two notes rising: confirm, open
-            UiDown      // two notes falling: cancel, close
-            Ring        // thin high tone — ringing ears
+            UiDown,     // two notes falling: cancel, close
+            Ring,       // thin high tone — ringing ears
             Heart       // two soft low thumps — a heartbeat
         }
 
@@ -312,9 +312,9 @@ namespace ForgottenKingdom.EditorTools
             new Spec(AudioId.PropBreak, "SFX/World", "sfx_prop_break", Recipe.Crack, 4, 0.32f, 1.35f),
             // ---- the hero falls into shadow (a long low breath); the altar answers (a low chime) ----
             new Spec(AudioId.HeroFall, "SFX/Player", "sfx_player_fall_to_shadow", Recipe.Shadow, 2, 1.8f, 0.42f),
-            new Spec(AudioId.AltarCall, "SFX/World", "sfx_altar_call", Recipe.Chime, 2, 1.6f, 0.5f)
+            new Spec(AudioId.AltarCall, "SFX/World", "sfx_altar_call", Recipe.Chime, 2, 1.6f, 0.5f),
             // ---- ringing ears after a blow to the hero ----
-            new Spec(AudioId.HurtRing, "SFX/Player", "sfx_player_hurt_ring", Recipe.Ring, 2, 0.9f, 1f)
+            new Spec(AudioId.HurtRing, "SFX/Player", "sfx_player_hurt_ring", Recipe.Ring, 2, 0.9f, 1f),
             // ---- the heart at low health: lub-dub, felt more than heard ----
             new Spec(AudioId.Heartbeat, "SFX/Player", "sfx_player_heartbeat", Recipe.Heart, 2, 0.6f, 1f)
         };

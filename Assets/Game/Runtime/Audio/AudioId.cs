@@ -252,9 +252,9 @@ namespace ForgottenKingdom
         PropBreak,
         // ---- the hero's death and return (GAME_FEEL_IDEAS item 22, appended) ----
         HeroFall,
-        AltarCall
+        AltarCall,
         // ---- ringing ears when the hero is hit (GAME_FEEL_IDEAS item 10, appended) ----
-        HurtRing
+        HurtRing,
         // ---- the heart heard at low health (GAME_FEEL_IDEAS item 17, appended) ----
         Heartbeat
     }

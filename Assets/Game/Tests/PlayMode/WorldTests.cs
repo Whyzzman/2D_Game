@@ -295,6 +295,27 @@ namespace ForgottenKingdom.Tests
         }
 
         [UnityTest]
+        public IEnumerator TheForestsCardRisesWithItsThemeNotBefore()
+        {
+            var hud = Object.FindAnyObjectByType<HudController>();
+            yield return Place(new Vector2(55f, 0.85f));
+            yield return Place(new Vector2(70f, 0.85f));
+            var entered = Time.realtimeSinceStartup;
+            var music = MusicDirector.Instance;
+            while (!hud.ZoneTitleText.Contains("ЛІС") && Time.realtimeSinceStartup - entered < 4f)
+            {
+                yield return null;
+            }
+
+            StringAssert.Contains("ЛІС", hud.ZoneTitleText, "The card comes, music or not.");
+            Assert.That(hud.ZoneTitleIsShowing, Is.True);
+            Assert.That(hud.ZoneTitleIsShort, Is.False, "The first visit is the full card.");
+            var waited = Time.realtimeSinceStartup - entered;
+            Assert.That(music == null || music.ThemeArrival("zone_withered_forest") >= 0.3f || waited >= 2.4f,
+                Is.True, "It rose with the forest's theme, or waited no longer than its limit.");
+        }
+
+        [UnityTest]
         public IEnumerator ASavedBeatenGuardianOpensTheDoorBeforeTheFirstFrame()
         {
             _progress.MarkBossDefeated(TombScene.GuardianId);

@@ -33,8 +33,7 @@ namespace ForgottenKingdom
         [SerializeField, Min(0f)] private float _hurtDuckHold = 0.6f;
         [Tooltip("How loud the thin ring over the blow is; 0 leaves only the muffling.")]
         [SerializeField, Range(0f, 1f)] private float _hurtRingVolume = 0.6f;
-        [Tooltip("Frames of the run cycle where a foot lands. Taken from the animation, not a timer.")]
-        [SerializeField] private int[] _footstepFrames = { 0, 3 };
+
         [Header("Coins in a run (GAME_FEEL_IDEAS.md, item 15)")]
         [Tooltip("Seconds between two coins that still continue the rising run.")]
         [SerializeField, Min(0f)] private float _coinChimeWindow = 1f;

@@ -156,9 +156,8 @@ namespace ForgottenKingdom
 
         /// <summary>
         /// The same, with the pitch scaled on top of the event's own variation: a hit climbing in a
-        /// streak (<see cref="HitStreak"/>). 1 is the sound as authored.
-        /// The same, with the pitch scaled on top of the event's own variation: coins collected in
-        /// a run (<see cref="CoinChime"/>). 1 is the sound as authored.
+        /// streak (<see cref="HitStreak"/>) or coins collected in a run (<see cref="CoinChime"/>).
+        /// 1 is the sound as authored.
         /// </summary>
         public static void Play(AudioId id, Vector2 position, float volumeScale, float pitchScale) =>
             Instance?.PlayInternal(id, position, volumeScale, false, pitchScale);
