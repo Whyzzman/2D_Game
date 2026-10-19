@@ -19,6 +19,7 @@ namespace ForgottenKingdom
         private static float _screenShake = 1f;
         private static float _flash = 1f;
         private static float _hitStop = 1f;
+        private static float _haptics = 1f;
 
         /// <summary>0 disables camera shake entirely. Combat stays readable without it.</summary>
         public static float ScreenShakeMultiplier
@@ -42,6 +43,16 @@ namespace ForgottenKingdom
         {
             get => _hitStop;
             set => _hitStop = Mathf.Clamp(value, 0f, 2f);
+        }
+
+        /// <summary>
+        /// Scales the gamepad's rumble (GAME_FEEL_IDEAS.md, item 6). 0 never touches the motors:
+        /// some people find vibration uncomfortable, and some pads are held by people who cannot.
+        /// </summary>
+        public static float HapticsMultiplier
+        {
+            get => _haptics;
+            set => _haptics = Mathf.Clamp01(value);
         }
 
         /// <summary>Turns down everything that moves the camera or the whole screen at once.</summary>
@@ -69,6 +80,7 @@ namespace ForgottenKingdom
             _screenShake = 1f;
             _flash = 1f;
             _hitStop = 1f;
+            _haptics = 1f;
         }
     }
 }

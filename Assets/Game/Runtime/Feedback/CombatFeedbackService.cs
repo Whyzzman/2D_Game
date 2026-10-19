@@ -44,6 +44,7 @@ namespace ForgottenKingdom
         private VfxPool _lights;
         private BossDeathMoment _bossDeath;
         private TelegraphCues _telegraphs;
+        private readonly GamepadRumble _rumble = new GamepadRumble();
         private Transform _root;
 
         // Collected during a frame and applied once at the end of it.
@@ -70,6 +71,8 @@ namespace ForgottenKingdom
 
         /// <summary>Enemy windups being breathed through right now (GAME_FEEL_IDEAS item 12).</summary>
         public int TelegraphsRunning => _telegraphs?.Count ?? 0;
+        /// <summary>The gamepad's rumble, driven by the profiles' haptic strength.</summary>
+        public GamepadRumble Rumble => _rumble;
 
         private void Awake()
         {
@@ -103,6 +106,16 @@ namespace ForgottenKingdom
             Unsubscribe();
             _bossDeath?.Stop();
             _telegraphs?.Clear();
+            _rumble.Stop();
+        }
+
+        private void OnApplicationFocus(bool focused)
+        {
+            // A pad left buzzing while the window is away is the one rumble bug nobody forgives.
+            if (!focused)
+            {
+                _rumble.Stop();
+            }
         }
 
         private void Start()
@@ -184,6 +197,7 @@ namespace ForgottenKingdom
         {
             _bossDeath?.Tick(Time.unscaledDeltaTime);
             _telegraphs?.Tick();
+            _rumble.Tick();
             if (_frameOwner == null)
             {
                 return;
@@ -204,6 +218,9 @@ namespace ForgottenKingdom
             {
                 _flash.Flash(profile.FlashColor, profile.ScreenFlash);
             }
+
+            // One rumble a frame, the owner's: five sparks are still one jolt in the hands.
+            _rumble.Pulse(profile.Haptic);
         }
 
         /// <summary>Drops every running effect. Called on death, respawn and world reset.</summary>
@@ -213,6 +230,7 @@ namespace ForgottenKingdom
             _lights?.ClearAll();
             _shaker?.Clear();
             _flash?.Clear();
+            _rumble.Stop();
             _frameOwner = null;
             _telegraphs?.Clear();
         }
