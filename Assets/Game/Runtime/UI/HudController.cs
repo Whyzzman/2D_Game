@@ -57,6 +57,8 @@ namespace ForgottenKingdom
         [SerializeField] private GameProgress _progress;
         [SerializeField] private WorldState _world;
         [SerializeField] private HudArt _art = new HudArt();
+        [Tooltip("The fog that sweeps across the screen on crossing into another region.")]
+        [SerializeField] private ZoneCurtainSettings _zoneCurtainSettings = new ZoneCurtainSettings();
 
         private readonly Meter _health = new Meter();
         private readonly Meter _manaMeter = new Meter();
@@ -79,6 +81,8 @@ namespace ForgottenKingdom
         private Label _promptText;
         private BossTitleCard _bossTitle;
         private ZoneTitleBanner _zoneTitle;
+        private ZoneCurtain _zoneCurtain;
+        private string _curtainZoneId;
         private InscriptionView _inscription;
         private EndingView _ending;
         private VisualElement _fade;
@@ -253,6 +257,7 @@ namespace ForgottenKingdom
             _prompt = _root.Q("prompt");
             _promptText = _root.Q<Label>("prompt-text");
             _zoneTitle = new ZoneTitleBanner(_root);
+            _zoneCurtain = new ZoneCurtain(_root, _zoneCurtainSettings);
             _bossTitle = new BossTitleCard(_root);
             _fade = _root.Q("fade");
             _death = _root.Q("death");
@@ -329,6 +334,8 @@ namespace ForgottenKingdom
             {
                 if (on) { _world.ZoneTitleRequested += OnZoneTitle; }
                 else { _world.ZoneTitleRequested -= OnZoneTitle; }
+                if (on) { _world.ZoneEntered += OnZoneEntered; _world.Reloaded += OnWorldReloaded; }
+                else { _world.ZoneEntered -= OnZoneEntered; _world.Reloaded -= OnWorldReloaded; }
             }
 
             if (on)
@@ -370,6 +377,7 @@ namespace ForgottenKingdom
             UpdateFade(dt);
             _zoneTitle?.Tick(dt);
             _bossTitle?.Tick(dt);
+            _zoneCurtain?.Tick(dt);
         }
 
         private void UpdateResources(float dt)
@@ -644,6 +652,7 @@ namespace ForgottenKingdom
             // Death owns the centre of the screen: a zone card still fading must not sit on it.
             _zoneTitle?.Hide();
             _bossTitle?.Hide();
+            _zoneCurtain?.Hide();
             _death?.EnableInClassList("death--visible", true);
         }
 
@@ -659,6 +668,33 @@ namespace ForgottenKingdom
                 _zoneTitle?.Show(zone.DisplayName);
             }
         }
+
+        /// <summary>The fog curtain the last region change played, for tests.</summary>
+        public ZoneCurtain ZoneCurtain => _zoneCurtain;
+
+        /// <summary>
+        /// Walking over a border sweeps fog in the colour of the region ahead (GAME_FEEL_IDEAS.md,
+        /// item 19). Not for the first zone of a session or a load, and not under the respawner's
+        /// fade: there the black already covers the change.
+        /// </summary>
+        private void OnZoneEntered(ZoneDefinition zone)
+        {
+            var previous = _curtainZoneId;
+            _curtainZoneId = zone?.ZoneId;
+            if (zone == null || string.IsNullOrEmpty(previous) || previous == zone.ZoneId
+                || (_world != null && _world.IsTransitioning))
+            {
+                return;
+            }
+
+            var heading = _player != null && _player.TryGetComponent<PlayerMotor2D>(out var motor)
+                ? motor.Velocity.x
+                : 1f;
+            _zoneCurtain?.Play(zone.FogTint, heading);
+        }
+
+        /// <summary>A load can put the hero anywhere; that is not a border crossed.</summary>
+        private void OnWorldReloaded() => _curtainZoneId = null;
 
         /// <summary>A vessel shard says how far its vessel is along, where zone names appear.</summary>
         private void OnPickupCollected(WorldPickup pickup)

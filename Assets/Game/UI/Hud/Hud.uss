@@ -475,6 +475,32 @@
     color: rgb(240, 230, 210);
 }
 
+/* ---------- zone curtain (GAME_FEEL_IDEAS.md item 19; ZoneCurtain moves and tints it) ---------- */
+
+.zone-curtain {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    display: none;
+}
+
+.zone-curtain__layer {
+    position: absolute;
+    left: 0;
+    top: -6%;
+    bottom: -6%;
+    width: 150%;
+    opacity: 0;
+    -unity-background-scale-mode: stretch-to-fill;
+}
+
+.zone-curtain__layer--back {
+    width: 210%;
+}
+
 /* ---------- zone title card ---------- */
 
 .zone-title {

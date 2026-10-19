@@ -250,6 +250,51 @@ namespace ForgottenKingdom.Tests
         }
 
         [UnityTest]
+        public IEnumerator CrossingIntoTheForestSweepsFogInTheForestsColour()
+        {
+            var hud = Object.FindAnyObjectByType<HudController>();
+            var graph = _progress.World;
+            Assert.That(graph.Zone("zone_withered_forest").FogTint,
+                Is.Not.EqualTo(graph.Zone("zone_forgotten_tomb").FogTint), "Each region has its own fog.");
+            yield return Place(new Vector2(55f, 0.85f));
+            yield return new WaitForSecondsRealtime(0.3f);
+            Assert.That(_world.CurrentZoneId, Is.EqualTo("zone_forgotten_tomb"));
+            Assert.That(hud.ZoneCurtain.IsPlaying, Is.False, "Standing in the first zone plays nothing.");
+
+            yield return Place(new Vector2(70f, 0.85f));
+            Assert.That(_world.CurrentZoneId, Is.EqualTo("zone_withered_forest"));
+            Assert.That(hud.ZoneCurtain.IsPlaying, Is.True, "The border is marked by the fog.");
+
+            var deadline = Time.realtimeSinceStartup + 3f;
+            while (hud.ZoneCurtain.IsPlaying && Time.realtimeSinceStartup < deadline)
+            {
+                yield return null;
+            }
+
+            Assert.That(hud.ZoneCurtain.IsPlaying, Is.False, "It passes; nothing waits on it.");
+        }
+
+        [UnityTest]
+        public IEnumerator WithReducedMotionTheCurtainIsAPlainFade()
+        {
+            var hud = Object.FindAnyObjectByType<HudController>();
+            FeedbackSettings.ReducedMotion = true;
+            try
+            {
+                yield return Place(new Vector2(55f, 0.85f));
+                yield return Place(new Vector2(70f, 0.85f));
+                Assert.That(hud.ZoneCurtain.IsPlaying, Is.True);
+                var front = hud.GetComponent<UnityEngine.UIElements.UIDocument>().rootVisualElement
+                    .Q("zone-curtain-front");
+                Assert.That(front.style.translate.value.x.value, Is.EqualTo(0f).Within(0.01f), "Nothing slides.");
+            }
+            finally
+            {
+                FeedbackSettings.ResetToDefaults();
+            }
+        }
+
+        [UnityTest]
         public IEnumerator ASavedBeatenGuardianOpensTheDoorBeforeTheFirstFrame()
         {
             _progress.MarkBossDefeated(TombScene.GuardianId);

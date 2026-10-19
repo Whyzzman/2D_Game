@@ -153,6 +153,8 @@ namespace ForgottenKingdom
         [SerializeField] private Color _glow = new Color(1f, 0.82f, 0.48f);
         [Tooltip("The few lines on the region's card.")]
         [SerializeField] private string _description = string.Empty;
+        [Tooltip("The fog that sweeps across the screen on entering the region (ZoneCurtain).")]
+        [SerializeField] private Color _fogTint = new Color(0.36f, 0.42f, 0.5f);
 
         public string ZoneId => _zoneId;
         public string DisplayName => _displayName;
@@ -167,6 +169,7 @@ namespace ForgottenKingdom
         public string Art => _art;
         public Color Glow => _glow;
         public string Description => _description;
+        public Color FogTint => _fogTint;
     }
 
     /// <summary>

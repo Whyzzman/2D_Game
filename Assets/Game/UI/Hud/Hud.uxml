@@ -10,6 +10,12 @@
     <ui:VisualElement name="hud" class="hud" picking-mode="Ignore">
         <ui:VisualElement name="vignette" class="vignette" picking-mode="Ignore" />
 
+        <!-- GAME_FEEL_IDEAS.md item 19: fog in the next region's colour sweeps over the world, under the HUD. -->
+        <ui:VisualElement name="zone-curtain" class="zone-curtain" picking-mode="Ignore">
+            <ui:VisualElement name="zone-curtain-back" class="zone-curtain__layer zone-curtain__layer--back" picking-mode="Ignore" />
+            <ui:VisualElement name="zone-curtain-front" class="zone-curtain__layer" picking-mode="Ignore" />
+        </ui:VisualElement>
+
         <ui:VisualElement name="conditions" class="conditions" picking-mode="Ignore">
             <ui:VisualElement name="status-bleed" class="chip chip--bleed" picking-mode="Ignore">
                 <ui:VisualElement class="chip__icon" picking-mode="Ignore" />
