@@ -69,6 +69,22 @@ namespace ForgottenKingdom.Tests
         }
 
         [UnityTest]
+        public IEnumerator TheThreeBlueSealsAreDoorsThatStayShut()
+        {
+            // Item 6d: the palace's seal behind the King, the Cathedral's in the crypts, the Citadel's in
+            // the cistern (Levels/capital.txt) — shut until their zones exist, whatever is beaten.
+            yield return TestWorld.LoadEveryZone();
+            _progress.MarkBossDefeated("ash-commander");
+            _progress.MarkBossDefeated("ashen-king");
+            yield return null;
+            var seals = Object.FindObjectsByType<PersistentDoor>(FindObjectsInactive.Include)
+                .Where(d => d.name.StartsWith("SealDoor_")).ToArray();
+            Assert.That(seals.Select(d => d.name), Is.EquivalentTo(new[]
+                { "SealDoor_seal-palace", "SealDoor_seal-cathedral", "SealDoor_seal-citadel" }));
+            Assert.That(seals.All(d => !d.IsOpen), Is.True, "No seal opens onto a zone that is not built.");
+        }
+
+        [UnityTest]
         public IEnumerator TheMerchantMovesToTheCityGateOnceTheBellringerFalls()
         {
             _motor.ResetTo(new Vector2(300f, 1f));

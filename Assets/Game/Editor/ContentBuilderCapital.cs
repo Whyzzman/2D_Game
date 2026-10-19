@@ -100,6 +100,8 @@ namespace ForgottenKingdom.EditorTools
         }
 
         private const string CapitalThroneRoom = "room_capital_throne_hall";
+
+        private static GameProgress CapitalLayoutProgress() => Object.FindAnyObjectByType<GameProgress>();
         private const string CapitalKingsRoom = "room_capital_kings_throne";
 
         /// <summary>How the Capital's stone looks: ledges as slabs, walls as masonry, floors as flagstones.</summary>
@@ -165,6 +167,9 @@ namespace ForgottenKingdom.EditorTools
                 if (seal != null)
                 {
                     seal.name = "Seal_" + spot;
+                    // A door that will not open until the zone behind it exists (item 6d).
+                    PlaceDoor(Dressing(room), "SealDoor_" + spot, CapitalSpot(spot) + new Vector2(0f, 1.2f),
+                        RequirementKind.Unavailable, string.Empty, seal, CapitalLayoutProgress());
                     seal.GetComponent<SpriteRenderer>().color = new Color(0.62f, 0.78f, 1f);
                     var host = LightChild(seal.transform, "SealLight", CapitalSpot(spot) + new Vector2(0f, 2.2f));
                     AddLight(host, Light2D.LightType.Point, new Color(0.5f, 0.7f, 1f), 0.8f, 3.6f, 0.3f, 0.6f);

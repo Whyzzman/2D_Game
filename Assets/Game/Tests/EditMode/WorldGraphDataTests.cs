@@ -195,8 +195,16 @@ namespace ForgottenKingdom.Tests
         [Test]
         public void TheFutureRoadIsSealedNamelessAndCannotBeTravelledTo()
         {
-            var future = _graph.Connections.Single(c => c.IsFuture);
+            var future = _graph.Connections.Single(c => c.IsFuture && c.ToAreaId == "room_beyond_capital");
             var beyond = _graph.Area(future.ToAreaId);
+            // The capital's three blue seals (item 6d): the palace's road past the King, the Cathedral's and
+            // the Citadel's — every one sealed and nameless.
+            Assert.That(_graph.Connections.Count(c => c.IsFuture), Is.EqualTo(3));
+            foreach (var road in _graph.Connections.Where(c => c.IsFuture))
+            {
+                Assert.That(_graph.Zone(_graph.Area(road.ToAreaId).ZoneId).IsImplemented, Is.False);
+                Assert.That(_graph.Area(road.ToAreaId).DisplayName, Is.Empty);
+            }
             Assert.That(_graph.Zone(beyond.ZoneId).IsImplemented, Is.False);
             Assert.That(beyond.DisplayName, Is.Empty, "No spoiler for a region that is not built.");
             Assert.That(future.RequiredBossId, Is.EqualTo(King));
@@ -501,7 +509,7 @@ namespace ForgottenKingdom.Tests
             // Since item 6b the road beyond runs from the King's throne, past the Commander's hall.
             var view = Map(data, "room_capital_kings_throne");
 
-            var future = view.Links.Single(l => l.Connection.IsFuture);
+            var future = view.Links.Single(l => l.Connection.IsFuture && l.Connection.ToAreaId == "room_beyond_capital");
             Assert.That(future.State, Is.EqualTo(MapLinkState.Sealed));
             Assert.That(view.Node("room_beyond_capital").Label, Is.Empty);
             Assert.That(view.Links.Single(l => l.Connection.ConnectionId == "conn_forest_to_village")

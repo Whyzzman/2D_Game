@@ -38,6 +38,8 @@ namespace ForgottenKingdom.EditorTools
         private const string CapitalThroneHall = "room_capital_throne_hall";
         private const string CapitalGallery = "room_capital_royal_gallery";
         private const string BeyondCapital = "room_beyond_capital";
+        private const string BeyondCathedral = "room_beyond_cathedral";
+        private const string BeyondCitadel = "room_beyond_citadel";
         // Rooms behind breakable walls (item 4, stage B).
         private const string CapitalRoofCache = "room_capital_roof_cache";
         private const string CapitalHiddenTreasury = "room_capital_hidden_treasury";
@@ -131,7 +133,15 @@ namespace ForgottenKingdom.EditorTools
             {
                 AreaJson(BeyondCapital, FutureZoneId, string.Empty,
                     new Vector2(536f * MapScale, 0f), new Vector2(0.8f, 1.2f),
-                    Rect.MinMaxRect(530f, 0.5f, 542f, 18.5f), optional: true)
+                    Rect.MinMaxRect(530f, 0.5f, 542f, 18.5f), optional: true),
+                // Behind the capital's other two blue seals (item 6d): down from the crypts to the
+                // Sunken Cathedral, east from the cistern to the Iron Citadel — sealed until they are built.
+                AreaJson(BeyondCathedral, CathedralZoneId, string.Empty,
+                    new Vector2(386f, -49.5f) * MapScale, new Vector2(0.8f, 1.2f),
+                    Rect.MinMaxRect(380f, -56f, 392f, -43f), optional: true),
+                AreaJson(BeyondCitadel, CitadelZoneId, string.Empty,
+                    new Vector2(486f, -33f) * MapScale, new Vector2(0.8f, 1.2f),
+                    Rect.MinMaxRect(480f, -41.5f, 492f, -24.5f), optional: true)
             })).Append("],");
 
             json.Append("\"_connections\":[").Append(string.Join(",", tomb.links)).Append(",")
@@ -153,7 +163,11 @@ namespace ForgottenKingdom.EditorTools
                     type: ConnectionType.Shortcut, shortcut: CapitalRoadShortcut, openedFrom: CapitalAshRoad),
                 // East of the throne the road goes on, sealed: what lies there is the ending's.
                 LinkJson("conn_capital_throne_beyond", "room_capital_kings_throne", BeyondCapital,
-                    type: ConnectionType.Gate, boss: CapitalKingBossId, future: true)
+                    type: ConnectionType.Gate, boss: CapitalKingBossId, future: true),
+                LinkJson("conn_capital_crypts_cathedral", "room_capital_crypts", BeyondCathedral,
+                    MapDirection.South, ConnectionType.Gate, future: true),
+                LinkJson("conn_capital_cistern_citadel", "room_capital_cistern", BeyondCitadel,
+                    type: ConnectionType.Gate, future: true)
             })).Append("],");
 
             json.Append("\"_checkpoints\":[").Append(string.Join(",", tomb.altars)).Append(",")

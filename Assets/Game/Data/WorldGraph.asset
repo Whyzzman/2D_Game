@@ -2082,6 +2082,40 @@ MonoBehaviour:
     _requiredAbilityId: 
     _iconType: 0
     _bossId: 
+  - _areaId: room_beyond_cathedral
+    _zoneId: zone_sunken_cathedral
+    _displayName: 
+    _mapPosition: {x: 38.6, y: -4.95}
+    _mapSize: {x: 0.8, y: 1.2}
+    _worldBounds:
+      serializedVersion: 2
+      x: 380
+      y: -56
+      width: 12
+      height: 13
+    _isSecret: 0
+    _isOptional: 1
+    _discoveryRule: 0
+    _requiredAbilityId: 
+    _iconType: 0
+    _bossId: 
+  - _areaId: room_beyond_citadel
+    _zoneId: zone_iron_citadel
+    _displayName: 
+    _mapPosition: {x: 48.6, y: -3.3}
+    _mapSize: {x: 0.8, y: 1.2}
+    _worldBounds:
+      serializedVersion: 2
+      x: 480
+      y: -41.5
+      width: 12
+      height: 17
+    _isSecret: 0
+    _isOptional: 1
+    _discoveryRule: 0
+    _requiredAbilityId: 
+    _iconType: 0
+    _bossId: 
   _connections:
   - _connectionId: conn_tomb_entrance_guard_passage
     _fromAreaId: room_tomb_entrance
@@ -3652,6 +3686,32 @@ MonoBehaviour:
     _requiredAbilityId: 
     _requiredProgressionId: 
     _requiredBossId: ashen-king
+    _isShortcut: 0
+    _persistentUnlockId: 
+    _openedFromAreaId: 
+    _isFuture: 1
+  - _connectionId: conn_capital_crypts_cathedral
+    _fromAreaId: room_capital_crypts
+    _toAreaId: room_beyond_cathedral
+    _direction: 3
+    _type: 2
+    _isBidirectional: 1
+    _requiredAbilityId: 
+    _requiredProgressionId: 
+    _requiredBossId: 
+    _isShortcut: 0
+    _persistentUnlockId: 
+    _openedFromAreaId: 
+    _isFuture: 1
+  - _connectionId: conn_capital_cistern_citadel
+    _fromAreaId: room_capital_cistern
+    _toAreaId: room_beyond_citadel
+    _direction: 0
+    _type: 2
+    _isBidirectional: 1
+    _requiredAbilityId: 
+    _requiredProgressionId: 
+    _requiredBossId: 
     _isShortcut: 0
     _persistentUnlockId: 
     _openedFromAreaId: 
