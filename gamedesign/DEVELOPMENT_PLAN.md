@@ -97,6 +97,22 @@
 | `cloud/music` | длиннее петли, виолончель, воздух, реверберация, тремоло, кроссфейд равной мощности | `MUSIC_SYSTEM.md` §4б |
 | `cloud/ambience` | туман, мягкие лучи, светлячки, жар в каждой зоне | `ENVIRONMENT_TOMB.md` §10а |
 | `cloud/hud` | живые полосы, вспышка удара, нарисованные фляги, стопка монет | `UI_UX_GUIDE.md` §2а |
+| `cloud/camera-look` | взгляд вверх/вниз удержанием 0,4 с | `GAME_FEEL_IDEAS.md` № 1 |
+| `cloud/haptics` | вибрация геймпада из профилей, настройка «Вибрація» | `GAME_FEEL_IDEAS.md` № 6 |
+| `cloud/hit-pitch` | серия попаданий растёт тоном | `GAME_FEEL_IDEAS.md` № 8 |
+| `cloud/zone-marsh` | текст уровня Болот (черновик, ждёт `LevelCheck`) | `MARSH.md` |
+| `cloud/hero-death` | смерть героя: замедление, тело уходит тенями, голос алтаря | `GAME_FEEL_IDEAS.md` № 22 |
+| `cloud/mana-wisp` | искра маны от врага к полосе | `GAME_FEEL_IDEAS.md` № 5 |
+| `cloud/surfaces` | шаги и пыль по поверхности (камень, дерево, земля, вода, пепел) | `GAME_FEEL_IDEAS.md` № 4 |
+| `cloud/world-react` | качаются цепи и корни, огни дрожат от рывка, пыль с потолка, 22 урны с монетами | `GAME_FEEL_IDEAS.md` № 13–14 |
+| `cloud/boss-death` | смерть босса с замедлением и светом из трещин; «вдох» и блик за 0,2 с до удара врага | `GAME_FEEL_IDEAS.md` № 11–12 |
+
+Пересечения последних веток (2026-10-19): все добавляют значения в конец `AudioId` — при слиянии
+поставить их друг за другом, ни одно не терять (генератор пересоберёт события); `hero-death` и
+`boss-death` оба занимают `GameTimeScale.SetBaseScale` и отдают его, только если он не изменился;
+`surfaces` и `world-react` правят `MovementFeedback.OnLanded` и `ContentBuilderLevels.BuildLayout`;
+`mana-wisp` и `world-react` — `WeaponManaGain`; `surfaces` и `boss-death` — `CombatFeedbackService`.
+После `world-react` и `surfaces`: `Build` → `Scene*.Apply` зон из текста → `SceneReactive.Apply`.
 
 Дальше по ощущению игры — `GAME_FEEL_IDEAS.md` (23 пункта по пользе).
 
