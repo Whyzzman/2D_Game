@@ -108,6 +108,7 @@ namespace ForgottenKingdom
         private ShopView _shop;
         private AbilityCard _abilityCard;
         private HudKeyGlyphs _keyGlyphs;
+        private HudManaWisps _manaWisps;
         private VisualElement _flasks;
         private VisualElement _flaskRow;
         private readonly System.Collections.Generic.List<VisualElement> _flaskIcons =
@@ -128,6 +129,9 @@ namespace ForgottenKingdom
         public InscriptionView InscriptionPanel => _inscription;
         public EndingView Ending => _ending;
         public ShopView Shop => _shop;
+
+        /// <summary>The sparks that carry a swing's mana to the bar.</summary>
+        public HudManaWisps ManaWisps => _manaWisps;
 
         /// <summary>The "ability gained" card; it shares this document.</summary>
         public AbilityCard AbilityCard => _abilityCard;
@@ -183,6 +187,7 @@ namespace ForgottenKingdom
             _pause = new PauseMenu(_root, _inventory, _map, _shrine, _dialogue, _shop, _ending);
             _pause.Attach(_player, _progress);
             _keyGlyphs = new HudKeyGlyphs(_root);
+            _manaWisps = new HudManaWisps(_root, _player != null ? _player.GetComponent<WeaponManaGain>() : null);
             _abilityCard = new AbilityCard(_root);
             _abilityCard.Attach(_player, _progress);
             _flasks = _root.Q("flasks");
@@ -204,6 +209,8 @@ namespace ForgottenKingdom
             _ending?.Detach();
             _abilityCard?.Detach();
             _keyGlyphs?.Dispose();
+            _manaWisps?.Dispose();
+            _manaWisps = null;
         }
 
         private void Start()
@@ -362,6 +369,7 @@ namespace ForgottenKingdom
             _abilityCard?.Tick();
             var dt = Time.unscaledDeltaTime;
             UpdateResources(dt);
+            _manaWisps?.Tick(dt);
             UpdateFlasks();
             UpdateBoss(dt);
             UpdateLoadout();

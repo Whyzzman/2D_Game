@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace ForgottenKingdom
@@ -24,6 +25,12 @@ namespace ForgottenKingdom
 
         public float PerHit => _perHit;
         public float PerHeavyHit => _perHeavyHit;
+
+        /// <summary>
+        /// A swing paid mana: where it came from in the world and how much. The HUD draws the
+        /// payment travelling to the bar (GAME_FEEL_IDEAS item 5); nothing here waits for it.
+        /// </summary>
+        public event Action<Vector2, float> ManaPaid;
 
         private void Awake()
         {
@@ -56,7 +63,15 @@ namespace ForgottenKingdom
             if (amount > 0f)
             {
                 _mana.Restore(amount);
+                ManaPaid?.Invoke(Source(target), amount);
             }
+        }
+
+        /// <summary>The middle of what was struck, not its feet: the payment leaves the body.</summary>
+        private static Vector2 Source(CombatActor target)
+        {
+            var body = target.GetComponent<Collider2D>();
+            return body != null ? (Vector2)body.bounds.center : (Vector2)target.transform.position;
         }
 
         /// <summary>What one landed swing pays: nothing for a hit the target ignored or turned.</summary>
