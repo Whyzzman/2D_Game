@@ -41,6 +41,12 @@ namespace ForgottenKingdom
         [SerializeField, Min(0f)] private float _secondWindCooldown = 30f;
         [Tooltip("How long a pressed action keeps waiting for the current action to end.")]
         [SerializeField, Min(0f)] private float _inputBufferTime = 0.15f;
+        [Tooltip("An attack pressed in this last stretch of a dash waits for the dash to end and "
+            + "then swings at once, however long the stretch is next to the buffer.")]
+        [SerializeField, Min(0f)] private float _dashTailAttackWindow = 0.15f;
+        [Tooltip("How long past the dash's end such a press still waits: covers the physics step "
+            + "the dash may take to be seen as over.")]
+        [SerializeField, Min(0f)] private float _dashTailAttackGrace = 0.05f;
         [SerializeField, Min(0f)] private float _hurtDuration = 0.28f;
         [SerializeField, Min(0f)] private float _deathDelay = 1.2f;
         [Tooltip("Share of normal speed kept while the guard is up.")]
@@ -321,8 +327,13 @@ namespace ForgottenKingdom
         private void BufferPresses(in CombatInput input)
         {
             var until = Time.time + _inputBufferTime;
-            if (input.IsLightAttackPressed) { _bufferedLightUntil = until; }
-            if (input.IsHeavyAttackPressed) { _bufferedHeavyUntil = until; }
+            var dashRemaining = _motor.IsDashing
+                ? _motor.DashSettings.DashDuration - _motor.DashElapsed
+                : 0f;
+            var attackUntil = AttackBuffer.WaitsUntil(Time.time, _inputBufferTime, dashRemaining,
+                _dashTailAttackWindow, _dashTailAttackGrace);
+            if (input.IsLightAttackPressed) { _bufferedLightUntil = attackUntil; }
+            if (input.IsHeavyAttackPressed) { _bufferedHeavyUntil = attackUntil; }
             if (input.IsDashPressed) { _bufferedDashUntil = until; }
         }
 
