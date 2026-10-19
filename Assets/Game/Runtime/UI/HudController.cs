@@ -57,6 +57,8 @@ namespace ForgottenKingdom
         [SerializeField] private GameProgress _progress;
         [SerializeField] private WorldState _world;
         [SerializeField] private HudArt _art = new HudArt();
+        [Tooltip("The zone card's timing and how it waits for the zone's music.")]
+        [SerializeField] private ZoneTitleTiming _zoneTitleTiming = new ZoneTitleTiming();
 
         private readonly Meter _health = new Meter();
         private readonly Meter _manaMeter = new Meter();
@@ -79,6 +81,7 @@ namespace ForgottenKingdom
         private Label _promptText;
         private BossTitleCard _bossTitle;
         private ZoneTitleBanner _zoneTitle;
+        private string _titleZoneId;
         private InscriptionView _inscription;
         private EndingView _ending;
         private VisualElement _fade;
@@ -143,6 +146,8 @@ namespace ForgottenKingdom
         public bool IsDeathShown => _death != null && _death.ClassListContains("death--visible");
         public float FadeAmount => _fadeValue;
         public string ZoneTitleText => _zoneTitle != null ? _zoneTitle.Text : string.Empty;
+        public bool ZoneTitleIsShowing => _zoneTitle != null && _zoneTitle.IsShowing;
+        public bool ZoneTitleIsShort => _zoneTitle != null && _zoneTitle.IsShort;
 
         /// <summary>For tests: the boss title card.</summary>
         public BossTitleCard BossTitle => _bossTitle;
@@ -252,7 +257,7 @@ namespace ForgottenKingdom
             _purse = _root.Q<Label>("purse-value");
             _prompt = _root.Q("prompt");
             _promptText = _root.Q<Label>("prompt-text");
-            _zoneTitle = new ZoneTitleBanner(_root);
+            _zoneTitle = new ZoneTitleBanner(_root, _zoneTitleTiming);
             _bossTitle = new BossTitleCard(_root);
             _fade = _root.Q("fade");
             _death = _root.Q("death");
@@ -329,6 +334,10 @@ namespace ForgottenKingdom
             {
                 if (on) { _world.ZoneTitleRequested += OnZoneTitle; }
                 else { _world.ZoneTitleRequested -= OnZoneTitle; }
+
+                // Return visits get the short card; a load is not a visit (GAME_FEEL_IDEAS.md, item 20).
+                if (on) { _world.ZoneEntered += OnZoneReturned; _world.Reloaded += OnTitlesReloaded; }
+                else { _world.ZoneEntered -= OnZoneReturned; _world.Reloaded -= OnTitlesReloaded; }
             }
 
             if (on)
@@ -652,13 +661,31 @@ namespace ForgottenKingdom
             _death?.EnableInClassList("death--visible", false);
         }
 
+        /// <summary>The first visit: the full card, risen with the zone's theme.</summary>
         private void OnZoneTitle(ZoneDefinition zone)
         {
             if (zone != null)
             {
-                _zoneTitle?.Show(zone.DisplayName);
+                _zoneTitle?.ShowZone(zone.ZoneId, zone.DisplayName, isFirstVisit: true);
             }
         }
+
+        /// <summary>
+        /// Any region change. Queues the short card; on a first visit the title request that follows
+        /// in the same frame upgrades it to the full one. The first zone of a session or a load is
+        /// where the hero already is, not a return, so it gets nothing here.
+        /// </summary>
+        private void OnZoneReturned(ZoneDefinition zone)
+        {
+            var previous = _titleZoneId;
+            _titleZoneId = zone?.ZoneId;
+            if (zone != null && !string.IsNullOrEmpty(previous) && previous != zone.ZoneId)
+            {
+                _zoneTitle?.ShowZone(zone.ZoneId, zone.DisplayName, isFirstVisit: false);
+            }
+        }
+
+        private void OnTitlesReloaded() => _titleZoneId = null;
 
         /// <summary>A vessel shard says how far its vessel is along, where zone names appear.</summary>
         private void OnPickupCollected(WorldPickup pickup)

@@ -126,6 +126,24 @@ namespace ForgottenKingdom
         /// <summary>Raised when the score moves to another region's palette.</summary>
         public event Action<string> ZoneChanged;
 
+        /// <summary>
+        /// How far <paramref name="zoneId"/>'s theme has come in, 0 to 1: the crossfade's progress
+        /// while its track fades in, 1 once it is fully in — or when there is nothing to wait for
+        /// (the zone has no score of its own, it shares the track playing, or nothing plays). The
+        /// zone card waits on this so its name arrives with the first phrase (GAME_FEEL_IDEAS.md,
+        /// item 20).
+        /// </summary>
+        public float ThemeArrival(string zoneId)
+        {
+            if (_palette == null || !string.Equals(_palette.ZoneId, zoneId, StringComparison.Ordinal)
+                || _current == null || _current.clip == null)
+            {
+                return 1f;
+            }
+
+            return _fade;
+        }
+
         /// <summary>Which region's tracks are in use; empty before one is chosen.</summary>
         public string ZoneId => _palette != null ? _palette.ZoneId : string.Empty;
 
