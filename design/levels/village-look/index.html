@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Село — новий вигляд</title>
+<style>
+  :root { --bg: #0e0b0a; --text: #d8cbb4; --muted: #8a7a68; --gold: #d9a25a; }
+  html, body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.5 Georgia, serif; }
+  body.shot { overflow: hidden; }
+  main { max-width: 1280px; margin: 0 auto; padding: 24px 16px 48px; }
+  h1 { font-weight: normal; letter-spacing: .08em; color: var(--gold); margin: 0 0 4px; }
+  p.note { color: var(--muted); margin: 0 0 20px; }
+  figure { margin: 0 0 28px; }
+  figcaption { color: var(--muted); margin-top: 6px; }
+  canvas { width: 100%; height: auto; display: block; border: 1px solid #241c18; }
+  body.shot main { padding: 0; max-width: none; }
+  body.shot h1, body.shot p.note, body.shot figcaption { display: none; }
+  body.shot figure { margin: 0; }
+  body.shot canvas { border: 0; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Зів'ялий Село — новий вигляд</h1>
+  <p class="note">Макет кадру гри (камера 32 × 18 юнітів), тим самим способом, що й погоджені Гробниця та Ліс: органічні маси, світлий кант там, де можна стояти, плани глибини. Село — присмерк із жаром над Столицею внизу, темне дерево й глина, солома, бронза дзвону; тепле світло лише у вікнах, де ще горить свічка.</p>
+  <figure id="f-square"><canvas id="square" width="1920" height="1080"></canvas>
+    <figcaption>Площа з колодязем: хати з провислою соломою, дзвіниця проти жаркого неба, дим зі Столиці; дерев'яні помости й дахи — уступи.</figcaption></figure>
+  <figure id="f-church"><canvas id="church" width="1920" height="1080"></canvas>
+    <figcaption>Церква: кам'яна нава, розбитий вітраж із теплим світлом, свічки біля вівтаря, лави й балки — уступи.</figcaption></figure>
+</main>
+<script src="../tomb-look/paint.js"></script>
+<script src="../forest-look/forest.js"></script>
+<script src="village.js"></script>
+<script src="scenes.js"></script>
+</body>
+</html>
