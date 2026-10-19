@@ -34,6 +34,8 @@ namespace ForgottenKingdom
         private float _decayPerSecond;
         private float _verticalBias = 1f;
         private float _seed;
+        private float _startAmplitude;
+        private Vector2 _kick;
 
         public Vector2 CurrentOffset { get; private set; }
 
@@ -46,7 +48,17 @@ namespace ForgottenKingdom
         /// Requests a shake. A weaker request while a stronger one is still running is ignored
         /// rather than added: that is what keeps a burst of small hits from compounding.
         /// </summary>
-        public void Shake(ShakeProfile profile, float scale = 1f, float verticalBias = 1f)
+        public void Shake(ShakeProfile profile, float scale = 1f, float verticalBias = 1f) =>
+            Shake(profile, scale, verticalBias, Vector2.zero, 0f);
+
+        /// <summary>
+        /// The same request with a push: <paramref name="kick"/> of the shake goes into one shove
+        /// along <paramref name="direction"/> that fades out quicker than the tremble, so a blow to
+        /// the right nudges the view right before it settles (COMBAT_FEEDBACK.md §6а). The rest is
+        /// the usual tremble; the clamp covers both.
+        /// </summary>
+        public void Shake(ShakeProfile profile, float scale, float verticalBias, Vector2 direction,
+            float kick)
         {
             var (amplitude, duration) = Tier(profile);
             amplitude *= Mathf.Max(0f, scale) * FeedbackSettings.ScreenShakeMultiplier;
@@ -61,8 +73,10 @@ namespace ForgottenKingdom
             }
 
             _amplitude = Mathf.Min(amplitude, _maximumOffset);
+            _startAmplitude = _amplitude;
             _decayPerSecond = _amplitude / duration;
             _verticalBias = Mathf.Max(0f, verticalBias);
+            _kick = direction.sqrMagnitude > 0.0001f ? direction.normalized * Mathf.Clamp01(kick) : Vector2.zero;
         }
 
         /// <summary>
@@ -95,14 +109,20 @@ namespace ForgottenKingdom
             var time = Time.unscaledTime * _frequency;
             var x = (Mathf.PerlinNoise(_seed, time) - 0.5f) * 2f;
             var y = (Mathf.PerlinNoise(_seed + 37f, time) - 0.5f) * 2f * _verticalBias;
-            CurrentOffset = Vector2.ClampMagnitude(new Vector2(x, y) * _amplitude, _maximumOffset);
+            // The push fades with the square of the remaining shake: a shove, then the tremble.
+            var life = _startAmplitude > 0f ? _amplitude / _startAmplitude : 0f;
+            var tremble = new Vector2(x, y) * _amplitude * (1f - _kick.magnitude * 0.5f);
+            var push = _kick * _startAmplitude * life * life;
+            CurrentOffset = Vector2.ClampMagnitude(tremble + push, _maximumOffset);
         }
 
         /// <summary>Drops any shake instantly; used on death, respawn and scene changes.</summary>
         public void Clear()
         {
             _amplitude = 0f;
+            _startAmplitude = 0f;
             _decayPerSecond = 0f;
+            _kick = Vector2.zero;
             CurrentOffset = Vector2.zero;
         }
 

@@ -8,17 +8,17 @@ namespace ForgottenKingdom
     /// to land and lie where it fell.
     ///
     /// The slide is measured in distance, not speed: a sword and a greatsword both come out
-    /// between half a unit and just under one, so a heavier weapon reads heavier without punting
+    /// between 0.6 of a unit and just under one (raised from 0.5–0.9 on 2026-10-19, combat feel), so a heavier weapon reads heavier without punting
     /// enemies out of reach of the next swing. Split out of <see cref="EnemyController"/>, which
     /// keeps the decisions; this only moves the body.
     /// </summary>
     public sealed class EnemyKnockback
     {
         /// <summary>The slide of the lightest blow.</summary>
-        public const float MinimumSlide = 0.5f;
+        public const float MinimumSlide = 0.6f;
 
         /// <summary>The slide of the heaviest blow; kept under one unit so combos still connect.</summary>
-        public const float MaximumSlide = 0.9f;
+        public const float MaximumSlide = 0.95f;
 
         /// <summary>How long the slide lasts; the enemy acts again when it ends.</summary>
         public const float SlideTime = 0.16f;
