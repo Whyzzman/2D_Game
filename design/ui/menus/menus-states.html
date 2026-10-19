@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<title>Тінь Забутого Королівства — Меню</title>
+<link rel="stylesheet" href="../_shared/ui.css">
+<style>
+  body { background: #050403; }
+  .sheet { display: flex; flex-wrap: wrap; gap: 28px; padding: 28px; }
+  .frame { position: relative; width: 912px; height: 513px; overflow: hidden; border: 1px solid var(--edge-mid); }
+  .frame > .stage-inner { position: absolute; width: 1920px; height: 1080px; transform: scale(0.475); transform-origin: top left; }
+  .frame__caption {
+    position: absolute; left: 0; right: 0; bottom: 0; z-index: 5;
+    padding: 6px 10px;
+    font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--gold-dim); background: rgba(5,4,3,0.88);
+    border-top: 1px solid var(--edge-mid);
+  }
+
+  /* Головне меню: титул, вертикальний список, тиха службова інформація. */
+  .title-screen { position: absolute; inset: 0; display: grid; place-items: center; }
+  .title-screen__art {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(60% 50% at 50% 38%, rgba(138,116,52,0.14) 0%, transparent 70%),
+      radial-gradient(120% 90% at 50% 10%, #241f19 0%, #100d0b 55%, #060504 100%);
+  }
+  .game-title {
+    position: relative;
+    font-family: var(--font-display);
+    font-size: 78px; letter-spacing: 0.1em; line-height: 1.1;
+    text-align: center; color: var(--ink-bright);
+    text-shadow: 0 6px 34px rgba(0,0,0,0.9), 0 0 60px rgba(138,116,52,0.25);
+    margin: 0 0 var(--s7);
+  }
+  .game-title small { display: block; font-size: 24px; letter-spacing: 0.34em; color: var(--gold-dim); margin-top: var(--s3); }
+  .menu-list { position: relative; display: flex; flex-direction: column; gap: var(--s3); width: 400px; }
+  .menu-list .btn { width: 100%; font-family: var(--font-display); letter-spacing: 0.14em; text-transform: uppercase; }
+  .save-meta {
+    position: absolute; left: 64px; bottom: 56px;
+    font-size: var(--fs-small); color: var(--ink-dim); line-height: 1.7;
+  }
+  .save-meta b { color: var(--ink-muted); font-weight: 500; }
+  .build-tag { position: absolute; right: 64px; bottom: 56px; font-size: var(--fs-micro); color: var(--ink-dim); }
+
+  /* Пауза: та сама панель, поверх кадру гри. */
+  .pause { position: absolute; inset: 0; display: grid; place-items: center; }
+  .pause__panel { width: 520px; }
+  .pause__panel .btn { width: 100%; font-family: var(--font-display); letter-spacing: 0.12em; text-transform: uppercase; }
+
+  .option-row {
+    display: grid; grid-template-columns: 1fr 260px 64px;
+    align-items: center; gap: var(--s4);
+    padding: var(--s3) 0;
+    border-bottom: 1px solid rgba(58,47,37,0.6);
+  }
+  .option-row.is-focused { background: linear-gradient(90deg, rgba(138,116,52,0.14), transparent); box-shadow: inset 2px 0 0 var(--gold); }
+  .option-row__name { display: flex; flex-direction: column; gap: 2px; }
+  .option-row__name b { font-weight: 500; color: var(--ink-bright); }
+  .option-row__name span { font-size: var(--fs-micro); color: var(--ink-dim); }
+  .option-row__value { text-align: right; font-variant-numeric: tabular-nums; color: var(--gold-bright); }
+
+  .track { position: relative; height: 8px; background: var(--surface-sunken); border: 1px solid var(--edge-dark); }
+  .track__fill { position: absolute; inset: 0 auto 0 0; background: linear-gradient(180deg, var(--gold), var(--gold-dim)); }
+  .track__knob {
+    position: absolute; top: 50%; width: 14px; height: 18px;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(180deg, #4a4030, #201a14);
+    border: 1px solid var(--edge-light);
+  }
+
+  .toggle { display: flex; gap: var(--s1); }
+  .toggle button {
+    flex: 1; padding: var(--s1) var(--s2);
+    font-size: var(--fs-micro); color: var(--ink-muted);
+    background: var(--surface-sunken); border: 1px solid var(--edge-mid); cursor: pointer;
+  }
+  .toggle button.is-on { color: var(--gold-bright); border-color: var(--gold-dim); background: rgba(138,116,52,0.12); }
+
+  /* Смерть: мінімально, темно, коротко. */
+  .death { position: absolute; inset: 0; display: grid; place-items: center; background: rgba(3,2,2,0.86); }
+  .death__text {
+    font-family: var(--font-display); font-size: 92px; letter-spacing: 0.22em;
+    color: #7e1b22; text-shadow: 0 0 60px rgba(126,27,34,0.5);
+    margin: 0;
+  }
+  .death__sub { margin-top: var(--s5); font-size: var(--fs-small); letter-spacing: 0.2em; color: var(--ink-dim); text-transform: uppercase; text-align: center; }
+
+  /* Вівтар: тепліший тон, ніж у решти меню — це безпечне місце. */
+  .checkpoint-panel { width: 520px; border-color: var(--gold-dim); }
+  .checkpoint-panel .panel__header { background: linear-gradient(180deg, rgba(240,180,65,0.16), transparent); }
+  .checkpoint-panel .btn { width: 100%; font-family: var(--font-display); letter-spacing: 0.12em; text-transform: uppercase; }
+
+  .saving {
+    position: absolute; right: 48px; bottom: 44px;
+    display: flex; align-items: center; gap: var(--s2);
+    font-size: var(--fs-small); color: var(--ink-muted);
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .saving__mark { width: 16px; height: 16px; border: 2px solid var(--gold-dim); border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite; }
+
+  .toast-error {
+    position: absolute; left: 50%; bottom: 120px; transform: translateX(-50%);
+    display: flex; align-items: center; gap: var(--s3);
+    padding: var(--s3) var(--s5);
+    border: 1px solid var(--danger); border-left-width: 3px;
+    background: rgba(24,10,7,0.94);
+    font-size: var(--fs-small); color: #f0c4b4;
+  }
+</style>
+</head>
+<body>
+<!-- 2026-10-19: кадри 1–5 (титул, нова гра, пауза, налаштування) замінив живий макет menus.html;
+     кадри 6–8 (вівтар, смерть, збереження) діють. -->
+<div class="sheet">
+
+  <!-- 1. головне меню — без збереження -->
+  <div class="frame">
+    <div class="stage-inner">
+      <div class="title-screen">
+        <div class="title-screen__art"></div>
+        <div style="position:relative; display:grid; place-items:center;">
+          <h1 class="game-title">Тінь<br>Забутого Королівства<small>Пролог</small></h1>
+          <div class="menu-list">
+            <!-- Немає збереження — «Продовжити» вимкнено, а не сховано. -->
+            <button class="btn is-disabled" disabled>Продовжити</button>
+            <button class="btn btn--primary is-focused">Нова гра</button>
+            <button class="btn">Налаштування</button>
+            <button class="btn">Вийти</button>
+          </div>
+        </div>
+        <div class="save-meta">Збереження не знайдено</div>
+        <div class="build-tag">Вертикальний зріз · 0.21</div>
+      </div>
+    </div>
+    <div class="frame__caption">Головне меню — збереження немає</div>
+  </div>
+
+  <!-- 2. головне меню — зі збереженням -->
+  <div class="frame">
+    <div class="stage-inner">
+      <div class="title-screen">
+        <div class="title-screen__art"></div>
+        <div style="position:relative; display:grid; place-items:center;">
+          <h1 class="game-title">Тінь<br>Забутого Королівства<small>Пролог</small></h1>
+          <div class="menu-list">
+            <button class="btn btn--primary is-focused">Продовжити</button>
+            <button class="btn">Нова гра</button>
+            <button class="btn">Налаштування</button>
+            <button class="btn">Вийти</button>
+          </div>
+        </div>
+        <div class="save-meta">
+          <b>Вівтар переходу</b><br>
+          Рівень 7 · 1 год 24 хв
+        </div>
+        <div class="build-tag">Вертикальний зріз · 0.21</div>
+      </div>
+    </div>
+    <div class="frame__caption">Головне меню — збереження є</div>
+  </div>
+
+  <!-- 3. підтвердження перезапису -->
+  <div class="frame">
+    <div class="stage-inner">
+      <div class="title-screen">
+        <div class="title-screen__art"></div>
+        <div style="position:relative; display:grid; place-items:center; opacity:0.35">
+          <h1 class="game-title">Тінь<br>Забутого Королівства<small>Пролог</small></h1>
+        </div>
+        <!-- Модальне вікно забирає ввід: меню під ним не реагує. -->
+        <div class="scrim">
+          <div class="panel panel--royal modal">
+            <div class="panel__header"><h2 class="panel__title" style="font-size:var(--fs-lead)">Почати нову гру?</h2></div>
+            <div class="panel__body">
+              <p style="margin:0 0 var(--s5); font-size:var(--fs-small); line-height:1.6; color:var(--ink-muted)">
+                Поточне проходження буде стерто назавжди.<br>
+                <b style="color:var(--ink-bright)">Вівтар переходу · Рівень 7 · 1 год 24 хв</b>
+              </p>
+              <div class="row">
+                <button class="btn is-focused">Скасувати</button>
+                <span class="spacer"></span>
+                <button class="btn btn--danger">Стерти й почати</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="frame__caption">Підтвердження — знищення збереження</div>
+  </div>
+
+  <!-- 4. пауза -->
+  <div class="frame">
+    <div class="stage-inner">
+      <div class="gameplay-backdrop"></div>
+      <div class="scrim">
+        <div class="panel panel--royal pause__panel">
+          <div class="panel__header"><h2 class="panel__title" style="font-size:var(--fs-lead)">Пауза</h2></div>
+          <div class="panel__body">
+            <div class="col">
+              <button class="btn btn--primary is-focused">Продовжити</button>
+              <button class="btn">Спорядження</button>
+              <button class="btn">Персонаж <span class="pip" style="margin-left:6px"></span></button>
+              <button class="btn">Уміння <span class="pip" style="margin-left:6px"></span></button>
+              <button class="btn">Налаштування</button>
+              <button class="btn btn--danger">До головного меню</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="frame__caption">Пауза</div>
+  </div>
+
+  <!-- 5. налаштування -->
+  <div class="frame">
+    <div class="stage-inner">
+      <div class="gameplay-backdrop"></div>
+      <div class="scrim">
+        <div class="panel panel--royal" style="width:1000px">
+          <div class="panel__header">
+            <h2 class="panel__title" style="font-size:var(--fs-lead)">Налаштування</h2>
+            <div class="tabs" style="border:none">
+              <button class="tab is-active">Звук</button>
+              <button class="tab">Доступність</button>
+              <button class="tab">Екран</button>
+            </div>
+          </div>
+          <div class="panel__body">
+            <div class="option-row">
+              <div class="option-row__name"><b>Загальна гучність</b><span>Керує всім звуком гри</span></div>
+              <div class="track"><div class="track__fill" style="width:80%"></div><div class="track__knob" style="left:80%"></div></div>
+              <span class="option-row__value">80</span>
+            </div>
+            <div class="option-row">
+              <div class="option-row__name"><b>Музика</b></div>
+              <div class="track"><div class="track__fill" style="width:60%"></div><div class="track__knob" style="left:60%"></div></div>
+              <span class="option-row__value">60</span>
+            </div>
+            <div class="option-row">
+              <div class="option-row__name"><b>Ефекти</b></div>
+              <div class="track"><div class="track__fill" style="width:90%"></div><div class="track__knob" style="left:90%"></div></div>
+              <span class="option-row__value">90</span>
+            </div>
+            <div class="option-row is-focused">
+              <div class="option-row__name"><b>Тремтіння камери</b><span>0 % вимикає повністю; бій лишається читабельним</span></div>
+              <div class="track"><div class="track__fill" style="width:100%"></div><div class="track__knob" style="left:100%"></div></div>
+              <span class="option-row__value">100</span>
+            </div>
+            <div class="option-row">
+              <div class="option-row__name"><b>Яскравість спалахів</b><span>Стосується парирування, зламу блоку й моментів боса</span></div>
+              <div class="track"><div class="track__fill" style="width:50%"></div><div class="track__knob" style="left:50%"></div></div>
+              <span class="option-row__value">50</span>
+            </div>
+            <div class="option-row">
+              <div class="option-row__name"><b>Числа шкоди</b></div>
+              <div class="toggle"><button class="is-on">Показувати</button><button>Сховати</button></div>
+              <span class="option-row__value"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="frame__caption">Налаштування — звук і доступність</div>
+  </div>
+
+  <!-- 6. вівтар -->
+  <div class="frame">
+    <div class="stage-inner">
+      <div class="gameplay-backdrop"></div>
+      <div class="scrim" style="background:rgba(12,7,3,0.66)">
+        <div class="panel panel--royal checkpoint-panel">
+          <div class="panel__header">
+            <h2 class="panel__title" style="font-size:var(--fs-lead)">Вівтар переходу</h2>
+            <span class="muted" style="font-size:var(--fs-micro)">Збережено</span>
+          </div>
+          <div class="panel__body">
+            <div class="col">
+              <button class="btn btn--primary is-focused">Відпочити</button>
+              <button class="btn">Персонаж <span class="pip" style="margin-left:6px"></span></button>
+              <button class="btn">Уміння <span class="pip" style="margin-left:6px"></span></button>
+              <button class="btn">Спорядження</button>
+              <button class="btn">Відійти</button>
+            </div>
+            <p style="margin:var(--s5) 0 0; font-size:var(--fs-micro); color:var(--ink-dim); line-height:1.6">
+              Відпочинок відновлює здоров'я й повертає рядових ворогів.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="frame__caption">Вівтар — тепліший тон, ніж у решті меню</div>
+  </div>
+
+  <!-- 7. смерть -->
+  <div class="frame">
+    <div class="stage-inner">
+      <div class="gameplay-backdrop"></div>
+      <div class="death">
+        <div>
+          <h2 class="death__text">ВИ ЗАГИНУЛИ</h2>
+          <p class="death__sub">Повернення до вівтаря</p>
+        </div>
+      </div>
+    </div>
+    <div class="frame__caption">Смерть — смуги приховано</div>
+  </div>
+
+  <!-- 8. збереження і помилка -->
+  <div class="frame">
+    <div class="stage-inner">
+      <div class="gameplay-backdrop"></div>
+      <div class="saving"><span class="saving__mark"></span> Збереження…</div>
+      <div class="toast-error">
+        <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 3l9 17H3z" fill="none" stroke="#c4552f" stroke-width="1.8" stroke-linejoin="round"/>
+          <path d="M12 9v5M12 16.5v.6" stroke="#c4552f" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <span>Не вдалося зберегти. Прогрес у пам'яті збережено — спробуйте ще раз біля вівтаря.</span>
+      </div>
+    </div>
+    <div class="frame__caption">Індикатор збереження і помилка збереження</div>
+  </div>
+
+</div>
+</body>
+</html>
