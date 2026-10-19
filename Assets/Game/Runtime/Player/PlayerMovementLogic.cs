@@ -38,6 +38,8 @@ namespace ForgottenKingdom
         private int _airJumpsUsed;
         private float _pendingBounce;
         private bool _isBouncing;
+        /// <summary>A jump was pressed during the dash; it may be the second jump once the dash ends.</summary>
+        private bool _pressedInDash;
 
         public PlayerMovementLogic(MovementSettings settings, DashSettings dash = null)
         {
@@ -169,6 +171,16 @@ namespace ForgottenKingdom
 
             if (IsDashing)
             {
+                if (input.IsJumpPressed && mode == LocomotionMode.Normal)
+                {
+                    // Pressed during the dash: held in the buffer and taken as soon as the dash
+                    // ends, a jump off the ground or, in the air, the second jump — as in Hollow
+                    // Knight, where the dash's tail is where the next move is entered. A press
+                    // from before the dash still runs out during it (StepDash).
+                    _bufferRemaining = _settings.JumpBuffer - Mathf.Max(0f, input.JumpPressAge);
+                    _pressedInDash = true;
+                }
+
                 return StepDash(deltaTime);
             }
 
@@ -204,9 +216,14 @@ namespace ForgottenKingdom
                 var speed = mode == LocomotionMode.Restricted
                     ? _settings.WalkSpeed * Mathf.Clamp01(movementScale)
                     : _settings.RunSpeed;
+                // In the air a reversal bites three times harder than speeding up: steering
+                // corrects a jump without making any jump longer (MovementSettings).
+                var reversing = hasDirection && Mathf.Abs(velocity.x) > MotionThreshold
+                    && Mathf.Sign(horizontal) != Mathf.Sign(velocity.x);
                 var acceleration = IsGrounded
                     ? (hasDirection ? _settings.GroundAcceleration : _settings.GroundDeceleration)
-                    : (hasDirection ? _settings.AirAcceleration : _settings.AirDeceleration);
+                    : (reversing ? _settings.AirTurnAcceleration
+                        : hasDirection ? _settings.AirAcceleration : _settings.AirDeceleration);
                 velocity.x = Mathf.MoveTowards(velocity.x, horizontal * speed, acceleration * deltaTime);
             }
 
@@ -228,7 +245,8 @@ namespace ForgottenKingdom
                 IsGrounded = false;
                 Jumped?.Invoke();
             }
-            else if (input.IsJumpPressed && IsAirJumpReady && !IsWallJumpPending)
+            else if ((input.IsJumpPressed || (_pressedInDash && _bufferRemaining >= 0f))
+                && IsAirJumpReady && !IsWallJumpPending)
             {
                 // Deliberately a fresh press rather than the buffer: a press made just before
                 // landing is meant for the landing, and spending the second jump on it would feel
@@ -239,6 +257,9 @@ namespace ForgottenKingdom
                 _bufferRemaining = -1f;
                 AirJumped?.Invoke();
             }
+
+            // Only the first step after a dash may turn its buffered press into the second jump.
+            _pressedInDash = false;
 
             if (IsGrounded)
             {
@@ -289,6 +310,7 @@ namespace ForgottenKingdom
             _airJumpsUsed = 0;
             _pendingBounce = 0f;
             _isBouncing = false;
+            _pressedInDash = false;
             IsGrounded = false;
             State = MovementState.Idle;
             FacingDirection = 1;

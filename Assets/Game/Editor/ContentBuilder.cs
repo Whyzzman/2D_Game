@@ -476,6 +476,12 @@ namespace ForgottenKingdom.EditorTools
             Ensure<WallMovement>(root);
             var motor = Ensure<PlayerMotor2D>(root);
             SetLayerMask(motor, "_groundMask", 1 << GroundLayer);
+            // Air control as in Hollow Knight (2026-10-19, TUNING.md): the prefab keeps what it was
+            // first built with, so the numbers that changed since are written here. Jump speed,
+            // gravities and the apex stay as they are — the level heights are built on them.
+            SetFloat(motor, "_settings._airDeceleration", 45f);
+            SetFloat(motor, "_settings._airTurnAcceleration", 90f);
+            SetFloat(motor, "_settings._jumpBuffer", 0.15f);
             var visual = root.transform.Find("Visual");
             SetReference(motor, "_visual", visual != null ? visual : root.transform);
 
