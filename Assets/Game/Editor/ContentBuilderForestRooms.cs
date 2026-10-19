@@ -125,18 +125,7 @@ namespace ForgottenKingdom.EditorTools
         {
             if (_forestPainted)
             {
-                // The painter draws the ground; the block is only what the hero stands on.
-                var solid = new GameObject(name);
-                solid.transform.SetParent(parent);
-                solid.transform.position = world.center;
-                solid.layer = GroundLayer;
-                solid.AddComponent<BoxCollider2D>().size = world.size;
-                if (name == "BreakableWall")
-                {
-                    PlacePaintedBreakable(ForestArtFolder, ForestLayout, solid, world);
-                }
-
-                return solid;
+                return PaintedSolid(parent, name, world, ForestArtFolder, ForestLayout);
             }
 
             ForestSurface surface;

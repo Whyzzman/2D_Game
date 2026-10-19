@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using UnityEngine;
@@ -51,12 +52,16 @@ namespace ForgottenKingdom
             public readonly int Strength;
             public readonly int Dexterity;
             public readonly ProgressionCurve Curve;
+            /// <summary>Flat attack these hands add to a weapon (trinkets, tempering); null adds none.</summary>
+            public readonly Func<WeaponDefinition, float> FlatAttack;
 
-            public Wielder(int strength, int dexterity, ProgressionCurve curve)
+            public Wielder(int strength, int dexterity, ProgressionCurve curve,
+                Func<WeaponDefinition, float> flatAttack = null)
             {
                 Strength = strength;
                 Dexterity = dexterity;
                 Curve = curve;
+                FlatAttack = flatAttack;
             }
         }
 
@@ -141,7 +146,7 @@ namespace ForgottenKingdom
         {
             var meets = weapon.MeetsRequirements(wielder.Strength, wielder.Dexterity);
             return WeaponDamageCalculator.Evaluate(weapon, wielder.Curve, wielder.Strength,
-                wielder.Dexterity, 0f, meets).ScaledBase;
+                wielder.Dexterity, wielder.FlatAttack != null ? wielder.FlatAttack(weapon) : 0f, meets).ScaledBase;
         }
 
         private static ComparisonRow Number(string label, float value, float? worn,

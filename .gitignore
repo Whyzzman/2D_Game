@@ -73,3 +73,6 @@ npm-debug.log*
 
 # Логи
 *.log
+
+# Knowledge graph from /graphify (local only)
+graphify-out/

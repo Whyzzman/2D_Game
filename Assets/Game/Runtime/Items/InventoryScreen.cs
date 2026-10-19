@@ -427,7 +427,7 @@ namespace ForgottenKingdom
             var dexterity = _stats.GetFinalStat(CharacterStat.Dexterity);
             var meets = weapon.MeetsRequirements(strength, dexterity);
             var breakdown = WeaponDamageCalculator.Evaluate(weapon, _progression.Curve, strength,
-                dexterity, 0f, meets);
+                dexterity, _stats.FlatAttackFor(weapon), meets);
             lines.Add($"Сила атаки {breakdown.ScaledBase:0.#}");
             if (weapon.HasRequirements && !meets)
             {

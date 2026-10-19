@@ -6,42 +6,22 @@
 
 ROOT="${0:A:h:h:h}"
 OUT="$ROOT/Assets/Game/Art/Map"
-# Інший Chromium: CHROME=<шлях>; для chrome-headless-shell (малює й при сплячому дисплеї) — HEADLESS=
-CHROME="${CHROME:-/Applications/Google Chrome.app/Contents/MacOS/Google Chrome}"
-HEADLESS="${HEADLESS---headless=new}"
+source "$ROOT/tools/_shared/shot.sh"
 URL="http://localhost:8123/design/ui/world-map/render.html"
 WHAT="${1:-all}"
-if ! curl -s -o /dev/null "http://localhost:8123/design/ui/world-map/render.html"; then
-  node "$ROOT/design/ui/_shared/serve.js" >/dev/null 2>&1 &
-  SERVER=$!
-  trap 'kill $SERVER 2>/dev/null' EXIT
-  sleep 1
-fi
-PROFILE="$(mktemp -d)"
-shot() { # shot <file> <w> <h> <query>
-  # Chrome writes the picture and then may not quit on its own: wait for the file, then stop it.
-  rm -f "$1"
-  "$CHROME" ${=HEADLESS} --disable-gpu --hide-scrollbars --default-background-color=00000000 \
-    --user-data-dir="$PROFILE" --no-first-run --no-default-browser-check \
-    --window-size="$2,$3" --virtual-time-budget=3000 --screenshot="$1" "$URL?$4" >/dev/null 2>&1 &
-  local pid=$! waited=0
-  while [[ ! -s "$1" && $waited -lt 300 ]]; do sleep 0.1; waited=$((waited + 1)); done
-  sleep 0.3
-  kill $pid 2>/dev/null; wait $pid 2>/dev/null
-  [[ -s "$1" ]] || echo "failed: $1"
-}
+serve "$URL"
 mkdir -p "$OUT/Islands" "$OUT/Cards" "$OUT/Rooms"
 if [[ "$WHAT" == all || "$WHAT" == islands ]]; then
   for art in tomb forest village marsh depths crystal citadel capital cathedral aqueducts ice observatory palace shadow throne; do
-    shot "$OUT/Islands/$art.png" 736 608 "island=$art"
-    shot "$OUT/Cards/$art.png" 744 392 "card=$art"
+    shot "$OUT/Islands/$art.png" 736 608 "$URL?island=$art" 3000
+    shot "$OUT/Cards/$art.png" 744 392 "$URL?card=$art" 3000
   done
-  shot "$OUT/fog.png" 1470 900 "fog=1"
-  shot "$OUT/glow.png" 128 128 "glow=1"
+  shot "$OUT/fog.png" 1470 900 "$URL?fog=1" 3000
+  shot "$OUT/glow.png" 128 128 "$URL?glow=1" 3000
 fi
 if [[ "$WHAT" == all || "$WHAT" == rooms ]]; then
   find "$OUT/Rooms" -name "*.png" -delete
-  python3 - "$ROOT/design/ui/world-map/map-rooms.json" <<'PY' | while IFS=$'\t' read -r id query w h; do shot "$OUT/Rooms/$id.png" "$w" "$h" "$query"; done
+  python3 - "$ROOT/design/ui/world-map/map-rooms.json" <<'PY' | while IFS=$'\t' read -r id query w h; do shot "$OUT/Rooms/$id.png" "$w" "$h" "$URL?$query" 3000; done
 import json, sys
 for r in json.load(open(sys.argv[1]))["rooms"]:
     w, h = round(r["w"]), round(r["h"])
@@ -50,5 +30,4 @@ for r in json.load(open(sys.argv[1]))["rooms"]:
     print(f"{r['id']}\t{q}\t{w * s}\t{h * s}")
 PY
 fi
-rm -rf "$PROFILE"
 echo "map art: $(ls "$OUT/Islands"/*.png | wc -l | tr -d ' ') islands, $(ls "$OUT/Rooms"/*.png | wc -l | tr -d ' ') rooms"

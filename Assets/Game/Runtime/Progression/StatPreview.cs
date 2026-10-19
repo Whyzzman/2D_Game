@@ -70,7 +70,7 @@ namespace ForgottenKingdom
             var raisedStrength = stat == CharacterStat.Strength ? strength + 1 : strength;
             var raisedDexterity = stat == CharacterStat.Dexterity ? dexterity + 1 : dexterity;
             var after = WeaponDamageCalculator.Evaluate(weapon, curve, raisedStrength, raisedDexterity,
-                0f, weapon.MeetsRequirements(raisedStrength, raisedDexterity));
+                stats.FlatAttackFor(weapon), weapon.MeetsRequirements(raisedStrength, raisedDexterity));
             lines.Add($"Атака {stats.ActiveWeaponAttack:0} → {after.ScaledBase:0}");
         }
 

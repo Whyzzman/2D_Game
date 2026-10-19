@@ -42,6 +42,18 @@ namespace ForgottenKingdom.Tests
         }
 
         [Test]
+        public void TemperingAndTrinketAttackAreInTheDamageThePanelShows()
+        {
+            var sword = Weapon("sword", 20f, strength: 0f);
+            var bare = new ItemComparison.Wielder(10, 10, null);
+            var tempered = new ItemComparison.Wielder(10, 10, null,
+                weapon => 4f + Tempering.Bonus(weapon.BaseDamage, 1));
+
+            Assert.That(ItemComparison.Damage(sword, tempered) - ItemComparison.Damage(sword, bare),
+                Is.EqualTo(6f).Within(0.001f), "Trinket +4 and one tempering (+10% of 20) both count.");
+        }
+
+        [Test]
         public void ArmourComparesDefenceUpAndWeightDown()
         {
             var hood = Armor("hood", EquipmentSlot.Head, defense: 3f, weight: 1f);

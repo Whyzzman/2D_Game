@@ -136,8 +136,9 @@ link room_a room_b door | oneway | ability=id | boss=id | shortcut=id from=room_
 `ContentBuilder.Build` → `ContentBuilder.RefreshLevelArt` (импорт) → `Scene<Зона>.Apply`. Просмотр без Unity:
 `node design/ui/_shared/serve.js` → `/design/levels/painter/index.html?zone=tomb&what=preview&ppu=12`
 (вся зона) или `&what=view&x=..&y=..&ppu=60` (кадр камеры). Зона без папки арта остаётся на тайлах.
-Браузер для `render.sh` — `CHROME=<путь>`; при спящем дисплее обычный Chrome зависает, тогда
-`CHROME=~/Library/Caches/ms-playwright/chromium_headless_shell-*/chrome-headless-shell-mac-arm64/chrome-headless-shell HEADLESS=`.
+Браузер, сервер и снимок у `level-art` и `map-art` общие — `tools/_shared/shot.sh`. Браузер — `CHROME=<путь>`;
+без Google Chrome скрипт сам берёт `chrome-headless-shell` Playwright (он рисует и при спящем дисплее, где
+обычный Chrome зависает).
 `render.sh` стирает каждый файл перед снимком: прерванный прогон оставляет зону без арта — перезапустить целиком.
 
 Формы в тексте (генератор Гробницы): своды (`vault`), неровные потолки пещер (`rough_ceiling`), наплывы

@@ -317,10 +317,19 @@ namespace ForgottenKingdom
             var weapon = _equipment != null ? _equipment.ActiveWeaponDefinition : null;
             var meets = weapon == null
                 || weapon.MeetsRequirements(_finalStats.strength, _finalStats.dexterity);
-            // The smith's tempering (item 6c) adds a share of the weapon's own base.
-            var temper = weapon != null ? Tempering.Bonus(weapon.BaseDamage, Tempering.Level(_progress)) : 0f;
             _weaponDamage = WeaponDamageCalculator.Evaluate(weapon, curve, _finalStats.strength,
-                _finalStats.dexterity, _stats.Get(StatType.AttackPower) + temper, meets);
+                _finalStats.dexterity, FlatAttackFor(weapon), meets);
+        }
+
+        /// <summary>
+        /// The flat attack a weapon gets in these hands on top of its scaled base: trinket attack
+        /// power plus the smith's tempering (item 6c), a share of the weapon's own base. Every
+        /// screen that shows weapon damage passes this, so the number shown is the number struck.
+        /// </summary>
+        public float FlatAttackFor(WeaponDefinition weapon)
+        {
+            var temper = weapon != null ? Tempering.Bonus(weapon.BaseDamage, Tempering.Level(_progress)) : 0f;
+            return _stats.Get(StatType.AttackPower) + temper;
         }
 
         private static StatType ToStatType(CharacterStat stat)

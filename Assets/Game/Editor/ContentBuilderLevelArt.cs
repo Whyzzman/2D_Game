@@ -153,6 +153,27 @@ namespace ForgottenKingdom.EditorTools
             return true;
         }
 
+        /// <summary>
+        /// A block of a painted zone: the painter draws the ground, so the block is only what the
+        /// hero stands on. A secret's wall gets its own painted piece over the opening, so breaking
+        /// it leaves the hole the stone around it was painted with.
+        /// </summary>
+        private static GameObject PaintedSolid(Transform parent, string name, Rect world, string zone,
+            LevelZone layout)
+        {
+            var solid = new GameObject(name);
+            solid.transform.SetParent(parent);
+            solid.transform.position = world.center;
+            solid.layer = GroundLayer;
+            solid.AddComponent<BoxCollider2D>().size = world.size;
+            if (name == "BreakableWall")
+            {
+                PlacePaintedBreakable(zone, layout, solid, world);
+            }
+
+            return solid;
+        }
+
         /// <summary>The painted stone of a secret's wall, as the wall's own «Visual».</summary>
         private static void PlacePaintedBreakable(string zone, LevelZone layout, GameObject wall, Rect world)
         {

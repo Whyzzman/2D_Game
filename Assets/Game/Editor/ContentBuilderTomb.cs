@@ -87,20 +87,7 @@ namespace ForgottenKingdom.EditorTools
         {
             if (_tombPainted)
             {
-                // The painter draws the stone; the block is only what the hero stands on.
-                var solid = new GameObject(name);
-                solid.transform.SetParent(parent);
-                solid.transform.position = world.center;
-                solid.layer = GroundLayer;
-                solid.AddComponent<BoxCollider2D>().size = world.size;
-                if (name == "BreakableWall")
-                {
-                    // A secret's wall is its own painted piece over the opening, so breaking it
-                    // leaves the hole the stone around it was painted with.
-                    PlacePaintedBreakable(TombArtFolder, TombLayout, solid, world);
-                }
-
-                return solid;
+                return PaintedSolid(parent, name, world, TombArtFolder, TombLayout);
             }
 
             TombSurface surface;

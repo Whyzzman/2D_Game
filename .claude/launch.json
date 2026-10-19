@@ -4,8 +4,22 @@
     {
       "name": "ui-prototype",
       "runtimeExecutable": "node",
-      "runtimeArgs": ["design/ui/_shared/serve.js"],
+      "runtimeArgs": [
+        "design/ui/_shared/serve.js"
+      ],
       "port": 8123
+    },
+    {
+      "name": "graph",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "8130",
+        "--directory",
+        "graphify-out"
+      ],
+      "port": 8130
     }
   ]
 }

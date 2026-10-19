@@ -124,18 +124,7 @@ namespace ForgottenKingdom.EditorTools
         {
             if (_capitalPainted)
             {
-                // The painter draws the stone; the block is only what the hero stands on.
-                var solid = new GameObject(name);
-                solid.transform.SetParent(parent);
-                solid.transform.position = world.center;
-                solid.layer = GroundLayer;
-                solid.AddComponent<BoxCollider2D>().size = world.size;
-                if (name == "BreakableWall")
-                {
-                    PlacePaintedBreakable(CapitalArtFolder, CapitalLayout, solid, world);
-                }
-
-                return solid;
+                return PaintedSolid(parent, name, world, CapitalArtFolder, CapitalLayout);
             }
 
             var surface = kind == LevelCell.Ledge ? CapitalSurface.Ledge

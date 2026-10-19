@@ -1024,7 +1024,8 @@ namespace ForgottenKingdom
             return _playerStats == null
                 ? new ItemComparison.Wielder(0, 0, null)
                 : new ItemComparison.Wielder(_playerStats.GetFinalStat(CharacterStat.Strength),
-                    _playerStats.GetFinalStat(CharacterStat.Dexterity), _playerStats.Curve);
+                    _playerStats.GetFinalStat(CharacterStat.Dexterity), _playerStats.Curve,
+                    _playerStats.FlatAttackFor);
         }
 
         private static string TypeName(ItemDefinition item)
