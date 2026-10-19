@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Царство Тіні — новий вигляд</title>
+<style>
+  :root { --bg: #05020a; --text: #ddd0ee; --muted: #8a7aa2; --gold: #d8b0ff; }
+  html, body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.5 Georgia, serif; }
+  body.shot { overflow: hidden; }
+  main { max-width: 1280px; margin: 0 auto; padding: 24px 16px 48px; }
+  h1 { font-weight: normal; letter-spacing: .08em; color: var(--gold); margin: 0 0 4px; }
+  p.note { color: var(--muted); margin: 0 0 20px; }
+  figure { margin: 0 0 28px; }
+  figcaption { color: var(--muted); margin-top: 6px; }
+  canvas { width: 100%; height: auto; display: block; border: 1px solid #1e1030; }
+  body.shot main { padding: 0; max-width: none; }
+  body.shot h1, body.shot p.note, body.shot figcaption { display: none; }
+  body.shot figure { margin: 0; }
+  body.shot canvas { border: 0; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Царство Тіні — новий вигляд</h1>
+  <p class="note">Макет кадру гри (камера 32 × 18 юнітів) тими самими прийомами, що й погоджені зони: органічні маси, світлий кант там, де стоять, плани глибини. Царство Тіні — фіолетова порожнеча й летючі руїни; світло дає лише затемнення й очі-портали. Тепла тут немає зовсім. Тіньові платформи видно тільки з Місячним оком — блідим контуром і мерехтінням; гравець читає їх як «є, але не тверде на вигляд».</p>
+  <figure id="f-temple"><canvas id="temple" width="1920" height="1080"></canvas>
+    <figcaption>Храм затемнення: чорне сонце з фіолетовою короною між колонами без склепіння, підлога храму обривається над безоднею, через неї — три тіньові платформи; праворуч — око-портал на уступі, знизу піднімаються пасма тіні.</figcaption></figure>
+  <figure id="f-bridge"><canvas id="bridge" width="1920" height="1080"></canvas>
+    <figcaption>Міст затемнення: серп за шпилем, міст на арках над порожнечею, середній проліт обвалений — його тримають тіньові платформи; праворуч — вертикальне око-портал, унизу — уламки з кришталем.</figcaption></figure>
+</main>
+<script src="../tomb-look/paint.js"></script>
+<script src="../forest-look/forest.js"></script>
+<script src="../village-look/village.js"></script>
+<script src="../capital-look/capital.js"></script>
+<script src="../observatory-look/observatory.js"></script>
+<script src="shadow.js"></script>
+<script src="scenes.js"></script>
+</body>
+</html>

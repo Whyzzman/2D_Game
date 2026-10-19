@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Собор — новий вигляд</title>
+<style>
+  :root { --bg: #070a0d; --text: #cfd8dc; --muted: #7a8a90; --gold: #d8b060; }
+  html, body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.5 Georgia, serif; }
+  body.shot { overflow: hidden; }
+  main { max-width: 1280px; margin: 0 auto; padding: 24px 16px 48px; }
+  h1 { font-weight: normal; letter-spacing: .08em; color: var(--gold); margin: 0 0 4px; }
+  p.note { color: var(--muted); margin: 0 0 20px; }
+  figure { margin: 0 0 28px; }
+  figcaption { color: var(--muted); margin-top: 6px; }
+  canvas { width: 100%; height: auto; display: block; border: 1px solid #161c22; }
+  body.shot main { padding: 0; max-width: none; }
+  body.shot h1, body.shot p.note, body.shot figcaption { display: none; }
+  body.shot figure { margin: 0; }
+  body.shot canvas { border: 0; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Затоплений Собор — новий вигляд</h1>
+  <p class="note">Макет кадру гри (камера 32 × 18 юнітів) тими самими прийомами, що й погоджені Гробниця, Ліс, Село, Столиця й Болота: органічні маси, світлий кант там, де стоять, плани глибини. Собор — сірий холодний камінь і бірюзова вода; тепле світло дають тільки свічки й розетка. Чим нижче — тим більше води: угорі молитва, унизу — тиша, у яку пірнають лише з Диханням глибин.</p>
+  <figure id="f-nave"><canvas id="nave" width="1920" height="1080"></canvas>
+    <figcaption>Неф із розеткою: вітраж — тепле серце кадру, пучкові колони з ребрами склепінь, хори-балкони по боках, вода на дні нефу відбиває розетку. Над водою — Свята, ще камінь, але тріщина на обличчі вже світить.</figcaption></figure>
+  <figure id="f-deep"><canvas id="deep" width="1920" height="1080"></canvas>
+    <figcaption>Потоплений хор: над водою — уламок балкона зі свічками й дзвін на ланцюгах; під водою — ряди хористів-статуй, похила люстра, мертве дерево й промені крізь бірюзу. Нижче лінії води — тільки з Диханням глибин.</figcaption></figure>
+</main>
+<script src="../tomb-look/paint.js"></script>
+<script src="../forest-look/forest.js"></script>
+<script src="../village-look/village.js"></script>
+<script src="../capital-look/capital.js"></script>
+<script src="cathedral.js"></script>
+<script src="scenes.js"></script>
+</body>
+</html>

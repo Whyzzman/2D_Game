@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Акведуки — новий вигляд</title>
+<style>
+  :root { --bg: #05090a; --text: #c4dcda; --muted: #6f8c8a; --gold: #7fe0d6; }
+  html, body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.5 Georgia, serif; }
+  body.shot { overflow: hidden; }
+  main { max-width: 1280px; margin: 0 auto; padding: 24px 16px 48px; }
+  h1 { font-weight: normal; letter-spacing: .08em; color: var(--gold); margin: 0 0 4px; }
+  p.note { color: var(--muted); margin: 0 0 20px; }
+  figure { margin: 0 0 28px; }
+  figcaption { color: var(--muted); margin-top: 6px; }
+  canvas { width: 100%; height: auto; display: block; border: 1px solid #122022; }
+  body.shot main { padding: 0; max-width: none; }
+  body.shot h1, body.shot p.note, body.shot figcaption { display: none; }
+  body.shot figure { margin: 0; }
+  body.shot canvas { border: 0; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Чумні Акведуки — новий вигляд</h1>
+  <p class="note">Макет кадру гри (камера 32 × 18 юнітів) тими самими прийомами, що й погоджені Гробниця, Ліс, Село, Столиця й Болота: органічні маси, світлий кант там, де стоять, плани глибини. Акведуки — бірюзова вода й темний мокрий камінь: світло йде від води й лягає на стіни відблисками; ряди арок тонуть у тумані один за одним. Зелені вентилі шлюзів видно здалеку — це те, що змінює рівень води.</p>
+  <figure id="f-wheels"><canvas id="wheels" width="1920" height="1080"></canvas>
+    <figcaption>Канал коліс: два яруси арок акведука в тумані, з обвалених прольотів стікає вода; велике водяне колесо в каналі, течія несе праворуч; шлюзова будка з зеленим вентилем, лев'яча голова-водомет б'є в канал.</figcaption></figure>
+  <figure id="f-throne"><canvas id="throne" width="1920" height="1080"></canvas>
+    <figcaption>Тронна зала Владаря: кам'яний Владар Шлюзів на троні з тризубом, з тріщин очей стікає світла вода; басейн на всю залу, бокові галереї й високий уступ — сухі місця, коли вода піднімається; три вентилі на стінах.</figcaption></figure>
+</main>
+<script src="../tomb-look/paint.js"></script>
+<script src="../forest-look/forest.js"></script>
+<script src="../village-look/village.js"></script>
+<script src="../capital-look/capital.js"></script>
+<script src="../marsh-look/marsh.js"></script>
+<script src="aqueducts.js"></script>
+<script src="scenes.js"></script>
+</body>
+</html>

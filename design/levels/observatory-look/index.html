@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Обсерваторія — новий вигляд</title>
+<style>
+  :root { --bg: #05041a; --text: #d8d2f0; --muted: #8580a8; --gold: #f2cf7a; }
+  html, body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.5 Georgia, serif; }
+  body.shot { overflow: hidden; }
+  main { max-width: 1280px; margin: 0 auto; padding: 24px 16px 48px; }
+  h1 { font-weight: normal; letter-spacing: .08em; color: var(--gold); margin: 0 0 4px; }
+  p.note { color: var(--muted); margin: 0 0 20px; }
+  figure { margin: 0 0 28px; }
+  figcaption { color: var(--muted); margin-top: 6px; }
+  canvas { width: 100%; height: auto; display: block; border: 1px solid #1a1840; }
+  body.shot main { padding: 0; max-width: none; }
+  body.shot h1, body.shot p.note, body.shot figcaption { display: none; }
+  body.shot figure { margin: 0; }
+  body.shot canvas { border: 0; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Таємна Обсерваторія — новий вигляд</h1>
+  <p class="note">Макет кадру гри (камера 32 × 18 юнітів) тими самими прийомами, що й погоджені Гробниця, Ліс, Село, Столиця й Болота: органічні маси, світлий кант там, де стоять, плани глибини. Обсерваторія — індиго й золоті зорі: холодне зоряне світло згори й з вікон, тепле — лише свічки читалень і вівтарі. Зоряні містки й лінзи світяться блакитним — гравець читає, де можна пройти.</p>
+  <figure id="f-library"><canvas id="library" width="1920" height="1080"></canvas>
+    <figcaption>Бібліотека: стіни полиць під стрілчастими арками, вікна з туманністю, оррері на латунних орбітах над колодязем у темряву; лінза кидає зоряний місток через прогалину, на галереї — читальні свічки, внизу праворуч — вівтар.</figcaption></figure>
+  <figure id="f-isles"><canvas id="isles" width="1920" height="1080"></canvas>
+    <figcaption>Летючі острови: острови з рівним верхом і кришталем знизу, пунктир орбіти острова, що пливе, кільце гака між ними; далеко — купол Астролога з телескопом, туманність і падаюча зоря.</figcaption></figure>
+</main>
+<script src="../tomb-look/paint.js"></script>
+<script src="../forest-look/forest.js"></script>
+<script src="../village-look/village.js"></script>
+<script src="../capital-look/capital.js"></script>
+<script src="observatory.js"></script>
+<script src="scenes.js"></script>
+</body>
+</html>
