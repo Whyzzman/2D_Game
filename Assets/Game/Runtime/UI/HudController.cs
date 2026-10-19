@@ -57,6 +57,8 @@ namespace ForgottenKingdom
         [SerializeField] private HudArt _art = new HudArt();
         [Tooltip("The fog that sweeps across the screen on crossing into another region.")]
         [SerializeField] private ZoneCurtainSettings _zoneCurtainSettings = new ZoneCurtainSettings();
+        [Tooltip("Pale edges and a heartbeat under a quarter of health (GAME_FEEL_IDEAS item 17).")]
+        [SerializeField] private LowHealthSettings _lowHealth = new LowHealthSettings();
 
         private readonly HudMeter _health = new HudMeter();
         private readonly HudMeter _manaMeter = new HudMeter();
@@ -112,6 +114,13 @@ namespace ForgottenKingdom
         private AbilityCard _abilityCard;
         private HudKeyGlyphs _keyGlyphs;
         private HudManaWisps _manaWisps;
+        private LowHealthCue _lowHealthCue;
+        private VisualElement _flasks;
+        private VisualElement _flaskRow;
+        private readonly System.Collections.Generic.List<VisualElement> _flaskIcons =
+            new System.Collections.Generic.List<VisualElement>();
+        private int _shownFlaskCharges = -1;
+        private bool _shownFlaskDrinking;
 
         /// <summary>The pause over the game; it shares this document.</summary>
         public PauseMenu Pause => _pause;
@@ -147,6 +156,9 @@ namespace ForgottenKingdom
 
         /// <summary>For tests: the boss title card.</summary>
         public BossTitleCard BossTitle => _bossTitle;
+
+        /// <summary>For tests: the pale edge and heartbeat of low health.</summary>
+        public LowHealthCue LowHealth => _lowHealthCue;
 
         private void OnEnable()
         {
@@ -185,6 +197,8 @@ namespace ForgottenKingdom
             _pause.Attach(_player, _progress);
             _keyGlyphs = new HudKeyGlyphs(_root);
             _manaWisps = new HudManaWisps(_root, _player != null ? _player.GetComponent<WeaponManaGain>() : null);
+            _lowHealthCue = new LowHealthCue(_root, _lowHealth);
+            _lowHealthCue.Beat += volume => AudioManager.Play2D(AudioId.Heartbeat, volume);
             _abilityCard = new AbilityCard(_root);
             _abilityCard.Attach(_player, _progress);
             Dress();
@@ -381,6 +395,18 @@ namespace ForgottenKingdom
             _zoneTitle?.Tick(dt);
             _bossTitle?.Tick(dt);
             _zoneCurtain?.Tick(dt);
+            TickLowHealth(dt);
+        }
+
+        private void TickLowHealth(float dt)
+        {
+            if (_lowHealthCue == null || _player == null || _player.Health == null)
+            {
+                return;
+            }
+
+            var health = _player.Health;
+            _lowHealthCue.Tick(dt, Share(health.Current, health.Max), _player.IsAlive);
         }
 
         private void UpdateResources(float dt)
@@ -598,6 +624,7 @@ namespace ForgottenKingdom
 
         private void OnPlayerRespawned()
         {
+            _lowHealthCue?.Clear();
             _death?.EnableInClassList("death--visible", false);
         }
 

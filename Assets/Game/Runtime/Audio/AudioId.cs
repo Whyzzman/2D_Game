@@ -255,5 +255,7 @@ namespace ForgottenKingdom
         AltarCall
         // ---- ringing ears when the hero is hit (GAME_FEEL_IDEAS item 10, appended) ----
         HurtRing
+        // ---- the heart heard at low health (GAME_FEEL_IDEAS item 17, appended) ----
+        Heartbeat
     }
 }

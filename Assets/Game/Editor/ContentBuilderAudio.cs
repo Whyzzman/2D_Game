@@ -199,6 +199,8 @@ namespace ForgottenKingdom.EditorTools
             events.Add(Sound(AudioId.AltarCall, clips, 0.7f, voices: 1, priority: 110, spatial: 0.15f));
             // Ringing ears after a blow to the hero: quiet, flat (it is in the head), never stacked.
             events.Add(Sound(AudioId.HurtRing, clips, 0.22f, voices: 1, priority: 85, interval: 0.3f,
+            // The heart at low health: quiet, flat (it is inside the hero), one at a time.
+            events.Add(Sound(AudioId.Heartbeat, clips, 0.45f, voices: 1, priority: 60, interval: 0.3f,
                 spatial: 0f));
 
             // Interface. Quiet, flat, and spaced so fast navigation does not chatter.
