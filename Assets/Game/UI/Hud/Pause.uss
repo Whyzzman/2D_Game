@@ -1,9 +1,7 @@
 /*
- * The pause menu, from design/ui/menus/menus.html (frame 4) and design/ui/_shared/ui.css:
- * a scrim over the frozen game, one royal panel 520 px wide, a column of buttons.
- * USS has no gradients, box shadows or text-transform, so the button gradient is its middle
- * tone, the focus glow is a gold border on a faint gold wash, and the labels are upper case
- * in the markup.
+ * The pause menu, from design/ui/menus/menus.html (2026-10-19): the scrim fades in over the
+ * frozen game, one panel 560 px wide with gems at its corners, a column of words with the same
+ * MenuFocus as the title. USS has no blur, so the frozen game is dimmed rather than blurred.
  */
 
 .pause {
@@ -28,8 +26,8 @@
 }
 
 .pause__panel {
-    width: 520px;
-    background-color: rgb(23, 19, 15);
+    width: 560px;
+    background-color: rgba(18, 15, 12, 0.96);
     border-width: 1px;
     border-color: rgb(107, 90, 66);
     border-radius: 2px;
@@ -46,22 +44,62 @@
 }
 
 .pause__header {
-    padding: 12px 24px;
-    border-bottom-width: 1px;
-    border-bottom-color: rgb(58, 47, 37);
-    background-color: rgba(138, 116, 52, 0.1);
+    padding: 32px 40px 0 40px;
+    align-items: stretch;
 }
 
 .pause__title {
-    font-size: 20px;
-    letter-spacing: 1px;
+    font-size: 40px;
+    letter-spacing: 8px;
     color: rgb(240, 230, 210);
+    -unity-text-align: middle-center;
     margin: 0;
     padding: 0;
 }
 
+.pause__rule {
+    margin: 4px 0 8px 0;
+}
+
 .pause__body {
-    padding: 24px;
+    padding: 8px 24px 28px 24px;
+}
+
+/* Words without boxes, as on the title; the focus light is MenuFocus behind them. */
+.pause__item,
+.pause__item:hover,
+.pause__item:active,
+.pause__item.btn--focused,
+.pause__item:disabled {
+    min-height: 50px;
+    margin: 0;
+    padding: 0;
+    background-color: rgba(0, 0, 0, 0);
+    border-width: 0;
+}
+
+.pause__item > .btn__text {
+    font-size: 25px;
+    letter-spacing: 4px;
+    color: rgb(216, 203, 180);
+    transition-property: color, letter-spacing;
+    transition-duration: 0.16s, 0.32s;
+    transition-timing-function: ease-out-cubic, ease-out-cubic;
+}
+
+.pause__item:hover > .btn__text,
+.pause__item.btn--focused > .btn__text {
+    color: rgb(232, 205, 138);
+    letter-spacing: 6px;
+}
+
+.pause__item.btn--danger.btn--focused > .btn__text,
+.pause__item.btn--danger:hover > .btn__text {
+    color: rgb(240, 185, 164);
+}
+
+.pause__item:disabled > .btn__text {
+    color: rgb(95, 87, 76);
 }
 
 /* The buttons (.btn) and the points diamond (.pip) are in Menu/Options.uss, shared with the title screen. */

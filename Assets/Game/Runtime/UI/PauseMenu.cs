@@ -17,6 +17,10 @@ namespace ForgottenKingdom
     /// Settings are the title screen's own panel. Leaving for the title saves first, the same as
     /// quitting the application does.
     ///
+    /// The scrim fades in, the panel rises and the words unfold one after another
+    /// (<see cref="MenuMotion"/>); the focused word carries the same light and flame as the title
+    /// (<see cref="MenuFocus"/>), as in design/ui/menus/menus.html (2026-10-19).
+    ///
     /// It lives in the HUD's document and is ticked by <see cref="HudController"/>, so the scene
     /// needs no object of its own. Holding the pause freezes time through <see cref="GamePause"/>
     /// and silences gameplay input, so nothing reaches the player while it is open.
@@ -33,6 +37,8 @@ namespace ForgottenKingdom
         private readonly VisualElement _skillsPip;
         private readonly InventoryView _inventory;
         private readonly MapView _map;
+        private readonly VisualElement _panel;
+        private readonly MenuFocus _focusMarks;
         private readonly IHudOverlay[] _overlays;
         private PlayerCharacter _player;
         private PlayerInputReader _input;
@@ -62,6 +68,8 @@ namespace ForgottenKingdom
             _overlays = all.ToArray();
 
             _options = new OptionsPanel(_overlay, OnOptionsClosed);
+            _panel = _overlay.Q("pause-panel");
+            _focusMarks = new MenuFocus(_overlay.Q(className: "pause__body"));
             _characterPip = _overlay.Q("pause-character-pip");
             _skillsPip = _overlay.Q("pause-skills-pip");
             Bind("pause-resume", Resume, true);
@@ -172,6 +180,9 @@ namespace ForgottenKingdom
             }
 
             _overlay.AddToClassList(OpenClass);
+            MenuMotion.Reveal(_overlay);
+            MenuMotion.Reveal(_panel);
+            MenuMotion.Stagger(_items.ConvertAll(item => (VisualElement)item), 80);
             GamePause.Push();
             _input?.SetGameplayEnabled(false);
             RefreshPips();
@@ -188,6 +199,8 @@ namespace ForgottenKingdom
             _options?.Close();
             CloseControls();
             _overlay.RemoveFromClassList(OpenClass);
+            MenuMotion.Hide(_overlay);
+            MenuMotion.Hide(_panel);
             GamePause.Pop();
             _input?.SetGameplayEnabled(true);
         }
@@ -388,6 +401,11 @@ namespace ForgottenKingdom
             for (var i = 0; i < _items.Count; i++)
             {
                 _items[i].EnableInClassList("btn--focused", i == _focus);
+            }
+
+            if (_focus < _items.Count)
+            {
+                _focusMarks?.MoveTo(_items[_focus], _items[_focus].ClassListContains("btn--danger"));
             }
         }
     }
