@@ -19,6 +19,12 @@ namespace ForgottenKingdom.EditorTools
     /// Not a score: it exists so the states, the crossfades and the layers can be heard and judged.
     /// Each loop is written into a ring buffer, so a note ringing past the end continues at the
     /// start and the seam is silent.
+    ///
+    /// Deeper since 2026-10-19 (MUSIC_SYSTEM.md §4б, decided by Claude under the standing
+    /// approval): the region loops are twice as long with the second half voiced higher, a low
+    /// counter-voice answers the chords, a breath of filtered air sits under everything, and
+    /// every track and layer is put in its own room (<see cref="Space"/>) — a crypt rings longer
+    /// than a forest. The fight layers carry a string tremolo over the drums.
     /// </summary>
     public static class PlaceholderMusicArt
     {
@@ -80,22 +86,22 @@ namespace ForgottenKingdom.EditorTools
             new[] { 57, 60, 64 }, new[] { 53, 57, 60 }, new[] { 48, 55, 64 },
             new[] { 55, 59, 62 }, new[] { 57, 60, 64 }, new[] { 52, 55, 59 });
 
-        private static readonly Song TombSong = new Song(60f, 12, 2,
+        private static readonly Song TombSong = new Song(60f, 24, 2,
             new[] { 50, 53, 57 }, new[] { 46, 50, 53 }, new[] { 48, 52, 55 },
             new[] { 50, 53, 57 }, new[] { 45, 49, 52 }, new[] { 50, 53, 57 });
 
-        private static readonly Song ForestSong = new Song(72f, 16, 2,
+        private static readonly Song ForestSong = new Song(72f, 32, 2,
             new[] { 52, 55, 59 }, new[] { 50, 54, 57 }, new[] { 48, 52, 55 },
             new[] { 52, 55, 59 }, new[] { 45, 49, 52 }, new[] { 47, 50, 54 },
             new[] { 48, 52, 55 }, new[] { 50, 54, 57 });
 
         // The capital: slower than the forest, lower than the tomb, and in a darker key.
-        private static readonly Song CapitalSong = new Song(56f, 12, 2,
+        private static readonly Song CapitalSong = new Song(56f, 24, 2,
             new[] { 46, 49, 53 }, new[] { 42, 46, 49 }, new[] { 44, 48, 51 },
             new[] { 46, 49, 53 }, new[] { 41, 45, 48 }, new[] { 44, 47, 51 });
 
         // The village: a folk lament, between the forest's pace and the capital's, in a minor key.
-        private static readonly Song VillageSong = new Song(64f, 12, 2,
+        private static readonly Song VillageSong = new Song(64f, 24, 2,
             new[] { 50, 53, 57 }, new[] { 46, 50, 53 }, new[] { 48, 52, 55 },
             new[] { 45, 48, 52 }, new[] { 46, 50, 53 }, new[] { 43, 46, 50 });
 
@@ -118,6 +124,8 @@ namespace ForgottenKingdom.EditorTools
             // The melody is rare: one short phrase every other chord, and not always.
             Melody(buffer, song, new System.Random(3), new[] { 69, 72, 74, 76, 79, 81 },
                 Voice.Piano, 0.24f, phraseEvery: 4, notesPerPhrase: 4);
+            Air(buffer, 31, 0.035f, 900f);
+            Space(buffer, 0.28f, 1.15f);
             return Finish(buffer);
         }
 
@@ -129,6 +137,10 @@ namespace ForgottenKingdom.EditorTools
             Pads(buffer, song, PadTone.Organ, 0.2f);
             Melody(buffer, song, new System.Random(5), new[] { 62, 65, 67, 69, 72, 74 },
                 Voice.Bell, 0.2f, phraseEvery: 4, notesPerPhrase: 3);
+            Counter(buffer, song, 0.12f);
+            Air(buffer, 37, 0.04f, 520f);
+            // A crypt: the longest, darkest room of all.
+            Space(buffer, 0.36f, 1.35f);
             return Finish(buffer);
         }
 
@@ -141,6 +153,10 @@ namespace ForgottenKingdom.EditorTools
             Arpeggio(buffer, song, new System.Random(8), 0.13f);
             Melody(buffer, song, new System.Random(9), new[] { 64, 66, 67, 69, 71, 74, 76 },
                 Voice.Pipe, 0.18f, phraseEvery: 4, notesPerPhrase: 5);
+            Counter(buffer, song, 0.09f);
+            // Leaves: brighter air, a smaller, softer room.
+            Air(buffer, 41, 0.045f, 1800f);
+            Space(buffer, 0.2f, 0.9f);
             return Finish(buffer);
         }
 
@@ -153,6 +169,10 @@ namespace ForgottenKingdom.EditorTools
             Pads(buffer, song, PadTone.Organ, 0.16f);
             Melody(buffer, song, new System.Random(17), new[] { 58, 61, 63, 65, 68, 70 },
                 Voice.Bell, 0.18f, phraseEvery: 4, notesPerPhrase: 2);
+            Counter(buffer, song, 0.12f);
+            Air(buffer, 43, 0.04f, 650f);
+            // Burnt halls: as large as the crypt, a shade brighter.
+            Space(buffer, 0.38f, 1.4f);
             return Finish(buffer);
         }
 
@@ -170,6 +190,9 @@ namespace ForgottenKingdom.EditorTools
                 Note(buffer, bar * song.Bar, 3f, Midi(song.ChordAt(bar)[0] + 12), 0.1f, Voice.Bell);
             }
 
+            Counter(buffer, song, 0.1f);
+            Air(buffer, 47, 0.04f, 1100f);
+            Space(buffer, 0.24f, 1f);
             return Finish(buffer);
         }
 
@@ -186,6 +209,7 @@ namespace ForgottenKingdom.EditorTools
                 Note(buffer, bar * song.Bar, 3f, Midi(song.ChordAt(bar)[0] + 24), 0.16f, Voice.Bell);
             }
 
+            Space(buffer, 0.2f, 1.1f);
             return Finish(buffer);
         }
 
@@ -196,6 +220,7 @@ namespace ForgottenKingdom.EditorTools
             Pads(buffer, song, PadTone.Soft, 0.22f);
             Melody(buffer, song, new System.Random(13), new[] { 72, 76, 79, 84 },
                 Voice.Bell, 0.2f, phraseEvery: 2, notesPerPhrase: 4);
+            Space(buffer, 0.32f, 1.2f);
             return Finish(buffer);
         }
 
@@ -222,6 +247,10 @@ namespace ForgottenKingdom.EditorTools
                 }
             }
 
+            // Tension over the drums: the chord's third and fifth bowed in a quiet tremolo, so the
+            // fight is a rising of the same music, not a different song.
+            Tremolo(buffer, song, 0.07f, 12);
+            Space(buffer, 0.14f, 0.9f);
             return Finish(buffer);
         }
 
@@ -246,6 +275,8 @@ namespace ForgottenKingdom.EditorTools
                 }
             }
 
+            Tremolo(buffer, song, 0.09f, 24);
+            Space(buffer, 0.14f, 1.1f);
             return Finish(buffer);
         }
 
@@ -276,10 +307,15 @@ namespace ForgottenKingdom.EditorTools
         private static void Pads(float[] buffer, Song song, PadTone tone, float amp)
         {
             var span = song.Bar * song.BarsPerChord;
+            // A long loop's second half voices the same chords higher (the root an octave up), so the
+            // repeat is heard as an answer rather than as the tape starting over.
+            var answerFrom = song.Bars >= 24 ? song.Bars / 2 : int.MaxValue;
             for (var bar = 0; bar < song.Bars; bar += song.BarsPerChord)
             {
-                foreach (var note in song.ChordAt(bar))
+                var chord = song.ChordAt(bar);
+                for (var n = 0; n < chord.Length; n++)
                 {
+                    var note = chord[n] + (bar >= answerFrom && n == 0 ? 12 : 0);
                     var pitch = tone == PadTone.Air ? note + 12 : note;
                     Pad(buffer, bar * song.Bar, span + 1.5f, Midi(pitch), amp, tone);
                 }
@@ -318,7 +354,7 @@ namespace ForgottenKingdom.EditorTools
             }
         }
 
-        private enum Voice { Piano, Bell, Pipe, Pluck, Bass, Low }
+        private enum Voice { Piano, Bell, Pipe, Pluck, Bass, Low, Cello, Bow }
 
         private static void Melody(float[] buffer, Song song, System.Random random, int[] scale,
             Voice voice, float amp, int phraseEvery, int notesPerPhrase)
@@ -379,6 +415,137 @@ namespace ForgottenKingdom.EditorTools
             }
         }
 
+        /// <summary>
+        /// A low bowed voice answering the chords: the third of every other chord an octave down,
+        /// held through both its bars and swelling in, so the harmony moves under the melody.
+        /// </summary>
+        private static void Counter(float[] buffer, Song song, float amp)
+        {
+            var span = song.Bar * song.BarsPerChord;
+            for (var bar = song.BarsPerChord; bar < song.Bars; bar += song.BarsPerChord * 2)
+            {
+                var chord = song.ChordAt(bar);
+                Note(buffer, bar * song.Bar, span * 0.95f, Midi(chord[1] - 12), amp, Voice.Cello);
+            }
+        }
+
+        /// <summary>
+        /// Bowed tremolo on the chord's third and fifth, re-struck every sixteenth (or twelfth),
+        /// at a whisper: the strings' nervous edge under a fight.
+        /// </summary>
+        private static void Tremolo(float[] buffer, Song song, float amp, int strokesPerBar)
+        {
+            var stroke = song.Bar / strokesPerBar;
+            for (var bar = 0; bar < song.Bars; bar++)
+            {
+                var chord = song.ChordAt(bar);
+                for (var s = 0; s < strokesPerBar; s++)
+                {
+                    var swell = 0.6f + 0.4f * Mathf.Sin(Mathf.PI * s / strokesPerBar);
+                    foreach (var note in new[] { chord[1] + 12, chord[2] + 12 })
+                    {
+                        Note(buffer, bar * song.Bar + s * stroke, stroke * 1.1f, Midi(note),
+                            amp * swell, Voice.Bow);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// A breath of air under the music: noise through a slowly opening and closing low-pass.
+        /// Filtered over two passes of the loop, so the filter enters the seam already settled.
+        /// </summary>
+        private static void Air(float[] buffer, int seed, float amp, float cutoff)
+        {
+            var random = new System.Random(seed);
+            var length = buffer.Length;
+            var noise = new float[length];
+            for (var i = 0; i < length; i++)
+            {
+                noise[i] = (float)(random.NextDouble() * 2.0 - 1.0);
+            }
+
+            var z1 = 0f;
+            var z2 = 0f;
+            for (var pass = 0; pass < 2; pass++)
+            {
+                for (var i = 0; i < length; i++)
+                {
+                    // Two whole cycles of the sweep per loop: the seam meets itself.
+                    var sweep = cutoff * (0.6f + 0.4f * Mathf.Sin(2f * Mathf.PI * 2f * i / length));
+                    var a = Mathf.Clamp01(1f - Mathf.Exp(-2f * Mathf.PI * sweep / Rate));
+                    z1 += a * (noise[i] - z1);
+                    z2 += a * (z1 - z2);
+                    if (pass == 1)
+                    {
+                        buffer[i] += z2 * amp * 6f;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// A room: four damped comb filters and two all-passes (Schroeder), mixed in at
+        /// <paramref name="wet"/>. <paramref name="size"/> stretches the delays — a crypt rings
+        /// longer than a glade. Run over the loop twice and kept from the second pass, so the tail
+        /// of the end is already ringing at the start and the seam stays silent.
+        /// </summary>
+        private static void Space(float[] buffer, float wet, float size)
+        {
+            var length = buffer.Length;
+            var combs = new[] { 0.0297f, 0.0371f, 0.0411f, 0.0437f };
+            var lines = new float[combs.Length][];
+            var heads = new int[combs.Length];
+            var damp = new float[combs.Length];
+            for (var c = 0; c < combs.Length; c++)
+            {
+                lines[c] = new float[Mathf.Max(1, Mathf.RoundToInt(combs[c] * size * Rate))];
+            }
+
+            var allpass = new[] { new float[Mathf.RoundToInt(0.005f * Rate)], new float[Mathf.RoundToInt(0.0017f * Rate)] };
+            var allHeads = new int[2];
+            var feedback = Mathf.Clamp(0.74f + 0.06f * size, 0.7f, 0.86f);
+            var output = new float[length];
+            for (var pass = 0; pass < 2; pass++)
+            {
+                for (var i = 0; i < length; i++)
+                {
+                    var input = buffer[i];
+                    var sum = 0f;
+                    for (var c = 0; c < combs.Length; c++)
+                    {
+                        var line = lines[c];
+                        var delayed = line[heads[c]];
+                        damp[c] += 0.35f * (delayed - damp[c]);
+                        line[heads[c]] = input + damp[c] * feedback;
+                        heads[c] = (heads[c] + 1) % line.Length;
+                        sum += delayed;
+                    }
+
+                    var value = sum * 0.25f;
+                    for (var a = 0; a < allpass.Length; a++)
+                    {
+                        var line = allpass[a];
+                        var delayed = line[allHeads[a]];
+                        var next = value + delayed * 0.5f;
+                        line[allHeads[a]] = next;
+                        allHeads[a] = (allHeads[a] + 1) % line.Length;
+                        value = delayed - next * 0.5f;
+                    }
+
+                    if (pass == 1)
+                    {
+                        output[i] = value;
+                    }
+                }
+            }
+
+            for (var i = 0; i < length; i++)
+            {
+                buffer[i] = buffer[i] * (1f - wet * 0.5f) + output[i] * wet;
+            }
+        }
+
         // ---------- instruments ----------
 
         private static void Note(float[] buffer, float start, float seconds, float freq, float amp,
@@ -418,6 +585,20 @@ namespace ForgottenKingdom.EditorTools
                     case Voice.Bass:
                         v = Mathf.Exp(-t * 3f) * (Mathf.Sin(phase) + 0.3f * Mathf.Sin(phase * 2f));
                         v *= Mathf.Min(1f, t / 0.004f);
+                        break;
+                    case Voice.Cello:
+                    {
+                        // A held bow: a slow swell in, a gentle vibrato that arrives late, warm harmonics.
+                        var wobble = 1f + 0.003f * Mathf.Sin(2f * Mathf.PI * 4.6f * t) * Mathf.Clamp01((t - 0.5f) / 0.8f);
+                        var p = phase * wobble;
+                        v = Mathf.Sin(p) + 0.42f * Mathf.Sin(p * 2f) + 0.2f * Mathf.Sin(p * 3f) + 0.08f * Mathf.Sin(p * 5f);
+                        v *= Mathf.Min(1f, t / 0.9f) * Mathf.Clamp01((seconds - t) / 0.9f);
+                        break;
+                    }
+                    case Voice.Bow:
+                        // One short tremolo stroke: soft in and out so the strokes blur together.
+                        v = (Mathf.Sin(phase) + 0.35f * Mathf.Sin(phase * 2f) + 0.15f * Mathf.Sin(phase * 3f))
+                            * Mathf.Sin(Mathf.PI * Mathf.Clamp01(t / Mathf.Max(0.001f, seconds)));
                         break;
                     default:
                         // Low bowed strings: a few harmonics, a short bow attack.
