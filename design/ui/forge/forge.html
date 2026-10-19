@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<title>Тінь Забутого Королівства — Кузня Остапа</title>
+<!-- Шрифти з кирилицею (OFL), як у живому макеті меню (UI_UX_GUIDE §3). -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@400;500;700&family=Cormorant+SC:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="../_shared/ui.css">
+<style>
+  :root {
+    --font-display: "Cormorant SC", "Cinzel", Georgia, serif;
+    --font-body: "Alegreya Sans", "Segoe UI", system-ui, sans-serif;
+    --heat: #ff8c3a;
+    --heat-deep: #8a3a12;
+  }
+  body { background: #050403; font-family: var(--font-body); }
+  .sheet { display: flex; flex-wrap: wrap; gap: 28px; padding: 28px; }
+  .frame { position: relative; flex-shrink: 0; width: 912px; height: 513px; overflow: hidden; border: 1px solid var(--edge-mid); }
+  .frame > .stage-inner { position: absolute; width: 1920px; height: 1080px; transform: scale(0.475); transform-origin: top left; }
+  .frame__caption {
+    position: absolute; left: 0; right: 0; bottom: 0; z-index: 5; padding: 6px 10px;
+    font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--gold-dim); background: rgba(5,4,3,0.88); border-top: 1px solid var(--edge-mid);
+  }
+  .note { max-width: 1852px; margin: 28px 28px 0; color: var(--ink-muted); font-size: 14px; line-height: 1.6; }
+  .note b { color: var(--ink); }
+  .note ul { margin: 8px 0 0; padding-left: 20px; }
+  .note table { border-collapse: collapse; margin-top: 10px; font-size: 13px; }
+  .note td, .note th { border-bottom: 1px solid var(--edge-mid); padding: 4px 14px 4px 0; text-align: left; }
+  .note th { color: var(--gold-dim); font-weight: 500; letter-spacing: 0.06em; }
+  .note td.n { text-align: right; font-variant-numeric: tabular-nums; color: var(--ink); }
+
+  /* Майстерня за вікном: горн ліворуч унизу дає тепле світло, решта — попіл. Плавні плями, без рамок. */
+  .world { position: absolute; inset: 0; background:
+      radial-gradient(38% 46% at 14% 92%, rgba(255,140,58,0.30), transparent 70%),
+      radial-gradient(22% 26% at 14% 96%, rgba(255,196,120,0.30), transparent 70%),
+      radial-gradient(70% 60% at 60% 30%, rgba(60,46,32,0.35), transparent 70%),
+      linear-gradient(180deg, #0f0c0a, #070605); }
+  .world::after { content: ""; position: absolute; inset: 0; background: rgba(6,5,4,0.62); }
+  .embers { position: absolute; inset: 0; pointer-events: none; }
+
+  .forge { position: absolute; left: 50%; top: 96px; transform: translateX(-50%); width: 1440px; }
+  .forge .panel__header { display: flex; justify-content: space-between; align-items: baseline; }
+  .wallet { display: flex; gap: var(--s5); align-items: center; font-size: var(--fs-lead); font-variant-numeric: tabular-nums; }
+  .wallet span { display: inline-flex; align-items: center; gap: var(--s2); color: var(--ink-bright); }
+  .coin { width: 16px; height: 16px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, var(--gold-bright), var(--gold) 55%, var(--gold-dim)); box-shadow: 0 0 0 1px #3a2f25; }
+  .iron { width: 18px; height: 14px; background: linear-gradient(160deg, #b9c0c8, #5c6168 60%, #2e3034); clip-path: polygon(8% 30%, 40% 0, 100% 18%, 88% 80%, 30% 100%, 0 70%); }
+
+  .forge__body { display: grid; grid-template-columns: 300px 1fr 560px; gap: var(--s5); padding: var(--s5); min-height: 640px; }
+
+  /* Сходинки гарту: знизу вгору, як розпечений клинок. Стан читається формою знака, не лише кольором. */
+  .ladder { display: flex; flex-direction: column-reverse; gap: var(--s3); position: relative; align-self: start; }
+  .ladder::before { content: ""; position: absolute; left: 35px; top: 36px; bottom: 36px; width: 2px;
+    background: linear-gradient(0deg, var(--heat) 0%, var(--gold-dim) var(--fill, 40%), var(--edge-mid) var(--fill, 40%)); }
+  .step { position: relative; display: grid; grid-template-columns: 72px 1fr; align-items: center; gap: var(--s3); padding: var(--s2) var(--s3) var(--s2) 0; border: 1px solid transparent; }
+  .step__mark { position: relative; z-index: 1; width: 52px; height: 52px; margin-left: 10px; display: grid; place-items: center;
+    font-family: var(--font-display); font-size: 22px; font-weight: 600; color: var(--ink-dim);
+    border-radius: 50% 50% 46% 54% / 56% 48% 52% 44%; border: 2px dashed var(--edge-light); background: #0e0b09; }
+  .step__name { font-family: var(--font-display); font-size: var(--fs-lead); letter-spacing: 0.06em; color: var(--ink-muted); }
+  .step__name small { display: block; font-family: var(--font-body); font-size: var(--fs-micro); letter-spacing: 0.02em; color: var(--ink-dim); margin-top: 2px; }
+  /* зроблено: суцільна обводка, розпечене тло, ✓ у куті */
+  .step.is-done .step__mark { border-style: solid; border-color: var(--heat); color: #ffe2b8;
+    background: radial-gradient(circle at 40% 35%, #c45a1c, var(--heat-deep) 70%); box-shadow: 0 0 18px rgba(255,140,58,0.45); }
+  .step.is-done .step__mark::after { content: "✓"; position: absolute; right: -8px; top: -8px; font: 600 15px var(--font-body); color: var(--ok);
+    background: #0e0b09; border: 1px solid var(--ok); border-radius: 50%; width: 20px; height: 20px; display: grid; place-items: center; }
+  .step.is-done .step__name { color: var(--ink); }
+  /* наступний: суцільна золота обводка без тла */
+  .step.is-next .step__mark { border-style: solid; border-color: var(--gold); color: var(--gold-bright); }
+  .step.is-next .step__name { color: var(--ink-bright); }
+  /* закрито умовою: пунктир + замок */
+  .step.is-locked .step__mark::after { content: ""; position: absolute; right: -7px; bottom: -6px; width: 14px; height: 11px; border-radius: 2px;
+    background: var(--ink-dim); box-shadow: 0 -7px 0 -3px #0e0b09, 0 -7px 0 -1px var(--ink-dim); }
+  .step.is-focused { border-color: var(--gold); box-shadow: var(--focus); background: rgba(138,116,52,0.10); }
+
+  /* Зброя в руках. */
+  .weapon { display: flex; flex-direction: column; align-items: center; gap: var(--s4); padding-top: var(--s5); border-left: 1px solid var(--edge-mid); border-right: 1px solid var(--edge-mid); }
+  .weapon__art { width: 360px; height: 360px; }
+  .weapon__name { font-family: var(--font-display); font-size: var(--fs-title); letter-spacing: 0.06em; color: var(--ink-bright); font-weight: 500; }
+  .weapon__sub { font-size: var(--fs-small); color: var(--ink-muted); text-align: center; line-height: 1.5; max-width: 420px; }
+  .weapon__sub b { color: var(--gold); font-weight: 600; font-family: var(--font-display); font-variant-ligatures: none; }
+
+  .detail { display: flex; flex-direction: column; gap: var(--s3); }
+  .detail .kind { font-size: var(--fs-micro); letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-dim); }
+  .detail h3 { margin: 0; font-family: var(--font-display); font-size: var(--fs-title); letter-spacing: 0.06em; color: var(--ink-bright); font-weight: 500; }
+  .detail p { margin: 0; font-size: var(--fs-body); line-height: 1.6; color: var(--ink-muted); }
+  .detail q { quotes: "«" "»"; font-style: italic; color: var(--ink); }
+  .cost { display: grid; grid-template-columns: 26px 1fr auto auto; gap: var(--s2) var(--s3); align-items: center; padding: var(--s3) 0; border-top: 1px solid var(--edge-mid); border-bottom: 1px solid var(--edge-mid); font-size: var(--fs-body); }
+  .cost .need { font-variant-numeric: tabular-nums; color: var(--ink-bright); text-align: right; }
+  .cost .have { font-variant-numeric: tabular-nums; color: var(--ink-muted); font-size: var(--fs-small); min-width: 92px; text-align: right; }
+  .cost .ok::before { content: "✓ "; color: var(--ok); }
+  .cost .short { color: var(--danger); }
+  .cost .short::before { content: "✗ "; }
+  .compare { width: 100%; border-collapse: collapse; font-size: var(--fs-small); }
+  .compare td { padding: 6px 0; border-bottom: 1px solid rgba(58,47,37,0.6); font-variant-numeric: tabular-nums; }
+  .compare td:first-child { color: var(--ink-muted); }
+  .compare td.was { text-align: right; color: var(--ink); width: 90px; }
+  .compare td.arrow { text-align: center; color: var(--ink-dim); width: 40px; }
+  .compare td.now { text-align: right; color: var(--ink-bright); width: 120px; }
+  .compare td.now.up { color: var(--ok); }
+  .compare td.now.up::before { content: "▲ "; }
+  .buy { margin-top: auto; display: flex; justify-content: space-between; align-items: center; gap: var(--s4); padding-top: var(--s4); border-top: 1px solid var(--edge-mid); }
+  .buy .btn { min-width: 240px; font-family: var(--font-display); letter-spacing: 0.12em; text-transform: uppercase; font-size: var(--fs-body); }
+  .warn { color: var(--danger); font-size: var(--fs-small); line-height: 1.5; }
+  .locknote { color: var(--ink-muted); font-size: var(--fs-small); line-height: 1.5; }
+  .locknote b { color: var(--ink); font-weight: 500; }
+  .forge__footer { display: flex; gap: var(--s6); padding: var(--s3) var(--s5); border-top: 1px solid var(--edge-mid); font-size: var(--fs-small); color: var(--ink-muted); }
+  .forge__footer span { display: inline-flex; gap: var(--s2); align-items: center; }
+
+  /* Мить гарту: панель гасне, клинок у центрі, іскри, одна дельта великим. */
+  .strike { position: absolute; inset: 0; display: grid; place-items: center; }
+  .strike__flash { position: absolute; inset: 0; background: radial-gradient(30% 34% at 50% 46%, rgba(255,186,110,0.40), transparent 70%); }
+  .strike__card { position: relative; text-align: center; display: flex; flex-direction: column; align-items: center; gap: var(--s3); }
+  .strike__title { font-family: var(--font-display); font-size: 52px; letter-spacing: 0.12em; color: #ffe2b8; font-weight: 600; text-shadow: 0 0 24px rgba(255,140,58,0.55); }
+  .strike__delta { font-size: 30px; color: var(--ink-bright); font-variant-numeric: tabular-nums; }
+  .strike__delta b { color: var(--ok); font-weight: 600; }
+  .strike__delta b::before { content: "▲ "; }
+  .strike__line { font-size: var(--fs-lead); color: var(--ink-muted); font-style: italic; max-width: 820px; line-height: 1.6; }
+</style>
+</head>
+<body>
+
+<div class="note">
+  <b>Кузня Остапа (Approval 1, рішення Claude за постійною згодою, 2026-10-19).</b> Окремий екран замість спільної лавки:
+  гарт — не товар із полиці, а сходинки, і гравцеві треба бачити, що вже зроблено, що далі й чого бракує.
+  <ul>
+    <li><b>Сходинки I–V</b> знизу вгору. Стан — формою знака: зроблено — суцільне розпечене коло з ✓; наступне — суцільна
+      золота обводка; далі — пунктир; закрите умовою — пунктир і замок. Колір лише підтримує.</li>
+    <li><b>Ціна двома рядками</b>: золото й уламки заліза, у кожного «треба / є» і ✓ або ✗. Відмова пояснює себе словами
+      («Бракує 2 уламків заліза»), кнопка вимкнена (UI_UX_GUIDE §6).</li>
+    <li><b>До / після</b>: атака і всі удари зброї в руках — з тими ж числами, що інвентар (`PlayerStats.FlatAttackFor`).
+      Гарт тримає герой, а не клинок: інша зброя отримає той самий бонус — про це рядок під назвою.</li>
+    <li><b>IV і V</b> — з `BALANCE_WORLD.md` §5: IV відкривається після Залізного Тюремника, V — після Кришталевого Звіра і
+      потребує «Серце Кришталю». Поки їх немає в грі, сходинок три, а замкнені рядки просто не показуються.</li>
+    <li><b>Мить гарту</b> (кадр 4): 1,2 с, удар молота (`AudioId` гарту — новий, у кінець), іскри, одна дельта; Esc не перериває,
+      будь-яка клавіша після 0,6 с повертає до сходинок.</li>
+    <li>Префікс USS — <code>forge-</code>. Вхід — «Гартувати» в розмові з Остапом (замість «Торгувати»).</li>
+  </ul>
+  <table>
+    <tr><th>Гарт</th><th>Золото</th><th>Залізо</th><th>Умова</th><th>Разом до базової шкоди</th></tr>
+    <tr><td>I</td><td class="n">300</td><td class="n">2</td><td>—</td><td>+10 %</td></tr>
+    <tr><td>II</td><td class="n">700</td><td class="n">4</td><td>після I</td><td>+20 %</td></tr>
+    <tr><td>III</td><td class="n">1400</td><td class="n">6</td><td>після II</td><td>+30 %</td></tr>
+    <tr><td>IV</td><td class="n">2200</td><td class="n">8</td><td>Залізний Тюремник</td><td>+40 %</td></tr>
+    <tr><td>V</td><td class="n">3200</td><td class="n">10</td><td>Кришталевий Звір, Серце Кришталю</td><td>+50 %</td></tr>
+  </table>
+</div>
+
+<template id="sword">
+  <svg class="weapon__art" viewBox="0 0 360 360" aria-hidden="true">
+    <defs>
+      <linearGradient id="blade" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#e9edf2"/><stop offset="0.45" stop-color="#9aa3ae"/><stop offset="1" stop-color="#3e4247"/>
+      </linearGradient>
+      <linearGradient id="hot" x1="0" y1="1" x2="1" y2="0">
+        <stop offset="0" stop-color="#ffd59a" stop-opacity="0"/><stop offset="0.5" stop-color="#ff8c3a" stop-opacity="var(--heat-a, 0.35)"/><stop offset="1" stop-color="#ffd59a" stop-opacity="0"/>
+      </linearGradient>
+      <radialGradient id="halo"><stop offset="0" stop-color="#ff9a4a" stop-opacity="0.35"/><stop offset="1" stop-color="#ff9a4a" stop-opacity="0"/></radialGradient>
+    </defs>
+    <ellipse cx="180" cy="190" rx="170" ry="150" fill="url(#halo)"/>
+    <!-- клинок трохи вигнутий, кінчик зношений -->
+    <path d="M78 300 C 130 236, 214 128, 292 58 C 298 54, 304 56, 300 64 C 236 146, 156 252, 98 314 Z" fill="url(#blade)"/>
+    <path d="M78 300 C 130 236, 214 128, 292 58 C 298 54, 304 56, 300 64 C 236 146, 156 252, 98 314 Z" fill="url(#hot)"/>
+    <path d="M100 290 C 150 230, 220 140, 288 66" stroke="#f4f6f9" stroke-opacity="0.5" stroke-width="2" fill="none"/>
+    <!-- гарда -->
+    <path d="M52 270 C 70 262, 96 282, 118 304 C 126 314, 118 322, 108 316 C 90 300, 68 286, 52 282 C 44 280, 44 272, 52 270 Z" fill="#6b5a42"/>
+    <!-- руків'я й навершя -->
+    <path d="M70 308 C 60 318, 46 330, 36 338" stroke="#2a211a" stroke-width="16" stroke-linecap="round"/>
+    <path d="M70 308 C 60 318, 46 330, 36 338" stroke="#4a3a2a" stroke-width="10" stroke-linecap="round" stroke-dasharray="4 6"/>
+    <circle cx="30" cy="344" r="11" fill="#8a7434"/>
+  </svg>
+</template>
+
+<div class="sheet">
+
+  <!-- 1. Готово до гарту -->
+  <div class="frame">
+    <div class="stage-inner">
+      <div class="world"></div>
+      <div class="panel panel--royal forge">
+        <div class="panel__header"><h2 class="panel__title">Кузня Остапа</h2>
+          <div class="wallet"><span><i class="coin"></i>1 240</span><span><i class="iron"></i>5</span></div></div>
+        <div class="forge__body">
+          <div class="ladder" style="--fill: 30%">
+            <div class="step is-done"><div class="step__mark">I</div><div class="step__name">Гарт I<small>+10 % · зроблено</small></div></div>
+            <div class="step is-next is-focused"><div class="step__mark">II</div><div class="step__name">Гарт II<small>700 · 4 заліза</small></div></div>
+            <div class="step"><div class="step__mark">III</div><div class="step__name">Гарт III<small>після II</small></div></div>
+            <div class="step is-locked"><div class="step__mark">IV</div><div class="step__name">Гарт IV<small>залізо Цитаделі</small></div></div>
+            <div class="step is-locked"><div class="step__mark">V</div><div class="step__name">Гарт V<small>серце кришталю</small></div></div>
+          </div>
+          <div class="weapon" data-sword>
+            <div class="weapon__name">Старий Меч</div>
+            <div class="weapon__sub">У руках · загартовано <b>I</b><br>Гарт лишається з героєм: інший клинок отримає той самий бонус.</div>
+          </div>
+          <div class="detail">
+            <span class="kind">Гарт · другий</span>
+            <h3>Гарт II</h3>
+            <p><q>Розпечу ще раз і остуджу в попелі. Сталь пам'ятає жар краще, ніж люди.</q></p>
+            <div class="cost">
+              <i class="coin"></i><span>Золото</span><span class="need">700</span><span class="have ok">є 1 240</span>
+              <i class="iron"></i><span>Уламки заліза</span><span class="need">4</span><span class="have ok">є 5</span>
+            </div>
+            <table class="compare">
+              <tr><td>Атака</td><td class="was">26</td><td class="arrow">→</td><td class="now up">28</td></tr>
+              <tr><td>Легкий удар · серія</td><td class="was">20 / 23 / 33</td><td class="arrow">→</td><td class="now up">21 / 25 / 35</td></tr>
+              <tr><td>Важкий удар</td><td class="was">46</td><td class="arrow">→</td><td class="now up">49</td></tr>
+              <tr><td>До базової шкоди</td><td class="was">+10 %</td><td class="arrow">→</td><td class="now up">+20 %</td></tr>
+            </table>
+            <div class="buy"><span class="locknote">Після гарту: <b>540</b> золота, <b>1</b> залізо</span><button class="btn btn--primary is-focused">Гартувати</button></div>
+          </div>
+        </div>
+        <div class="forge__footer"><span><span class="glyph">E</span> гартувати</span><span><span class="glyph">↑↓</span> сходинка</span><span><span class="glyph">Esc</span> піти</span></div>
+      </div>
+    </div>
+    <div class="frame__caption">1 · Наступний гарт: ціна з «треба / є», до й після, кнопка</div>
+  </div>
+
+  <!-- 2. Бракує заліза -->
+  <div class="frame">
+    <div class="stage-inner">
+      <div class="world"></div>
+      <div class="panel panel--royal forge">
+        <div class="panel__header"><h2 class="panel__title">Кузня Остапа</h2>
+          <div class="wallet"><span><i class="coin"></i>1 820</span><span><i class="iron"></i>2</span></div></div>
+        <div class="forge__body">
+          <div class="ladder" style="--fill: 30%">
+            <div class="step is-done"><div class="step__mark">I</div><div class="step__name">Гарт I<small>+10 % · зроблено</small></div></div>
+            <div class="step is-next is-focused"><div class="step__mark">II</div><div class="step__name">Гарт II<small>700 · 4 заліза</small></div></div>
+            <div class="step"><div class="step__mark">III</div><div class="step__name">Гарт III<small>після II</small></div></div>
+            <div class="step is-locked"><div class="step__mark">IV</div><div class="step__name">Гарт IV<small>залізо Цитаделі</small></div></div>
+            <div class="step is-locked"><div class="step__mark">V</div><div class="step__name">Гарт V<small>серце кришталю</small></div></div>
+          </div>
+          <div class="weapon" data-sword>
+            <div class="weapon__name">Старий Меч</div>
+            <div class="weapon__sub">У руках · загартовано <b>I</b><br>Гарт лишається з героєм: інший клинок отримає той самий бонус.</div>
+          </div>
+          <div class="detail">
+            <span class="kind">Гарт · другий</span>
+            <h3>Гарт II</h3>
+            <p><q>Золота досить, а заліза — на півклинка. Руїни Столиці ним усіяні: щитоносці, списники, горгулі.</q></p>
+            <div class="cost">
+              <i class="coin"></i><span>Золото</span><span class="need">700</span><span class="have ok">є 1 820</span>
+              <i class="iron"></i><span>Уламки заліза</span><span class="need">4</span><span class="have short">є 2</span>
+            </div>
+            <table class="compare">
+              <tr><td>Атака</td><td class="was">26</td><td class="arrow">→</td><td class="now up">28</td></tr>
+              <tr><td>Легкий удар · серія</td><td class="was">20 / 23 / 33</td><td class="arrow">→</td><td class="now up">21 / 25 / 35</td></tr>
+              <tr><td>Важкий удар</td><td class="was">46</td><td class="arrow">→</td><td class="now up">49</td></tr>
+              <tr><td>До базової шкоди</td><td class="was">+10 %</td><td class="arrow">→</td><td class="now up">+20 %</td></tr>
+            </table>
+            <div class="buy"><span class="warn">Бракує 2 уламків заліза.<br>Залізо падає з воїнів у латах.</span><button class="btn is-disabled">Гартувати</button></div>
+          </div>
+        </div>
+        <div class="forge__footer"><span><span class="glyph">E</span> гартувати</span><span><span class="glyph">↑↓</span> сходинка</span><span><span class="glyph">Esc</span> піти</span></div>
+      </div>
+    </div>
+    <div class="frame__caption">2 · Відмова пояснює себе: ✗ біля заліза, слова й підказка, де його взяти</div>
+  </div>
+
+  <!-- 3. Закрита сходинка -->
+  <div class="frame">
+    <div class="stage-inner">
+      <div class="world"></div>
+      <div class="panel panel--royal forge">
+        <div class="panel__header"><h2 class="panel__title">Кузня Остапа</h2>
+          <div class="wallet"><span><i class="coin"></i>3 410</span><span><i class="iron"></i>11</span></div></div>
+        <div class="forge__body">
+          <div class="ladder" style="--fill: 58%">
+            <div class="step is-done"><div class="step__mark">I</div><div class="step__name">Гарт I<small>+10 % · зроблено</small></div></div>
+            <div class="step is-done"><div class="step__mark">II</div><div class="step__name">Гарт II<small>+20 % · зроблено</small></div></div>
+            <div class="step is-done"><div class="step__mark">III</div><div class="step__name">Гарт III<small>+30 % · зроблено</small></div></div>
+            <div class="step is-locked is-focused"><div class="step__mark">IV</div><div class="step__name">Гарт IV<small>залізо Цитаделі</small></div></div>
+            <div class="step is-locked"><div class="step__mark">V</div><div class="step__name">Гарт V<small>серце кришталю</small></div></div>
+          </div>
+          <div class="weapon" data-sword style="--heat-a: 0.6">
+            <div class="weapon__name">Залізний Дворучник</div>
+            <div class="weapon__sub">У руках · загартовано <b>III</b><br>Гарт лишається з героєм: інший клинок отримає той самий бонус.</div>
+          </div>
+          <div class="detail">
+            <span class="kind">Гарт · четвертий</span>
+            <h3>Гарт IV</h3>
+            <p><q>Більше мій горн зі звичайного заліза не витягне. У Цитаделі кували кайдани, що не рвались століттями, — принеси мені того заліза.</q></p>
+            <div class="cost">
+              <i class="coin"></i><span>Золото</span><span class="need">2 200</span><span class="have ok">є 3 410</span>
+              <i class="iron"></i><span>Уламки заліза</span><span class="need">8</span><span class="have ok">є 11</span>
+            </div>
+            <table class="compare">
+              <tr><td>Атака</td><td class="was">56</td><td class="arrow">→</td><td class="now up">59</td></tr>
+              <tr><td>Легкий удар · серія</td><td class="was">48 / 53 / 76</td><td class="arrow">→</td><td class="now up">50 / 56 / 80</td></tr>
+              <tr><td>Важкий удар</td><td class="was">106</td><td class="arrow">→</td><td class="now up">113</td></tr>
+            </table>
+            <div class="buy"><span class="locknote"><b>Закрито:</b> відкриється, коли впаде Залізний Тюремник.<br>Золота й заліза досить.</span><button class="btn is-disabled">Гартувати</button></div>
+          </div>
+        </div>
+        <div class="forge__footer"><span><span class="glyph">E</span> гартувати</span><span><span class="glyph">↑↓</span> сходинка</span><span><span class="glyph">Esc</span> піти</span></div>
+      </div>
+    </div>
+    <div class="frame__caption">3 · Сходинка з умовою: замок, слова Остапа, що саме її відкриє</div>
+  </div>
+
+  <!-- 4. Мить гарту -->
+  <div class="frame">
+    <div class="stage-inner">
+      <div class="world" style="filter: brightness(1.2)"></div>
+      <canvas class="embers" width="1920" height="1080" data-embers="7"></canvas>
+      <div class="strike">
+        <div class="strike__flash"></div>
+        <div class="strike__card">
+          <div data-sword style="--heat-a: 0.9"></div>
+          <div class="strike__title">Гарт II</div>
+          <div class="strike__delta">Атака 26 → <b>28</b></div>
+          <div class="strike__line">«Чуєш, як співає? Тепер рубатиме глибше».</div>
+        </div>
+      </div>
+    </div>
+    <div class="frame__caption">4 · Мить гарту: удар молота, іскри, одна дельта; 1,2 с</div>
+  </div>
+
+</div>
+
+<script>
+  // Один клинок для всіх кадрів (шаблон), іскри — зі свого seed, без повторів.
+  const tpl = document.getElementById("sword");
+  document.querySelectorAll("[data-sword]").forEach(host => {
+    host.insertBefore(tpl.content.cloneNode(true), host.firstChild);
+  });
+  function rng(seed) { let s = seed >>> 0; return () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296); }
+  document.querySelectorAll("canvas[data-embers]").forEach(cv => {
+    const c = cv.getContext("2d"), r = rng(+cv.dataset.embers);
+    for (let i = 0; i < 140; i++) {
+      const a = -Math.PI / 2 + (r() - 0.5) * 2.6, d = 60 + r() * r() * 520;
+      const x = 960 + Math.cos(a) * d, y = 470 + Math.sin(a) * d * 0.8, len = 6 + r() * 26;
+      c.strokeStyle = `rgba(255,${150 + (r() * 90) | 0},80,${0.35 + r() * 0.6})`; c.lineWidth = 1.5 + r() * 2.5; c.lineCap = "round";
+      c.beginPath(); c.moveTo(x, y);
+      c.quadraticCurveTo(x + Math.cos(a) * len * 0.6, y + Math.sin(a) * len * 0.6 + 4, x + Math.cos(a) * len, y + Math.sin(a) * len + 10); c.stroke();
+    }
+  });
+</script>
+</body>
+</html>

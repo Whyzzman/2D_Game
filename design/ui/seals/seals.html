@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<title>Тінь Забутого Королівства — Печатки клятви</title>
+<!-- Шрифти з кирилицею (OFL), як у живому макеті меню (UI_UX_GUIDE §3). -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@400;500;700&family=Cormorant+SC:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="../_shared/ui.css">
+<style>
+  :root {
+    --font-display: "Cormorant SC", "Cinzel", Georgia, serif;
+    --font-body: "Alegreya Sans", "Segoe UI", system-ui, sans-serif;
+    --fire: #ff8c3a; --water: #5fc4c0; --ice: #a9dcff;
+  }
+  body { background: #050403; font-family: var(--font-body); }
+  .sheet { display: flex; flex-wrap: wrap; gap: 28px; padding: 28px; }
+  .frame { position: relative; flex-shrink: 0; width: 912px; height: 513px; overflow: hidden; border: 1px solid var(--edge-mid); }
+  .frame > .stage-inner { position: absolute; width: 1920px; height: 1080px; transform: scale(0.475); transform-origin: top left; }
+  .frame__caption {
+    position: absolute; left: 0; right: 0; bottom: 0; z-index: 5; padding: 6px 10px;
+    font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--gold-dim); background: rgba(5,4,3,0.88); border-top: 1px solid var(--edge-mid);
+  }
+  .note { max-width: 1852px; margin: 28px 28px 0; color: var(--ink-muted); font-size: 14px; line-height: 1.6; }
+  .note b { color: var(--ink); }
+  .note ul { margin: 8px 0 0; padding-left: 20px; }
+
+  .world { position: absolute; inset: 0; filter: brightness(0.35);
+    background: radial-gradient(60% 50% at 50% 55%, rgba(92,70,40,0.25), transparent 70%), linear-gradient(180deg, #120f0c, #0a0807); }
+  .pause-tabs { position: absolute; left: 160px; right: 160px; top: 56px; display: flex; gap: var(--s5); justify-content: center; }
+  .pause-tabs span { font-family: var(--font-display); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); font-size: var(--fs-body); padding-bottom: 6px; }
+  .pause-tabs span.is-on { color: var(--gold-bright); border-bottom: 2px solid var(--gold); }
+
+  .seals { position: absolute; left: 50%; top: 116px; transform: translateX(-50%); width: 1500px; }
+  .seals .panel__header { display: flex; justify-content: space-between; align-items: baseline; }
+  .seals .panel__header span { font-size: var(--fs-small); color: var(--ink-muted); }
+  .seals .panel__header b { color: var(--gold); font-weight: 600; font-family: var(--font-display); font-size: var(--fs-lead); }
+
+  /* Брама Палацу: арка з трьома гніздами. Гніздо світиться, коли печатку зламано. */
+  .seal-gate { position: relative; height: 330px; border-bottom: 1px solid var(--edge-mid); }
+  .seal-gate svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .seal-gate__label { position: absolute; left: 0; right: 0; bottom: 18px; text-align: center; font-size: var(--fs-small); color: var(--ink-muted); letter-spacing: 0.04em; }
+  .seal-gate__label b { color: var(--ink-bright); font-weight: 500; }
+
+  .seal-cards { display: grid; grid-template-columns: repeat(3, 1fr); }
+  .seal-card { position: relative; padding: var(--s5); display: flex; flex-direction: column; gap: var(--s3); border-right: 1px solid var(--edge-mid); min-height: 410px; }
+  .seal-card:last-child { border-right: none; }
+  .seal-card.is-focused { background: rgba(138,116,52,0.08); box-shadow: inset 0 3px 0 var(--gold); }
+  .seal-card__head { display: grid; grid-template-columns: 92px 1fr; gap: var(--s4); align-items: center; }
+  .seal-card__emblem { width: 92px; height: 92px; }
+  .seal-card h3 { margin: 0; font-family: var(--font-display); font-size: var(--fs-lead); letter-spacing: 0.06em; color: var(--ink-bright); font-weight: 600; }
+  .seal-card .keeper { font-size: var(--fs-small); color: var(--ink-muted); margin-top: 2px; }
+  .seal-card .state { display: inline-flex; gap: var(--s2); align-items: center; font-size: var(--fs-micro); letter-spacing: 0.14em; text-transform: uppercase; margin-top: var(--s2); color: var(--ink-dim); }
+  .seal-card .state::before { content: ""; width: 12px; height: 12px; border: 2px dashed var(--ink-dim); border-radius: 50%; }
+  .seal-card.is-known .state { color: var(--ink); }
+  .seal-card.is-known .state::before { border-style: solid; border-color: var(--ink); }
+  .seal-card.is-broken .state { color: var(--gold-bright); }
+  .seal-card.is-broken .state::before { border-style: solid; border-color: var(--gold); background: var(--gold); }
+  .seal-card dl { margin: 0; display: grid; grid-template-columns: 96px 1fr; gap: 6px var(--s3); font-size: var(--fs-small); border-top: 1px solid rgba(58,47,37,0.6); padding-top: var(--s3); }
+  .seal-card dt { color: var(--ink-dim); }
+  .seal-card dd { margin: 0; color: var(--ink); line-height: 1.45; }
+  .seal-card dd.need { color: var(--ink-muted); }
+  .seal-card dd.need::before { content: "◇ "; color: var(--ink-dim); }
+  .seal-card dd.have::before { content: "◆ "; color: var(--gold); }
+  .seal-card p { margin: 0; font-size: var(--fs-body); line-height: 1.6; color: var(--ink-muted); }
+  .seal-card q { quotes: "«" "»"; font-style: italic; color: var(--ink); }
+  .seal-card.is-unknown h3 { color: var(--ink-dim); letter-spacing: 0.24em; }
+
+  .seals__footer { display: flex; gap: var(--s6); padding: var(--s3) var(--s5); border-top: 1px solid var(--edge-mid); font-size: var(--fs-small); color: var(--ink-muted); }
+  .seals__footer span { display: inline-flex; gap: var(--s2); align-items: center; }
+
+  /* Сповіщення «Печатку зламано» — праворуч зверху, як інші сповіщення HUD. */
+  .toast { position: absolute; right: 64px; top: 64px; width: 520px; display: grid; grid-template-columns: 84px 1fr; gap: var(--s4); align-items: center;
+    padding: var(--s4); background: rgba(11,9,7,0.9); border: 1px solid var(--edge-light); }
+  .toast h4 { margin: 0; font-family: var(--font-display); font-size: var(--fs-lead); letter-spacing: 0.08em; color: var(--gold-bright); font-weight: 600; }
+  .toast p { margin: 4px 0 0; font-size: var(--fs-small); color: var(--ink-muted); line-height: 1.5; }
+  .toast .pips { display: flex; gap: 8px; margin-top: 8px; }
+  .toast .pips i { width: 14px; height: 14px; border-radius: 50%; border: 2px dashed var(--ink-dim); }
+  .toast .pips i.on { border-style: solid; border-color: var(--gold); background: var(--gold); }
+  .hud-world { position: absolute; inset: 0; background:
+      radial-gradient(40% 50% at 30% 70%, rgba(255,120,40,0.25), transparent 70%),
+      linear-gradient(180deg, #1a0d08, #0b0605); }
+</style>
+</head>
+<body>
+
+<div class="note">
+  <b>Журнал печаток (Approval 1, рішення Claude за постійною згодою, 2026-10-19).</b> Нова вкладка паузи <b>«Печатки»</b> після
+  «Бестіарію»: три Присяжні тримають клятву, їхні печатки відчиняють Палац (`STORY.md`, `WORLD_DESIGN.md`). Гравцеві в
+  відкритому акті «Королівство» треба бачити, що зламано, де шукати решту і що туди веде — без підказки стрілкою.
+  <ul>
+    <li><b>Брама</b> вгорі — та сама, що на Тронній площі Столиці: три гнізда; зламана печатка світиться у своєму гнізді.</li>
+    <li><b>Три картки</b>: огонь (Попелясті Глибини), вода (Королівські Акведуки), лід (Крижаний Бастіон). Стан — знаком, не лише
+      кольором: пунктирне коло — «Не знайдено», суцільне — «Відомо», залите — «Зламано», емблема тріснута.</li>
+    <li><b>«Шлях»</b> — що відкриває дорогу: ◆ є, ◇ ще ні (Чумна маска, Дихання глибин, ключ Бастіону + Кришталевий ривок). Не
+      знайдена зона показує лише слух від жителя, без назви Присяжного («???»).</li>
+    <li><b>Сповіщення</b> (кадр 4) при зламаній печатці — у куті сповіщень, 3 с, з лічильником 1–3; бій не зупиняє.</li>
+    <li>Префікс USS — <code>seal-</code>. Дані — `IWorldQuery`: «зламано» = переможений Присяжний, «відомо» = відвідана зона.</li>
+  </ul>
+</div>
+
+<template id="gate">
+  <svg viewBox="0 0 1500 330" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+    <defs>
+      <radialGradient id="g-fire"><stop offset="0" stop-color="#ffd59a"/><stop offset="0.5" stop-color="#ff8c3a" stop-opacity="0.6"/><stop offset="1" stop-color="#ff8c3a" stop-opacity="0"/></radialGradient>
+      <radialGradient id="g-water"><stop offset="0" stop-color="#c8fff6"/><stop offset="0.5" stop-color="#5fc4c0" stop-opacity="0.6"/><stop offset="1" stop-color="#5fc4c0" stop-opacity="0"/></radialGradient>
+      <radialGradient id="g-ice"><stop offset="0" stop-color="#ffffff"/><stop offset="0.5" stop-color="#a9dcff" stop-opacity="0.6"/><stop offset="1" stop-color="#a9dcff" stop-opacity="0"/></radialGradient>
+      <linearGradient id="stone" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a241d"/><stop offset="1" stop-color="#14100d"/></linearGradient>
+      <radialGradient id="beyond" cx="0.5" cy="0.35"><stop offset="0" stop-color="#e8e2ff" stop-opacity="0.55"/><stop offset="0.6" stop-color="#7a6aa8" stop-opacity="0.2"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+    </defs>
+    <!-- арка: плавний стрілчастий проріз у масиві -->
+    <path d="M520 330 L520 170 C 520 90, 620 34, 750 22 C 880 34, 980 90, 980 170 L980 330 Z" fill="#070605"/>
+    <path class="gate-beyond" d="M560 330 L560 176 C 560 108, 640 62, 750 52 C 860 62, 940 108, 940 176 L940 330 Z" fill="url(#beyond)" opacity="0"/>
+    <path d="M470 330 L470 160 C 470 70, 600 6, 750 -4 C 900 6, 1030 70, 1030 160 L1030 330 L980 330 L980 170 C 980 90, 880 34, 750 22 C 620 34, 520 90, 520 170 L520 330 Z" fill="url(#stone)"/>
+    <path d="M470 160 C 470 70, 600 6, 750 -4 C 900 6, 1030 70, 1030 160" fill="none" stroke="#6b5a42" stroke-width="2" opacity="0.6"/>
+    <!-- стулки брами: зачинено -->
+    <g class="gate-doors">
+      <path d="M560 330 L560 176 C 560 108, 640 62, 748 52 L748 330 Z" fill="#1e1915"/>
+      <path d="M752 330 L752 52 C 860 62, 940 108, 940 176 L940 330 Z" fill="#1b1612"/>
+      <path d="M600 200 C 640 180, 700 172, 740 176 M760 176 C 800 172, 860 180, 900 200" stroke="#3a2f25" stroke-width="3" fill="none"/>
+    </g>
+    <!-- три гнізда: вогонь ліворуч, вода праворуч, лід над замковим каменем -->
+    <g class="sock sock-fire" transform="translate(605 236)"><circle r="44" fill="url(#g-fire)" class="glow" opacity="0"/><circle r="26" fill="#0b0907" stroke="#6b5a42" stroke-width="3" class="ring"/></g>
+    <g class="sock sock-water" transform="translate(895 236)"><circle r="44" fill="url(#g-water)" class="glow" opacity="0"/><circle r="26" fill="#0b0907" stroke="#6b5a42" stroke-width="3" class="ring"/></g>
+    <g class="sock sock-ice" transform="translate(750 96)"><circle r="44" fill="url(#g-ice)" class="glow" opacity="0"/><circle r="26" fill="#0b0907" stroke="#6b5a42" stroke-width="3" class="ring"/></g>
+    <!-- колони обабіч, у тумані -->
+    <path d="M330 330 C 334 240, 326 160, 340 90 L380 90 C 392 160, 386 240, 390 330 Z" fill="#100d0b"/>
+    <path d="M1110 330 C 1114 240, 1106 160, 1120 90 L1160 90 C 1172 160, 1166 240, 1170 330 Z" fill="#100d0b"/>
+    <path d="M0 300 C 300 270, 520 310, 750 290 C 980 270, 1200 312, 1500 290 L1500 330 L0 330 Z" fill="#0b0907" opacity="0.8"/>
+  </svg>
+</template>
+
+<!-- емблеми: вогонь — язик полум'я, вода — хвиля, лід — кристал; тріщина додається станом «зламано» -->
+<template id="em-fire">
+  <svg class="seal-card__emblem" viewBox="0 0 92 92" aria-hidden="true">
+    <circle cx="46" cy="46" r="42" fill="#0b0907" stroke="currentColor" stroke-width="3" class="em-ring"/>
+    <path d="M46 18 C 54 32, 66 38, 64 54 C 62 68, 52 74, 46 74 C 38 74, 28 68, 28 56 C 28 46, 36 42, 38 34 C 42 40, 42 46, 46 48 C 50 40, 48 28, 46 18 Z" fill="currentColor" class="em-shape"/>
+    <path d="M30 24 L44 44 L40 52 L58 72" stroke="#0b0907" stroke-width="4" fill="none" class="em-crack"/>
+  </svg>
+</template>
+<template id="em-water">
+  <svg class="seal-card__emblem" viewBox="0 0 92 92" aria-hidden="true">
+    <circle cx="46" cy="46" r="42" fill="#0b0907" stroke="currentColor" stroke-width="3" class="em-ring"/>
+    <path d="M20 56 C 28 44, 38 44, 46 52 C 54 60, 64 60, 72 48 C 70 64, 58 72, 46 70 C 36 68, 30 60, 20 56 Z" fill="currentColor" class="em-shape"/>
+    <path d="M24 40 C 32 30, 40 30, 46 36 C 52 42, 60 42, 68 32" stroke="currentColor" stroke-width="4" fill="none" stroke-linecap="round" class="em-shape"/>
+    <path d="M30 24 L44 44 L40 52 L58 72" stroke="#0b0907" stroke-width="4" fill="none" class="em-crack"/>
+  </svg>
+</template>
+<template id="em-ice">
+  <svg class="seal-card__emblem" viewBox="0 0 92 92" aria-hidden="true">
+    <circle cx="46" cy="46" r="42" fill="#0b0907" stroke="currentColor" stroke-width="3" class="em-ring"/>
+    <path d="M46 16 L56 40 L46 76 L36 40 Z" fill="currentColor" class="em-shape"/>
+    <path d="M26 34 L40 44 L34 62 Z M66 34 L52 44 L58 62 Z" fill="currentColor" opacity="0.7" class="em-shape"/>
+    <path d="M30 24 L44 44 L40 52 L58 72" stroke="#0b0907" stroke-width="4" fill="none" class="em-crack"/>
+  </svg>
+</template>
+
+<div class="sheet">
+
+  <!-- 1. Жодної: усе попереду -->
+  <div class="frame">
+    <div class="stage-inner">
+      <div class="world"></div>
+      <div class="pause-tabs"><span>Спорядження</span><span>Екіпірування</span><span>Персонаж</span><span>Уміння</span><span>Закляття</span><span>Люди</span><span>Бестіарій</span><span class="is-on">Печатки</span></div>
+      <div class="panel panel--royal seals">
+        <div class="panel__header"><h2 class="panel__title">Печатки клятви</h2><span>Зламано <b>0 з 3</b></span></div>
+        <div class="seal-gate" data-gate="" data-open="0"><div class="seal-gate__label"><b>Брама Палацу</b> · Столиця, Тронна площа · зачинена</div></div>
+        <div class="seal-cards">
+          <div class="seal-card is-unknown is-focused" data-em="fire">
+            <div class="seal-card__head"><div class="em"></div><div><h3>???</h3><div class="keeper">Печатка вогню</div><div class="state">Не знайдено</div></div></div>
+            <dl><dt>Де</dt><dd>Глибоко під болотами, де горять кузні</dd><dt>Шлях</dt><dd class="need">крізь отруйну воду</dd></dl>
+            <p><q>Під болотом земля тепла, як піч. Хто там кує — не знаю, та дим іде звідти віками.</q> — Ярина</p>
+          </div>
+          <div class="seal-card is-unknown" data-em="water">
+            <div class="seal-card__head"><div class="em"></div><div><h3>???</h3><div class="keeper">Печатка води</div><div class="state">Не знайдено</div></div></div>
+            <dl><dt>Де</dt><dd>За Собором, куди пішла вода міста</dd><dt>Шлях</dt><dd class="need">під водою</dd></dl>
+            <p><q>Вода з міста не зникла. Її забрали шлюзи, і хтось досі ними править.</q> — Мирослава</p>
+          </div>
+          <div class="seal-card is-unknown" data-em="ice">
+            <div class="seal-card__head"><div class="em"></div><div><h3>???</h3><div class="keeper">Печатка льоду</div><div class="state">Не знайдено</div></div></div>
+            <dl><dt>Де</dt><dd>Північна фортеця за Цитаделлю</dd><dt>Шлях</dt><dd class="need">ключ від брами Бастіону</dd></dl>
+            <p><q>Ключ від Бастіону носив Тюремник. Носить і досі, мабуть.</q> — Остап</p>
+          </div>
+        </div>
+        <div class="seals__footer"><span><span class="glyph">←→</span> печатка</span><span><span class="glyph">M</span> на карті</span><span><span class="glyph">Q</span><span class="glyph">E</span> вкладки</span><span><span class="glyph">Esc</span> назад</span></div>
+      </div>
+    </div>
+    <div class="frame__caption">1 · Після Столиці: жодної, лише чутки жителів про місця</div>
+  </div>
+
+  <!-- 2. Одна зламана, друга відома -->
+  <div class="frame">
+    <div class="stage-inner">
+      <div class="world"></div>
+      <div class="pause-tabs"><span>Спорядження</span><span>Екіпірування</span><span>Персонаж</span><span>Уміння</span><span>Закляття</span><span>Люди</span><span>Бестіарій</span><span class="is-on">Печатки</span></div>
+      <div class="panel panel--royal seals">
+        <div class="panel__header"><h2 class="panel__title">Печатки клятви</h2><span>Зламано <b>1 з 3</b></span></div>
+        <div class="seal-gate" data-gate="fire" data-open="0"><div class="seal-gate__label"><b>Брама Палацу</b> · Столиця, Тронна площа · зачинена</div></div>
+        <div class="seal-cards">
+          <div class="seal-card is-broken" data-em="fire">
+            <div class="seal-card__head"><div class="em"></div><div><h3>Присяжний Вогню</h3><div class="keeper">Печатка вогню · Попелясті Глибини</div><div class="state">Зламано</div></div></div>
+            <dl><dt>Шлях</dt><dd class="have">Чумна маска</dd></dl>
+            <p><q>Я тримав жар, щоб королівство не замерзло в забутті. Тепер гасни і ти.</q> — останні слова Присяжного</p>
+          </div>
+          <div class="seal-card is-known is-focused" data-em="water">
+            <div class="seal-card__head"><div class="em"></div><div><h3>Владар Шлюзів</h3><div class="keeper">Печатка води · Королівські Акведуки</div><div class="state">Відомо</div></div></div>
+            <dl><dt>Шлях</dt><dd class="have">Дихання глибин</dd><dt>Лишилось</dt><dd>шлюзова зала на дні, за трьома клапанами</dd></dl>
+            <p><q>Тут ще чути його тризуб: вода б'є в стіни разом із ним.</q> — напис біля першого шлюзу</p>
+          </div>
+          <div class="seal-card is-unknown" data-em="ice">
+            <div class="seal-card__head"><div class="em"></div><div><h3>???</h3><div class="keeper">Печатка льоду</div><div class="state">Не знайдено</div></div></div>
+            <dl><dt>Де</dt><dd>Північна фортеця за Цитаделлю</dd><dt>Шлях</dt><dd class="need">ключ від брами Бастіону</dd><dd class="need" style="grid-column:2">Кришталевий ривок</dd></dl>
+            <p><q>Ключ від Бастіону носив Тюремник. Носить і досі, мабуть.</q> — Остап</p>
+          </div>
+        </div>
+        <div class="seals__footer"><span><span class="glyph">←→</span> печатка</span><span><span class="glyph">M</span> на карті</span><span><span class="glyph">Q</span><span class="glyph">E</span> вкладки</span><span><span class="glyph">Esc</span> назад</span></div>
+      </div>
+    </div>
+    <div class="frame__caption">2 · Вогонь зламано, вода відома: шлях ◆ є, що лишилось — словами</div>
+  </div>
+
+  <!-- 3. Усі три: брама відчинена -->
+  <div class="frame">
+    <div class="stage-inner">
+      <div class="world"></div>
+      <div class="pause-tabs"><span>Спорядження</span><span>Екіпірування</span><span>Персонаж</span><span>Уміння</span><span>Закляття</span><span>Люди</span><span>Бестіарій</span><span class="is-on">Печатки</span></div>
+      <div class="panel panel--royal seals">
+        <div class="panel__header"><h2 class="panel__title">Печатки клятви</h2><span>Зламано <b>3 з 3</b></span></div>
+        <div class="seal-gate" data-gate="fire water ice" data-open="1"><div class="seal-gate__label"><b>Брама Палацу відчинена</b> · Столиця, Тронна площа · за нею — місячний сад</div></div>
+        <div class="seal-cards">
+          <div class="seal-card is-broken" data-em="fire">
+            <div class="seal-card__head"><div class="em"></div><div><h3>Присяжний Вогню</h3><div class="keeper">Печатка вогню · Попелясті Глибини</div><div class="state">Зламано</div></div></div>
+            <p><q>Я тримав жар, щоб королівство не замерзло в забутті. Тепер гасни і ти.</q></p>
+          </div>
+          <div class="seal-card is-broken" data-em="water">
+            <div class="seal-card__head"><div class="em"></div><div><h3>Владар Шлюзів</h3><div class="keeper">Печатка води · Королівські Акведуки</div><div class="state">Зламано</div></div></div>
+            <p><q>Вода пам'ятає все, що в неї впало. Навіть тебе.</q></p>
+          </div>
+          <div class="seal-card is-broken is-focused" data-em="ice">
+            <div class="seal-card__head"><div class="em"></div><div><h3>Присяжна Льоду</h3><div class="keeper">Печатка льоду · Крижаний Бастіон</div><div class="state">Зламано</div></div></div>
+            <p><q>Я заморозила клятву на півслові, щоб її ніхто не доказав. Ти доказав.</q></p>
+          </div>
+        </div>
+        <div class="seals__footer"><span><span class="glyph">←→</span> печатка</span><span><span class="glyph">M</span> брама на карті</span><span><span class="glyph">Q</span><span class="glyph">E</span> вкладки</span><span><span class="glyph">Esc</span> назад</span></div>
+      </div>
+    </div>
+    <div class="frame__caption">3 · Усі три: гнізда світяться, брама відчинена, за нею місячне світло</div>
+  </div>
+
+  <!-- 4. Сповіщення в бою -->
+  <div class="frame">
+    <div class="stage-inner">
+      <div class="hud-world"></div>
+      <div class="toast">
+        <div data-em="fire" class="is-broken" style="color:var(--fire)"><div class="em"></div></div>
+        <div><h4>Печатку вогню зламано</h4><p>Брама Палацу слабшає. Лишилось дві.</p><div class="pips"><i class="on"></i><i></i><i></i></div></div>
+      </div>
+    </div>
+    <div class="frame__caption">4 · Сповіщення після Присяжного: кут сповіщень, 3 с, лічильник 1–3</div>
+  </div>
+
+</div>
+
+<script>
+  const colors = { fire: "var(--fire)", water: "var(--water)", ice: "var(--ice)" };
+  document.querySelectorAll("[data-em]").forEach(card => {
+    const kind = card.dataset.em, host = card.querySelector(".em");
+    host.appendChild(document.getElementById("em-" + kind).content.cloneNode(true));
+    const svg = host.querySelector("svg");
+    const broken = card.classList.contains("is-broken"), known = card.classList.contains("is-known");
+    // Не знайдено — тьмяний пунктир; відомо — суцільний у кольорі; зламано — суцільний, яскравий, з тріщиною.
+    svg.style.color = broken || known ? colors[kind] : "var(--ink-dim)";
+    svg.querySelector(".em-ring").setAttribute("stroke-dasharray", broken || known ? "" : "6 6");
+    svg.querySelectorAll(".em-shape").forEach(s => s.setAttribute("opacity", broken ? 1 : known ? 0.75 : 0.25));
+    svg.querySelector(".em-crack").style.display = broken ? "" : "none";
+    if (broken) svg.style.filter = `drop-shadow(0 0 10px ${colors[kind]})`;
+  });
+  document.querySelectorAll("[data-gate]").forEach(g => {
+    g.insertBefore(document.getElementById("gate").content.cloneNode(true), g.firstChild);
+    const lit = g.dataset.gate.split(" ").filter(Boolean);
+    lit.forEach(k => {
+      const s = g.querySelector(".sock-" + k);
+      s.querySelector(".glow").setAttribute("opacity", 1);
+      s.querySelector(".ring").setAttribute("fill", k === "fire" ? "#ff8c3a" : k === "water" ? "#5fc4c0" : "#a9dcff");
+    });
+    if (g.dataset.open === "1") {
+      g.querySelector(".gate-doors").setAttribute("opacity", 0);
+      g.querySelector(".gate-beyond").setAttribute("opacity", 1);
+    }
+  });
+</script>
+</body>
+</html>

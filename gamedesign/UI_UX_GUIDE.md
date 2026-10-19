@@ -29,6 +29,8 @@
 | Керування | `design/ui/controls/controls.html` | `ControlsPanel` |
 | Картка здібності | `design/ui/tutorial/tutorial.html` | `AbilityCard` |
 | Картка боса | `design/ui/boss-title/` | `BossTitleCard` |
+| Кузня Остапа (Approval 1, 2026-10-19) | `design/ui/forge/forge.html` | — (зараз `ShopView`; префікс `forge-`) |
+| Печатки клятви (Approval 1, 2026-10-19) | `design/ui/seals/seals.html` | — (нова вкладка паузи; префікс `seal-`) |
 
 ## 2. Розкладка HUD
 
