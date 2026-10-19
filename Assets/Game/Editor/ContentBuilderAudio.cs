@@ -178,6 +178,9 @@ namespace ForgottenKingdom.EditorTools
             events.Add(Sound(AudioId.WallCrack, clips, 0.6f, voices: 2, priority: 50));
             events.Add(Sound(AudioId.WallCrumble, clips, 0.8f, voices: 1, priority: 80));
             events.Add(Sound(AudioId.TrialGong, clips, 0.85f, voices: 1, priority: 100, spatial: 0.3f));
+            // Ringing ears after a blow to the hero: quiet, flat (it is in the head), never stacked.
+            events.Add(Sound(AudioId.HurtRing, clips, 0.22f, voices: 1, priority: 85, interval: 0.3f,
+                spatial: 0f));
 
             // Interface. Quiet, flat, and spaced so fast navigation does not chatter.
             events.Add(Sound(AudioId.UiNavigate, clips, 0.3f, AudioBus.Ui, voices: 1, priority: 25,

@@ -101,10 +101,14 @@ namespace ForgottenKingdom
         private MusicState _state = MusicState.Silent;
         private float _fade;
         private float _duck = 1f;
+        private float _duckHeldUntil;
 
         public static MusicDirector Instance { get; private set; }
 
         public MusicState State => _state;
+
+        /// <summary>How far the score is stepped back right now: 1 is untouched.</summary>
+        public float DuckLevel => _duck;
 
         /// <summary>True when a track is actually assigned for the current state.</summary>
         public bool HasTrackForState => ClipFor(_state) != null;
@@ -264,7 +268,17 @@ namespace ForgottenKingdom
         }
 
         /// <summary>Steps the score back so a louder moment can be heard over it.</summary>
-        public void Duck() => _duck = Mathf.Min(_duck, 1f - _duckAmount);
+        public void Duck() => Duck(_duckAmount, 0f);
+
+        /// <summary>
+        /// Steps the score back by <paramref name="amount"/> and holds it there for
+        /// <paramref name="hold"/> real seconds before it starts to return.
+        /// </summary>
+        public void Duck(float amount, float hold)
+        {
+            _duck = Mathf.Min(_duck, 1f - Mathf.Clamp01(amount));
+            _duckHeldUntil = Mathf.Max(_duckHeldUntil, Time.unscaledTime + Mathf.Max(0f, hold));
+        }
 
         private void Crossfade(AudioClip clip)
         {
@@ -425,7 +439,10 @@ namespace ForgottenKingdom
 
         private void Update()
         {
-            _duck = Mathf.Min(1f, _duck + Time.unscaledDeltaTime / _duckRecovery);
+            if (Time.unscaledTime >= _duckHeldUntil)
+            {
+                _duck = Mathf.Min(1f, _duck + Time.unscaledDeltaTime / _duckRecovery);
+            }
             _fade = Mathf.Min(1f, _fade + Time.unscaledDeltaTime / _crossfade);
             var layerTarget = WantsLayer() ? 1f : 0f;
             _layerMix = Mathf.MoveTowards(_layerMix, layerTarget,

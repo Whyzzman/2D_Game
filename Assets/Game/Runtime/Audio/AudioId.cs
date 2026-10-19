@@ -238,6 +238,9 @@ namespace ForgottenKingdom
         // ---- exploration (item 4, stage B, appended) ----
         WallCrack,
         WallCrumble,
-        TrialGong
+        TrialGong,
+
+        // ---- ringing ears when the hero is hit (GAME_FEEL_IDEAS item 10, appended) ----
+        HurtRing
     }
 }

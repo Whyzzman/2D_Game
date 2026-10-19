@@ -217,6 +217,47 @@ namespace ForgottenKingdom.Tests
                 "The room has to come back on its own.");
         }
 
+        [UnityTest]
+        public IEnumerator ABlowToTheHeroMufflesTheWorldForAMoment()
+        {
+            // GAME_FEEL_IDEAS item 10: ringing ears. Music and room step back, stay back for a
+            // moment rather than a frame, and come back on their own.
+            var music = Object.FindAnyObjectByType<MusicDirector>();
+            var room = Object.FindAnyObjectByType<AmbienceController>();
+            Assume.That(_audio.BusDuck(AudioBus.Ambience), Is.EqualTo(1f).Within(0.01f));
+
+            _player.Actor.ApplyDamage(new DamageInfo(1f, Vector2.right, isUnblockable: true,
+                hitPoint: _player.transform.position));
+            yield return null;
+            yield return null;
+
+            Assert.That(_audio.BusDuck(AudioBus.Ambience), Is.LessThan(0.5f));
+            Assert.That(music.DuckLevel, Is.LessThan(0.5f));
+            if (room != null && room.BedDuck < 1f)
+            {
+                Assert.That(room.BedDuck, Is.LessThan(0.5f), "The playing room bed follows the duck.");
+            }
+
+            var held = Time.realtimeSinceStartup + 0.4f;
+            while (Time.realtimeSinceStartup < held)
+            {
+                yield return null;
+            }
+
+            Assert.That(_audio.BusDuck(AudioBus.Ambience), Is.LessThan(0.5f),
+                "Held for a moment, not let go on the next frame.");
+            Assert.That(music.DuckLevel, Is.LessThan(0.5f));
+
+            var back = Time.realtimeSinceStartup + 2.5f;
+            while (Time.realtimeSinceStartup < back)
+            {
+                yield return null;
+            }
+
+            Assert.That(_audio.BusDuck(AudioBus.Ambience), Is.EqualTo(1f).Within(0.01f));
+            Assert.That(music.DuckLevel, Is.EqualTo(1f).Within(0.01f));
+        }
+
         // ---------- nothing is left running ----------
 
         [UnityTest]
