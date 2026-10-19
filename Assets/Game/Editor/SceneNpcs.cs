@@ -46,6 +46,7 @@ namespace ForgottenKingdom.EditorTools
             var gnat = Load(ContentBuilder.GnatPrefabPath);
             var myroslava = Load(ContentBuilder.MyroslavaPrefabPath);
             var severyn = Load(ContentBuilder.SeverynPrefabPath);
+            var ostap = Load(ContentBuilder.OstapPrefabPath);
             var chest = Load(ContentBuilder.LockedChestPrefabPath);
             var warden = ContentBuilder.WardenBossId;
 
@@ -62,6 +63,10 @@ namespace ForgottenKingdom.EditorTools
             // Before the Guardian's door, where the Tomb's text puts him.
             PlaceAt(root, severyn, "tomb-approach", ContentBuilder.TombSpot("severyn"), null, null,
                 "Гробниця · Підступ до Стража", dialogue, flip: true);
+
+            // The smith at his forge in the capital's workshop (item 6c), where the capital's text puts him.
+            PlaceAt(root, ostap, "capital-workshop", ContentBuilder.CapitalSpot("smith"), null, null,
+                "Столиця · Майстерня", dialogue);
 
             Chest(root, chest, "tomb-altar-02", 4.6f, "chest-tomb-crypt", 180, "healing_herb");
             Chest(root, chest, "royal-road-shrine", 4.2f, "chest-forest-road", 260, "iron_scrap");

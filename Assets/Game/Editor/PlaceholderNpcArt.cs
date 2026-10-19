@@ -16,6 +16,7 @@ namespace ForgottenKingdom.EditorTools
         public const string GnatPath = Folder + "/npc_gnat.png";
         public const string MyroslavaPath = Folder + "/npc_myroslava.png";
         public const string SeverynPath = Folder + "/npc_severyn.png";
+        public const string OstapPath = Folder + "/npc_ostap.png";
         public const string ChestClosedPath = Folder + "/chest_locked.png";
         public const string ChestOpenPath = Folder + "/chest_open.png";
 
@@ -37,15 +38,16 @@ namespace ForgottenKingdom.EditorTools
         private static readonly Color32 GhostLight = new Color32(0xC2, 0xD4, 0xE4, 0xFF);
         private static readonly Color32 GhostDark = new Color32(0x5A, 0x6C, 0x80, 0xFF);
 
-        public static (Sprite gnat, Sprite myroslava, Sprite severyn, Sprite chestClosed, Sprite chestOpen) Generate()
+        public static (Sprite gnat, Sprite myroslava, Sprite severyn, Sprite ostap, Sprite chestClosed, Sprite chestOpen) Generate()
         {
             PlaceholderImport.EnsureFolder(Folder);
             Write(GnatPath, Gnat());
             Write(MyroslavaPath, Myroslava());
             Write(SeverynPath, Severyn());
+            Write(OstapPath, Ostap());
             Write(ChestClosedPath, Chest(open: false));
             Write(ChestOpenPath, Chest(open: true));
-            return (Load(GnatPath), Load(MyroslavaPath), Load(SeverynPath), Load(ChestClosedPath),
+            return (Load(GnatPath), Load(MyroslavaPath), Load(SeverynPath), Load(OstapPath), Load(ChestClosedPath),
                 Load(ChestOpenPath));
         }
 
@@ -114,6 +116,39 @@ namespace ForgottenKingdom.EditorTools
             c.Ellipse(new Vector2(x0 + 18f, 136f), 2f, 2f, WoodDark);
             c.Thick(new Vector2(x0 + 8f, 128f), new Vector2(x0 + 22f, 130f), 3f, 2f, CoatDark);
 
+            c.Silhouette(Outline, Edge, 0.4f);
+            return c;
+        }
+
+        /// <summary>A broad smith in a leather apron, hammer in hand, by an anvil; the forge's glow on him.</summary>
+        private static Canvas Ostap()
+        {
+            var c = new Canvas(220, 210);
+            // The anvil at his feet, on the right.
+            c.Rect(140f, 4f, 196f, 24f, WoodDark);
+            c.Quad(new Vector2(126f, 24f), new Vector2(206f, 24f), new Vector2(200f, 42f), new Vector2(132f, 42f), Iron);
+            c.Triangle(new Vector2(200f, 42f), new Vector2(216f, 38f), new Vector2(200f, 34f), Iron);
+            c.Ellipse(new Vector2(166f, 46f), 22f, 4f, Flame);
+            // Him: legs apart, broad trunk, apron, bare forearms.
+            const float x0 = 82f;
+            c.Thick(new Vector2(x0 - 16f, 4f), new Vector2(x0 - 12f, 64f), 11f, 13f, CoatDark);
+            c.Thick(new Vector2(x0 + 16f, 4f), new Vector2(x0 + 12f, 64f), 11f, 13f, CoatDark);
+            c.Thick(new Vector2(x0 - 22f, 3f), new Vector2(x0 - 8f, 3f), 7f, 7f, WoodDark);
+            c.Thick(new Vector2(x0 + 8f, 3f), new Vector2(x0 + 22f, 3f), 7f, 7f, WoodDark);
+            c.Quad(new Vector2(x0 - 34f, 58f), new Vector2(x0 + 34f, 58f), new Vector2(x0 + 30f, 150f),
+                new Vector2(x0 - 30f, 150f), Coat);
+            c.Quad(new Vector2(x0 - 22f, 30f), new Vector2(x0 + 22f, 30f), new Vector2(x0 + 18f, 132f),
+                new Vector2(x0 - 18f, 132f), Sack);
+            // The near arm down with the hammer, the far one on his hip.
+            c.Thick(new Vector2(x0 + 30f, 140f), new Vector2(x0 + 46f, 96f), 10f, 9f, Skin);
+            c.Thick(new Vector2(x0 + 46f, 96f), new Vector2(x0 + 52f, 60f), 4f, 4f, Wood);
+            c.Rect(x0 + 40f, 52f, x0 + 66f, 66f, Iron);
+            c.Thick(new Vector2(x0 - 30f, 140f), new Vector2(x0 - 40f, 104f), 10f, 9f, Skin);
+            // Head: a short beard, a soot-dark cap.
+            c.Ellipse(new Vector2(x0 + 2f, 166f), 17f, 18f, Skin);
+            c.Ellipse(new Vector2(x0 + 4f, 154f), 15f, 9f, CoatDark);
+            c.Ellipse(new Vector2(x0, 180f), 17f, 8f, WoodDark);
+            c.Ellipse(new Vector2(x0 + 10f, 168f), 2f, 2f, WoodDark);
             c.Silhouette(Outline, Edge, 0.4f);
             return c;
         }

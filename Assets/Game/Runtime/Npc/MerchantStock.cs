@@ -17,7 +17,9 @@ namespace ForgottenKingdom
         /// <summary>One more healing flask.</summary>
         FlaskShard,
         /// <summary>An item (a relic) into the bag.</summary>
-        Relic
+        Relic,
+        /// <summary>The smith's tempering (item 6c): its level is the good's target, bought in turn.</summary>
+        Temper
     }
 
     /// <summary>One thing on the merchant's cart. Each is sold once.</summary>
@@ -42,6 +44,8 @@ namespace ForgottenKingdom
         [TextArea(2, 4)] public string quote = string.Empty;
         [Tooltip("On the cart only once this boss is beaten (the forest's goods); empty for from the start.")]
         public string requiresBoss = string.Empty;
+        [Tooltip("Iron scrap taken from the bag besides the gold (the smith's tempering).")]
+        [Min(0)] public int iron;
     }
 
     /// <summary>

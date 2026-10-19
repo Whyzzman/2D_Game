@@ -10,7 +10,11 @@ namespace ForgottenKingdom
         Bought,
         AlreadySold,
         TooPoor,
-        Unavailable
+        Unavailable,
+        /// <summary>Appended: not enough iron scrap in the bag (the smith's tempering).</summary>
+        NoIron,
+        /// <summary>Appended: the tempering before this one is not bought yet.</summary>
+        NotYet
     }
 
     /// <summary>
@@ -108,6 +112,17 @@ namespace ForgottenKingdom
                 return PurchaseResult.AlreadySold;
             }
 
+            if (good.kind == GoodKind.Temper && int.TryParse(good.target, out var level)
+                && Tempering.Level(_progress) < level - 1)
+            {
+                return PurchaseResult.NotYet;
+            }
+
+            if (good.iron > 0 && _progress.GetItemAmount(Tempering.IronItemId) < good.iron)
+            {
+                return PurchaseResult.NoIron;
+            }
+
             return _progress.Currency < good.price ? PurchaseResult.TooPoor : PurchaseResult.Bought;
         }
 
@@ -117,6 +132,11 @@ namespace ForgottenKingdom
             if (result != PurchaseResult.Bought || !_progress.TrySpendCurrency(good.price))
             {
                 return result == PurchaseResult.Bought ? PurchaseResult.TooPoor : result;
+            }
+
+            if (good.iron > 0)
+            {
+                _progress.TryRemoveItem(Tempering.IronItemId, good.iron);
             }
 
             _progress.GrantReward(MerchantStock.BoughtId(good));
@@ -149,6 +169,9 @@ namespace ForgottenKingdom
                 case GoodKind.Relic:
                     _progress.AddItem(good.target);
                     break;
+                case GoodKind.Temper:
+                    _progress.GrantReward(Tempering.RewardId(int.Parse(good.target)));
+                    break;
             }
         }
 
@@ -161,6 +184,9 @@ namespace ForgottenKingdom
                 case PurchaseResult.TooPoor:
                     return $"Бракує {Mathf.Max(0, good.price - (_progress != null ? _progress.Currency : 0))} золота";
                 case PurchaseResult.Unavailable: return "Не продається";
+                case PurchaseResult.NoIron:
+                    return $"Бракує {Mathf.Max(0, good.iron - (_progress != null ? _progress.GetItemAmount(Tempering.IronItemId) : 0))} заліза";
+                case PurchaseResult.NotYet: return "Спершу попереднє загартування";
                 default: return string.Empty;
             }
         }

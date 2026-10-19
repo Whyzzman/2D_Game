@@ -162,6 +162,13 @@ namespace ForgottenKingdom
         /// </summary>
         private void OnWorldChanged(WorldFlag flag, string id)
         {
+            if (flag == WorldFlag.RewardGranted && id != null && id.StartsWith("temper:"))
+            {
+                // The smith's tempering (item 6c) changes what the weapon in hand is worth.
+                Recalculate();
+                return;
+            }
+
             if (flag != WorldFlag.RewardGranted || !VesselShards.TryKind(id, out var kind))
             {
                 return;
@@ -310,8 +317,10 @@ namespace ForgottenKingdom
             var weapon = _equipment != null ? _equipment.ActiveWeaponDefinition : null;
             var meets = weapon == null
                 || weapon.MeetsRequirements(_finalStats.strength, _finalStats.dexterity);
+            // The smith's tempering (item 6c) adds a share of the weapon's own base.
+            var temper = weapon != null ? Tempering.Bonus(weapon.BaseDamage, Tempering.Level(_progress)) : 0f;
             _weaponDamage = WeaponDamageCalculator.Evaluate(weapon, curve, _finalStats.strength,
-                _finalStats.dexterity, _stats.Get(StatType.AttackPower), meets);
+                _finalStats.dexterity, _stats.Get(StatType.AttackPower) + temper, meets);
         }
 
         private static StatType ToStatType(CharacterStat stat)

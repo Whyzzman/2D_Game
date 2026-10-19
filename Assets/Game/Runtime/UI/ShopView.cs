@@ -223,7 +223,7 @@ namespace ForgottenKingdom
             var sold = row.Next == null;
             element.Add(UiParts.Text(sold ? "ПРОДАНО" : shown.price.ToString("N0"), "shop__row-price"));
             element.EnableInClassList("shop__row--sold", sold);
-            element.EnableInClassList("shop__row--poor", !sold && _shop.Check(row.Next) == PurchaseResult.TooPoor);
+            element.EnableInClassList("shop__row--poor", !sold && _shop.Check(row.Next) is PurchaseResult.TooPoor or PurchaseResult.NoIron or PurchaseResult.NotYet);
             element.clicked += () =>
             {
                 Select(index);

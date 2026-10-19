@@ -16,6 +16,9 @@ namespace ForgottenKingdom.EditorTools
         public const string NpcDataFolder = DataFolder + "/Npc";
         public const string MerchantStockPath = NpcDataFolder + "/MerchantStock.asset";
         public const string GnatPath = NpcDataFolder + "/Npc_Gnat.asset";
+        public const string OstapPath = NpcDataFolder + "/Npc_Ostap.asset";
+        public const string OstapStockPath = NpcDataFolder + "/OstapStock.asset";
+        public const string OstapPrefabPath = PrefabFolder + "/Npc_Ostap.prefab";
         public const string MyroslavaPath = NpcDataFolder + "/Npc_Myroslava.asset";
         public const string SeverynPath = NpcDataFolder + "/Npc_Severyn.asset";
         public const string GnatPrefabPath = PrefabFolder + "/Npc_Gnat.prefab";
@@ -68,6 +71,7 @@ namespace ForgottenKingdom.EditorTools
             var myroslava = BuildNpc(MyroslavaPath, "myroslava", "Паломниця Мирослава", "шукачка вогню",
                 MyroslavaTopics(), null);
             var severyn = BuildNpc(SeverynPath, "severyn", "Вартовий Северин", "привид", SeverynTopics(), null);
+            var ostap = BuildNpc(OstapPath, "ostap", "Коваль Остап", "коваль", OstapTopics(), BuildOstapStock());
             AssetDatabase.SaveAssets();
 
             BuildNpcPrefab(GnatPrefabPath, gnat, art.gnat, new Vector2(2.8f, 2.2f),
@@ -76,6 +80,8 @@ namespace ForgottenKingdom.EditorTools
                 new Vector3(0.36f, 1.53f, 0f), new Color(1f, 0.72f, 0.38f));
             BuildNpcPrefab(SeverynPrefabPath, severyn, art.severyn, new Vector2(1.6f, 2.4f),
                 new Vector3(0f, 1.2f, 0f), new Color(0.6f, 0.75f, 1f));
+            BuildNpcPrefab(OstapPrefabPath, ostap, art.ostap, new Vector2(2.4f, 2.4f),
+                new Vector3(0.9f, 0.9f, 0f), new Color(1f, 0.55f, 0.25f));
             BuildLockedChestPrefab(art.chestClosed, art.chestOpen);
         }
 
@@ -119,6 +125,50 @@ namespace ForgottenKingdom.EditorTools
                     + "Сміливим — нагорода."),
             Topic("again", string.Empty, false, null, null, "Ну, подивимось, що в тебе в гаманці.")
         };
+
+        /// <summary>
+        /// The smith of the capital's workshop (item 6c; WORLD_DESIGN: «коваль Остап — улучшение оружия за
+        /// железо и золото»). Words decided by Claude under the user's standing approval.
+        /// </summary>
+        private static DialogueTopic[] OstapTopics() => new[]
+        {
+            Topic("meet", "Коваль у майстерні Столиці. Гартує зброю за залізо й золото.", true, null, null,
+                "Живий? Тоді давай сюди руки, а не очі.",
+                "Я Остап. Кував для варти, поки місто горіло. Горн досі гарячий — Король не дав йому згаснути.",
+                "Принось залізо, що валяється по руїнах, і золото. Загартую — рубатимеш глибше."),
+            Topic("commander", "Знав Командора. Каже, той тримає браму й досі.", true, null, CommanderBossId,
+                "Командор? Я кував йому алебарду. Добра робота. Шкода, що тепер вона проти тебе.",
+                "Коли він б'є в підлогу — стрибай. Камінь біжить в обидва боки."),
+            Topic("after-commander", "Командор упав; Остап мовчки поклав молот.", true, CommanderBossId, null,
+                "Упав, кажеш… Ну, хоч його алебарда більше нікого не різатиме.",
+                "За ним — Король. Мого заліза на нього замало. Але що є — твоє."),
+            Topic("again", string.Empty, false, null, null, "Залізо принесла? Тоді до горна.")
+        };
+
+        /// <summary>
+        /// Three temperings, each after the one before (item 6c): about one zone's worth of gold each
+        /// in turn, and iron the capital's chests and soldiers drop.
+        /// </summary>
+        private static MerchantStock BuildOstapStock()
+        {
+            const string text = "Остап розпікає клинок у горні, що не гасне, і гартує в попелі.";
+            var goods = new[]
+            {
+                Good("temper-1", GoodKind.Temper, "Загартування I", "2 заліза", 300, text,
+                    "+10 % до базової шкоди будь-якої зброї в руках.", target: "1"),
+                Good("temper-2", GoodKind.Temper, "Загартування II", "4 заліза", 700, text,
+                    "Ще +10 % — разом +20 %.", target: "2"),
+                Good("temper-3", GoodKind.Temper, "Загартування III", "6 заліза", 1400, text,
+                    "Ще +10 % — разом +30 %. Більше горн не дасть.", target: "3")
+            };
+            goods[0].iron = 2;
+            goods[1].iron = 4;
+            goods[2].iron = 6;
+            var stock = CreateAsset<MerchantStock>(OstapStockPath);
+            stock.Configure(goods);
+            EditorUtility.SetDirty(stock);
+            return stock;
+        }
 
         private static DialogueTopic[] MyroslavaTopics() => new[]
         {
