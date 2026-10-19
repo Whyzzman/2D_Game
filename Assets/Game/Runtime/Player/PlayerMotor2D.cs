@@ -29,6 +29,7 @@ namespace ForgottenKingdom
             + "catches the head. About a quarter of the body's width.")]
         [SerializeField, Min(0f)] private float _cornerCorrection = 0.2f;
         private const int CornerCorrectionSteps = 4;
+        private const int LedgeForgivenessSteps = 4;
         private readonly RaycastHit2D[] _groundHits = new RaycastHit2D[8];
         private readonly Collider2D[] _cornerOverlaps = new Collider2D[4];
         private float _cornerShiftUsed;
@@ -215,6 +216,12 @@ namespace ForgottenKingdom
                     LastSafeGround = _body.position;
                     HasSafeGround = true;
                 }
+            }
+
+            if (!IsGrounded && nextVelocity.y < 0f && !_skillVelocity.HasValue && !IsDashing
+                && mode != LocomotionMode.Knockback)
+            {
+                TryLedgeForgive(-nextVelocity.y * Time.fixedDeltaTime, input.Horizontal, nextVelocity.x);
             }
 
             // Along a slope the move is swept as one: split into axes, the rise itself reads as a wall.
@@ -432,6 +439,66 @@ namespace ForgottenKingdom
 
             return false;
         }
+
+        /// <summary>
+        /// The feet's twin of the corner correction: a fall toward a ledge whose feet miss its
+        /// corner by a hair lands on it instead of scraping down its face. When this step's fall
+        /// would not land, the body is nudged toward the steered side by the smallest step that
+        /// does — no farther than <see cref="MovementSettings.LedgeForgiveness"/> past the body's
+        /// side, plus the rim of the rounded foot that is too steep to stand on (a capsule resting
+        /// there only by its curve is not on the ground either, it would hang on the corner).
+        /// </summary>
+        private bool TryLedgeForgive(float fall, float steering, float horizontalSpeed)
+        {
+            var tolerance = _settings.LedgeForgiveness;
+            var direction = steering > 0.1f ? 1 : steering < -0.1f ? -1 : 0;
+            if (tolerance <= 0f || fall <= 0f || direction == 0 || horizontalSpeed * direction < 0f)
+            {
+                return false;
+            }
+
+            var radius = _capsule.size.x * 0.5f;
+            var rim = radius * (1f - Mathf.Sqrt(1f - MinimumGroundNormal * MinimumGroundNormal));
+            var reach = tolerance + rim;
+            var position = _body.position;
+            if (LandsFrom(position, fall))
+            {
+                return false;
+            }
+
+            var step = reach / LedgeForgivenessSteps;
+            for (var i = 1; i <= LedgeForgivenessSteps; i++)
+            {
+                var shifted = position + new Vector2(direction * step * i, 0f);
+                if (IsSpaceClear(shifted) && LandsFrom(shifted, fall))
+                {
+                    _body.position = shifted;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>Whether falling <paramref name="fall"/> from there meets ground flat enough to stand on.</summary>
+        private bool LandsFrom(Vector2 position, float fall)
+        {
+            var count = Physics2D.CapsuleCast(position + _capsule.offset, _capsule.size,
+                _capsule.direction, 0f, Vector2.down, _groundFilter, _groundHits, fall + 0.01f);
+            for (var i = 0; i < count; i++)
+            {
+                if (_groundHits[i].rigidbody != _body && _groundHits[i].normal.y >= MinimumGroundNormal)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private bool IsSpaceClear(Vector2 position) =>
+            Physics2D.OverlapCapsule(position + _capsule.offset, _capsule.size, _capsule.direction, 0f,
+                _groundFilter, _cornerOverlaps) == 0;
 
         private bool IsRiseClearFrom(Vector2 position, float rise)
         {
