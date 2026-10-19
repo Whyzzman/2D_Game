@@ -171,6 +171,20 @@
     c.strokeStyle = rgba(look.lipLight, 0.8);
     c.lineWidth = Math.max(1.5, S * 0.045);
     c.beginPath(); c.moveTo(ax + 1, ay + 1); c.lineTo(bx - 1, ay + 1); c.stroke();
+    // мох (Ліс): м'які подушки на канті, подекуди звисає за край
+    if (look.moss) {
+      for (let x = x0 + 0.1; x < x1 - 0.1; x += 0.3) {
+        const h = N2.hash(Math.round(x * 17), Math.round(y * 17), seed + 29);
+        if (h < 0.35) continue;
+        c.fillStyle = rgba(look.moss, 0.6 + h * 0.35);
+        c.beginPath(); c.ellipse(f.x(x), ay + 1, S * (0.2 + h * 0.35), S * (0.06 + h * 0.08), 0, Math.PI, 0); c.fill();
+        if (h > 0.85) {
+          const drop = S * (0.2 + (h - 0.85) * 4);
+          c.strokeStyle = rgba(look.moss, 0.5); c.lineWidth = Math.max(1, S * 0.035); c.lineCap = "round";
+          c.beginPath(); c.moveTo(f.x(x), ay + S * 0.05); c.quadraticCurveTo(f.x(x + 0.08), ay + drop * 0.6, f.x(x - 0.02), ay + drop); c.stroke();
+        }
+      }
+    }
     // пил і дрібні уламки
     for (let x = x0 + 0.15; x < x1 - 0.15; x += 0.25) {
       const h = N2.hash(Math.round(x * 20), Math.round(y * 20), seed + 23);
@@ -202,6 +216,14 @@
               const [hx, hy] = T.world(zone, cx, top);
               const chainX = hx + (k === 0 ? 0.3 : 0.2);
               c.strokeStyle = rgba(look.chain, 0.9); c.lineWidth = S * 0.045;
+              if (look.hang === "roots") {
+                // Ліс: уступ тримають корені, що звисають зі стелі, — хвиляста лінія, не ланцюг
+                c.lineWidth = S * 0.09; c.lineCap = "round";
+                c.beginPath(); c.moveTo(f.x(chainX), f.y(hy));
+                for (let yy = hy; yy > wyt; yy -= 0.4) c.lineTo(f.x(chainX + (N2.fbm(chainX, yy * 0.7, s2, 2) - 0.5) * 0.35), f.y(yy));
+                c.lineTo(f.x(chainX), f.y(wyt)); c.stroke();
+                return;
+              }
               for (let yy = wyt; yy < hy; yy += 0.22) {
                 c.beginPath(); c.ellipse(f.x(chainX), f.y(yy + 0.11), S * 0.05, S * 0.1, 0, 0, Math.PI * 2); c.stroke();
               }

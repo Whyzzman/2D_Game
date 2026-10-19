@@ -111,10 +111,20 @@ link room_a room_b door | oneway | ability=id | boss=id | shortcut=id from=room_
   арками, статуи, знамёна, лучи, пыль; пещеры (`looks.js`, `caves`) — глыбы, корни, грибы; тайники —
   ниши с черепами. У каждой комнаты свой seed — картинки не повторяются.
 
+**Лес** (2026-10-19, макет `design/levels/forest-look`): тот же камень с мхом на канте и корнями вместо
+цепей у висящих уступов (`looks.js`, `forest`); тло — `forest-backdrop.js`: открытые комнаты — небо, луна
+не в каждой, ряды мёртвых дубов в тумане, местами руина аббатства; закрытые (`enclosed`, как
+`ForestEnclosedRooms`) — чаща; под землёй (ниже `groundLine`) и тайники — корни, грибы, ядовитый свет.
+Закрашенный Лес не строит тайлы, убранство комнат, землю и общий параллакс; `SceneForestLook` оставляет
+только лунный свет.
+
 Порядок: правка текста → `tools/level-art/render.sh <зона>` (headless Chrome, ~1 мин) →
 `ContentBuilder.Build` → `ContentBuilder.RefreshLevelArt` (импорт) → `Scene<Зона>.Apply`. Просмотр без Unity:
 `node design/ui/_shared/serve.js` → `/design/levels/painter/index.html?zone=tomb&what=preview&ppu=12`
 (вся зона) или `&what=view&x=..&y=..&ppu=60` (кадр камеры). Зона без папки арта остаётся на тайлах.
+Браузер для `render.sh` — `CHROME=<путь>`; при спящем дисплее обычный Chrome зависает, тогда
+`CHROME=~/Library/Caches/ms-playwright/chromium_headless_shell-*/chrome-headless-shell-mac-arm64/chrome-headless-shell HEADLESS=`.
+`render.sh` стирает каждый файл перед снимком: прерванный прогон оставляет зону без арта — перезапустить целиком.
 
 Формы в тексте (генератор Гробницы): своды (`vault`), неровные потолки пещер (`rough_ceiling`), наплывы
 стен (`bulge`), бугры осыпи (`hump`) — только там, где не мешают проходу; проверка — `LevelCheck`.

@@ -40,101 +40,53 @@ namespace ForgottenKingdom.Tests
         }
 
         [UnityTest]
-        public IEnumerator TheSkyStaysBehindTheViewAtTheTopOfTheClimb()
+        public IEnumerator TheForestIsPaintedRatherThanTiled()
         {
-            // The layers were thirteen units tall: at the top of the climb the camera saw its own
-            // clear colour over the trees.
-            _motor.ResetTo(new Vector2(198f, 14f));
-            yield return Settle(2.5f);
-
-            var camera = Camera.main;
-            Assert.That(camera.transform.position.y, Is.GreaterThan(9f), "The view went up the climb.");
-            var top = camera.transform.position.y + camera.orthographicSize;
-            var bottom = camera.transform.position.y - camera.orthographicSize;
-            var far = Strip("env_forest_bg_far_01");
-            // Past the layer's top the camera's clear colour shows, and the sky is painted to end
-            // in exactly that colour (ForestLookDataTests): either way the view sees sky.
-            if (far.bounds.max.y < top)
-            {
-                var clear = camera.backgroundColor;
-                Assert.That(clear.r * 255f, Is.EqualTo(10f).Within(2f), "The sky runs on into the clear colour.");
-                Assert.That(clear.g * 255f, Is.EqualTo(11f).Within(2f));
-                Assert.That(clear.b * 255f, Is.EqualTo(17f).Within(2f));
-            }
-
-            Assert.That(far.bounds.max.y, Is.GreaterThan(top - 3f), "Most of the view is painted sky.");
-            Assert.That(far.bounds.min.y, Is.LessThan(bottom));
-            var halfWidth = camera.orthographicSize * camera.aspect;
-            Assert.That(far.bounds.min.x, Is.LessThan(camera.transform.position.x - halfWidth));
-            Assert.That(far.bounds.max.x, Is.GreaterThan(camera.transform.position.x + halfWidth));
-        }
-
-        [UnityTest]
-        public IEnumerator EveryWalkableForestLedgeHasALivingEdge()
-        {
-            // Every zone: the forest's edge is covered by the Village's hill above it.
+            // Since the zone rework reached the Forest (2026-10-19, approved look design/levels/forest-look)
+            // the painter draws it: ground in pieces over the whole zone, the blocks only colliders.
             yield return TestWorld.LoadEveryZone();
-            var blocks = Object.FindObjectsByType<BoxCollider2D>()
-                .Where(b => b.gameObject.layer == 9 && !b.isTrigger && b.bounds.center.x > 62.5f
-                    && b.bounds.size.x >= 0.8f && b.GetComponent<NonClimbableSurface>() == null)
-                .Where(b => IsWalkable(b))
-                .ToArray();
+            var painted = Painted();
+            Assert.That(painted, Is.Not.Empty, "The Forest has its painted art.");
+            var ground = painted.Select(p => p.Find("Terrain")).Where(t => t != null)
+                .SelectMany(t => t.GetComponentsInChildren<SpriteRenderer>()).ToArray();
+            Assert.That(ground.Length, Is.GreaterThanOrEqualTo(40), "The ground covers the zone.");
+            Assert.That(ground.All(r => r.sprite != null && r.sortingLayerName == "GameplayEnvironment"), Is.True);
+            var tiled = GameObject.Find("room_forest_entrance").GetComponentsInChildren<BoxCollider2D>()
+                .Where(b => b.name.StartsWith("Solid_")).SelectMany(b => b.GetComponentsInChildren<SpriteRenderer>());
+            Assert.That(tiled, Is.Empty, "A block is a collider; the picture is the painter's.");
+            Assert.That(GameObject.Find("ForestParallax"), Is.Null, "The rooms paint their own sky.");
+        }
 
-            Assert.That(blocks.Length, Is.GreaterThan(12), "The forest's ground was found.");
-            var ground = Object.FindObjectsByType<BoxCollider2D>()
-                .Where(b => b.gameObject.layer == 9 && !b.isTrigger).ToArray();
-            bool Covered(BoxCollider2D self, Vector2 probe) =>
-                ground.Any(other => other != self && other.bounds.Contains(new Vector3(probe.x, probe.y, other.bounds.center.z)));
-            foreach (var block in blocks)
+        [UnityTest]
+        public IEnumerator EveryForestRoomHasItsOwnPaintedBackdrop()
+        {
+            // No picture repeats from room to room (the user's rule, 2026-10-03).
+            yield return TestWorld.LoadEveryZone();
+            var all = Painted().Select(p => p.Find("Rooms")).Where(r => r != null).ToArray();
+            var sprites = new System.Collections.Generic.HashSet<Sprite>();
+            foreach (var room in ForestScene.Layout.Rooms)
             {
-                // A top with rock on it is inside the rock: only a top the hero can stand on grows moss.
-                var bounds = block.bounds;
-                if (Covered(block, new Vector2(bounds.center.x, bounds.max.y + 0.1f)))
-                {
-                    continue;
-                }
-
-                Assert.That(block.transform.Find("ForestEdgeTop"), Is.Not.Null,
-                    $"{block.name} is a bare slab with no moss on its edge.");
-                if (bounds.size.y <= 1.1f && bounds.size.x >= 1.2f
-                    && !Covered(block, new Vector2(bounds.center.x, bounds.min.y - 0.1f)))
-                {
-                    Assert.That(block.transform.Find("ForestEdgeRoots"), Is.Not.Null,
-                        $"{block.name} floats with nothing growing under it.");
-                }
+                var holder = all.Select(r => r.Find("Backdrop_" + room.Id)).FirstOrDefault(h => h != null);
+                Assert.That(holder, Is.Not.Null, $"{room.Id} has no backdrop.");
+                var far = holder.Find("Far").GetComponent<SpriteRenderer>();
+                var wall = holder.Find("Wall").GetComponent<SpriteRenderer>();
+                Assert.That(far.maskInteraction, Is.EqualTo(SpriteMaskInteraction.VisibleInsideMask));
+                Assert.That(far.GetComponent<RoomParallax>(), Is.Not.Null);
+                Assert.That(wall.sortingLayerName, Is.EqualTo("BackgroundNear"));
+                Assert.That(sprites.Add(far.sprite) && sprites.Add(wall.sprite), Is.True, $"{room.Id} repeats a picture.");
             }
         }
 
         [UnityTest]
-        public IEnumerator TheDressingCanNeverBeStoodOn()
+        public IEnumerator TheMoonlightCanNeverBeStoodOn()
         {
             yield return null;
-            var dressing = Object.FindObjectsByType<Transform>()
-                .Where(t => t.name.StartsWith("ForestEdge"))
-                .Concat(GameObject.Find("ForestLook").GetComponentsInChildren<Transform>())
-                .ToArray();
-
-            Assert.That(dressing.Length, Is.GreaterThan(20));
-            foreach (var piece in dressing)
+            var pieces = GameObject.Find("ForestLook").GetComponentsInChildren<Transform>();
+            Assert.That(pieces.Length, Is.GreaterThan(8));
+            foreach (var piece in pieces)
             {
                 Assert.That(piece.GetComponent<Collider2D>(), Is.Null, $"{piece.name} carries collision.");
             }
-        }
-
-        [UnityTest]
-        public IEnumerator TheAbbeyStandsBehindTheWholeWardenFight()
-        {
-            yield return null;
-            var abbey = GameObject.Find("env_forest_arena_backdrop").GetComponent<SpriteRenderer>();
-            // The arena of the Forest's text, less its walls: the fighting floor and the air over it.
-            var room = ForestScene.Room("room_forest_warden_arena");
-            var floor = Rect.MinMaxRect(room.xMin + 1f, room.yMin + 1f, room.xMax - 1f, room.yMax - 1f);
-
-            Assert.That(abbey.bounds.min.x, Is.LessThan(floor.xMin));
-            Assert.That(abbey.bounds.max.x, Is.GreaterThan(floor.xMax));
-            Assert.That(abbey.bounds.max.y, Is.GreaterThan(floor.yMin + 12f), "Its gable and sky fill the widened fight view.");
-            var layers = SortingLayer.layers.Select(l => l.name).ToList();
-            Assert.That(layers.IndexOf(abbey.sortingLayerName), Is.LessThan(layers.IndexOf("Characters")));
         }
 
         [UnityTest]
@@ -149,25 +101,9 @@ namespace ForgottenKingdom.Tests
 
         // ---------- helpers ----------
 
-        private static SpriteRenderer Strip(string name) =>
-            GameObject.Find("ForestParallax").GetComponentsInChildren<SpriteRenderer>()
-                .First(r => r.name == name);
-
-        private static bool IsWalkable(BoxCollider2D block)
-        {
-            var visual = block.transform.Find("Visual");
-            var sprite = visual != null ? visual.GetComponent<SpriteRenderer>().sprite : null;
-            return sprite != null && (sprite.name == "env_forest_ground_01" || sprite.name == "env_forest_road_01"
-                || sprite.name == "env_forest_cliff_01");
-        }
-
-        private static IEnumerator Settle(float seconds)
-        {
-            var until = Time.realtimeSinceStartup + seconds;
-            while (Time.realtimeSinceStartup < until)
-            {
-                yield return null;
-            }
-        }
+        /// <summary>The world is cut by zone, so each zone's scene holds its own share of the Forest's root.</summary>
+        private static Transform[] Painted() =>
+            Object.FindObjectsByType<Transform>()
+                .Where(t => t.name == "Painted" && t.parent != null && t.parent.name == "WitheredForest").ToArray();
     }
 }

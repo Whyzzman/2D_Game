@@ -50,9 +50,14 @@ namespace ForgottenKingdom.EditorTools
         {
             var art = PlaceholderForestArt.Generate();
             var unlit = AssetDatabase.LoadAssetAtPath<Material>(UnlitPath);
-            FitParallax(art, unlit);
-            FitArenaBackdrop(art, unlit);
-            DressEdges(art);
+            // The painted Forest (item 4 of the zone rework) draws its sky, abbey and mossy edges
+            // itself; the tiled one is fitted here. Moonlight falls on both.
+            if (!ContentBuilder.HasPaintedArt(ContentBuilder.ForestArtFolder))
+            {
+                FitParallax(art, unlit);
+                FitArenaBackdrop(art, unlit);
+                DressEdges(art);
+            }
 
             var old = GameObject.Find(RootName);
             if (old != null)

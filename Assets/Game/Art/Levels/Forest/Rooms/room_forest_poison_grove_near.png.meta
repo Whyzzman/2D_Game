@@ -1,0 +1,455 @@
+fileFormatVersion: 2
+guid: e3e3ec049fcee4732a1e3479dcdd2c09
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -7973281484692537367
+    second: room_forest_poison_grove_near_0
+  - first:
+      213: -5951177592545130926
+    second: room_forest_poison_grove_near_1
+  - first:
+      213: 7628555222082649761
+    second: room_forest_poison_grove_near_2
+  - first:
+      213: 8056078154975040435
+    second: room_forest_poison_grove_near_3
+  - first:
+      213: 7799541550879452558
+    second: room_forest_poison_grove_near_4
+  - first:
+      213: 1960176411887660653
+    second: room_forest_poison_grove_near_5
+  - first:
+      213: -2073711114996424044
+    second: room_forest_poison_grove_near_6
+  - first:
+      213: -4525597771792136317
+    second: room_forest_poison_grove_near_7
+  - first:
+      213: 8338880439911902259
+    second: room_forest_poison_grove_near_8
+  - first:
+      213: -1899595226706028816
+    second: room_forest_poison_grove_near_9
+  - first:
+      213: -4082406246118946141
+    second: room_forest_poison_grove_near_10
+  - first:
+      213: 5507750508824793841
+    second: room_forest_poison_grove_near_11
+  - first:
+      213: -2225135322816854574
+    second: room_forest_poison_grove_near_12
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 0
+  alignment: 6
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 32
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: room_forest_poison_grove_near_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 510
+        height: 640
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9efb3b2ebb6395190800000000000000
+      internalID: -7973281484692537367
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_forest_poison_grove_near_1
+      rect:
+        serializedVersion: 2
+        x: 344
+        y: 0
+        width: 698
+        height: 640
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2564511a28b296da0800000000000000
+      internalID: -5951177592545130926
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_forest_poison_grove_near_2
+      rect:
+        serializedVersion: 2
+        x: 952
+        y: 477
+        width: 94
+        height: 163
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1aeffa18e821ed960800000000000000
+      internalID: 7628555222082649761
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_forest_poison_grove_near_3
+      rect:
+        serializedVersion: 2
+        x: 1073
+        y: 54
+        width: 290
+        height: 586
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3b352162660fccf60800000000000000
+      internalID: 8056078154975040435
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_forest_poison_grove_near_4
+      rect:
+        serializedVersion: 2
+        x: 1307
+        y: 503
+        width: 222
+        height: 137
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e8da11f77b98d3c60800000000000000
+      internalID: 7799541550879452558
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_forest_poison_grove_near_5
+      rect:
+        serializedVersion: 2
+        x: 1535
+        y: 2
+        width: 193
+        height: 638
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d6ee9a7af02f33b10800000000000000
+      internalID: 1960176411887660653
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_forest_poison_grove_near_6
+      rect:
+        serializedVersion: 2
+        x: 1561
+        y: 606
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 492ebd75ab2b833e0800000000000000
+      internalID: -2073711114996424044
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_forest_poison_grove_near_7
+      rect:
+        serializedVersion: 2
+        x: 1565
+        y: 609
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 387c700edc8d131c0800000000000000
+      internalID: -4525597771792136317
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_forest_poison_grove_near_8
+      rect:
+        serializedVersion: 2
+        x: 1099
+        y: 487
+        width: 14
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 33ce66d2497a9b370800000000000000
+      internalID: 8338880439911902259
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_forest_poison_grove_near_9
+      rect:
+        serializedVersion: 2
+        x: 1392
+        y: 317
+        width: 116
+        height: 222
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0f6d82fa43843a5e0800000000000000
+      internalID: -1899595226706028816
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_forest_poison_grove_near_10
+      rect:
+        serializedVersion: 2
+        x: 1620
+        y: 483
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3aa8e3f06216857c0800000000000000
+      internalID: -4082406246118946141
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_forest_poison_grove_near_11
+      rect:
+        serializedVersion: 2
+        x: 1123
+        y: 80
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1f29afd08e57f6c40800000000000000
+      internalID: 5507750508824793841
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_forest_poison_grove_near_12
+      rect:
+        serializedVersion: 2
+        x: 1471
+        y: 74
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2d5c352963bbe11e0800000000000000
+      internalID: -2225135322816854574
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      room_forest_poison_grove_near_0: -7973281484692537367
+      room_forest_poison_grove_near_1: -5951177592545130926
+      room_forest_poison_grove_near_10: -4082406246118946141
+      room_forest_poison_grove_near_11: 5507750508824793841
+      room_forest_poison_grove_near_12: -2225135322816854574
+      room_forest_poison_grove_near_2: 7628555222082649761
+      room_forest_poison_grove_near_3: 8056078154975040435
+      room_forest_poison_grove_near_4: 7799541550879452558
+      room_forest_poison_grove_near_5: 1960176411887660653
+      room_forest_poison_grove_near_6: -2073711114996424044
+      room_forest_poison_grove_near_7: -4525597771792136317
+      room_forest_poison_grove_near_8: 8338880439911902259
+      room_forest_poison_grove_near_9: -1899595226706028816
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

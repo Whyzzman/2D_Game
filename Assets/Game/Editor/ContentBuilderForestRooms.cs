@@ -46,6 +46,11 @@ namespace ForgottenKingdom.EditorTools
             "room_forest_poison_grove"
         };
 
+        /// <summary>The Forest's painted art (item 4 of the zone rework, approved look — design/levels/forest-look).</summary>
+        public const string ForestArtFolder = "Forest";
+
+        private static bool _forestPainted;
+
         /// <summary>Below this the forest is underground: earth stands behind it, not the sky.</summary>
         public const float ForestGroundLine = -5.5f;
 
@@ -71,6 +76,7 @@ namespace ForgottenKingdom.EditorTools
             var zone = ForestLayout;
             var root = Section(level, ForestRootName);
             var context = LevelContext.FromScene();
+            _forestPainted = HasPaintedArt(ForestArtFolder);
             foreach (var problem in BuildLayout(zone, root, ForestLayoutBlock, context))
             {
                 Debug.LogError($"Forest layout: {problem}");
@@ -96,6 +102,13 @@ namespace ForgottenKingdom.EditorTools
                 }
             }
 
+            if (_forestPainted)
+            {
+                // The painter draws the ground, the rooms' backdrops and the sky behind them.
+                PlacePaintedArt(ForestArtFolder, zone, root);
+                return encounter;
+            }
+
             foreach (var room in zone.Rooms)
             {
                 DressForestRoom(zone, room, rooms[room.Id]);
@@ -110,6 +123,22 @@ namespace ForgottenKingdom.EditorTools
         /// <summary>How the Forest's ground looks: ledges as planks, the road as road, the rest by its shape.</summary>
         private static GameObject ForestLayoutBlock(Transform parent, string name, Rect world, LevelCell kind)
         {
+            if (_forestPainted)
+            {
+                // The painter draws the ground; the block is only what the hero stands on.
+                var solid = new GameObject(name);
+                solid.transform.SetParent(parent);
+                solid.transform.position = world.center;
+                solid.layer = GroundLayer;
+                solid.AddComponent<BoxCollider2D>().size = world.size;
+                if (name == "BreakableWall")
+                {
+                    PlacePaintedBreakable(ForestArtFolder, ForestLayout, solid, world);
+                }
+
+                return solid;
+            }
+
             ForestSurface surface;
             if (kind == LevelCell.Ledge)
             {

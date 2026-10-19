@@ -8,7 +8,9 @@ ZONE="${1:-tomb}"
 JOBS="${2:-4}"
 CAP="${(C)ZONE}"
 OUT="$ROOT/Assets/Game/Art/Levels/$CAP"
-CHROME="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+# Інший Chromium: CHROME=<шлях>; для chrome-headless-shell (малює й при сплячому дисплеї) — HEADLESS=
+CHROME="${CHROME:-/Applications/Google Chrome.app/Contents/MacOS/Google Chrome}"
+HEADLESS="${HEADLESS---headless=new}"
 URL="http://localhost:8123/design/levels/painter/index.html"
 if ! curl -s -o /dev/null "$URL"; then
   node "$ROOT/design/ui/_shared/serve.js" >/dev/null 2>&1 &
@@ -20,7 +22,7 @@ mkdir -p "$OUT/Terrain" "$OUT/Rooms" "$OUT/Breakables"
 shot() { # shot <file> <w> <h> <query>
   local profile="$(mktemp -d)"
   rm -f "$1"
-  "$CHROME" --headless=new --disable-gpu --hide-scrollbars --default-background-color=00000000 \
+  "$CHROME" ${=HEADLESS} --disable-gpu --hide-scrollbars --default-background-color=00000000 \
     --user-data-dir="$profile" --no-first-run --no-default-browser-check \
     --window-size="$2,$3" --virtual-time-budget=6000 --screenshot="$1" "$URL?zone=$ZONE&$4" >/dev/null 2>&1 &
   local pid=$! waited=0

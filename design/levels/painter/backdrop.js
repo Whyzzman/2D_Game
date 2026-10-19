@@ -394,7 +394,9 @@
     canvas.width = Math.round((rect.w + 2 * m) * ppu);
     canvas.height = Math.round((rect.h + 2 * m) * ppu);
     const f = new Frame(canvas, rect.x - m, rect.y - m, ppu);
-    (layer === "mid" ? paintMid : paintNear)(f, zone, room, look, rect, seed);
+    // Ліс малює своє тло (design/levels/forest-look); решта зон — нави й аркади Гробниці.
+    const style = look.style === "forest" ? root.LevelBackdropForest : { paintMid, paintNear };
+    (layer === "mid" ? style.paintMid : style.paintNear)(f, zone, room, look, rect, seed);
   }
 
   // Уся зона разом: тло кімнат (без паралаксу), потім камінь — для перегляду.
@@ -426,5 +428,5 @@
     c.drawImage(terrain, 0, 0);
   }
 
-  root.LevelBackdrop = { paintRoom, paintPreview, roomRect, kindOf, MARGIN };
+  root.LevelBackdrop = { paintRoom, paintPreview, roomRect, kindOf, floorOf, Frame, rgba, shade, MARGIN };
 })(window);
