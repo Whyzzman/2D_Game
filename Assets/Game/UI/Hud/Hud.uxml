@@ -9,6 +9,8 @@
     <Style src="Story.uss" />
     <ui:VisualElement name="hud" class="hud" picking-mode="Ignore">
         <ui:VisualElement name="vignette" class="vignette" picking-mode="Ignore" />
+        <!-- The red edge of a blow taken (HudVitals): the vignette's shape, tinted, faded by code. -->
+        <ui:VisualElement name="hurt-flash" class="hurt-flash" picking-mode="Ignore" />
 
         <ui:VisualElement name="conditions" class="conditions" picking-mode="Ignore">
             <ui:VisualElement name="status-bleed" class="chip chip--bleed" picking-mode="Ignore">
