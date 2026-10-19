@@ -143,7 +143,7 @@
 | Окружение | `ENVIRONMENT_TOMB.md`; нарисованные зоны — `LEVEL_TOOL.md` («Нарисованный уровень»), макет и painter — `design/levels/` |
 | Боевой фидбек | `COMBAT_FEEDBACK.md` |
 | Ощущение игры: что улучшить дальше | `GAME_FEEL_IDEAS.md` |
-| Звук и музыка | `AUDIO_DESIGN.md`, `AUDIO_ASSET_LIST.md`, `MUSIC_SYSTEM.md` |
+| Звук и музыка | `AUDIO_DESIGN.md`, `AUDIO_ASSET_LIST.md`, `MUSIC_SYSTEM.md`; бриф на живую музыку и запись — `AUDIO_BRIEF.md` |
 | Интерфейс | `UI_UX_GUIDE.md`, `design/ui/` |
 | Мир | `WORLD_DESIGN.md` (план 15 зон, карты — `reference/maps/`), `LEVEL_TOOL.md` (зоны текстом), `WORLD_GRAPH.md`, `WORLD_SCENES.md`, `CAPITAL.md`, `WORLD_MAP.md`, `PROGRESSION_GATES.md`, `FAST_TRAVEL.md` |
 | Жители, разговоры, торговец | `NPC_AND_SHOP.md` |
