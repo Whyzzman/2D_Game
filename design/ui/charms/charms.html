@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<title>Тінь Забутого Королівства — Намисто оберегів</title>
+<!-- Шрифти з кирилицею (OFL), як у живому макеті меню (UI_UX_GUIDE §3). -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@400;500;700&family=Cormorant+SC:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="../_shared/ui.css">
+<style>
+  :root {
+    --font-display: "Cormorant SC", "Cinzel", Georgia, serif;
+    --font-body: "Alegreya Sans", "Segoe UI", system-ui, sans-serif;
+    --thread: #b08a4a; --thread-torn: #c0303f;
+    --c-simple: #c9a14a; --c-fight: #c4552f; --c-magic: #6b8fff; --c-heal: #b3202a; --c-move: #7fc4b0; --c-seek: #a8b46a; --c-rare: #9b6bd6;
+  }
+  body { background: #050403; font-family: var(--font-body); }
+  .sheet { display: flex; flex-wrap: wrap; gap: 28px; padding: 28px; }
+  .frame { position: relative; flex-shrink: 0; width: 912px; height: 513px; overflow: hidden; border: 1px solid var(--edge-mid); }
+  .frame > .stage-inner { position: absolute; width: 1920px; height: 1080px; transform: scale(0.475); transform-origin: top left; }
+  .frame__caption {
+    position: absolute; left: 0; right: 0; bottom: 0; z-index: 5; padding: 6px 10px;
+    font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--gold-dim); background: rgba(5,4,3,0.88); border-top: 1px solid var(--edge-mid);
+  }
+  .note { max-width: 1852px; margin: 28px 28px 0; color: var(--ink-muted); font-size: 14px; line-height: 1.6; }
+  .note b { color: var(--ink); }
+  .note ul { margin: 8px 0 0; padding-left: 20px; }
+
+  .world { position: absolute; inset: 0; filter: brightness(0.35);
+    background: radial-gradient(40% 45% at 22% 70%, rgba(255,170,80,0.35), transparent 70%), linear-gradient(180deg, #120f0c, #0a0807); }
+  .pause-tabs { position: absolute; left: 160px; right: 160px; top: 56px; display: flex; gap: var(--s5); justify-content: center; }
+  .pause-tabs span { font-family: var(--font-display); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); font-size: var(--fs-body); padding-bottom: 6px; }
+  .pause-tabs span.is-on { color: var(--gold-bright); border-bottom: 2px solid var(--gold); }
+
+  .charm-screen { position: absolute; left: 50%; top: 112px; transform: translateX(-50%); width: 1640px; height: 920px; display: flex; flex-direction: column; }
+  .charm-screen .panel__header { display: flex; justify-content: space-between; align-items: baseline; }
+  .charm-screen .panel__header span { font-size: var(--fs-small); color: var(--ink-muted); }
+  .charm-screen .panel__header b { color: var(--gold); font-weight: 600; font-family: var(--font-display); font-size: var(--fs-lead); }
+  .charm-screen.is-torn .panel__header b { color: var(--boss-high); }
+
+  /* Намисто: дуга нитки, 11 гнізд-намистин; надягнені обереги висять під нею. */
+  .charm-necklace { position: relative; height: 236px; border-bottom: 1px solid var(--edge-mid); }
+  .charm-necklace > svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .charm-necklace__label { position: absolute; right: 24px; bottom: 10px; font-size: var(--fs-small); color: var(--ink-muted); }
+  .charm-necklace__label b { color: var(--ink-bright); font-weight: 500; }
+  .is-torn .charm-necklace__label b { color: var(--boss-high); }
+
+  .charm-body { flex: 1; display: grid; grid-template-columns: 1fr 520px; min-height: 0; }
+  .charm-grid { padding: var(--s5); display: grid; grid-template-columns: repeat(7, 1fr); gap: var(--s3); align-content: start; border-right: 1px solid var(--edge-mid); }
+  .charm-cell { position: relative; height: 84px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+    border: 1px solid rgba(58,47,37,0.7); background: linear-gradient(180deg, rgba(34,28,23,0.6), rgba(11,9,7,0.6)); }
+  .charm-cell svg { width: 50px; height: 50px; }
+  .charm-cell__cost { display: flex; gap: 3px; }
+  .charm-cell__cost i { width: 8px; height: 8px; border-radius: 50%; background: var(--gold-dim); }
+  .charm-cell.is-worn { border-color: var(--gold-dim); background: linear-gradient(180deg, rgba(138,116,52,0.18), rgba(11,9,7,0.6)); }
+  .charm-cell.is-worn::after { content: "надягнено"; position: absolute; top: 4px; right: 6px; font-size: 11px; letter-spacing: 0.1em; color: var(--gold); }
+  .charm-cell.is-focused { border-color: var(--gold); box-shadow: var(--focus); }
+  .charm-cell.is-missing svg { opacity: 0.18; filter: grayscale(1); }
+  .charm-cell.is-missing .charm-cell__cost { visibility: hidden; }
+  .charm-cell.is-broken svg { opacity: 0.55; }
+  .charm-cell.is-broken::before { content: ""; position: absolute; left: 30%; right: 30%; top: 50%; height: 2px; background: var(--danger); transform: rotate(-35deg); }
+  .charm-cell.is-dimmed { opacity: 0.5; }
+
+  .charm-card { padding: var(--s5); display: flex; flex-direction: column; gap: var(--s3); }
+  .charm-card__head { display: grid; grid-template-columns: 96px 1fr; gap: var(--s4); align-items: center; }
+  .charm-card__head svg { width: 96px; height: 96px; }
+  .charm-card h3 { margin: 0; font-family: var(--font-display); font-size: 30px; letter-spacing: 0.04em; color: var(--ink-bright); font-weight: 600; }
+  .charm-card .kind { font-size: var(--fs-micro); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-muted); }
+  .charm-card .cost { display: flex; gap: 6px; align-items: center; margin-top: 6px; font-size: var(--fs-small); color: var(--ink-muted); }
+  .charm-card .cost i { width: 14px; height: 14px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 6px rgba(201,161,74,0.5); }
+  .charm-card p { margin: 0; font-size: var(--fs-body); line-height: 1.55; color: var(--ink); }
+  .charm-card h4 { margin: var(--s2) 0 0; font-size: var(--fs-micro); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); font-weight: 500; }
+  .charm-card ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 6px; font-size: var(--fs-small); }
+  .charm-card li { color: var(--ink-muted); padding-left: 18px; position: relative; line-height: 1.45; }
+  .charm-card li::before { content: "◇"; position: absolute; left: 0; color: var(--ink-dim); }
+  .charm-card li.is-on { color: var(--gold-bright); }
+  .charm-card li.is-on::before { content: "◆"; color: var(--gold); }
+  .charm-card .where { font-size: var(--fs-small); color: var(--ink-muted); border-top: 1px solid rgba(58,47,37,0.6); padding-top: var(--s3); margin-top: auto; }
+  .charm-card .warn { font-size: var(--fs-small); color: var(--boss-high); border-left: 2px solid var(--boss-high); padding: var(--s2) var(--s3); background: rgba(143,29,44,0.12); }
+  .charm-card .lock { font-size: var(--fs-small); color: var(--gold-dim); border-left: 2px solid var(--gold-dim); padding: var(--s2) var(--s3); background: rgba(138,116,52,0.08); }
+
+  .charm-footer { display: flex; gap: var(--s6); padding: var(--s3) var(--s5); border-top: 1px solid var(--edge-mid); font-size: var(--fs-small); color: var(--ink-muted); }
+  .charm-footer span { display: inline-flex; gap: var(--s2); align-items: center; }
+  .charm-footer .is-off { opacity: 0.4; }
+
+  /* HUD-фрагмент для кадру 4: тріщина на смузі здоров'я в надриві. */
+  .hud-frag { position: absolute; left: 64px; top: 56px; display: flex; flex-direction: column; gap: 8px; }
+  .hud-frag .bar { width: 520px; height: 22px; background: var(--surface-sunken); border: 1px solid var(--edge-light); position: relative; overflow: hidden; }
+  .hud-frag .bar > i { position: absolute; inset: 0 30% 0 0; background: linear-gradient(180deg, #d0313b, var(--hp)); }
+  .hud-frag .bar svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .hud-frag .bar.mana { height: 12px; width: 360px; } .hud-frag .bar.mana > i { inset: 0 45% 0 0; background: linear-gradient(180deg, var(--mana-high), var(--mana)); }
+  .hud-frag small { color: var(--boss-high); font-size: var(--fs-small); letter-spacing: 0.06em; }
+  .hero { position: absolute; left: 900px; top: 622px; width: 120px; height: 220px; }
+</style>
+</head>
+<body>
+
+<div class="note">
+  <b>Намисто оберегів (Approval 1, рішення Claude за постійною згодою, 2026-10-19).</b> Нова вкладка паузи <b>«Обереги»</b> між
+  «Екіпіруванням» і «Персонажем». Аналог амулетів Hollow Knight: ємність намиста — від 3 до 11 намистин, оберіг коштує 1–4,
+  сполучення пар підсвічуються золотою ниткою. Правила й список — <code>gamedesign/CHARMS.md</code>.
+  <ul>
+    <li><b>Намисто</b> вгорі: дуга нитки з 11 гніздами. Відкриті гнізда — темна бусина, ще не знайдені — пунктир; надягнені обереги висять під ниткою, кожен займає стільки бусин, скільки коштує.</li>
+    <li><b>Сітка</b> 7 × 5 — усі 34 обереги в постійному порядку (за родом), не знайдені — тьмяний контур без ціни. Крихкий і зламаний — навскісна риска.</li>
+    <li><b>Картка</b> праворуч: ім'я, рід, ціна бусинами, ефект, сполучення (◆ — діє зараз), де знайдено.</li>
+    <li><b>Надягати й знімати — лише біля вівтаря</b> (кадр 1–2). У паузі — тільки читання й підказка (кадр 3).</li>
+    <li><b>Надрив</b> (кадр 2, 4): на один оберіг понад ємність — нитка червоніє й рветься, удари ворогів ×1,5; на HUD — тріщина на смузі здоров'я.</li>
+    <li>Префікс USS — <code>charm-</code>. Дані — <code>CharmLoadout</code> у прогресі.</li>
+  </ul>
+</div>
+
+<div class="sheet" id="sheet"></div>
+
+<script>
+"use strict";
+// Обереги в постійному порядку сітки (рід, ціна, ефект, де). Ті самі, що в CHARMS.md §4.
+const KINDS = {
+  simple: ["Простий", "--c-simple"], fight: ["Бій", "--c-fight"], magic: ["Магія", "--c-magic"],
+  heal: ["Зцілення", "--c-heal"], move: ["Рух", "--c-move"], seek: ["Пошук", "--c-seek"], rare: ["Особливий", "--c-rare"],
+};
+const CHARMS = [
+  ["ring_of_life", "Перстень життя", "simple", 1, "+10 до найбільшого здоров'я.", "Забута Гробниця"],
+  ["ring_of_endurance", "Перстень витривалості", "simple", 1, "+10 до витривалості.", "Зів'ялий Ліс"],
+  ["iron_talisman", "Залізний талісман", "simple", 1, "Оглушити вас стає на десяту частку важче.", "Забута Гробниця"],
+  ["ring_of_might", "Перстень сили", "simple", 2, "+3 до сили.", "Занепале Село"],
+  ["amber_bead", "Бурштинова намистина", "simple", 1, "Монети самі летять до вас з чотирьох кроків.", "Гнат, 300 золота"],
+  ["wayfarer_knot", "Вузол мандрівника", "simple", 1, "Поза боєм ви біжите на чверть швидше.", "Ліс, Сокільня"],
+  ["long_edge", "Довге лезо", "fight", 2, "Удар сягає на п'яту частину далі.", "Столиця, Випробування зброї"],
+  ["quick_hand", "Швидка рука", "fight", 3, "Між ударами — на чверть менше часу.", "Цитадель, Арена"],
+  ["heavy_heart", "Важке серце", "fight", 3, "Удар сильніший на третину, але відкидає вас удвічі далі.", "Глибини, кузня"],
+  ["last_breath", "Останній подих", "fight", 2, "Коли здоров'я — чверть чи менше, удар сильніший наполовину.", "Собор, затоплений низ"],
+  ["thorn_crown", "Терновий вінець", "fight", 2, "Коли вас ранять, довкола вибухають шипи.", "Ліс, Терновий шлях"],
+  ["wolf_tooth", "Вовчий зуб", "fight", 1, "Удар по оглушеному ворогу — сильніший на дві п'ятих.", "Бастіон, лігво вовчиць"],
+  ["fragile_strength", "Крихка сила", "fight", 3, "Удар сильніший наполовину. Ламається, коли ви гинете.", "Ярина, 1800 золота"],
+  ["parry_ward", "Оберіг відбиття", "fight", 2, "Відбити удар легше; вдале відбиття трохи лікує.", "Столиця, храм"],
+  ["soul_thread", "Нитка душі", "magic", 2, "За удар — наполовину більше мани.", "Болота, Святиня Утопленої"],
+  ["deep_well", "Глибока криниця", "magic", 3, "+40 мани, але за удар її менше на чверть.", "Акведуки"],
+  ["star_ink", "Зоряне чорнило", "magic", 3, "Закляття сильніші на третину.", "Обсерваторія, бібліотека"],
+  ["quiet_cast", "Тихе слово", "magic", 2, "Закляття дешевші на п'яту частину.", "Тихон, 1600 золота"],
+  ["frost_rosary", "Крижані чотки", "magic", 2, "Закляття студять ворога.", "Бастіон, каплиця"],
+  ["swift_draught", "Швидкий ковток", "heal", 2, "Фляга п'ється значно швидше.", "Гнат, 900 золота"],
+  ["deep_draught", "Глибокий ковток", "heal", 3, "Фляга лікує на третину більше, але п'ється довше.", "Мирослава"],
+  ["stone_skin", "Кам'яна шкіра", "heal", 2, "Після рани ви довше невразливі.", "Печери, лігво жуків"],
+  ["fragile_heart", "Крихке серце", "heal", 2, "+30 до здоров'я. Ламається, коли ви гинете.", "Ярина, 1400 золота"],
+  ["rest_ember", "Жарина вівтаря", "heal", 1, "Біля вівтаря — зайва фляга до першої смерті.", "Гробниця, Келія каменяра"],
+  ["swallow_feather", "Перо ластівки", "move", 2, "Ривок готовий знову на третину швидше.", "Село, Горище"],
+  ["shadow_step", "Тіньовий крок", "move", 2, "Ривок проходить крізь ворогів, і на ньому вас не ранять.", "Царство Тіні"],
+  ["hook_charm", "Кігтик гака", "move", 1, "Гак чіпляється далі.", "Село, Горище кузні"],
+  ["soft_fall", "М'яке падіння", "move", 1, "Ви приземляєтеся беззвучно — вороги не чують.", "Глибини, шахта"],
+  ["seeker_eye", "Око шукача", "seek", 1, "Стіни сховків мерехтять, коли ви поруч.", "Тихон, 800 золота"],
+  ["wisp_bell", "Дзвіночок вогників", "seek", 1, "Загублені вогники дзвенять на краю зору.", "Село, Дзвін"],
+  ["cartographer", "Компас картографа", "seek", 1, "На карті видно, де ви, навіть без пера.", "Гнат, 250 золота"],
+  ["greedy_purse", "Жадібний гаманець", "seek", 2, "Золота з ворогів більше на дві п'ятих. Ламається, коли ви гинете.", "Ярина, 2000 золота"],
+  ["kings_echo", "Відлуння короля", "rare", 4, "Кожен третій удар серії пускає хвилю-півмісяць.", "Палац, тронна зала"],
+  ["oath_of_ash", "Клятва попелу", "rare", 4, "Надрив карає слабше; намисто жевріє жаром.", "Трон Забуття"],
+];
+const PAIRS = [
+  ["soul_thread", "deep_well", "Нитка душі — мана за удар без втрати"],
+  ["thorn_crown", "stone_skin", "Шипи вибухають двічі"],
+  ["shadow_step", "swallow_feather", "Ривок лишає тінь, що ранить"],
+  ["last_breath", "fragile_heart", "Останній подих вмикається раніше"],
+  ["star_ink", "frost_rosary", "Холод тримається вдвічі довше"],
+  ["swift_draught", "deep_draught", "Фляга п'ється звично, лікує більше"],
+  ["heavy_heart", "long_edge", "Відкидає й ворога"],
+  ["kings_echo", "oath_of_ash", "Хвиля лишає вогняний слід"],
+];
+const byId = Object.fromEntries(CHARMS.map(c => [c[0], c]));
+
+// Знак оберега: кругла бусина з власним візерунком; візерунок — з id, щоб жоден не повторювався.
+function hash(s) { let h = 2166136261; for (const ch of s) { h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619); } return h >>> 0; }
+function emblem(id, size) {
+  const c = byId[id]; const col = `var(${KINDS[c[2]][1]})`; const h = hash(id);
+  const petals = 3 + (h % 5), turn = (h >> 3) % 360, inner = 10 + ((h >> 7) % 8), wave = 4 + ((h >> 11) % 9);
+  let d = "";
+  for (let i = 0; i <= 72; i++) {
+    const a = (i / 72) * Math.PI * 2, r = 30 - wave + wave * Math.cos(a * petals);
+    d += (i ? "L" : "M") + (50 + r * Math.cos(a + turn)).toFixed(1) + " " + (50 + r * Math.sin(a + turn)).toFixed(1);
+  }
+  return `<svg viewBox="0 0 100 100" width="${size}" height="${size}" aria-hidden="true">
+    <circle cx="50" cy="50" r="46" fill="#0b0907" stroke="${col}" stroke-width="3" opacity="0.9"/>
+    <path d="${d}Z" fill="${col}" opacity="0.28"/><path d="${d}Z" fill="none" stroke="${col}" stroke-width="2.5"/>
+    <circle cx="50" cy="50" r="${inner}" fill="${col}"/><circle cx="${46 - inner / 3}" cy="${46 - inner / 3}" r="${inner / 3}" fill="#fff" opacity="0.35"/>
+  </svg>`;
+}
+
+// Намисто: нитка — квадратична дуга, 11 гнізд рівно по ній, обереги висять під своїми бусинами.
+function necklace(state) {
+  const W = 1640, H = 236, n = 11, x0 = 300, x1 = 1340, sag = 80, y0 = 24;
+  const pt = t => [x0 + (x1 - x0) * t, y0 + sag * 4 * t * (1 - t)];
+  const torn = state.torn;
+  let svg = `<svg viewBox="0 0 ${W} ${H}" aria-hidden="true"><defs>
+    <radialGradient id="bead-${state.key}"><stop offset="0" stop-color="#f3dca0"/><stop offset="0.6" stop-color="#b08a4a"/><stop offset="1" stop-color="#4a3a20"/></radialGradient></defs>`;
+  const thread = `M${pt(0)} Q${(x0 + x1) / 2} ${y0 + sag * 2} ${pt(1)}`;
+  svg += `<path d="M120 ${y0 - 10} C 200 ${y0 - 14}, 260 ${y0 - 6}, ${pt(0)}" stroke="var(--thread)" stroke-width="3" fill="none" opacity="0.6"/>`;
+  svg += `<path d="M${pt(1)} C 1380 ${y0 - 6}, 1440 ${y0 - 14}, 1520 ${y0 - 10}" stroke="var(--thread)" stroke-width="3" fill="none" opacity="0.6"/>`;
+  svg += `<path d="${thread}" stroke="${torn ? "var(--thread-torn)" : "var(--thread)"}" stroke-width="3" fill="none" ${torn ? 'stroke-dasharray="40 6 90 4"' : ""}/>`;
+  let slot = 0;
+  const spans = [];
+  for (const id of state.worn) { const cost = byId[id][3]; spans.push([id, slot, cost]); slot += cost; }
+  for (let i = 0; i < n; i++) {
+    const [x, y] = pt((i + 0.5) / n);
+    const open = i < state.capacity, used = i < slot, over = used && i >= state.capacity;
+    if (!open && !over) svg += `<circle cx="${x}" cy="${y}" r="13" fill="none" stroke="#5f574c" stroke-width="2" stroke-dasharray="4 4"/>`;
+    else svg += `<circle cx="${x}" cy="${y}" r="15" fill="${over ? "#5a1620" : used ? `url(#bead-${state.key})` : "#17130f"}" stroke="${over ? "var(--thread-torn)" : used ? "#e8cd8a" : "#6b5a42"}" stroke-width="2"/>`;
+  }
+  for (const [id, from, cost] of spans) {
+    const [xa, ya] = pt((from + 0.5) / n), [xb, yb] = pt((from + cost - 0.5) / n);
+    const cx = (xa + xb) / 2, cy = Math.max(ya, yb) + 26;
+    svg += `<path d="M${xa} ${ya + 14} Q ${cx} ${cy + 8} ${xb} ${yb + 14}" stroke="#6b5a42" stroke-width="2" fill="none"/>`;
+    svg += `<line x1="${cx}" y1="${cy + 4}" x2="${cx}" y2="${cy + 22}" stroke="#6b5a42" stroke-width="2"/>`;
+    svg += `<g transform="translate(${cx - 34} ${cy + 20})">${emblem(id, 68).replace("<svg", '<svg x="0" y="0"')}</g>`;
+  }
+  // Золоті нитки сполучень між надягненими парами.
+  for (const [a, b] of PAIRS) {
+    const sa = spans.find(s => s[0] === a), sb = spans.find(s => s[0] === b);
+    if (!sa || !sb) continue;
+    const xa = pt((sa[1] + sa[2] / 2) / n)[0], xb = pt((sb[1] + sb[2] / 2) / n)[0];
+    const ya = Math.max(pt((sa[1] + 0.5) / n)[1], pt((sa[1] + sa[2] - 0.5) / n)[1]) + 116;
+    const yb = Math.max(pt((sb[1] + 0.5) / n)[1], pt((sb[1] + sb[2] - 0.5) / n)[1]) + 116;
+    svg += `<path d="M${xa} ${ya} Q ${(xa + xb) / 2} ${Math.max(ya, yb) + 36} ${xb} ${yb}" stroke="var(--gold-bright)" stroke-width="2" fill="none" opacity="0.8" stroke-dasharray="2 5" stroke-linecap="round"/>`;
+  }
+  if (torn) svg += `<path d="M${pt(0.94)[0] - 10} ${pt(0.94)[1] - 18} l 8 12 l -6 6 l 10 14" stroke="var(--thread-torn)" stroke-width="3" fill="none"/>`;
+  return svg + "</svg>";
+}
+
+function card(state) {
+  const c = byId[state.focus]; const worn = new Set(state.worn);
+  const pairs = PAIRS.filter(p => p[0] === c[0] || p[1] === c[0]).map(p => {
+    const other = byId[p[0] === c[0] ? p[1] : p[0]];
+    const on = worn.has(p[0]) && worn.has(p[1]);
+    return `<li class="${on ? "is-on" : ""}">Разом із «${other[1]}»: ${p[2].charAt(0).toLowerCase() + p[2].slice(1)}</li>`;
+  }).join("") || `<li>Сполучень немає</li>`;
+  const cost = Array.from({ length: c[3] }, () => "<i></i>").join("");
+  const extra = state.torn ? `<div class="warn">Намисто надірване: удари ворогів ранять у півтора раза сильніше. Зніміть оберіг біля вівтаря.</div>`
+    : state.paused ? `<div class="lock">Змінити обереги — біля вівтаря.</div>` : "";
+  return `<div class="charm-card__head">${emblem(c[0], 96)}<div><div class="kind">${KINDS[c[2]][0]}</div><h3>${c[1]}</h3>
+    <div class="cost">${cost}<span>${c[3]} ${c[3] === 1 ? "намистина" : c[3] < 5 ? "намистини" : "намистин"}</span></div></div></div>
+    <p>${c[4]}</p>${extra}<h4>Сполучення</h4><ul>${pairs}</ul><div class="where">Знайдено: ${c[5]}</div>`;
+}
+
+function frame(state) {
+  const used = state.worn.reduce((s, id) => s + byId[id][3], 0);
+  const cells = CHARMS.map(c => {
+    const cls = ["charm-cell"];
+    if (state.worn.includes(c[0])) cls.push("is-worn");
+    if (state.missing.includes(c[0])) cls.push("is-missing");
+    if (state.broken && state.broken.includes(c[0])) cls.push("is-broken");
+    if (c[0] === state.focus) cls.push("is-focused");
+    if (!state.worn.includes(c[0]) && !state.missing.includes(c[0]) && !state.torn && used + c[3] > state.capacity && used >= state.capacity) cls.push("is-dimmed");
+    const cost = Array.from({ length: c[3] }, () => "<i></i>").join("");
+    return `<div class="${cls.join(" ")}">${emblem(c[0], 58)}<div class="charm-cell__cost">${cost}</div></div>`;
+  }).join("");
+  const label = state.torn ? `<b>Надрив</b> · ${used} з ${state.capacity} · нитка рветься`
+    : `<b>${used} з ${state.capacity}</b> намистин зайнято · ${11 - state.capacity} ще не знайдено`;
+  const footer = state.paused
+    ? `<span class="is-off"><span class="glyph">Enter</span> надягти</span><span><span class="glyph">←→↑↓</span> оберіг</span><span><span class="glyph">Q</span><span class="glyph">E</span> вкладки</span><span><span class="glyph">Esc</span> назад</span>`
+    : `<span><span class="glyph">Enter</span> ${state.worn.includes(state.focus) ? "зняти" : "надягти"}</span><span><span class="glyph">←→↑↓</span> оберіг</span><span><span class="glyph">X</span> зняти всі</span><span><span class="glyph">Esc</span> до вівтаря</span>`;
+  const tabs = state.paused
+    ? `<div class="pause-tabs"><span>Спорядження</span><span>Екіпірування</span><span class="is-on">Обереги</span><span>Персонаж</span><span>Уміння</span><span>Закляття</span><span>Люди</span><span>Бестіарій</span><span>Печатки</span></div>`
+    : `<div class="pause-tabs"><span class="is-on">Обереги</span><span>Відпочинок · Вівтар причалу</span></div>`;
+  return `<div class="frame"><div class="stage-inner"><div class="world"></div>${tabs}
+    <div class="panel panel--royal charm-screen ${state.torn ? "is-torn" : ""}">
+      <div class="panel__header"><h2 class="panel__title">Намисто оберегів</h2><span>Ємність <b>${used} / ${state.capacity}</b></span></div>
+      <div class="charm-necklace">${necklace(state)}<div class="charm-necklace__label">${label}</div></div>
+      <div class="charm-body"><div class="charm-grid">${cells}</div><div class="charm-card">${card(state)}</div></div>
+      <div class="charm-footer">${footer}</div>
+    </div></div><div class="frame__caption">${state.caption}</div></div>`;
+}
+
+// Кадр 4: гра в надриві — тріщина на смузі здоров'я, червона нитка на шиї героя.
+function hudFrame() {
+  return `<div class="frame"><div class="stage-inner">
+    <div class="world" style="filter:brightness(0.55);background:radial-gradient(50% 40% at 50% 80%, rgba(111,168,58,0.35), transparent 70%), linear-gradient(180deg,#0a100c,#16241a)"></div>
+    <div class="hud-frag"><div class="bar"><i></i><svg viewBox="0 0 520 22" preserveAspectRatio="none"><path d="M120 0 L128 9 L121 13 L131 22 M300 0 L292 11 L299 15 L290 22" stroke="#0b0907" stroke-width="3" fill="none"/></svg></div>
+      <div class="bar mana"><i></i></div><small>Намисто надірване · удари ворогів ×1,5</small></div>
+    <svg class="hero" viewBox="0 0 120 220" aria-hidden="true">
+      <path d="M60 30 C 78 30, 86 46, 84 62 C 100 76, 104 120, 96 150 L 92 210 L 70 210 L 66 160 L 54 160 L 50 210 L 28 210 L 24 150 C 16 120, 20 76, 36 62 C 34 46, 42 30, 60 30 Z" fill="#1f1a16" stroke="#6f8a52" stroke-width="2"/>
+      <path d="M40 66 Q 60 84 80 66" stroke="var(--thread-torn)" stroke-width="3" fill="none"/>
+      <circle cx="60" cy="80" r="5" fill="#c0303f"/><path d="M78 66 l 6 -4 M80 70 l 7 2" stroke="var(--thread-torn)" stroke-width="2"/>
+    </svg>
+    <div style="position:absolute;inset:auto 0 0 0;height:240px;background:linear-gradient(180deg,#141a12,#070908)"></div>
+  </div><div class="frame__caption">4 · У грі: надрив видно на HUD (тріщина, підпис) і на герої (червона нитка)</div></div>`;
+}
+
+const missing = ["fragile_strength", "deep_well", "star_ink", "quiet_cast", "frost_rosary", "deep_draught", "fragile_heart", "shadow_step",
+  "soft_fall", "seeker_eye", "greedy_purse", "kings_echo", "oath_of_ash", "heavy_heart", "wolf_tooth", "quick_hand", "stone_skin"];
+const states = [
+  { key: "a", capacity: 6, worn: ["soul_thread", "long_edge", "ring_of_life"], missing, focus: "soul_thread",
+    caption: "1 · Біля вівтаря, Болота: 5 з 6 — вільна одна намистина" },
+  { key: "b", capacity: 6, worn: ["soul_thread", "long_edge", "ring_of_life", "swallow_feather"], missing, focus: "swallow_feather", torn: true,
+    caption: "2 · Надрив: 7 з 6 — оберіг на 2 намистини при вільній одній — нитка червона, попередження в картці" },
+  { key: "c", capacity: 9, worn: ["thorn_crown", "stone_skin", "deep_draught", "ring_of_life", "rest_ember"],
+    missing: missing.filter(id => !["stone_skin", "deep_draught", "fragile_heart"].includes(id)), broken: ["fragile_heart"], focus: "thorn_crown", paused: true,
+    caption: "3 · Пауза, пізніше: «танк» 9 з 9, сполучення ◆ діє; змінити — лише біля вівтаря" },
+];
+document.getElementById("sheet").innerHTML = states.map(frame).join("") + hudFrame();
+</script>
+</body>
+</html>

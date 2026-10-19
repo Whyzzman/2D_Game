@@ -147,6 +147,7 @@
 | Интерфейс | `UI_UX_GUIDE.md`, `design/ui/` |
 | Мир | `WORLD_DESIGN.md` (план 15 зон, карты — `reference/maps/`), `LEVEL_TOOL.md` (зоны текстом), `WORLD_GRAPH.md`, `WORLD_SCENES.md`, `CAPITAL.md`, `WORLD_MAP.md`, `PROGRESSION_GATES.md`, `FAST_TRAVEL.md` |
 | Жители, разговоры, торговец | `NPC_AND_SHOP.md` |
+| Обереги (сборка героя: намисто, цены, сочетания) | `CHARMS.md`, макет `design/ui/charms/` |
 | Осколки, тайные комнаты, испытания, бестиарий | `EXPLORATION.md` |
 | Сюжет, надписи, концовка, итоги, «Новая игра+» | `STORY.md` |
 | Проблемы и QA | `KNOWN_ISSUES.md`, `VERTICAL_SLICE_QA.md` |
