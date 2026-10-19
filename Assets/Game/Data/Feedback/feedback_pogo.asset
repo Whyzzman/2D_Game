@@ -29,10 +29,11 @@ MonoBehaviour:
   _mirrorsToDirection: 0
   _sortingLayer: VFXFront
   _sortingOrder: 0
-  _hitStop: 0.035
+  _hitStop: 0.04
   _shake: 1
   _shakeScale: 1
   _shakeVerticalBias: 1.8
+  _shakeKick: 0.5
   _screenFlash: 0
   _flashColor: {r: 1, g: 1, b: 1, a: 1}
   _lightColor: {r: 0.85, g: 0.9, b: 1, a: 0.45}
@@ -40,4 +41,4 @@ MonoBehaviour:
   _lightDuration: 0.18
   _priority: 15
   _soundEvent: 
-  _haptic: 0
+  _haptic: 0.15

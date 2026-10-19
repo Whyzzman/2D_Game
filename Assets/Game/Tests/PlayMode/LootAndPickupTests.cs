@@ -149,7 +149,7 @@ namespace ForgottenKingdom.Tests
             var before = _progress.Currency;
             var hero = (Vector2)_player.transform.position;
             var near = _loot.Spawn(new DropResult(string.Empty, true, 5), hero + new Vector2(1.4f, 0.8f));
-            var far = _loot.Spawn(new DropResult(string.Empty, true, 7), hero + new Vector2(0f, 4f));
+            var far = _loot.Spawn(new DropResult(string.Empty, true, 7), hero + new Vector2(6f, 0.8f));
             var item = _loot.Spawn(new DropResult("iron_scrap", false, 1), hero + new Vector2(-1.4f, 0.8f));
             Assert.That(near.MagnetRadius, Is.EqualTo(2f).Within(0.001f), "GAME_FEEL_IDEAS.md item 15: 2 units.");
             Assert.That(item.MagnetRadius, Is.Zero, "A find is chosen, not swept up.");

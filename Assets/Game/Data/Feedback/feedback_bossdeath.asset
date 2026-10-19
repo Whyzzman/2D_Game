@@ -46,6 +46,7 @@ MonoBehaviour:
   _shake: 5
   _shakeScale: 1
   _shakeVerticalBias: 1
+  _shakeKick: 0
   _screenFlash: 0.28
   _flashColor: {r: 0.7, g: 0.5, b: 1, a: 1}
   _lightColor: {r: 0.61, g: 0.3, b: 1, a: 0.85}
@@ -53,4 +54,4 @@ MonoBehaviour:
   _lightDuration: 0.18
   _priority: 100
   _soundEvent: boss_death
-  _haptic: 0
+  _haptic: 0.8

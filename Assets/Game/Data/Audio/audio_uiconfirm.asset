@@ -15,6 +15,7 @@ MonoBehaviour:
   _id: 77
   _clips:
   - {fileID: 8300000, guid: c5c5b99094fd1304e81640d3929a4fdd, type: 3}
+  - {fileID: 8300000, guid: dc2a38bbe4722410f83e2c13fa6acc5b, type: 3}
   _bus: 3
   _volume: 0.45
   _volumeJitter: 0.06
@@ -22,6 +23,6 @@ MonoBehaviour:
   _spatialBlend: 0
   _maxDistance: 26
   _maxVoices: 1
-  _minimumInterval: 0
+  _minimumInterval: 0.06
   _priority: 40
   _loop: 0

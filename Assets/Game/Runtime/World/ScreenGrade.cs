@@ -71,6 +71,8 @@ namespace ForgottenKingdom
         public static float BossTarget(bool fighting, int phase, float phaseOneShare) =>
             !fighting ? 0f : phase >= 2 ? 1f : phaseOneShare;
 
+        private const float MaxFadeStep = 0.1f;
+
         private void Awake()
         {
             GetComponent<Camera>().GetUniversalAdditionalCameraData().renderPostProcessing = true;
@@ -94,7 +96,8 @@ namespace ForgottenKingdom
 
         private void Update()
         {
-            var dt = Time.unscaledDeltaTime;
+            // A long frame (a zone streaming in) must not skip the fade it is part of.
+            var dt = Mathf.Min(Time.unscaledDeltaTime, MaxFadeStep);
             var current = WorldState.Current != null && !string.IsNullOrEmpty(WorldState.Current.CurrentZoneId)
                 ? WorldState.Current.CurrentZoneId
                 : _defaultZoneId;

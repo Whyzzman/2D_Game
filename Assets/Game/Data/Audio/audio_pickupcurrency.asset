@@ -23,7 +23,7 @@ MonoBehaviour:
   _pitchJitter: 0.045
   _spatialBlend: 0.55
   _maxDistance: 26
-  _maxVoices: 2
-  _minimumInterval: 0.18
+  _maxVoices: 3
+  _minimumInterval: 0.07
   _priority: 30
   _loop: 0

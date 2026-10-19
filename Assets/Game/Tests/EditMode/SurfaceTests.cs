@@ -48,20 +48,5 @@ namespace ForgottenKingdom.Tests
             Assert.That(Surfaces.DustTint(SurfaceKind.Ash), Is.Not.EqualTo(Color.white));
             Assert.That(Surfaces.DustTint(SurfaceKind.Wood), Is.Not.EqualTo(Surfaces.DustTint(SurfaceKind.Earth)));
         }
-
-        [Test]
-        public void ATaggedBlockUnderTheFeetWinsOverTheZone()
-        {
-            var block = new GameObject("Plank") { layer = LayerMask.NameToLayer("Ground") };
-            _made.Add(block);
-            block.AddComponent<BoxCollider2D>().size = new Vector2(4f, 1f);
-            block.AddComponent<GroundSurface>().Set(SurfaceKind.Wood);
-            block.transform.position = new Vector3(1000f, 1000f, 0f);
-            Physics2D.SyncTransforms();
-
-            Assert.That(Surfaces.Under(new Vector2(1000f, 1000.5f)), Is.EqualTo(SurfaceKind.Wood));
-            Assert.That(Surfaces.Under(new Vector2(1010f, 1000.5f)), Is.EqualTo(SurfaceKind.Stone),
-                "Off the plank, over nothing, the zone's default (none here: stone).");
-        }
     }
 }

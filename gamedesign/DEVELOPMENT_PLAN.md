@@ -106,10 +106,18 @@
 | `cloud/surfaces` | шаги и пыль по поверхности (камень, дерево, земля, вода, пепел) | `GAME_FEEL_IDEAS.md` № 4 |
 | `cloud/world-react` | качаются цепи и корни, огни дрожат от рывка, пыль с потолка, 22 урны с монетами | `GAME_FEEL_IDEAS.md` № 13–14 |
 | `cloud/ledge-forgiveness` | прощение на краю: промах стопой по углу уступа ≤ 0,1 — героя сдвигает на уступ | `TUNING.md`, `GAME_FEEL_IDEAS.md` № 2 |
+| `cloud/attack-buffer` | удар, нажатый в последние 0,15 с рывка, ждёт его конца и выполняется сразу | `TUNING.md`, `GAME_FEEL_IDEAS.md` № 3 |
+| `cloud/room-camera` | жёсткий край комнаты: камера после сглаживания и тряски не заходит за комнату | `ENVIRONMENT_TOMB.md`, «Межі камери» |
+| `cloud/parry-slowmo` | парирование героя: после заморозки мир 0,12 с на скорости 0,3, по настройкам доступности. Проверить: `SlowMotionMomentTests`, `CombatFeedbackTests`, на ощупь в бою | `COMBAT_FEEDBACK.md` §9а |
+| `cloud/hurt-duck` | удар по герою: музыка −55 %, комната −60 % на 0,6 с, тонкий звон `HurtRing`; шар комнаты теперь следует дакингу. Проверить: `AudioTests`, `AudioDataTests`, на слух | `AUDIO_DESIGN.md` §8а |
+| `cloud/low-health` | под 25 % здоровья края экрана бледнеют и слышно сердце; гаснет выше порога и при смерти, без пульса при `ReducedMotion`. Проверить: `LowHealthCueTests`, `AudioDataTests`, HUD-тесты PlayMode, на глаз и слух | `UI_UX_GUIDE.md` §10а |
 | `cloud/boss-death` | смерть босса с замедлением и светом из трещин; «вдох» и блик за 0,2 с до удара врага | `GAME_FEEL_IDEAS.md` № 11–12 |
 | `cloud/zone-title` | карточка зоны встаёт под тему зоны; первый вход — полная, возврат — короткая | `MUSIC_SYSTEM.md` §4в |
 | `cloud/hitch-probe` | журнал долгих кадров (`HitchLog`, `-hitchLog`), A/B буфера загрузки текстур в пробе | `KNOWN_ISSUES.md` KI-012 |
 | `cloud/integration` | **все ветки выше одной веткой** | `INTEGRATION.md` |
+| `cloud/hitch-probe` | журнал долгих кадров (`HitchLog`, `-hitchLog`), A/B буфера загрузки текстур в пробе | `KNOWN_ISSUES.md` KI-012 |
+| `cloud/zone-transition` | на границе зон через мир проходит туман в цвет следующей зоны | `UI_UX_GUIDE.md` §12а |
+| `cloud/coin-magnet` | монеты ближе 2 ед. летят к герою, звон подряд растёт тоном; подбор озвучен | `TUNING.md` (добыча) |
 
 Пересечения последних веток (2026-10-19): все добавляют значения в конец `AudioId` — при слиянии
 поставить их друг за другом, ни одно не терять (генератор пересоберёт события); `hero-death` и
@@ -119,6 +127,13 @@
 После `world-react` и `surfaces`: `Build` → `Scene*.Apply` зон из текста → `SceneReactive.Apply`.
 
 Дальше по ощущению игры — `GAME_FEEL_IDEAS.md` (23 пункта по пользе).
+
+## Облачные ветки — ждут локальной проверки
+
+- **`cloud/zone-marsh`** — черновик `Levels/marsh.txt` (20 комнат, `MARSH.md`), сгенерирован
+  `tools/level-drafts/marsh.py` (скрипт проверяет, что комнаты не перекрываются и каждый проём смотрит в
+  проём соседа). Ядовитая вода пока — `^`. Проверить: `LevelCheck` / `LevelTools.RenderPreviews`; зону в
+  игру не подключать до строителя (`MARSH.md` §10).
 
 ## Отложено до конца разработки
 

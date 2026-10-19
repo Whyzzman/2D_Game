@@ -20,6 +20,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 67233fda3e8570c488353f00a257f4a5, type: 3}
   - {fileID: 8300000, guid: 5b5255dc2b3a8e24eb992cb2712692b2, type: 3}
   - {fileID: 8300000, guid: d1cc178fbd9b32e4c97c51c330bff343, type: 3}
+  - {fileID: 8300000, guid: caf6c7167e02341e7800a0a132e3322d, type: 3}
+  - {fileID: 8300000, guid: cafc2e0eaaf68449d9023b85655b8b82, type: 3}
   _bus: 2
   _volume: 0.34
   _volumeJitter: 0.06

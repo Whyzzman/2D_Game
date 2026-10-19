@@ -15,6 +15,7 @@ MonoBehaviour:
   _id: 80
   _clips:
   - {fileID: 8300000, guid: c4b88d539ac2a734d8156df4111f3d35, type: 3}
+  - {fileID: 8300000, guid: 4a01fbcf0f2a0429bb5720eb6757f1be, type: 3}
   _bus: 3
   _volume: 0.42
   _volumeJitter: 0.06

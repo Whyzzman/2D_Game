@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f262bfdbc3db1d1448a3cf59cba06016, type: 3}
+  m_Name: audio_heartbeat
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.AudioEvent
+  _id: 163
+  _clips:
+  - {fileID: 8300000, guid: 970bf633ebb424e5ead0b1314973a1e1, type: 3}
+  - {fileID: 8300000, guid: d464ca4c02e8247f79b4be9c7d9fe50f, type: 3}
+  _bus: 2
+  _volume: 0.45
+  _volumeJitter: 0.06
+  _pitchJitter: 0.045
+  _spatialBlend: 0
+  _maxDistance: 26
+  _maxVoices: 1
+  _minimumInterval: 0.3
+  _priority: 60
+  _loop: 0
