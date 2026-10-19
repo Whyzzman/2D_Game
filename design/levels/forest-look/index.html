@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ліс — новий вигляд</title>
+<style>
+  :root { --bg: #0a0d0c; --text: #d0d4c4; --muted: #7f8a7c; --gold: #b9c8b0; }
+  html, body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.5 Georgia, serif; }
+  body.shot { overflow: hidden; }
+  main { max-width: 1280px; margin: 0 auto; padding: 24px 16px 48px; }
+  h1 { font-weight: normal; letter-spacing: .08em; color: var(--gold); margin: 0 0 4px; }
+  p.note { color: var(--muted); margin: 0 0 20px; }
+  figure { margin: 0 0 28px; }
+  figcaption { color: var(--muted); margin-top: 6px; }
+  canvas { width: 100%; height: auto; display: block; border: 1px solid #1c221e; }
+  body.shot main { padding: 0; max-width: none; }
+  body.shot h1, body.shot p.note, body.shot figcaption { display: none; }
+  body.shot figure { margin: 0; }
+  body.shot canvas { border: 0; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Зів'ялий Ліс — новий вигляд</h1>
+  <p class="note">Макет кадру гри (камера 32 × 18 юнітів), тим самим способом, що й погоджена Гробниця: органічні маси, світлий кант там, де можна стояти, плани глибини. Ліс — холодна зелень і місячне срібло, мертві дуби, руїни абатства без даху, мох на кантах.</p>
+  <figure id="f-edge"><canvas id="edge" width="1920" height="1080"></canvas>
+    <figcaption>Узлісся: руїна абатства проти туманного неба з місяцем, ряди мертвих дубів у глибину, коріння-уступи; місячне світло — головне джерело.</figcaption></figure>
+  <figure id="f-roots"><canvas id="roots" width="1920" height="1080"></canvas>
+    <figcaption>Під великим деревом: печера з коріння й землі, отруйна заводь унизу, бліді гриби позначають дорогу, промінь крізь дупло.</figcaption></figure>
+</main>
+<script src="../tomb-look/paint.js"></script>
+<script src="forest.js"></script>
+<script src="scenes.js"></script>
+</body>
+</html>
