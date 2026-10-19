@@ -90,6 +90,16 @@ namespace ForgottenKingdom
         /// <summary>Lead time for a scheduled start, so a track and its layer begin on one tick.</summary>
         private const double ScheduleLead = 0.06;
 
+        /// <summary>
+        /// How long a lull in a fight must last before the fight layer starts to ebb: a pause between
+        /// two enemies keeps the drums rather than dropping and raising them (2026-10-19).
+        /// </summary>
+        private const float CalmHold = 1f;
+
+        /// <summary>How far the calm part steps back under a full fight layer, so the drums have room.</summary>
+        private const float UnderLayer = 0.12f;
+        private float _calmSince = float.NegativeInfinity;
+
         private AudioSource _current;
         private AudioSource _previous;
         private AudioSource _currentLayer;
@@ -427,15 +437,26 @@ namespace ForgottenKingdom
         {
             _duck = Mathf.Min(1f, _duck + Time.unscaledDeltaTime / _duckRecovery);
             _fade = Mathf.Min(1f, _fade + Time.unscaledDeltaTime / _crossfade);
-            var layerTarget = WantsLayer() ? 1f : 0f;
+            var wanted = WantsLayer();
+            if (wanted)
+            {
+                _calmSince = Time.unscaledTime;
+            }
+
+            var layerTarget = wanted || Time.unscaledTime - _calmSince < CalmHold ? 1f : 0f;
             _layerMix = Mathf.MoveTowards(_layerMix, layerTarget,
                 Time.unscaledDeltaTime / (layerTarget > _layerMix ? _layerFadeIn : _layerFadeOut));
 
+            // Equal-power curves (2026-10-19): a linear crossfade dips in loudness half-way, which
+            // is heard as the music sagging between exploring and fighting.
             var target = _volume * BusVolume() * _duck;
+            var incoming = Mathf.Sin(_fade * Mathf.PI * 0.5f);
+            var outgoing = Mathf.Cos(_fade * Mathf.PI * 0.5f);
+            var layer = Mathf.SmoothStep(0f, 1f, _layerMix);
             if (_current != null)
             {
-                _current.volume = target * _fade;
-                _currentLayer.volume = target * _fade * _layerMix;
+                _current.volume = target * incoming * (1f - UnderLayer * layer);
+                _currentLayer.volume = target * incoming * layer;
             }
 
             if (_previous == null)
@@ -443,8 +464,9 @@ namespace ForgottenKingdom
                 return;
             }
 
-            _previous.volume = target * (1f - _fade);
-            _previousLayer.volume = target * (1f - _fade) * _previousLayerMix;
+            var previousLayer = Mathf.SmoothStep(0f, 1f, _previousLayerMix);
+            _previous.volume = target * outgoing * (1f - UnderLayer * previousLayer);
+            _previousLayer.volume = target * outgoing * previousLayer;
             if (_fade >= 1f && _previous.isPlaying)
             {
                 _previous.Stop();
