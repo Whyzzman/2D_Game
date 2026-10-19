@@ -71,6 +71,49 @@ namespace ForgottenKingdom.Tests
         }
 
         [Test]
+        public void AJumpPressedAtTheEndOfADashJumpsAsTheDashEnds()
+        {
+            _logic.Step(Vector2.zero, true, default, Step);
+            _logic.TryBeginDash(1);
+            var velocity = Vector2.zero;
+            var steps = 0;
+            while (_logic.IsDashing && steps < 100)
+            {
+                // The press comes in the dash's last tenth of a second.
+                var press = steps == Mathf.FloorToInt((_dash.DashDuration - 0.1f) / Step);
+                velocity = _logic.Step(velocity, true, new MovementInput(0f, press, true), Step);
+                steps++;
+            }
+
+            velocity = _logic.Step(velocity, true, new MovementInput(0f, false, true), Step);
+            Assert.That(velocity.y, Is.GreaterThan(9f), "The dash's tail is where the next jump is entered.");
+        }
+
+        [Test]
+        public void AJumpPressedDuringAnAirDashIsTheSecondJumpWhenItEnds()
+        {
+            _logic.AirJumpsAllowed = 1;
+            _logic.Step(new Vector2(0f, -1f), false, default, Step);
+            Assume.That(_logic.TryBeginDash(1), Is.True);
+            var velocity = Vector2.zero;
+            var steps = 0;
+            while (_logic.IsDashing && steps < 100)
+            {
+                // Late enough in the dash that the buffer still holds the press when it ends.
+                var press = steps == 4;
+                velocity = _logic.Step(velocity, false, new MovementInput(0f, press, true), Step);
+                steps++;
+            }
+
+            velocity = _logic.Step(velocity, false, new MovementInput(0f, false, true), Step);
+            Assert.That(_logic.AirJumpsUsed, Is.EqualTo(1));
+            Assert.That(velocity.y, Is.GreaterThan(8f));
+            // Taken once: the step after does not jump again.
+            var after = _logic.Step(velocity, false, new MovementInput(0f, false, true), Step);
+            Assert.That(after.y, Is.LessThan(velocity.y));
+        }
+
+        [Test]
         public void NoInputModeBrakesTheCharacterAndRefusesJumps()
         {
             var velocity = new Vector2(6f, 0f);

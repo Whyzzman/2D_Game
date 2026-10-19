@@ -14,7 +14,13 @@ namespace ForgottenKingdom
         [SerializeField, Min(0f)] private float _groundAcceleration = 60f;
         [SerializeField, Min(0f)] private float _groundDeceleration = 80f;
         [SerializeField, Min(0f)] private float _airAcceleration = 30f;
-        [SerializeField, Min(0f)] private float _airDeceleration = 20f;
+        [Tooltip("Braking in the air with no direction held. 45 stops a full run in about 0.14 s "
+            + "(it was 20, a third of a second of drift); it can only shorten a jump, never lengthen it.")]
+        [SerializeField, Min(0f)] private float _airDeceleration = 45f;
+        [Tooltip("Steering against the current drift in the air: a reversal is three times as quick "
+            + "as speeding up, as in Hollow Knight, so a jump can be corrected mid-air. Speeding up "
+            + "the same way stays at the air acceleration, so no gap gets wider.")]
+        [SerializeField, Min(0f)] private float _airTurnAcceleration = 90f;
         [SerializeField, Min(0f)] private float _jumpSpeed = 11f;
         [SerializeField, Min(0f)] private float _riseGravity = 30f;
         [SerializeField, Min(0f)] private float _fallGravity = 48f;
@@ -30,7 +36,8 @@ namespace ForgottenKingdom
             + "(about 0.1 to 0.2 s) and raises a full jump from 1.91 to 1.97 at 50 Hz.")]
         [SerializeField, Range(0.1f, 1f)] private float _apexGravityMultiplier = 0.5f;
         [SerializeField, Min(0f)] private float _coyoteTime = 0.10f;
-        [SerializeField, Min(0f)] private float _jumpBuffer = 0.12f;
+        [Tooltip("A press this long before landing, or before a dash ends, still jumps.")]
+        [SerializeField, Min(0f)] private float _jumpBuffer = 0.15f;
         [Tooltip("Extra jumps in the air, once the ability is owned. Gated by progression, not here.")]
         [SerializeField, Min(0)] private int _airJumps = 1;
         [Tooltip("A shade weaker than the ground jump, so the second one reads as a recovery.")]
@@ -45,6 +52,7 @@ namespace ForgottenKingdom
         public float GroundDeceleration => _groundDeceleration;
         public float AirAcceleration => _airAcceleration;
         public float AirDeceleration => _airDeceleration;
+        public float AirTurnAcceleration => _airTurnAcceleration;
         public float JumpSpeed => _jumpSpeed;
         public float RiseGravity => _riseGravity;
         public float FallGravity => _fallGravity;
