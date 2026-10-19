@@ -20,7 +20,7 @@ namespace ForgottenKingdom
     public sealed class ScreenshotTour : MonoBehaviour
     {
         private string _folder;
-        private string _stash;
+        private SaveStash _stash;
         private Keyboard _keyboard;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
@@ -44,7 +44,7 @@ namespace ForgottenKingdom
             Application.runInBackground = true;
             InputSystem.settings.backgroundBehavior = InputSettings.BackgroundBehavior.IgnoreFocus;
             _keyboard = InputSystem.AddDevice<Keyboard>("TourKeyboard");
-            StashSave();
+            _stash = SaveStash.Take("tour-save-stash");
             SaveSystem.Delete();
             // The build opens on the title screen; it is part of what the player sees first.
             if (SceneManager.GetActiveScene().name == MainMenuController.SceneName)
@@ -117,7 +117,7 @@ namespace ForgottenKingdom
             // Progress writes itself on quit; it goes first so the restored files stay restored.
             Destroy(FindAnyObjectByType<GameProgress>());
             yield return null;
-            RestoreSave();
+            _stash.Restore();
             InputSystem.RemoveDevice(_keyboard);
             Application.Quit();
         }
@@ -148,37 +148,6 @@ namespace ForgottenKingdom
         private static IEnumerator Wait(float seconds)
         {
             yield return new WaitForSecondsRealtime(seconds);
-        }
-
-        private void StashSave()
-        {
-            _stash = Path.Combine(Application.temporaryCachePath, "tour-save-stash");
-            Directory.CreateDirectory(_stash);
-            foreach (var file in new[] { SaveSystem.FilePath, SaveSystem.BackupPath })
-            {
-                var target = Path.Combine(_stash, Path.GetFileName(file));
-                if (File.Exists(file))
-                {
-                    File.Copy(file, target, true);
-                }
-                else if (File.Exists(target))
-                {
-                    File.Delete(target);
-                }
-            }
-        }
-
-        private void RestoreSave()
-        {
-            SaveSystem.Delete();
-            foreach (var file in new[] { SaveSystem.FilePath, SaveSystem.BackupPath })
-            {
-                var source = Path.Combine(_stash, Path.GetFileName(file));
-                if (File.Exists(source))
-                {
-                    File.Copy(source, file, true);
-                }
-            }
         }
     }
 }
