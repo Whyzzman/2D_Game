@@ -31,6 +31,8 @@ namespace ForgottenKingdom
         [SerializeField] private GameObject[] _barriers = Array.Empty<GameObject>();
         [Tooltip("Turned on once the trial is first won: the prize pickups.")]
         [SerializeField] private GameObject[] _rewards = Array.Empty<GameObject>();
+        [Tooltip("A boss that must fall first; until then the gong (or bell) stays silent. Empty: always.")]
+        [SerializeField] private string _requiresBoss = string.Empty;
         [SerializeField, Min(0f)] private float _firstWaveDelay = 1.2f;
         [SerializeField, Min(0f)] private float _waveGap = 1.5f;
 
@@ -53,7 +55,11 @@ namespace ForgottenKingdom
         public IReadOnlyList<EnemyController> Alive => _alive;
         public bool IsWon => _progress != null && _progress.IsPickupCollected(_trialId);
 
-        public bool CanInteract => !IsRunning && _waves.Length > 0 && isActiveAndEnabled;
+        /// <summary>False while the boss it waits for still stands.</summary>
+        public bool IsOpen => string.IsNullOrEmpty(_requiresBoss)
+            || (_progress != null && _progress.IsBossDefeated(_requiresBoss));
+
+        public bool CanInteract => !IsRunning && IsOpen && _waves.Length > 0 && isActiveAndEnabled;
         public string Prompt => $"Вдарити в гонг: {_displayName}";
 
         private void Awake()

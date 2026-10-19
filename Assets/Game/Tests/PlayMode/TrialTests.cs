@@ -84,7 +84,12 @@ namespace ForgottenKingdom.Tests
             }
         }
 
-        private static TrialArena Arms() => Object.FindObjectsByType<TrialArena>().Single();
+        private static TrialArena Trial(string id) =>
+            Object.FindObjectsByType<TrialArena>().Single(t => t.TrialId.EndsWith(id));
+
+        private static TrialArena Arms() => Trial("trial-ash-road");
+
+        private static TrialArena NightBell() => Trial("trial-night-bell");
 
         private IEnumerator BeatTheWaves(TrialArena trial, HudController hud)
         {
@@ -131,6 +136,37 @@ namespace ForgottenKingdom.Tests
             Assert.That(shard.TryCollect(_player), Is.True);
 
             // Again: the waves come, the prize does not.
+            trial.Interact(_player);
+            yield return BeatTheWaves(trial, hud);
+            Assert.That(shard.gameObject.activeSelf, Is.False, "A taken prize is not laid out twice.");
+        }
+
+        [UnityTest]
+        public IEnumerator TheNightBellIsSilentUntilTheBellringerFallsThenClosesTheSquareAndPaysOnce()
+        {
+            _player.Actor.SetInvulnerable(ImmunitySource.Script, 120f);
+            var trial = NightBell();
+            var hud = Object.FindAnyObjectByType<HudController>();
+            var walls = Object.FindObjectsByType<Transform>(FindObjectsInactive.Include)
+                .Where(t => t.name.StartsWith("NightBellWall")).Select(t => t.gameObject).ToArray();
+            var shard = Object.FindObjectsByType<WorldPickup>(FindObjectsInactive.Include)
+                .Single(p => p.ItemId == VesselShards.HealthPrefix + "trial-night-bell");
+            Assert.That(walls.Length, Is.EqualTo(2));
+
+            _motor.ResetTo((Vector2)trial.transform.position + new Vector2(-0.5f, 0.2f));
+            yield return Realtime(0.3f);
+            Assert.That(trial.CanInteract, Is.False, "While the Bellringer lives, the bell is silent.");
+
+            _progress.MarkBossDefeated("bellringer");
+            Assert.That(trial.CanInteract, Is.True);
+            trial.Interact(_player);
+            Assert.That(walls.All(w => w.activeSelf), Is.True, "The bell closes the square both ways.");
+            yield return BeatTheWaves(trial, hud);
+
+            Assert.That(walls.Any(w => w.activeSelf), Is.False, "Won, the square opens.");
+            Assert.That(shard.gameObject.activeSelf, Is.True, "The prize is laid out.");
+            Assert.That(shard.TryCollect(_player), Is.True);
+
             trial.Interact(_player);
             yield return BeatTheWaves(trial, hud);
             Assert.That(shard.gameObject.activeSelf, Is.False, "A taken prize is not laid out twice.");

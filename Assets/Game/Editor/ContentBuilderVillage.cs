@@ -83,6 +83,7 @@ namespace ForgottenKingdom.EditorTools
             var encounter = BuildBellringerFloor(zone, rooms[VillageBellRoom], context);
             BuildMarshGate(zone, rooms["room_village_marsh_road"], context.Progress);
             BuildVillageGateHints(zone, rooms, context.Progress);
+            BuildNightBellTrial(rooms["room_village_square"], context.Progress);
             foreach (var room in zone.Rooms)
             {
                 DressVillageRoom(zone, room, rooms[room.Id]);
