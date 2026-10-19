@@ -75,6 +75,7 @@
     {"id":"room_capital_bell_tower","art":"capital","w":105,"h":945,"boss":false},
     {"id":"room_capital_palace_approach","art":"capital","w":555,"h":135,"boss":false},
     {"id":"room_capital_throne_hall","art":"capital","w":495,"h":255,"boss":true},
+    {"id":"room_capital_kings_throne","art":"capital","w":435,"h":255,"boss":true},
     {"id":"room_capital_cathedral_steps","art":"capital","w":390,"h":180,"boss":false},
     {"id":"room_capital_temple","art":"capital","w":510,"h":240,"boss":false},
     {"id":"room_capital_market","art":"capital","w":585,"h":210,"boss":false},

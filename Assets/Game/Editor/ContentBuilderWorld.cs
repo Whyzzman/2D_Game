@@ -130,8 +130,8 @@ namespace ForgottenKingdom.EditorTools
                 .Append(string.Join(",", capital.areas)).Append(",").Append(string.Join(",", new[]
             {
                 AreaJson(BeyondCapital, FutureZoneId, string.Empty,
-                    new Vector2(506f * MapScale, 0f), new Vector2(0.8f, 1.2f),
-                    Rect.MinMaxRect(500f, -1f, 512f, 17f), optional: true)
+                    new Vector2(536f * MapScale, 0f), new Vector2(0.8f, 1.2f),
+                    Rect.MinMaxRect(530f, 0.5f, 542f, 18.5f), optional: true)
             })).Append("],");
 
             json.Append("\"_connections\":[").Append(string.Join(",", tomb.links)).Append(",")
@@ -152,7 +152,7 @@ namespace ForgottenKingdom.EditorTools
                 LinkJson("conn_forest_to_capital", "room_forest_far_gate", CapitalAshRoad,
                     type: ConnectionType.Shortcut, shortcut: CapitalRoadShortcut, openedFrom: CapitalAshRoad),
                 // East of the throne the road goes on, sealed: what lies there is the ending's.
-                LinkJson("conn_capital_throne_beyond", CapitalThroneHall, BeyondCapital,
+                LinkJson("conn_capital_throne_beyond", "room_capital_kings_throne", BeyondCapital,
                     type: ConnectionType.Gate, boss: CapitalKingBossId, future: true)
             })).Append("],");
 

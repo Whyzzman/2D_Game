@@ -81,7 +81,9 @@ namespace ForgottenKingdom.EditorTools
             }
 
             BuildCapitalDressing(rooms);
-            BuildThroneHall(rooms[CapitalThroneRoom], context.Progress, Object.FindAnyObjectByType<PlayerRespawner>());
+            var respawner = Object.FindAnyObjectByType<PlayerRespawner>();
+            BuildCommanderHall(rooms[CapitalThroneRoom], context.Progress, respawner);
+            BuildKingsThrone(rooms[CapitalKingsRoom], context.Progress, respawner);
             foreach (var link in zone.Links)
             {
                 if (link.Ability == AbilityIds.Grapple && link.To == CapitalGalleryArea)
@@ -98,6 +100,7 @@ namespace ForgottenKingdom.EditorTools
         }
 
         private const string CapitalThroneRoom = "room_capital_throne_hall";
+        private const string CapitalKingsRoom = "room_capital_kings_throne";
 
         /// <summary>How the Capital's stone looks: ledges as slabs, walls as masonry, floors as flagstones.</summary>
         private static GameObject CapitalLayoutBlock(Transform parent, string name, Rect world, LevelCell kind)
@@ -155,7 +158,7 @@ namespace ForgottenKingdom.EditorTools
 
             // The three blue seals of the user's map: the palace's door, the ways to the Cathedral
             // and the Citadel — shut until their zones exist.
-            foreach (var (spot, room) in new[] { ("seal-palace", CapitalThroneRoom), ("seal-cathedral", "room_capital_crypts"),
+            foreach (var (spot, room) in new[] { ("seal-palace", CapitalKingsRoom), ("seal-cathedral", "room_capital_crypts"),
                 ("seal-citadel", "room_capital_cistern") })
             {
                 var seal = CapitalProp(Dressing(room), "env_capital_gate_01", CapitalSpot(spot), "EnvironmentBack", 1, 0.9f);
@@ -170,23 +173,49 @@ namespace ForgottenKingdom.EditorTools
         }
 
         /// <summary>
-        /// The Throne Hall: the King's arena, sealed behind the hero by his fight at the door from the
-        /// approach; the palace's seal stands at its far end.
+        /// The Commander's hall (item 6b; the old throne hall, its id kept for saves): sealed behind the
+        /// hero by his fight, and the door east to the King's throne shut until he falls.
         /// </summary>
-        private static void BuildThroneHall(Transform room, GameProgress progress, PlayerRespawner respawner)
+        private static void BuildCommanderHall(Transform room, GameProgress progress, PlayerRespawner respawner)
+        {
+            var section = Section(room, "Commander");
+            var hall = Inside(CapitalLayout, CapitalLayout.Room(CapitalThroneRoom));
+            var barrier = CapitalBlock(section, "CommanderBarrier", new Vector2(hall.xMin - 0.5f, hall.yMin + 4.5f),
+                new Vector2(1f, 9f), CapitalSurface.Rubble);
+            barrier.SetActive(false);
+            BuildCapitalEncounter(section, CommanderPrefabName, "CommanderEncounter", barrier, progress, respawner,
+                CapitalSpot("commander") + new Vector2(0f, 1.4f), new Vector2(hall.xMin + 4f, hall.yMin + 2f),
+                CommanderRewardItemId, "Хоругва Командора", 900, 1500);
+
+            var door = CapitalBlock(section, "KingsDoor", new Vector2(hall.xMax + 0.5f, hall.yMin + 2.5f), new Vector2(1f, 5f),
+                CapitalSurface.Masonry);
+            Ensure<NonClimbableSurface>(door);
+            PlaceDoor(section, "KingsDoorGate", door.transform.position, RequirementKind.BossDefeated, CommanderBossId,
+                door, progress);
+            CapitalProp(section, "env_capital_banner_01", new Vector2(hall.xMin + 8f, hall.yMin + 4f), "EnvironmentBack", 3);
+            CapitalProp(section, "env_capital_banner_01", new Vector2(hall.xMax - 8f, hall.yMin + 4f), "EnvironmentBack", 3, 1f, flip: true);
+            Brazier(section, new Vector2(hall.xMin + 4f, hall.yMin));
+            Brazier(section, new Vector2(hall.xMax - 3f, hall.yMin));
+        }
+
+        /// <summary>
+        /// The King's throne (item 6b): his arena now, past the Commander, until he moves to the
+        /// Throne of Oblivion (item 17); the palace's blue seal stands behind him.
+        /// </summary>
+        private static void BuildKingsThrone(Transform room, GameProgress progress, PlayerRespawner respawner)
         {
             var section = Section(room, "Throne");
-            var door = Inside(CapitalLayout, CapitalLayout.Room(CapitalThroneRoom));
-            var barrier = CapitalBlock(section, "ThroneBarrier", new Vector2(door.xMin - 0.5f, door.yMin + 4.5f), new Vector2(1f, 9f),
-                CapitalSurface.Rubble);
+            var hall = Inside(CapitalLayout, CapitalLayout.Room(CapitalKingsRoom));
+            var barrier = CapitalBlock(section, "ThroneBarrier", new Vector2(hall.xMin - 0.5f, hall.yMin + 4.5f),
+                new Vector2(1f, 9f), CapitalSurface.Rubble);
             barrier.SetActive(false);
-            BuildKingEncounter(section, barrier, progress, respawner, CapitalSpot("king") + new Vector2(0f, 1.4f),
-                new Vector2(door.xMin + 4f, door.yMin + 2f));
+            BuildCapitalEncounter(section, KingPrefabName, "KingEncounter", barrier, progress, respawner,
+                CapitalSpot("king") + new Vector2(0f, 1.4f), new Vector2(hall.xMin + 4f, hall.yMin + 2f),
+                KingRewardItemId, "Печать Короля", 1200, 2000);
             CapitalProp(section, "env_capital_throne_01", CapitalSpot("throne"), "EnvironmentBack", 1);
-            CapitalProp(section, "env_capital_banner_01", new Vector2(door.xMin + 8f, door.yMin + 4f), "EnvironmentBack", 3);
-            CapitalProp(section, "env_capital_banner_01", new Vector2(door.xMax - 10f, door.yMin + 4f), "EnvironmentBack", 3, 1f, flip: true);
-            Brazier(section, new Vector2(door.xMin + 4f, door.yMin));
-            Brazier(section, new Vector2(door.xMax - 2f, door.yMin));
+            CapitalProp(section, "env_capital_banner_01", new Vector2(hall.xMin + 6f, hall.yMin + 4f), "EnvironmentBack", 3);
+            Brazier(section, new Vector2(hall.xMin + 3f, hall.yMin));
+            Brazier(section, new Vector2(hall.xMax - 2f, hall.yMin));
         }
 
         /// <summary>

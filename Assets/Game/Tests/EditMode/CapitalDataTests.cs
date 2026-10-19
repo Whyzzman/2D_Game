@@ -35,13 +35,14 @@ namespace ForgottenKingdom.Tests
             var areas = _graph.AreasIn(Capital);
             // Since item 6a it is built from its text by the user's map (Levels/capital.txt): eighteen
             // rooms on three tiers round the bell tower, the main path along the upper one.
-            Assert.That(areas.Count, Is.EqualTo(18));
-            Assert.That(areas.Count(a => !a.IsOptional), Is.EqualTo(6));
+            Assert.That(areas.Count, Is.EqualTo(19));
+            Assert.That(areas.Count(a => !a.IsOptional), Is.EqualTo(7));
             Assert.That(areas.Where(a => a.IsSecret).Select(a => a.RequiredAbilityId),
                 Is.EquivalentTo(new[] { AbilityIds.Grapple, AbilityIds.Grapple, string.Empty, string.Empty, string.Empty }),
                 "The royal gallery behind the grapple and the treasury past it; three behind breakable walls alone.");
             Assert.That(_graph.Checkpoints.Count(c => c.ZoneId == Capital), Is.EqualTo(3));
-            Assert.That(areas.Single(a => a.IsBossArena).BossId, Is.EqualTo(King));
+            // The Commander's hall, then the King's throne past it (item 6b).
+            Assert.That(areas.Where(a => a.IsBossArena).Select(a => a.BossId), Is.EquivalentTo(new[] { "ash-commander", King }));
         }
 
         [Test]

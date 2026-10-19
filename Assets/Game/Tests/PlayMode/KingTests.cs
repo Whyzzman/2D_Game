@@ -88,13 +88,38 @@ namespace ForgottenKingdom.Tests
         }
 
         [UnityTest]
+        public IEnumerator TheCommandersHallSealsAndHisFallOpensTheKingsDoor()
+        {
+            // Item 6b: the Ash Commander holds the hall before the King's throne (Levels/capital.txt).
+            var encounter = Object.FindObjectsByType<BossEncounter>().Single(e => e.BossId == "ash-commander");
+            var commander = Object.FindObjectsByType<BossController>().Single(b => b.BossId == "ash-commander");
+            var door = GameObject.Find("KingsDoor");
+            Assert.That(door, Is.Not.Null);
+            Assert.That(door.activeSelf, Is.True, "The King's door is shut while the Commander stands.");
+
+            var hall = CapitalScene.Room("room_capital_throne_hall");
+            _motor.ResetTo(new Vector2(hall.xMin + 7f, hall.yMin + 1.85f));
+            yield return Until(() => encounter.IsFightActive, 4f, "Past the threshold, his fight begins.");
+            Assert.That(encounter.IsArenaSealed, Is.True, "The hall seals behind the hero.");
+
+            yield return Realtime(2.5f);
+            commander.Actor.ClearInvulnerability();
+            commander.Actor.ApplyDamage(new DamageInfo(float.MaxValue, Vector2.left, isUnblockable: true,
+                attacker: _player.gameObject));
+            yield return Until(() => _progress.IsBossDefeated("ash-commander"), 6f, "He falls.");
+            Assert.That(_progress.AcquiredRewards, Does.Contain("commander_banner"));
+            yield return Until(() => !encounter.IsArenaSealed, 6f, "His fall opens the hall.");
+            yield return Until(() => !door.activeSelf, 3f, "And the door to the King's throne.");
+        }
+
+        [UnityTest]
         public IEnumerator TheHallSealsAndTheKingsDeathOpensIt()
         {
             var encounter = Object.FindObjectsByType<BossEncounter>().Single(e => e.BossId == King);
             var king = Object.FindObjectsByType<BossController>().Single(b => b.BossId == King);
             Assert.That(encounter.IsArenaSealed, Is.False);
 
-            var hall = CapitalScene.Room("room_capital_throne_hall");
+            var hall = CapitalScene.Room("room_capital_kings_throne");
             _motor.ResetTo(new Vector2(hall.xMin + 7f, hall.yMin + 1.85f));
             yield return Until(() => encounter.IsFightActive, 4f, "Past the threshold, the fight begins.");
             Assert.That(encounter.IsArenaSealed, Is.True, "The hall seals behind the hero.");

@@ -19,6 +19,7 @@ namespace ForgottenKingdom.EditorTools
         private const string EmberScarPrefabPath = PrefabFolder + "/EmberScar.prefab";
         public const string KingPrefabName = "OathBoundKing";
         public const string KingRewardItemId = "king_seal";
+        public const string CommanderRewardItemId = "commander_banner";
         public const string HunterRelicItemId = "hunter_talon";
         private const float KingStunHeight = 1.95f;
 
@@ -39,6 +40,10 @@ namespace ForgottenKingdom.EditorTools
                     "Королівська печать, досі тепла. Попіл на ній не холоне.",
                     ItemCategory.Progression, ItemRarity.Legendary, 1, true, true, 0,
                     new Color(0.95f, 0.55f, 0.28f)),
+                BuildItem(CommanderRewardItemId, "Хоругва Командора",
+                    "Обгоріле полотнище зі щита Командора. Під ним палацова печать відступила.",
+                    ItemCategory.Progression, ItemRarity.Epic, 1, true, true, 0,
+                    new Color(0.62f, 0.2f, 0.22f)),
                 BuildItem(HunterRelicItemId, "Кіготь мисливця",
                     "Талісман із кігтя звіра, якого в Лісі вже ніхто не бачив живим.",
                     ItemCategory.Accessory, ItemRarity.Rare, 1, true, true, 450,
@@ -259,38 +264,42 @@ namespace ForgottenKingdom.EditorTools
         /// The King waits before his throne; stepping past the hall's threshold seals it behind the
         /// hero. His death opens it again and hands over the seal and the coin.
         /// </summary>
-        private static void BuildKingEncounter(Transform section, GameObject barrier, GameProgress progress,
-            PlayerRespawner respawner, Vector2 kingAt, Vector2 triggerAt)
+        /// <summary>
+        /// A boss of the capital in its arena: the prefab at <paramref name="bossAt"/>, the trigger past
+        /// the door at <paramref name="triggerAt"/> that seals <paramref name="barrier"/> behind the hero,
+        /// and what the fall hands over.
+        /// </summary>
+        private static void BuildCapitalEncounter(Transform section, string prefabName, string name, GameObject barrier,
+            GameProgress progress, PlayerRespawner respawner, Vector2 bossAt, Vector2 triggerAt, string rewardId,
+            string rewardName, int currency, int experience)
         {
-            var prefab = AssetDatabase.LoadAssetAtPath<GameObject>($"{PrefabFolder}/{KingPrefabName}.prefab");
+            var prefab = AssetDatabase.LoadAssetAtPath<GameObject>($"{PrefabFolder}/{prefabName}.prefab");
             if (prefab == null)
             {
-                Debug.LogError("The King is not built; run ContentBuilder.Build first.");
+                Debug.LogError($"{prefabName} is not built; run ContentBuilder.Build first.");
                 return;
             }
 
-            var king = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
-            king.transform.SetParent(section);
-            king.transform.position = kingAt;
+            var boss = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
+            boss.transform.SetParent(section);
+            boss.transform.position = bossAt;
 
-            var encounterObject = new GameObject("KingEncounter");
+            var encounterObject = new GameObject(name);
             encounterObject.transform.SetParent(section);
             encounterObject.transform.position = triggerAt;
             var trigger = encounterObject.AddComponent<BoxCollider2D>();
             trigger.isTrigger = true;
             trigger.size = new Vector2(3f, 6f);
             var encounter = encounterObject.AddComponent<BossEncounter>();
-            SetReference(encounter, "_boss", king.GetComponent<BossController>());
+            SetReference(encounter, "_boss", boss.GetComponent<BossController>());
             SetReference(encounter, "_barrier", barrier);
             SetReference(encounter, "_progress", progress);
             SetReference(encounter, "_respawner", respawner);
             SetReference(encounter, "_progression", Object.FindAnyObjectByType<PlayerProgressionService>());
-            SetString(encounter, "_rewardId", KingRewardItemId);
-            SetString(encounter, "_rewardName", "Печать Короля");
-            SetInt(encounter, "_rewardCurrency", 1200);
-            SetInt(encounter, "_rewardExperience", 2000);
-            // The grapple moved to the Village's Bellringer (item 5 of the 15 zones): the capital is
-            // reached by it now, so its King has nothing of the kind to hand over.
+            SetString(encounter, "_rewardId", rewardId);
+            SetString(encounter, "_rewardName", rewardName);
+            SetInt(encounter, "_rewardCurrency", currency);
+            SetInt(encounter, "_rewardExperience", experience);
         }
 
         // ---------- rings and what they reach ----------

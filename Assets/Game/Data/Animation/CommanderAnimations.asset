@@ -1,0 +1,751 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84f4db3b7222ee046a84610767e996ec, type: 3}
+  m_Name: CommanderAnimations
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.BossAnimationSet
+  _clips:
+  - state: 1
+    clip:
+      _clipName: boss_commander_dormant
+      _frames:
+      - {fileID: 21300000, guid: dfb8d5ed81246413093c034ecc4049c1, type: 3}
+      - {fileID: 21300000, guid: 8a95042e9f70140ea9fd58387374e9e4, type: 3}
+      - {fileID: 21300000, guid: 85a2e7dffae7e4a36b6d7bc80b9a5615, type: 3}
+      - {fileID: 21300000, guid: d7d1d90a857df499389b953fb54f9896, type: 3}
+      _framesPerSecond: 8
+      _isLooping: 1
+      _anchors:
+      - {x: -0.32124388, y: 1.3967421, z: 13.2}
+      - {x: -0.32124388, y: 1.3967421, z: 13.2}
+      - {x: -0.32124388, y: 1.3967421, z: 13.2}
+      - {x: -0.32124388, y: 1.3967421, z: 13.2}
+  - state: 2
+    clip:
+      _clipName: boss_commander_intro
+      _frames:
+      - {fileID: 21300000, guid: 380eda85e661d4089a66907060d1fe50, type: 3}
+      - {fileID: 21300000, guid: 38972a15ec505401abd792868b4461d4, type: 3}
+      - {fileID: 21300000, guid: 4702641ee63924625b99101f8f8b41a0, type: 3}
+      - {fileID: 21300000, guid: 20173d943584b43d7a40d0596d823b0d, type: 3}
+      - {fileID: 21300000, guid: a82a0b8ce9167420fa516efcb500ccb9, type: 3}
+      - {fileID: 21300000, guid: f9de8cf1a7e25430b8a6e45da550d7b5, type: 3}
+      - {fileID: 21300000, guid: 6bcfa662f51144958adffe81ccc3a40d, type: 3}
+      - {fileID: 21300000, guid: 508b6c85eb32c41d4bd4c92222740048, type: 3}
+      - {fileID: 21300000, guid: 10085c643f1124ab18c8a8163af1db29, type: 3}
+      - {fileID: 21300000, guid: 4a239d2e9e70e4e289812e1f6ab54c5c, type: 3}
+      - {fileID: 21300000, guid: aed9eac67ca0f4c0bb1089ffb034b1db, type: 3}
+      - {fileID: 21300000, guid: 34a394b6da9df4a74bb0a871e66275f8, type: 3}
+      - {fileID: 21300000, guid: b888e798b9f6e4f5c931e56643597418, type: 3}
+      - {fileID: 21300000, guid: 612670ecf7d1f4f1f81fb1d64ad987b5, type: 3}
+      - {fileID: 21300000, guid: 7f7f9208e4b36499685dfe5377f8bef2, type: 3}
+      - {fileID: 21300000, guid: 0821086dc537d4e24b8ec18960032f64, type: 3}
+      - {fileID: 21300000, guid: bb01b905d0d2e4b14b1489baf5096a93, type: 3}
+      - {fileID: 21300000, guid: aff712c9dbca5475e91c1689442b8985, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 0
+      _anchors:
+      - {x: -0.32124388, y: 1.3967421, z: 13.2}
+      - {x: -0.3211963, y: 1.3968538, z: 13.205984}
+      - {x: -0.32106096, y: 1.3971709, z: 13.2229595}
+      - {x: -0.32084915, y: 1.3976657, z: 13.249461}
+      - {x: -0.3205716, y: 1.3983107, z: 13.284022}
+      - {x: -0.32023957, y: 1.3990778, z: 13.325178}
+      - {x: -0.3198639, y: 1.3999395, z: 13.371464}
+      - {x: -0.31945586, y: 1.4008685, z: 13.421412}
+      - {x: -0.3190271, y: 1.4018369, z: 13.47356}
+      - {x: -0.31858918, y: 1.402818, z: 13.526441}
+      - {x: -0.3181543, y: 1.4037837, z: 13.578588}
+      - {x: -0.31773528, y: 1.4047077, z: 13.628536}
+      - {x: -0.31734452, y: 1.4055628, z: 13.674822}
+      - {x: -0.31699508, y: 1.4063221, z: 13.715978}
+      - {x: -0.31670013, y: 1.406959, z: 13.75054}
+      - {x: -0.3164731, y: 1.4074473, z: 13.7770405}
+      - {x: -0.3163275, y: 1.4077597, z: 13.794016}
+      - {x: -0.31627595, y: 1.4078698, z: 13.8}
+  - state: 3
+    clip:
+      _clipName: boss_commander_idlep1
+      _frames:
+      - {fileID: 21300000, guid: c37116c5140af4263ac759ff1cc08045, type: 3}
+      - {fileID: 21300000, guid: 0331640508cad4e14a2ea4ff6343b36c, type: 3}
+      - {fileID: 21300000, guid: 3e74afaf70ccc4b9c88dd7e9ad35b5f3, type: 3}
+      - {fileID: 21300000, guid: c7105d60ba43c4d578eb58638559541f, type: 3}
+      - {fileID: 21300000, guid: 9d0f95205d0314489823630f3889677c, type: 3}
+      - {fileID: 21300000, guid: 443097156d9ae4df08b8abd48868c92f, type: 3}
+      _framesPerSecond: 8
+      _isLooping: 1
+      _anchors:
+      - {x: -0.31880844, y: 1.4023275, z: 13.5}
+      - {x: -0.31880844, y: 1.4109879, z: 13.5}
+      - {x: -0.31880844, y: 1.4109879, z: 13.5}
+      - {x: -0.31880844, y: 1.4023275, z: 13.5}
+      - {x: -0.31880844, y: 1.3936673, z: 13.5}
+      - {x: -0.31880844, y: 1.3936673, z: 13.5}
+  - state: 4
+    clip:
+      _clipName: boss_commander_walkp1
+      _frames:
+      - {fileID: 21300000, guid: d4d11d69247b145a3938ba29f7b0f6fd, type: 3}
+      - {fileID: 21300000, guid: 4d0a131669850422796d1ddde57b6715, type: 3}
+      - {fileID: 21300000, guid: 69654d65f362d4381be1be333af21528, type: 3}
+      - {fileID: 21300000, guid: bd44f0ca23693497d9ce9062b32bca83, type: 3}
+      - {fileID: 21300000, guid: da5f96990eeeb422aadc12c490a85220, type: 3}
+      - {fileID: 21300000, guid: c078f9872ac134193baf96e457219a18, type: 3}
+      - {fileID: 21300000, guid: 2afea430dc24149c68502e491317727e, type: 3}
+      - {fileID: 21300000, guid: 4b91d9d588b7c463ca6975e3097eadc0, type: 3}
+      _framesPerSecond: 10
+      _isLooping: 1
+      _anchors:
+      - {x: -0.31364715, y: 1.4133672, z: 14.1}
+      - {x: -0.31364715, y: 1.4374089, z: 14.1}
+      - {x: -0.31364715, y: 1.4473671, z: 14.1}
+      - {x: -0.31364715, y: 1.4374089, z: 14.1}
+      - {x: -0.31364715, y: 1.4133672, z: 14.1}
+      - {x: -0.31364715, y: 1.4374089, z: 14.1}
+      - {x: -0.31364715, y: 1.4473671, z: 14.1}
+      - {x: -0.31364715, y: 1.4374089, z: 14.1}
+  - state: 0
+    clip:
+      _clipName: boss_commander_slashp1
+      _frames:
+      - {fileID: 21300000, guid: 776c180a7b2a14712bf3235a996a2fbf, type: 3}
+      - {fileID: 21300000, guid: 450880e09755a44268df717c833b2baa, type: 3}
+      - {fileID: 21300000, guid: 6af23cb36672d457ba9b42bbec4172e0, type: 3}
+      - {fileID: 21300000, guid: 7bfbe6cc9a7524d979951ba1db5fe55c, type: 3}
+      - {fileID: 21300000, guid: 2fb47bbd912a24390bce3e93fe44c878, type: 3}
+      - {fileID: 21300000, guid: e1bf74d98591540c0b928b1054102120, type: 3}
+      - {fileID: 21300000, guid: 5f69cfeb13cf24deea6066a835dd4d8b, type: 3}
+      - {fileID: 21300000, guid: 541e8a17e0a334a688271d94d5c5877c, type: 3}
+      - {fileID: 21300000, guid: 74b8c46970bbd430d80c45e8a7641476, type: 3}
+      - {fileID: 21300000, guid: 953ccaf4195a2495b97b4aaa6f4b33cb, type: 3}
+      - {fileID: 21300000, guid: 217daebaf5afe434e9333b1f638b4d27, type: 3}
+      - {fileID: 21300000, guid: d8dd80fc566054e2187d364befa4bb3b, type: 3}
+      - {fileID: 21300000, guid: 986a1821d2ee0406bb8ee0f9affb423f, type: 3}
+      - {fileID: 21300000, guid: bf7cb13acabcf44ff9bb4b6f6861160b, type: 3}
+      - {fileID: 21300000, guid: 669b81a2d1c2a40b0b49f2e6972d946b, type: 3}
+      - {fileID: 21300000, guid: d1bd5477eb2a946c88deb0b121db293f, type: 3}
+      - {fileID: 21300000, guid: 5e7c94ac438bb4be086769b6834c24c8, type: 3}
+      - {fileID: 21300000, guid: 3ece52f086bca415981d5fba2b237be8, type: 3}
+      - {fileID: 21300000, guid: 2cf2a21a9b57e4092a2dcc5a4d0c4420, type: 3}
+      - {fileID: 21300000, guid: 94c9f3dee0e504bebbcfdbb550421968, type: 3}
+      - {fileID: 21300000, guid: 828a73dda40fc4e43b33e0d4706b9ef6, type: 3}
+      - {fileID: 21300000, guid: 228b2932dcbc942c9970a954c694319c, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.37468606, y: 1.315566, z: 9.03}
+      - {x: -0.37468606, y: 1.315566, z: 9.03}
+      - {x: -0.37468606, y: 1.315566, z: 9.03}
+      - {x: -0.37468606, y: 1.315566, z: 9.03}
+      - {x: -0.37468606, y: 1.315566, z: 9.03}
+      - {x: -0.37468606, y: 1.315566, z: 9.03}
+      - {x: -0.37468606, y: 1.315566, z: 9.03}
+      - {x: -0.37256363, y: 1.3188657, z: 9.194687}
+      - {x: -0.36284584, y: 1.3333246, z: 9.919696}
+      - {x: -0.34620872, y: 1.3559552, z: 11.0683565}
+      - {x: -0.32386026, y: 1.3830025, z: 12.471209}
+      - {x: -0.2977875, y: 1.4107853, z: 13.958791}
+      - {x: -0.2710382, y: 1.435955, z: 15.361643}
+      - {x: -0.24763657, y: 1.4556992, z: 16.510303}
+      - {x: -0.23219788, y: 1.4677169, z: 17.235313}
+      - {x: -0.22862075, y: 1.4703962, z: 17.4}
+      - {x: -0.22862075, y: 1.4703962, z: 17.4}
+      - {x: -0.22862075, y: 1.4703962, z: 17.4}
+      - {x: -0.22862075, y: 1.4703962, z: 17.4}
+      - {x: -0.22862075, y: 1.4703962, z: 17.4}
+      - {x: -0.22862075, y: 1.4703962, z: 17.4}
+      - {x: -0.22862075, y: 1.4703962, z: 17.4}
+  - state: 6
+    clip:
+      _clipName: boss_commander_chargestart
+      _frames:
+      - {fileID: 21300000, guid: 537b4f0a9f1444f40a0f0c5f8d501024, type: 3}
+      - {fileID: 21300000, guid: daa8c09c674224a2bb5d663f7bc6d4a3, type: 3}
+      - {fileID: 21300000, guid: 8221861ee07fa4350a21fc944115b97b, type: 3}
+      - {fileID: 21300000, guid: 1531b47588e5444809fdcd6241267954, type: 3}
+      - {fileID: 21300000, guid: 9a98ea2285e724cada73ceefc64fe81c, type: 3}
+      - {fileID: 21300000, guid: 75f830fd79629439cadcb1dc91c3d634, type: 3}
+      - {fileID: 21300000, guid: 520fb969833214d398b705ab9b2f905e, type: 3}
+      - {fileID: 21300000, guid: ee868d8111f2e425cb5040c238512607, type: 3}
+      - {fileID: 21300000, guid: a815d64db607444af850c8651a2aaa52, type: 3}
+      - {fileID: 21300000, guid: 8da10755e8748409ca33a16c71a9eda8, type: 3}
+      - {fileID: 21300000, guid: 9ed016c43be50426796bdd9c12191692, type: 3}
+      - {fileID: 21300000, guid: 7115186916f034d9999657344569eebc, type: 3}
+      - {fileID: 21300000, guid: 5e31d5f382a06468397fd32b1e1bf1bc, type: 3}
+      - {fileID: 21300000, guid: 35adf9c658842402592469db71ae5d95, type: 3}
+      - {fileID: 21300000, guid: 6485d46ab59dc4e53a452602439540a5, type: 3}
+      - {fileID: 21300000, guid: f11ede56ed6644b7c932a086f3a5d6b8, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.32582048, y: 1.3854474, z: 12.6}
+      - {x: -0.32497635, y: 1.3858345, z: 12.714666}
+      - {x: -0.32252356, y: 1.3868927, z: 13.0373335}
+      - {x: -0.31850967, y: 1.388435, z: 13.536}
+      - {x: -0.3129419, y: 1.390244, z: 14.178667}
+      - {x: -0.3058461, y: 1.3920908, z: 14.933333}
+      - {x: -0.29731202, y: 1.3937542, z: 15.768}
+      - {x: -0.28752518, y: 1.3950434, z: 16.650667}
+      - {x: -0.2767822, y: 1.3958191, z: 17.549334}
+      - {x: -0.26549423, y: 1.3960152, z: 18.432001}
+      - {x: -0.25417572, y: 1.3956512, z: 19.266666}
+      - {x: -0.2434253, y: 1.3948374, z: 20.021334}
+      - {x: -0.23389953, y: 1.3937645, z: 20.664001}
+      - {x: -0.22628234, y: 1.3926833, z: 21.162666}
+      - {x: -0.22125168, y: 1.3918644, z: 21.485334}
+      - {x: -0.21944503, y: 1.3915509, z: 21.6}
+  - state: 7
+    clip:
+      _clipName: boss_commander_charge
+      _frames:
+      - {fileID: 21300000, guid: 72deb44c89c654e2b939ba95409bce57, type: 3}
+      - {fileID: 21300000, guid: 4973fd13ee3284166964a7087fbe48fd, type: 3}
+      - {fileID: 21300000, guid: 18d9b1b3903d345de936cc7e56bd2c83, type: 3}
+      - {fileID: 21300000, guid: ca61c50a095d84a3ca8088c5b38ac4a1, type: 3}
+      - {fileID: 21300000, guid: ae14ee8af85244c75aad678c8af13645, type: 3}
+      - {fileID: 21300000, guid: 40c70948ff62344f18d4858ce404da9a, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 1
+      _anchors:
+      - {x: -0.17951691, y: 1.459449, z: 24}
+      - {x: -0.17951691, y: 1.4854296, z: 24}
+      - {x: -0.17951691, y: 1.4854296, z: 24}
+      - {x: -0.17951691, y: 1.459449, z: 24}
+      - {x: -0.17951691, y: 1.4854296, z: 24}
+      - {x: -0.17951691, y: 1.4854296, z: 24}
+  - state: 8
+    clip:
+      _clipName: boss_commander_chargerecover
+      _frames:
+      - {fileID: 21300000, guid: 9924f6416d761493290b83050b49ecfd, type: 3}
+      - {fileID: 21300000, guid: ef910041fe97e45e4b29db05f7471b82, type: 3}
+      - {fileID: 21300000, guid: c70487dc4bdce47568f8a0cf02d62058, type: 3}
+      - {fileID: 21300000, guid: 2a3bb10867ab4453d83c0f7a7a8d20e5, type: 3}
+      - {fileID: 21300000, guid: e1727af27acca4449abfaee49b95aa00, type: 3}
+      - {fileID: 21300000, guid: 60601bc852c314ce48ec012e4958189c, type: 3}
+      - {fileID: 21300000, guid: 5299ddf2a5f4d4456b921d0d84fdbf43, type: 3}
+      - {fileID: 21300000, guid: f6049d1a208ef41359037578c57c400f, type: 3}
+      - {fileID: 21300000, guid: 1e67a36b81bf84a4b90209c4a0ce7079, type: 3}
+      - {fileID: 21300000, guid: 8c18d379c042e40eca24792524714db3, type: 3}
+      - {fileID: 21300000, guid: f1894ff6ccc96478eb15c4bac4de9b52, type: 3}
+      - {fileID: 21300000, guid: 7f4c46089e745499999d4e064928c831, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.08985809, y: 1.3930016, z: 23.4}
+      - {x: -0.09598236, y: 1.3942337, z: 23.176409}
+      - {x: -0.11260468, y: 1.3973612, z: 22.563337}
+      - {x: -0.13695343, y: 1.4013654, z: 21.647333}
+      - {x: -0.16619095, y: 1.4052507, z: 20.514952}
+      - {x: -0.19756989, y: 1.4082698, z: 19.252743}
+      - {x: -0.22858138, y: 1.4100379, z: 17.947258}
+      - {x: -0.25707582, y: 1.4105443, z: 16.68505}
+      - {x: -0.28132477, y: 1.4100842, z: 15.552667}
+      - {x: -0.29999146, y: 1.4091389, z: 14.636664}
+      - {x: -0.31199676, y: 1.408245, z: 14.023591}
+      - {x: -0.31627595, y: 1.4078698, z: 13.8}
+  - state: 9
+    clip:
+      _clipName: boss_commander_combo1
+      _frames:
+      - {fileID: 21300000, guid: 43bda4aafaf6345209598733b7b5cc82, type: 3}
+      - {fileID: 21300000, guid: a3f636fc42bb4474dbedfd9882114973, type: 3}
+      - {fileID: 21300000, guid: 907dfce1fb3204ab5a5f976a2db0adb8, type: 3}
+      - {fileID: 21300000, guid: afc13267c330e4432b0f570468e31c4b, type: 3}
+      - {fileID: 21300000, guid: 0759700dfe4a14504864eb30ad200ccd, type: 3}
+      - {fileID: 21300000, guid: c5010b660c9a245fd99cdbc52532e517, type: 3}
+      - {fileID: 21300000, guid: 7e72faa1d57984f8eab639b1f53d67e5, type: 3}
+      - {fileID: 21300000, guid: d106873b1e2cf476e94c91eab6636989, type: 3}
+      - {fileID: 21300000, guid: f71566419815f47acb3c04d79be27845, type: 3}
+      - {fileID: 21300000, guid: 6dacd31f375134ec1844924d62156ee1, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.37091592, y: 1.3353152, z: 10.0199995}
+      - {x: -0.37091592, y: 1.3353152, z: 10.0199995}
+      - {x: -0.37091592, y: 1.3353152, z: 10.0199995}
+      - {x: -0.36885375, y: 1.3374912, z: 10.129791}
+      - {x: -0.33831933, y: 1.3677868, z: 11.6774}
+      - {x: -0.28880036, y: 1.4104887, z: 13.9426}
+      - {x: -0.25180513, y: 1.4382056, z: 15.490209}
+      - {x: -0.24908692, y: 1.4401196, z: 15.6}
+      - {x: -0.24908692, y: 1.4401196, z: 15.6}
+      - {x: -0.24908692, y: 1.4401196, z: 15.6}
+  - state: 10
+    clip:
+      _clipName: boss_commander_combo2
+      _frames:
+      - {fileID: 21300000, guid: e9615be734a93470caf5e7ce10965f83, type: 3}
+      - {fileID: 21300000, guid: 79b6dea56cf484462b021db8c48c45f0, type: 3}
+      - {fileID: 21300000, guid: 7bb34164eba6544a2a09713ad215024a, type: 3}
+      - {fileID: 21300000, guid: f01860e0543a1413597d5757973a0c60, type: 3}
+      - {fileID: 21300000, guid: d3a14cee82b624bb1b1e53f7428cba34, type: 3}
+      - {fileID: 21300000, guid: 687538f23e303460d84b88f8094c1f08, type: 3}
+      - {fileID: 21300000, guid: e5a7093aa650c44f08eea3cd1f4d517f, type: 3}
+      - {fileID: 21300000, guid: 84f620ebd6e6343bebb1a3b74b2a56ed, type: 3}
+      - {fileID: 21300000, guid: 7bfb4e45e12c84f15ae1ae399f2cef20, type: 3}
+      - {fileID: 21300000, guid: 0f7de9667269846c190b6e6f46962ce1, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.37355575, y: 1.3221725, z: 9.36}
+      - {x: -0.37355575, y: 1.3221725, z: 9.36}
+      - {x: -0.37355575, y: 1.3221725, z: 9.36}
+      - {x: -0.3714398, y: 1.3250965, z: 9.506389}
+      - {x: -0.3389871, y: 1.365707, z: 11.569866}
+      - {x: -0.2829091, y: 1.4222472, z: 14.590134}
+      - {x: -0.2390654, y: 1.4581031, z: 16.653612}
+      - {x: -0.23579377, y: 1.4605441, z: 16.8}
+      - {x: -0.23579377, y: 1.4605441, z: 16.8}
+      - {x: -0.23579377, y: 1.4605441, z: 16.8}
+  - state: 11
+    clip:
+      _clipName: boss_commander_combo3
+      _frames:
+      - {fileID: 21300000, guid: c394ee82412764d5aaa958d15c3f1c15, type: 3}
+      - {fileID: 21300000, guid: 83017ae0f6e8247669e67e95a39e6edd, type: 3}
+      - {fileID: 21300000, guid: f80f64e00a5a54195946e12f108923ba, type: 3}
+      - {fileID: 21300000, guid: fdb9b29735be946bda3de53f052d1989, type: 3}
+      - {fileID: 21300000, guid: 2532b811662274119a2e753771ebe4ca, type: 3}
+      - {fileID: 21300000, guid: 55d59958601c441829de5ff4501b44ca, type: 3}
+      - {fileID: 21300000, guid: 26ad65906490a4c29a45cf18f8a0e968, type: 3}
+      - {fileID: 21300000, guid: 893f385233a9843e09af8c83b0ee4fa4, type: 3}
+      - {fileID: 21300000, guid: 5d50fd7c468804cd9b5581c867f6b447, type: 3}
+      - {fileID: 21300000, guid: d6bb663d57f464ca2a4b82778f14ca97, type: 3}
+      - {fileID: 21300000, guid: 272b3487da206410b9643367298ada9f, type: 3}
+      - {fileID: 21300000, guid: 71b373a2bd069497ba291a08e9675e0c, type: 3}
+      - {fileID: 21300000, guid: 1d97c244f6f434db6879975d293691f9, type: 3}
+      - {fileID: 21300000, guid: d31a223f886b94eb08c365e4980f0c2c, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.3784249, y: 1.2822733, z: 7.3799996}
+      - {x: -0.3784249, y: 1.2822733, z: 7.3799996}
+      - {x: -0.3784249, y: 1.2822733, z: 7.3799996}
+      - {x: -0.3784249, y: 1.2822733, z: 7.3799996}
+      - {x: -0.3783187, y: 1.2825624, z: 7.39426}
+      - {x: -0.36592865, y: 1.3125836, z: 8.881381}
+      - {x: -0.33116165, y: 1.3746768, z: 12.035264}
+      - {x: -0.27616334, y: 1.4426315, z: 15.744736}
+      - {x: -0.2184671, y: 1.493858, z: 18.898619}
+      - {x: -0.18815246, y: 1.5153843, z: 20.38574}
+      - {x: -0.18785293, y: 1.5155815, z: 20.4}
+      - {x: -0.18785293, y: 1.5155815, z: 20.4}
+      - {x: -0.18785293, y: 1.5155815, z: 20.4}
+      - {x: -0.18785293, y: 1.5155815, z: 20.4}
+  - state: 12
+    clip:
+      _clipName: boss_commander_stunned
+      _frames:
+      - {fileID: 21300000, guid: 7f931b982079749d6bb273d7bf32e6d1, type: 3}
+      - {fileID: 21300000, guid: 3c27004213c704980b1122933c272953, type: 3}
+      - {fileID: 21300000, guid: eded6336d755b4189b8dc97718627d15, type: 3}
+      - {fileID: 21300000, guid: 648a40fa1cf7248ceb801ba9cfb5f18e, type: 3}
+      - {fileID: 21300000, guid: 833c61b90f9c14b4a8fa8bfce579bbec, type: 3}
+      - {fileID: 21300000, guid: 4dcd22dcdc9a34dc58e5f45999f3c2c4, type: 3}
+      - {fileID: 21300000, guid: f5f70be3b1d404be18b0bc7084ba0512, type: 3}
+      - {fileID: 21300000, guid: 966b3b86bb2004e33a6a4416f004e074, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 1
+      _anchors:
+      - {x: -0.34783798, y: 1.089921, z: 4.7999997}
+      - {x: -0.34911004, y: 1.1157367, z: 6.072792}
+      - {x: -0.34907663, y: 1.1264449, z: 6.6}
+      - {x: -0.34911004, y: 1.1157367, z: 6.072792}
+      - {x: -0.34783798, y: 1.089921, z: 4.7999997}
+      - {x: -0.34465957, y: 1.0642704, z: 3.5272071}
+      - {x: -0.3427884, y: 1.0537269, z: 2.9999995}
+      - {x: -0.3446595, y: 1.0642704, z: 3.5272079}
+  - state: 13
+    clip:
+      _clipName: boss_commander_recoil
+      _frames:
+      - {fileID: 21300000, guid: c2f750add68db4c4cb750d6fe7441d50, type: 3}
+      - {fileID: 21300000, guid: f3b3cfe959d9a4fa69ca2ca54900dd7a, type: 3}
+      - {fileID: 21300000, guid: eb329175219f745ada13b30620bbc0d3, type: 3}
+      - {fileID: 21300000, guid: 540dfc74d6d544cfa9fa7ff31f302c19, type: 3}
+      - {fileID: 21300000, guid: 3acf90513f0d149ffa15111a2d8d7035, type: 3}
+      - {fileID: 21300000, guid: 3297ec08b6d874767a8e336ce71b7056, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.33, y: 1.374, z: 12}
+      - {x: -0.38646638, y: 1.3114704, z: 8.825959}
+      - {x: -0.4155101, y: 1.2718112, z: 6.864294}
+      - {x: -0.41551018, y: 1.2718112, z: 6.864295}
+      - {x: -0.38646638, y: 1.3114704, z: 8.82596}
+      - {x: -0.33, y: 1.374, z: 12}
+  - state: 14
+    clip:
+      _clipName: boss_commander_phasetransition
+      _frames:
+      - {fileID: 21300000, guid: cd09046f9f8164e8ead092c3cec9b504, type: 3}
+      - {fileID: 21300000, guid: 08af0d5115dd745b5915fa7158884154, type: 3}
+      - {fileID: 21300000, guid: 34573a0646bd940b589df5b7667740a1, type: 3}
+      - {fileID: 21300000, guid: 37ea210c78a3e48c4976cf1dd2b99cdb, type: 3}
+      - {fileID: 21300000, guid: 201d7f384a45442a4b52c43a88ae5b7e, type: 3}
+      - {fileID: 21300000, guid: 5406ed3c3a0064760b6d0e42c97ee4d9, type: 3}
+      - {fileID: 21300000, guid: e0c82118c0ba747258f2e682ccd55ed7, type: 3}
+      - {fileID: 21300000, guid: f835610c8cc0243aba1bed6c3949fe4d, type: 3}
+      - {fileID: 21300000, guid: 1d8af3a5d98a443b3be5559f17bc1312, type: 3}
+      - {fileID: 21300000, guid: 120044b3328054af48b5a40a662f3d28, type: 3}
+      - {fileID: 21300000, guid: 99ee46d14aebb46e3a9f09b2f1ac59c9, type: 3}
+      - {fileID: 21300000, guid: 305e0c73764eb403abd93b7d57196d21, type: 3}
+      - {fileID: 21300000, guid: db08a0402068d4795a8ce08924a13fdb, type: 3}
+      - {fileID: 21300000, guid: 66a47741e26be47d081a63de9469f6e2, type: 3}
+      - {fileID: 21300000, guid: 74737c9b785534a03ba3eb988f129265, type: 3}
+      - {fileID: 21300000, guid: 1f1500b3f274249439a576f989eb5c60, type: 3}
+      - {fileID: 21300000, guid: 1fa5bc8ff8ff7461dbcd3afaacc466f6, type: 3}
+      - {fileID: 21300000, guid: 7248ef9b250d740fbaba8e78a91ff698, type: 3}
+      - {fileID: 21300000, guid: a17dbca4e581346cb958fe82a1f54cbd, type: 3}
+      - {fileID: 21300000, guid: d662cd8c0e6d94967be46ffaa40694fd, type: 3}
+      - {fileID: 21300000, guid: a2fcf9b4a422f40fd8b5eed2df958bf8, type: 3}
+      - {fileID: 21300000, guid: 59f79666d8db84c9d87761200f3cb05c, type: 3}
+      - {fileID: 21300000, guid: 4c820cd8dacad4447bed8c61b987c0bc, type: 3}
+      - {fileID: 21300000, guid: ef246041e739e4e41bfe58e7d4eda02c, type: 3}
+      - {fileID: 21300000, guid: 33936fb5441e64b47bbb0217ef9d69f7, type: 3}
+      - {fileID: 21300000, guid: 68c974974a0c048e9888c19d87911ad5, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 0
+      _anchors:
+      - {x: -0.32124388, y: 1.3967421, z: 13.2}
+      - {x: -0.32240295, y: 1.3904186, z: 13.052826}
+      - {x: -0.325466, y: 1.3729918, z: 12.648389}
+      - {x: -0.32971847, y: 1.3467468, z: 12.042311}
+      - {x: -0.33442473, y: 1.3139821, z: 11.290218}
+      - {x: -0.33893624, y: 1.2770531, z: 10.447736}
+      - {x: -0.3427687, y: 1.238387, z: 9.570488}
+      - {x: -0.34564894, y: 1.2004731, z: 8.7141}
+      - {x: -0.34752578, y: 1.1658378, z: 7.9341955}
+      - {x: -0.34854102, y: 1.1370158, z: 7.2863994}
+      - {x: -0.3489614, y: 1.1165277, z: 6.826337}
+      - {x: -0.34907287, y: 1.106874, z: 6.609633}
+      - {x: -0.34904158, y: 1.1091536, z: 6.68257}
+      - {x: -0.34880888, y: 1.1204488, z: 7.026929}
+      - {x: -0.34811378, y: 1.1391786, z: 7.5984}
+      - {x: -0.3466075, y: 1.1638522, z: 8.352668}
+      - {x: -0.34396264, y: 1.1929488, z: 9.245417}
+      - {x: -0.33995956, y: 1.2249248, z: 10.232334}
+      - {x: -0.33454764, y: 1.2582328, z: 11.269106}
+      - {x: -0.32788056, y: 1.2913525, z: 12.311416}
+      - {x: -0.32032228, y: 1.3228242, z: 13.314952}
+      - {x: -0.31242934, y: 1.3512753, z: 14.235396}
+      - {x: -0.30490968, y: 1.3754323, z: 15.0284395}
+      - {x: -0.298564, y: 1.3941069, z: 15.649764}
+      - {x: -0.294214, y: 1.4061618, z: 16.055056}
+      - {x: -0.29261857, y: 1.410448, z: 16.2}
+  - state: 15
+    clip:
+      _clipName: boss_commander_idlep2
+      _frames:
+      - {fileID: 21300000, guid: 2e98201b88957414185ffa7ef2fc017d, type: 3}
+      - {fileID: 21300000, guid: 6d0bf2de205814958ba1eb86c7ef84e7, type: 3}
+      - {fileID: 21300000, guid: fa15b5f10eff84680bd094cd5b0e6e33, type: 3}
+      - {fileID: 21300000, guid: f454487a696714fb9ae38d8d3b711ee9, type: 3}
+      - {fileID: 21300000, guid: 200e67585236144e18110279c6bd0c97, type: 3}
+      - {fileID: 21300000, guid: f1bbdf26175374a9e9168540ef4c4ba2, type: 3}
+      _framesPerSecond: 10
+      _isLooping: 1
+      _anchors:
+      - {x: -0.28579375, y: 1.4605441, z: 16.8}
+      - {x: -0.28579375, y: 1.4709365, z: 16.8}
+      - {x: -0.28579375, y: 1.4709365, z: 16.8}
+      - {x: -0.28579375, y: 1.4605441, z: 16.8}
+      - {x: -0.28579375, y: 1.4501519, z: 16.8}
+      - {x: -0.28579375, y: 1.4501519, z: 16.8}
+  - state: 16
+    clip:
+      _clipName: boss_commander_movep2
+      _frames:
+      - {fileID: 21300000, guid: ba856a1a19caf41c4b6f4cc89cf41da8, type: 3}
+      - {fileID: 21300000, guid: 9e29c26ae982f4125b00222ce6a56a4f, type: 3}
+      - {fileID: 21300000, guid: 38002bfdf1c93472d9780b9955b5f905, type: 3}
+      - {fileID: 21300000, guid: 5c5a892abc17f4314a53526035b3e89a, type: 3}
+      - {fileID: 21300000, guid: cba06b59e683a4259b9f6740400175e2, type: 3}
+      - {fileID: 21300000, guid: 057e32e6e58d1490f83cb7a211735d2e, type: 3}
+      - {fileID: 21300000, guid: 6d408903d11a9412c8d4ee326f1a458a, type: 3}
+      - {fileID: 21300000, guid: 9b318dd3f87c147e3997c57710fd880a, type: 3}
+      _framesPerSecond: 14
+      _isLooping: 1
+      _anchors:
+      - {x: -0.2632657, y: 1.4893192, z: 18.6}
+      - {x: -0.2632657, y: 1.5147749, z: 18.6}
+      - {x: -0.2632657, y: 1.5253192, z: 18.6}
+      - {x: -0.2632657, y: 1.5147749, z: 18.6}
+      - {x: -0.2632657, y: 1.4893192, z: 18.6}
+      - {x: -0.2632657, y: 1.5147749, z: 18.6}
+      - {x: -0.2632657, y: 1.5253192, z: 18.6}
+      - {x: -0.2632657, y: 1.5147749, z: 18.6}
+  - state: 17
+    clip:
+      _clipName: boss_commander_slashp2
+      _frames:
+      - {fileID: 21300000, guid: 1d3a2a443bfad4ea8b30e9e7345fe4ba, type: 3}
+      - {fileID: 21300000, guid: 2adb6a5ea2f124977b5d5d65b57e7f38, type: 3}
+      - {fileID: 21300000, guid: 211623702ae3d411b9003813c3739465, type: 3}
+      - {fileID: 21300000, guid: 7715c29ba000c4bde9c8835774242ab9, type: 3}
+      - {fileID: 21300000, guid: f1d100f0154d04d6eb9b2639adcb9c62, type: 3}
+      - {fileID: 21300000, guid: 085d8eed47cae4e8da29fc5790e1a015, type: 3}
+      - {fileID: 21300000, guid: 3824bcd24035d46f996beb9f1dfabfe9, type: 3}
+      - {fileID: 21300000, guid: 5e9e75f81d95844fc914e15e451a27d9, type: 3}
+      - {fileID: 21300000, guid: 5f5ff210c93a64a30a5d7696471ba744, type: 3}
+      - {fileID: 21300000, guid: 123da7256f647487999a4c65f5491ead, type: 3}
+      - {fileID: 21300000, guid: 4fc83083939e84eda9643eea07abeb00, type: 3}
+      - {fileID: 21300000, guid: 052f11eb765dd4321bb6dda8f8f76bc9, type: 3}
+      - {fileID: 21300000, guid: 188db6e8f7bd14c96b9b4b9ebabba5d5, type: 3}
+      - {fileID: 21300000, guid: fd204bffccfae4dc589bf11b1b0f4e3b, type: 3}
+      - {fileID: 21300000, guid: 1977a90af9b124b53a60128d8ebcb8d2, type: 3}
+      - {fileID: 21300000, guid: 1f1f7694c26be4d16b53df67fa3e245a, type: 3}
+      - {fileID: 21300000, guid: da1e5c92bbf4b4be7ae88cb20f10f8c4, type: 3}
+      - {fileID: 21300000, guid: cee805c84e7be46b8a332812dbd9a36d, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.37731317, y: 1.2956324, z: 8.04}
+      - {x: -0.37731317, y: 1.2956324, z: 8.04}
+      - {x: -0.37731317, y: 1.2956324, z: 8.04}
+      - {x: -0.37731317, y: 1.2956324, z: 8.04}
+      - {x: -0.37731317, y: 1.2956324, z: 8.04}
+      - {x: -0.37731317, y: 1.2956324, z: 8.04}
+      - {x: -0.37220353, y: 1.3064178, z: 8.574731}
+      - {x: -0.35501298, y: 1.3382267, z: 10.166927}
+      - {x: -0.3260322, y: 1.3816097, z: 12.39799}
+      - {x: -0.28797638, y: 1.4267596, z: 14.84201}
+      - {x: -0.24781846, y: 1.465059, z: 17.073072}
+      - {x: -0.21622589, y: 1.4903172, z: 18.665268}
+      - {x: -0.20510192, y: 1.4983672, z: 19.2}
+      - {x: -0.20510192, y: 1.4983672, z: 19.2}
+      - {x: -0.20510192, y: 1.4983672, z: 19.2}
+      - {x: -0.20510192, y: 1.4983672, z: 19.2}
+      - {x: -0.20510192, y: 1.4983672, z: 19.2}
+      - {x: -0.20510192, y: 1.4983672, z: 19.2}
+  - state: 18
+    clip:
+      _clipName: boss_commander_combop2
+      _frames:
+      - {fileID: 21300000, guid: dca64132960204d5c9d10a5e2fcc1300, type: 3}
+      - {fileID: 21300000, guid: b36a20343fac540ca8c3bf42e7de82b5, type: 3}
+      - {fileID: 21300000, guid: c8eb2b639d30d4cf99daadef44da59bc, type: 3}
+      - {fileID: 21300000, guid: 26a15ed6926984dc4a3eef20dfcfea70, type: 3}
+      - {fileID: 21300000, guid: 7c93c8b0a912a400b9bf612f0ed0f723, type: 3}
+      - {fileID: 21300000, guid: cbee163565e6f429da38d7fcf886f803, type: 3}
+      - {fileID: 21300000, guid: 91a8e989bc4a1429bb30a9556f60a13f, type: 3}
+      - {fileID: 21300000, guid: 73aa727bc12cc462096802fa17dbbac6, type: 3}
+      - {fileID: 21300000, guid: 7835ce962fabb4661b9040c26f09b707, type: 3}
+      - {fileID: 21300000, guid: c3f0b908f05374f2688d27b21e85afc2, type: 3}
+      - {fileID: 21300000, guid: 24a754b91196040c9b03defa5f789876, type: 3}
+      - {fileID: 21300000, guid: f2769ab874f964dbe8bc2edb717a6f32, type: 3}
+      - {fileID: 21300000, guid: f9570d90cb60a4ecdb172d504c4440f0, type: 3}
+      - {fileID: 21300000, guid: 5e92d9619b3784bdd8fb84aab4f4933d, type: 3}
+      - {fileID: 21300000, guid: 95538ea126d72492e81a0bc8640c9852, type: 3}
+      - {fileID: 21300000, guid: 9238bbcb271eb4fafa30fc3915cf999f, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.37878838, y: 1.2755804, z: 7.0499997}
+      - {x: -0.37878838, y: 1.2755804, z: 7.0499997}
+      - {x: -0.37878838, y: 1.2755804, z: 7.0499997}
+      - {x: -0.37878838, y: 1.2755804, z: 7.0499997}
+      - {x: -0.37878838, y: 1.2755804, z: 7.0499997}
+      - {x: -0.37692085, y: 1.281148, z: 7.324479}
+      - {x: -0.36151725, y: 1.3195664, z: 9.229687}
+      - {x: -0.32788575, y: 1.3796921, z: 12.297395}
+      - {x: -0.27756852, y: 1.442768, z: 15.752605}
+      - {x: -0.22280473, y: 1.4926746, z: 18.820312}
+      - {x: -0.18454437, y: 1.52004, z: 20.725521}
+      - {x: -0.17878845, y: 1.5237269, z: 21}
+      - {x: -0.17878845, y: 1.5237269, z: 21}
+      - {x: -0.17878845, y: 1.5237269, z: 21}
+      - {x: -0.17878845, y: 1.5237269, z: 21}
+      - {x: -0.17878845, y: 1.5237269, z: 21}
+  - state: 19
+    clip:
+      _clipName: boss_commander_jumpstart
+      _frames:
+      - {fileID: 21300000, guid: bd4d0992f6feb42d686afb3d68bb8e8e, type: 3}
+      - {fileID: 21300000, guid: f9034af5d39b74dabb7ba9abcce2605e, type: 3}
+      - {fileID: 21300000, guid: 236db191d40ac4cc4b191ff803249c45, type: 3}
+      - {fileID: 21300000, guid: 61db9111ae3f64ee0a165db3fe74b342, type: 3}
+      - {fileID: 21300000, guid: a966aaf365aed4af18ef4fc1fe8c33f4, type: 3}
+      - {fileID: 21300000, guid: 354aee38b2bdb4e5c84c72bb14ddd40e, type: 3}
+      - {fileID: 21300000, guid: 7e927a8023e784398ab8928b357b4eeb, type: 3}
+      - {fileID: 21300000, guid: 12affdfae68e94c68959f94fece96a96, type: 3}
+      - {fileID: 21300000, guid: 4f6cd956d770b4e689e23738e000afe2, type: 3}
+      - {fileID: 21300000, guid: b68afb7a400694721863521015ecd69a, type: 3}
+      - {fileID: 21300000, guid: f504193fd876b49bc8de58ceb52c5a59, type: 3}
+      - {fileID: 21300000, guid: 404ddddc783714df18bbb66941f18c3f, type: 3}
+      - {fileID: 21300000, guid: 3f5a46d4619df487aa8b8bbb7a65304e, type: 3}
+      - {fileID: 21300000, guid: c0ad021740148445f8aed1aee55d5c94, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.29261857, y: 1.450448, z: 16.2}
+      - {x: -0.29222444, y: 1.4414034, z: 16.280838}
+      - {x: -0.2911914, y: 1.416372, z: 16.505873}
+      - {x: -0.28979814, y: 1.3786361, z: 16.848885}
+      - {x: -0.2883449, y: 1.3315437, z: 17.283659}
+      - {x: -0.28710115, y: 1.2783916, z: 17.783978}
+      - {x: -0.2862671, y: 1.2223347, z: 18.323624}
+      - {x: -0.28595078, y: 1.1663158, z: 18.876377}
+      - {x: -0.28615677, y: 1.1130211, z: 19.416023}
+      - {x: -0.2867926, y: 1.0648665, z: 19.916342}
+      - {x: -0.28768495, y: 1.02402, z: 20.351116}
+      - {x: -0.28860703, y: 0.9924598, z: 20.694128}
+      - {x: -0.28931472, y: 0.9720773, z: 20.919163}
+      - {x: -0.28958833, y: 0.96481824, z: 21}
+  - state: 20
+    clip:
+      _clipName: boss_commander_jump
+      _frames:
+      - {fileID: 21300000, guid: 3b0a2c391979441d4bcbe64273a56487, type: 3}
+      - {fileID: 21300000, guid: be28e6fd2416647839f66b6a876227ed, type: 3}
+      - {fileID: 21300000, guid: 737782d9e83334478ab5666700ec1a2b, type: 3}
+      - {fileID: 21300000, guid: c5220626840054ae2a4310776ee89cf1, type: 3}
+      - {fileID: 21300000, guid: b67543e23006a406886773ae9bada42d, type: 3}
+      - {fileID: 21300000, guid: 80d1d567884344486a28fc54b1ee0faa, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 1
+      _anchors:
+      - {x: -0.289606, y: 1.6239233, z: 15.6}
+      - {x: -0.289606, y: 1.6239233, z: 15.6}
+      - {x: -0.289606, y: 1.6239233, z: 15.6}
+      - {x: -0.289606, y: 1.6239233, z: 15.6}
+      - {x: -0.289606, y: 1.6239233, z: 15.6}
+      - {x: -0.289606, y: 1.6239233, z: 15.6}
+  - state: 21
+    clip:
+      _clipName: boss_commander_slam
+      _frames:
+      - {fileID: 21300000, guid: f340fa78fb4af412ba59916b15d65078, type: 3}
+      - {fileID: 21300000, guid: e2ef8f04c1ef44320b3d584237268e87, type: 3}
+      - {fileID: 21300000, guid: 006d48ba818e048dc880f21c5d103762, type: 3}
+      - {fileID: 21300000, guid: 947fc53dd4a0b48f5ab5a6388e3c750e, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.26661742, y: 1.22134, z: 19.800001}
+      - {x: -0.26646012, y: 1.1625831, z: 20.6}
+      - {x: -0.26738068, y: 1.105719, z: 21.4}
+      - {x: -0.2693326, y: 1.0508343, z: 22.2}
+  - state: 22
+    clip:
+      _clipName: boss_commander_slamrecover
+      _frames:
+      - {fileID: 21300000, guid: 665cdd079f5134a46b2bba397da8539f, type: 3}
+      - {fileID: 21300000, guid: 4b80a964870db4d2b8d7b3c65c5a00f4, type: 3}
+      - {fileID: 21300000, guid: eb445f55fbd264c508ab396b7c47f03a, type: 3}
+      - {fileID: 21300000, guid: aaa3b0f68808144bda15965b20f9e0d7, type: 3}
+      - {fileID: 21300000, guid: df02ebbe88abe47469cf466f5079efe5, type: 3}
+      - {fileID: 21300000, guid: b945c66bf7a4349dc80114032aedc885, type: 3}
+      - {fileID: 21300000, guid: 2a827be893d6a49918c2a7f59e8eb2eb, type: 3}
+      - {fileID: 21300000, guid: 9f166d02066ce463fa14bb421c4b572a, type: 3}
+      - {fileID: 21300000, guid: aee8c2eecc5ac473593800a556600758, type: 3}
+      - {fileID: 21300000, guid: 284620c34a9be4331a4d25f36b29c6bc, type: 3}
+      - {fileID: 21300000, guid: 897d445d60f654121b0e1ba48bd5c5ec, type: 3}
+      - {fileID: 21300000, guid: 8ed1cd88017c043439f2d6ae430a2cfe, type: 3}
+      - {fileID: 21300000, guid: 37c1645ecc70a44a58c2a2f416ed7007, type: 3}
+      - {fileID: 21300000, guid: 266262d9f07744491b9870c1167387b1, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.2693326, y: 1.0508343, z: 22.2}
+      - {x: -0.26934418, y: 1.0570314, z: 22.109058}
+      - {x: -0.26942047, y: 1.0744181, z: 21.855894}
+      - {x: -0.26966217, y: 1.1013007, z: 21.470005}
+      - {x: -0.27019164, y: 1.1360267, z: 20.980883}
+      - {x: -0.27111876, y: 1.1768723, z: 20.418024}
+      - {x: -0.27251145, y: 1.2219653, z: 19.810925}
+      - {x: -0.27437255, y: 1.2692412, z: 19.189075}
+      - {x: -0.27662477, y: 1.3164284, z: 18.581976}
+      - {x: -0.27910432, y: 1.3610623, z: 18.019117}
+      - {x: -0.28156966, y: 1.4005224, z: 17.529997}
+      - {x: -0.28372085, y: 1.4320852, z: 17.144106}
+      - {x: -0.28523162, y: 1.4529943, z: 16.890942}
+      - {x: -0.28579375, y: 1.4605441, z: 16.8}
+  - state: 23
+    clip:
+      _clipName: boss_commander_death
+      _frames:
+      - {fileID: 21300000, guid: 0fdc70cf87e5e4538b4babf36d3e582b, type: 3}
+      - {fileID: 21300000, guid: f7953db972ca94148b33875a3d0d029c, type: 3}
+      - {fileID: 21300000, guid: 92f1cc77b11074ca2a4aac213e833fd6, type: 3}
+      - {fileID: 21300000, guid: aaa8664d724224560a13f88ff8766355, type: 3}
+      - {fileID: 21300000, guid: 1414cd6dda58948cbab8c25f4d3ca9a8, type: 3}
+      - {fileID: 21300000, guid: 3a0651eb160da45949e10d497d2712ab, type: 3}
+      - {fileID: 21300000, guid: 21d677b3a277c40db9bba162f22cb7e6, type: 3}
+      - {fileID: 21300000, guid: 38830abbbdad24b9a8043f5b261ff09b, type: 3}
+      - {fileID: 21300000, guid: be42aedc48b6a487598846832628749b, type: 3}
+      - {fileID: 21300000, guid: 5dfa5a3f4f2bc45d1929fc388e5f6790, type: 3}
+      - {fileID: 21300000, guid: 30ac149793caa4d41a98f3fb489fcffd, type: 3}
+      - {fileID: 21300000, guid: ba6a47f33c1dc4d5f991ea7c6873d9ac, type: 3}
+      - {fileID: 21300000, guid: e1b274a793d794e0c95eb95d66a3441e, type: 3}
+      - {fileID: 21300000, guid: 45d99c040aba5462cbda3385d55438d0, type: 3}
+      - {fileID: 21300000, guid: 000049edf866f4da5a510710a9ff7f6d, type: 3}
+      - {fileID: 21300000, guid: 6032eec08f52046afb90e1ae65add6fd, type: 3}
+      - {fileID: 21300000, guid: b3dc83ef5969b41f299370537d0aeb75, type: 3}
+      - {fileID: 21300000, guid: 02d26bc8cf52e42e7831cd0820db81db, type: 3}
+      - {fileID: 21300000, guid: a0924f9b6ec4a409bb9e1c61a4d70666, type: 3}
+      - {fileID: 21300000, guid: 9d770e8c52930468d91e79c2f028f358, type: 3}
+      - {fileID: 21300000, guid: 4db5a3e334ca8477989d43098a1415d5, type: 3}
+      - {fileID: 21300000, guid: f7a6631ff83444101ad0e08a09250ab8, type: 3}
+      - {fileID: 21300000, guid: f1a14ba746bad46b9829413e4bb0afc0, type: 3}
+      - {fileID: 21300000, guid: cc83d2c3411994151bdfc8ac1c5db7bf, type: 3}
+      - {fileID: 21300000, guid: dd6559c6dd5ba41568bdd9cfac02d62d, type: 3}
+      - {fileID: 21300000, guid: 1b2c3e094647140cea77b87d13ee19e0, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 0
+      _anchors:
+      - {x: -0.3051906, y: 1.4295721, z: 15}
+      - {x: -0.307856, y: 1.4213153, z: 14.882266}
+      - {x: -0.31534395, y: 1.3972633, z: 14.541965}
+      - {x: -0.326633, y: 1.3584874, z: 13.998451}
+      - {x: -0.34044006, y: 1.3061022, z: 13.271079}
+      - {x: -0.3553166, y: 1.2413352, z: 12.3792}
+      - {x: -0.3697493, y: 1.165581, z: 11.34217}
+      - {x: -0.38225463, y: 1.0804416, z: 10.17934}
+      - {x: -0.39147857, y: 0.9877342, z: 8.910068}
+      - {x: -0.3962864, y: 0.8894699, z: 7.5537014}
+      - {x: -0.39584267, y: 0.78780305, z: 6.1295996}
+      - {x: -0.3896698, y: 0.68494993, z: 4.6571126}
+      - {x: -0.37767923, y: 0.58308923, z: 3.155597}
+      - {x: -0.36017272, y: 0.48425353, z: 1.6444035}
+      - {x: -0.33781037, y: 0.39022034, z: 0.14288588}
+      - {x: -0.31155074, y: 0.30241805, z: -1.3296026}
+      - {x: -0.28256896, y: 0.22185448, z: -2.753703}
+      - {x: -0.2521637, y: 0.14907524, z: -4.1100683}
+      - {x: -0.22166184, y: 0.084155425, z: -5.3793416}
+      - {x: -0.19233689, y: 0.02672348, z: -6.542169}
+      - {x: -0.165345, y: -0.023986435, z: -7.5792007}
+      - {x: -0.14168778, y: -0.06905899, z: -8.471078}
+      - {x: -0.12220428, y: -0.10980824, z: -9.19845}
+      - {x: -0.10758927, y: -0.14767635, z: -9.741965}
+      - {x: -0.098432004, y: -0.18412735, z: -10.082267}
+      - {x: -0.09526474, y: -0.22053589, z: -10.200001}
+  _fallback:
+    _clipName: boss_commander_idlep1
+    _frames:
+    - {fileID: 21300000, guid: c37116c5140af4263ac759ff1cc08045, type: 3}
+    - {fileID: 21300000, guid: 0331640508cad4e14a2ea4ff6343b36c, type: 3}
+    - {fileID: 21300000, guid: 3e74afaf70ccc4b9c88dd7e9ad35b5f3, type: 3}
+    - {fileID: 21300000, guid: c7105d60ba43c4d578eb58638559541f, type: 3}
+    - {fileID: 21300000, guid: 9d0f95205d0314489823630f3889677c, type: 3}
+    - {fileID: 21300000, guid: 443097156d9ae4df08b8abd48868c92f, type: 3}
+    _framesPerSecond: 8
+    _isLooping: 1
+    _anchors:
+    - {x: -0.31880844, y: 1.4023275, z: 13.5}
+    - {x: -0.31880844, y: 1.4109879, z: 13.5}
+    - {x: -0.31880844, y: 1.4109879, z: 13.5}
+    - {x: -0.31880844, y: 1.4023275, z: 13.5}
+    - {x: -0.31880844, y: 1.3936673, z: 13.5}
+    - {x: -0.31880844, y: 1.3936673, z: 13.5}
+  _requiredStates: 0100000002000000030000000400000000000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f0000001000000011000000120000001300000014000000150000001600000017000000

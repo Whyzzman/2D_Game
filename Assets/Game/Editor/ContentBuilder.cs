@@ -152,6 +152,8 @@ namespace ForgottenKingdom.EditorTools
             BuildCapitalBoss();
             // The Fallen Village's bell-keeper (item 5 of the 15 zones); the village places him by name.
             BuildVillageBoss();
+            // The capital's Commander (item 6b), in the hall before the King's throne.
+            BuildCapitalCommander();
             var checkpointPrefab = BuildCheckpointPrefab();
             var dummyPrefab = BuildDummyPrefab();
             var attackerPrefab = BuildAttackerPrefab();

@@ -185,6 +185,7 @@ namespace ForgottenKingdom.EditorTools
             {
                 (GuardianBossId, "Страж Гробниці", TombZoneId),
                 (WardenBossId, "Порожній Вартовий", ForestZoneId),
+                (CommanderBossId, "Командор Попелу", CapitalZoneId),
                 (CapitalKingBossId, "Король-Заклятий", CapitalZoneId)
             };
             var bosses = serialized.FindProperty("_bosses");

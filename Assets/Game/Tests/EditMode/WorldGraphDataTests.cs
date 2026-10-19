@@ -493,11 +493,13 @@ namespace ForgottenKingdom.Tests
         {
             var data = Walked("room_tomb_guardian_arena", "room_forest_root_tunnel",
                 "room_forest_warden_arena", "room_forest_far_gate", "room_village_hill", "room_capital_ash_road",
-                "room_capital_palace_approach", "room_capital_throne_hall");
+                "room_capital_palace_approach", "room_capital_throne_hall", "room_capital_kings_throne");
             data.MarkBossDefeated(Guardian);
             data.MarkBossDefeated(Warden);
+            data.MarkBossDefeated("ash-commander");
             data.MarkBossDefeated(King);
-            var view = Map(data, "room_capital_throne_hall");
+            // Since item 6b the road beyond runs from the King's throne, past the Commander's hall.
+            var view = Map(data, "room_capital_kings_throne");
 
             var future = view.Links.Single(l => l.Connection.IsFuture);
             Assert.That(future.State, Is.EqualTo(MapLinkState.Sealed));

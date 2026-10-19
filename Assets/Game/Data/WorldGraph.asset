@@ -1863,7 +1863,7 @@ MonoBehaviour:
     _bossId: 
   - _areaId: room_capital_throne_hall
     _zoneId: zone_ashen_capital
-    _displayName: "\u0422\u0440\u043E\u043D\u043D\u0430 \u0437\u0430\u043B\u0430"
+    _displayName: "\u0417\u0430\u043B\u0430 \u041A\u043E\u043C\u0430\u043D\u0434\u043E\u0440\u0430"
     _mapPosition: {x: 48.3, y: 0.95}
     _mapSize: {x: 3.3, y: 1.7}
     _worldBounds:
@@ -1871,6 +1871,23 @@ MonoBehaviour:
       x: 466
       y: 0.5
       width: 34
+      height: 18
+    _isSecret: 0
+    _isOptional: 0
+    _discoveryRule: 0
+    _requiredAbilityId: 
+    _iconType: 2
+    _bossId: ash-commander
+  - _areaId: room_capital_kings_throne
+    _zoneId: zone_ashen_capital
+    _displayName: "\u0422\u0440\u043E\u043D \u041A\u043E\u0440\u043E\u043B\u044F"
+    _mapPosition: {x: 51.5, y: 0.95}
+    _mapSize: {x: 2.9, y: 1.7}
+    _worldBounds:
+      serializedVersion: 2
+      x: 500
+      y: 0.5
+      width: 30
       height: 18
     _isSecret: 0
     _isOptional: 0
@@ -2051,12 +2068,12 @@ MonoBehaviour:
   - _areaId: room_beyond_capital
     _zoneId: zone_unknown_east
     _displayName: 
-    _mapPosition: {x: 50.6, y: 0}
+    _mapPosition: {x: 53.6, y: 0}
     _mapSize: {x: 0.8, y: 1.2}
     _worldBounds:
       serializedVersion: 2
-      x: 500
-      y: -1
+      x: 530
+      y: 0.5
       width: 12
       height: 18
     _isSecret: 0
@@ -3366,6 +3383,19 @@ MonoBehaviour:
     _persistentUnlockId: 
     _openedFromAreaId: 
     _isFuture: 0
+  - _connectionId: conn_capital_throne_hall_kings_throne
+    _fromAreaId: room_capital_throne_hall
+    _toAreaId: room_capital_kings_throne
+    _direction: 0
+    _type: 1
+    _isBidirectional: 1
+    _requiredAbilityId: 
+    _requiredProgressionId: 
+    _requiredBossId: 
+    _isShortcut: 0
+    _persistentUnlockId: 
+    _openedFromAreaId: 
+    _isFuture: 0
   - _connectionId: conn_capital_ash_road_city_gate
     _fromAreaId: room_capital_ash_road
     _toAreaId: room_capital_city_gate
@@ -3614,7 +3644,7 @@ MonoBehaviour:
     _openedFromAreaId: room_capital_ash_road
     _isFuture: 0
   - _connectionId: conn_capital_throne_beyond
-    _fromAreaId: room_capital_throne_hall
+    _fromAreaId: room_capital_kings_throne
     _toAreaId: room_beyond_capital
     _direction: 0
     _type: 2
