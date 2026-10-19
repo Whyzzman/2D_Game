@@ -247,6 +247,8 @@ namespace ForgottenKingdom
         FootstepAsh,
         // ---- footwork (2026-10-19, appended): the skid of a start or a turn, the kick off a wall ----
         FootstepScuff,
-        WallJumpKick
+        WallJumpKick,
+        // ---- the world answering the hero (GAME_FEEL_IDEAS items 13-14, appended) ----
+        PropBreak
     }
 }

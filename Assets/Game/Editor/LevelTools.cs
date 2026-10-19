@@ -136,6 +136,7 @@ namespace ForgottenKingdom.EditorTools
             "gold" => new Color32(240, 220, 120, 255),
             "item" => new Color32(150, 230, 255, 255),
             "ring" => new Color32(80, 220, 230, 255),
+            "urn" => new Color32(200, 150, 100, 255),
             _ => new Color32(255, 0, 255, 255)
         };
 

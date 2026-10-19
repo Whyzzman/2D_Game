@@ -57,6 +57,12 @@ namespace ForgottenKingdom
                 return;
             }
 
+            // An urn is not a fight: breaking things pays coins, never mana, as in Hollow Knight.
+            if (target.GetComponent<BreakableProp>() != null)
+            {
+                return;
+            }
+
             var weapon = _combat.Weapon;
             var heavy = weapon != null && attack == weapon.HeavyAttack;
             var amount = Evaluate(result.Outcome, target.Faction, heavy ? _perHeavyHit : _perHit);

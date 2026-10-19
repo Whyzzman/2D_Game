@@ -247,6 +247,27 @@ namespace ForgottenKingdom
             CombatFeedbackService.Play(FeedbackKind.LandDust, Feet, Vector2.right,
                 Mathf.Lerp(0.7f, 1.25f, weight), GroundTint);
             StartSquash(-LandSquash * weight);
+            // The room feels it too (GAME_FEEL_IDEAS item 13): props nearby shiver, and a hard
+            // landing shakes dust from the ceiling above.
+            ReactiveProp.Gust(Feet, 3f, 30f * weight, 0f);
+            if (weight > 0.75f) { CeilingDust(); }
+        }
+
+        private const float CeilingReach = 7f;
+
+        private void CeilingDust()
+        {
+            var hit = Physics2D.Raycast(Feet + Vector2.up * 2.2f, Vector2.up, CeilingReach, LayerMask.GetMask("Ground"));
+            if (hit.collider == null)
+            {
+                return;
+            }
+
+            // Two trickles a little apart, falling: grit loosened from the stone overhead.
+            foreach (var dx in new[] { -0.5f, 0.45f })
+            {
+                CombatFeedbackService.Play(FeedbackKind.WallSlideDust, hit.point + new Vector2(dx, -0.15f), Vector2.down);
+            }
         }
 
         private void OnRespawned()

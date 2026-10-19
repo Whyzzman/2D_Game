@@ -193,6 +193,7 @@ namespace ForgottenKingdom.EditorTools
             events.Add(Sound(AudioId.WallCrack, clips, 0.6f, voices: 2, priority: 50));
             events.Add(Sound(AudioId.WallCrumble, clips, 0.8f, voices: 1, priority: 80));
             events.Add(Sound(AudioId.TrialGong, clips, 0.85f, voices: 1, priority: 100, spatial: 0.3f));
+            events.Add(Sound(AudioId.PropBreak, clips, 0.6f, voices: 3, priority: 45, interval: 0.04f));
 
             // Interface. Quiet, flat, and spaced so fast navigation does not chatter.
             events.Add(Sound(AudioId.UiNavigate, clips, 0.3f, AudioBus.Ui, voices: 1, priority: 25,

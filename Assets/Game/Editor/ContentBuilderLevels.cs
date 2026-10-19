@@ -85,6 +85,8 @@ namespace ForgottenKingdom.EditorTools
             LevelContext context)
         {
             var problems = new List<string>(zone.Errors);
+            // Loaded fresh for each zone: asset references taken before a new scene are dead.
+            _breakables = null;
             var rooms = new Dictionary<string, Transform>();
             foreach (var room in zone.Rooms)
             {
@@ -246,6 +248,8 @@ namespace ForgottenKingdom.EditorTools
                         marker.Arg(1), gold);
                     Adopt(parent, c => c.GetComponent<WorldPickup>()?.PersistentId == marker.Arg(1));
                     return null;
+                case "urn":
+                    return PlaceBreakable(parent, marker, feet);
                 case "ring":
                     PlaceGrappleRing(parent, $"Ring_{marker.Cell.x}_{marker.Cell.y}", zone.CellCentre(marker.Cell));
                     return null;
