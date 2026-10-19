@@ -94,6 +94,9 @@ namespace ForgottenKingdom
         [SerializeField, Min(0f)] private float _shakeScale = 1f;
         [Tooltip("1 shakes evenly; below 1 favours horizontal, above 1 favours vertical.")]
         [SerializeField, Min(0f)] private float _shakeVerticalBias = 1f;
+        [Tooltip("Share of the shake spent as one push along the blow before the tremble: 0 trembles "
+            + "only, 1 is all push. The camera follows the strike the way the eye does.")]
+        [SerializeField, Range(0f, 1f)] private float _shakeKick;
 
         [Header("Screen and light")]
         [Tooltip("0 for almost everything. Reserved for parry, guard break and boss moments.")]
@@ -121,6 +124,7 @@ namespace ForgottenKingdom
         public ShakeProfile Shake => _shake;
         public float ShakeScale => _shakeScale;
         public float ShakeVerticalBias => _shakeVerticalBias;
+        public float ShakeKick => _shakeKick;
         public Color FlashColor => _flashColor;
         public Color LightColor => _lightColor;
         public float LightRadius => _lightRadius;

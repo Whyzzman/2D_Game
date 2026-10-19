@@ -2017,32 +2017,40 @@ namespace ForgottenKingdom.EditorTools
                 new System.Collections.Generic.List<(FeedbackKind kind, FeedbackProfile profile)>();
 
             // Physical combat. Light is a tap; heavy is a thud; a crit is sharper rather than
-            // bigger, so it never gets mistaken for a boss-level event.
-            entries.Add(Feedback(FeedbackKind.LightHit, "vfx_hit_light", hitStop: 0.03f,
-                shake: ShakeProfile.Tiny, priority: 10));
-            entries.Add(Feedback(FeedbackKind.HeavyHit, "vfx_hit_heavy", hitStop: 0.065f,
-                shake: ShakeProfile.Small, shakeScale: 1.1f, verticalBias: 1.3f, priority: 20));
-            entries.Add(Feedback(FeedbackKind.CriticalHit, "vfx_hit_critical", hitStop: 0.075f,
-                shake: ShakeProfile.Small, shakeScale: 1.2f, flash: 0.12f,
-                flashColor: new Color(1f, 0.93f, 0.76f), light: new Color(1f, 0.9f, 0.66f, 0.7f),
-                lightRadius: 2.6f, priority: 30));
-            entries.Add(Feedback(FeedbackKind.Block, "vfx_block", hitStop: 0.035f,
-                shake: ShakeProfile.Tiny, priority: 25));
+            // bigger, so it never gets mistaken for a boss-level event. Combat feel, 2026-10-19
+            // (decided by Claude under the standing approval, COMBAT_FEEDBACK.md §6а): every blow
+            // freezes a little longer, pushes the camera along the strike (kick) and lights the
+            // spot it lands on with a short warm spark of light.
+            entries.Add(Feedback(FeedbackKind.LightHit, "vfx_hit_light", hitStop: 0.04f,
+                shake: ShakeProfile.Tiny, shakeScale: 1.3f, verticalBias: 0.8f, kick: 0.6f,
+                light: new Color(1f, 0.95f, 0.86f, 0.45f), lightRadius: 1.4f, priority: 10));
+            entries.Add(Feedback(FeedbackKind.HeavyHit, "vfx_hit_heavy", hitStop: 0.075f,
+                shake: ShakeProfile.Small, shakeScale: 1.35f, verticalBias: 1.3f, kick: 0.7f,
+                light: new Color(1f, 0.88f, 0.66f, 0.6f), lightRadius: 2f, priority: 20));
+            entries.Add(Feedback(FeedbackKind.CriticalHit, "vfx_hit_critical", hitStop: 0.085f,
+                shake: ShakeProfile.Small, shakeScale: 1.4f, kick: 0.6f, flash: 0.12f,
+                flashColor: new Color(1f, 0.93f, 0.76f), light: new Color(1f, 0.9f, 0.66f, 0.75f),
+                lightRadius: 2.8f, priority: 30));
+            entries.Add(Feedback(FeedbackKind.Block, "vfx_block", hitStop: 0.04f,
+                shake: ShakeProfile.Tiny, shakeScale: 1.2f, kick: 0.5f,
+                light: new Color(0.85f, 0.9f, 1f, 0.4f), lightRadius: 1.4f, priority: 25));
 
             // The parry is the single most important moment in the game's combat, and its profile
             // is louder than anything below boss level on purpose.
-            entries.Add(Feedback(FeedbackKind.Parry, "vfx_parry", hitStop: 0.09f,
-                shake: ShakeProfile.Medium, flash: 0.3f,
+            entries.Add(Feedback(FeedbackKind.Parry, "vfx_parry", hitStop: 0.095f,
+                shake: ShakeProfile.Medium, kick: 0.4f, flash: 0.3f,
                 flashColor: new Color(1f, 0.96f, 0.85f), light: new Color(1f, 0.92f, 0.7f, 0.85f),
                 lightRadius: 3.4f, priority: 60, sound: "parry"));
             entries.Add(Feedback(FeedbackKind.GuardBreak, "vfx_guard_break", hitStop: 0.1f,
                 shake: ShakeProfile.Medium, shakeScale: 1.2f, flash: 0.22f,
                 flashColor: new Color(1f, 0.85f, 0.5f), light: new Color(0.94f, 0.71f, 0.26f, 0.8f),
                 lightRadius: 3.2f, priority: 65, sound: "guard_break"));
-            entries.Add(Feedback(FeedbackKind.StaggerBreak, "vfx_stagger", hitStop: 0.06f,
-                shake: ShakeProfile.Small, shakeScale: 1.2f, priority: 40, sound: "stagger"));
-            entries.Add(Feedback(FeedbackKind.PlayerHurt, "vfx_hurt_flash", hitStop: 0.02f,
-                shake: ShakeProfile.Tiny, shakeScale: 1.4f, priority: 35, facesDirection: false));
+            entries.Add(Feedback(FeedbackKind.StaggerBreak, "vfx_stagger", hitStop: 0.07f,
+                shake: ShakeProfile.Small, shakeScale: 1.3f, kick: 0.5f, priority: 40, sound: "stagger"));
+            // Being hit has to hurt: a real stop and a shove the way the blow came, as in HK.
+            entries.Add(Feedback(FeedbackKind.PlayerHurt, "vfx_hurt_flash", hitStop: 0.08f,
+                shake: ShakeProfile.Small, shakeScale: 1.3f, kick: 0.6f, priority: 35,
+                facesDirection: false));
 
             // Magic. Each element keeps its own light colour, which is most of how a player tells
             // at a glance what just hit them.
@@ -2138,8 +2146,8 @@ namespace ForgottenKingdom.EditorTools
                 shake: ShakeProfile.Large, verticalBias: 1.6f,
                 light: new Color(0.85f, 0.75f, 0.55f, 0.5f), lightRadius: 3.4f, priority: 55,
                 facesDirection: false, sound: "ground_breaker"));
-            entries.Add(Feedback(FeedbackKind.DashStrike, "vfx_dash_strike", hitStop: 0.05f,
-                shake: ShakeProfile.Small, shakeScale: 1.1f, priority: 50, sound: "dash_strike"));
+            entries.Add(Feedback(FeedbackKind.DashStrike, "vfx_dash_strike", hitStop: 0.06f,
+                shake: ShakeProfile.Small, shakeScale: 1.3f, kick: 0.8f, priority: 50, sound: "dash_strike"));
 
             // The boss tier. These are the only profiles allowed to take the whole screen.
             entries.Add(Feedback(FeedbackKind.BossCharge, "vfx_guardian_charge",
@@ -2158,15 +2166,18 @@ namespace ForgottenKingdom.EditorTools
                 flashColor: new Color(0.7f, 0.5f, 1f), light: new Color(0.61f, 0.3f, 1f, 0.85f),
                 lightRadius: 6f, priority: 100, facesDirection: false, sound: "boss_death"));
 
-            entries.Add(Feedback(FeedbackKind.EnemyDeath, "vfx_enemy_death",
-                shake: ShakeProfile.None, priority: 8, facesDirection: false));
+            // The kill confirmed: above a light hit, so the killing blow freezes a beat longer and
+            // pushes the camera along the swing; below a heavy one, which already says enough.
+            entries.Add(Feedback(FeedbackKind.EnemyDeath, "vfx_enemy_death", hitStop: 0.06f,
+                shake: ShakeProfile.Small, kick: 0.7f, light: new Color(1f, 0.86f, 0.62f, 0.5f),
+                lightRadius: 2f, priority: 18, facesDirection: false));
             entries.Add(Feedback(FeedbackKind.Pickup, "vfx_pickup", shake: ShakeProfile.None,
                 priority: 3, facesDirection: false));
             // The pogo, as Hollow Knight gives it: a spark under the feet, a hair of freeze and a
             // downward kick, whether the blade found an enemy or spikes — a bounce that makes no
             // mark reads as the player floating off by accident.
-            entries.Add(Feedback(FeedbackKind.Pogo, "vfx_block", hitStop: 0.035f,
-                shake: ShakeProfile.Tiny, verticalBias: 1.8f,
+            entries.Add(Feedback(FeedbackKind.Pogo, "vfx_block", hitStop: 0.04f,
+                shake: ShakeProfile.Tiny, verticalBias: 1.8f, kick: 0.5f,
                 light: new Color(0.85f, 0.9f, 1f, 0.45f), lightRadius: 1.6f, priority: 15));
 
             var library = CreateAsset<FeedbackLibrary>(FeedbackLibraryPath);
@@ -2190,7 +2201,7 @@ namespace ForgottenKingdom.EditorTools
 
         private static (FeedbackKind, FeedbackProfile) Feedback(FeedbackKind kind, string vfx,
             float hitStop = 0f, ShakeProfile shake = ShakeProfile.Tiny, float shakeScale = 1f,
-            float verticalBias = 1f, float flash = 0f, Color flashColor = default,
+            float verticalBias = 1f, float kick = 0f, float flash = 0f, Color flashColor = default,
             Color light = default, float lightRadius = 2f, int priority = 10, float scale = 1f,
             bool facesDirection = true, string layer = "VFXFront", string sound = "",
             bool mirrors = false)
@@ -2202,6 +2213,7 @@ namespace ForgottenKingdom.EditorTools
             serialized.FindProperty("_shake").enumValueIndex = (int)shake;
             serialized.FindProperty("_shakeScale").floatValue = shakeScale;
             serialized.FindProperty("_shakeVerticalBias").floatValue = verticalBias;
+            serialized.FindProperty("_shakeKick").floatValue = kick;
             serialized.FindProperty("_screenFlash").floatValue = flash;
             serialized.FindProperty("_flashColor").colorValue =
                 flashColor == default ? Color.white : flashColor;
