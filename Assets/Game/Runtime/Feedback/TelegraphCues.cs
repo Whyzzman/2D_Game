@@ -86,7 +86,7 @@ namespace ForgottenKingdom
                 {
                     cue.Flashed = true;
                     var point = cue.Sockets != null && cue.Sockets.Has(VisualSocket.Weapon)
-                        ? cue.Sockets.Position(VisualSocket.Weapon)
+                        ? (Vector2)cue.Sockets.Position(VisualSocket.Weapon)
                         : (Vector2)cue.Enemy.transform.position + Vector2.up;
                     _flash?.Invoke(point);
                 }

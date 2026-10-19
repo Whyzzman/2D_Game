@@ -690,6 +690,10 @@ namespace ForgottenKingdom.EditorTools
                 var value = Mathf.Sin(2f * Mathf.PI * frequency * t)
                     + 0.6f * Mathf.Sin(2f * Mathf.PI * (frequency + 5f) * t);
                 samples[i] = value * attack * release * 0.5f;
+            }
+        }
+
+        /// <summary>
         /// A heartbeat: two soft low thumps, the second weaker, each a sine falling in pitch under a
         /// little filtered noise so it is a body and not a test tone.
         /// </summary>

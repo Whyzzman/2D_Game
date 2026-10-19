@@ -115,6 +115,7 @@ namespace ForgottenKingdom
             _bossDeath?.Stop();
             _telegraphs?.Clear();
             _rumble.Stop();
+            _slowMotion.Stop();
         }
 
         private void OnApplicationFocus(bool focused)
@@ -124,7 +125,6 @@ namespace ForgottenKingdom
             {
                 _rumble.Stop();
             }
-            _slowMotion.Stop();
         }
 
         private void Start()
@@ -243,6 +243,7 @@ namespace ForgottenKingdom
             _rumble.Stop();
             _frameOwner = null;
             _telegraphs?.Clear();
+            _slowMotion.Stop();
         }
 
         private void PlayCrackLight(Vector2 position, Color color, float radius, float duration)
@@ -266,7 +267,6 @@ namespace ForgottenKingdom
             }
 
             return bounds ?? new Bounds(boss.transform.position + Vector3.up, new Vector3(1.5f, 2f, 0f));
-            _slowMotion.Stop();
         }
 
         // ---------- listening to combat ----------

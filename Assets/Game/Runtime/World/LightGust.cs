@@ -29,7 +29,7 @@ namespace ForgottenKingdom
         {
             _light = GetComponent<Light2D>();
             _base = _light.intensity;
-            _seed = Mathf.Abs(GetInstanceID()) % 97;
+            _seed = Mathf.Abs(GetEntityId().GetHashCode()) % 97;
         }
 
         private void OnEnable()

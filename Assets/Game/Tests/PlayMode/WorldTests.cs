@@ -5,6 +5,7 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
+using UnityEngine.UIElements;
 
 namespace ForgottenKingdom.Tests
 {
@@ -284,7 +285,7 @@ namespace ForgottenKingdom.Tests
                 yield return Place(new Vector2(55f, 0.85f));
                 yield return Place(new Vector2(70f, 0.85f));
                 Assert.That(hud.ZoneCurtain.IsPlaying, Is.True);
-                var front = hud.GetComponent<UnityEngine.UIElements.UIDocument>().rootVisualElement
+                var front = hud.GetComponent<UIDocument>().rootVisualElement
                     .Q("zone-curtain-front");
                 Assert.That(front.style.translate.value.x.value, Is.EqualTo(0f).Within(0.01f), "Nothing slides.");
             }
