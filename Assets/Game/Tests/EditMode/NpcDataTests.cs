@@ -90,6 +90,16 @@ namespace ForgottenKingdom.Tests
             Assert.That(myroslava.Pick(_progress).id, Is.EqualTo("end"));
             _progress.GrantReward(myroslava.HeardId(myroslava.Pick(_progress)));
             Assert.That(myroslava.LatestNote(_progress), Does.Contain("дорога скінчилась"));
+
+            // The village (item 5c): Gnat at the well tells of it, and after the Bellringer of the night
+            // bell; Myroslava, moved to the church, of its crypt.
+            gnat = Load("Npc_Gnat");
+            Assert.That(gnat.Pick(_progress).id, Is.EqualTo("moved"));
+            _progress.GrantReward(gnat.HeardId(gnat.Pick(_progress)));
+            Assert.That(gnat.Pick(_progress).id, Is.EqualTo("village"));
+            _progress.MarkBossDefeated("bellringer");
+            Assert.That(gnat.Pick(_progress).id, Is.EqualTo("night-bell"));
+            Assert.That(myroslava.Pick(_progress).id, Is.EqualTo("church"));
         }
 
         [Test]

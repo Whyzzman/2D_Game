@@ -107,9 +107,16 @@ namespace ForgottenKingdom.EditorTools
                 "Страж упав? Отже, дорога в Ліс відчинена.",
                 "Я перебрався сюди. Біля мертвих дерев торгувати краще, ніж біля мертвих королів.",
                 "На возі є й нове — для Лісу."),
-            Topic("east", "Каже, що дорога на схід за лісом ще замкнена.", true, WardenBossId, null,
-                "Вартового більше нема… Ліс ніби видихнув.",
-                "Кажуть, за краєм лісу дорога на схід. Замкнена. Поки що."),
+            Topic("village", "Переїхав у Село до колодязя. Радить не стояти під дзвіницею.", true,
+                WardenBossId, BellringerBossId,
+                "Село. Тут колись пекли хліб для двору.",
+                "Тепер дзвін б'є сам. Люди виходять на нього — і вже не повертаються людьми.",
+                "Не стій під дзвіницею, коли він гуде."),
+            Topic("night-bell", "Розповів про нічний дзвін на площі: ним скликали варту.", true,
+                BellringerBossId, null,
+                "Дзвін замовк. Уперше за триста років я чую колодязь.",
+                "На площі висить малий дзвін — нічний. Ним скликали варту. Вдариш — прийдуть усі, хто ще блукає. "
+                    + "Сміливим — нагорода."),
             Topic("again", string.Empty, false, null, null, "Ну, подивимось, що в тебе в гаманці.")
         };
 
@@ -127,7 +134,12 @@ namespace ForgottenKingdom.EditorTools
                 "Вартовий — глибше в лісі. Корені слухають його, не короля."),
             Topic("roots", string.Empty, false, GuardianBossId, WardenBossId,
                 "Корені пам'ятають кожен крок. Не зупиняйся надовго."),
-            Topic("end", "Лишилася біля вівтаря глибокого лісу. Її дорога скінчилась.", true, WardenBossId, null,
+            Topic("church", "Перейшла до сільської церкви. Каже, під нею крипта.", true, BellringerBossId, null,
+                "Церква стояла порожня, доки дзвін бив сам. Тепер тут знову можна молитися.",
+                "Під церквою — крипта. Селяни ховали там те, що не віддали королю.",
+                "Моя дорога тут кінчається. Твоя — вниз, до Столиці."),
+            Topic("end", "Лишилася біля вівтаря глибокого лісу. Її дорога скінчилась.", true, WardenBossId,
+                BellringerBossId,
                 "Ліс затих. Я чую вогонь — він знову чистий.",
                 "Моя дорога тут кінчається. Твоя — ні. Схід чекає."),
             Topic("farewell", string.Empty, false, WardenBossId, null, "Хай вогонь тримає тебе.")
@@ -219,7 +231,22 @@ namespace ForgottenKingdom.EditorTools
                 Good("lockpick-forest-1", GoodKind.Lockpick, "Відмичка", "1 замок", 150, pickText, pickEffect,
                     target: MerchantStock.LockpickItemId, requires: GuardianBossId),
                 Good("lockpick-forest-2", GoodKind.Lockpick, "Відмичка", "1 замок", 150, pickText, pickEffect,
-                    target: MerchantStock.LockpickItemId, requires: GuardianBossId)
+                    target: MerchantStock.LockpickItemId, requires: GuardianBossId),
+
+                Good("map-village", GoodKind.ZoneMap, "Карта Села", "відкриває всю зону", 150,
+                    "Межова карта села з панських книг. Хати на ній ще цілі.",
+                    "Усі кімнати Села з'являються на карті блідим обрисом, разом із вівтарями.",
+                    VillageZoneId, requires: WardenBossId),
+                Good("rumour-haybarn", GoodKind.Rumour, "Чутка", "про Село", 90, rumourText, rumourEffect,
+                    VillageZoneId, "room_village_hay_barn",
+                    "У сіннику одна стіна новіша за інші. Селяни щось за нею сховали від збирачів податку.",
+                    WardenBossId),
+                Good("rumour-attic", GoodKind.Rumour, "Чутка", "про Село", 90, rumourText, rumourEffect,
+                    VillageZoneId, "room_village_attic",
+                    "Над верхніми хатами є горище, куди не ведуть сходи. Хто туди лазив — не жалівся.",
+                    WardenBossId),
+                Good("flask-village", GoodKind.FlaskShard, "Уламок фляги", "+1 фляга", 450, shardText, shardEffect,
+                    requires: WardenBossId)
             };
 
             var stock = CreateAsset<MerchantStock>(MerchantStockPath);
