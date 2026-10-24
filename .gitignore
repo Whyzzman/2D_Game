@@ -76,3 +76,6 @@ npm-debug.log*
 
 # Knowledge graph from /graphify (local only)
 graphify-out/
+
+# Исходники Midjourney (большие; обработанное лежит в Assets) — gamedesign/MIDJOURNEY_PROMPTS.md
+/art-inbox/
