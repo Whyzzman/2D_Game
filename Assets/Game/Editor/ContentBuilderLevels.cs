@@ -117,6 +117,12 @@ namespace ForgottenKingdom.EditorTools
                     Ensure<NonClimbableSurface>(made);
                 }
 
+                if (made != null && piece.Kind == LevelCell.Ledge)
+                {
+                    // A jump from under a ledge lands on top of it (SceneOneWayLedges).
+                    Ensure<OneWayPlatform>(made);
+                }
+
                 if (made != null)
                 {
                     Ensure<GroundSurface>(made).Set(SurfaceFor(piece.RoomId, piece.Kind));

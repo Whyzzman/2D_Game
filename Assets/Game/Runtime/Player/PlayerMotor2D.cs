@@ -398,12 +398,39 @@ namespace ForgottenKingdom
             var allowed = distance;
             for (var i = 0; i < count; i++)
             {
-                if (Vector2.Dot(_groundHits[i].normal, direction) < -0.1f)
+                if (Vector2.Dot(_groundHits[i].normal, direction) < -0.1f && Stops(_groundHits[i].collider, direction))
                 {
                     allowed = Mathf.Min(allowed, Mathf.Max(0f, _groundHits[i].distance - 0.01f));
                 }
             }
             return velocity * (allowed / distance);
+        }
+
+        /// <summary>Where the bottom of the body is when it stands at <paramref name="position"/>.</summary>
+        private float FeetAt(Vector2 position) => position.y + _capsule.offset.y - _capsule.size.y * 0.5f;
+
+        /// <summary>
+        /// Whether a hit stops a move along <paramref name="direction"/>: a one-way ledge only stops a
+        /// move down onto it from above; up and sideways the body passes through.
+        /// </summary>
+        private bool Stops(Collider2D collider, Vector2 direction) =>
+            !OneWayPlatform.Is(collider) || (direction.y < -0.5f && OneWayPlatform.Stops(collider, FeetAt(_body.position)));
+
+        /// <summary>Overlapping colliders that are solid to a body inside them: one-way ledges are not.</summary>
+        private int SolidOverlaps(Vector2 center)
+        {
+            var count = Physics2D.OverlapCapsule(center, _capsule.size, _capsule.direction, 0f,
+                _groundFilter, _cornerOverlaps);
+            var solid = 0;
+            for (var i = 0; i < count; i++)
+            {
+                if (!OneWayPlatform.Is(_cornerOverlaps[i]))
+                {
+                    solid++;
+                }
+            }
+
+            return solid;
         }
 
         /// <summary>
@@ -487,7 +514,8 @@ namespace ForgottenKingdom
                 _capsule.direction, 0f, Vector2.down, _groundFilter, _groundHits, fall + 0.01f);
             for (var i = 0; i < count; i++)
             {
-                if (_groundHits[i].rigidbody != _body && _groundHits[i].normal.y >= MinimumGroundNormal)
+                if (_groundHits[i].rigidbody != _body && _groundHits[i].normal.y >= MinimumGroundNormal
+                    && OneWayPlatform.Stops(_groundHits[i].collider, FeetAt(position)))
                 {
                     return true;
                 }
@@ -496,15 +524,12 @@ namespace ForgottenKingdom
             return false;
         }
 
-        private bool IsSpaceClear(Vector2 position) =>
-            Physics2D.OverlapCapsule(position + _capsule.offset, _capsule.size, _capsule.direction, 0f,
-                _groundFilter, _cornerOverlaps) == 0;
+        private bool IsSpaceClear(Vector2 position) => SolidOverlaps(position + _capsule.offset) == 0;
 
         private bool IsRiseClearFrom(Vector2 position, float rise)
         {
             var center = position + _capsule.offset;
-            if (Physics2D.OverlapCapsule(center, _capsule.size, _capsule.direction, 0f,
-                    _groundFilter, _cornerOverlaps) > 0)
+            if (SolidOverlaps(center) > 0)
             {
                 return false;
             }
@@ -513,7 +538,7 @@ namespace ForgottenKingdom
                 Vector2.up, _groundFilter, _groundHits, rise + 0.01f);
             for (var i = 0; i < count; i++)
             {
-                if (_groundHits[i].normal.y < -0.1f)
+                if (_groundHits[i].normal.y < -0.1f && !OneWayPlatform.Is(_groundHits[i].collider))
                 {
                     return false;
                 }
@@ -534,7 +559,7 @@ namespace ForgottenKingdom
             for (var i = 0; i < count; i++)
             {
                 var hit = _destinationHits[i];
-                if (hit.attachedRigidbody == _body) { continue; }
+                if (hit.attachedRigidbody == _body || OneWayPlatform.Is(hit)) { continue; }
                 if (hit.GetComponent<KillZone>() != null
                     || (!hit.isTrigger && ((_groundMask.value & (1 << hit.gameObject.layer)) != 0)))
                 {
@@ -555,7 +580,8 @@ namespace ForgottenKingdom
             {
                 // A surface marked as smooth offers no grip; it stays solid, it just is not a wall.
                 if (Mathf.Abs(_groundHits[i].normal.x) > 0.9f
-                    && !_groundHits[i].collider.TryGetComponent<NonClimbableSurface>(out _))
+                    && !_groundHits[i].collider.TryGetComponent<NonClimbableSurface>(out _)
+                    && !OneWayPlatform.Is(_groundHits[i].collider))
                 {
                     return direction;
                 }
@@ -574,6 +600,7 @@ namespace ForgottenKingdom
                 if (_groundHits[i].collider != null
                     && _groundHits[i].rigidbody != _body
                     && _groundHits[i].normal.y >= MinimumGroundNormal
+                    && OneWayPlatform.Stops(_groundHits[i].collider, FeetAt(_body.position))
                     && (!found || _groundHits[i].normal.y > _groundNormal.y))
                 {
                     _groundNormal = _groundHits[i].normal;
@@ -601,7 +628,7 @@ namespace ForgottenKingdom
             {
                 var normal = _groundHits[i].normal;
                 if (_groundHits[i].rigidbody != _body && normal.y >= MinimumGroundNormal && normal.y < 0.999f
-                    && normal.x * direction.x < 0f)
+                    && normal.x * direction.x < 0f && !OneWayPlatform.Is(_groundHits[i].collider))
                 {
                     return normal;
                 }
@@ -616,7 +643,8 @@ namespace ForgottenKingdom
             var nearest = float.MaxValue;
             for (var i = 0; i < count; i++)
             {
-                if (_groundHits[i].rigidbody != _body && _groundHits[i].normal.y >= MinimumGroundNormal)
+                if (_groundHits[i].rigidbody != _body && _groundHits[i].normal.y >= MinimumGroundNormal
+                    && OneWayPlatform.Stops(_groundHits[i].collider, FeetAt(_body.position)))
                 {
                     nearest = Mathf.Min(nearest, _groundHits[i].distance);
                 }

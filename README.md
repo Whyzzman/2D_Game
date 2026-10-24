@@ -89,7 +89,7 @@ gamedesign/    документы разработки (по-русски; ча�
 - **Контент генерируется кодом.** `ContentBuilder.Build` пишет арт, звук, данные и префабы; сцены
   правят только редакторские `Scene*.Apply`. Зона пишется текстом в `Levels/*.txt`, проверяется
   на проходимость (`LevelCheck`) и собирается в сцену (`SceneTomb.Apply` и т. п.).
-- **Нарисованная зона** (пока Гробница): текст → `tools/level-art/render.sh <зона>` →
+- **Нарисованная зона** (пока Гробница): текст → `node tools/level-art/render.js <зона>` →
   `ContentBuilder.RefreshLevelArt` → `Scene<Зона>.Apply`. Блоки — только коллайдеры, всё видимое —
   картинки painter'а (`gamedesign/LEVEL_TOOL.md`, «Нарисованный уровень»).
 - **Проверка** — тесты в batchmode на копии `Artifacts/Verification/Project`; живой редактор —

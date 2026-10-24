@@ -170,7 +170,7 @@ Claude правит процедурные спрайты, а позже раб�
   видна сквозь арки и двигается с камерой (`ContentBuilderLevelArt`). `python tools/midjourney/place.py tomb`
   (Pillow: `pip install pillow`; macOS и Windows) обрезает по центру под пропорции комнаты, масштабирует и
   тонирует под дальний план (`VISUAL_BIBLE.md` §10: светлота L* 6–40 мягким плечом, насыщенность ×0,7 — гамма
-  комнаты остаётся своей). После `tools/level-art/render.sh tomb` запустить `place.py` ещё раз. Слой `near` (стена с
+  комнаты остаётся своей). После `node tools/level-art/render.js tomb` запустить `place.py` ещё раз. Слой `near` (стена с
   арками) остаётся от painter'а, но получает текстуру кладки.
 - **Текстуры** → painter (`design/levels/painter/terrain.js`) накладывает их на массы камня в тоне
   зоны; из текстуры строится карта нормалей для 2D-света.

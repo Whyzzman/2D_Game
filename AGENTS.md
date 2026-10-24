@@ -72,7 +72,8 @@
 - **Enum, хранимые числом** (`FeedbackKind`, `AudioId`, `PlayerAnimationState` и подобные) —
   новые значения только в конец.
 - **Высоты уровня** — от дискретного прыжка на 50 Гц: 1,97 (второй — ≈3,43); ступень
-  основного пути ≤ 1,7. Проходимость держит `TheWholeMainPathIsWalkableEastAndBackWithoutAnyAbility`.
+  основного пути ≤ 1,7. Уступы `=` односторонние (`OneWayPlatform`): уступ, закрывающий ворота способности,
+  делать камнем `#`, иначе в ворота впрыгнут снизу (`LevelCheck` это ловит). Проходимость держит `TheWholeMainPathIsWalkableEastAndBackWithoutAnyAbility`.
 - **Кадры игрока** 256×224, 100 PPU, pivot у стоп (128, 0), нарисованы лицом вправо; мотор
   зеркалит `Visual` через scale.x.
 - **Персонажи — lit-спрайты** (`ContentBuilder.LitSpriteMaterial`) с нормалями (`CharacterNormals`,
@@ -93,7 +94,7 @@
   Лес и Село уже такие: сцену из текста собирают `SceneTomb.Apply` / `SceneForest.Apply` /
   `SceneVillage.Apply` (после `Build`), тесты берут места из текста (`TombScene.Spot`, `ForestScene.Spot`),
   не числами. Новая зона — ещё `ProjectSettings/EditorBuildSettings.asset` из копии (сцена зоны). Картинки комнат карты — `ExportMapRooms` → `tools/map-art/render.sh
-  rooms` → `RefreshMapArt`. Нарисованная зона (Гробница): сменил текст — `tools/level-art/render.sh <зона>`
+  rooms` → `RefreshMapArt`. Нарисованная зона (Гробница): сменил текст — `node tools/level-art/render.js <зона>`
   → `RefreshLevelArt` → `Scene<Зона>.Apply` (`LEVEL_TOOL.md`, «Нарисованный уровень»).
 - `Build` пересоздаёт дочерние объекты префабов врагов с новыми fileID — переопределения
   сцены на них пропадут; настраивать через генератор.

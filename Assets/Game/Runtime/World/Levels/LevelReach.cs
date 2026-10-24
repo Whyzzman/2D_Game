@@ -30,7 +30,9 @@ namespace ForgottenKingdom
     ///
     /// It is a model, not the physics: the body is a 0.8 × 1.6 box standing on the middle half of
     /// its feet, walls give nothing back (no wall jumps or runs) and a running start is assumed
-    /// wherever there is floor behind. It comes strict or generous (<see cref="StrictJump"/>);
+    /// wherever there is floor behind. Ledges (<c>=</c>) are one-way, as in the game
+    /// (<see cref="OneWayPlatform"/>): they hold the feet from above and let the body through
+    /// from below and from the side. It comes strict or generous (<see cref="StrictJump"/>);
     /// PlayMode tests hold the real hero between the two (`LevelReachTests`).
     /// </summary>
     public sealed class LevelReach
@@ -189,8 +191,10 @@ namespace ForgottenKingdom
         private static bool IsSolid(LevelCell cell) =>
             cell == LevelCell.Solid || cell == LevelCell.Smooth || cell == LevelCell.Ledge;
 
+        private static bool IsWall(LevelCell cell) => cell == LevelCell.Solid || cell == LevelCell.Smooth;
+
         /// <summary>Cells under a world box, shrunk a hair so touching is not overlapping.</summary>
-        private bool Overlaps(Vector2 min, Vector2 max, bool spikes)
+        private bool Overlaps(Vector2 min, Vector2 max, bool spikes, bool ledges = true)
         {
             const float Eps = 0.001f;
             var size = _zone.CellSize;
@@ -203,7 +207,7 @@ namespace ForgottenKingdom
                 for (var x = x0; x <= x1; x++)
                 {
                     var cell = Cell(x, y);
-                    if (spikes ? cell == LevelCell.Spikes : IsSolid(cell))
+                    if (spikes ? cell == LevelCell.Spikes : ledges ? IsSolid(cell) : IsWall(cell))
                     {
                         return true;
                     }
@@ -213,10 +217,42 @@ namespace ForgottenKingdom
             return false;
         }
 
-        /// <summary>The body, by its feet (bottom centre).</summary>
+        /// <summary>The body, by its feet (bottom centre); a ledge never blocks a body inside it.</summary>
         private bool Blocked(Vector2 feet) =>
             Overlaps(new Vector2(feet.x - BodyWidth * 0.5f, feet.y),
-                new Vector2(feet.x + BodyWidth * 0.5f, feet.y + BodyHeight), false);
+                new Vector2(feet.x + BodyWidth * 0.5f, feet.y + BodyHeight), false, ledges: false);
+
+        /// <summary>
+        /// A fall from <paramref name="from"/> to <paramref name="to"/> crosses the top of a ledge
+        /// under the feet: the ledge holds them there.
+        /// </summary>
+        private bool LandsOnLedge(Vector2 from, Vector2 to)
+        {
+            const float Eps = 0.001f;
+            var size = _zone.CellSize;
+            var x0 = Mathf.FloorToInt((from.x - BodyWidth * 0.5f + Eps - _zone.Origin.x) / size);
+            var x1 = Mathf.FloorToInt((from.x + BodyWidth * 0.5f - Eps - _zone.Origin.x) / size);
+            var yTop = Mathf.FloorToInt((from.y + Eps - _zone.Origin.y) / size) - 1;
+            var yLow = Mathf.FloorToInt((to.y - Eps - _zone.Origin.y) / size);
+            for (var y = yTop; y >= yLow; y--)
+            {
+                var top = _zone.Origin.y + (y + 1) * size;
+                if (top > from.y + Eps || top < to.y - Eps)
+                {
+                    continue;
+                }
+
+                for (var x = x0; x <= x1; x++)
+                {
+                    if (Cell(x, y) == LevelCell.Ledge)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
 
         private bool OnSpikes(Vector2 feet) =>
             Overlaps(new Vector2(feet.x - BodyWidth * 0.4f, feet.y),
@@ -228,7 +264,33 @@ namespace ForgottenKingdom
         /// </summary>
         private bool Supported(Vector2 feet) =>
             Overlaps(new Vector2(feet.x - SupportHalfWidth, feet.y - GroundProbe),
-                new Vector2(feet.x + SupportHalfWidth, feet.y), false);
+                new Vector2(feet.x + SupportHalfWidth, feet.y), false, ledges: false)
+            || LedgeUnder(feet);
+
+        /// <summary>A ledge's top right under the middle of the feet — not a ledge the body is inside.</summary>
+        private bool LedgeUnder(Vector2 feet)
+        {
+            const float Eps = 0.001f;
+            var size = _zone.CellSize;
+            var row = Mathf.RoundToInt((feet.y - _zone.Origin.y) / size) - 1;
+            var top = _zone.Origin.y + (row + 1) * size;
+            if (feet.y < top - Eps || feet.y > top + GroundProbe)
+            {
+                return false;
+            }
+
+            var x0 = Mathf.FloorToInt((feet.x - SupportHalfWidth + Eps - _zone.Origin.x) / size);
+            var x1 = Mathf.FloorToInt((feet.x + SupportHalfWidth - Eps - _zone.Origin.x) / size);
+            for (var x = x0; x <= x1; x++)
+            {
+                if (Cell(x, row) == LevelCell.Ledge)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
 
         private Vector2 Feet(int x, int row) => _zone.CellCorner(new Vector2Int(x, row));
 
@@ -561,10 +623,12 @@ namespace ForgottenKingdom
 
             var count = Mathf.CeilToInt(Mathf.Abs(delta) / SubStep);
             var piece = axis * (delta / count);
+            var falling = axis.y > 0f && delta < 0f;
             for (var i = 0; i < count; i++)
             {
                 var next = feet + piece;
-                if (!Blocked(next))
+                var start = feet;
+                if (!Blocked(next) && !(falling && LandsOnLedge(start, next)))
                 {
                     feet = next;
                     continue;
@@ -576,7 +640,8 @@ namespace ForgottenKingdom
                 for (var k = 0; k < 6; k++)
                 {
                     var mid = (low + high) * 0.5f;
-                    if (Blocked(feet + piece * mid)) { high = mid; } else { low = mid; }
+                    var probe = feet + piece * mid;
+                    if (Blocked(probe) || (falling && LandsOnLedge(start, probe))) { high = mid; } else { low = mid; }
                 }
 
                 feet += piece * low;
