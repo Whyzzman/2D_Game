@@ -90,6 +90,9 @@ merge-коммитом из `cloud/verified`: компиляция и `.meta` и
 - **Болота** — черновик `Levels/marsh.txt` (20 комнат, `MARSH.md`, `tools/level-drafts/marsh.py`);
   ядовитая вода пока `^`; `LevelCheck`: `room_marsh_toxic_drain` доступна без маски, `room_marsh_hold_cache` недоступна и с маской — править текст; зону в игру не подключать до строителя (`MARSH.md` §10).
 
+- [ ] **Премиум-арт через Midjourney** (решение пользователя 2026-10-24): Claude пишет промпты, пользователь
+  генерирует, Claude вписывает; Гробница → Лес → Село → Столица. Промпты и порядок — `MIDJOURNEY.md`.
+
 Дальше по ощущению игры — `GAME_FEEL_IDEAS.md` (23 пункта по пользе).
 
 ## Отложено до конца разработки
@@ -116,7 +119,7 @@ merge-коммитом из `cloud/verified`: компиляция и `.meta` и
 | Клавиши и отладка | `CONTROLS.md` |
 | Визуальный стиль | `VISUAL_BIBLE.md`, `CONCEPT_BRIEFS.md`, `ART_REQUIREMENTS.md` |
 | Арт: список и замена | `ART_ASSET_LIST.md`, `ANIMATION_LIST.md`, `ANIMATION_PIPELINE.md`, `VFX_LIST.md` |
-| Окружение | `ENVIRONMENT_TOMB.md`; нарисованные зоны — `LEVEL_TOOL.md` («Нарисованный уровень»), макет и painter — `design/levels/`; фоны из Midjourney — `MIDJOURNEY.md` |
+| Окружение | `ENVIRONMENT_TOMB.md`; нарисованные зоны — `LEVEL_TOOL.md` («Нарисованный уровень»), макет и painter — `design/levels/`; арт из Midjourney (фоны, текстуры, декор) — `MIDJOURNEY.md` |
 | Боевой фидбек | `COMBAT_FEEDBACK.md` |
 | Ощущение игры: что улучшить дальше | `GAME_FEEL_IDEAS.md` |
 | Звук и музыка | `AUDIO_DESIGN.md`, `AUDIO_ASSET_LIST.md`, `MUSIC_SYSTEM.md`; бриф на живую музыку и запись — `AUDIO_BRIEF.md` |
