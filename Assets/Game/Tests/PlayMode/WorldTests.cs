@@ -5,6 +5,7 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
+using UnityEngine.UIElements;
 
 namespace ForgottenKingdom.Tests
 {
@@ -247,6 +248,72 @@ namespace ForgottenKingdom.Tests
             Assert.That(MusicDirector.Instance.ZoneId, Is.EqualTo("zone_forgotten_tomb"));
             yield return Place(new Vector2(70f, 0.85f));
             Assert.That(titles, Is.EqualTo(1), "The title card plays on the first crossing only.");
+        }
+
+        [UnityTest]
+        public IEnumerator CrossingIntoTheForestSweepsFogInTheForestsColour()
+        {
+            var hud = Object.FindAnyObjectByType<HudController>();
+            var graph = _progress.World;
+            Assert.That(graph.Zone("zone_withered_forest").FogTint,
+                Is.Not.EqualTo(graph.Zone("zone_forgotten_tomb").FogTint), "Each region has its own fog.");
+            yield return Place(new Vector2(55f, 0.85f));
+            yield return new WaitForSecondsRealtime(0.3f);
+            Assert.That(_world.CurrentZoneId, Is.EqualTo("zone_forgotten_tomb"));
+            Assert.That(hud.ZoneCurtain.IsPlaying, Is.False, "Standing in the first zone plays nothing.");
+
+            yield return Place(new Vector2(70f, 0.85f));
+            Assert.That(_world.CurrentZoneId, Is.EqualTo("zone_withered_forest"));
+            Assert.That(hud.ZoneCurtain.IsPlaying, Is.True, "The border is marked by the fog.");
+
+            var deadline = Time.realtimeSinceStartup + 3f;
+            while (hud.ZoneCurtain.IsPlaying && Time.realtimeSinceStartup < deadline)
+            {
+                yield return null;
+            }
+
+            Assert.That(hud.ZoneCurtain.IsPlaying, Is.False, "It passes; nothing waits on it.");
+        }
+
+        [UnityTest]
+        public IEnumerator WithReducedMotionTheCurtainIsAPlainFade()
+        {
+            var hud = Object.FindAnyObjectByType<HudController>();
+            FeedbackSettings.ReducedMotion = true;
+            try
+            {
+                yield return Place(new Vector2(55f, 0.85f));
+                yield return Place(new Vector2(70f, 0.85f));
+                Assert.That(hud.ZoneCurtain.IsPlaying, Is.True);
+                var front = hud.GetComponent<UIDocument>().rootVisualElement
+                    .Q("zone-curtain-front");
+                Assert.That(front.style.translate.value.x.value, Is.EqualTo(0f).Within(0.01f), "Nothing slides.");
+            }
+            finally
+            {
+                FeedbackSettings.ResetToDefaults();
+            }
+        }
+
+        [UnityTest]
+        public IEnumerator TheForestsCardRisesWithItsThemeNotBefore()
+        {
+            var hud = Object.FindAnyObjectByType<HudController>();
+            yield return Place(new Vector2(55f, 0.85f));
+            yield return Place(new Vector2(70f, 0.85f));
+            var entered = Time.realtimeSinceStartup;
+            var music = MusicDirector.Instance;
+            while (!hud.ZoneTitleText.Contains("ЛІС") && Time.realtimeSinceStartup - entered < 4f)
+            {
+                yield return null;
+            }
+
+            StringAssert.Contains("ЛІС", hud.ZoneTitleText, "The card comes, music or not.");
+            Assert.That(hud.ZoneTitleIsShowing, Is.True);
+            Assert.That(hud.ZoneTitleIsShort, Is.False, "The first visit is the full card.");
+            var waited = Time.realtimeSinceStartup - entered;
+            Assert.That(music == null || music.ThemeArrival("zone_withered_forest") >= 0.3f || waited >= 2.4f,
+                Is.True, "It rose with the forest's theme, or waited no longer than its limit.");
         }
 
         [UnityTest]

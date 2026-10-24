@@ -34,6 +34,7 @@ MonoBehaviour:
   _shake: 0
   _shakeScale: 1
   _shakeVerticalBias: 1
+  _shakeKick: 0
   _screenFlash: 0
   _flashColor: {r: 1, g: 1, b: 1, a: 1}
   _lightColor: {r: 1, g: 0.55, b: 0.2, a: 0.45}

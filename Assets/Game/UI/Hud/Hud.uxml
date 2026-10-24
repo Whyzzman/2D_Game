@@ -9,6 +9,14 @@
     <Style src="Story.uss" />
     <ui:VisualElement name="hud" class="hud" picking-mode="Ignore">
         <ui:VisualElement name="vignette" class="vignette" picking-mode="Ignore" />
+        <!-- The red edge of a blow taken (HudVitals): the vignette's shape, tinted, faded by code. -->
+        <ui:VisualElement name="hurt-flash" class="hurt-flash" picking-mode="Ignore" />
+
+        <!-- GAME_FEEL_IDEAS.md item 19: fog in the next region's colour sweeps over the world, under the HUD. -->
+        <ui:VisualElement name="zone-curtain" class="zone-curtain" picking-mode="Ignore">
+            <ui:VisualElement name="zone-curtain-back" class="zone-curtain__layer zone-curtain__layer--back" picking-mode="Ignore" />
+            <ui:VisualElement name="zone-curtain-front" class="zone-curtain__layer" picking-mode="Ignore" />
+        </ui:VisualElement>
 
         <ui:VisualElement name="conditions" class="conditions" picking-mode="Ignore">
             <ui:VisualElement name="status-bleed" class="chip chip--bleed" picking-mode="Ignore">
@@ -587,36 +595,50 @@
         </ui:VisualElement>
 
         <!-- design/ui/menus/menus.html, frame 4: the pause over the live, frozen game. -->
-        <ui:VisualElement name="pause" class="pause">
-            <ui:VisualElement name="pause-panel" class="pause__panel">
+        <ui:VisualElement name="pause" class="pause motion motion--fade">
+            <ui:VisualElement name="pause-panel" class="pause__panel motion">
+                <ui:VisualElement class="gem gem--tl" picking-mode="Ignore" />
+                <ui:VisualElement class="gem gem--tr" picking-mode="Ignore" />
+                <ui:VisualElement class="gem gem--bl" picking-mode="Ignore" />
+                <ui:VisualElement class="gem gem--br" picking-mode="Ignore" />
                 <ui:VisualElement class="pause__inset" picking-mode="Ignore" />
                 <ui:VisualElement class="pause__header" picking-mode="Ignore">
-                    <ui:Label class="pause__title display" text="ПАУЗА" picking-mode="Ignore" />
+                    <ui:Label class="pause__title display" text="Пауза" picking-mode="Ignore" />
+                    <ui:VisualElement class="pause__rule ornament" picking-mode="Ignore" />
                 </ui:VisualElement>
                 <ui:VisualElement class="pause__body">
-                    <ui:Button name="pause-resume" class="btn btn--primary"><ui:Label class="btn__text display" text="ПРОДОВЖИТИ" picking-mode="Ignore" /></ui:Button>
-                    <ui:Button name="pause-map" class="btn"><ui:Label class="btn__text display" text="КАРТА" picking-mode="Ignore" /></ui:Button>
-                    <ui:Button name="pause-equipment" class="btn"><ui:Label class="btn__text display" text="СПОРЯДЖЕННЯ" picking-mode="Ignore" /></ui:Button>
-                    <ui:Button name="pause-character" class="btn"><ui:Label class="btn__text display" text="ПЕРСОНАЖ" picking-mode="Ignore" /><ui:VisualElement name="pause-character-pip" class="pip" picking-mode="Ignore" /></ui:Button>
-                    <ui:Button name="pause-skills" class="btn"><ui:Label class="btn__text display" text="УМІННЯ" picking-mode="Ignore" /><ui:VisualElement name="pause-skills-pip" class="pip" picking-mode="Ignore" /></ui:Button>
-                    <ui:Button name="pause-options" class="btn"><ui:Label class="btn__text display" text="НАЛАШТУВАННЯ" picking-mode="Ignore" /></ui:Button>
-                    <ui:Button name="pause-controls" class="btn"><ui:Label class="btn__text display" text="КЕРУВАННЯ" picking-mode="Ignore" /></ui:Button>
-                    <ui:Button name="pause-main-menu" class="btn btn--danger btn--last"><ui:Label class="btn__text display" text="ДО ГОЛОВНОГО МЕНЮ" picking-mode="Ignore" /></ui:Button>
+                    <ui:Button name="pause-resume" class="btn btn--primary pause__item motion motion--line"><ui:Label class="btn__text display" text="Продовжити" picking-mode="Ignore" /></ui:Button>
+                    <ui:Button name="pause-map" class="btn pause__item motion motion--line"><ui:Label class="btn__text display" text="Карта" picking-mode="Ignore" /></ui:Button>
+                    <ui:Button name="pause-equipment" class="btn pause__item motion motion--line"><ui:Label class="btn__text display" text="Спорядження" picking-mode="Ignore" /></ui:Button>
+                    <ui:Button name="pause-character" class="btn pause__item motion motion--line"><ui:Label class="btn__text display" text="Персонаж" picking-mode="Ignore" /><ui:VisualElement name="pause-character-pip" class="pip" picking-mode="Ignore" /></ui:Button>
+                    <ui:Button name="pause-skills" class="btn pause__item motion motion--line"><ui:Label class="btn__text display" text="Уміння" picking-mode="Ignore" /><ui:VisualElement name="pause-skills-pip" class="pip" picking-mode="Ignore" /></ui:Button>
+                    <ui:Button name="pause-options" class="btn pause__item motion motion--line"><ui:Label class="btn__text display" text="Налаштування" picking-mode="Ignore" /></ui:Button>
+                    <ui:Button name="pause-controls" class="btn pause__item motion motion--line"><ui:Label class="btn__text display" text="Керування" picking-mode="Ignore" /></ui:Button>
+                    <ui:Button name="pause-main-menu" class="btn btn--danger btn--last pause__item motion motion--line"><ui:Label class="btn__text display" text="До головного меню" picking-mode="Ignore" /></ui:Button>
                 </ui:VisualElement>
             </ui:VisualElement>
 
             <!-- design/ui/controls/controls.html: the controls, now changeable; ControlsPanel builds the rows. -->
             <ui:VisualElement name="controls-panel" class="controls" />
 
-            <ui:VisualElement name="options-panel" class="options">
-                <ui:Label class="options__title display" text="Налаштування" />
+            <!-- design/ui/menus/menus.html, state 4: one panel, two groups, a line explaining the focused row. -->
+            <ui:VisualElement name="options-panel" class="options motion">
+                <ui:VisualElement class="gem gem--tl" picking-mode="Ignore" />
+                <ui:VisualElement class="gem gem--tr" picking-mode="Ignore" />
+                <ui:VisualElement class="gem gem--bl" picking-mode="Ignore" />
+                <ui:VisualElement class="gem gem--br" picking-mode="Ignore" />
+                <ui:Label class="options__title display" text="Налаштування" picking-mode="Ignore" />
                 <ui:VisualElement class="options__rule ornament" picking-mode="Ignore" />
-                <ui:Slider name="opt-master" class="option" label="Гучність" low-value="0" high-value="1" />
-                <ui:Slider name="opt-effects" class="option" label="Ефекти" low-value="0" high-value="1" />
-                <ui:Slider name="opt-shake" class="option" label="Тремтіння камери" low-value="0" high-value="1" />
-                <ui:Slider name="opt-flash" class="option" label="Спалахи" low-value="0" high-value="1" />
-                <ui:Slider name="opt-hitstop" class="option" label="Зупинка при ударі" low-value="0" high-value="1" />
-                <ui:Toggle name="opt-post" class="option option--toggle" label="Ефекти зображення" value="true" />
+                <ui:Label class="options__group display options__line motion motion--line" text="Звук" picking-mode="Ignore" />
+                <ui:Slider name="opt-master" class="option options__line motion motion--line" label="Загальна гучність" low-value="0" high-value="1" />
+                <ui:Slider name="opt-music" class="option options__line motion motion--line" label="Музика" low-value="0" high-value="1" />
+                <ui:Slider name="opt-effects" class="option options__line motion motion--line" label="Ефекти" low-value="0" high-value="1" />
+                <ui:Label class="options__group options__group--gap display options__line motion motion--line" text="Екран і доступність" picking-mode="Ignore" />
+                <ui:Slider name="opt-shake" class="option options__line motion motion--line" label="Тремтіння камери" low-value="0" high-value="1" />
+                <ui:Slider name="opt-flash" class="option options__line motion motion--line" label="Спалахи" low-value="0" high-value="1" />
+                <ui:Slider name="opt-hitstop" class="option options__line motion motion--line" label="Зупинка при ударі" low-value="0" high-value="1" />
+                <ui:Toggle name="opt-post" class="option option--toggle options__line motion motion--line" label="Ефекти зображення" value="true" />
+                <ui:Label name="options-help" class="options__help" text="" picking-mode="Ignore" />
                 <ui:Button name="options-back" class="menu-button menu-button--small display" text="Назад" />
             </ui:VisualElement>
         </ui:VisualElement>

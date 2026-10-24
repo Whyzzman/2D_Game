@@ -118,6 +118,43 @@ namespace ForgottenKingdom.Tests
         }
 
         [UnityTest]
+        public IEnumerator APaymentFliesFromTheStruckBodyToTheBar()
+        {
+            var gain = _player.GetComponent<WeaponManaGain>();
+            var hud = Object.FindAnyObjectByType<HudController>();
+            Assume.That(hud, Is.Not.Null);
+            Assert.That(hud.ManaWisps, Is.Not.Null, "The HUD carries the mana sparks.");
+            var dummy = Object.FindAnyObjectByType<TrainingDummy>();
+            Assume.That(dummy, Is.Not.Null);
+            var facing = _motor.FacingDirection;
+            _motor.ResetTo(new Vector2(dummy.transform.position.x - facing * 1.1f,
+                dummy.transform.position.y));
+            yield return Land();
+            yield return new WaitForSeconds(0.3f);
+            _mana.TrySpend(60f);
+
+            var paid = 0f;
+            var from = Vector2.zero;
+            void OnPaid(Vector2 position, float amount) { paid += amount; from = position; }
+            gain.ManaPaid += OnPaid;
+            var hits = dummy.HitCount;
+            Assert.That(_player.Combat.TryStartLight(), Is.True);
+            yield return WaitForHit(dummy, hits);
+            gain.ManaPaid -= OnPaid;
+
+            Assert.That(paid, Is.EqualTo(gain.PerHit).Within(0.01f), "The payment is announced once.");
+            Assert.That(Vector2.Distance(from, dummy.transform.position), Is.LessThan(2f),
+                "It leaves the body that was struck.");
+            Assert.That(hud.ManaWisps.ActiveCount + (hud.ManaWisps.IsFlashing ? 1 : 0),
+                Is.GreaterThan(0), "A spark is on its way, or the bar is already brightening.");
+
+            var started = Time.realtimeSinceStartup;
+            while (Time.realtimeSinceStartup - started < 1f) { yield return null; }
+            Assert.That(hud.ManaWisps.ActiveCount, Is.Zero, "Every spark lands within a second.");
+            Assert.That(hud.ManaWisps.IsFlashing, Is.False);
+        }
+
+        [UnityTest]
         public IEnumerator IntelligenceBuysABiggerPoolWithoutRefillingIt()
         {
             var before = _mana.Max;

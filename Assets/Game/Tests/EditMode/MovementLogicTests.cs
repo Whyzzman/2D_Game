@@ -58,8 +58,9 @@ namespace ForgottenKingdom.Tests
         [Test]
         public void AirControlAndDirectionChangeAreResponsive()
         {
+            // A reversal in the air bites at the turn acceleration (90), three times speeding up.
             var velocity = _logic.Step(new Vector2(3f, 0f), false, new MovementInput(-1f), StepTime);
-            Assert.That(velocity.x, Is.EqualTo(2.4f).Within(0.001f));
+            Assert.That(velocity.x, Is.EqualTo(3f - _settings.AirTurnAcceleration * StepTime).Within(0.001f));
             Assert.That(_logic.FacingDirection, Is.EqualTo(-1));
             for (var i = 0; i < 16; i++)
             {
@@ -104,8 +105,27 @@ namespace ForgottenKingdom.Tests
         {
             _logic.Step(Vector2.down, false, new MovementInput(0f, true, true), StepTime);
             var velocity = _logic.Step(Vector2.zero, true,
-                new MovementInput(0f, false, true), 0.15f);
+                new MovementInput(0f, false, true), _settings.JumpBuffer + 0.03f);
             Assert.That(velocity.y, Is.Zero);
+        }
+
+        [Test]
+        public void LettingGoInTheAirStopsTheDriftQuicklyButNeverAddsReach()
+        {
+            // As in Hollow Knight the hero does not glide on after the stick is let go: a full
+            // run is gone in about a seventh of a second (it was a third).
+            var velocity = new Vector2(_settings.RunSpeed, 2f);
+            var steps = 0;
+            while (velocity.x > 0f && steps < 100)
+            {
+                velocity = _logic.Step(velocity, false, default, StepTime);
+                steps++;
+            }
+
+            Assert.That(steps * StepTime, Is.LessThanOrEqualTo(0.16f));
+            // Speeding up the same way is unchanged, so no jump across a gap got longer.
+            velocity = _logic.Step(new Vector2(1f, 2f), false, new MovementInput(1f), StepTime);
+            Assert.That(velocity.x, Is.EqualTo(1f + _settings.AirAcceleration * StepTime).Within(0.001f));
         }
 
         [Test]

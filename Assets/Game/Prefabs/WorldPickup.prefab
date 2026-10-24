@@ -91,6 +91,11 @@ MonoBehaviour:
   _visual: {fileID: 5316141239112295978}
   _bobHeight: 0.12
   _bobSpeed: 2.5
+  _magnetRadius: 2
+  _magnetAcceleration: 40
+  _magnetMaxSpeed: 18
+  _magnetTargetHeight: 0.8
+  _magnetCatchDistance: 0.25
 --- !u!1 &3296630489903923155
 GameObject:
   m_ObjectHideFlags: 0

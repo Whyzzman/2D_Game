@@ -39,9 +39,18 @@ namespace ForgottenKingdom
         [Tooltip("A real 2D light cloned into each light pulse, so a parry lights the stone around "
             + "it rather than only drawing a halo. Built in the editor so it keeps its layers.")]
         [SerializeField] private UnityEngine.Rendering.Universal.Light2D _lightTemplate;
+        [Tooltip("The world's speed for a moment after a parry's freeze (GAME_FEEL_IDEAS item 9).")]
+        [SerializeField, Range(0.05f, 1f)] private float _parrySlowScale = 0.3f;
+        [Tooltip("Real seconds of that slow at full hit-stop setting; the setting scales it, "
+            + "reduced motion turns it off.")]
+        [SerializeField, Min(0f)] private float _parrySlowTime = 0.12f;
 
         private VfxPool _bursts;
         private VfxPool _lights;
+        private BossDeathMoment _bossDeath;
+        private TelegraphCues _telegraphs;
+        private readonly GamepadRumble _rumble = new GamepadRumble();
+        private readonly SlowMotionMoment _slowMotion = new SlowMotionMoment();
         private Transform _root;
 
         // Collected during a frame and applied once at the end of it.
@@ -63,6 +72,16 @@ namespace ForgottenKingdom
         public int LiveLights => _lights?.Live ?? 0;
         public FeedbackLibrary Library => _library;
 
+        /// <summary>True while a boss's death holds the world slow (GAME_FEEL_IDEAS item 11).</summary>
+        public bool IsBossDeathRunning => _bossDeath != null && _bossDeath.IsRunning;
+
+        /// <summary>Enemy windups being breathed through right now (GAME_FEEL_IDEAS item 12).</summary>
+        public int TelegraphsRunning => _telegraphs?.Count ?? 0;
+        /// <summary>The gamepad's rumble, driven by the profiles' haptic strength.</summary>
+        public GamepadRumble Rumble => _rumble;
+        /// <summary>True while a parry holds the world slow.</summary>
+        public bool IsSlowMotionRunning => _slowMotion.IsRunning;
+
         private void Awake()
         {
             Instance = this;
@@ -70,6 +89,9 @@ namespace ForgottenKingdom
             _root.SetParent(transform, false);
             _bursts = new VfxPool(_root, _burstCapacity, _effectMaterial);
             _lights = new VfxPool(_root, _lightCapacity, _effectMaterial, _lightTemplate);
+            _bossDeath = new BossDeathMoment(PlayCrackLight);
+            _telegraphs = new TelegraphCues(point =>
+                PlayInternal(FeedbackKind.EnemyTelegraph, point, Vector2.right, 0.8f, Color.white));
             if (_shaker == null && Camera.main != null)
             {
                 _shaker = Camera.main.GetComponent<CameraShaker>();
@@ -90,6 +112,19 @@ namespace ForgottenKingdom
 
             ZoneStreamer.ZonesChanged -= SubscribeLevel;
             Unsubscribe();
+            _bossDeath?.Stop();
+            _telegraphs?.Clear();
+            _rumble.Stop();
+            _slowMotion.Stop();
+        }
+
+        private void OnApplicationFocus(bool focused)
+        {
+            // A pad left buzzing while the window is away is the one rumble bug nobody forgives.
+            if (!focused)
+            {
+                _rumble.Stop();
+            }
         }
 
         private void Start()
@@ -114,6 +149,12 @@ namespace ForgottenKingdom
         public static void Play(FeedbackKind kind, Vector2 position, Color tint, float scale = 1f)
         {
             Instance?.PlayInternal(kind, position, Vector2.right, scale, tint);
+        }
+
+        /// <summary>A directed moment, tinted: movement dust in the colour of the ground it rose from.</summary>
+        public static void Play(FeedbackKind kind, Vector2 position, Vector2 direction, float scale, Color tint)
+        {
+            Instance?.PlayInternal(kind, position, direction, scale, tint);
         }
 
         private void PlayInternal(FeedbackKind kind, Vector2 position, Vector2 direction,
@@ -163,6 +204,10 @@ namespace ForgottenKingdom
 
         private void LateUpdate()
         {
+            _bossDeath?.Tick(Time.unscaledDeltaTime);
+            _telegraphs?.Tick();
+            _rumble.Tick();
+            _slowMotion.Tick(Time.unscaledDeltaTime);
             if (_frameOwner == null)
             {
                 return;
@@ -174,13 +219,18 @@ namespace ForgottenKingdom
             HitStop.Request(profile.HitStop);
             if (_shaker != null)
             {
-                _shaker.Shake(profile.Shake, profile.ShakeScale, profile.ShakeVerticalBias);
+                // The direction of the moment that owns the frame: the camera is pushed along the blow.
+                _shaker.Shake(profile.Shake, profile.ShakeScale, profile.ShakeVerticalBias,
+                    _frameDirection, profile.ShakeKick);
             }
 
             if (_flash != null && profile.ScreenFlash > 0f)
             {
                 _flash.Flash(profile.FlashColor, profile.ScreenFlash);
             }
+
+            // One rumble a frame, the owner's: five sparks are still one jolt in the hands.
+            _rumble.Pulse(profile.Haptic);
         }
 
         /// <summary>Drops every running effect. Called on death, respawn and world reset.</summary>
@@ -190,7 +240,33 @@ namespace ForgottenKingdom
             _lights?.ClearAll();
             _shaker?.Clear();
             _flash?.Clear();
+            _rumble.Stop();
             _frameOwner = null;
+            _telegraphs?.Clear();
+            _slowMotion.Stop();
+        }
+
+        private void PlayCrackLight(Vector2 position, Color color, float radius, float duration)
+        {
+            if (_lightSprite == null) { return; }
+            _lights.Take().PlayLight(_lightSprite, color, radius, duration, position, _lights);
+        }
+
+        /// <summary>The body's drawn extent, so the light breaks out of the figure and not its feet.</summary>
+        private static Bounds BodyBounds(BossController boss)
+        {
+            var renderers = boss.GetComponentsInChildren<SpriteRenderer>();
+            if (renderers.Length == 0) { return new Bounds(boss.transform.position + Vector3.up, new Vector3(1.5f, 2f, 0f)); }
+
+            Bounds? bounds = null;
+            foreach (var renderer in renderers)
+            {
+                if (!renderer.enabled || renderer.sprite == null) { continue; }
+                if (bounds == null) { bounds = renderer.bounds; }
+                else { var grown = bounds.Value; grown.Encapsulate(renderer.bounds); bounds = grown; }
+            }
+
+            return bounds ?? new Bounds(boss.transform.position + Vector3.up, new Vector3(1.5f, 2f, 0f));
         }
 
         // ---------- listening to combat ----------
@@ -208,6 +284,8 @@ namespace ForgottenKingdom
                 }
 
                 player.DashStarted += () => OnPlayerDash(player);
+                // Only the hero's own parry slows the world: it is the moment the player earned.
+                player.Parried += _ => _slowMotion.Begin(_parrySlowScale, _parrySlowTime);
                 var combat = player.GetComponent<PlayerCombat>();
                 if (combat != null)
                 {
@@ -242,8 +320,16 @@ namespace ForgottenKingdom
         {
             foreach (var actor in ZoneObjects.New(_actors))
             {
-                actor.DamageTaken += OnDamageTaken;
                 actor.AttackParried += OnParried;
+                if (actor.GetComponent<PlayerCharacter>() != null)
+                {
+                    // The hero's own hurt (COMBAT_FEEDBACK.md §6а). Its death has its own
+                    // presentation; the enemy-death burst and the zombie's death cry are not it.
+                    actor.DamageTaken += OnPlayerDamaged;
+                    continue;
+                }
+
+                actor.DamageTaken += OnDamageTaken;
                 actor.Killed += OnKilled;
             }
 
@@ -258,7 +344,11 @@ namespace ForgottenKingdom
                 enemy.GuardBrokenOpen += () => PlayAt(FeedbackKind.GuardBreak, captured.transform);
                 enemy.StaggerBroken += _ => PlayAt(FeedbackKind.StaggerBreak, captured.transform);
                 var sockets = enemy.GetComponentInChildren<VisualSockets>(true);
-                enemy.AttackTelegraphed += _ => OnEnemyTelegraph(captured, sockets);
+                enemy.AttackTelegraphed += attack =>
+                {
+                    OnEnemyTelegraph(captured, sockets);
+                    _telegraphs.Begin(captured, attack, sockets);
+                };
             }
 
             // Every boss in the scene: the forest's Warden deserves the same weight as the Guardian.
@@ -270,7 +360,11 @@ namespace ForgottenKingdom
                 boss.MovementBegan += movement => OnBossMovement(boss, movement, true);
                 boss.MovementEnded += movement => OnBossMovement(boss, movement, false);
                 boss.PhaseChanged += phase => OnBossPhase(boss, phase);
-                boss.Defeated += defeated => PlayAt(FeedbackKind.BossDeath, defeated.transform, 2f);
+                boss.Defeated += defeated =>
+                {
+                    PlayAt(FeedbackKind.BossDeath, defeated.transform, 2f);
+                    _bossDeath.Begin(BodyBounds(defeated));
+                };
                 boss.Staggered += _ => PlayAt(FeedbackKind.StaggerBreak, boss.transform, 1.5f);
             }
 
@@ -300,6 +394,7 @@ namespace ForgottenKingdom
                 }
 
                 actor.DamageTaken -= OnDamageTaken;
+                actor.DamageTaken -= OnPlayerDamaged;
                 actor.AttackParried -= OnParried;
                 actor.Killed -= OnKilled;
             }
@@ -315,11 +410,7 @@ namespace ForgottenKingdom
         /// </summary>
         private void OnDamageTaken(DamageInfo info, DamageResult result)
         {
-            var position = info.HitPoint.sqrMagnitude > 0.0001f
-                ? info.HitPoint
-                : (Vector2)(info.Attacker != null
-                    ? info.Attacker.transform.position
-                    : Vector3.zero);
+            var position = ImpactPoint(info);
 
             switch (result.Outcome)
             {
@@ -337,6 +428,31 @@ namespace ForgottenKingdom
 
             PlayInternal(KindForHit(info), position, BurstDirection(info), ScaleForHit(info));
         }
+
+        /// <summary>
+        /// A blow that landed on the hero is the hero being hurt: its own profile — a longer stop
+        /// and a shove of the camera the way the blow came — rather than the spark the hero's own
+        /// sword makes on an enemy. Elements and statuses keep their impacts, which say what hit;
+        /// blocks, parries and invincibility go the usual way.
+        /// </summary>
+        private void OnPlayerDamaged(DamageInfo info, DamageResult result)
+        {
+            if (result.Outcome == DamageOutcome.Hit && !info.IsStatusDamage
+                && info.Type == DamageType.Physical)
+            {
+                PlayInternal(FeedbackKind.PlayerHurt, ImpactPoint(info), info.HitDirection, 1f);
+                return;
+            }
+
+            OnDamageTaken(info, result);
+        }
+
+        private static Vector2 ImpactPoint(in DamageInfo info) =>
+            info.HitPoint.sqrMagnitude > 0.0001f
+                ? info.HitPoint
+                : (Vector2)(info.Attacker != null
+                    ? info.Attacker.transform.position
+                    : Vector3.zero);
 
         /// <summary>Where the pogo's spark sits: under the feet, where the blade struck.</summary>
         private static readonly Vector2 PogoSparkOffset = new Vector2(0f, -1.1f);

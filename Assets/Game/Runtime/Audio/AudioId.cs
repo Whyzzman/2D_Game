@@ -238,6 +238,24 @@ namespace ForgottenKingdom
         // ---- exploration (item 4, stage B, appended) ----
         WallCrack,
         WallCrumble,
-        TrialGong
+        TrialGong,
+
+        // ---- the ground under the feet (GAME_FEEL_IDEAS item 4, appended) ----
+        FootstepWood,
+        FootstepEarth,
+        FootstepWater,
+        FootstepAsh,
+        // ---- footwork (2026-10-19, appended): the skid of a start or a turn, the kick off a wall ----
+        FootstepScuff,
+        WallJumpKick,
+        // ---- the world answering the hero (GAME_FEEL_IDEAS items 13-14, appended) ----
+        PropBreak,
+        // ---- the hero's death and return (GAME_FEEL_IDEAS item 22, appended) ----
+        HeroFall,
+        AltarCall,
+        // ---- ringing ears when the hero is hit (GAME_FEEL_IDEAS item 10, appended) ----
+        HurtRing,
+        // ---- the heart heard at low health (GAME_FEEL_IDEAS item 17, appended) ----
+        Heartbeat
     }
 }

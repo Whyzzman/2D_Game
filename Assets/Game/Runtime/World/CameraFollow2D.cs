@@ -36,7 +36,23 @@ namespace ForgottenKingdom
         [Tooltip("Falling faster than this counts as a long fall. An ordinary jump lands at ~14.")]
         [SerializeField, Min(0f)] private float _fallLookAheadSpeed = 15f;
         [SerializeField, Min(0.01f)] private float _fallLookAheadSmoothTime = 0.5f;
+        [Header("Looking up and down")]
+        [Tooltip("How far the view moves when the player stands still holding up or down "
+            + "(GAME_FEEL_IDEAS.md, item 1). Zero turns it off.")]
+        [SerializeField, Min(0f)] private float _lookDistance = 3f;
+        [Tooltip("How long up or down has to be held, standing still, before the view moves: a "
+            + "swing up or a pogo never moves it.")]
+        [SerializeField, Min(0f)] private float _lookDelay = 0.4f;
+        [SerializeField, Min(0.01f)] private float _lookSmoothTime = 0.35f;
+        [Tooltip("The camera itself, not only where it is heading, stays inside the room once it is "
+            + "in: the smoothing lag of a zoom out and a shake against a wall never show past it.")]
+        [SerializeField] private bool _hardRoomEdges = true;
+        [Tooltip("How far past the frame the view may already be and still be pulled to its edge at "
+            + "once: a zoom's step in one frame. Farther (a frame set with no slide) is left to the "
+            + "smoothing, so the view never cuts.")]
+        [SerializeField, Min(0f)] private float _hardEdgePull = 0.1f;
         private Vector2 _smoothingVelocity;
+        private Vector2 _appliedShake;
         private float _anchorY;
         private float _fallLead;
         private float _fallLeadVelocity;
@@ -57,10 +73,15 @@ namespace ForgottenKingdom
         private float _zoomSmoothTime = 0.8f;
         private float _punchUntil;
         private float _punchAmount;
+        private PlayerInputReader _input;
+        private float _lookHeld;
+        private int _lookSign;
+        private float _look;
+        private float _lookVelocity;
 
         /// <summary>Where the camera is heading, before shake; tests measure framing against this.</summary>
         public Vector2 TargetPosition => _target != null
-            ? Clamp(new Vector2(_target.transform.position.x + _lead, _anchorY + _fallLead)
+            ? Clamp(new Vector2(_target.transform.position.x + _lead, _anchorY + _fallLead + _look)
                 + _framingOffset)
             : (Vector2)transform.position;
 
@@ -92,6 +113,7 @@ namespace ForgottenKingdom
             _zoomTarget = _baseSize;
             _zoom = _baseSize;
             if (_shaker == null) { _shaker = GetComponent<CameraShaker>(); }
+            if (_target != null) { _input = _target.GetComponent<PlayerInputReader>(); }
             if (_target == null)
             {
                 Debug.LogError("CameraFollow2D requires a Player target.", this);
@@ -119,6 +141,7 @@ namespace ForgottenKingdom
         private void LateUpdate()
         {
             UpdateVertical();
+            UpdateLook();
             if (_lookAhead > 0f)
             {
                 // Led by speed, not by facing: a player standing still is centred, and turning on
@@ -131,12 +154,14 @@ namespace ForgottenKingdom
 
             // Following happens against the un-shaken position, so a shake never feeds back into
             // the smoothing and never leaves the camera drifted once it has decayed.
-            var basePosition = (Vector2)transform.position
-                - (_shaker != null ? _shaker.CurrentOffset : Vector2.zero);
+            var basePosition = (Vector2)transform.position - _appliedShake;
             var position = Vector2.SmoothDamp(basePosition, TargetPosition,
                 ref _smoothingVelocity, _smoothTime, Mathf.Infinity, Time.deltaTime);
+            position = HoldInside(basePosition, position);
             var shake = _shaker != null ? _shaker.CurrentOffset : Vector2.zero;
-            transform.position = new Vector3(position.x + shake.x, position.y + shake.y, _depth);
+            var shaken = HoldInside(position, position + shake);
+            _appliedShake = shaken - position;
+            transform.position = new Vector3(shaken.x, shaken.y, _depth);
 
             UpdateZoom();
         }
@@ -148,7 +173,11 @@ namespace ForgottenKingdom
             _leadVelocity = 0f;
             _fallLead = 0f;
             _fallLeadVelocity = 0f;
+            _look = 0f;
+            _lookVelocity = 0f;
+            _lookHeld = 0f;
             _previousRoomBounds = null;
+            _appliedShake = Vector2.zero;
             if (_target != null)
             {
                 _anchorY = _target.transform.position.y;
@@ -218,6 +247,36 @@ namespace ForgottenKingdom
         }
 
         /// <summary>
+        /// Hollow Knight's look up and down: standing still and holding up or down for
+        /// <see cref="_lookDelay"/> seconds eases the view that way; letting go, moving or leaving
+        /// the ground brings it back. The room's bounds still hold, so a floor at the bottom of the
+        /// room stops a look down there.
+        /// </summary>
+        private void UpdateLook()
+        {
+            var vertical = _input != null ? _input.AimVertical : 0f;
+            var standing = _target != null && _target.IsGrounded && Mathf.Abs(_target.Velocity.x) < 0.2f;
+            var sign = vertical > 0.5f ? 1 : vertical < -0.5f ? -1 : 0;
+            if (!standing || IsFree || sign == 0 || sign != _lookSign)
+            {
+                _lookHeld = 0f;
+            }
+
+            _lookSign = standing ? sign : 0;
+            _lookHeld += Time.deltaTime;
+            var wanted = LookOffset(_lookSign, _lookHeld, _lookDelay, _lookDistance);
+            _look = Mathf.SmoothDamp(_look, wanted, ref _lookVelocity, _lookSmoothTime,
+                Mathf.Infinity, Time.deltaTime);
+        }
+
+        /// <summary>
+        /// Where the look wants the view, in units: nothing until the hold has lasted the delay,
+        /// then the whole distance up (+) or down (-).
+        /// </summary>
+        public static float LookOffset(int direction, float heldFor, float delay, float distance) =>
+            direction != 0 && heldFor >= delay ? Mathf.Sign(direction) * distance : 0f;
+
+        /// <summary>
         /// Moves a view centre so the whole view stays inside the active bounds. A rectangle
         /// narrower than the view centres it instead, which is what holds a small arena still; one
         /// lower than the view keeps its floor at the bottom of the screen rather than showing as
@@ -241,6 +300,36 @@ namespace ForgottenKingdom
 
             // A room narrower than the view would centre past the world's end; the world wins.
             return _worldBounds.HasValue ? ClampTo(_worldBounds.Value, clamped) : clamped;
+        }
+
+        /// <summary>
+        /// The hard edge of a room, as in Hollow Knight: on each axis where the view already was
+        /// inside the frame (or as good as, <see cref="_hardEdgePull"/>), the next position is kept
+        /// inside it too. Only the target is clamped
+        /// otherwise, so the smoothing lag of a widening zoom and a shake against a wall would show
+        /// a strip past the room. An axis that was outside (a frame set at once, with no slide) is
+        /// left to the smoothing, which brings it in without a cut; from then on it holds.
+        /// </summary>
+        private Vector2 HoldInside(Vector2 previous, Vector2 next)
+        {
+            if (!_hardRoomEdges || !ActiveBounds.HasValue || _camera == null || IsFree)
+            {
+                return next;
+            }
+
+            var held = Clamp(previous);
+            var clamped = Clamp(next);
+            if (Mathf.Abs(held.x - previous.x) <= _hardEdgePull)
+            {
+                next.x = clamped.x;
+            }
+
+            if (Mathf.Abs(held.y - previous.y) <= _hardEdgePull)
+            {
+                next.y = clamped.y;
+            }
+
+            return next;
         }
 
         private Vector2 ClampTo(Rect rect, Vector2 center)

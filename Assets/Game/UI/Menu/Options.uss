@@ -1,57 +1,181 @@
 /*
- * Buttons and the settings panel shared by the title screen and the pause menu, from
- * design/ui/menus/menus.html. Moved out of MainMenu.uss unchanged so both screens stay alike.
+ * Motion, focus, menu words and the settings panel shared by the title screen and the pause
+ * menu, from design/ui/menus/menus.html (2026-10-19, UI_UX_GUIDE.md §12). USS has no gradients
+ * or blur: the focus light is drawn by MenuFocus, the panel washes are flat tones.
  */
 
+/* ---------- motion (MenuMotion): enter low and faint, rise into place ---------- */
+
+.motion {
+    opacity: 0;
+    translate: 0 14px;
+    transition-property: opacity, translate, scale;
+    transition-duration: 0.52s, 0.52s, 0.42s;
+    transition-timing-function: ease-out-cubic, ease-out-cubic, ease-out-cubic;
+}
+
+.motion--line {
+    translate: 0 10px;
+    transition-duration: 0.42s, 0.42s, 0.42s;
+}
+
+.motion--fade {
+    translate: 0 0;
+    transition-duration: 0.32s, 0.32s, 0.32s;
+}
+
+.motion--grow {
+    translate: 0 0;
+    scale: 0.96 0.96;
+}
+
+.motion--shown {
+    opacity: 1;
+    translate: 0 0;
+    scale: 1 1;
+}
+
+/* ---------- MenuFocus: the light, the flame and the threads behind the focused word ---------- */
+
+.menu-focus__glow,
+.menu-focus__flame,
+.menu-focus__thread {
+    position: absolute;
+    left: 0;
+    top: 0;
+    transition-property: translate, scale;
+    transition-duration: 0.32s, 0.32s;
+    transition-timing-function: ease-out-cubic, ease-out-cubic;
+}
+
+.menu-focus__glow {
+    width: 560px;
+    height: 64px;
+}
+
+.menu-focus__flame {
+    width: 22px;
+    height: 30px;
+}
+
+.menu-focus__thread {
+    width: 70px;
+    height: 1px;
+    background-color: rgba(201, 161, 74, 0.85);
+    scale: 0 1;
+}
+
+.menu-focus__thread--left {
+    transform-origin: 100% 50%;
+}
+
+.menu-focus__thread--right {
+    transform-origin: 0 50%;
+}
+
+.menu-focus__thread--drawn {
+    scale: 1 1;
+}
+
+.menu-focus__thread--danger {
+    background-color: rgba(196, 85, 47, 0.85);
+}
+
+.menu-focus--instant {
+    transition-duration: 0s, 0s;
+}
+
+/* ---------- title menu items: words without boxes (menus.html) ---------- */
+
 .menu-button {
-    height: 52px;
-    margin: 0 0 12px 0;
-    font-size: 20px;
-    letter-spacing: 4px;
+    height: 58px;
+    margin: 0;
+    padding: 0;
+    font-size: 30px;
+    letter-spacing: 5px;
     color: rgb(216, 203, 180);
-    background-color: rgba(15, 13, 11, 0.72);
-    border-width: 1px;
-    border-color: rgb(58, 47, 37);
-    border-radius: 2px;
+    background-color: rgba(0, 0, 0, 0);
+    border-width: 0;
     -unity-text-align: middle-center;
-    transition-property: background-color, border-color, color, translate;
-    transition-duration: 0.15s;
+    transition-property: opacity, translate, color, letter-spacing;
+    transition-duration: 0.42s, 0.42s, 0.16s, 0.32s;
+    transition-timing-function: ease-out-cubic, ease-out-cubic, ease-out-cubic, ease-out-cubic;
 }
 
 .menu-button:hover,
 .menu-button--focused {
-    color: rgb(240, 230, 210);
-    background-color: rgba(60, 46, 24, 0.85);
-    border-color: rgb(201, 161, 74);
-    border-left-width: 3px;
-    translate: 4px 0;
+    color: rgb(232, 205, 138);
+    letter-spacing: 8px;
+    background-color: rgba(0, 0, 0, 0);
 }
 
-/* Disabled, not hidden: it has to read as "there is no save", so it stays legible. */
+/* Disabled, not hidden: it reads as "there is no save" by its note, not by colour alone. */
 .menu-button:disabled {
-    color: rgb(142, 131, 117);
-    background-color: rgba(11, 9, 7, 0.78);
-    border-color: rgb(58, 47, 37);
-    translate: 0 0;
-    opacity: 0.75;
+    color: rgb(95, 87, 76);
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.menu-button.motion:disabled {
+    opacity: 0;
+}
+
+.menu-button.motion--shown:disabled {
+    opacity: 0.9;
+}
+
+.menu-button__note {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -2px;
+    margin: 0;
+    padding: 0;
+    font-size: 13px;
+    letter-spacing: 1px;
+    color: rgb(95, 87, 76);
+    -unity-text-align: middle-center;
+    display: none;
+}
+
+.menu-button:disabled > .menu-button__note {
+    display: flex;
 }
 
 .menu-button--small {
-    width: 220px;
+    width: 260px;
+    height: 46px;
+    font-size: 24px;
     align-self: center;
-    margin-top: 18px;
+    margin-top: 14px;
 }
+
+/* ---------- corner gems: ornament only at the corners (VISUAL_BIBLE §15) ---------- */
+
+.gem {
+    position: absolute;
+    width: 9px;
+    height: 9px;
+    background-color: rgb(138, 116, 52);
+    rotate: 45deg;
+}
+
+.gem--tl { left: -5px; top: -5px; }
+.gem--tr { right: -5px; top: -5px; }
+.gem--bl { left: -5px; bottom: -5px; }
+.gem--br { right: -5px; bottom: -5px; }
+
+/* ---------- settings (menus.html, state 4) ---------- */
 
 .options {
     position: absolute;
     left: 50%;
-    top: 26%;
-    width: 640px;
-    translate: -50% 0;
-    padding: 28px 40px 24px 40px;
-    background-color: rgba(15, 13, 11, 0.94);
+    top: 14%;
+    width: 900px;
+    margin-left: -450px;
+    padding: 36px 56px 28px 56px;
+    background-color: rgba(18, 15, 12, 0.96);
     border-width: 1px;
-    border-color: rgb(138, 116, 52);
+    border-color: rgb(107, 90, 66);
     display: none;
 }
 
@@ -60,28 +184,118 @@
 }
 
 .options__title {
-    font-size: 30px;
-    letter-spacing: 6px;
+    font-size: 40px;
+    letter-spacing: 8px;
     color: rgb(240, 230, 210);
     -unity-text-align: middle-center;
 }
 
 .options__rule {
-    margin: 6px 60px 18px 60px;
+    margin: 4px 40px 16px 40px;
+}
+
+.options__group {
+    margin: 0 0 4px 0;
+    padding: 0;
+    font-size: 21px;
+    letter-spacing: 6px;
+    color: rgb(138, 116, 52);
+}
+
+.options__group--gap {
+    margin-top: 20px;
 }
 
 .option {
-    margin: 6px 0;
+    height: 50px;
+    margin: 0;
+    padding: 0 18px 0 22px;
+    align-items: center;
+    border-bottom-width: 1px;
+    border-bottom-color: rgba(58, 47, 37, 0.55);
+    border-left-width: 3px;
+    border-left-color: rgba(0, 0, 0, 0);
+    transition-property: opacity, translate, background-color, border-left-color;
+    transition-duration: 0.42s, 0.42s, 0.16s, 0.32s;
 }
 
-.option > Label {
-    min-width: 240px;
-    font-size: 17px;
+.option > .unity-base-field__label {
+    min-width: 400px;
+    font-size: 20px;
     color: rgb(216, 203, 180);
 }
 
-.option--focused > Label {
+.option--focused {
+    background-color: rgba(201, 161, 74, 0.12);
+    border-left-color: rgb(201, 161, 74);
+}
+
+.option--focused > .unity-base-field__label {
     color: rgb(232, 205, 138);
+}
+
+.option #unity-tracker {
+    height: 6px;
+    margin-top: -3px;
+    background-color: rgb(10, 8, 6);
+    border-width: 1px;
+    border-color: rgb(58, 47, 37);
+    border-radius: 0;
+}
+
+/* The knob is a gold diamond, brighter under focus. */
+.option #unity-dragger {
+    width: 14px;
+    height: 14px;
+    margin-top: -7px;
+    rotate: 45deg;
+    background-color: rgb(201, 161, 74);
+    border-width: 1px;
+    border-color: rgb(26, 20, 14);
+    border-radius: 0;
+}
+
+.option--focused #unity-dragger {
+    background-color: rgb(240, 219, 160);
+}
+
+.option .option__value {
+    min-width: 64px;
+    margin-left: 22px;
+    font-size: 19px;
+    color: rgb(142, 131, 117);
+    -unity-text-align: middle-right;
+}
+
+.option--focused .option__value {
+    color: rgb(232, 205, 138);
+}
+
+.option--zero .option__value {
+    color: rgb(95, 87, 76);
+}
+
+.options__help {
+    min-height: 52px;
+    margin: 18px 0 0 0;
+    padding: 12px 18px;
+    font-size: 16px;
+    color: rgb(142, 131, 117);
+    white-space: normal;
+    border-left-width: 2px;
+    border-left-color: rgb(138, 116, 52);
+    background-color: rgba(0, 0, 0, 0.25);
+}
+
+/* The flash preview of the settings: the combat flash colour, raised by OptionsPanel. */
+.options__flash {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgb(255, 236, 200);
+    opacity: 0;
 }
 
 /* The picture-effects switch: a gold-rimmed box, filled when on. */

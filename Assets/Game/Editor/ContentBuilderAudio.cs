@@ -29,6 +29,15 @@ namespace ForgottenKingdom.EditorTools
             // Movement. Frequent and quiet: high voice counts, low priority, nothing spatial.
             events.Add(Sound(AudioId.FootstepStone, clips, 0.34f, voices: 4, priority: 15,
                 interval: 0.1f, spatial: 0.4f));
+            // The same step on the other surfaces (item 4): the same weight, its own material.
+            events.Add(Sound(AudioId.FootstepWood, clips, 0.36f, voices: 4, priority: 15,
+                interval: 0.1f, spatial: 0.4f));
+            events.Add(Sound(AudioId.FootstepEarth, clips, 0.3f, voices: 4, priority: 15,
+                interval: 0.1f, spatial: 0.4f));
+            events.Add(Sound(AudioId.FootstepWater, clips, 0.34f, voices: 4, priority: 15,
+                interval: 0.1f, spatial: 0.4f));
+            events.Add(Sound(AudioId.FootstepAsh, clips, 0.3f, voices: 4, priority: 15,
+                interval: 0.1f, spatial: 0.4f));
             events.Add(Sound(AudioId.Land, clips, 0.55f, voices: 2, priority: 30));
             events.Add(Sound(AudioId.Jump, clips, 0.3f, voices: 2, priority: 15));
             events.Add(Sound(AudioId.DashGround, clips, 0.5f, voices: 2, priority: 30));
@@ -36,6 +45,12 @@ namespace ForgottenKingdom.EditorTools
             events.Add(Sound(AudioId.WallSlide, clips, 0.35f, voices: 1, priority: 15,
                 interval: 0.35f));
             events.Add(Sound(AudioId.WallContact, clips, 0.45f, voices: 2, priority: 20));
+            // The skid of a start or a turn and the kick off a wall (2026-10-19): footwork, so as
+            // quiet and low in priority as the steps themselves.
+            events.Add(Sound(AudioId.FootstepScuff, clips, 0.3f, voices: 2, priority: 16,
+                interval: 0.12f, spatial: 0.4f));
+            events.Add(Sound(AudioId.WallJumpKick, clips, 0.42f, voices: 1, priority: 28,
+                spatial: 0.4f));
 
             // Weapons. The greatsword is louder and lower before a single clip is chosen.
             events.Add(Sound(AudioId.SwordSwingLight, clips, 0.5f, voices: 3, priority: 45));
@@ -141,9 +156,11 @@ namespace ForgottenKingdom.EditorTools
             events.Add(Sound(AudioId.PickupCommon, clips, 0.45f, voices: 2, priority: 35,
                 interval: 0.08f));
             events.Add(Sound(AudioId.PickupRare, clips, 0.6f, voices: 1, priority: 60));
-            // Bundled coins collapse into one tone rather than a rattle of fifty.
-            events.Add(Sound(AudioId.PickupCurrency, clips, 0.4f, voices: 2, priority: 30,
-                interval: 0.18f));
+            // Bundled coins collapse into one tone rather than a rattle of fifty, but the gap is
+            // short enough for coins flying in one after another to ring their rising run
+            // (CoinChime, GAME_FEEL_IDEAS.md item 15; 0.18 → 0.07, decided by Claude).
+            events.Add(Sound(AudioId.PickupCurrency, clips, 0.4f, voices: 3, priority: 30,
+                interval: 0.07f));
             events.Add(Sound(AudioId.LevelUp, clips, 0.7f, voices: 1, priority: 90, spatial: 0f));
             events.Add(Sound(AudioId.SkillUnlock, clips, 0.6f, voices: 1, priority: 70,
                 spatial: 0f));
@@ -178,14 +195,26 @@ namespace ForgottenKingdom.EditorTools
             events.Add(Sound(AudioId.WallCrack, clips, 0.6f, voices: 2, priority: 50));
             events.Add(Sound(AudioId.WallCrumble, clips, 0.8f, voices: 1, priority: 80));
             events.Add(Sound(AudioId.TrialGong, clips, 0.85f, voices: 1, priority: 100, spatial: 0.3f));
+            events.Add(Sound(AudioId.PropBreak, clips, 0.6f, voices: 3, priority: 45, interval: 0.04f));
+            // The hero's death and return: never dropped, nearly flat — it is about the player.
+            events.Add(Sound(AudioId.HeroFall, clips, 0.85f, voices: 1, priority: 120, spatial: 0.15f));
+            events.Add(Sound(AudioId.AltarCall, clips, 0.7f, voices: 1, priority: 110, spatial: 0.15f));
+            // Ringing ears after a blow to the hero: quiet, flat (it is in the head), never stacked.
+            events.Add(Sound(AudioId.HurtRing, clips, 0.22f, voices: 1, priority: 85, interval: 0.3f,
+                spatial: 0f));
+            // The heart at low health: quiet, flat (it is inside the hero), one at a time.
+            events.Add(Sound(AudioId.Heartbeat, clips, 0.45f, voices: 1, priority: 60, interval: 0.3f,
+                spatial: 0f));
 
             // Interface. Quiet, flat, and spaced so fast navigation does not chatter.
             events.Add(Sound(AudioId.UiNavigate, clips, 0.3f, AudioBus.Ui, voices: 1, priority: 25,
                 interval: 0.05f, spatial: 0f));
+            // Confirm and cancel are heard from MenuInput, which several screens may ask in one
+            // frame; the interval keeps one press one sound.
             events.Add(Sound(AudioId.UiConfirm, clips, 0.45f, AudioBus.Ui, voices: 1, priority: 40,
-                spatial: 0f));
+                interval: 0.06f, spatial: 0f));
             events.Add(Sound(AudioId.UiCancel, clips, 0.4f, AudioBus.Ui, voices: 1, priority: 40,
-                spatial: 0f));
+                interval: 0.06f, spatial: 0f));
             events.Add(Sound(AudioId.UiOpen, clips, 0.45f, AudioBus.Ui, voices: 1, priority: 40,
                 spatial: 0f));
             events.Add(Sound(AudioId.UiClose, clips, 0.42f, AudioBus.Ui, voices: 1, priority: 40,

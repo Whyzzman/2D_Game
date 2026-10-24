@@ -264,18 +264,54 @@ namespace ForgottenKingdom.EditorTools
             c.Ellipse(centre, coreRadius * 1.9f, coreRadius * 1.5f, Fade(tone, fade * 0.35f));
             c.Ellipse(centre, coreRadius, coreRadius * 0.8f, Fade(tone, fade));
 
+            // Combat feel (2026-10-19): a ring of displaced air on the first frames and a thin
+            // bright cut across the contact, as the blade's line through the target. Both gone
+            // by half the burst, so the sparks are what lingers.
+            if (t < 0.6f)
+            {
+                var ring = Mathf.Lerp(coreRadius * 1.2f, reach * 0.62f, Mathf.SmoothStep(0f, 1f, t / 0.6f));
+                var ringFade = fade * (1f - t / 0.6f);
+                Outline(c, centre, ring, ring * 0.8f, Mathf.Lerp(3f, 1f, t / 0.6f), Fade(tone, ringFade * 0.7f));
+            }
+
+            if (t < 0.5f)
+            {
+                var cut = Mathf.Lerp(1f, 0.4f, t / 0.5f);
+                var across = new Vector2(Mathf.Cos(-0.6f), Mathf.Sin(-0.6f)) * reach * 0.9f * cut;
+                c.Thick(centre - across, centre + across, 1.2f, 1.2f, Fade(tone, fade * (1f - t / 0.5f)));
+                c.Thick(centre - across * 0.6f, centre + across * 0.6f, 3.2f * cut, 3.2f * cut,
+                    Fade(tone, fade * (1f - t / 0.5f)));
+            }
+
             for (var i = 0; i < count; i++)
             {
-                // Biased forward: sparks come off the way the blow was travelling.
+                // Biased forward: sparks come off the way the blow was travelling, and arc down
+                // under their own weight instead of flying in straight lines.
                 var spread = (float)(rng.NextDouble() - 0.5) * 1.5f;
                 var length = reach * Mathf.Lerp(0.35f, 1f, (float)rng.NextDouble());
-                var head = centre + new Vector2(Mathf.Cos(spread), Mathf.Sin(spread))
-                    * length * Mathf.SmoothStep(0f, 1f, t);
-                var tail = Vector2.Lerp(centre, head, 0.55f);
-                c.Thick(tail, head, 3.4f * fade, 1f, Fade(tone, fade));
+                var travel = length * Mathf.SmoothStep(0f, 1f, t);
+                var fall = new Vector2(0f, -reach * 0.35f * t * t);
+                var head = centre + new Vector2(Mathf.Cos(spread), Mathf.Sin(spread)) * travel + fall;
+                var mid = centre + new Vector2(Mathf.Cos(spread), Mathf.Sin(spread)) * travel * 0.7f + fall * 0.5f;
+                var tail = Vector2.Lerp(centre, mid, 0.6f);
+                c.Thick(tail, mid, 3.4f * fade, 2.2f * fade, Fade(tone, fade * 0.8f));
+                c.Thick(mid, head, 2.2f * fade, 1f, Fade(tone, fade));
             }
 
             return c;
+        }
+
+        /// <summary>An ellipse outline of the given width, drawn as short thick segments.</summary>
+        private static void Outline(Canvas c, Vector2 centre, float rx, float ry, float width, Color32 tone)
+        {
+            const int segments = 32;
+            for (var k = 0; k < segments; k++)
+            {
+                var a0 = k * Mathf.PI * 2f / segments;
+                var a1 = (k + 1) * Mathf.PI * 2f / segments;
+                c.Thick(centre + new Vector2(Mathf.Cos(a0) * rx, Mathf.Sin(a0) * ry),
+                    centre + new Vector2(Mathf.Cos(a1) * rx, Mathf.Sin(a1) * ry), width, width, tone);
+            }
         }
 
         private static Canvas Critical(float t)

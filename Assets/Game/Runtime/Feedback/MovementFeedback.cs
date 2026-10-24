@@ -187,7 +187,7 @@ namespace ForgottenKingdom
             }
 
             _lastKick = Time.time;
-            CombatFeedbackService.Play(FeedbackKind.RunDust, Feet, new Vector2(facing, 0f));
+            CombatFeedbackService.Play(FeedbackKind.RunDust, Feet, new Vector2(facing, 0f), 1f, GroundTint);
         }
 
         private void TrackWallSlide()
@@ -223,7 +223,7 @@ namespace ForgottenKingdom
                 return;
             }
 
-            CombatFeedbackService.Play(FeedbackKind.JumpDust, Feet);
+            CombatFeedbackService.Play(FeedbackKind.JumpDust, Feet, Vector2.zero, 1f, GroundTint);
             StartSquash(JumpStretch);
         }
 
@@ -245,8 +245,29 @@ namespace ForgottenKingdom
 
             var weight = LandingWeight(fall);
             CombatFeedbackService.Play(FeedbackKind.LandDust, Feet, Vector2.right,
-                Mathf.Lerp(0.7f, 1.25f, weight));
+                Mathf.Lerp(0.7f, 1.25f, weight), GroundTint);
             StartSquash(-LandSquash * weight);
+            // The room feels it too (GAME_FEEL_IDEAS item 13): props nearby shiver, and a hard
+            // landing shakes dust from the ceiling above.
+            ReactiveProp.Gust(Feet, 3f, 30f * weight, 0f);
+            if (weight > 0.75f) { CeilingDust(); }
+        }
+
+        private const float CeilingReach = 7f;
+
+        private void CeilingDust()
+        {
+            var hit = Physics2D.Raycast(Feet + Vector2.up * 2.2f, Vector2.up, CeilingReach, LayerMask.GetMask("Ground"));
+            if (hit.collider == null)
+            {
+                return;
+            }
+
+            // Two trickles a little apart, falling: grit loosened from the stone overhead.
+            foreach (var dx in new[] { -0.5f, 0.45f })
+            {
+                CombatFeedbackService.Play(FeedbackKind.WallSlideDust, hit.point + new Vector2(dx, -0.15f), Vector2.down);
+            }
         }
 
         private void OnRespawned()
@@ -259,6 +280,9 @@ namespace ForgottenKingdom
         }
 
         private bool IsQuiet => Time.time < _quietUntil;
+
+        /// <summary>The dust takes the colour of what it rose from (GAME_FEEL_IDEAS item 4).</summary>
+        private Color GroundTint => Surfaces.DustTint(Surfaces.Under(Feet));
 
         private Vector2 Feet => _capsule != null
             ? new Vector2(_capsule.bounds.center.x, _capsule.bounds.min.y)

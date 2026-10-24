@@ -60,6 +60,16 @@ namespace ForgottenKingdom
         /// </summary>
         public AudioClip PickClip(ref int lastIndex)
         {
+            var before = -1;
+            return PickClip(ref lastIndex, ref before);
+        }
+
+        /// <summary>
+        /// The same, remembering two plays back: with four variants or more, neither of the last
+        /// two is chosen, so a run of steps or swings never falls into an A-B-A-B pattern either.
+        /// </summary>
+        public AudioClip PickClip(ref int lastIndex, ref int beforeIndex)
+        {
             if (!HasClips)
             {
                 return null;
@@ -72,11 +82,14 @@ namespace ForgottenKingdom
             }
 
             var index = UnityEngine.Random.Range(0, ClipCount);
-            if (index == lastIndex)
+            var avoidBefore = ClipCount >= 4;
+            for (var tries = 0; tries < ClipCount
+                && (index == lastIndex || (avoidBefore && index == beforeIndex)); tries++)
             {
                 index = (index + 1) % ClipCount;
             }
 
+            beforeIndex = lastIndex;
             lastIndex = index;
             return _clips[index];
         }

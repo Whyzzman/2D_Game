@@ -36,6 +36,20 @@ namespace ForgottenKingdom
                 return;
             }
 
+            // A/B for KI-012: a larger upload ring and slice keep big painted textures off the
+            // main thread (-uploadBuffer 64 -uploadSlice 4); without the flags the project's values stay.
+            var buffer = Array.IndexOf(args, "-uploadBuffer");
+            if (buffer >= 0 && buffer + 1 < args.Length && int.TryParse(args[buffer + 1], out var megabytes))
+            {
+                QualitySettings.asyncUploadBufferSize = megabytes;
+            }
+
+            var slice = Array.IndexOf(args, "-uploadSlice");
+            if (slice >= 0 && slice + 1 < args.Length && int.TryParse(args[slice + 1], out var milliseconds))
+            {
+                QualitySettings.asyncUploadTimeSlice = milliseconds;
+            }
+
             var probe = new GameObject("PerformanceProbe").AddComponent<PerformanceProbe>();
             probe._report = args[index + 1];
             DontDestroyOnLoad(probe.gameObject);
@@ -57,6 +71,7 @@ namespace ForgottenKingdom
             var streamer = ZoneStreamer.Current;
             var graph = FindAnyObjectByType<GameProgress>().World;
 
+            var hitches = HitchLog.Begin(Path.ChangeExtension(_report, null) + "-hitches.tsv");
             var lines = new StringBuilder(
                 "zone\tarea\tavg_fps\tlow1_fps\tmax_ms\tallocated_mb\treserved_mb\ttexture_mb\tgfx_mb\n");
             var all = new List<float>();
@@ -74,6 +89,7 @@ namespace ForgottenKingdom
                     yield return streamer.PrepareAt(point);
                 }
 
+                hitches.Place = area.AreaId;
                 motor.ResetTo(point);
                 motor.enabled = false;
                 body.simulated = false;
@@ -93,6 +109,7 @@ namespace ForgottenKingdom
 
             lines.Append(Row("ALL", "-", all));
             File.WriteAllText(_report, lines.ToString());
+            hitches.Flush();
 
             // Progress writes itself on quit; it goes first so the restored files stay restored.
             Destroy(FindAnyObjectByType<GameProgress>());

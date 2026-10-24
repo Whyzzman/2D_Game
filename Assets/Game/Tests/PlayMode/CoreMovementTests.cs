@@ -349,6 +349,54 @@ namespace ForgottenKingdom.Tests
             Assert.That(peak, Is.LessThan(0.7f));
         }
 
+        [UnityTest]
+        public IEnumerator AFallThatMissesALedgeCornerByAHairLandsOnIt()
+        {
+            yield return NeutralFrames(5);
+            var floor = _body.position.y - 0.8f;
+            // The body's side starts 0.05 short of the ledge and the feet a hair over its top:
+            // steering held toward it closes ~0.04 before they cross, never enough to stand on the
+            // corner unaided. The nudge needs the steering held, so it is held through the fall.
+            yield return FallBesideLedge(floor, gap: 0.05f, above: 0.02f, steerFrames: 8);
+            Assert.That(_player.IsGrounded, Is.True);
+            Assert.That(_body.position.y - 0.8f, Is.EqualTo(floor + LedgeHeight).Within(0.05f),
+                "Nudged onto the ledge instead of scraping down its face.");
+        }
+
+        [UnityTest]
+        public IEnumerator AFallThatClearlyMissesALedgeStillFallsPastIt()
+        {
+            yield return NeutralFrames(5);
+            var floor = _body.position.y - 0.8f;
+            yield return FallBesideLedge(floor, gap: 0.6f, above: 0.3f, steerFrames: 4);
+            Assert.That(_body.position.y - 0.8f, Is.EqualTo(floor).Within(0.05f),
+                "Past the forgiveness the fall is an honest miss.");
+        }
+
+        private const float LedgeHeight = 1f;
+
+        /// <summary>
+        /// Drops the player, steering right for <paramref name="steerFrames"/>, with the feet
+        /// <paramref name="above"/> over the top of a ledge whose left face is <paramref name="gap"/>
+        /// past the body's right side.
+        /// </summary>
+        private IEnumerator FallBesideLedge(float floor, float gap, float above, int steerFrames)
+        {
+            var x = _body.position.x;
+            // Layer 9 is Ground.
+            var ledge = new GameObject("ForgivenessLedge") { layer = 9 };
+            var box = ledge.AddComponent<BoxCollider2D>();
+            box.size = new Vector2(3f, LedgeHeight);
+            ledge.transform.position = new Vector3(x + 0.4f + gap + 1.5f, floor + LedgeHeight * 0.5f, 0f);
+            Physics2D.SyncTransforms();
+
+            _player.ResetTo(new Vector2(x, floor + LedgeHeight + above + 0.8f));
+            InputSystem.QueueStateEvent(_keyboard, new KeyboardState(Key.D));
+            yield return Frames(steerFrames);
+            yield return NeutralFrames(40);
+            Object.Destroy(ledge);
+        }
+
         /// <summary>A ledge whose underside sits 0.5 above the standing player's head.</summary>
         private static GameObject CeilingLedge(Vector2 start, float leftEdgeOffset)
         {

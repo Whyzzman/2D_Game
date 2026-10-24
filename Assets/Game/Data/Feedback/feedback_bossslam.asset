@@ -40,6 +40,7 @@ MonoBehaviour:
   _shake: 5
   _shakeScale: 1
   _shakeVerticalBias: 1.8
+  _shakeKick: 0
   _screenFlash: 0.16
   _flashColor: {r: 1, g: 0.9, b: 0.72, a: 1}
   _lightColor: {r: 1, g: 0.86, b: 0.6, a: 0.7}
@@ -47,4 +48,4 @@ MonoBehaviour:
   _lightDuration: 0.18
   _priority: 80
   _soundEvent: boss_slam
-  _haptic: 0
+  _haptic: 0.7

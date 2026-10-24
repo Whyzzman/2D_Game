@@ -14,12 +14,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.AudioLibrary
   _events:
   - {fileID: 11400000, guid: 82ff53ec42eb0294085d7dae9e61c017, type: 2}
+  - {fileID: 11400000, guid: 435ca9268194641cd91f6f931efb90d9, type: 2}
+  - {fileID: 11400000, guid: eb901bce2223b489f80cd27792188d38, type: 2}
+  - {fileID: 11400000, guid: 863654ada107c48c19744113597f7dca, type: 2}
+  - {fileID: 11400000, guid: 220fb433edac24d7b8beca1902168c29, type: 2}
   - {fileID: 11400000, guid: 9154ff2934e9a8143a74f92d562e77a3, type: 2}
   - {fileID: 11400000, guid: cde8fbe14708efa4895d405bb1d7e8ee, type: 2}
   - {fileID: 11400000, guid: b7bcab9b0df03684e96176ab967a798a, type: 2}
   - {fileID: 11400000, guid: 8ab28bf7de6824d4da5a5301a823b7a3, type: 2}
   - {fileID: 11400000, guid: 914829de889c5054794654a243f053b9, type: 2}
   - {fileID: 11400000, guid: 83c8ef3ffda1a6e49a907692820d0d0f, type: 2}
+  - {fileID: 11400000, guid: a490c3f5193cc49649a675060835fa96, type: 2}
+  - {fileID: 11400000, guid: 86b47943207654538a06e7a911ad4059, type: 2}
   - {fileID: 11400000, guid: e5e4bc7489d9bd445a8183174efc0e24, type: 2}
   - {fileID: 11400000, guid: 9bb3c853f3c1ac6429bf68c0f3340287, type: 2}
   - {fileID: 11400000, guid: 2846433518b942147acfec9fcc304c42, type: 2}
@@ -110,6 +116,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b4b53a8dcddf94fe3b8da40883a5b4b1, type: 2}
   - {fileID: 11400000, guid: 3324f7e2fb979487abdb0a158e33b2ba, type: 2}
   - {fileID: 11400000, guid: 82484234884754c298cb83b683aea3a6, type: 2}
+  - {fileID: 11400000, guid: 16266ef79f44d4a5bb0b6cc878290753, type: 2}
+  - {fileID: 11400000, guid: 9dc16e7ab4c6b42db93fc78c5b36f369, type: 2}
+  - {fileID: 11400000, guid: 84c282443abcb45dcb3bbebcdd78d62c, type: 2}
+  - {fileID: 11400000, guid: 993f7161ee67745c4b7691d5fa3e28f1, type: 2}
+  - {fileID: 11400000, guid: 5cae238e30fd34aa0aa428686cd66eb6, type: 2}
   - {fileID: 11400000, guid: e1129da5ed3cc1146a95cae61e1b733f, type: 2}
   - {fileID: 11400000, guid: 8e5b1d1759a87564db53f405d25d7f31, type: 2}
   - {fileID: 11400000, guid: 2ced95c0edc08f945b08183a64dbae3d, type: 2}

@@ -22,6 +22,12 @@ namespace ForgottenKingdom.EditorTools
             SetReference(afterimages, "_animation", controller);
             SetReference(afterimages, "_body", body);
             SetReference(afterimages, "_material", HitFlashMaterial());
+
+            // The death as a moment: slow, darken, come apart into shadows; gather at the altar.
+            var death = Ensure<HeroDeath>(root);
+            SetReference(death, "_player", root.GetComponent<PlayerCharacter>());
+            SetReference(death, "_body", body);
+            SetReference(death, "_material", HitFlashMaterial());
         }
     }
 }

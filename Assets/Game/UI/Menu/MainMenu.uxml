@@ -7,31 +7,43 @@
         <ui:VisualElement name="fade" class="menu__fade" picking-mode="Ignore" />
 
         <ui:VisualElement name="front" class="menu__front">
-            <ui:Label class="title display" text="ТІНЬ" picking-mode="Ignore" />
-            <ui:Label class="title title--second display" text="ЗАБУТОГО КОРОЛІВСТВА" picking-mode="Ignore" />
-            <ui:VisualElement class="title__rule ornament" picking-mode="Ignore" />
-            <ui:Label class="title__small display" text="ПРОЛОГ" picking-mode="Ignore" />
+            <ui:Label class="title display motion" text="ТІНЬ" picking-mode="Ignore" />
+            <ui:Label class="title title--second display motion" text="Забутого Королівства" picking-mode="Ignore" />
+            <ui:VisualElement class="title__rule ornament motion" picking-mode="Ignore" />
+            <ui:Label class="title__small display motion" text="Пролог" picking-mode="Ignore" />
 
+            <!-- design/ui/menus/menus.html: words without boxes; MenuFocus draws the light, the flame and the threads. -->
             <ui:VisualElement name="list" class="menu-list">
-                <ui:Button name="continue" class="menu-button display" text="Продовжити" />
+                <ui:Button name="continue" class="menu-button display motion" text="Продовжити">
+                    <ui:Label class="menu-button__note" text="Збереження немає" picking-mode="Ignore" />
+                </ui:Button>
                 <!-- design/ui/ending/ending.html frame 6: only once the game is completed. -->
-                <ui:Button name="new-game-plus" class="menu-button display" text="Нова гра+" />
-                <ui:Button name="new-game" class="menu-button display" text="Нова гра" />
-                <ui:Button name="options" class="menu-button display" text="Налаштування" />
-                <ui:Button name="controls" class="menu-button display" text="Керування" />
-                <ui:Button name="quit" class="menu-button display" text="Вийти" />
+                <ui:Button name="new-game-plus" class="menu-button display motion" text="Нова гра+" />
+                <ui:Button name="new-game" class="menu-button display motion" text="Нова гра" />
+                <ui:Button name="options" class="menu-button display motion" text="Налаштування" />
+                <ui:Button name="controls" class="menu-button display motion" text="Керування" />
+                <ui:Button name="quit" class="menu-button display motion" text="Вийти" />
             </ui:VisualElement>
         </ui:VisualElement>
 
-        <ui:VisualElement name="options-panel" class="options">
-            <ui:Label class="options__title display" text="Налаштування" />
+        <!-- design/ui/menus/menus.html, state 4: one panel, two groups, a line explaining the focused row. -->
+        <ui:VisualElement name="options-panel" class="options motion">
+            <ui:VisualElement class="gem gem--tl" picking-mode="Ignore" />
+            <ui:VisualElement class="gem gem--tr" picking-mode="Ignore" />
+            <ui:VisualElement class="gem gem--bl" picking-mode="Ignore" />
+            <ui:VisualElement class="gem gem--br" picking-mode="Ignore" />
+            <ui:Label class="options__title display" text="Налаштування" picking-mode="Ignore" />
             <ui:VisualElement class="options__rule ornament" picking-mode="Ignore" />
-            <ui:Slider name="opt-master" class="option" label="Гучність" low-value="0" high-value="1" />
-            <ui:Slider name="opt-effects" class="option" label="Ефекти" low-value="0" high-value="1" />
-            <ui:Slider name="opt-shake" class="option" label="Тремтіння камери" low-value="0" high-value="1" />
-            <ui:Slider name="opt-flash" class="option" label="Спалахи" low-value="0" high-value="1" />
-            <ui:Slider name="opt-hitstop" class="option" label="Зупинка при ударі" low-value="0" high-value="1" />
-            <ui:Toggle name="opt-post" class="option option--toggle" label="Ефекти зображення" value="true" />
+            <ui:Label class="options__group display options__line motion motion--line" text="Звук" picking-mode="Ignore" />
+            <ui:Slider name="opt-master" class="option options__line motion motion--line" label="Загальна гучність" low-value="0" high-value="1" />
+            <ui:Slider name="opt-music" class="option options__line motion motion--line" label="Музика" low-value="0" high-value="1" />
+            <ui:Slider name="opt-effects" class="option options__line motion motion--line" label="Ефекти" low-value="0" high-value="1" />
+            <ui:Label class="options__group options__group--gap display options__line motion motion--line" text="Екран і доступність" picking-mode="Ignore" />
+            <ui:Slider name="opt-shake" class="option options__line motion motion--line" label="Тремтіння камери" low-value="0" high-value="1" />
+            <ui:Slider name="opt-flash" class="option options__line motion motion--line" label="Спалахи" low-value="0" high-value="1" />
+            <ui:Slider name="opt-hitstop" class="option options__line motion motion--line" label="Зупинка при ударі" low-value="0" high-value="1" />
+            <ui:Toggle name="opt-post" class="option option--toggle options__line motion motion--line" label="Ефекти зображення" value="true" />
+            <ui:Label name="options-help" class="options__help" text="" picking-mode="Ignore" />
             <ui:Button name="options-back" class="menu-button menu-button--small display" text="Назад" />
         </ui:VisualElement>
 
@@ -39,8 +51,8 @@
         <ui:VisualElement name="controls-panel" class="controls" />
 
         <!-- design/ui/menus/menus.html, frame 3: the modal takes the input; the menu under it does not react. -->
-        <ui:VisualElement name="confirm-new" class="confirm">
-            <ui:VisualElement class="confirm__panel">
+        <ui:VisualElement name="confirm-new" class="confirm motion motion--fade">
+            <ui:VisualElement class="confirm__panel motion motion--grow">
                 <ui:VisualElement class="confirm__inset" picking-mode="Ignore" />
                 <ui:VisualElement class="confirm__header" picking-mode="Ignore">
                     <ui:Label name="confirm-title" class="confirm__title display" text="ПОЧАТИ НОВУ ГРУ?" picking-mode="Ignore" />

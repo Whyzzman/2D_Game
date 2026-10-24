@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f262bfdbc3db1d1448a3cf59cba06016, type: 3}
+  m_Name: audio_footstepwater
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.AudioEvent
+  _id: 155
+  _clips:
+  - {fileID: 8300000, guid: cb0ec88ee22124ce481bf50e69c6e4c1, type: 3}
+  - {fileID: 8300000, guid: b8e270810eca74b9dbb5d4746dcc27b3, type: 3}
+  - {fileID: 8300000, guid: 50c1848797bd94b86adcd860e211627a, type: 3}
+  - {fileID: 8300000, guid: 8395d059c10c84d9aa065767391dc70e, type: 3}
+  - {fileID: 8300000, guid: 94d391d51ae434dd5a98f4b849e756a5, type: 3}
+  - {fileID: 8300000, guid: b80a2bb4f2dcd4d4fa6286e73119f07b, type: 3}
+  _bus: 2
+  _volume: 0.34
+  _volumeJitter: 0.06
+  _pitchJitter: 0.045
+  _spatialBlend: 0.4
+  _maxDistance: 26
+  _maxVoices: 4
+  _minimumInterval: 0.1
+  _priority: 15
+  _loop: 0

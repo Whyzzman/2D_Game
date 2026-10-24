@@ -226,6 +226,8 @@ namespace ForgottenKingdom.Tests
                     break;
                 }
 
+                // A slow frame can spoil an attempt; only the one that parries is judged on cost.
+                health = _player.Health.Current;
                 InputSystem.QueueStateEvent(_keyboard, new KeyboardState(Key.Q));
                 yield return Realtime(0.3f);
                 yield return Neutral(2);

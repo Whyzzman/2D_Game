@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f262bfdbc3db1d1448a3cf59cba06016, type: 3}
+  m_Name: audio_footstepwood
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.AudioEvent
+  _id: 153
+  _clips:
+  - {fileID: 8300000, guid: f19b6379144d54f50b109fa3a6805e61, type: 3}
+  - {fileID: 8300000, guid: 6d112de1c5bcb4036ba3c97c45051730, type: 3}
+  - {fileID: 8300000, guid: bdb039c36be7b4c13a4dbda17b893397, type: 3}
+  - {fileID: 8300000, guid: 441e073685cdd454697647dabc37ee57, type: 3}
+  - {fileID: 8300000, guid: 72b3ca6e4e9244f3ca5fc862eaca9781, type: 3}
+  - {fileID: 8300000, guid: 2ce3895e5021d43cc898bd7685d4d6e8, type: 3}
+  _bus: 2
+  _volume: 0.36
+  _volumeJitter: 0.06
+  _pitchJitter: 0.045
+  _spatialBlend: 0.4
+  _maxDistance: 26
+  _maxVoices: 4
+  _minimumInterval: 0.1
+  _priority: 15
+  _loop: 0

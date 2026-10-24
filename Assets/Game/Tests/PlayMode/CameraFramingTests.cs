@@ -110,6 +110,37 @@ namespace ForgottenKingdom.Tests
         }
 
         [UnityTest]
+        public IEnumerator AShakeAgainstTheWorldsEndNeverShowsPastIt()
+        {
+            var bounds = _follow.ActiveBounds;
+            Assume.That(bounds.HasValue, Is.True);
+            var shaker = _follow.GetComponent<CameraShaker>();
+            Assume.That(shaker, Is.Not.Null);
+            FeedbackSettings.ResetToDefaults();
+
+            _motor.ResetTo(new Vector2(bounds.Value.xMin + 1f, _motor.transform.position.y));
+            yield return Realtime(1f);
+            shaker.Shake(ShakeProfile.BossLarge);
+
+            // The view sits against the west edge: half of every shake points past it, and the
+            // room's hard edge has to stop that half rather than show the void beyond.
+            var shook = false;
+            var end = Time.realtimeSinceStartup + 0.4f;
+            while (Time.realtimeSinceStartup < end)
+            {
+                yield return null;
+                shook |= shaker.CurrentOffset.sqrMagnitude > 0f;
+                var edge = _follow.ActiveBounds.Value.xMin;
+                var halfWidth = _camera.orthographicSize * _camera.aspect;
+                Assert.That(_camera.transform.position.x - halfWidth, Is.GreaterThanOrEqualTo(edge - 0.01f),
+                    "The shake never shows past the end of the room.");
+            }
+
+            Assert.That(shook, Is.True, "The shake has to run for this to mean anything.");
+            shaker.Clear();
+        }
+
+        [UnityTest]
         public IEnumerator TheViewKeepsToTheRoomAndShowsLittleUnderTheFloor()
         {
             var director = _follow.GetComponent<CameraDirector>();

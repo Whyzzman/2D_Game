@@ -65,6 +65,9 @@ namespace ForgottenKingdom
         }
         public float HealAmount => _healAmount;
         public float DrinkTime => _drinkTime;
+
+        /// <summary>How far through the drink, 0 to 1; 0 while not drinking. For the HUD's draining flask.</summary>
+        public float DrinkProgress => IsDrinking && _drinkTime > 0f ? Mathf.Clamp01(_elapsed / _drinkTime) : 0f;
         public bool IsDrinking { get; private set; }
 
         /// <summary>While drinking: a flask rather than an item from the bag.</summary>

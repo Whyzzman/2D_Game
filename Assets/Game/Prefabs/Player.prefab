@@ -1121,6 +1121,7 @@ GameObject:
   - component: {fileID: 7464111563418591982}
   - component: {fileID: 5299036118544267504}
   - component: {fileID: 3787244074650942526}
+  - component: {fileID: 8613538260809643231}
   m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
@@ -1243,7 +1244,8 @@ MonoBehaviour:
     _groundAcceleration: 60
     _groundDeceleration: 80
     _airAcceleration: 30
-    _airDeceleration: 20
+    _airDeceleration: 45
+    _airTurnAcceleration: 90
     _jumpSpeed: 11
     _riseGravity: 30
     _fallGravity: 48
@@ -1253,10 +1255,11 @@ MonoBehaviour:
     _apexSpeedThreshold: 2
     _apexGravityMultiplier: 0.5
     _coyoteTime: 0.1
-    _jumpBuffer: 0.12
+    _jumpBuffer: 0.15
     _airJumps: 1
     _airJumpSpeed: 9.5
     _pogoSpeed: 9.5
+    _ledgeForgiveness: 0.1
   _dashSettings:
     _dashSpeed: 16
     _dashDuration: 0.18
@@ -1448,6 +1451,8 @@ MonoBehaviour:
   _secondWindDuration: 6
   _secondWindCooldown: 30
   _inputBufferTime: 0.15
+  _dashTailAttackWindow: 0.15
+  _dashTailAttackGrace: 0.05
   _hurtDuration: 0.28
   _deathDelay: 1.2
   _blockMovementScale: 0.28
@@ -1898,6 +1903,31 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   _handOffset: {x: 0.2, y: 1.1}
+--- !u!114 &8613538260809643231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5698690768296159545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8a2b69d61f5449ee94f6be0dac88f65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.HeroDeath
+  _player: {fileID: 5383813697250227479}
+  _body: {fileID: 9079692608646343180}
+  _material: {fileID: 2100000, guid: 3901c6c8da8834bcea4f6b348011e90d, type: 2}
+  _slowScale: 0.35
+  _slowDuration: 0.45
+  _darkenTime: 0.25
+  _dissolveTime: 0.8
+  _wispCount: 28
+  _wispColor: {r: 0.08, g: 0.06, b: 0.12, a: 0.85}
+  _wispEdge: {r: 0.55, g: 0.6, b: 0.78, a: 0.35}
+  _wispLife: 1.1
+  _wispRise: 1.6
+  _gatherTime: 0.5
 --- !u!1 &5840511060120495854
 GameObject:
   m_ObjectHideFlags: 0

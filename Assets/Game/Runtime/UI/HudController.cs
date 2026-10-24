@@ -40,8 +40,6 @@ namespace ForgottenKingdom
     [RequireComponent(typeof(UIDocument))]
     public sealed class HudController : MonoBehaviour
     {
-        private const float LossDelay = 0.45f;
-        private const float LossSpeed = 0.9f;
         private const float LowShare = 0.3f;
         /// <summary>A change smaller than this (a twentieth of a percent) is not worth a relayout.</summary>
         private const float ShownEpsilon = 0.0005f;
@@ -57,11 +55,20 @@ namespace ForgottenKingdom
         [SerializeField] private GameProgress _progress;
         [SerializeField] private WorldState _world;
         [SerializeField] private HudArt _art = new HudArt();
+        [Tooltip("The fog that sweeps across the screen on crossing into another region.")]
+        [SerializeField] private ZoneCurtainSettings _zoneCurtainSettings = new ZoneCurtainSettings();
+        [Tooltip("Pale edges and a heartbeat under a quarter of health (GAME_FEEL_IDEAS item 17).")]
+        [SerializeField] private LowHealthSettings _lowHealth = new LowHealthSettings();
+        [Tooltip("The zone card's timing and how it waits for the zone's music.")]
+        [SerializeField] private ZoneTitleTiming _zoneTitleTiming = new ZoneTitleTiming();
 
-        private readonly Meter _health = new Meter();
-        private readonly Meter _manaMeter = new Meter();
-        private readonly Meter _stamina = new Meter();
-        private readonly Meter _bossMeter = new Meter();
+        private readonly HudMeter _health = new HudMeter();
+        private readonly HudMeter _manaMeter = new HudMeter();
+        private readonly HudMeter _stamina = new HudMeter();
+        private readonly HudMeter _bossMeter = new HudMeter();
+        private HudVitals _vitals;
+        private HudFlasks _flaskRow;
+        private HudPurse _purse;
         private readonly Slot[] _skillSlots = new Slot[ActiveSkillController.SlotCount];
         private readonly Slot[] _spellSlots = new Slot[PlayerSpellbook.SlotCount];
         private readonly VisualElement[] _chips = new VisualElement[4];
@@ -74,11 +81,13 @@ namespace ForgottenKingdom
         private Label _bossPhase;
         private Label _bossValue;
         private Label _hpValue;
-        private Label _purse;
         private VisualElement _prompt;
         private Label _promptText;
         private BossTitleCard _bossTitle;
         private ZoneTitleBanner _zoneTitle;
+        private ZoneCurtain _zoneCurtain;
+        private string _curtainZoneId;
+        private string _titleZoneId;
         private InscriptionView _inscription;
         private EndingView _ending;
         private VisualElement _fade;
@@ -88,7 +97,6 @@ namespace ForgottenKingdom
         private float _fadeValue;
         private float _fadeTarget;
         private float _fadeSpeed = 1f;
-        private int _shownCurrency = -1;
         // What the labels and fills last showed. UI Toolkit re-lays out on every style or text
         // write, so the HUD writes only when a shown value actually changes.
         private int _shownHp = -1;
@@ -108,12 +116,8 @@ namespace ForgottenKingdom
         private ShopView _shop;
         private AbilityCard _abilityCard;
         private HudKeyGlyphs _keyGlyphs;
-        private VisualElement _flasks;
-        private VisualElement _flaskRow;
-        private readonly System.Collections.Generic.List<VisualElement> _flaskIcons =
-            new System.Collections.Generic.List<VisualElement>();
-        private int _shownFlaskCharges = -1;
-        private bool _shownFlaskDrinking;
+        private HudManaWisps _manaWisps;
+        private LowHealthCue _lowHealthCue;
 
         /// <summary>The pause over the game; it shares this document.</summary>
         public PauseMenu Pause => _pause;
@@ -129,6 +133,9 @@ namespace ForgottenKingdom
         public EndingView Ending => _ending;
         public ShopView Shop => _shop;
 
+        /// <summary>The sparks that carry a swing's mana to the bar.</summary>
+        public HudManaWisps ManaWisps => _manaWisps;
+
         /// <summary>The "ability gained" card; it shares this document.</summary>
         public AbilityCard AbilityCard => _abilityCard;
 
@@ -136,16 +143,21 @@ namespace ForgottenKingdom
         public HudKeyGlyphs KeyGlyphs => _keyGlyphs;
 
         /// <summary>Flask icons currently drawn, for tests and tools.</summary>
-        public int FlaskIconCount => _flaskIcons.Count;
+        public int FlaskIconCount => _flaskRow != null ? _flaskRow.Count : 0;
 
         /// <summary>For tests and tools: whether the boss bar is currently up.</summary>
         public bool IsBossBarVisible => _boss != null && _boss.ClassListContains("boss--visible");
         public bool IsDeathShown => _death != null && _death.ClassListContains("death--visible");
         public float FadeAmount => _fadeValue;
         public string ZoneTitleText => _zoneTitle != null ? _zoneTitle.Text : string.Empty;
+        public bool ZoneTitleIsShowing => _zoneTitle != null && _zoneTitle.IsShowing;
+        public bool ZoneTitleIsShort => _zoneTitle != null && _zoneTitle.IsShort;
 
         /// <summary>For tests: the boss title card.</summary>
         public BossTitleCard BossTitle => _bossTitle;
+
+        /// <summary>For tests: the pale edge and heartbeat of low health.</summary>
+        public LowHealthCue LowHealth => _lowHealthCue;
 
         private void OnEnable()
         {
@@ -183,17 +195,20 @@ namespace ForgottenKingdom
             _pause = new PauseMenu(_root, _inventory, _map, _shrine, _dialogue, _shop, _ending);
             _pause.Attach(_player, _progress);
             _keyGlyphs = new HudKeyGlyphs(_root);
+            _manaWisps = new HudManaWisps(_root, _player != null ? _player.GetComponent<WeaponManaGain>() : null);
+            _lowHealthCue = new LowHealthCue(_root, _lowHealth);
+            _lowHealthCue.Beat += volume => AudioManager.Play2D(AudioId.Heartbeat, volume);
             _abilityCard = new AbilityCard(_root);
             _abilityCard.Attach(_player, _progress);
-            _flasks = _root.Q("flasks");
-            _flaskRow = _root.Q("flask-row");
             Dress();
+            _vitals = new HudVitals(_root, _health, _manaMeter, _art.vignette);
             Subscribe(true);
         }
 
         private void OnDisable()
         {
             Subscribe(false);
+            _vitals?.Dispose();
             _pause?.Detach();
             _inventory?.Detach();
             _map?.Detach();
@@ -204,6 +219,8 @@ namespace ForgottenKingdom
             _ending?.Detach();
             _abilityCard?.Detach();
             _keyGlyphs?.Dispose();
+            _manaWisps?.Dispose();
+            _manaWisps = null;
         }
 
         private void Start()
@@ -249,10 +266,13 @@ namespace ForgottenKingdom
             _bossPhase = _root.Q<Label>("boss-phase");
             _bossValue = _root.Q<Label>("boss-value");
             _hpValue = _root.Q<Label>("hp-value");
-            _purse = _root.Q<Label>("purse-value");
+            _purse = new HudPurse(_root);
+            _flaskRow = new HudFlasks(_root);
             _prompt = _root.Q("prompt");
             _promptText = _root.Q<Label>("prompt-text");
             _zoneTitle = new ZoneTitleBanner(_root);
+            _zoneCurtain = new ZoneCurtain(_root, _zoneCurtainSettings);
+            _zoneTitle = new ZoneTitleBanner(_root, _zoneTitleTiming);
             _bossTitle = new BossTitleCard(_root);
             _fade = _root.Q("fade");
             _death = _root.Q("death");
@@ -329,6 +349,12 @@ namespace ForgottenKingdom
             {
                 if (on) { _world.ZoneTitleRequested += OnZoneTitle; }
                 else { _world.ZoneTitleRequested -= OnZoneTitle; }
+                if (on) { _world.ZoneEntered += OnZoneEntered; _world.Reloaded += OnWorldReloaded; }
+                else { _world.ZoneEntered -= OnZoneEntered; _world.Reloaded -= OnWorldReloaded; }
+
+                // Return visits get the short card; a load is not a visit (GAME_FEEL_IDEAS.md, item 20).
+                if (on) { _world.ZoneEntered += OnZoneReturned; _world.Reloaded += OnTitlesReloaded; }
+                else { _world.ZoneEntered -= OnZoneReturned; _world.Reloaded -= OnTitlesReloaded; }
             }
 
             if (on)
@@ -362,14 +388,29 @@ namespace ForgottenKingdom
             _abilityCard?.Tick();
             var dt = Time.unscaledDeltaTime;
             UpdateResources(dt);
-            UpdateFlasks();
+            _manaWisps?.Tick(dt);
+            _flaskRow?.Update(_player != null ? _player.Flasks : null);
             UpdateBoss(dt);
             UpdateLoadout();
             UpdateConditions();
-            UpdatePurseAndPrompt();
+            _purse?.Update(_progress != null ? _progress.Currency : 0, dt);
+            UpdatePrompt();
             UpdateFade(dt);
             _zoneTitle?.Tick(dt);
             _bossTitle?.Tick(dt);
+            _zoneCurtain?.Tick(dt);
+            TickLowHealth(dt);
+        }
+
+        private void TickLowHealth(float dt)
+        {
+            if (_lowHealthCue == null || _player == null || _player.Health == null)
+            {
+                return;
+            }
+
+            var health = _player.Health;
+            _lowHealthCue.Tick(dt, Share(health.Current, health.Max), _player.IsAlive);
         }
 
         private void UpdateResources(float dt)
@@ -383,6 +424,7 @@ namespace ForgottenKingdom
             var share = Share(health.Current, health.Max);
             _health.Set(share, dt);
             _health.Fill?.EnableInClassList("bar__fill--low", share < LowShare);
+            _vitals?.Tick(dt, share, share < LowShare);
             var hp = Mathf.CeilToInt(health.Current);
             var hpMax = Mathf.CeilToInt(health.Max);
             if (_hpValue != null && (hp != _shownHp || hpMax != _shownHpMax))
@@ -404,63 +446,6 @@ namespace ForgottenKingdom
                 _stamina.Set(staminaShare, dt);
                 _stamina.Fill?.EnableInClassList("bar__fill--low", staminaShare < LowShare);
             }
-        }
-
-        /// <summary>
-        /// The flask row: full ones lit, spent ones only an outline, and the one being drunk
-        /// glowing and running low. Rebuilt only when the charge count or the drinking changes.
-        /// </summary>
-        private void UpdateFlasks()
-        {
-            var flasks = _player != null ? _player.Flasks : null;
-            if (flasks == null || _flaskRow == null)
-            {
-                return;
-            }
-
-            if (_flaskIcons.Count != flasks.MaxCharges)
-            {
-                _flaskRow.Clear();
-                _flaskIcons.Clear();
-                for (var i = 0; i < flasks.MaxCharges; i++)
-                {
-                    var flask = new VisualElement { pickingMode = PickingMode.Ignore };
-                    flask.AddToClassList("flask");
-                    var neck = new VisualElement { pickingMode = PickingMode.Ignore };
-                    neck.AddToClassList("flask__neck");
-                    var body = new VisualElement { pickingMode = PickingMode.Ignore };
-                    body.AddToClassList("flask__body");
-                    var liquid = new VisualElement { pickingMode = PickingMode.Ignore };
-                    liquid.AddToClassList("flask__liquid");
-                    body.Add(liquid);
-                    flask.Add(neck);
-                    flask.Add(body);
-                    _flaskRow.Add(flask);
-                    _flaskIcons.Add(flask);
-                }
-
-                _shownFlaskCharges = -1;
-            }
-
-            var charges = flasks.Charges;
-            var drinking = flasks.IsDrinking;
-            if (charges == _shownFlaskCharges && drinking == _shownFlaskDrinking)
-            {
-                return;
-            }
-
-            _shownFlaskCharges = charges;
-            _shownFlaskDrinking = drinking;
-            for (var i = 0; i < _flaskIcons.Count; i++)
-            {
-                // The charge is paid as the drink starts, so the one being drunk sits just past
-                // the remaining ones.
-                var isDrinking = drinking && i == charges;
-                _flaskIcons[i].EnableInClassList("flask--drinking", isDrinking);
-                _flaskIcons[i].EnableInClassList("flask--empty", i >= charges && !isDrinking);
-            }
-
-            _flasks?.EnableInClassList("flasks--empty", charges == 0 && !drinking);
         }
 
         private void UpdateBoss(float dt)
@@ -586,15 +571,8 @@ namespace ForgottenKingdom
             }
         }
 
-        private void UpdatePurseAndPrompt()
+        private void UpdatePrompt()
         {
-            var currency = _progress != null ? _progress.Currency : 0;
-            if (_purse != null && currency != _shownCurrency)
-            {
-                _shownCurrency = currency;
-                _purse.text = currency.ToString("N0").Replace(',', ' ');
-            }
-
             var prompt = _interactor != null ? _interactor.CurrentPrompt : string.Empty;
             var dead = _player != null && !_player.IsAlive;
             // The boss's name sits where the prompt does; for its few seconds the name wins.
@@ -644,21 +622,68 @@ namespace ForgottenKingdom
             // Death owns the centre of the screen: a zone card still fading must not sit on it.
             _zoneTitle?.Hide();
             _bossTitle?.Hide();
+            _zoneCurtain?.Hide();
             _death?.EnableInClassList("death--visible", true);
         }
 
         private void OnPlayerRespawned()
         {
+            _lowHealthCue?.Clear();
             _death?.EnableInClassList("death--visible", false);
         }
 
+        /// <summary>The first visit: the full card, risen with the zone's theme.</summary>
         private void OnZoneTitle(ZoneDefinition zone)
         {
             if (zone != null)
             {
-                _zoneTitle?.Show(zone.DisplayName);
+                _zoneTitle?.ShowZone(zone.ZoneId, zone.DisplayName, isFirstVisit: true);
             }
         }
+
+        /// <summary>The fog curtain the last region change played, for tests.</summary>
+        public ZoneCurtain ZoneCurtain => _zoneCurtain;
+
+        /// <summary>
+        /// Walking over a border sweeps fog in the colour of the region ahead (GAME_FEEL_IDEAS.md,
+        /// item 19). Not for the first zone of a session or a load, and not under the respawner's
+        /// fade: there the black already covers the change.
+        /// </summary>
+        private void OnZoneEntered(ZoneDefinition zone)
+        {
+            var previous = _curtainZoneId;
+            _curtainZoneId = zone?.ZoneId;
+            if (zone == null || string.IsNullOrEmpty(previous) || previous == zone.ZoneId
+                || (_world != null && _world.IsTransitioning))
+            {
+                return;
+            }
+
+            var heading = _player != null && _player.TryGetComponent<PlayerMotor2D>(out var motor)
+                ? motor.Velocity.x
+                : 1f;
+            _zoneCurtain?.Play(zone.FogTint, heading);
+        }
+
+        /// <summary>A load can put the hero anywhere; that is not a border crossed.</summary>
+        private void OnWorldReloaded() => _curtainZoneId = null;
+
+        /// <summary>
+        /// Any region change. Queues the short card; on a first visit the title request that follows
+        /// in the same frame upgrades it to the full one. The first zone of a session or a load is
+        /// where the hero already is, not a return, so it gets nothing here.
+        /// </summary>
+        private void OnZoneReturned(ZoneDefinition zone)
+        {
+            var previous = _titleZoneId;
+            _titleZoneId = zone?.ZoneId;
+            if (zone != null && !string.IsNullOrEmpty(previous) && previous != zone.ZoneId)
+            {
+                _zoneTitle?.ShowZone(zone.ZoneId, zone.DisplayName, isFirstVisit: false);
+            }
+        }
+
+        private void OnTitlesReloaded() => _titleZoneId = null;
 
         /// <summary>A vessel shard says how far its vessel is along, where zone names appear.</summary>
         private void OnPickupCollected(WorldPickup pickup)
@@ -722,78 +747,6 @@ namespace ForgottenKingdom
         }
 
         /// <summary>A bar with a delayed pale trail showing what was just lost.</summary>
-        private sealed class Meter
-        {
-            private VisualElement _loss;
-            private float _shown = -1f;
-            private float _trail;
-            private float _trailWait;
-            private float _writtenShown = -1f;
-            private float _writtenTrail = -1f;
-
-            public VisualElement Fill { get; private set; }
-
-            public void Bind(VisualElement root, string prefix)
-            {
-                Fill = root.Q($"{prefix}-fill");
-                _loss = root.Q($"{prefix}-loss");
-            }
-
-            public void Snap(float share)
-            {
-                _shown = share;
-                _trail = share;
-                _trailWait = 0f;
-                Write();
-            }
-
-            public void Set(float share, float dt)
-            {
-                if (_shown < 0f)
-                {
-                    Snap(share);
-                    return;
-                }
-
-                if (share < _shown)
-                {
-                    _trailWait = LossDelay;
-                }
-
-                _shown = share;
-                if (_trail < share)
-                {
-                    _trail = share;
-                }
-                else if (_trailWait > 0f)
-                {
-                    _trailWait -= dt;
-                }
-                else
-                {
-                    _trail = Mathf.MoveTowards(_trail, share, LossSpeed * dt);
-                }
-
-                Write();
-            }
-
-            private void Write()
-            {
-                if (Fill != null && Mathf.Abs(_shown - _writtenShown) > ShownEpsilon)
-                {
-                    _writtenShown = _shown;
-                    Fill.style.width = Length.Percent(_shown * 99f);
-                    Fill.style.borderRightWidth = _shown > 0.005f && _shown < 0.995f ? 2f : 0f;
-                }
-
-                if (_loss != null && Mathf.Abs(_trail - _writtenTrail) > ShownEpsilon)
-                {
-                    _writtenTrail = _trail;
-                    _loss.style.width = Length.Percent(_trail * 99f);
-                }
-            }
-        }
-
         private sealed class Slot
         {
             private readonly VisualElement _root;
@@ -847,52 +800,6 @@ namespace ForgottenKingdom
                         : remaining >= 10f ? Mathf.CeilToInt(remaining).ToString()
                         : (tenths / 10f).ToString("0.0");
                 }
-            }
-        }
-    }
-
-    /// <summary>
-    /// The HUD's typefaces. Georgia stands in for the display serif of the HTML design (Cinzel)
-    /// until a licensed font is bundled; both carry Cyrillic. Created once, on first use.
-    /// </summary>
-    public static class HudFonts
-    {
-        private static Font _display;
-        private static Font _body;
-        private static bool _created;
-
-        public static Font Display
-        {
-            get { Create(); return _display; }
-        }
-
-        public static Font Body
-        {
-            get { Create(); return _body; }
-        }
-
-        private static void Create()
-        {
-            if (_created)
-            {
-                return;
-            }
-
-            _created = true;
-            try
-            {
-                _display = Font.CreateDynamicFontFromOSFont(
-                    new[] { "Georgia", "Palatino Linotype", "Times New Roman" }, 32);
-                // Arial first: it ships with both Windows and macOS. A face missing on this OS at
-                // the head of the list makes UI Toolkit warn on every panel update.
-                _body = Font.CreateDynamicFontFromOSFont(
-                    new[] { "Arial", "Segoe UI", "Liberation Sans" }, 24);
-            }
-            catch (Exception)
-            {
-                // No OS fonts (a headless runner): the theme's own font is used instead.
-                _display = null;
-                _body = null;
             }
         }
     }

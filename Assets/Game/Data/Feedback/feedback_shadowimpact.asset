@@ -35,6 +35,7 @@ MonoBehaviour:
   _shake: 2
   _shakeScale: 1.1
   _shakeVerticalBias: 1
+  _shakeKick: 0
   _screenFlash: 0
   _flashColor: {r: 1, g: 1, b: 1, a: 1}
   _lightColor: {r: 0.74, g: 0.24, b: 1, a: 0.8}
@@ -42,4 +43,4 @@ MonoBehaviour:
   _lightDuration: 0.18
   _priority: 45
   _soundEvent: shadow
-  _haptic: 0
+  _haptic: 0.3
