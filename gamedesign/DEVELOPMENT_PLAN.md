@@ -116,7 +116,7 @@ merge-коммитом из `cloud/verified`: компиляция и `.meta` и
 | Клавиши и отладка | `CONTROLS.md` |
 | Визуальный стиль | `VISUAL_BIBLE.md`, `CONCEPT_BRIEFS.md`, `ART_REQUIREMENTS.md` |
 | Арт: список и замена | `ART_ASSET_LIST.md`, `ANIMATION_LIST.md`, `ANIMATION_PIPELINE.md`, `VFX_LIST.md` |
-| Окружение | `ENVIRONMENT_TOMB.md`; нарисованные зоны — `LEVEL_TOOL.md` («Нарисованный уровень»), макет и painter — `design/levels/` |
+| Окружение | `ENVIRONMENT_TOMB.md`; нарисованные зоны — `LEVEL_TOOL.md` («Нарисованный уровень»), макет и painter — `design/levels/`; фоны из Midjourney — `MIDJOURNEY.md` |
 | Боевой фидбек | `COMBAT_FEEDBACK.md` |
 | Ощущение игры: что улучшить дальше | `GAME_FEEL_IDEAS.md` |
 | Звук и музыка | `AUDIO_DESIGN.md`, `AUDIO_ASSET_LIST.md`, `MUSIC_SYSTEM.md`; бриф на живую музыку и запись — `AUDIO_BRIEF.md` |
