@@ -22,12 +22,12 @@
 
 ## Как работать
 
-1. **Настройки (веб-интерфейс, версия 8.2):** Version 8.2, Raw — Raw, Stylization ~100–150, Weirdness 0,
+1. **Настройки (веб-интерфейс, версия 8.2):** Version 8.2, Raw — **Standard** (Raw тянет к фото и 3D-рендеру — проверено), Stylization ~250, Weirdness 0,
    Variety 0; Standard — для якоря и проб, HD — для финальных фонов (выше разрешение). `--v` в промпт не
    писать — берётся версия из настроек. Ссылку `--sref` не печатать: перетащить картинку в строку промпта
    и выбрать «Style reference». Параметры в тексте промпта (`--ar`, `--no`) важнее ползунков.
-2. **Шаг 0 — якорь стиля.** Загрузить в Midjourney карту зоны (`gamedesign/reference/maps/01_forgotten_tomb.webp`)
-   и сгенерировать промпт из §0 с её ссылкой в `--sref`. Выбрать одну лучшую картинку, сделать Upscale,
+2. **Шаг 0 — якорь стиля.** Перетащить в строку промпта карту зоны (`gamedesign/reference/maps/01_forgotten_tomb.webp`)
+   как Style reference и сгенерировать промпт из §0. Выбрать одну лучшую картинку, сделать Upscale,
    скопировать её ссылку (или код стиля `--sref <число>`). Дальше во **всех** промптах вместо `<STYLE>`
    подставлять эту ссылку — тогда 27 комнат будут одной игрой, а не 27 разными.
 3. **Из четырёх вариантов** брать тот, где: вид строго сбоку, нет людей, нет текста, **середина
@@ -48,26 +48,31 @@
 **FON** (фоны комнат):
 
 ```
-dark gothic fantasy, painterly 2D game background, soft brush strokes, layered fog, cold blue-grey stone, faded royal gold accents, muted desaturated palette, low contrast, dim, palette #2A2520 #3E4247 #2F3E52, faint violet shadow veins, volumetric light shafts, ancient ruined royal crypt, distant background layer for a 2D side-scroller, straight-on side view, flat orthographic, empty interior, calm dark empty centre, no characters --style raw --stylize 150 --sref <STYLE> --no people, figures, creatures, text, letters, logo, frame, border, UI, watermark, foreground floor, saturated colors, bright sky
+dark gothic fantasy, painterly 2D game background, soft brush strokes, layered fog, cold blue-grey stone, faded royal gold accents, hand-painted digital matte painting, visible soft brush strokes, muted desaturated palette, low contrast, dim, palette #2A2520 #3E4247 #2F3E52, faint violet shadow veins, volumetric light shafts, ancient ruined royal crypt, distant background layer for a 2D side-scroller, straight-on side view, flat orthographic, empty interior, calm dark empty centre, no characters --sref <STYLE> --no people, figures, creatures, text, letters, logo, frame, border, vignette, UI, watermark, foreground floor, saturated colors, bright sky, photo, photorealistic, 3d render, perspective floor, vanishing point
 ```
 
 **TEX** (бесшовные текстуры):
 
 ```
-seamless tileable texture, flat top-down orthographic, even soft lighting, no shadows, no perspective, painterly hand-painted game texture, muted desaturated palette --tile --ar 1:1 --style raw --sref <STYLE> --no text, objects, vignette, highlights
+seamless tileable texture, flat top-down orthographic, even soft lighting, no shadows, no perspective, painterly hand-painted game texture, muted desaturated palette --tile --ar 1:1 --sref <STYLE> --no text, objects, vignette, highlights, photo
 ```
 
 **PROP** (декор):
 
 ```
-single object, isolated on pure black background, centered, whole object visible with margin, straight-on side view, painterly dark gothic fantasy game asset, soft rim light, muted desaturated palette, faded gold accents --style raw --sref <STYLE> --no background, floor, shadow on ground, text, people, frame
+single object, isolated on pure black background, centered, whole object visible with margin, straight-on side view, painterly dark gothic fantasy game asset, soft rim light, muted desaturated palette, faded gold accents --sref <STYLE> --no background, floor, shadow on ground, text, people, frame, photo, 3d render
 ```
 
 ## §0. Якорь стиля
 
+Карта зоны — в Style reference; Raw выключен. Промпт, давший якорь Гробницы (2026-10-25, вариант 4 из 4):
+
 ```
-vast gothic royal crypt interior, rows of pointed arches and clustered columns, stone effigies of knights resting in niches, faded blue banners with a golden crown and flame emblem, warm candlelight accents against cold blue-grey stone, drifting fog, pale light shafts falling from cracks in the ribbed vault, melancholic grandeur, dark gothic fantasy, painterly 2D concept art, soft brush strokes, muted desaturated palette --ar 16:9 --style raw --no people, text, logo, watermark
+side view of a vast gothic royal crypt hall, straight-on flat orthographic view like a theatre stage set, rows of pointed arches and clustered columns in parallel layers, stone effigies of knights resting in niches, faded blue banners with a golden crown and flame emblem, warm candlelight accents against cold blue-grey stone, drifting fog, pale light shafts falling from cracks in the vault, melancholic grandeur, dark gothic fantasy, hand-painted digital matte painting, illustrated 2D game background, visible soft brush strokes, painterly concept art, muted desaturated palette --ar 16:9 --no people, text, logo, watermark, photo, photorealistic, 3d render, perspective floor, vanishing point
 ```
+
+«theatre stage set» даёт тёмную рваную рамку по краям — в промптах комнат его нет, рамка запрещена в `--no`.
+Якорь сохранить как `design/levels/midjourney/tomb/_style_anchor.png`.
 
 ## §1. Гробница — фоны комнат (27)
 
@@ -145,11 +150,11 @@ Claude правит процедурные спрайты, а позже раб�
 
 | Имя файла | --ar | Промпт |
 | --- | --- | --- |
-| `concept_hero` | 3:2 | character turnaround sheet of a lone wanderer, front, side and back views, deep hood hiding the face in shadow, dark wool cloak widening downward into a triangle silhouette, old steel sword, worn leather straps, a dull grey-blue scarf accent, faint purple veins glowing on one forearm, slim agile build, 6.5 heads tall, dark gothic fantasy, painterly concept art, plain dark grey background --style raw --sref <STYLE> --no text, logo |
-| `concept_zombie_soldier` | 3:2 | character turnaround sheet of an undead royal soldier, hunched, asymmetric shoulders, rusted chainmail and torn blue tabard, grey-green dead skin, faint purple glow in the eye sockets, broken sword, dark gothic fantasy, painterly concept art, plain dark grey background --style raw --sref <STYLE> --no text, logo |
-| `concept_shieldguard` | 3:2 | character turnaround sheet of an undead shield guard, heavy rectangular silhouette, tall crested helmet, large tower shield with crossed swords under a crown, purple light in cracks of the armor, dark gothic fantasy, painterly concept art, plain dark grey background --style raw --sref <STYLE> --no text, logo |
-| `concept_bone_archer` | 3:2 | character turnaround sheet of a skeletal archer, tall thin silhouette, long bow forming a strong horizontal line, tattered hood, quiver of black arrows, dark gothic fantasy, painterly concept art, plain dark grey background --style raw --sref <STYLE> --no text, logo |
-| `concept_tomb_guardian` | 3:2 | character turnaround sheet of a colossal tomb guardian knight boss, monumental trapezoid silhouette, crown on the helmet, dark crimson cape, great shield with a crown and flame emblem, symmetrical and solemn, second variant with cracked armor and purple shadow smoke pouring from the chest, dark gothic fantasy, painterly concept art, plain dark grey background --style raw --sref <STYLE> --no text, logo |
+| `concept_hero` | 3:2 | character turnaround sheet of a lone wanderer, front, side and back views, deep hood hiding the face in shadow, dark wool cloak widening downward into a triangle silhouette, old steel sword, worn leather straps, a dull grey-blue scarf accent, faint purple veins glowing on one forearm, slim agile build, 6.5 heads tall, dark gothic fantasy, painterly concept art, plain dark grey background --sref <STYLE> --no text, logo, photo, 3d render |
+| `concept_zombie_soldier` | 3:2 | character turnaround sheet of an undead royal soldier, hunched, asymmetric shoulders, rusted chainmail and torn blue tabard, grey-green dead skin, faint purple glow in the eye sockets, broken sword, dark gothic fantasy, painterly concept art, plain dark grey background --sref <STYLE> --no text, logo, photo, 3d render |
+| `concept_shieldguard` | 3:2 | character turnaround sheet of an undead shield guard, heavy rectangular silhouette, tall crested helmet, large tower shield with crossed swords under a crown, purple light in cracks of the armor, dark gothic fantasy, painterly concept art, plain dark grey background --sref <STYLE> --no text, logo, photo, 3d render |
+| `concept_bone_archer` | 3:2 | character turnaround sheet of a skeletal archer, tall thin silhouette, long bow forming a strong horizontal line, tattered hood, quiver of black arrows, dark gothic fantasy, painterly concept art, plain dark grey background --sref <STYLE> --no text, logo, photo, 3d render |
+| `concept_tomb_guardian` | 3:2 | character turnaround sheet of a colossal tomb guardian knight boss, monumental trapezoid silhouette, crown on the helmet, dark crimson cape, great shield with a crown and flame emblem, symmetrical and solemn, second variant with cracked armor and purple shadow smoke pouring from the chest, dark gothic fantasy, painterly concept art, plain dark grey background --sref <STYLE> --no text, logo, photo, 3d render |
 
 ## Как Claude вписывает результат
 
