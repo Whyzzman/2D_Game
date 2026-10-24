@@ -14,7 +14,7 @@ namespace ForgottenKingdom.Tests
         [UnityTest]
         public IEnumerator ATaggedBlockUnderTheFeetWinsOverTheZone()
         {
-            var block = new GameObject("Plank") { layer = LayerMask.NameToLayer("Ground") };
+            var block = new GameObject("Plank") { layer = 9 }; // Ground; the layers have no names
             block.transform.position = new Vector3(1000f, 1000f, 0f);
             block.AddComponent<BoxCollider2D>().size = new Vector2(4f, 1f);
             block.AddComponent<GroundSurface>().Set(SurfaceKind.Wood);

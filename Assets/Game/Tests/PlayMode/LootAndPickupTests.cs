@@ -150,9 +150,10 @@ namespace ForgottenKingdom.Tests
             var hero = (Vector2)_player.transform.position;
             var near = _loot.Spawn(new DropResult(string.Empty, true, 5), hero + new Vector2(1.4f, 0.8f));
             var far = _loot.Spawn(new DropResult(string.Empty, true, 7), hero + new Vector2(6f, 0.8f));
-            var item = _loot.Spawn(new DropResult("iron_scrap", false, 1), hero + new Vector2(-1.4f, 0.8f));
+            var item = _loot.Spawn(new DropResult("iron_scrap", false, 1), hero + new Vector2(-6f, 0.8f));
             Assert.That(near.MagnetRadius, Is.EqualTo(2f).Within(0.001f), "GAME_FEEL_IDEAS.md item 15: 2 units.");
             Assert.That(item.MagnetRadius, Is.Zero, "A find is chosen, not swept up.");
+            // Out of the hero's reach: a find dropped at his feet is picked up by touch, magnet or not.
 
             var deadline = Time.realtimeSinceStartup + 3f;
             while (!near.IsCollected && Time.realtimeSinceStartup < deadline)
@@ -163,7 +164,7 @@ namespace ForgottenKingdom.Tests
             Assert.That(near.IsCollected, Is.True, "The near coin flew in on its own.");
             Assert.That(_progress.Currency, Is.EqualTo(before + 5));
             Assert.That(far.IsCollected || far.IsAttracted, Is.False, "Out of reach stays put.");
-            Assert.That(item.IsCollected, Is.False);
+            Assert.That(item.IsCollected || item.IsAttracted, Is.False, "An item never flies in.");
         }
 
         [UnityTest]

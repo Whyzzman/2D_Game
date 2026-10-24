@@ -139,7 +139,8 @@ namespace ForgottenKingdom.Tests
         /// A player's climb by a ring: face it, throw the line, at the top of the pop jump again
         /// straight up, and step toward the shelf once over it. Returns where the hero lands.
         /// </summary>
-        private IEnumerator ClimbByRing(Vector2 start, Key towardRing, Key towardShelf, float overShelfY)
+        private IEnumerator ClimbByRing(Vector2 start, Key towardRing, Key towardShelf, float overShelfY,
+            bool steerUntilLanded = false)
         {
             _progress.UnlockAbility(AbilityIds.Grapple);
             _progress.UnlockAbility(AbilityIds.DoubleJump);
@@ -176,8 +177,11 @@ namespace ForgottenKingdom.Tests
 
             InputSystem.QueueStateEvent(_keyboard, new KeyboardState(towardShelf, Key.Space));
             yield return Realtime(0.35f);
-            InputSystem.QueueStateEvent(_keyboard, new KeyboardState());
+            // Air braking (TUNING.md) shortens the drift: a shelf in a wall is steered into until the feet land.
+            InputSystem.QueueStateEvent(_keyboard,
+                steerUntilLanded ? new KeyboardState(towardShelf) : new KeyboardState());
             yield return Until(() => _motor.IsGrounded, 3f, "Lands somewhere.");
+            InputSystem.QueueStateEvent(_keyboard, new KeyboardState());
             Time.maximumDeltaTime = 0.3333333f;
         }
 
@@ -201,7 +205,7 @@ namespace ForgottenKingdom.Tests
             // opens in that wall ten cells over the ground (Levels/tomb.txt).
             var nest = TombScene.Layout.WorldBounds(TombScene.Layout.Room("room_tomb_crypt_nest"));
             var floor = nest.yMin + 1f;
-            yield return ClimbByRing(TombScene.Spot("grapple-hint") + new Vector2(0f, 0.85f), Key.A, Key.A, floor + 0.9f);
+            yield return ClimbByRing(TombScene.Spot("grapple-hint") + new Vector2(0f, 0.85f), Key.A, Key.A, floor + 0.9f, steerUntilLanded: true);
             Assert.That(_player.transform.position.y, Is.GreaterThan(floor),
                 $"On the nest's floor: at {_player.transform.position}.");
             Assert.That(_player.transform.position.x, Is.LessThan(nest.xMax), "Inside the nest.");
@@ -214,7 +218,7 @@ namespace ForgottenKingdom.Tests
             // that wall ten cells over the ground (Levels/forest.txt).
             var hollow = ForestScene.Room("room_forest_hunter_hollow");
             var floor = hollow.yMin + 1f;
-            yield return ClimbByRing(ForestScene.Ground("grapple-hint"), Key.A, Key.A, floor + 0.9f);
+            yield return ClimbByRing(ForestScene.Ground("grapple-hint"), Key.A, Key.A, floor + 0.9f, steerUntilLanded: true);
             Assert.That(_player.transform.position.y, Is.GreaterThan(floor),
                 $"In the hollow: at {_player.transform.position}.");
             Assert.That(_player.transform.position.x, Is.LessThan(hollow.xMax), "Inside the hollow.");

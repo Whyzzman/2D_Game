@@ -257,7 +257,7 @@ namespace ForgottenKingdom
 
         private void CeilingDust()
         {
-            var hit = Physics2D.Raycast(Feet + Vector2.up * 2.2f, Vector2.up, CeilingReach, LayerMask.GetMask("Ground"));
+            var hit = Physics2D.Raycast(Feet + Vector2.up * 2.2f, Vector2.up, CeilingReach, 1 << 9); // Ground (layers have no names)
             if (hit.collider == null)
             {
                 return;

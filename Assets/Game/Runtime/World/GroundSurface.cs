@@ -38,7 +38,8 @@ namespace ForgottenKingdom
         /// <summary>The block under <paramref name="feet"/>, or the zone's default over a gap.</summary>
         public static SurfaceKind Under(Vector2 feet)
         {
-            if (_groundMask < 0) { _groundMask = LayerMask.GetMask("Ground"); }
+            // Layer 9 is Ground; the project's layers are used by index and have no names.
+            if (_groundMask < 0) { _groundMask = 1 << 9; }
             var hit = Physics2D.Raycast(feet + Vector2.up * 0.1f, Vector2.down, ProbeDepth, _groundMask);
             if (hit.collider != null)
             {

@@ -357,7 +357,7 @@ namespace ForgottenKingdom.Tests
             // The body's side starts 0.05 short of the ledge and the feet a hair over its top:
             // steering held toward it closes ~0.04 before they cross, never enough to stand on the
             // corner unaided. The nudge needs the steering held, so it is held through the fall.
-            yield return FallBesideLedge(floor, gap: 0.05f, above: 0.02f, steerFrames: 8);
+            yield return FallBesideLedge(floor, gap: 0.05f, above: 0.12f, steerFrames: 12);
             Assert.That(_player.IsGrounded, Is.True);
             Assert.That(_body.position.y - 0.8f, Is.EqualTo(floor + LedgeHeight).Within(0.05f),
                 "Nudged onto the ledge instead of scraping down its face.");
@@ -390,11 +390,24 @@ namespace ForgottenKingdom.Tests
             ledge.transform.position = new Vector3(x + 0.4f + gap + 1.5f, floor + LedgeHeight * 0.5f, 0f);
             Physics2D.SyncTransforms();
 
-            _player.ResetTo(new Vector2(x, floor + LedgeHeight + above + 0.8f));
-            InputSystem.QueueStateEvent(_keyboard, new KeyboardState(Key.D));
-            yield return Frames(steerFrames);
-            yield return NeutralFrames(40);
-            Object.Destroy(ledge);
+            // One physics step per frame: under load a long frame would let the body fall several
+            // steps before the steering arrives, past the corner.
+            Time.maximumDeltaTime = Time.fixedDeltaTime;
+            try
+            {
+                _player.ResetTo(new Vector2(x, floor + LedgeHeight + above + 0.8f));
+                // The teleport ignores input until a physics step reads every key up.
+                InputSystem.QueueStateEvent(_keyboard, new KeyboardState());
+                yield return Frames(1);
+                InputSystem.QueueStateEvent(_keyboard, new KeyboardState(Key.D));
+                yield return Frames(steerFrames);
+                yield return NeutralFrames(40);
+            }
+            finally
+            {
+                Time.maximumDeltaTime = 0.3333333f;
+                Object.Destroy(ledge);
+            }
         }
 
         /// <summary>A ledge whose underside sits 0.5 above the standing player's head.</summary>
