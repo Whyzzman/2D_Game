@@ -26,10 +26,9 @@
    Variety 0; Standard — для якоря и проб, HD — для финальных фонов (выше разрешение). `--v` в промпт не
    писать — берётся версия из настроек. Ссылку `--sref` не печатать: перетащить картинку в строку промпта
    и выбрать «Style reference». Параметры в тексте промпта (`--ar`, `--no`) важнее ползунков.
-2. **Шаг 0 — якорь стиля.** Перетащить в строку промпта карту зоны (`gamedesign/reference/maps/01_forgotten_tomb.webp`)
-   как Style reference и сгенерировать промпт из §0. Выбрать одну лучшую картинку, сделать Upscale,
-   скопировать её ссылку (или код стиля `--sref <число>`). Дальше во **всех** промптах вместо `<STYLE>`
-   подставлять эту ссылку — тогда 27 комнат будут одной игрой, а не 27 разными.
+2. **Якорь стиля для фонов не ставить** (§1: он повторял композицию). Для текстур, декора и концептов — по
+   желанию: перетащить карту зоны (`gamedesign/reference/maps/01_forgotten_tomb.webp`) как Style reference (`<STYLE>` в
+   хвостах TEX и PROP). Единство фонов держит общий хвост FON, а не картинка-образец.
 3. **Из четырёх вариантов** брать тот, где: вид строго сбоку, нет людей, нет текста, **середина
    кадра спокойная и тёмная** (по ней ходит герой), интерес — по краям и вверху. Слишком светлую или
    пёструю не брать. Upscale (Subtle) → скачать (png/jpg/webp).
@@ -48,7 +47,7 @@
 **FON** (фоны комнат):
 
 ```
-dark gothic fantasy, painterly 2D game background, soft brush strokes, layered fog, cold blue-grey stone, faded royal gold accents, hand-painted digital matte painting, visible soft brush strokes, muted desaturated palette, low contrast, dim, palette #2A2520 #3E4247 #2F3E52, faint violet shadow veins, volumetric light shafts, ancient ruined royal crypt, distant background layer for a 2D side-scroller, straight-on side view, flat orthographic, empty interior, calm dark empty centre, no characters --sref <STYLE> --no people, figures, creatures, text, letters, logo, frame, border, vignette, UI, watermark, foreground floor, saturated colors, bright sky, photo, photorealistic, 3d render, perspective floor, vanishing point
+hand-drawn 2D side-scroller game environment, painterly, soft ink outlines, deep layered parallax planes fading into mist, dark silhouetted foreground shapes at the edges, organic flowing forms, one dominant hue with a single accent glow, atmospheric haze, drifting faint glowing particles, asymmetric composition, open negative space, no central focal object, side view, enclosed underground, no sky, empty, no characters --s 300 --no people, characters, creatures, trees, sky, text, logo, frame, border, UI, watermark, symmetry, centered composition, photo, photorealistic, 3d render, vanishing point, perspective floor
 ```
 
 **TEX** (бесшовные текстуры):
@@ -63,7 +62,7 @@ seamless tileable texture, flat top-down orthographic, even soft lighting, no sh
 single object, isolated on pure black background, centered, whole object visible with margin, straight-on side view, painterly dark gothic fantasy game asset, soft rim light, muted desaturated palette, faded gold accents --sref <STYLE> --no background, floor, shadow on ground, text, people, frame, photo, 3d render
 ```
 
-## §0. Якорь стиля
+## §0. Якорь стиля (для фонов не используется с 2026-10-25)
 
 Карта зоны — в Style reference; Raw выключен. Промпт, давший якорь Гробницы (2026-10-25, вариант 4 из 4):
 
@@ -78,37 +77,46 @@ side view of a vast gothic royal crypt hall, straight-on flat orthographic view 
 
 Промпт = **текст строки** + `, ` + **FON** + `--ar` из строки. Имя файла:
 `design/levels/midjourney/tomb/<id>.png`. Первыми — `entrance`, `burial_hall`, `guardian_arena` (их видят
-первыми): Claude ставит их и показывает скриншот, потом остальные. У каждой комнаты свой мотив — повторов нет.
+первыми): Claude ставит их и показывает скриншот, потом остальные.
+
+Решения пользователя 2026-10-25: фоны разнообразнее и разного цвета; «в каждом рисунке зала и в центре что-то
+стоит» — сделать каждую часть уровня особенной, как в Hollow Knight. Поэтому: **якоря стиля нет** (он сам был
+симметричной залой и повторял композицию во всех картинках); у каждой комнаты своя форма (шахта, пропасть,
+грот, водопад, логово, корни) и своя гамма; хвост FON описывает качества Hollow Knight словами — асимметрия,
+силуэты по краям, глубокие слои тумана, одна главная гамма с одним акцентом, — но не называет игру, чтобы
+Midjourney не копировал чужой вид (`VISUAL_BIBLE.md` §3). Без «underground, no sky» залы выходили городом под
+открытым небом с деревьями — хвост это запрещает; соседние комнаты не делить одну гамму (Зала — тёплые свечи на
+холодном камне, Арена — кармин).
 
 | # | id (имя файла) | Комната | --ar | Текст |
 | --- | --- | --- | --- | --- |
-| 1 | `room_tomb_entrance` | Вход | 2:1 | tomb entrance hall, massive half-open iron portcullis with grey dawn haze behind it, a tall hooded mourner statue beside the gate, tattered banner on a leaning spear, worn steps leading down |
-| 2 | `room_tomb_burial_hall` | Поховальная зала | 5:2 | long royal burial hall, rows of stone sarcophagi with recumbent knight effigies, tall pointed niches, a warm amber altar glow in the far center, dusty iron chandeliers hanging from the vault |
-| 3 | `room_tomb_west_shaft` | Западная шахта | 1:1 | narrow vertical stone shaft, remnants of a broken spiral stair clinging to the walls, iron rings set in stone, pale roots creeping down from above, faint light from the top |
-| 4 | `room_tomb_guard_passage` | Проход стражи | 7:3 | guard corridor of the crypt, empty weapon racks with rusted halberds, round shields bearing crossed swords under a crown, low ribbed vault, guard alcoves with stone benches |
-| 5 | `room_tomb_chain_shaft` | Цепная шахта | 1:3 | deep vertical shaft, enormous rusted chains hanging from darkness above, stone counterweights, the iron frame of an old lift cage, cold mist far below |
-| 6 | `room_tomb_guardian_approach` | Подступ к Стражу | 8:7 | approach to a ceremonial hall, a grand staircase rising, twin colossal hooded knight statues holding swords point-down, a faint crimson glow beyond a great arch |
-| 7 | `room_tomb_guardian_arena` | Арена Стража | 8:7 | ceremonial arena of a royal tomb, a giant carved crown and flame emblem on the back wall, dark crimson velvet drapes, tall candelabras, a royal sarcophagus on a raised dais, a dim rose window high above |
-| 8 | `room_tomb_royal_ossuary` | Королевская костница | 1:1 | royal ossuary, walls built from stacked skulls and bones in ornamental patterns, a gilded crowned skull in a central niche, melted candle stubs |
-| 9 | `room_tomb_upper_passage` | Верхний коридор | 3:1 | upper gallery corridor, broken stone balustrade, view through a row of arches into a vast dark nave below, heavy cobwebs, dust in the air |
-| 10 | `room_tomb_statue_hall` | Зала статуй | 2:3 | tall narrow hall of statues, giant knight effigies stacked in niches up to the vault, one statue fallen and broken across the hall, a single light beam from above |
-| 11 | `room_tomb_east_chapel` | Восточная часовня | 7:3 | small funerary chapel, rows of stone pews, a faded fresco of a crown and flame in the apse, an altar with candles, shards of blue stained glass glowing dimly |
-| 12 | `room_tomb_flooded_crypt` | Затопленный склеп | 1:2 | flooded crypt, dark still water reflecting pointed arches, half-submerged tombstones, dripping water, pale cyan light seeping through cracks |
-| 13 | `room_tomb_drowned_cache` | Тайник над водой | 1:1 | small hidden chamber above water, wet glistening stones, an old shelf with clay funeral urns, moss in the seams, water drips |
-| 14 | `room_tomb_east_hall` | Восточная зала | 2:1 | eastern crypt hall with a broken ceiling, roots of a forest breaking through the vault, first green moss on the stones, pale moonlight falling in, transition from crypt to forest |
-| 15 | `room_tomb_falls` | Водопад | 1:1 | underground waterfall pouring from a broken aqueduct arch into a dark pool, rising mist spray, glistening wet rock, blue-grey tones |
-| 16 | `room_tomb_lower_crypt` | Нижний склеп | 4:3 | lower crypt of an older age, low heavy round romanesque arches, coffins stacked in wall niches, thick dust, a single hanging lantern |
-| 17 | `room_tomb_lower_chain` | Нижняя цепь | 5:6 | bottom of a chain shaft, huge chains ending in a giant rusted gear mechanism and winch, iron beams, dripping water |
-| 18 | `room_tomb_reliquary` | Реликварий | 1:1 | reliquary chamber, gilded reliquary caskets behind wrought iron grilles with quatrefoil lattice, faded gold, a dim warm glow |
-| 19 | `room_tomb_rubble_slope` | Обвал | 1:1 | collapsed hall, a huge fallen column lying diagonally, broken arch fragments forming a slope, dust drifting in a light beam |
-| 20 | `room_tomb_buried_cache` | Заваленный тайник | 5:4 | half-buried chamber, rubble covering a carved relief wall, a crushed sarcophagus, roots hanging from cracks |
-| 21 | `room_tomb_collapsed_crypt` | Обрушенный склеп | 5:4 | collapsed crypt, tilted tombstones and leaning obelisks, a broken vault opening into darkness, a thin trickle of water falling |
-| 22 | `room_tomb_crypt_nest` | Гнездо над склепом | 1:1 | lair above a crypt, piles of bones and rags, deep claw scratches on the walls, thick cobwebs, eerie stillness |
-| 23 | `room_tomb_column` | Столп | 1:2 | a single colossal pillar rising through a vertical chamber, carved with a spiralling relief of marching knights, a broken capital at the top |
-| 24 | `room_tomb_walled_cell` | Замурованная келья | 2:1 | walled-up monk cell, a bricked-over arch, rusted chains on the wall, a lone wooden stool, carved tally marks on stone |
-| 25 | `room_tomb_mason_cache` | Келья каменщика | 1:1 | stonemason's cell, an unfinished knight statue, chisels and mallets on a bench, rough stone blocks, scaffold planks |
-| 26 | `room_tomb_bell_shaft` | Колокольная шахта | 1:2 | bell shaft, a huge cracked bronze bell hanging in a vertical stone tower, frayed ropes, heavy timber beams |
-| 27 | `room_tomb_arcade` | Арковая галерея | 3:2 | arched gallery, a rhythmic colonnade of pointed arches receding into fog, pools of pale light on the stone |
+| 1 | `room_tomb_entrance` | Вход | 2:1 | crumbling tomb gateway half swallowed by rock on the left, a broken portcullis hanging askew, pale dawn light spilling diagonally from a crack above, a hooded statue toppled on its side, ash grey and dawn silver hues |
+| 2 | `room_tomb_burial_hall` | Поховальная зала | 5:2 | underground royal burial vault deep beneath the earth, rows of stone sarcophagi receding to the right in staggered layers inside a cavernous crypt, clusters of candles glowing on the lids, iron chandeliers hanging from a rough rock ceiling, warm amber candle glow against cold grey-green stone |
+| 3 | `room_tomb_west_shaft` | Западная шахта | 1:1 | narrow vertical rock shaft, fragments of a ruined spiral stair clinging to one wall, pale roots and moss hanging down, drips of light from far above, damp moss green hues |
+| 4 | `room_tomb_guard_passage` | Проход стражи | 7:3 | long low corridor curving like a rib cage, rusted halberds leaning in alcoves, collapsed heaps of old armour, rust brown and faded navy hues |
+| 5 | `room_tomb_chain_shaft` | Цепная шахта | 1:3 | colossal vertical abyss, giant rusted chains plunging from darkness through layers of fog, a broken lift cage dangling off to one side, rust orange and charcoal hues |
+| 6 | `room_tomb_guardian_approach` | Подступ к Стражу | 8:7 | cavern stairway carved into living rock, giant stone hands emerging from the wall, a faint crimson glow seeping from above, dusky violet hues |
+| 7 | `room_tomb_guardian_arena` | Арена Стража | 8:7 | vast round chamber like the inside of a crown, a colossal broken crown sculpture lying tilted in the background, torn crimson banners, gold dust drifting, deep crimson and gold hues |
+| 8 | `room_tomb_royal_ossuary` | Королевская костница | 1:1 | cave walls overgrown with bones like coral, skulls forming an organic honeycomb, a single crowned skull glinting in a hollow, bone ivory and sepia hues |
+| 9 | `room_tomb_upper_passage` | Верхний коридор | 3:1 | narrow ledge gallery high above a void, a broken balustrade, glimpses of distant towers through holes in the wall, dust motes in thin beams, dusty beige and grey hues |
+| 10 | `room_tomb_statue_hall` | Зала статуй | 2:3 | tall chasm with giant weathered knight statues half buried in the rock walls at different heights, one fallen diagonally across the gap, pale moonlight silver and slate hues |
+| 11 | `room_tomb_east_chapel` | Восточная часовня | 7:3 | small half-flooded chapel, shattered stained glass glowing in pools on the floor, leaning pews, a tilted altar, muted blue and dusty rose hues |
+| 12 | `room_tomb_flooded_crypt` | Затопленный склеп | 1:2 | drowned crypt, still black water mirroring broken arches, sinking tombstones, faint bioluminescent algae on the walls, deep teal and cyan hues |
+| 13 | `room_tomb_drowned_cache` | Тайник над водой | 1:1 | small grotto above dark water, glistening wet rocks, hanging strands of moss, a faint green glow rising from below, green-teal hues |
+| 14 | `room_tomb_east_hall` | Восточная зала | 2:1 | ruined hall invaded by giant tree roots bursting through the ceiling, moss and small ferns on the stones, moonlight filtering through the roots, moss green and silver hues |
+| 15 | `room_tomb_falls` | Водопад | 1:1 | towering underground waterfall cascading from a broken aqueduct, clouds of mist, glowing spray, wet black rock, icy turquoise and white hues |
+| 16 | `room_tomb_lower_crypt` | Нижний склеп | 4:3 | ancient low catacomb, heavy round arches sinking unevenly into the ground, coffin niches stacked irregularly, a lone lantern, earthy brown and ochre hues |
+| 17 | `room_tomb_lower_chain` | Нижняя цепь | 5:6 | bottom of a pit, enormous rusted gears and winches half sunk in sludge, chains coiled like serpents, oily black and rust red hues |
+| 18 | `room_tomb_reliquary` | Реликварий | 1:1 | hidden vault of golden reliquaries behind twisted iron lattices, a warm dim glow, tarnished gold and bronze hues |
+| 19 | `room_tomb_rubble_slope` | Обвал | 1:1 | collapsed cavern, huge fallen pillars forming a diagonal slope, a storm of dust in a single light shaft, sandstone and grey haze hues |
+| 20 | `room_tomb_buried_cache` | Заваленный тайник | 5:4 | chamber crushed by earth, roots pushing through a carved relief wall, broken urns spilling soil, clay brown and umber hues |
+| 21 | `room_tomb_collapsed_crypt` | Обрушенный склеп | 5:4 | cavern where a crypt fell into a sinkhole, tilted tombstones on islands of rock, a thin waterfall from above, cold blue-grey and green-black hues |
+| 22 | `room_tomb_crypt_nest` | Гнездо над склепом | 1:1 | creature lair, walls draped in webs and shadow tendrils, bones heaped into a nest, a sickly violet glow, violet and black hues |
+| 23 | `room_tomb_column` | Столп | 1:2 | a lone colossal pillar rising out of a misty chasm, spiral carvings of marching knights, rock walls fading into fog, pale limestone and cold blue hues |
+| 24 | `room_tomb_walled_cell` | Замурованная келья | 2:1 | cramped walled-up cell, rusted chains on the wall, scratched tally marks, a single candle stub glowing, dim orange in near darkness |
+| 25 | `room_tomb_mason_cache` | Келья каменщика | 1:1 | abandoned sculptor's workshop, a half-carved giant face emerging from a stone block, rickety scaffolding, chalky white and warm grey hues |
+| 26 | `room_tomb_bell_shaft` | Колокольная шахта | 1:2 | vertical tower shaft, a giant cracked bell hanging askew, frayed ropes, splintered timber beams, green patina bronze and brown hues |
+| 27 | `room_tomb_arcade` | Арковая галерея | 3:2 | colonnade curving away into fog, arches broken off at different heights, ivy on the stones, soft lavender dusk and grey hues |
 
 ## §2. Гробница — текстуры (6)
 
@@ -159,10 +167,10 @@ Claude правит процедурные спрайты, а позже раб�
 ## Как Claude вписывает результат
 
 - **Фоны** → слой `mid` комнаты (`Art/Levels/Tomb/Rooms/<id>_mid.png`) — непрозрачная картинка за стеной,
-  видна сквозь арки и двигается с камерой (`ContentBuilderLevelArt`). `tools/midjourney/place.sh tomb`
-  обрезает по центру под пропорции комнаты и масштабирует (macOS, `sips`; на Windows — порт при первой
-  вставке). Затем тон под план «средний фон» (`VISUAL_BIBLE.md` §10: L* 10–30, низкая насыщенность),
-  туман снизу. После `tools/level-art/render.sh tomb` запустить `place.sh` ещё раз. Слой `near` (стена с
+  видна сквозь арки и двигается с камерой (`ContentBuilderLevelArt`). `python tools/midjourney/place.py tomb`
+  (Pillow: `pip install pillow`; macOS и Windows) обрезает по центру под пропорции комнаты, масштабирует и
+  тонирует под дальний план (`VISUAL_BIBLE.md` §10: светлота L* 6–40 мягким плечом, насыщенность ×0,7 — гамма
+  комнаты остаётся своей). После `tools/level-art/render.sh tomb` запустить `place.py` ещё раз. Слой `near` (стена с
   арками) остаётся от painter'а, но получает текстуру кладки.
 - **Текстуры** → painter (`design/levels/painter/terrain.js`) накладывает их на массы камня в тоне
   зоны; из текстуры строится карта нормалей для 2D-света.
