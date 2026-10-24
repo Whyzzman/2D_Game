@@ -22,7 +22,10 @@
 
 ## Как работать
 
-1. **Версия:** `--v 7` (или новее, если есть). Параметр `--style raw` оставлять: меньше «украшательства».
+1. **Настройки (веб-интерфейс, версия 8.2):** Version 8.2, Raw — Raw, Stylization ~100–150, Weirdness 0,
+   Variety 0; Standard — для якоря и проб, HD — для финальных фонов (выше разрешение). `--v` в промпт не
+   писать — берётся версия из настроек. Ссылку `--sref` не печатать: перетащить картинку в строку промпта
+   и выбрать «Style reference». Параметры в тексте промпта (`--ar`, `--no`) важнее ползунков.
 2. **Шаг 0 — якорь стиля.** Загрузить в Midjourney карту зоны (`gamedesign/reference/maps/01_forgotten_tomb.webp`)
    и сгенерировать промпт из §0 с её ссылкой в `--sref`. Выбрать одну лучшую картинку, сделать Upscale,
    скопировать её ссылку (или код стиля `--sref <число>`). Дальше во **всех** промптах вместо `<STYLE>`
@@ -63,7 +66,7 @@ single object, isolated on pure black background, centered, whole object visible
 ## §0. Якорь стиля
 
 ```
-vast gothic royal crypt interior, rows of pointed arches and clustered columns, stone effigies of knights resting in niches, faded blue banners with a golden crown and flame emblem, warm candlelight accents against cold blue-grey stone, drifting fog, pale light shafts falling from cracks in the ribbed vault, melancholic grandeur, dark gothic fantasy, painterly 2D concept art, soft brush strokes, muted desaturated palette --ar 16:9 --style raw --v 7 --sref <ссылка на карту зоны> --no people, text, logo, watermark
+vast gothic royal crypt interior, rows of pointed arches and clustered columns, stone effigies of knights resting in niches, faded blue banners with a golden crown and flame emblem, warm candlelight accents against cold blue-grey stone, drifting fog, pale light shafts falling from cracks in the ribbed vault, melancholic grandeur, dark gothic fantasy, painterly 2D concept art, soft brush strokes, muted desaturated palette --ar 16:9 --style raw --no people, text, logo, watermark
 ```
 
 ## §1. Гробница — фоны комнат (27)
