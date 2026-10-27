@@ -75,7 +75,10 @@ namespace ForgottenKingdom.EditorTools
                 Grit(host, material),
                 // Cold mist lying on the crypt floor, and pale light falling from the vault's cracks.
                 Mist(host, "TombMist", material, new Color(0.62f, 0.68f, 0.8f, 0.07f), drift: 0.12f),
-                Shafts(host, "TombShafts", material, new Color(0.72f, 0.8f, 1f, 0.06f), tilt: 0.22f)
+                Shafts(host, "TombShafts", material, new Color(0.72f, 0.8f, 1f, 0.06f), tilt: 0.22f),
+                // Pale wisps drifting in the dark, few and slow — the soft lights that make a crypt feel
+                // alive (2026-10-27, the user's «mood of Hollow Knight»; decided by Claude).
+                Fireflies(host, "TombWisps", material, new Color(0.78f, 0.88f, 1f, 0.75f), rate: 0.6f)
             };
             var forest = new[]
             {
