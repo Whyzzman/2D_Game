@@ -150,7 +150,7 @@ namespace ForgottenKingdom.EditorTools
                      ""_windup"":0.09,""_activeTime"":0.07,""_recovery"":0.17,
                      ""_comboLinkTime"":0.16,""_cancelableAfter"":0.15,
                      ""_hitboxOffset"":{""x"":0.85,""y"":0.05},""_hitboxSize"":{""x"":1.3,""y"":1.2},
-                     ""_movementScale"":0.35,
+                     ""_movementScale"":0.95,
                      ""_statusBuildup"":[{""type"":0,""amount"":14}]},
                     {""_displayName"":""Light 2"",""_animationState"":""LightAttack2"",""_damage"":0,
                      ""_damageMultiplier"":0.92,
@@ -160,7 +160,7 @@ namespace ForgottenKingdom.EditorTools
                      ""_windup"":0.08,""_activeTime"":0.07,""_recovery"":0.19,
                      ""_comboLinkTime"":0.15,""_cancelableAfter"":0.15,
                      ""_hitboxOffset"":{""x"":0.9,""y"":0.05},""_hitboxSize"":{""x"":1.45,""y"":1.25},
-                     ""_movementScale"":0.25,
+                     ""_movementScale"":0.9,
                      ""_statusBuildup"":[{""type"":0,""amount"":14}]},
                     {""_displayName"":""Light 3"",""_animationState"":""LightAttack3"",""_damage"":0,
                      ""_damageMultiplier"":1.2,
@@ -170,7 +170,7 @@ namespace ForgottenKingdom.EditorTools
                      ""_windup"":0.13,""_activeTime"":0.09,""_recovery"":0.30,
                      ""_comboLinkTime"":0.42,""_cancelableAfter"":0.24,
                      ""_hitboxOffset"":{""x"":1.0,""y"":0.05},""_hitboxSize"":{""x"":1.7,""y"":1.35},
-                     ""_movementScale"":0.15,
+                     ""_movementScale"":0.8,
                      ""_statusBuildup"":[{""type"":0,""amount"":20}]}
                 ],
                 ""_heavyAttack"": {""_displayName"":""Heavy"",""_animationState"":""HeavyAttack"",
@@ -180,7 +180,7 @@ namespace ForgottenKingdom.EditorTools
                      ""_windup"":0.29,""_activeTime"":0.11,""_recovery"":0.41,
                      ""_comboLinkTime"":0.76,""_cancelableAfter"":0.42,
                      ""_hitboxOffset"":{""x"":1.05,""y"":0.05},""_hitboxSize"":{""x"":1.95,""y"":1.5},
-                     ""_movementScale"":0.05,
+                     ""_movementScale"":0.5,
                      ""_statusBuildup"":[{""type"":0,""amount"":30}]}
             }", weapon);
             EditorUtility.SetDirty(weapon);
@@ -220,7 +220,7 @@ namespace ForgottenKingdom.EditorTools
                      ""_windup"":0.24,""_activeTime"":0.10,""_recovery"":0.34,
                      ""_comboLinkTime"":0.40,""_cancelableAfter"":0.36,
                      ""_hitboxOffset"":{""x"":1.05,""y"":0.05},""_hitboxSize"":{""x"":2.0,""y"":1.5},
-                     ""_movementScale"":0.12},
+                     ""_movementScale"":0.6},
                     {""_displayName"":""Light 2"",""_animationState"":""LightAttack2"",""_damage"":0,
                      ""_damageMultiplier"":1.05,
                      ""_damageType"":0,""_staminaCost"":0,""_staggerDamage"":32,
@@ -229,7 +229,7 @@ namespace ForgottenKingdom.EditorTools
                      ""_windup"":0.28,""_activeTime"":0.11,""_recovery"":0.40,
                      ""_comboLinkTime"":0.62,""_cancelableAfter"":0.44,
                      ""_hitboxOffset"":{""x"":1.15,""y"":0.05},""_hitboxSize"":{""x"":2.2,""y"":1.6},
-                     ""_movementScale"":0.08}
+                     ""_movementScale"":0.55}
                 ],
                 ""_heavyAttack"": {""_displayName"":""Heavy"",""_animationState"":""HeavyAttack"",
                      ""_damage"":0,""_damageMultiplier"":1.95,
@@ -239,7 +239,7 @@ namespace ForgottenKingdom.EditorTools
                      ""_windup"":0.46,""_activeTime"":0.13,""_recovery"":0.58,
                      ""_comboLinkTime"":1.1,""_cancelableAfter"":0.62,
                      ""_hitboxOffset"":{""x"":1.25,""y"":0.05},""_hitboxSize"":{""x"":2.5,""y"":1.8},
-                     ""_movementScale"":0.03}
+                     ""_movementScale"":0.25}
             }", weapon);
             EditorUtility.SetDirty(weapon);
             return weapon;

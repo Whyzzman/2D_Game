@@ -231,7 +231,7 @@ namespace ForgottenKingdom.EditorTools
                      ""_windup"":0.10,""_activeTime"":0.07,""_recovery"":0.18,
                      ""_comboLinkTime"":0.17,""_cancelableAfter"":0.16,
                      ""_hitboxOffset"":{""x"":0.85,""y"":0.05},""_hitboxSize"":{""x"":1.3,""y"":1.2},
-                     ""_movementScale"":0.3},
+                     ""_movementScale"":0.9},
                     {""_displayName"":""Light 2"",""_animationState"":""LightAttack2"",""_damage"":0,
                      ""_damageMultiplier"":0.9,
                      ""_damageType"":0,""_staminaCost"":0,""_staggerDamage"":12,
@@ -240,7 +240,7 @@ namespace ForgottenKingdom.EditorTools
                      ""_windup"":0.09,""_activeTime"":0.07,""_recovery"":0.20,
                      ""_comboLinkTime"":0.16,""_cancelableAfter"":0.16,
                      ""_hitboxOffset"":{""x"":0.9,""y"":0.05},""_hitboxSize"":{""x"":1.45,""y"":1.25},
-                     ""_movementScale"":0.2},
+                     ""_movementScale"":0.85},
                     {""_displayName"":""Light 3"",""_animationState"":""LightAttack3"",""_damage"":0,
                      ""_damageMultiplier"":1.25,
                      ""_damageType"":0,""_staminaCost"":0,""_staggerDamage"":22,
@@ -249,7 +249,7 @@ namespace ForgottenKingdom.EditorTools
                      ""_windup"":0.15,""_activeTime"":0.09,""_recovery"":0.32,
                      ""_comboLinkTime"":0.45,""_cancelableAfter"":0.26,
                      ""_hitboxOffset"":{""x"":1.0,""y"":0.05},""_hitboxSize"":{""x"":1.7,""y"":1.35},
-                     ""_movementScale"":0.1}
+                     ""_movementScale"":0.75}
                 ],
                 ""_heavyAttack"": {""_displayName"":""Heavy"",""_animationState"":""HeavyAttack"",
                      ""_damage"":0,""_damageMultiplier"":1.75,
@@ -258,7 +258,7 @@ namespace ForgottenKingdom.EditorTools
                      ""_windup"":0.32,""_activeTime"":0.11,""_recovery"":0.44,
                      ""_comboLinkTime"":0.80,""_cancelableAfter"":0.45,
                      ""_hitboxOffset"":{""x"":1.05,""y"":0.05},""_hitboxSize"":{""x"":1.95,""y"":1.5},
-                     ""_movementScale"":0.05}
+                     ""_movementScale"":0.45}
             }", weapon);
             EditorUtility.SetDirty(weapon);
             return weapon;
@@ -297,7 +297,7 @@ namespace ForgottenKingdom.EditorTools
                      ""_windup"":0.24,""_activeTime"":0.10,""_recovery"":0.30,
                      ""_comboLinkTime"":0.34,""_cancelableAfter"":0.30,
                      ""_hitboxOffset"":{""x"":1.05,""y"":0.05},""_hitboxSize"":{""x"":1.9,""y"":1.5},
-                     ""_movementScale"":0.2},
+                     ""_movementScale"":0.7},
                     {""_displayName"":""Reverse Swing"",""_animationState"":""GreatLight2"",""_damage"":0,
                      ""_damageMultiplier"":0.95,
                      ""_damageType"":0,""_staminaCost"":0,""_staggerDamage"":24,
@@ -306,7 +306,7 @@ namespace ForgottenKingdom.EditorTools
                      ""_windup"":0.22,""_activeTime"":0.10,""_recovery"":0.34,
                      ""_comboLinkTime"":0.33,""_cancelableAfter"":0.30,
                      ""_hitboxOffset"":{""x"":1.1,""y"":0.05},""_hitboxSize"":{""x"":2.0,""y"":1.55},
-                     ""_movementScale"":0.15},
+                     ""_movementScale"":0.65},
                     {""_displayName"":""Overhead Finisher"",""_animationState"":""GreatLight3"",
                      ""_damage"":0,""_damageMultiplier"":1.35,
                      ""_damageType"":0,""_staminaCost"":0,""_staggerDamage"":40,
@@ -315,7 +315,7 @@ namespace ForgottenKingdom.EditorTools
                      ""_windup"":0.34,""_activeTime"":0.12,""_recovery"":0.52,
                      ""_comboLinkTime"":0.90,""_cancelableAfter"":0.50,
                      ""_hitboxOffset"":{""x"":1.15,""y"":0.05},""_hitboxSize"":{""x"":2.3,""y"":1.8},
-                     ""_movementScale"":0.05}
+                     ""_movementScale"":0.5}
                 ],
                 ""_heavyAttack"": {""_displayName"":""Great Overhead"",""_animationState"":""GreatHeavy"",
                      ""_damage"":0,""_damageMultiplier"":1.9,
@@ -325,7 +325,7 @@ namespace ForgottenKingdom.EditorTools
                      ""_windup"":0.50,""_activeTime"":0.14,""_recovery"":0.62,
                      ""_comboLinkTime"":1.10,""_cancelableAfter"":0.66,
                      ""_hitboxOffset"":{""x"":1.2,""y"":0.05},""_hitboxSize"":{""x"":2.5,""y"":2.0},
-                     ""_movementScale"":0.0}
+                     ""_movementScale"":0.3}
             }", weapon);
             EditorUtility.SetDirty(weapon);
             return weapon;

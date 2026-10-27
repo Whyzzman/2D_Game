@@ -171,6 +171,24 @@ namespace ForgottenKingdom.Tests
         }
 
         [Test]
+        public void AttackingModeRunsAndJumpsButKeepsTheSwingAimed()
+        {
+            var settings = new MovementSettings();
+            var velocity = Vector2.zero;
+            for (var i = 0; i < 40; i++)
+            {
+                velocity = _logic.Step(velocity, true, new MovementInput(1f), Step, LocomotionMode.Attacking, 0.9f);
+            }
+
+            Assert.That(velocity.x, Is.EqualTo(settings.RunSpeed * 0.9f).Within(0.001f),
+                "A swing keeps most of the run, not the old walking creep.");
+
+            velocity = _logic.Step(velocity, true, new MovementInput(-1f, true, true), Step, LocomotionMode.Attacking, 0.9f);
+            Assert.That(velocity.y, Is.GreaterThan(0f), "A jump pressed mid-swing is taken.");
+            Assert.That(_logic.FacingDirection, Is.EqualTo(1), "Facing stays where the swing started.");
+        }
+
+        [Test]
         public void KnockbackModeKeepsHorizontalSpeedWhileGravityApplies()
         {
             var velocity = new Vector2(-7f, 0f);

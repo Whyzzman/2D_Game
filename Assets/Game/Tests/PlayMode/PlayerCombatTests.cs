@@ -180,19 +180,20 @@ namespace ForgottenKingdom.Tests
         }
 
         [UnityTest]
-        public IEnumerator AttackingSlowsMovementWithoutStoppingIt()
+        public IEnumerator AttackingKeepsTheHeroRunning()
         {
             InputSystem.QueueStateEvent(_keyboard, new KeyboardState(Key.D));
             yield return WaitForSecondsRealtime(0.4f);
-            var walkSpeed = Mathf.Abs(_motor.Velocity.x);
-            Assert.That(walkSpeed, Is.GreaterThan(2.5f));
+            var runSpeed = Mathf.Abs(_motor.Velocity.x);
+            Assert.That(runSpeed, Is.GreaterThan(2.5f));
 
             InputSystem.QueueStateEvent(_keyboard, new KeyboardState(Key.D, Key.J));
             yield return WaitForSecondsRealtime(0.12f);
             var attackSpeed = Mathf.Abs(_motor.Velocity.x);
 
+            // As in Hollow Knight the swing does not root the hero (user's request 2026-10-27).
             Assert.That(_player.Action, Is.EqualTo(PlayerAction.LightAttack));
-            Assert.That(attackSpeed, Is.LessThan(walkSpeed * 0.6f), "The swing must slow the player.");
+            Assert.That(attackSpeed, Is.GreaterThan(runSpeed * 0.6f), "The swing must not freeze the hero.");
             yield return Neutral(4);
         }
 

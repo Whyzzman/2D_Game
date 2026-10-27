@@ -49,7 +49,7 @@ MonoBehaviour:
     _cancelableAfter: 0.15
     _hitboxOffset: {x: 0.85, y: 0.05}
     _hitboxSize: {x: 1.3, y: 1.2}
-    _movementScale: 0.35
+    _movementScale: 0.95
     _statusBuildup:
     - type: 0
       amount: 14
@@ -72,7 +72,7 @@ MonoBehaviour:
     _cancelableAfter: 0.15
     _hitboxOffset: {x: 0.9, y: 0.05}
     _hitboxSize: {x: 1.45, y: 1.25}
-    _movementScale: 0.25
+    _movementScale: 0.9
     _statusBuildup:
     - type: 0
       amount: 14
@@ -95,7 +95,7 @@ MonoBehaviour:
     _cancelableAfter: 0.24
     _hitboxOffset: {x: 1, y: 0.05}
     _hitboxSize: {x: 1.7, y: 1.35}
-    _movementScale: 0.15
+    _movementScale: 0.8
     _statusBuildup:
     - type: 0
       amount: 20
@@ -119,7 +119,7 @@ MonoBehaviour:
     _cancelableAfter: 0.42
     _hitboxOffset: {x: 1.05, y: 0.05}
     _hitboxSize: {x: 1.95, y: 1.5}
-    _movementScale: 0.05
+    _movementScale: 0.5
     _statusBuildup:
     - type: 0
       amount: 30

@@ -106,6 +106,7 @@ namespace ForgottenKingdom
                         return LocomotionMode.Knockback;
                     case PlayerAction.LightAttack:
                     case PlayerAction.HeavyAttack:
+                        return LocomotionMode.Attacking;
                     case PlayerAction.Block:
                     case PlayerAction.Parry:
                     case PlayerAction.WeaponSwitch:

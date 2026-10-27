@@ -15,7 +15,13 @@ namespace ForgottenKingdom
         /// <summary>Rooted actions such as blocking: gravity and braking, but no player input.</summary>
         NoInput,
         /// <summary>Knockback and stun: horizontal velocity is left alone while gravity applies.</summary>
-        Knockback
+        Knockback,
+        /// <summary>
+        /// The hero's own swings, as in Hollow Knight (user's request 2026-10-27: «the hero must not
+        /// freeze while attacking»): he runs at a share of his full pace and may jump, only the
+        /// facing holds so the swing stays aimed where it started.
+        /// </summary>
+        Attacking
     }
 
     public sealed class PlayerMovementLogic
@@ -192,7 +198,7 @@ namespace ForgottenKingdom
                 // Hollow Knight an attack in the air never shortens the rise.
                 input = new MovementInput(input.Horizontal, isJumpHeld: input.IsJumpHeld);
             }
-            else if (mode != LocomotionMode.Normal)
+            else if (mode != LocomotionMode.Normal && mode != LocomotionMode.Attacking)
             {
                 input = default;
             }
@@ -203,7 +209,7 @@ namespace ForgottenKingdom
 
             var horizontal = Mathf.Clamp(input.Horizontal, -1f, 1f);
             var hasDirection = Mathf.Abs(horizontal) > MotionThreshold;
-            if (hasDirection && mode != LocomotionMode.Restricted)
+            if (hasDirection && mode != LocomotionMode.Restricted && mode != LocomotionMode.Attacking)
             {
                 FacingDirection = horizontal > 0f ? 1 : -1;
             }
@@ -215,7 +221,9 @@ namespace ForgottenKingdom
                 // guard keeps the slow creep it was tuned for rather than twice that.
                 var speed = mode == LocomotionMode.Restricted
                     ? _settings.WalkSpeed * Mathf.Clamp01(movementScale)
-                    : _settings.RunSpeed;
+                    : mode == LocomotionMode.Attacking
+                        ? _settings.RunSpeed * Mathf.Clamp01(movementScale)
+                        : _settings.RunSpeed;
                 // In the air a reversal bites three times harder than speeding up: steering
                 // corrects a jump without making any jump longer (MovementSettings).
                 var reversing = hasDirection && Mathf.Abs(velocity.x) > MotionThreshold

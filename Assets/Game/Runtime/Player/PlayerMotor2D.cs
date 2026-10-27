@@ -11,7 +11,7 @@ namespace ForgottenKingdom
     {
         LocomotionMode LocomotionMode { get; }
 
-        /// <summary>Share of normal speed allowed in <see cref="LocomotionMode.Restricted"/>.</summary>
+        /// <summary>Share of normal speed allowed in <see cref="LocomotionMode.Restricted"/> (of the walk) and <see cref="LocomotionMode.Attacking"/> (of the run).</summary>
         float MovementScale { get; }
     }
 

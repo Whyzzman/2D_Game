@@ -49,7 +49,7 @@ MonoBehaviour:
     _cancelableAfter: 0.16
     _hitboxOffset: {x: 0.85, y: 0.05}
     _hitboxSize: {x: 1.3, y: 1.2}
-    _movementScale: 0.3
+    _movementScale: 0.9
     _statusBuildup: []
   - _displayName: Light 2
     _animationState: LightAttack2
@@ -70,7 +70,7 @@ MonoBehaviour:
     _cancelableAfter: 0.16
     _hitboxOffset: {x: 0.9, y: 0.05}
     _hitboxSize: {x: 1.45, y: 1.25}
-    _movementScale: 0.2
+    _movementScale: 0.85
     _statusBuildup: []
   - _displayName: Light 3
     _animationState: LightAttack3
@@ -91,7 +91,7 @@ MonoBehaviour:
     _cancelableAfter: 0.26
     _hitboxOffset: {x: 1, y: 0.05}
     _hitboxSize: {x: 1.7, y: 1.35}
-    _movementScale: 0.1
+    _movementScale: 0.75
     _statusBuildup: []
   _heavyAttack:
     _displayName: Heavy
@@ -113,7 +113,7 @@ MonoBehaviour:
     _cancelableAfter: 0.45
     _hitboxOffset: {x: 1.05, y: 0.05}
     _hitboxSize: {x: 1.95, y: 1.5}
-    _movementScale: 0.05
+    _movementScale: 0.45
     _statusBuildup: []
   _visualColor: {r: 0.82, g: 0.84, b: 0.9, a: 1}
   _visualSize: {x: 0.12, y: 0.9}
