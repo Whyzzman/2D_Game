@@ -125,7 +125,8 @@ link room_a room_b door | oneway | ability=id | boss=id | shortcut=id from=room_
   painter берёт рельеф из бесшовных текстур Midjourney (`design/levels/midjourney/<зона>/textures/`) — только
   яркость, цвет остаётся зоны: у края массы кладка (плитка 6 юнитов), в толще дикий камень (две плитки 7 и 9,3,
   смешанные шумом — повтор не читается), где стоят — плиты пола (5), уступы `=` — своя плита (3, `soft-light`).
-  Пока только Гробница.
+  Сменил текстуру — `python tools/midjourney/textures.py <зона>` (пакует их в `painter/textures-<зона>.js`: headless
+  Chrome снимает кадр, не дождавшись картинок через `<img>`, и камень выходил пустым), потом `render.js`. Пока только Гробница.
 
 **Лес** (2026-10-19, макет `design/levels/forest-look`): тот же камень с мхом на канте и корнями вместо
 цепей у висящих уступов (`looks.js`, `forest`); тло — `forest-backdrop.js`: открытые комнаты — небо, луна
