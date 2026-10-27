@@ -19,9 +19,10 @@
 <script src="forest-backdrop.js"></script>
 <script src="village-backdrop.js"></script>
 <script src="capital-backdrop.js"></script>
+<script src="front.js"></script>
 <script>
 // ?zone=tomb&what=terrain&x=-64&y=-16&size=16&ppu=48 — шматок каменю (прозорий фон)
-// ?zone=tomb&what=room&id=room_tomb_entrance&layer=mid|near&ppu=32 — тло кімнати
+// ?zone=tomb&what=room&id=room_tomb_entrance&layer=mid|near|front&ppu=32 — тло кімнати (front — передній план)
 // ?zone=tomb&what=preview&ppu=8 — уся зона разом, для перегляду
 (async function () {
   const q = new URLSearchParams(location.search);
@@ -47,7 +48,9 @@
     canvas.width = Math.round(sx * ppu); canvas.height = Math.round(sy * ppu);
     LevelTerrain.paintChunk(canvas, zone, wx - pad, wy - pad, sx, sy, ppu, look, seed);
   } else if (what === "room") {
-    LevelBackdrop.paintRoom(canvas, zone, zone.rooms.find(r => r.id === q.get("id")), q.get("layer"), ppu, look);
+    const room = zone.rooms.find(r => r.id === q.get("id"));
+    if (q.get("layer") === "front") LevelFront.paintFront(canvas, zone, room, ppu, look);
+    else LevelBackdrop.paintRoom(canvas, zone, room, q.get("layer"), ppu, look);
   } else if (what === "view") {
     // кадр гри: x, y — лівий нижній кут, 32 × 18 юнітів
     document.body.classList.add("preview");

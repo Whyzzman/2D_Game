@@ -1,0 +1,494 @@
+fileFormatVersion: 2
+guid: 9141c30d077adf04485e2918adc5d978
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 7678442505071294394
+    second: room_tomb_east_hall_front_0
+  - first:
+      213: 4961475156657027806
+    second: room_tomb_east_hall_front_1
+  - first:
+      213: 9192733631685565792
+    second: room_tomb_east_hall_front_2
+  - first:
+      213: 1099121541509528899
+    second: room_tomb_east_hall_front_3
+  - first:
+      213: 1758677218040826716
+    second: room_tomb_east_hall_front_4
+  - first:
+      213: -4629225905409455198
+    second: room_tomb_east_hall_front_5
+  - first:
+      213: -9116917443468207598
+    second: room_tomb_east_hall_front_6
+  - first:
+      213: 3365853274830707802
+    second: room_tomb_east_hall_front_7
+  - first:
+      213: 5371527329524832884
+    second: room_tomb_east_hall_front_8
+  - first:
+      213: 1853822646844135939
+    second: room_tomb_east_hall_front_9
+  - first:
+      213: -2994695276446663125
+    second: room_tomb_east_hall_front_10
+  - first:
+      213: -7703525027619470313
+    second: room_tomb_east_hall_front_11
+  - first:
+      213: 816437038521294747
+    second: room_tomb_east_hall_front_12
+  - first:
+      213: 4598616272234351196
+    second: room_tomb_east_hall_front_13
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 0
+  alignment: 6
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 32
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: room_tomb_east_hall_front_0
+      rect:
+        serializedVersion: 2
+        x: 141
+        y: 241
+        width: 57
+        height: 123
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ab7f807b6ce4f8a60800000000000000
+      internalID: 7678442505071294394
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_tomb_east_hall_front_1
+      rect:
+        serializedVersion: 2
+        x: 201
+        y: 291
+        width: 13
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: edab7723e53bad440800000000000000
+      internalID: 4961475156657027806
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_tomb_east_hall_front_2
+      rect:
+        serializedVersion: 2
+        x: 241
+        y: 274
+        width: 163
+        height: 151
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 06d97676886239f70800000000000000
+      internalID: 9192733631685565792
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_tomb_east_hall_front_3
+      rect:
+        serializedVersion: 2
+        x: 401
+        y: 361
+        width: 31
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 34db7a6f73dd04f00800000000000000
+      internalID: 1099121541509528899
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_tomb_east_hall_front_4
+      rect:
+        serializedVersion: 2
+        x: 432
+        y: 346
+        width: 30
+        height: 98
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c5b45e7ac93186810800000000000000
+      internalID: 1758677218040826716
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_tomb_east_hall_front_5
+      rect:
+        serializedVersion: 2
+        x: 465
+        y: 346
+        width: 20
+        height: 98
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2ab8803d09fa1cfb0800000000000000
+      internalID: -4629225905409455198
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_tomb_east_hall_front_6
+      rect:
+        serializedVersion: 2
+        x: 482
+        y: 340
+        width: 23
+        height: 102
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 21ad38f73e33a7180800000000000000
+      internalID: -9116917443468207598
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_tomb_east_hall_front_7
+      rect:
+        serializedVersion: 2
+        x: 506
+        y: 345
+        width: 143
+        height: 113
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a5c9e5c68b9e5be20800000000000000
+      internalID: 3365853274830707802
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_tomb_east_hall_front_8
+      rect:
+        serializedVersion: 2
+        x: 643
+        y: 263
+        width: 58
+        height: 162
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 47a51a985af7b8a40800000000000000
+      internalID: 5371527329524832884
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_tomb_east_hall_front_9
+      rect:
+        serializedVersion: 2
+        x: 685
+        y: 300
+        width: 58
+        height: 126
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 30a18b510e91ab910800000000000000
+      internalID: 1853822646844135939
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_tomb_east_hall_front_10
+      rect:
+        serializedVersion: 2
+        x: 997
+        y: 361
+        width: 33
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b2e3bdc3384b076d0800000000000000
+      internalID: -2994695276446663125
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_tomb_east_hall_front_11
+      rect:
+        serializedVersion: 2
+        x: 102
+        y: 270
+        width: 33
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 714096a6dc4971590800000000000000
+      internalID: -7703525027619470313
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_tomb_east_hall_front_12
+      rect:
+        serializedVersion: 2
+        x: 865
+        y: 293
+        width: 58
+        height: 59
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b9f988e2921945b00800000000000000
+      internalID: 816437038521294747
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_tomb_east_hall_front_13
+      rect:
+        serializedVersion: 2
+        x: 454
+        y: 189
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c5a0cd4922191df30800000000000000
+      internalID: 4598616272234351196
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      room_tomb_east_hall_front_0: 7678442505071294394
+      room_tomb_east_hall_front_1: 4961475156657027806
+      room_tomb_east_hall_front_10: -2994695276446663125
+      room_tomb_east_hall_front_11: -7703525027619470313
+      room_tomb_east_hall_front_12: 816437038521294747
+      room_tomb_east_hall_front_13: 4598616272234351196
+      room_tomb_east_hall_front_2: 9192733631685565792
+      room_tomb_east_hall_front_3: 1099121541509528899
+      room_tomb_east_hall_front_4: 1758677218040826716
+      room_tomb_east_hall_front_5: -4629225905409455198
+      room_tomb_east_hall_front_6: -9116917443468207598
+      room_tomb_east_hall_front_7: 3365853274830707802
+      room_tomb_east_hall_front_8: 5371527329524832884
+      room_tomb_east_hall_front_9: 1853822646844135939
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

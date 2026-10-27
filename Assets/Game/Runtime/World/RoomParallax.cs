@@ -6,13 +6,14 @@ namespace ForgottenKingdom
     /// The far layer of one room's painted backdrop: it follows a share of the camera's offset from
     /// the room's middle, so it reads as further away than the room's own wall, and never slides
     /// more than the margin it was painted with — its edge is never seen. A sprite mask the size of
-    /// the room keeps it from showing in the room next door.
+    /// the room keeps it from showing in the room next door. A negative share moves the layer
+    /// against the camera: the room's foreground, nearer than the play.
     /// </summary>
     [DisallowMultipleComponent]
     public sealed class RoomParallax : MonoBehaviour
     {
-        [Tooltip("Share of the camera's offset from the room's middle the layer follows.")]
-        [SerializeField, Range(0f, 1f)] private float _factor = 0.15f;
+        [Tooltip("Share of the camera's offset from the room's middle the layer follows; negative — a foreground.")]
+        [SerializeField, Range(-1f, 1f)] private float _factor = 0.15f;
         [Tooltip("How far the layer may slide, in units: the margin painted around the room.")]
         [SerializeField, Min(0f)] private float _margin = 3f;
         [Tooltip("The room's middle in the world; the layer rests here when the camera is there.")]

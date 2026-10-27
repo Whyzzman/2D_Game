@@ -1,0 +1,520 @@
+fileFormatVersion: 2
+guid: 892c485fc34826c4eaa1565fe7bf3148
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -7859719060066606525
+    second: room_tomb_guard_passage_front_0
+  - first:
+      213: -5285794816008659997
+    second: room_tomb_guard_passage_front_1
+  - first:
+      213: 7270137810113413957
+    second: room_tomb_guard_passage_front_2
+  - first:
+      213: -3933569038285693841
+    second: room_tomb_guard_passage_front_3
+  - first:
+      213: -3457747774524907916
+    second: room_tomb_guard_passage_front_4
+  - first:
+      213: -8852514575764951534
+    second: room_tomb_guard_passage_front_5
+  - first:
+      213: -739645010372585387
+    second: room_tomb_guard_passage_front_6
+  - first:
+      213: 7695761792589418528
+    second: room_tomb_guard_passage_front_7
+  - first:
+      213: 3714790995946808507
+    second: room_tomb_guard_passage_front_8
+  - first:
+      213: 3584285327089494160
+    second: room_tomb_guard_passage_front_9
+  - first:
+      213: -6443480171704968160
+    second: room_tomb_guard_passage_front_10
+  - first:
+      213: 3775753175619927159
+    second: room_tomb_guard_passage_front_11
+  - first:
+      213: -3780161796833038405
+    second: room_tomb_guard_passage_front_12
+  - first:
+      213: 1784351250925530113
+    second: room_tomb_guard_passage_front_13
+  - first:
+      213: -6952538762747917390
+    second: room_tomb_guard_passage_front_14
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 0
+  alignment: 6
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 32
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: room_tomb_guard_passage_front_0
+      rect:
+        serializedVersion: 2
+        x: 311
+        y: 405
+        width: 72
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 342ec5e482bace290800000000000000
+      internalID: -7859719060066606525
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_tomb_guard_passage_front_1
+      rect:
+        serializedVersion: 2
+        x: 375
+        y: 362
+        width: 147
+        height: 114
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3ebd334ce9515a6b0800000000000000
+      internalID: -5285794816008659997
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_tomb_guard_passage_front_2
+      rect:
+        serializedVersion: 2
+        x: 523
+        y: 370
+        width: 33
+        height: 106
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 54342f7c1d7b4e460800000000000000
+      internalID: 7270137810113413957
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_tomb_guard_passage_front_3
+      rect:
+        serializedVersion: 2
+        x: 1215
+        y: 369
+        width: 60
+        height: 105
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f6c9185fcc72969c0800000000000000
+      internalID: -3933569038285693841
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_tomb_guard_passage_front_4
+      rect:
+        serializedVersion: 2
+        x: 1274
+        y: 422
+        width: 24
+        height: 51
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 47e9b8018bc9300d0800000000000000
+      internalID: -3457747774524907916
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_tomb_guard_passage_front_5
+      rect:
+        serializedVersion: 2
+        x: 1298
+        y: 363
+        width: 26
+        height: 110
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 21eef8e55ec852580800000000000000
+      internalID: -8852514575764951534
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_tomb_guard_passage_front_6
+      rect:
+        serializedVersion: 2
+        x: 91
+        y: 306
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5581ad828c04cb5f0800000000000000
+      internalID: -739645010372585387
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_tomb_guard_passage_front_7
+      rect:
+        serializedVersion: 2
+        x: 539
+        y: 260
+        width: 84
+        height: 117
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 020d0539396dcca60800000000000000
+      internalID: 7695761792589418528
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_tomb_guard_passage_front_8
+      rect:
+        serializedVersion: 2
+        x: 617
+        y: 243
+        width: 264
+        height: 162
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bb4aa30aab69d8330800000000000000
+      internalID: 3714790995946808507
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_tomb_guard_passage_front_9
+      rect:
+        serializedVersion: 2
+        x: 881
+        y: 266
+        width: 15
+        height: 98
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 09860deb380fdb130800000000000000
+      internalID: 3584285327089494160
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_tomb_guard_passage_front_10
+      rect:
+        serializedVersion: 2
+        x: 897
+        y: 275
+        width: 16
+        height: 89
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 02c90404ce82496a0800000000000000
+      internalID: -6443480171704968160
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_tomb_guard_passage_front_11
+      rect:
+        serializedVersion: 2
+        x: 916
+        y: 282
+        width: 127
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 77cf068228b266430800000000000000
+      internalID: 3775753175619927159
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_tomb_guard_passage_front_12
+      rect:
+        serializedVersion: 2
+        x: 330
+        y: 229
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bbfa34abfda2a8bc0800000000000000
+      internalID: -3780161796833038405
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_tomb_guard_passage_front_13
+      rect:
+        serializedVersion: 2
+        x: 1276
+        y: 228
+        width: 36
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 10ca0f1420a43c810800000000000000
+      internalID: 1784351250925530113
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_tomb_guard_passage_front_14
+      rect:
+        serializedVersion: 2
+        x: 1319
+        y: 163
+        width: 17
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2bbc647d4de938f90800000000000000
+      internalID: -6952538762747917390
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      room_tomb_guard_passage_front_0: -7859719060066606525
+      room_tomb_guard_passage_front_1: -5285794816008659997
+      room_tomb_guard_passage_front_10: -6443480171704968160
+      room_tomb_guard_passage_front_11: 3775753175619927159
+      room_tomb_guard_passage_front_12: -3780161796833038405
+      room_tomb_guard_passage_front_13: 1784351250925530113
+      room_tomb_guard_passage_front_14: -6952538762747917390
+      room_tomb_guard_passage_front_2: 7270137810113413957
+      room_tomb_guard_passage_front_3: -3933569038285693841
+      room_tomb_guard_passage_front_4: -3457747774524907916
+      room_tomb_guard_passage_front_5: -8852514575764951534
+      room_tomb_guard_passage_front_6: -739645010372585387
+      room_tomb_guard_passage_front_7: 7695761792589418528
+      room_tomb_guard_passage_front_8: 3714790995946808507
+      room_tomb_guard_passage_front_9: 3584285327089494160
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

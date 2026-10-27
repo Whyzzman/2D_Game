@@ -21,6 +21,10 @@ namespace ForgottenKingdom.EditorTools
         private const float TerrainChunk = 16f;
         private const float RoomParallaxMargin = 3f;
         private const float RoomParallaxFactor = 0.15f;
+        // The room's foreground (design/levels/painter/front.js): painted 2 units wider on each side,
+        // it slides ahead of the camera — nearer than the play — by a fifth of its offset.
+        private const float FrontMargin = 2f;
+        private const float FrontParallaxFactor = -0.2f;
         private const float BreakablePad = 0.5f;
 
         /// <summary>The folder of a zone's painted art, e.g. «Tomb».</summary>
@@ -147,6 +151,22 @@ namespace ForgottenKingdom.EditorTools
                 if (near != null)
                 {
                     near.name = "Wall";
+                }
+
+                // Dark growth hanging from the vaults, in front of everything (user's request of
+                // 2026-10-27: the mood of Hollow Knight, not its look). Only near the ceilings, so it
+                // never lies over a fight.
+                var front = PaintedSprite(holder, $"{LevelArtFolder(zone)}/Rooms/{room.Id}_front.png",
+                    bounds.min - Vector2.one * FrontMargin, "Foreground", index);
+                if (front != null)
+                {
+                    front.name = "Front";
+                    var drift = front.AddComponent<RoomParallax>();
+                    SetFloat(drift, "_factor", FrontParallaxFactor);
+                    SetFloat(drift, "_margin", FrontMargin);
+                    var centre = new SerializedObject(drift);
+                    centre.FindProperty("_roomCentre").vector2Value = bounds.center;
+                    centre.ApplyModifiedPropertiesWithoutUndo();
                 }
             }
 

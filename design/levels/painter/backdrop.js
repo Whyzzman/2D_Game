@@ -428,6 +428,20 @@
     terrain.width = canvas.width; terrain.height = canvas.height;
     root.LevelTerrain.paintChunk(terrain, zone, X0, Y0, W, H, ppu, look, seed);
     c.drawImage(terrain, 0, 0);
+    // Передній план (front.js) — поверх каменю, без паралаксу.
+    if (!root.LevelFront || look.style) return;
+    for (const room of zone.rooms) {
+      const rect = roomRect(zone, room), m = root.LevelFront.MARGIN;
+      if (rect.x > X0 + W || rect.x + rect.w < X0 || rect.y > Y0 + H || rect.y + rect.h < Y0) continue;
+      const tmp = document.createElement("canvas");
+      root.LevelFront.paintFront(tmp, zone, room, ppu, look);
+      c.save();
+      c.beginPath();
+      c.rect((rect.x - X0) * ppu, canvas.height - (rect.y + rect.h - Y0) * ppu, rect.w * ppu, rect.h * ppu);
+      c.clip();
+      c.drawImage(tmp, (rect.x - m - X0) * ppu, canvas.height - (rect.y + rect.h + m - Y0) * ppu);
+      c.restore();
+    }
   }
 
   root.LevelBackdrop = { paintRoom, paintPreview, roomRect, kindOf, floorOf, Frame, rgba, shade, MARGIN };

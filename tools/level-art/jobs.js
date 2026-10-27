@@ -28,7 +28,13 @@ for (const r of zone.rooms) {
     console.log(`breakable b_${cx}_${cy} ${w} ${hh} what=breakable&cx=${cx}&cy=${cy}&h=${h}&pad=${BREAK_PAD}&ppu=${TERRAIN_PPU}`);
   }
 }
+// Передній план (front.js) — поки лише Гробниця: інші зони мають своє тло й ще не мають шару.
+const FRONT_ZONES = ["tomb"], FRONT_MARGIN = 2;
 for (const r of zone.rooms) {
+  if (FRONT_ZONES.indexOf(zoneName) >= 0) {
+    const w = Math.round((r.w * c + 2 * FRONT_MARGIN) * ROOM_PPU), h = Math.round((r.h * c + 2 * FRONT_MARGIN) * ROOM_PPU);
+    console.log(`room ${r.id}_front ${w} ${h} what=room&id=${r.id}&layer=front&ppu=${ROOM_PPU}`);
+  }
   for (const [layer, m] of [["mid", MARGIN], ["near", 0]]) {
     const w = Math.round((r.w * c + 2 * m) * ROOM_PPU), h = Math.round((r.h * c + 2 * m) * ROOM_PPU);
     console.log(`room ${r.id}_${layer} ${w} ${h} what=room&id=${r.id}&layer=${layer}&ppu=${ROOM_PPU}`);

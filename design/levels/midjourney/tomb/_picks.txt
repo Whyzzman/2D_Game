@@ -1,0 +1,25 @@
+# Вибрані варіанти Midjourney для фонів Гробниці (job id, номер варіанта 0-3): https://cdn.midjourney.com/<id>/0_<n>.png
+room_tomb_west_shaft 8cdf2cc8-4075-4c7c-9bd1-de0f97138fde 3
+room_tomb_chain_shaft 54088b9d-a965-4642-892c-7d13d8e9e8e7 1
+room_tomb_guardian_approach 8bbc751d-1497-4e84-a8c5-43b5729f6009 3
+room_tomb_royal_ossuary 3339bfc5-cadf-4fd0-bfc3-60663a8ef6c2 1
+room_tomb_upper_passage 4ac33f2c-3120-4344-85a3-a28d9763030e 0
+room_tomb_statue_hall 03b5a0bf-321f-4fe7-943e-a71e37d720cf 2
+room_tomb_east_chapel c5ff0090-1c2c-4379-b5d2-46f017217dbd 0
+room_tomb_flooded_crypt 73924232-488c-4013-9bbf-545f086db86d 3
+room_tomb_drowned_cache 858584fb-e7f5-4e7e-b133-5b62269e8975 0
+room_tomb_east_hall 66c0d97c-b61a-4919-a189-ea4180b4127b 0
+room_tomb_falls 0c9b58da-1f59-498f-b316-997fce43eafa 2
+room_tomb_lower_crypt 2dacaf89-7b7b-4ce9-9798-8d4a5f6b1515 0
+room_tomb_lower_chain 8e7e5bcf-9713-4831-8cb2-6dd12aac0c6c 1
+room_tomb_reliquary f58e9eee-791b-4e08-bea1-cc29930442a9 1
+room_tomb_rubble_slope 3fcb82ca-f160-4412-a28a-596b73a4b97c 1
+room_tomb_buried_cache 9907d3de-fdd4-49e1-939e-077de8f2831b 2
+room_tomb_collapsed_crypt eb182214-54d1-4d3a-949c-9ab6cb553f99 3
+room_tomb_crypt_nest ecb5f52d-a09e-450b-8314-8b8c2d0429c7 3
+room_tomb_column 3d95fc18-5719-4f1b-8048-99b777aeae61 1
+room_tomb_walled_cell f73b1d03-d567-4cbc-8ca9-60841daf4040 1
+room_tomb_mason_cache b677afd7-4dcb-4b4e-be8c-d81126ac831c 2
+room_tomb_bell_shaft 26474ee4-ac39-45ad-83fd-1a2476250efc 2
+room_tomb_arcade 3f4941c2-485d-4d65-98ab-f9dbeacf425a 1
+# room_tomb_guard_passage — перегенеровано повторно (перше завдання не пройшло), варіант ще не вибрано
