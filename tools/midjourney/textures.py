@@ -11,7 +11,7 @@ import base64
 import sys
 from pathlib import Path
 
-from PIL import Image
+from PIL import Image, ImageFilter
 
 ROOT = Path(__file__).resolve().parents[2]
 SIZE = 512
@@ -25,6 +25,15 @@ def main():
              f"window.LevelTextureData.{zone} = {{"]
     for png in sorted(src.glob("*.png")):
         grey = Image.open(png).convert("L").resize((SIZE, SIZE), Image.LANCZOS)
+        # Photo grain reads raw next to painted art: flatten it into soft painted shapes
+        # (median keeps the big cracks and edges, the blur takes the speckle). Wrap-padded so the tile stays seamless.
+        pad = 16
+        tiled = Image.new("L", (SIZE + 2 * pad, SIZE + 2 * pad))
+        for dx in (-1, 0, 1):
+            for dy in (-1, 0, 1):
+                tiled.paste(grey, (pad + dx * SIZE, pad + dy * SIZE))
+        tiled = tiled.filter(ImageFilter.MedianFilter(9)).filter(ImageFilter.GaussianBlur(2.2))
+        grey = tiled.crop((pad, pad, pad + SIZE, pad + SIZE))
         name = png.stem.split("_", 2)[-1]  # tex_tomb_rock -> rock
         lines.append(f'  {name}: {{ w: {SIZE}, h: {SIZE}, b64: "{base64.b64encode(grey.tobytes()).decode()}" }},')
     lines.append("};")

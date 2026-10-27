@@ -53,9 +53,15 @@
       c.quadraticCurveTo(side * size * 0.9, size * 0.45, 0, 0); c.fill();
       c.restore();
     }
+    // кінчик — два-три видовжені листки, що звисають (не кулі: вони читалися як чорні ягоди)
     const [ex, ey] = f.px(...pts[steps]);
-    for (let k = 0; k < 4; k++) {
-      c.beginPath(); c.ellipse(ex + (r() - 0.5) * S * 0.35, ey + r() * S * 0.2, S * 0.16, S * 0.24, r(), 0, Math.PI * 2); c.fill();
+    for (let k = 0; k < 3; k++) {
+      const a = (k - 1) * 0.5 + (r() - 0.5) * 0.3, size = S * (0.22 + r() * 0.12);
+      c.save(); c.translate(ex, ey); c.rotate(a);
+      c.beginPath(); c.moveTo(0, 0);
+      c.quadraticCurveTo(size * 0.35, size * 0.9, 0, size * 2.1);
+      c.quadraticCurveTo(-size * 0.35, size * 0.9, 0, 0); c.fill();
+      c.restore();
     }
   }
 
@@ -97,22 +103,20 @@
     }
   }
 
-  // Сталактит: гострий звислий камінь з нерівним краєм.
+  // Сталактит: звислий камінь з опуклими боками, що плавно сходяться в краплю, трохи вигнутий
+  // (не трикутник — прямі боки читалися як вирізаний папір).
   function drip(f, x, top, len, r, color) {
-    const c = f.c, w = 0.25 + r() * 0.45;
+    const c = f.c, w = 0.18 + r() * 0.3, bend = (r() - 0.5) * 0.35;
+    const P = (dx, t) => f.px(x + dx + bend * t * t, top - len * t);
     c.fillStyle = color;
     c.beginPath();
-    c.moveTo(...f.px(x - w, top + 0.2));
-    const steps = 6;
-    for (let i = 1; i <= steps; i++) {
-      const t = i / steps;
-      c.lineTo(...f.px(x - w * (1 - t) + (r() - 0.5) * 0.08, top - len * t));
-    }
-    for (let i = steps - 1; i >= 0; i--) {
-      const t = i / steps;
-      c.lineTo(...f.px(x + w * (1 - t) + (r() - 0.5) * 0.08, top - len * t));
-    }
+    c.moveTo(...P(-w, -0.1));
+    c.bezierCurveTo(...P(-w * 1.05, 0.35), ...P(-w * 0.45, 0.75), ...P(0, 1));
+    c.bezierCurveTo(...P(w * 0.45, 0.75), ...P(w * 1.05, 0.35), ...P(w, -0.1));
     c.closePath(); c.fill();
+    // крапля на кінчику
+    const [dx, dy] = P(0, 1.08);
+    c.beginPath(); c.ellipse(dx, dy, f.S * 0.035, f.S * 0.055, 0, 0, Math.PI * 2); c.fill();
   }
 
   // Розмита світла пляма: вогник, що пролітає ближче до ока, ніж фокус.
@@ -147,7 +151,9 @@
     const maxLen = Math.min(4, Math.max(1.2, rect.h * 0.25));
     const c = f.c;
     c.save();
-    c.globalAlpha = 0.95;
+    c.globalAlpha = 0.9;
+    // передній план поза фокусом: ледь розмитий, як у HK (різкий чорний читався аплікацією)
+    c.filter = `blur(${Math.max(1, ppu * 0.035).toFixed(1)}px)`;
     // Кетяги: густо там, де шум високий, і порожньо між ними — як справжні зарості, не гребінка.
     for (let x = rect.x + 0.3; x < rect.x + rect.w - 0.3; x += 0.28 + r() * 0.4) {
       const density = N.fbm(x * 0.16, 1.7, seed, 3), ceiling = ceilingAt(x);
@@ -158,11 +164,11 @@
       else if (what === "chain") chain(f, x, from, len, r, color);
       else if (what === "root") rootStrand(f, x, from, len, r, color, 0);
       else drip(f, x, from, Math.min(len, 2.2), r, color);
-      // під стелею — темний наплив моху й коріння, з якого все звисає
-      if (r() < 0.45) {
-        const [mx, my] = f.px(x, ceiling + 0.1);
+      // під стелею — плаский наплив моху, з якого все звисає (притиснутий до каменю, не кулька)
+      if (r() < 0.35) {
+        const [mx, my] = f.px(x, ceiling + 0.05);
         c.fillStyle = color;
-        c.beginPath(); c.ellipse(mx, my, f.S * (0.14 + r() * 0.16), f.S * (0.06 + r() * 0.07), 0, 0, Math.PI * 2); c.fill();
+        c.beginPath(); c.ellipse(mx, my, f.S * (0.22 + r() * 0.2), f.S * (0.04 + r() * 0.03), 0, 0, Math.PI * 2); c.fill();
       }
     }
     c.restore();

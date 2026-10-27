@@ -5,15 +5,16 @@ Usage: python tools/midjourney/place.py <zone> [room_id ...]   e.g. python tools
 Needs Pillow (pip install pillow). Reads design/levels/midjourney/<zone>/<room_id>.(png|jpg|jpeg|webp),
 crops it to the room's proportions from the centre, scales it to the size of
 Assets/Game/Art/Levels/<Zone>/Rooms/<room_id>_mid.png and grades it to a background plan (VISUAL_BIBLE.md §10:
-darker and duller than the playfield). The painter's near wall of that room (<room_id>_near.png) is cleared:
+darker and duller than the playfield). The painter's near wall of that room (<room_id>_near.png) becomes a soft dark frame:
 the painting already holds the room's architecture, and the flat wall hid most of it.
 Then in Unity: ContentBuilder.RefreshLevelArt.
 """
 import math
+import time
 import sys
 from pathlib import Path
 
-from PIL import Image, ImageEnhance
+from PIL import Image, ImageChops, ImageEnhance
 
 ROOT = Path(__file__).resolve().parents[2]
 EXTENSIONS = (".png", ".jpg", ".jpeg", ".webp")
@@ -45,6 +46,71 @@ def tone(v):
 
 LUT = [tone(v) for v in range(256)] * 3
 
+# Two rooms' paintings met in a hard line of two hues (user, 2026-10-27: «looks raw»). Each painting
+# sinks into one shared dark at its edges, so neighbours meet in the same shadow. The layer is wider
+# than the room by MARGIN on each side (ContentBuilderLevelArt) and slides up to MARGIN with the camera,
+# so the room's edge may show anything from 0 to 2 × MARGIN in from the painting's edge: the fade is long
+# and steep there (a neighbour seen from the next room had slid its lit middle up to the seam).
+PPU = 32
+MARGIN = 3.0
+FADE = 9.0
+EDGE_DARK = (8, 10, 14)
+
+
+def save(image, path):
+    # An open Unity Editor locks a PNG for a moment while it imports the one written just before (Windows).
+    for attempt in range(20):
+        try:
+            image.save(path)
+            return
+        except OSError:
+            if attempt == 19:
+                raise
+            time.sleep(0.5)
+
+
+def smooth(t):
+    t = max(0.0, min(1.0, t))
+    return t * t * (3 - 2 * t)
+
+
+def feather(image):
+    w, h = image.size
+    # a small room keeps its middle lit: the fade never takes more than a third of a side
+    reach_x = min(FADE * PPU, w * 0.35)
+    reach_y = min(FADE * PPU, h * 0.35)
+    xs = [smooth(min(x, w - 1 - x) / reach_x) ** 1.5 for x in range(w)]
+    ys = [smooth(min(y, h - 1 - y) / reach_y) ** 1.5 for y in range(h)]
+    row = Image.new("L", (w, 1))
+    row.putdata([round(v * 255) for v in xs])
+    col = Image.new("L", (1, h))
+    col.putdata([round(v * 255) for v in ys])
+    mask = ImageChops.multiply(row.resize((w, h)), col.resize((w, h)))
+    return Image.composite(image, Image.new("RGB", (w, h), EDGE_DARK), mask)
+
+
+# The far layer slides, so its own fade cannot hold the seam still; the near layer is exactly the room
+# and does not move. It becomes a soft dark frame, clear in the middle: wherever the camera is, two
+# rooms meet in the same shadow.
+BORDER = 2.5
+BORDER_ALPHA = 0.92
+
+
+def border(near):
+    w, h = Image.open(near).size
+    reach = BORDER * PPU
+    xs = [smooth(min(x, w - 1 - x) / reach) for x in range(w)]
+    ys = [smooth(min(y, h - 1 - y) / reach) for y in range(h)]
+    row = Image.new("L", (w, 1))
+    row.putdata([round(v * 255) for v in xs])
+    col = Image.new("L", (1, h))
+    col.putdata([round(v * 255) for v in ys])
+    clear = ImageChops.multiply(row.resize((w, h)), col.resize((w, h)))
+    alpha = clear.point(lambda v: round((255 - v) * BORDER_ALPHA))
+    frame = Image.new("RGBA", (w, h), EDGE_DARK + (255,))
+    frame.putalpha(alpha)
+    save(frame, near)
+
 
 def place(source, target):
     tw, th = Image.open(target).size
@@ -56,10 +122,11 @@ def place(source, target):
     left, top = (w - tw) // 2, (h - th) // 2
     image = image.crop((left, top, left + tw, top + th))
     image = ImageEnhance.Color(image).enhance(SATURATION).point(LUT)
-    image.save(target)
+    image = feather(image)
+    save(image, target)
     near = target.with_name(target.name.replace("_mid.png", "_near.png"))
     if near.exists():
-        Image.new("RGBA", Image.open(near).size, (0, 0, 0, 0)).save(near)
+        border(near)
     return sw, sh, tw, th
 
 

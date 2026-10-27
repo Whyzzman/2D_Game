@@ -152,15 +152,17 @@
         if (tex) {
           // Рельєф з текстур Midjourney: у краю маси — кладка, у глибині — дикий камінь (дві плитки
           // різного розміру, змішані шумом, щоб повтор не читався), там, де стоять, — плити підлоги.
+          // (2026-10-27, другий підхід: «виглядає сиро» — рельєф тихий, як мазки, а не фото; найсильніший
+          // біля краю, де на камінь падає світло, у товщі майже згасає, як у Hollow Knight)
           const mix = N.fbm(wx * 0.11, wy * 0.11, seed + 31, 2);
-          const rockDetail = texAt(tex.rock, wx, wy, 7) * mix + texAt(tex.rock, wx + 3.7, wy + 2.3, 9.3) * (1 - mix);
-          let detail = texAt(tex.masonry, wx, wy, 6) * (1 - depth) + rockDetail * depth;
-          detail = detail * (1 - guard) + texAt(tex.floor, wx, wy, 5) * guard;
-          shade = (1 + Math.max(-0.55, Math.min(0.5, detail * 0.32))) * (0.9 + (N.fbm(wx * 0.5, wy * 0.5, seed + 37, 3) - 0.5) * 0.3);
+          const rockDetail = texAt(tex.rock, wx, wy, 8) * mix + texAt(tex.rock, wx + 3.7, wy + 2.3, 11) * (1 - mix);
+          let detail = texAt(tex.masonry, wx, wy, 4.5) * (1 - depth) + rockDetail * depth;
+          detail = detail * (1 - guard) + texAt(tex.floor, wx, wy, 4) * guard;
+          const strength = 0.17 * (1 - depth) + 0.05 * depth;
+          shade = (1 + Math.max(-0.3, Math.min(0.25, detail * strength))) * (0.92 + (N.fbm(wx * 0.5, wy * 0.5, seed + 37, 3) - 0.5) * 0.2);
         }
         let r = band[0] * shade, g = band[1] * shade, b = band[2] * shade;
-        // з текстурою глибина темнить не до чорного: рельєф читається й у товщі каменю
-        const sink = tex ? depth * 0.72 : depth;
+        const sink = depth;
         r = r + (core[0] * shade - r) * sink; g = g + (core[1] * shade - g) * sink; b = b + (core[2] * shade - b) * sink;
 
         // Відблиск на гранях, повернутих угору й трохи вбік.
