@@ -118,9 +118,11 @@ Midjourney не копировал чужой вид (`VISUAL_BIBLE.md` §3). Б
 | 26 | `room_tomb_bell_shaft` | Колокольная шахта | 1:2 | vertical tower shaft, a giant cracked bell hanging askew, frayed ropes, splintered timber beams, green patina bronze and brown hues |
 | 27 | `room_tomb_arcade` | Арковая галерея | 3:2 | colonnade curving away into fog, arches broken off at different heights, ivy on the stones, soft lavender dusk and grey hues |
 
-## §2. Гробница — текстуры (6)
+## §2. Гробница — текстуры (7)
 
-Промпт = **текст** + `, ` + **TEX**. Файл: `design/levels/midjourney/tomb/textures/<имя>.png`.
+Промпт = **текст** + `, ` + **TEX**. Файл: `design/levels/midjourney/tomb/textures/<имя>.png` (512 px).
+В 8.2 `--tile` работает; `--sref` для текстур не ставили. Выходят почти фото — это не мешает: painter берёт
+только яркость, цвет зоны свой. Готовы все 7 (2026-10-27); в painter пока идут rock, masonry, floor, ledge.
 
 | Имя файла | Для чего | Текст |
 | --- | --- | --- |
@@ -130,6 +132,7 @@ Midjourney не копировал чужой вид (`VISUAL_BIBLE.md` §3). Б
 | `tex_tomb_marble` | гладкий мрамор (не зацепиться) | polished dark grey marble with thin cracks and long pale vertical veins |
 | `tex_tomb_floor` | плиты пола, кант | worn tombstone floor slabs with faint illegible carved letters, scuffed |
 | `tex_tomb_bones` | костница, гнездо | densely packed old bones and skulls, yellowed ivory, dusty |
+| `tex_tomb_ledge` | уступы `=` | weathered thin stone slab surface, chipped worn grain, faint carved groove lines, cold grey with lighter dusty patches |
 
 ## §3. Гробница — декор (12)
 

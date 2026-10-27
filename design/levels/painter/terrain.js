@@ -39,6 +39,46 @@
     return (a * (1 - fx) + b * fx) * (1 - fy) + (c * (1 - fx) + d * fx) * fy;
   }
 
+  // Бесшовна текстура Midjourney як поле яскравості: середнє 0, розкид 1 (колір дає зона, текстура —
+  // лише рельєф). Дані — textures-<зона>.js (tools/midjourney/textures.py): сірі байти в скрипті, бо
+  // headless Chrome знімає кадр, не дочекавшись картинок, завантажених асинхронно.
+  function loadTexture(data) {
+    const bytes = atob(data.b64), n = data.w * data.h, v = new Float32Array(n);
+    const cv = document.createElement("canvas");
+    cv.width = data.w; cv.height = data.h;
+    const c = cv.getContext("2d");
+    let mean = 0;
+    for (let i = 0; i < n; i++) { v[i] = bytes.charCodeAt(i); mean += v[i]; }
+    mean /= n;
+    let sd = 0;
+    for (let i = 0; i < n; i++) sd += (v[i] - mean) * (v[i] - mean);
+    sd = Math.sqrt(sd / n) || 1;
+    for (let i = 0; i < n; i++) v[i] = Math.max(-3, Math.min(3, (v[i] - mean) / sd));
+    // сірий варіант для накладання «soft-light» (уступи)
+    const gray = c.createImageData(cv.width, cv.height);
+    for (let i = 0; i < n; i++) {
+      const g = 128 + v[i] * 38;
+      gray.data[i * 4] = gray.data[i * 4 + 1] = gray.data[i * 4 + 2] = g; gray.data[i * 4 + 3] = 255;
+    }
+    c.putImageData(gray, 0, 0);
+    return { w: cv.width, h: cv.height, v, canvas: cv };
+  }
+
+  function loadTextures(zoneName, names) {
+    const data = (root.LevelTextureData || {})[zoneName], out = {};
+    for (const key of names) out[key] = loadTexture(data[key]);
+    return out;
+  }
+
+  // Яскравість текстури в точці світу; tile — скільки юнітів займає одна плитка.
+  function texAt(t, wx, wy, tile) {
+    const u = ((wx / tile) % 1 + 1) % 1 * t.w, v = ((-wy / tile) % 1 + 1) % 1 * t.h;
+    const x0 = Math.floor(u), y0 = Math.floor(v), fx = u - x0, fy = v - y0;
+    const x1 = (x0 + 1) % t.w, y1 = (y0 + 1) % t.h;
+    const a = t.v[y0 * t.w + x0], b = t.v[y0 * t.w + x1], c = t.v[y1 * t.w + x0], d = t.v[y1 * t.w + x1];
+    return (a * (1 - fx) + b * fx) * (1 - fy) + (c * (1 - fx) + d * fx) * fy;
+  }
+
   /**
    * Малює шматок [wx0, wy0] … [wx0 + sx, wy0 + sy] у світових юнітах на canvas (ppu пікселів на юніт).
    * look — кольори зони.
@@ -62,6 +102,7 @@
     const img = c.createImageData(W, H), px = img.data;
     const core = hexRgb(look.core), band = hexRgb(look.stone), rim = hexRgb(look.rim);
     const amp = 0.42; // ерозія в клітинках
+    const tex = look.tex;
     for (let j = 0; j < H; j++) {
       const wy = wy0 + sy * (1 - (j + 0.5) / H);
       for (let i = 0; i < W; i++) {
@@ -107,8 +148,20 @@
         // світліший верхній край кожного каменю
         const bevel = (1 - (rowF - row)) < 0.08 ? 1.12 : 1;
 
-        let r = band[0] * tone * seamDark * bevel, g = band[1] * tone * seamDark * bevel, b = band[2] * tone * seamDark * bevel;
-        r = r + (core[0] - r) * depth; g = g + (core[1] - g) * depth; b = b + (core[2] - b) * depth;
+        let shade = tone * seamDark * bevel;
+        if (tex) {
+          // Рельєф з текстур Midjourney: у краю маси — кладка, у глибині — дикий камінь (дві плитки
+          // різного розміру, змішані шумом, щоб повтор не читався), там, де стоять, — плити підлоги.
+          const mix = N.fbm(wx * 0.11, wy * 0.11, seed + 31, 2);
+          const rockDetail = texAt(tex.rock, wx, wy, 7) * mix + texAt(tex.rock, wx + 3.7, wy + 2.3, 9.3) * (1 - mix);
+          let detail = texAt(tex.masonry, wx, wy, 6) * (1 - depth) + rockDetail * depth;
+          detail = detail * (1 - guard) + texAt(tex.floor, wx, wy, 5) * guard;
+          shade = (1 + Math.max(-0.55, Math.min(0.5, detail * 0.32))) * (0.9 + (N.fbm(wx * 0.5, wy * 0.5, seed + 37, 3) - 0.5) * 0.3);
+        }
+        let r = band[0] * shade, g = band[1] * shade, b = band[2] * shade;
+        // з текстурою глибина темнить не до чорного: рельєф читається й у товщі каменю
+        const sink = tex ? depth * 0.72 : depth;
+        r = r + (core[0] * shade - r) * sink; g = g + (core[1] * shade - g) * sink; b = b + (core[2] * shade - b) * sink;
 
         // Відблиск на гранях, повернутих угору й трохи вбік.
         const e = 0.6;
@@ -245,6 +298,15 @@
           g.addColorStop(0, look.stone); g.addColorStop(1, look.core);
           c.fillStyle = g; c.fill();
           c.save(); c.clip();
+          if (look.tex) {
+            // фактура плити з текстури Midjourney, плитка 3 юніти, поверх кольору зони
+            const p = c.createPattern(look.tex.ledge.canvas, "repeat");
+            p.setTransform(new DOMMatrix().translate(f.x(0), f.y(0)).scale(S * 3 / look.tex.ledge.w));
+            c.globalCompositeOperation = "soft-light";
+            c.fillStyle = p;
+            c.fillRect(f.x(wx0) - 2, f.y(wyt) - 2, f.x(wx1) - f.x(wx0) + 4, f.y(wyb - 1) - f.y(wyt) + 4);
+            c.globalCompositeOperation = "source-over";
+          }
           for (let x = wx0 + 0.6 + N2.hash(gx0, gy, s2) * 0.8; x < wx1 - 0.3; x += 1.1 + N2.hash(Math.round(x * 10), gy, s2) * 0.9) {
             c.strokeStyle = "rgba(0,0,0,0.45)"; c.lineWidth = Math.max(1, S * 0.03);
             c.beginPath(); c.moveTo(f.x(x), f.y(wyt)); c.lineTo(f.x(x - 0.05), f.y(wyb - 0.4)); c.stroke();
@@ -257,5 +319,5 @@
     }
   }
 
-  root.LevelTerrain = { paintChunk };
+  root.LevelTerrain = { paintChunk, loadTextures };
 })(window);

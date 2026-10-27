@@ -22,4 +22,4 @@ room_tomb_walled_cell f73b1d03-d567-4cbc-8ca9-60841daf4040 1
 room_tomb_mason_cache b677afd7-4dcb-4b4e-be8c-d81126ac831c 2
 room_tomb_bell_shaft 26474ee4-ac39-45ad-83fd-1a2476250efc 2
 room_tomb_arcade 3f4941c2-485d-4d65-98ab-f9dbeacf425a 1
-# room_tomb_guard_passage — перегенеровано повторно (перше завдання не пройшло), варіант ще не вибрано
+room_tomb_guard_passage b26e8597-7e42-4f6d-bbab-2f35046beb38 0

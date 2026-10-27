@@ -49,7 +49,7 @@ function shot(chrome, file, w, h, url) {
     fs.rmSync(file, { force: true });
     const child = spawn(chrome, ["--headless=new", "--disable-gpu", "--hide-scrollbars",
       "--default-background-color=00000000", `--user-data-dir=${profile}`, "--no-first-run",
-      "--no-default-browser-check", `--window-size=${w},${h}`, "--virtual-time-budget=6000",
+      "--no-default-browser-check", `--window-size=${w},${h}`, "--virtual-time-budget=60000",
       `--screenshot=${file}`, url], { stdio: "ignore" });
     const started = Date.now();
     const timer = setInterval(() => {

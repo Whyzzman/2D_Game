@@ -14,6 +14,7 @@
 <script src="noise.js"></script>
 <script src="level-text.js"></script>
 <script src="looks.js"></script>
+<script src="textures-tomb.js"></script>
 <script src="terrain.js"></script>
 <script src="backdrop.js"></script>
 <script src="forest-backdrop.js"></script>
@@ -30,6 +31,7 @@
   const text = await (await fetch(`/Assets/Game/Levels/${zoneName}.txt`)).text();
   const zone = LevelText.parse(text);
   const look = LevelLooks[zoneName];
+  if (look.textures) look.tex = LevelTerrain.loadTextures(zoneName, look.textures);
   const canvas = document.getElementById("out");
   const what = q.get("what") || "preview";
   const ppu = parseFloat(q.get("ppu") || "48");

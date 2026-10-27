@@ -7,6 +7,8 @@
       // камінь площини
       core: "#0a0b0e", stone: "#20252e", rim: "#a9bdd8",
       lip: "#77757a", lipDark: "#3a3b42", lipLight: "#c4beb0", chain: "#2e333c",
+      // рельєф каменю з бесшовних текстур Midjourney (MIDJOURNEY.md §2; варіанти вибрав Claude, 2026-10-27)
+      textures: ["rock", "masonry", "floor", "ledge"],
       // тло
       skyTop: "#151c28", skyBottom: "#0a0d12",
       fog: "#34465c", ribs: "#18202c", window: "#253650",
