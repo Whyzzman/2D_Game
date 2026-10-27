@@ -30,6 +30,16 @@ namespace ForgottenKingdom
         [SerializeField, Min(0f)] private float _cornerCorrection = 0.2f;
         private const int CornerCorrectionSteps = 4;
         private const int LedgeForgivenessSteps = 4;
+        /// <summary>
+        /// How far below a one-way ledge's top the feet may be, at the top of a jump or on the way
+        /// down, and still be lifted onto it. Without it a jump that falls short by a hand's width
+        /// sinks back through the ledge the body is already mostly above — read as falling through
+        /// the block (user's report 2026-10-27).
+        /// </summary>
+        private const float LedgeLiftHeight = 0.4f;
+        /// <summary>The lift waits for the top of the jump: below this rise the body is no longer climbing.</summary>
+        private const float LedgeLiftRise = 1.5f;
+        private readonly Collider2D[] _liftOverlaps = new Collider2D[8];
         private readonly RaycastHit2D[] _groundHits = new RaycastHit2D[8];
         private readonly Collider2D[] _cornerOverlaps = new Collider2D[4];
         private float _cornerShiftUsed;
@@ -216,6 +226,12 @@ namespace ForgottenKingdom
                     LastSafeGround = _body.position;
                     HasSafeGround = true;
                 }
+            }
+
+            if (!IsGrounded && nextVelocity.y < LedgeLiftRise && !_skillVelocity.HasValue && !IsDashing
+                && mode != LocomotionMode.Knockback && TryLedgeLift())
+            {
+                nextVelocity.y = 0f;
             }
 
             if (!IsGrounded && nextVelocity.y < 0f && !_skillVelocity.HasValue && !IsDashing
@@ -500,6 +516,45 @@ namespace ForgottenKingdom
                 if (IsSpaceClear(shifted) && LandsFrom(shifted, fall))
                 {
                     _body.position = shifted;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// A jump that tops out (or starts down) with the feet just under a one-way ledge it rose
+        /// through steps up onto it, if the middle of the feet is over the ledge and the body fits
+        /// above. See <see cref="LedgeLiftHeight"/>.
+        /// </summary>
+        private bool TryLedgeLift()
+        {
+            var position = _body.position;
+            var feet = FeetAt(position);
+            var count = Physics2D.OverlapCapsule(position + _capsule.offset, _capsule.size, _capsule.direction, 0f,
+                _groundFilter, _liftOverlaps);
+            for (var i = 0; i < count; i++)
+            {
+                var hit = _liftOverlaps[i];
+                if (!hit.TryGetComponent<OneWayPlatform>(out var ledge))
+                {
+                    continue;
+                }
+
+                var rise = ledge.Top - feet;
+                var bounds = hit.bounds;
+                if (rise <= 0f || rise > LedgeLiftHeight
+                    || position.x < bounds.min.x || position.x > bounds.max.x)
+                {
+                    continue;
+                }
+
+                var lifted = position + new Vector2(0f, rise + 0.01f);
+                if (IsSpaceClear(lifted))
+                {
+                    _body.position = lifted;
+                    Physics2D.SyncTransforms();
                     return true;
                 }
             }

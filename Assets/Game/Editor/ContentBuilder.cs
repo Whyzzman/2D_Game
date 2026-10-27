@@ -479,8 +479,15 @@ namespace ForgottenKingdom.EditorTools
             // Air control as in Hollow Knight (2026-10-19, TUNING.md): the prefab keeps what it was
             // first built with, so the numbers that changed since are written here. Jump speed,
             // gravities and the apex stay as they are — the level heights are built on them.
-            SetFloat(motor, "_settings._airDeceleration", 45f);
-            SetFloat(motor, "_settings._airTurnAcceleration", 90f);
+            // 2026-10-27: start, stop and steering all but instant, the released jump cut at once
+            // (user's request: «like Hollow Knight»; MovementSettings).
+            SetFloat(motor, "_settings._groundAcceleration", 150f);
+            SetFloat(motor, "_settings._groundDeceleration", 180f);
+            SetFloat(motor, "_settings._airAcceleration", 120f);
+            SetFloat(motor, "_settings._airDeceleration", 120f);
+            SetFloat(motor, "_settings._airTurnAcceleration", 250f);
+            SetFloat(motor, "_settings._releasedJumpSpeed", 1.5f);
+            SetFloat(motor, "_settings._releasedJumpDeceleration", 600f);
             SetFloat(motor, "_settings._jumpBuffer", 0.15f);
             var visual = root.transform.Find("Visual");
             SetReference(motor, "_visual", visual != null ? visual : root.transform);

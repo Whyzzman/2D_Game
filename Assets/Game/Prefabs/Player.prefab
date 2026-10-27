@@ -1241,17 +1241,17 @@ MonoBehaviour:
   _settings:
     _walkSpeed: 3
     _runSpeed: 6.5
-    _groundAcceleration: 60
-    _groundDeceleration: 80
-    _airAcceleration: 30
-    _airDeceleration: 45
-    _airTurnAcceleration: 90
+    _groundAcceleration: 150
+    _groundDeceleration: 180
+    _airAcceleration: 120
+    _airDeceleration: 120
+    _airTurnAcceleration: 250
     _jumpSpeed: 11
     _riseGravity: 30
     _fallGravity: 48
     _maxFallSpeed: 20
-    _releasedJumpSpeed: 4.5
-    _releasedJumpDeceleration: 200
+    _releasedJumpSpeed: 1.5
+    _releasedJumpDeceleration: 600
     _apexSpeedThreshold: 2
     _apexGravityMultiplier: 0.5
     _coyoteTime: 0.1

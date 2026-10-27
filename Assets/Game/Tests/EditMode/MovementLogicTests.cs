@@ -58,7 +58,7 @@ namespace ForgottenKingdom.Tests
         [Test]
         public void AirControlAndDirectionChangeAreResponsive()
         {
-            // A reversal in the air bites at the turn acceleration (90), three times speeding up.
+            // A reversal in the air bites at the turn acceleration, harder than speeding up.
             var velocity = _logic.Step(new Vector2(3f, 0f), false, new MovementInput(-1f), StepTime);
             Assert.That(velocity.x, Is.EqualTo(3f - _settings.AirTurnAcceleration * StepTime).Within(0.001f));
             Assert.That(_logic.FacingDirection, Is.EqualTo(-1));
@@ -123,7 +123,7 @@ namespace ForgottenKingdom.Tests
             }
 
             Assert.That(steps * StepTime, Is.LessThanOrEqualTo(0.16f));
-            // Speeding up the same way is unchanged, so no jump across a gap got longer.
+            // Speeding up the same way is at the air acceleration; a running jump is already at full speed.
             velocity = _logic.Step(new Vector2(1f, 2f), false, new MovementInput(1f), StepTime);
             Assert.That(velocity.x, Is.EqualTo(1f + _settings.AirAcceleration * StepTime).Within(0.001f));
         }
@@ -249,15 +249,15 @@ namespace ForgottenKingdom.Tests
         }
 
         [Test]
-        public void ReleasingAJumpSlowsItOverTwoStepsRatherThanCuttingIt()
+        public void ReleasingAJumpCutsItAtOnceAsInHollowKnight()
         {
+            // User's request 2026-10-27: the hero moves like Hollow Knight's — let go and the rise ends.
             var velocity = _logic.Step(Vector2.zero, true,
                 new MovementInput(0f, true, true), StepTime);
             velocity = _logic.Step(velocity, false, default, StepTime);
-            Assert.That(velocity.y, Is.GreaterThan(_settings.ReleasedJumpSpeed),
-                "One step after letting go the jump is still slowing, not cut dead.");
-            velocity = _logic.Step(velocity, false, default, StepTime);
-            Assert.That(velocity.y, Is.LessThanOrEqualTo(_settings.ReleasedJumpSpeed));
+            Assert.That(velocity.y, Is.LessThanOrEqualTo(_settings.ReleasedJumpSpeed),
+                "One step after letting go the rise is over.");
+            Assert.That(velocity.y, Is.GreaterThan(0f), "It ends in a soft top, not a drop.");
         }
 
         private float SimulateJump(bool hold)

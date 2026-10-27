@@ -11,25 +11,30 @@ namespace ForgottenKingdom
         [SerializeField, Min(0f)] private float _walkSpeed = 3f;
         [Tooltip("Ground speed at full stick or a held key; a half-tilted stick moves at half of it.")]
         [SerializeField, Min(0f)] private float _runSpeed = 6.5f;
-        [SerializeField, Min(0f)] private float _groundAcceleration = 60f;
-        [SerializeField, Min(0f)] private float _groundDeceleration = 80f;
-        [SerializeField, Min(0f)] private float _airAcceleration = 30f;
-        [Tooltip("Braking in the air with no direction held. 45 stops a full run in about 0.14 s "
-            + "(it was 20, a third of a second of drift); it can only shorten a jump, never lengthen it.")]
-        [SerializeField, Min(0f)] private float _airDeceleration = 45f;
+        [SerializeField, Min(0f)] private float _groundAcceleration = 150f;
+        [SerializeField, Min(0f)] private float _groundDeceleration = 180f;
+        [SerializeField, Min(0f)] private float _airAcceleration = 120f;
+        // Starting, stopping and steering are all but instant on the ground and in the air, as in
+        // Hollow Knight (user's request 2026-10-27, «the hero's mechanics like Hollow Knight»): a full
+        // run is reached in about 0.04 s (250 was tried: LevelReach then stranded a Tomb floor — the
+        // model's jumps need a run-up to differ from a standing start). Heights and gaps are untouched —
+        // the jump speed, gravities and the apex stay, the levels are built on them.
+        [Tooltip("Braking in the air with no direction held: 120 stops a full run in about 0.05 s; "
+            + "it can only shorten a jump, never lengthen it.")]
+        [SerializeField, Min(0f)] private float _airDeceleration = 120f;
         [Tooltip("Steering against the current drift in the air: a reversal is three times as quick "
             + "as speeding up, as in Hollow Knight, so a jump can be corrected mid-air. Speeding up "
             + "the same way stays at the air acceleration, so no gap gets wider.")]
-        [SerializeField, Min(0f)] private float _airTurnAcceleration = 90f;
+        [SerializeField, Min(0f)] private float _airTurnAcceleration = 250f;
         [SerializeField, Min(0f)] private float _jumpSpeed = 11f;
         [SerializeField, Min(0f)] private float _riseGravity = 30f;
         [SerializeField, Min(0f)] private float _fallGravity = 48f;
         [SerializeField, Min(0f)] private float _maxFallSpeed = 20f;
         [Tooltip("Upward speed a released jump is brought down to.")]
-        [SerializeField, Min(0f)] private float _releasedJumpSpeed = 4.5f;
-        [Tooltip("How fast a released jump sheds speed down to the released speed. The cut used "
-            + "to be instant, a jolt; 200 takes two physics steps and adds ~0.12 to a tap.")]
-        [SerializeField, Min(0f)] private float _releasedJumpDeceleration = 200f;
+        [SerializeField, Min(0f)] private float _releasedJumpSpeed = 1.5f;
+        [Tooltip("How fast a released jump sheds speed down to the released speed. 600 cuts it within "
+            + "a step or two, as in Hollow Knight: let go and the rise ends where it is.")]
+        [SerializeField, Min(0f)] private float _releasedJumpDeceleration = 600f;
         [Tooltip("Below this vertical speed a held jump is at its apex and floats.")]
         [SerializeField, Min(0f)] private float _apexSpeedThreshold = 2f;
         [Tooltip("Share of gravity near the apex while jump is held. 0.5 nearly doubles the hang "
