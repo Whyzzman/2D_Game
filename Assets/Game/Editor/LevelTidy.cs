@@ -41,6 +41,11 @@ namespace ForgottenKingdom.EditorTools
             public HashSet<long> Comfort;
             /// <summary>Every cell stood on, ledges included: a ledge that only leads to other ledges still leads somewhere.</summary>
             public HashSet<long> All;
+            /// <summary>
+            /// The same for the comfortable jump. Without it a shaft's steps went as «dead ends» while the
+            /// room was still reached by a jump at the very edge — and a slightly different hero lost it.
+            /// </summary>
+            public HashSet<long> ComfortAll;
             /// <summary>From each stone floor, how many moves to each other: a second, shorter way up is a way, not a spare.</summary>
             public Dictionary<long, Dictionary<long, int>> Ways;
             public Dictionary<LevelMarker, int> MarkerRows;
@@ -115,7 +120,8 @@ namespace ForgottenKingdom.EditorTools
                     return false;
                 }
 
-                if (baseline.All.Any(c => !now.All.Contains(c) && (gone == null || !gone.Contains(c))))
+                if (baseline.All.Any(c => !now.All.Contains(c) && (gone == null || !gone.Contains(c)))
+                    || baseline.ComfortAll.Any(c => !now.ComfortAll.Contains(c) && (gone == null || !gone.Contains(c))))
                 {
                     return false;
                 }
@@ -152,6 +158,7 @@ namespace ForgottenKingdom.EditorTools
                 // what the comfortable jump newly reaches is kept from now on
                 baseline.Comfort.UnionWith(now.Comfort);
                 baseline.All = now.All;
+                baseline.ComfortAll = now.ComfortAll;
                 baseline.Ways = now.Ways;
                 changed++;
                 log("  " + what);
@@ -403,9 +410,23 @@ namespace ForgottenKingdom.EditorTools
                 ways[floor.Value] = reached;
             }
 
+            var comfortAll = new HashSet<long>();
+            if (comfortStart >= 0)
+            {
+                foreach (var index in loose.Forward(comfortStart))
+                {
+                    var segment = loose.Segments[index];
+                    if (!segment.IsRing)
+                    {
+                        for (var x = segment.XMin; x <= segment.XMax; x++) comfortAll.Add(Pack(x, segment.Row));
+                    }
+                }
+            }
+
             return new Baseline
             {
                 All = all,
+                ComfortAll = comfortAll,
                 Ways = ways,
                 Strict = StoneCells(zone, strict, strictForward),
                 Comfort = comfortStart < 0 ? new HashSet<long>() : StoneCells(zone, loose, loose.Forward(comfortStart)),
