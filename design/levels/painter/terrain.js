@@ -100,7 +100,10 @@
     const airAt = (x, y) => (x < 0 || y < 0 || x >= gw || y >= gh) ? 0 : air[y * gw + x];
 
     const img = c.createImageData(W, H), px = img.data;
-    const core = hexRgb(look.core), band = hexRgb(look.stone), rim = hexRgb(look.rim);
+    let core = hexRgb(look.core), band = hexRgb(look.stone), rim = hexRgb(look.rim);
+    // Камінь у гамі своєї кімнати (2026-10-28, «кардинально інакше, красивіше»): тінь, тон і світло з фону
+    // Midjourney (palette-<зона>.js), між кімнатами — плавно (розмита сітка кольорів по клітинках).
+    const pal = paletteGrid(zone, cx0, cy0, gw, gh, look);
     const amp = 0.42; // ерозія в клітинках
     const tex = look.tex;
     for (let j = 0; j < H; j++) {
@@ -190,6 +193,12 @@
           const strength = 0.25 * (1 - depth) + 0.08 * depth;
           shade = (1 + Math.max(-0.4, Math.min(0.32, detail * strength))) * (0.92 + (N.fbm(wx * 0.5, wy * 0.5, seed + 37, 3) - 0.5) * 0.2);
         }
+        if (pal) {
+          const u = fx - 0.5, v = fy - 0.5, at = k => sample(pal[k], gw, gh, u, v);
+          band = [at(3) * 0.62 + at(0) * 0.38, at(4) * 0.62 + at(1) * 0.38, at(5) * 0.62 + at(2) * 0.38].map(c => c * 0.62);
+          core = [at(0) * 0.32, at(1) * 0.32, at(2) * 0.32];
+          rim = [at(6), at(7), at(8)];
+        }
         let r = band[0] * shade, g = band[1] * shade, b = band[2] * shade;
         const sink = depth;
         r = r + (core[0] * shade - r) * sink; g = g + (core[1] * shade - g) * sink; b = b + (core[2] * shade - b) * sink;
@@ -248,13 +257,44 @@
             c.lineTo(bx - rr, ay); c.quadraticCurveTo(bx, ay, bx, ay + rr); c.lineTo(bx, by); c.closePath();
             c.rect(ax - 50, ay - f.ppu * 0.6, bx - ax + 100, f.ppu * 0.6); // трава над краєм не обрізається
             c.clip();
-            lip(f, wx0, wx1, wy, look, seed);
+            lip(f, wx0, wx1, wy, lookAt(zone, cx0 + Math.round((start + x) / 2), cy0 + y, look), seed);
             c.restore();
+            if (root.LevelProps) root.LevelProps.dress(f, zone, wx0, wx1, wy, lookAt(zone, cx0 + Math.round((start + x) / 2), cy0 + y, look), seed + y * 31 + start);
           }
           start = -1;
         }
       }
     }
+  }
+
+  // Кольори кімнат по клітинках шматка, розмиті, — 9 каналів: тінь, тон, світло.
+  function paletteGrid(zone, cx0, cy0, gw, gh, look) {
+    const all = root.LevelPalettes && root.LevelPalettes[look.style || "tomb"];
+    if (!all || !look.roomPalette) return null;
+    const ch = [];
+    for (let k = 0; k < 9; k++) ch.push(new Float32Array(gw * gh));
+    const fallback = { dark: hexRgb(look.core).map(v => v * 2.5), mid: hexRgb(look.stone).map(v => v * 1.6), light: hexRgb(look.rim) };
+    for (let y = 0; y < gh; y++) for (let x = 0; x < gw; x++) {
+      const room = T.roomOf(zone, cx0 + x, cy0 + y);
+      const p = (room && all[room.id]) || fallback;
+      const v = [...p.dark, ...p.mid, ...p.light];
+      for (let k = 0; k < 9; k++) ch[k][y * gw + x] = v[k];
+    }
+    return ch.map(a => blur(a, gw, gh, 3));
+  }
+
+  // Вигляд для кромки й реквізиту там, де вони стоять: кольори кромки — з палітри кімнати.
+  function lookAt(zone, cx, cy, look) {
+    const all = root.LevelPalettes && root.LevelPalettes[look.style || "tomb"];
+    const room = all && look.roomPalette ? T.roomOf(zone, cx, cy) : null;
+    const p = room && all[room.id];
+    if (!p) return look;
+    const hex = v => "#" + v.map(c => Math.max(0, Math.min(255, Math.round(c))).toString(16).padStart(2, "0")).join("");
+    const mix = (a, b, t) => a.map((c, i) => c + (b[i] - c) * t);
+    return Object.assign({}, look, {
+      lip: hex(mix(p.dark, p.mid, 0.7)), lipDark: hex(p.dark.map(c => c * 0.6)), lipLight: hex(mix(p.mid, p.light, 0.75)),
+      moss: hex(mix(p.mid, p.light, 0.3)), grass: hex(mix(p.mid, p.light, 0.3)), glowTint: hex(p.light), shadowTint: hex(p.dark)
+    });
   }
 
   function lip(f, x0, x1, y, look, seed) {
@@ -384,7 +424,7 @@
           } else {
             hangers().forEach(([hx, up]) => { if (up !== null) M.rope(f, hx, up, wyt, pal, s2 + Math.round(hx * 7), hangKind); });
             if (kind === "log") M.log(f, wx0, wx1, wyt, pal, s2);
-            else if (kind === "slab") { M.slab(f, wx0, wx1, wyt, look, s2); lip(f, wx0, wx1, wyt, look, s2); }
+            else if (kind === "slab") { const lk = lookAt(zone, gx0, gy, look), tinted = lk === look ? look : Object.assign({}, lk, { stone: lk.lip, core: lk.shadowTint }); M.slab(f, wx0, wx1, wyt, tinted, s2); lip(f, wx0, wx1, wyt, lk, s2); }
             else M.planks(f, wx0, wx1, wyt, pal, s2, 0.3);
           }
           start = -1;

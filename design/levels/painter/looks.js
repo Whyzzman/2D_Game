@@ -8,7 +8,7 @@
       core: "#0a0b0e", stone: "#20252e", rim: "#a9bdd8",
       lip: "#77757a", lipDark: "#3a3b42", lipLight: "#c4beb0", chain: "#2e333c",
       // маса й верх (2026-10-28, «дешево»: фото-текстури прибрано): кладка, по верху — плити
-      mass: "blocks", cap: "flagstones",
+      mass: "blocks", cap: "flagstones", roomPalette: true,
       // тло
       skyTop: "#151c28", skyBottom: "#0a0d12",
       fog: "#34465c", ribs: "#18202c", window: "#253650",
