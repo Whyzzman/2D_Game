@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<title>Герой — кадри</title>
+<style>
+  html, body { margin: 0; background: transparent; }
+  body.sheet { background: #4a5266; }
+  canvas { display: block; }
+</style>
+</head>
+<body>
+<canvas id="out"></canvas>
+<script src="hero.js"></script>
+<script>
+// ?state=Run&frames=10[&big=1] — кадри стану в ряд (прозорий фон), для нарізки
+// ?sheet=1 — усі стани для перегляду
+(function () {
+  const q = new URLSearchParams(location.search);
+  const canvas = document.getElementById("out"), g = canvas.getContext("2d");
+  const frame = document.createElement("canvas"); frame.width = 256; frame.height = 224;
+  const fg = frame.getContext("2d");
+  const big = q.get("big") === "1";
+  if (q.get("sheet")) {
+    document.body.classList.add("sheet");
+    const list = (q.get("states") || "Idle:12,Run:10,JumpRise:3,Fall:3,Attack1:7,Attack3:9,AttackUp:6,AttackDown:6,Dash:5,WallSlide:2,Hurt:2,Heal:6").split(",");
+    const cols = 12, scale = parseFloat(q.get("scale") || "0.6");
+    canvas.width = cols * 256 * scale; canvas.height = list.length * 224 * scale;
+    list.forEach((item, row) => {
+      const [name, n] = item.split(":");
+      Hero.STATES[name](parseInt(n, 10)).forEach((p, i) => {
+        Hero.draw(fg, p, i, big);
+        g.drawImage(frame, i * 256 * scale, row * 224 * scale, 256 * scale, 224 * scale);
+      });
+    });
+  } else {
+    const name = q.get("state"), n = parseInt(q.get("frames"), 10);
+    canvas.width = 256 * n; canvas.height = 224;
+    Hero.STATES[name](n).forEach((p, i) => { Hero.draw(fg, p, i, big); g.drawImage(frame, i * 256, 0); });
+  }
+  document.title = "done";
+})();
+</script>
+</body>
+</html>
