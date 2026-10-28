@@ -82,7 +82,7 @@ namespace ForgottenKingdom.Tests
             // No key is held to run: the keyboard always moves at the running pace.
             InputSystem.QueueStateEvent(_keyboard, new KeyboardState(Key.D));
             yield return Frames(15);
-            Assert.That(_body.linearVelocity.x, Is.EqualTo(6.5f).Within(0.05f));
+            Assert.That(_body.linearVelocity.x, Is.EqualTo(6.8f).Within(0.05f));
             yield return NeutralFrames(5);
             Assert.That(Mathf.Abs(_body.linearVelocity.x), Is.LessThan(0.05f));
             _input.enabled = false;
@@ -99,7 +99,7 @@ namespace ForgottenKingdom.Tests
         {
             InputSystem.QueueStateEvent(_gamepad, new GamepadState { leftStick = Vector2.right });
             yield return Frames(8);
-            Assert.That(_body.linearVelocity.x, Is.EqualTo(6.5f).Within(0.05f));
+            Assert.That(_body.linearVelocity.x, Is.EqualTo(6.8f).Within(0.05f));
             InputSystem.QueueStateEvent(_gamepad, new GamepadState().WithButton(GamepadButton.South));
             yield return Frames(3);
             Assert.That(_body.linearVelocity.y, Is.GreaterThan(0f));

@@ -23,8 +23,8 @@
   const BASE = {
     x: 0, y: 0, lean: 0, sy: 1, sx: 1,
     hipF: 4, kneeF: 6, hipB: -4, kneeB: 6,
-    arm: 20, sword: 70, armB: -10,
-    flare: 0.15, scarf: 165, scarfWave: 0, scarfLen: 1, hood: 0, eyes: 1,
+    arm: 20, sword: 55, armB: -10,
+    flare: 0.15, scarf: 165, scarfWave: 0, scarfLen: 1, hood: 0, eyes: 1, tip: 0, hem: 0,
     glow: 0, slash: 0, slashFrom: -60, slashTo: 60, streak: 0, alpha: 1, sword2: 0
   };
 
@@ -56,35 +56,36 @@
 
   // Удар збоку: замах назад, удар (кадр контакту з дугою), проведення. contact — номер кадру удару.
   function swing(n, contact, from, to, heavy) {
-    const wind = pose({ lean: -8, arm: -60, sword: -120 + (heavy ? -20 : 0), hipF: 12, kneeF: 20, hipB: -14, kneeB: 10, y: 3, flare: 0.35, scarf: 150 });
-    const hit = pose({ lean: 14, arm: 80, sword: to, hipF: 28, kneeF: 18, hipB: -22, kneeB: 8, x: 6, flare: 0.6, scarf: 195, slash: 1, slashFrom: from, slashTo: to });
-    const follow = pose({ lean: 10, arm: 100, sword: to + 30, hipF: 22, kneeF: 16, hipB: -18, kneeB: 10, x: 7, flare: 0.45, scarf: 185, slash: 0.25, slashFrom: from, slashTo: to });
+    const wind = pose({ tip: 12, hem: 0.3, lean: -8, arm: -60, sword: -120 + (heavy ? -20 : 0), hipF: 12, kneeF: 20, hipB: -14, kneeB: 10, y: 3, flare: 0.35, scarf: 150 });
+    const hit = pose({ tip: -16, hem: 0.7, sy: 0.96, sx: 1.04, lean: 14, arm: 80, sword: to, hipF: 28, kneeF: 18, hipB: -22, kneeB: 8, x: 6, flare: 0.6, scarf: 195, slash: 1, slashFrom: from, slashTo: to });
+    const follow = pose({ tip: -6, hem: 0.9, lean: 10, arm: 100, sword: to + 30, hipF: 22, kneeF: 16, hipB: -18, kneeB: 10, x: 7, flare: 0.45, scarf: 185, slash: 0.25, slashFrom: from, slashTo: to });
     return track(n, [[0, pose({ lean: 2 })], [Math.max(1, contact - 2), wind], [contact, hit], [contact + 1, follow], [n - 1, pose({ lean: 3, arm: 40, sword: 60 })]]);
   }
 
   const RUN = n => cycle(n, (t) => {
     const a = t * PI2;
     return {
-      lean: 12, y: -Math.abs(S(a)) * 4 + 2,
+      lean: 14, y: -Math.abs(S(a)) * 7 + 3, sy: 1 + (Math.abs(S(a)) - 0.5) * 0.08, sx: 1 - (Math.abs(S(a)) - 0.5) * 0.05,
+      tip: -14 - Math.abs(S(a)) * 8, hem: t * 2, hood: -Math.abs(S(a)) * 3,
       hipF: 30 * S(a), kneeF: 18 + 26 * Math.max(0, -S(a + 0.6)),
       hipB: -30 * S(a), kneeB: 18 + 26 * Math.max(0, S(a + 0.6)),
-      arm: -18 * S(a) + 20, sword: 150, armB: 28 * S(a) - 10,
+      arm: -28 * S(a) + 20, sword: 150 - 10 * S(a), armB: 36 * S(a) - 10,
       flare: 0.55 + 0.1 * S(a * 2), scarf: 188, scarfWave: t, scarfLen: 1.2
     };
   });
 
   const STATES = {
-    Idle: n => cycle(n, t => ({ y: S(t * PI2) * 1.2, sy: 1 + S(t * PI2) * 0.012, arm: 18, sword: 75, scarf: 160 + S(t * PI2) * 6, scarfWave: t, flare: 0.12 })),
+    Idle: n => cycle(n, t => ({ y: S(t * PI2) * 2.2, sy: 1 + S(t * PI2) * 0.03, sx: 1 - S(t * PI2) * 0.015, arm: 18 + S(t * PI2) * 4, sword: 52 + S(t * PI2) * 3, armB: -10 - S(t * PI2) * 4, scarf: 160 + S(t * PI2) * 10, scarfWave: t, flare: 0.12 + S(t * PI2) * 0.05, tip: S(t * PI2 - 0.8) * 8, hem: t, hood: S(t * PI2 - 0.4) * 2 })),
     IdleGlance: n => track(n, [[0, {}], [3, { hood: -10, lean: -3 }], [6, { hood: 8, lean: 2 }], [9, {}]]),
     IdleVariant: n => track(n, [[0, {}], [3, { armB: 60, hood: 6, y: 1 }], [6, { armB: 70, hood: -4, scarf: 140, scarfWave: 0.5 }], [9, {}]]),
     Run: RUN,
     Turn: n => track(n, [[0, { lean: -10, sx: 0.9, scarf: 120 }], [1, { lean: 4, sx: 1, scarf: 175 }]]),
     JumpStart: n => track(n, [[0, { y: 5, sy: 0.9, hipF: 20, kneeF: 30, hipB: -10, kneeB: 30 }], [2, { y: -2, sy: 1.08, hipF: 10, kneeF: 5, hipB: -6, kneeB: 25, arm: -10, sword: 160, flare: 0.3 }]]),
-    JumpRise: n => cycle(n, t => ({ sy: 1.05, hipF: 18, kneeF: 30, hipB: -8, kneeB: 35, arm: -20, sword: 160, armB: -30, flare: 0.25 + t * 0.1, scarf: 150, scarfWave: t, scarfLen: 1.1 })),
-    Fall: n => cycle(n, t => ({ hipF: 12, kneeF: 12, hipB: -10, kneeB: 18, arm: 35, sword: 120, armB: -40, flare: 0.75 + 0.1 * S(t * PI2), scarf: 215, scarfWave: t, scarfLen: 1.15, y: 0 })),
-    Land: n => track(n, [[0, { y: 7, sy: 0.85, hipF: 30, kneeF: 45, hipB: -20, kneeB: 40, flare: 0.6 }], [2, {}]]),
+    JumpRise: n => cycle(n, t => ({ sy: 1.08, sx: 0.95, tip: 18, hem: t, hipF: 18, kneeF: 30, hipB: -8, kneeB: 35, arm: -20, sword: 160, armB: -30, flare: 0.25 + t * 0.1, scarf: 150, scarfWave: t, scarfLen: 1.1 })),
+    Fall: n => cycle(n, t => ({ tip: -22, hem: t * 2, hipF: 12, kneeF: 12, hipB: -10, kneeB: 18, arm: 35, sword: 120, armB: -40, flare: 0.75 + 0.1 * S(t * PI2), scarf: 215, scarfWave: t, scarfLen: 1.15, y: 0 })),
+    Land: n => track(n, [[0, { y: 9, sy: 0.8, sx: 1.08, hipF: 32, kneeF: 50, hipB: -22, kneeB: 45, flare: 0.7, tip: 20 }], [1, { y: -2, sy: 1.05, sx: 0.97, tip: -8 }], [2, {}]]),
     HardLand: n => track(n, [[0, { y: 12, sy: 0.75, hipF: 40, kneeF: 70, hipB: -30, kneeB: 60, arm: 60, sword: 100, flare: 0.8, lean: 20 }], [2, { y: 10, sy: 0.8, lean: 18, hipF: 38, kneeF: 65, hipB: -28, kneeB: 55 }], [4, {}]]),
-    Dash: n => track(n, [[0, { lean: 30, x: -6, streak: 0.4, arm: 60, sword: 175, flare: 0.9, scarf: 185, scarfLen: 1.4 }], [2, { lean: 34, x: 4, streak: 1, hipF: 50, kneeF: 30, hipB: -45, kneeB: 20, flare: 1, scarfLen: 1.5 }], [4, { lean: 16, x: 2, streak: 0.3, flare: 0.5 }]]),
+    Dash: n => track(n, [[0, { tip: -24, hem: 0.5, lean: 30, x: -6, streak: 0.4, arm: 60, sword: 175, flare: 0.9, scarf: 185, scarfLen: 1.4 }], [2, { lean: 34, x: 4, streak: 1, hipF: 50, kneeF: 30, hipB: -45, kneeB: 20, flare: 1, scarfLen: 1.5 }], [4, { lean: 16, x: 2, streak: 0.3, flare: 0.5 }]]),
     AirDash: n => track(n, [[0, { lean: 26, x: -6, streak: 0.4, arm: 60, sword: 175, flare: 0.9, scarf: 180, scarfLen: 1.4, hipF: 30, kneeF: 50, hipB: -10, kneeB: 60 }], [2, { lean: 30, x: 4, streak: 1, hipF: 40, kneeF: 60, hipB: 0, kneeB: 70, flare: 1, scarfLen: 1.5 }], [4, { lean: 12, x: 2, streak: 0.3, flare: 0.6 }]]),
     WallSlide: n => cycle(n, t => ({ lean: -8, x: 6, hipF: 30, kneeF: 50, hipB: 10, kneeB: 40, arm: 140, armB: 150, sword: 100, flare: 0.3, scarf: 250, scarfWave: t, y: S(t * PI2) })),
     WallJump: n => track(n, [[0, { lean: -20, x: 4, hipF: 40, kneeF: 60, hipB: 20, kneeB: 50, arm: -40, sword: 170, flare: 0.5, scarf: 260 }], [1, { lean: 10, sy: 1.08, hipF: 10, kneeF: 20, hipB: -30, kneeB: 20, flare: 0.4, scarf: 220 }]]),
@@ -185,7 +186,7 @@
       const n = 7;
       for (let i = 1; i <= n; i++) {
         const t = i / n, x = back + (front - back) * t;
-        const dip = (i % 2 ? 7 : 0) + Math.sin(i * 1.7) * 2;
+        const dip = (i % 2 ? 7 : 0) + Math.sin(i * 1.7 + p.hem * Math.PI * 2) * 4;
         g.lineTo(x, hemY - p.flare * 10 * (1 - t) + dip);
       }
       g.quadraticCurveTo(24, -48, 14, -88);
@@ -213,7 +214,9 @@
       g.moveTo(-20, 14);
       g.quadraticCurveTo(-28, -8, -14, -24);
       // гострий кінчик, відкинутий назад
-      g.quadraticCurveTo(-12, -40, -30, -54);
+      // кінчик гнеться за рухом (tip, градуси): відстає в бігу, падає назад у стрибку
+      const tb = p.tip * Math.PI / 180, tx = -30 * Math.cos(tb) + 54 * Math.sin(tb) * 0.35, ty = -54 + 30 * Math.sin(tb) * 0.6;
+      g.quadraticCurveTo(-12 + p.tip * 0.15, -40, tx, ty);
       g.quadraticCurveTo(-4, -46, 10, -26);
       g.quadraticCurveTo(26, -14, 22, 8);
       g.quadraticCurveTo(10, 18, -20, 14);
@@ -286,7 +289,7 @@
   function draw(g, p, frame, big) {
     g.clearRect(0, 0, 256, 224);
     g.save();
-    g.translate(128 + p.x, 200 + p.y);
+    g.translate(128 + p.x, 219 + p.y);
     g.globalAlpha = p.alpha;
     // прожилки руху (ривок)
     if (p.streak > 0.01) {

@@ -1240,7 +1240,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.PlayerMotor2D
   _settings:
     _walkSpeed: 3
-    _runSpeed: 6.5
+    _runSpeed: 6.8
     _groundAcceleration: 150
     _groundDeceleration: 180
     _airAcceleration: 120

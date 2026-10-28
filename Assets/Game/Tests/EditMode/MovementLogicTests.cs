@@ -25,7 +25,7 @@ namespace ForgottenKingdom.Tests
             {
                 velocity = _logic.Step(velocity, true, new MovementInput(1f), StepTime);
             }
-            Assert.That(velocity.x, Is.EqualTo(6.5f).Within(0.001f),
+            Assert.That(velocity.x, Is.EqualTo(_settings.RunSpeed).Within(0.001f),
                 "There is no walking gait: a full push always runs.");
             Assert.That(_logic.State, Is.EqualTo(MovementState.Run));
             for (var i = 0; i < 5; i++)
@@ -66,7 +66,7 @@ namespace ForgottenKingdom.Tests
             {
                 velocity = _logic.Step(velocity, false, new MovementInput(-1f), StepTime);
             }
-            Assert.That(velocity.x, Is.EqualTo(-6.5f).Within(0.001f));
+            Assert.That(velocity.x, Is.EqualTo(-_settings.RunSpeed).Within(0.001f));
         }
 
         [Test]
