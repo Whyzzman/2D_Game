@@ -119,9 +119,36 @@ namespace ForgottenKingdom
             // The view never shows past the zone the room belongs to. Zones lie at different
             // heights since the Tomb was built from its map: the whole world's extent (up to the
             // Guardian's hall) would let a short room of the forest show empty sky over its top.
+            // A narrow room joined across a zone border (the Forest's root tunnel to the Tomb's east
+            // hall) keeps to every zone it is made of: held to its first area's zone alone, the
+            // view was pulled into the tunnel while the player still stood in the hall (2026-10-28).
+            _follow.SetWorldBounds(room >= 0 ? ZonesExtent(_rooms.Rooms[room].AreaIds) : SceneExtent());
+        }
+
+        private Rect? ZonesExtent(IReadOnlyList<string> areaIds)
+        {
             var graph = _progress != null ? _progress.World : null;
-            var area = room >= 0 && graph != null ? graph.Area(_rooms.Rooms[room].AreaIds[0]) : null;
-            _follow.SetWorldBounds(area != null ? SceneExtent(area.ZoneId) : SceneExtent());
+            Rect? extent = null;
+            var seen = new HashSet<string>();
+            foreach (var id in areaIds)
+            {
+                var area = graph != null ? graph.Area(id) : null;
+                if (area == null || !seen.Add(area.ZoneId))
+                {
+                    continue;
+                }
+
+                var zone = SceneExtent(area.ZoneId);
+                if (zone.HasValue)
+                {
+                    extent = extent.HasValue
+                        ? Rect.MinMaxRect(Mathf.Min(extent.Value.xMin, zone.Value.xMin), Mathf.Min(extent.Value.yMin, zone.Value.yMin),
+                            Mathf.Max(extent.Value.xMax, zone.Value.xMax), Mathf.Max(extent.Value.yMax, zone.Value.yMax))
+                        : zone;
+                }
+            }
+
+            return extent ?? SceneExtent();
         }
 
         /// <summary>
