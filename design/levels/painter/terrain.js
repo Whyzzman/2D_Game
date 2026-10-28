@@ -134,7 +134,9 @@
 
         // Глибина маси: край світліший, серцевина темна.
         const d = sample(deep, gw, gh, fx - 0.5, fy - 0.5);
-        const depth = smoothstep(0.5, 0.86, d);
+        // З текстурою освітлена смуга біля поверхні ширша (2026-10-28, «текстури ті самі»: рельєф жив
+        // лише в тонкому краї, а маса була суцільно чорна); серцевина все одно гасне.
+        const depth = look.tex ? smoothstep(0.62, 0.97, d) * 0.92 : smoothstep(0.5, 0.86, d);
 
         // Кладка: ряди ~0,95 юніта, камені різної ширини, шви темні.
         const rowF = (wy + N.hash(Math.floor(wy / 7), 0, seed) * 0.4) / 0.95, row = Math.floor(rowF);
@@ -149,6 +151,15 @@
         const bevel = (1 - (rowF - row)) < 0.08 ? 1.12 : 1;
 
         let shade = tone * seamDark * bevel;
+        if (look.mass === "rock") {
+          // Природна скеля (Ліс, Село): без цегли — великі м'які плями й пологі пласти, як мазки.
+          const strata = Math.sin(wy * 1.7 + (N.fbm(wx * 0.3, wy * 0.3, seed + 41, 3) - 0.5) * 5) * 0.05;
+          shade = 0.9 + (N.fbm(wx * 0.45, wy * 0.6, seed + 43, 4) - 0.5) * 0.32 + strata;
+        } else if (look.mass === "blocks") {
+          // Кладка (Гробниця, Столиця): великі блоки ледь читаються, шов — тонка тінь, без «плитки».
+          shade = (0.93 + N.hash(col, row, seed + 11) * 0.1 + (N.fbm(wx * 0.6, wy * 0.6, seed + 13, 3) - 0.5) * 0.16)
+            * (seam < 0.03 ? 0.78 : 1) * ((1 - (rowF - row)) < 0.05 ? 1.06 : 1);
+        }
         if (tex) {
           // Рельєф з текстур Midjourney: у краю маси — кладка, у глибині — дикий камінь (дві плитки
           // різного розміру, змішані шумом, щоб повтор не читався), там, де стоять, — плити підлоги.
@@ -158,8 +169,8 @@
           const rockDetail = texAt(tex.rock, wx, wy, 8) * mix + texAt(tex.rock, wx + 3.7, wy + 2.3, 11) * (1 - mix);
           let detail = texAt(tex.masonry, wx, wy, 4.5) * (1 - depth) + rockDetail * depth;
           detail = detail * (1 - guard) + texAt(tex.floor, wx, wy, 4) * guard;
-          const strength = 0.17 * (1 - depth) + 0.05 * depth;
-          shade = (1 + Math.max(-0.3, Math.min(0.25, detail * strength))) * (0.92 + (N.fbm(wx * 0.5, wy * 0.5, seed + 37, 3) - 0.5) * 0.2);
+          const strength = 0.25 * (1 - depth) + 0.08 * depth;
+          shade = (1 + Math.max(-0.4, Math.min(0.32, detail * strength))) * (0.92 + (N.fbm(wx * 0.5, wy * 0.5, seed + 37, 3) - 0.5) * 0.2);
         }
         let r = band[0] * shade, g = band[1] * shade, b = band[2] * shade;
         const sink = depth;
@@ -248,6 +259,60 @@
         c.beginPath(); c.ellipse(f.x(x), ay - S * 0.03, S * (0.05 + h * 0.08), S * (0.03 + h * 0.035), 0, Math.PI, 0); c.fill();
       }
     }
+    cap(f, x0, x1, y, look, seed);
+  }
+
+  // Верх поверхні за характером зони (2026-10-28): плити підлоги, трава, тесаний карниз. Верх
+  // малюнка — рівно по верху каменю: нічого не стирчить там, де колайдер каже «повітря», крім трави.
+  function cap(f, x0, x1, y, look, seed) {
+    const c = f.c, S = f.ppu, N2 = root.PaintNoise, ay = f.y(y);
+    if (look.cap === "flagstones") {
+      let x = x0, k = 0;
+      while (x < x1 - 0.1) {
+        const w = Math.min(x1 - x, 0.7 + N2.hash(Math.round(x * 9), Math.round(y * 9), seed + 51) * 0.7);
+        const tone = 0.85 + N2.hash(k, Math.round(y * 5), seed + 53) * 0.3;
+        const ax = f.x(x) + S * 0.03, bx = f.x(x + w) - S * 0.03, h = S * 0.26;
+        const g = c.createLinearGradient(0, ay, 0, ay + h);
+        g.addColorStop(0, rgba(look.lipLight, 0.55 * tone)); g.addColorStop(0.25, rgba(look.lip, 0.95)); g.addColorStop(1, rgba(look.lipDark, 0.95));
+        c.fillStyle = g;
+        c.beginPath();
+        c.moveTo(ax, ay); c.lineTo(bx, ay); c.lineTo(bx, ay + h * 0.75);
+        c.quadraticCurveTo(bx, ay + h, bx - S * 0.06, ay + h); c.lineTo(ax + S * 0.06, ay + h);
+        c.quadraticCurveTo(ax, ay + h, ax, ay + h * 0.75); c.closePath(); c.fill();
+        c.strokeStyle = "rgba(0,0,0,0.55)"; c.lineWidth = Math.max(1, S * 0.02); c.stroke();
+        x += w; k++;
+      }
+      c.strokeStyle = rgba(look.lipLight, 0.75); c.lineWidth = Math.max(1.5, S * 0.035);
+      c.beginPath(); c.moveTo(f.x(x0) + 1, ay + 1); c.lineTo(f.x(x1) - 1, ay + 1); c.stroke();
+    } else if (look.cap === "grass") {
+      const grass = look.grass || look.moss || "#4a5a3a";
+      // темна смуга ґрунту під травою
+      const g = c.createLinearGradient(0, ay, 0, ay + S * 0.3);
+      g.addColorStop(0, rgba(grass, 0.9)); g.addColorStop(1, rgba(look.lipDark, 0));
+      c.fillStyle = g; c.fillRect(f.x(x0), ay, f.x(x1) - f.x(x0), S * 0.3);
+      // кущики травинок: густо там, де шум, рідко між ними
+      c.lineCap = "round";
+      for (let x = x0 + 0.05; x < x1 - 0.05; x += 0.07) {
+        const dense = N2.fbm(x * 0.9, y, seed + 61, 2);
+        if (N2.hash(Math.round(x * 41), Math.round(y * 7), seed + 63) > dense * 1.3) continue;
+        const h = S * (0.08 + dense * 0.28) * (0.6 + N2.hash(Math.round(x * 37), 1, seed + 65) * 0.6);
+        const lean = (N2.hash(Math.round(x * 29), 2, seed + 67) - 0.5) * S * 0.12;
+        c.strokeStyle = rgba(N2.hash(Math.round(x * 31), 3, seed) > 0.7 ? (look.lipLight || grass) : grass, 0.95);
+        c.lineWidth = Math.max(1, S * 0.03);
+        c.beginPath(); c.moveTo(f.x(x), ay + S * 0.04); c.quadraticCurveTo(f.x(x) + lean * 0.3, ay - h * 0.6, f.x(x) + lean, ay - h); c.stroke();
+      }
+    } else if (look.cap === "trim") {
+      // тесаний карниз: світла верхня смуга, тонка тінь, ряд зубців під нею
+      const h = S * 0.18;
+      c.fillStyle = rgba(look.lipLight, 0.35); c.fillRect(f.x(x0), ay, f.x(x1) - f.x(x0), h);
+      c.fillStyle = "rgba(0,0,0,0.45)"; c.fillRect(f.x(x0), ay + h, f.x(x1) - f.x(x0), Math.max(1, S * 0.03));
+      c.fillStyle = rgba(look.lip, 0.8);
+      for (let x = x0 + 0.1; x < x1 - 0.2; x += 0.32) {
+        c.fillRect(f.x(x), ay + h + S * 0.05, S * 0.16, S * 0.12);
+      }
+      c.strokeStyle = rgba(look.lipLight, 0.85); c.lineWidth = Math.max(1.5, S * 0.035);
+      c.beginPath(); c.moveTo(f.x(x0) + 1, ay + 1); c.lineTo(f.x(x1) - 1, ay + 1); c.stroke();
+    }
   }
 
   // Уступи «=»: плита з рівним верхом і обламаним низом; вільна — на двох ланцюгах до склепіння.
@@ -262,59 +327,32 @@
           const gx0 = cx0 + start, gx1 = cx0 + x, gy = cy0 + y;
           const [wx0, wyb] = T.world(zone, gx0, gy), [wx1, wyt] = T.world(zone, gx1, gy + 1);
           const s2 = seed + gx0 * 7 + gy * 13;
-          // ланцюги — лише в повітрі, до першого каменю вгорі
-          const freeLeft = !T.isRock(T.at(zone, gx0 - 1, gy)), freeRight = !T.isRock(T.at(zone, gx1, gy));
-          if (freeLeft && freeRight) {
-            [gx0, gx1 - 1].forEach((cx, k) => {
-              let top = gy + 1;
-              while (top < gy + 60 && !T.isRock(T.at(zone, cx, top))) top++;
-              const [hx, hy] = T.world(zone, cx, top);
-              const chainX = hx + (k === 0 ? 0.3 : 0.2);
-              c.strokeStyle = rgba(look.chain, 0.9); c.lineWidth = S * 0.045;
-              if (look.hang === "roots") {
-                // Ліс: уступ тримають корені, що звисають зі стелі, — хвиляста лінія, не ланцюг
-                c.lineWidth = S * 0.09; c.lineCap = "round";
-                c.beginPath(); c.moveTo(f.x(chainX), f.y(hy));
-                for (let yy = hy; yy > wyt; yy -= 0.4) c.lineTo(f.x(chainX + (N2.fbm(chainX, yy * 0.7, s2, 2) - 0.5) * 0.35), f.y(yy));
-                c.lineTo(f.x(chainX), f.y(wyt)); c.stroke();
-                return;
-              }
-              for (let yy = wyt; yy < hy; yy += 0.22) {
-                c.beginPath(); c.ellipse(f.x(chainX), f.y(yy + 0.11), S * 0.05, S * 0.1, 0, 0, Math.PI * 2); c.stroke();
-              }
-            });
+          // Матеріал уступу за місцем (materials.js): полиця, гілка, балкон біля стіни; міст, настил,
+          // колода чи плита у повітрі — на підвісах до першого каменю вгорі.
+          const M = root.LevelMaterials, zoneName = look.style || "tomb", pal = M.WOOD[zoneName] || M.WOOD.tomb;
+          const wallLeft = T.isRock(T.at(zone, gx0 - 1, gy)), wallRight = T.isRock(T.at(zone, gx1, gy));
+          const kind = M.kindOf(zoneName, wallLeft || wallRight, gx1 - gx0, s2);
+          const hangKind = look.hang === "roots" ? "root" : zoneName === "village" ? "rope" : "chain";
+          const ceilingAt = cx => {
+            let top = gy + 1;
+            while (top < gy + 60 && !T.isRock(T.at(zone, cx, top))) top++;
+            return top >= gy + 60 ? null : T.world(zone, cx, top)[1];
+          };
+          const hangers = () => [[wx0 + 0.3, ceilingAt(gx0)], [wx1 - 0.3, ceilingAt(gx1 - 1)]];
+          const wallSide = wallLeft ? -1 : 1;
+          if (kind === "shelf") M.shelf(f, wx0, wx1, wyt, wallSide, pal, s2);
+          else if (kind === "branch") M.branch(f, wx0, wx1, wyt, wallSide, pal, s2);
+          else if (kind === "balcony") M.balcony(f, wx0, wx1, wyt, wallSide, pal, s2);
+          else if (kind === "bridge") {
+            const hs = hangers();
+            if (wx1 - wx0 > 7) { const mid = Math.round((gx0 + gx1) / 2); hs.push([T.world(zone, mid, gy)[0], ceilingAt(mid)]); }
+            M.bridge(f, wx0, wx1, wyt, hs, pal, s2, hangKind);
+          } else {
+            hangers().forEach(([hx, up]) => { if (up !== null) M.rope(f, hx, up, wyt, pal, s2 + Math.round(hx * 7), hangKind); });
+            if (kind === "log") M.log(f, wx0, wx1, wyt, pal, s2);
+            else if (kind === "slab") { M.slab(f, wx0, wx1, wyt, look, s2); lip(f, wx0, wx1, wyt, look, s2); }
+            else M.planks(f, wx0, wx1, wyt, pal, s2, 0.3);
           }
-          // плита
-          c.beginPath();
-          c.moveTo(f.x(wx0), f.y(wyt));
-          c.lineTo(f.x(wx1), f.y(wyt));
-          const bottom = [];
-          for (let x = wx1; x >= wx0 - 0.001; x -= 0.12) {
-            const u = (x - wx0) / Math.max(0.01, wx1 - wx0);
-            const sag = Math.sin(Math.PI * u) * 0.32 + (N2.fbm(x * 2.4, wyb, s2, 3) - 0.5) * 0.3;
-            bottom.push([x, wyb - Math.max(0, sag)]);
-          }
-          bottom.forEach(([x, yy]) => c.lineTo(f.x(x), f.y(yy)));
-          c.closePath();
-          const g = c.createLinearGradient(0, f.y(wyt), 0, f.y(wyb - 0.4));
-          g.addColorStop(0, look.stone); g.addColorStop(1, look.core);
-          c.fillStyle = g; c.fill();
-          c.save(); c.clip();
-          if (look.tex) {
-            // фактура плити з текстури Midjourney, плитка 3 юніти, поверх кольору зони
-            const p = c.createPattern(look.tex.ledge.canvas, "repeat");
-            p.setTransform(new DOMMatrix().translate(f.x(0), f.y(0)).scale(S * 3 / look.tex.ledge.w));
-            c.globalCompositeOperation = "soft-light";
-            c.fillStyle = p;
-            c.fillRect(f.x(wx0) - 2, f.y(wyt) - 2, f.x(wx1) - f.x(wx0) + 4, f.y(wyb - 1) - f.y(wyt) + 4);
-            c.globalCompositeOperation = "source-over";
-          }
-          for (let x = wx0 + 0.6 + N2.hash(gx0, gy, s2) * 0.8; x < wx1 - 0.3; x += 1.1 + N2.hash(Math.round(x * 10), gy, s2) * 0.9) {
-            c.strokeStyle = "rgba(0,0,0,0.45)"; c.lineWidth = Math.max(1, S * 0.03);
-            c.beginPath(); c.moveTo(f.x(x), f.y(wyt)); c.lineTo(f.x(x - 0.05), f.y(wyb - 0.4)); c.stroke();
-          }
-          c.restore();
-          lip(f, wx0, wx1, wyt, look, s2);
           start = -1;
         }
       }

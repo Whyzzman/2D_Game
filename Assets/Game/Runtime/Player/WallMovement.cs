@@ -9,6 +9,10 @@ namespace ForgottenKingdom
     {
         [SerializeField, Min(0f)] private float _slideSpeed = 2.5f;
         [SerializeField, Min(0f)] private float _jumpUpSpeed = 10f;
+        [Tooltip("The leap off a wall before wall-run is found. Low enough that leaping off one wall and "
+            + "steering back loses height each time (≈1.5 a round at 7; at 10 it gained ≈0.3 and climbed "
+            + "any wall), so the gates built on the second jump hold.")]
+        [SerializeField, Min(0f)] private float _basicJumpUpSpeed = 7f;
         [SerializeField, Min(0f)] private float _jumpAwaySpeed = 7f;
         [SerializeField, Min(0f)] private float _regrabDelay = 0.25f;
         [SerializeField, Min(0f)] private float _runSpeed = 4f;
@@ -35,8 +39,9 @@ namespace ForgottenKingdom
         public float RunStaminaPerSecond => _runStaminaPerSecond
             * (_skills != null ? _skills.Multiplier(SkillEffectType.WallRunStaminaCost) : 1f);
 
+        /// <param name="canRun">Running up the wall: the wall-run ability. Sliding and leaping off need nothing.</param>
         public Vector2 Step(Vector2 velocity, MovementInput input, int wallDirection,
-            bool grounded, bool allowed, float deltaTime)
+            bool grounded, bool allowed, float deltaTime, bool canRun = true)
         {
             var previous = State;
             State = WallMovementState.None;
@@ -55,12 +60,12 @@ namespace ForgottenKingdom
                     {
                         _jumpDirection = -wallDirection;
                         WallSide = wallDirection;
-                        velocity = new Vector2(_jumpDirection * _jumpAwaySpeed, _jumpUpSpeed);
+                        velocity = new Vector2(_jumpDirection * _jumpAwaySpeed, canRun ? _jumpUpSpeed : _basicJumpUpSpeed);
                         _regrabRemaining = _regrabDelay;
                         State = WallMovementState.Jump;
                     }
                     // Holding jump against the wall runs up it; a fresh press above leaps off.
-                    else if (input.IsJumpHeld && _runUsed < _runDuration
+                    else if (canRun && input.IsJumpHeld && _runUsed < _runDuration
                         && _stamina != null && _stamina.TrySpend(RunStaminaPerSecond * deltaTime))
                     {
                         _runUsed += deltaTime;

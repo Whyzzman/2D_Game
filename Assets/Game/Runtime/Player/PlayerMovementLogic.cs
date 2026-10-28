@@ -55,6 +55,15 @@ namespace ForgottenKingdom
 
         public MovementState State { get; private set; } = MovementState.Idle;
         public int FacingDirection { get; private set; } = 1;
+
+        /// <summary>Turns the body outright — a swing aimed by the player, not by the stick's drift.</summary>
+        public void Face(int direction)
+        {
+            if (direction != 0)
+            {
+                FacingDirection = direction > 0 ? 1 : -1;
+            }
+        }
         public bool IsGrounded { get; private set; }
         public bool IsDashing => _dashRemaining > TimerEpsilon;
 

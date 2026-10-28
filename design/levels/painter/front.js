@@ -136,16 +136,29 @@
     const color = look.front || "#05060a";
     // Стеля над кожним стовпчиком кімнати: найнижча клітинка верхнього каменю. Там, де стелі немає
     // (шахта відкрита вгору) або стовпчик увесь камінь, нічого не звисає.
-    const cell = zone.cell, ceilings = [];
+    const cell = zone.cell, ceilings = [], clearance = [];
     for (let x = 0; x < room.w; x++) {
       let y = room.h - 1;
-      if (root.LevelText.isAir(room.rows[y][x])) { ceilings.push(null); continue; }
+      if (root.LevelText.isAir(room.rows[y][x])) { ceilings.push(null); clearance.push(0); continue; }
       while (y >= 0 && !root.LevelText.isAir(room.rows[y][x])) y--;
       ceilings.push(y < 0 ? null : zone.origin[1] + (room.y + y + 1) * cell);
+      // що під стелею: перша поверхня, на якій стоять (камінь чи уступ), — до неї вільно
+      let below = y;
+      while (below >= 0 && root.LevelText.isAir(room.rows[below][x])) below--;
+      clearance.push((y - below) * cell);
     }
     const ceilingAt = wx => {
       const i = Math.floor((wx - rect.x) / cell);
       return i < 0 || i >= ceilings.length ? null : ceilings[i];
+    };
+    // Пасмо кінчається вище за голову героя в стрибку над найближчою поверхнею під ним (2026-10-28:
+    // у Східній залі густі пасма злилися в чорну пляму й, зсунуті паралаксом, сховали героя).
+    const HEADROOM = 2.4;
+    const roomFor = wx => {
+      const i = Math.floor((wx - rect.x) / cell);
+      let room2 = Infinity;
+      for (let k = i - 1; k <= i + 1; k++) if (k >= 0 && k < clearance.length) room2 = Math.min(room2, clearance[k]);
+      return room2 === Infinity ? 0 : room2 - HEADROOM;
     };
     // Довжина — до чверті кімнати, не більше 4 юнітів: силует тримається над лінією бою.
     const maxLen = Math.min(4, Math.max(1.2, rect.h * 0.25));
@@ -157,9 +170,11 @@
     // Кетяги: густо там, де шум високий, і порожньо між ними — як справжні зарості, не гребінка.
     for (let x = rect.x + 0.3; x < rect.x + rect.w - 0.3; x += 0.28 + r() * 0.4) {
       const density = N.fbm(x * 0.16, 1.7, seed, 3), ceiling = ceilingAt(x);
-      if (density < 0.5 || ceiling === null) continue;
+      if (density < 0.56 || ceiling === null) continue;
       const what = pick(weights, r);
-      const len = maxLen * (0.3 + r() * 0.7) * (0.55 + density * 0.7), from = ceiling + 0.15;
+      const room2 = roomFor(x);
+      if (room2 < 0.6) continue;
+      const len = Math.min(room2, maxLen * (0.3 + r() * 0.7) * (0.55 + density * 0.7)), from = ceiling + 0.15;
       if (what === "vine") vine(f, x, from, len, r, color);
       else if (what === "chain") chain(f, x, from, len, r, color);
       else if (what === "root") rootStrand(f, x, from, len, r, color, 0);
@@ -175,9 +190,10 @@
     // Боке: кілька теплих чи холодних вогників упереді, м'яко розмитих.
     const glow = kind === "arena" ? (look.arenaGlow || "#c9d6ff") : kind === "secret" ? (look.secretGlow || "#d9b45a")
       : kind === "cave" ? (look.fungus || "#6fd0c4") : (look.dust || "#c9d6e8");
-    const count = 2 + Math.floor(r() * 4) + Math.floor(rect.w / 18);
+    // дрібні й тьмяні: великі сірі кола читались брудом на склі
+    const count = 1 + Math.floor(r() * 3) + Math.floor(rect.w / 24);
     for (let i = 0; i < count; i++) {
-      bokeh(f, rect.x + r() * rect.w, rect.y + rect.h * (0.35 + r() * 0.6), 0.35 + r() * 0.9, glow, 0.05 + r() * 0.09);
+      bokeh(f, rect.x + r() * rect.w, rect.y + rect.h * (0.55 + r() * 0.4), 0.12 + r() * 0.25, glow, 0.08 + r() * 0.1);
     }
   }
 

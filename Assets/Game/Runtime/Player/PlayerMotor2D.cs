@@ -92,6 +92,20 @@ namespace ForgottenKingdom
 
         public MovementState State => _logic?.State ?? MovementState.Idle;
         public int FacingDirection => _logic?.FacingDirection ?? 1;
+
+        /// <summary>The stick or keys as last read, -1…1.</summary>
+        public float Steering => _lastHorizontalInput;
+
+        /// <summary>Turns the hero to <paramref name="direction"/> now, the visual with him.</summary>
+        public void Face(int direction)
+        {
+            _logic?.Face(direction);
+            if (_visual != null)
+            {
+                _visual.localScale = new Vector3(
+                    Mathf.Abs(_visualScale.x) * FacingDirection, _visualScale.y, _visualScale.z);
+            }
+        }
         public bool IsGrounded => _logic != null && _logic.IsGrounded;
         public bool IsDashing => _logic != null && _logic.IsDashing;
         public bool IsDashReady => _logic != null && _logic.IsDashReady && (IsGrounded || CanAirDash);
@@ -181,8 +195,12 @@ namespace ForgottenKingdom
             // Re-read every step rather than cached at start: the ability is granted mid-session,
             // by a boss reward, and the player should have it the moment it is handed over.
             _logic.AirJumpsAllowed = CanDoubleJump ? _settings.AirJumps : 0;
-            var canWall = mode == LocomotionMode.Normal && !IsDashing
-                && (_progress == null || _progress.HasAbility(AbilityIds.WallRun));
+            // Sliding down a wall and leaping off it are the hero's own from the start, as Hollow
+            // Knight's cling (user's request 2026-10-27: «hitting the side of a block I should slide
+            // and be able to jump off it»). Running up a wall, and a wall giving the air moves back,
+            // stay the wall-run ability's.
+            var canWall = mode == LocomotionMode.Normal && !IsDashing;
+            var canRunWall = _progress == null || _progress.HasAbility(AbilityIds.WallRun);
             var wall = _wallMovement != null && canWall ? ProbeWall() : 0;
             // A press while pushing into a wall in the air is the wall's jump, not the second one.
             _logic.IsWallJumpPending = wall != 0 && !IsGrounded && input.IsJumpPressed
@@ -194,11 +212,12 @@ namespace ForgottenKingdom
             if (_wallMovement != null)
             {
                 nextVelocity = _wallMovement.Step(nextVelocity, input, wall,
-                    IsGrounded, canWall, Time.fixedDeltaTime);
-                // Hollow Knight's rule: a wall gives the air jump and the air dash back.
+                    IsGrounded, canWall, Time.fixedDeltaTime, canRunWall);
+                // Hollow Knight's rule: a wall gives the air jump and the air dash back — once the
+                // wall is truly the hero's (wall-run), or a wall beside any gate would open it.
                 var wallState = _wallMovement.State;
-                if (wallState == WallMovementState.Slide || wallState == WallMovementState.Run
-                    || (wallState == WallMovementState.Jump && input.IsJumpPressed))
+                if (canRunWall && (wallState == WallMovementState.Slide || wallState == WallMovementState.Run
+                    || (wallState == WallMovementState.Jump && input.IsJumpPressed)))
                 {
                     _logic.RefreshAirMoves();
                 }

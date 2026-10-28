@@ -235,11 +235,47 @@ namespace ForgottenKingdom
             _hasBounced = false;
             _hasRecoiled = false;
             CurrentDirection = direction;
+            if (direction == AttackDirection.Side)
+            {
+                AimSideSwing();
+            }
             _runner.Begin(attack, weapon.AttackSpeed);
             _comboExpiresAt = Time.time + attack.Duration / weapon.AttackSpeed
                 + weapon.ComboResetTime;
             AttackStarted?.Invoke(attack);
             return true;
+        }
+
+        /// <summary>
+        /// Each side swing goes where the player aims it (user's report 2026-10-28: «swinging right, I
+        /// press left and he still swings right»): a mouse click — toward the cursor; keys or a stick —
+        /// the way they are held. Within a swing the facing holds (<see cref="LocomotionMode.Attacking"/>).
+        /// </summary>
+        private void AimSideSwing()
+        {
+            if (_motor == null)
+            {
+                return;
+            }
+
+            var mouse = UnityEngine.InputSystem.Mouse.current;
+            var camera = Camera.main;
+            if (mouse != null && camera != null && (mouse.leftButton.isPressed || mouse.rightButton.isPressed))
+            {
+                var cursor = camera.ScreenToWorldPoint(mouse.position.ReadValue());
+                var offset = cursor.x - transform.position.x;
+                if (Mathf.Abs(offset) > 0.05f)
+                {
+                    _motor.Face(offset > 0f ? 1 : -1);
+                }
+
+                return;
+            }
+
+            if (Mathf.Abs(_motor.Steering) > 0.3f)
+            {
+                _motor.Face(_motor.Steering > 0f ? 1 : -1);
+            }
         }
 
         private void OnActiveStarted(AttackDefinition attack)

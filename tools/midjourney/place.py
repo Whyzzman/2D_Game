@@ -53,7 +53,7 @@ LUT = [tone(v) for v in range(256)] * 3
 # and steep there (a neighbour seen from the next room had slid its lit middle up to the seam).
 PPU = 32
 MARGIN = 3.0
-FADE = 9.0
+FADE = 5.5
 EDGE_DARK = (8, 10, 14)
 
 
@@ -79,8 +79,8 @@ def feather(image):
     # a small room keeps its middle lit: the fade never takes more than a third of a side
     reach_x = min(FADE * PPU, w * 0.35)
     reach_y = min(FADE * PPU, h * 0.35)
-    xs = [smooth(min(x, w - 1 - x) / reach_x) ** 1.5 for x in range(w)]
-    ys = [smooth(min(y, h - 1 - y) / reach_y) ** 1.5 for y in range(h)]
+    xs = [smooth(min(x, w - 1 - x) / reach_x) for x in range(w)]
+    ys = [smooth(min(y, h - 1 - y) / reach_y) for y in range(h)]
     row = Image.new("L", (w, 1))
     row.putdata([round(v * 255) for v in xs])
     col = Image.new("L", (1, h))
@@ -92,8 +92,8 @@ def feather(image):
 # The far layer slides, so its own fade cannot hold the seam still; the near layer is exactly the room
 # and does not move. It becomes a soft dark frame, clear in the middle: wherever the camera is, two
 # rooms meet in the same shadow.
-BORDER = 2.5
-BORDER_ALPHA = 0.92
+BORDER = 1.4
+BORDER_ALPHA = 0.6
 
 
 def border(near):

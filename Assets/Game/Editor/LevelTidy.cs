@@ -199,6 +199,83 @@ namespace ForgottenKingdom.EditorTools
                 return list;
             }
 
+            // 0. The first step (user, 2026-10-28: «I cannot jump onto the first block»): a ledge
+            // should be reached by a comfortable jump from the floor right under it. If not, it comes
+            // down a row or three, or a step is put in under its end.
+            log("step up:");
+            foreach (var ledge in Ledges(zone))
+            {
+                if (ReachedFromBelow(zone, abilities, comfort, ledge))
+                {
+                    continue;
+                }
+
+                var done = false;
+                for (var down = 1; down <= 3 && !done; down++)
+                {
+                    var target = ledge.Y - down;
+                    var fill = Span(target, ledge.X0, ledge.X1);
+                    if (target <= 0 || !fill.All(c => Free(ledge.Room, c.Item1, c.Item2))
+                        || !AirAbove(ledge.Room, target, ledge.X0, ledge.X1))
+                    {
+                        break;
+                    }
+
+                    foreach (var c in fill) ledge.Room.Cells[c.Item2, c.Item1] = LevelCell.Ledge;
+                    foreach (var c in Span(ledge.Y, ledge.X0, ledge.X1)) ledge.Room.Cells[c.Item2, c.Item1] = LevelCell.Empty;
+                    var moved = new Ledge { Room = ledge.Room, Y = target, X0 = ledge.X0, X1 = ledge.X1 };
+                    if (ReachedFromBelow(zone, abilities, comfort, moved) && Keep($"{ledge} comes down {down} to be reached from the floor"))
+                    {
+                        done = true;
+                    }
+                    else
+                    {
+                        foreach (var c in fill) ledge.Room.Cells[c.Item2, c.Item1] = LevelCell.Empty;
+                        foreach (var c in Span(ledge.Y, ledge.X0, ledge.X1)) ledge.Room.Cells[c.Item2, c.Item1] = LevelCell.Ledge;
+                    }
+                }
+
+                // a step three rows lower beside either end, or right under the near end
+                var floorY = FloorUnder(ledge.Room, ledge.Y, (ledge.X0 + ledge.X1) / 2);
+                if (done || floorY < 0)
+                {
+                    continue;
+                }
+
+                foreach (var stepY in new[] { ledge.Y - 3, ledge.Y - 2 })
+                {
+                    if (done || stepY - floorY < 2)
+                    {
+                        break;
+                    }
+
+                    foreach (var (x0, x1) in new[] { (ledge.X0 - 5, ledge.X0 - 2), (ledge.X1 + 2, ledge.X1 + 5), (ledge.X0, ledge.X0 + 3), (ledge.X1 - 3, ledge.X1) })
+                    {
+                        var fill = Span(stepY, x0, x1);
+                        if (!fill.All(c => Free(ledge.Room, c.Item1, c.Item2)) || !AirAbove(ledge.Room, stepY, x0, x1))
+                        {
+                            continue;
+                        }
+
+                        foreach (var c in fill) ledge.Room.Cells[c.Item2, c.Item1] = LevelCell.Ledge;
+                        var step = new Ledge { Room = ledge.Room, Y = stepY, X0 = x0, X1 = x1 };
+                        if (ReachedFromBelow(zone, abilities, comfort, step) && ReachedFromLedge(zone, abilities, comfort, step, ledge)
+                            && Keep($"{ledge} gets a step under it at y{stepY} x{x0}…{x1}"))
+                        {
+                            done = true;
+                            break;
+                        }
+
+                        foreach (var c in fill) ledge.Room.Cells[c.Item2, c.Item1] = LevelCell.Empty;
+                    }
+                }
+
+                if (!done)
+                {
+                    log($"  {ledge}: not reached from the floor under it, no fix found");
+                }
+            }
+
             // 1. Brackets: a ledge a short step from a wall grows into it.
             log("attach:");
             foreach (var ledge in Ledges(zone))
@@ -311,6 +388,62 @@ namespace ForgottenKingdom.EditorTools
 
             log("tight spots:\n  " + (tight.Count == 0 ? "none" : string.Join("\n  ", tight)));
             return Write(text, zone);
+        }
+
+        /// <summary>The local row of the first stone or ledge under a cell of the room; -1 if there is none in it.</summary>
+        private static int FloorUnder(LevelRoom room, int y, int x)
+        {
+            for (var row = y - 1; row >= 0; row--)
+            {
+                var cell = room.Cells[row, x];
+                if (cell == LevelCell.Solid || cell == LevelCell.Smooth || cell == LevelCell.Ledge)
+                {
+                    return row;
+                }
+
+                if (cell == LevelCell.Spikes)
+                {
+                    return -1;
+                }
+            }
+
+            return -1;
+        }
+
+        private static int SegmentOn(LevelReach reach, LevelRoom room, int y, int x) =>
+            reach.SegmentUnder(room.Origin + new Vector2Int(x, y + 1));
+
+        /// <summary>
+        /// Whether a comfortable jump lands the hero on the ledge from somewhere lower — a floor, another
+        /// ledge, a wall's other side. A ledge only fallen onto from above is a first step nobody can take.
+        /// </summary>
+        private static bool ReachedFromBelow(LevelZone zone, HashSet<string> abilities, MovementSettings comfort, Ledge ledge)
+        {
+            var reach = new LevelReach(zone, abilities, comfort);
+            var to = SegmentOn(reach, ledge.Room, ledge.Y, (ledge.X0 + ledge.X1) / 2);
+            if (to < 0)
+            {
+                return false;
+            }
+
+            var row = reach.Segments[to].Row;
+            for (var from = 0; from < reach.Segments.Count; from++)
+            {
+                if (from != to && !reach.Segments[from].IsRing && reach.Segments[from].Row < row && reach.HasMove(from, to))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static bool ReachedFromLedge(LevelZone zone, HashSet<string> abilities, MovementSettings comfort, Ledge from, Ledge to)
+        {
+            var reach = new LevelReach(zone, abilities, comfort);
+            var a = SegmentOn(reach, from.Room, from.Y, (from.X0 + from.X1) / 2);
+            var b = SegmentOn(reach, to.Room, to.Y, (to.X0 + to.X1) / 2);
+            return a >= 0 && b >= 0 && reach.HasMove(a, b);
         }
 
         private static long Pack(int x, int y) => ((long)x << 32) ^ (uint)y;

@@ -7,8 +7,8 @@
       // камінь площини
       core: "#0a0b0e", stone: "#20252e", rim: "#a9bdd8",
       lip: "#77757a", lipDark: "#3a3b42", lipLight: "#c4beb0", chain: "#2e333c",
-      // рельєф каменю з бесшовних текстур Midjourney (MIDJOURNEY.md §2; варіанти вибрав Claude, 2026-10-27)
-      textures: ["rock", "masonry", "floor", "ledge"],
+      // маса й верх (2026-10-28, «дешево»: фото-текстури прибрано): кладка, по верху — плити
+      mass: "blocks", cap: "flagstones",
       // тло
       skyTop: "#151c28", skyBottom: "#0a0d12",
       fog: "#34465c", ribs: "#18202c", window: "#253650",
@@ -30,6 +30,7 @@
       style: "forest",
       core: "#090c0b", stone: "#1f2a25", rim: "#b4c8c4",
       lip: "#4e6656", lipDark: "#2a3a31", lipLight: "#b9c9b8", chain: "#121a15",
+      mass: "rock", cap: "grass",
       moss: "#4e6656", hang: "roots",
       skyTop: "#1a2428", skyBottom: "#0b1012", moon: "#d6e2dc",
       farTree: "#1b2527", midTree: "#141c1d", nearTree: "#0c1111", ruin: "#1d2729", nearRuin: "#131a1a",
@@ -56,7 +57,8 @@
     village: {
       style: "village",
       core: "#0c0907", stone: "#2a211a", rim: "#d79a5c",
-      lip: "#6a5640", lipDark: "#3a2e22", lipLight: "#d8c4a0", chain: "#24180f",
+      lip: "#6a5640", lipDark: "#3a2e22", lipLight: "#d8c4a0", chain: "#24180f", grass: "#59583a",
+      mass: "rock", cap: "grass",
       skyTop: "#1c1414", skyBottom: "#5a3424", ember: "#d0642a", smoke: "#4a3026", fog: "#5a3a2a",
       towerStone: "#241a17", bell: "#6e522c", bellGlow: "#f2b05a",
       farHouse: { wall: "#2a1d18", beam: "#1a120e", roof: "#24180f", roofLight: "#5a4028", window: "#1a110c", windowLit: "#e08a40", lit: 0.15, broken: 0.5 },
@@ -81,6 +83,7 @@
       style: "capital",
       core: "#141213", stone: "#3a3635", rim: "#d8c2a8",
       lip: "#7a726b", lipDark: "#3a3635", lipLight: "#cfc4b6", chain: "#1b1615",
+      mass: "blocks", cap: "trim",
       skyTop: "#1e1416", skyBottom: "#6a2a1e", ember: "#c85a22", flame: "#f09a48", iron: "#1b1615",
       palace: "#1c1414", smoke: "#3a2a28", fog: "#5a2e24", emberFog: "#4a2620", ash: "#b8aca0",
       facade: "#221a1a", facadeHole: "#140f10", facadeColumn: "#2a2221", facadeColumnLight: "#3a302e",
