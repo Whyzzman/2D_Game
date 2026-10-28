@@ -40,25 +40,16 @@ function shot(chrome, file, w, h, url) {
   });
 }
 
-// Стани й кількість кадрів — як у заглушок (PlaceholderPlayerArt): контракт анімації той самий.
+// Стани й кількість кадрів — з таблиць PlaceholderPlayerArt (States, GreatswordStates): контракт анімації один.
 function jobs() {
-  const list = [];
-  for (const dir of fs.readdirSync(PLAYER)) {
-    const full = path.join(PLAYER, dir);
-    if (!fs.statSync(full).isDirectory() || dir === "Cloak") continue;
-    if (dir === "Greatsword") {
-      for (const sub of fs.readdirSync(full)) {
-        const f2 = path.join(full, sub);
-        if (!fs.statSync(f2).isDirectory()) continue;
-        const n = fs.readdirSync(f2).filter((f) => f.endsWith(".png")).length;
-        list.push({ state: sub, folder: `Greatsword/${sub}`, n, big: true });
-      }
-      continue;
-    }
-    const n = fs.readdirSync(full).filter((f) => f.endsWith(".png")).length;
-    if (n > 0) list.push({ state: dir, folder: dir, n, big: false });
-  }
-  return list;
+  const src = fs.readFileSync(path.join(ROOT, "Assets/Game/Editor/PlaceholderPlayerArt.cs"), "utf8");
+  const table = (name) => {
+    const at = src.indexOf("StateSpec[] " + name);
+    const body = src.slice(at, src.indexOf("};", at));
+    return [...body.matchAll(/StateSpec\(PlayerAnimationState\.(\w+), (\d+),/g)].map((m) => ({ state: m[1], n: +m[2] }));
+  };
+  return table("States").map((j) => ({ ...j, folder: j.state, big: false }))
+    .concat(table("GreatswordStates").map((j) => ({ ...j, folder: "Greatsword/" + j.state, big: true })));
 }
 
 async function main() {

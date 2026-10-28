@@ -130,6 +130,14 @@
         const sharp = rockAt(ix, iy);
         s = s * free + sharp * guard;
         if (s <= 0.47) continue;
+        // Заокруглені кути: верх, що закінчується обривом убік, закруглюється (2026-10-28, «менше прямих
+        // кутів»). Верх лишається рівним — по ньому ходять.
+        if (sharp > 0.5 && airAt(ix, iy + 1)) {
+          const lx = fx - ix, ly = fy - iy, R = 0.42;
+          const openL = airAt(ix - 1, iy) && airAt(ix - 1, iy + 1), openR = airAt(ix + 1, iy) && airAt(ix + 1, iy + 1);
+          if ((openL && lx < R && ly > 1 - R && Math.hypot(R - lx, ly - (1 - R)) > R)
+            || (openR && lx > 1 - R && ly > 1 - R && Math.hypot(lx - (1 - R), ly - (1 - R)) > R)) continue;
+        }
         const alpha = Math.min(1, (s - 0.47) / 0.06);
 
         // Глибина маси: край світліший, серцевина темна.
@@ -157,8 +165,18 @@
           shade = 0.9 + (N.fbm(wx * 0.45, wy * 0.6, seed + 43, 4) - 0.5) * 0.32 + strata;
         } else if (look.mass === "blocks") {
           // Кладка (Гробниця, Столиця): великі блоки ледь читаються, шов — тонка тінь, без «плитки».
-          shade = (0.93 + N.hash(col, row, seed + 11) * 0.1 + (N.fbm(wx * 0.6, wy * 0.6, seed + 13, 3) - 0.5) * 0.16)
-            * (seam < 0.03 ? 0.78 : 1) * ((1 - (rowF - row)) < 0.05 ? 1.06 : 1);
+          // Бутова кладка: камені неправильної форми (комірки Вороного по зсунутій сітці), без прямих рядів.
+          const vs = 1.4, gx = Math.floor(wx / vs), gy = Math.floor(wy / vs);
+          let d1 = 9, d2 = 9, id = 0;
+          for (let oy = -1; oy <= 1; oy++) for (let ox = -1; ox <= 1; ox++) {
+            const cxv = gx + ox, cyv = gy + oy;
+            const px2 = (cxv + 0.15 + N.hash(cxv, cyv, seed + 71) * 0.7) * vs, py2 = (cyv + 0.15 + N.hash(cxv, cyv, seed + 73) * 0.7) * vs;
+            const dd = Math.hypot(wx - px2, (wy - py2) * 1.25);
+            if (dd < d1) { d2 = d1; d1 = dd; id = cxv * 31 + cyv; } else if (dd < d2) d2 = dd;
+          }
+          const edge = d2 - d1;
+          shade = (0.9 + N.hash(id, 7, seed + 75) * 0.16 + (N.fbm(wx * 0.6, wy * 0.6, seed + 13, 3) - 0.5) * 0.14)
+            * (1 - (edge < 0.05 ? 0.28 : edge < 0.1 ? 0.12 : 0) * (1 - depth * 0.85)) * (1 + Math.max(0, 0.25 - d1) * 0.2);
         }
         if (tex) {
           // Рельєф з текстур Midjourney: у краю маси — кладка, у глибині — дикий камінь (дві плитки
@@ -217,7 +235,21 @@
         if (!here && start >= 0) {
           if (x - start >= 2) {
             const [wx0, wy] = T.world(zone, cx0 + start, cy0 + y + 1), [wx1] = T.world(zone, cx0 + x, 0);
+            // обрив з боку — кут заокруглений, як і камінь під ним
+            const air = (cx, cy) => T.isAir(T.at(zone, cx, cy));
+            const openL = air(cx0 + start - 1, cy0 + y) && air(cx0 + start - 1, cy0 + y + 1);
+            const openR = air(cx0 + x, cy0 + y) && air(cx0 + x, cy0 + y + 1);
+            const c = f.c;
+            c.save();
+            c.beginPath();
+            const ax = f.x(wx0), bx = f.x(wx1), ay = f.y(wy), by = ay + f.ppu * 1.2;
+            const rl = openL ? f.ppu * zone.cell * 0.84 : 0, rr = openR ? f.ppu * zone.cell * 0.84 : 0;
+            c.moveTo(ax, by); c.lineTo(ax, ay + rl); c.quadraticCurveTo(ax, ay, ax + rl, ay);
+            c.lineTo(bx - rr, ay); c.quadraticCurveTo(bx, ay, bx, ay + rr); c.lineTo(bx, by); c.closePath();
+            c.rect(ax - 50, ay - f.ppu * 0.6, bx - ax + 100, f.ppu * 0.6); // трава над краєм не обрізається
+            c.clip();
             lip(f, wx0, wx1, wy, look, seed);
+            c.restore();
           }
           start = -1;
         }
@@ -271,14 +303,16 @@
       while (x < x1 - 0.1) {
         const w = Math.min(x1 - x, 0.7 + N2.hash(Math.round(x * 9), Math.round(y * 9), seed + 51) * 0.7);
         const tone = 0.85 + N2.hash(k, Math.round(y * 5), seed + 53) * 0.3;
-        const ax = f.x(x) + S * 0.03, bx = f.x(x + w) - S * 0.03, h = S * 0.26;
+        const ax = f.x(x) + S * 0.03, bx = f.x(x + w) - S * 0.03, h = S * (0.18 + N2.hash(Math.round(x * 13), Math.round(y * 3), seed + 57) * 0.18);
         const g = c.createLinearGradient(0, ay, 0, ay + h);
         g.addColorStop(0, rgba(look.lipLight, 0.55 * tone)); g.addColorStop(0.25, rgba(look.lip, 0.95)); g.addColorStop(1, rgba(look.lipDark, 0.95));
         c.fillStyle = g;
         c.beginPath();
-        c.moveTo(ax, ay); c.lineTo(bx, ay); c.lineTo(bx, ay + h * 0.75);
-        c.quadraticCurveTo(bx, ay + h, bx - S * 0.06, ay + h); c.lineTo(ax + S * 0.06, ay + h);
-        c.quadraticCurveTo(ax, ay + h, ax, ay + h * 0.75); c.closePath(); c.fill();
+        // плита з округлим, трохи обламаним низом: верх рівний (по ньому ходять), низ — ні
+        c.moveTo(ax, ay); c.lineTo(bx, ay); c.lineTo(bx, ay + h * 0.45);
+        c.quadraticCurveTo(bx, ay + h, bx - S * 0.16, ay + h * (0.92 + N2.hash(k, 3, seed + 59) * 0.12));
+        c.quadraticCurveTo((ax + bx) / 2, ay + h * (1.08 + N2.hash(k, 5, seed + 61) * 0.15), ax + S * 0.16, ay + h);
+        c.quadraticCurveTo(ax, ay + h, ax, ay + h * 0.45); c.closePath(); c.fill();
         c.strokeStyle = "rgba(0,0,0,0.55)"; c.lineWidth = Math.max(1, S * 0.02); c.stroke();
         x += w; k++;
       }

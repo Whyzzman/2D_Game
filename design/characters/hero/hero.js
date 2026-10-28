@@ -38,6 +38,9 @@
 
   // Ключі розкладено по кадрах: [кадр, поза]; між ключами — плавно (ease in-out).
   function track(frames, keys) {
+    // Ключі, розставлені під меншу кількість кадрів, розтягуються на всі кадри стану.
+    const last = keys[keys.length - 1][0];
+    if (last > 0 && last < frames - 1) keys = keys.map(([k, p]) => [k * (frames - 1) / last, p]);
     const out = [];
     for (let f = 0; f < frames; f++) {
       let i = 0;
@@ -59,7 +62,12 @@
     const wind = pose({ tip: 12, hem: 0.3, lean: -8, arm: -60, sword: -120 + (heavy ? -20 : 0), hipF: 12, kneeF: 20, hipB: -14, kneeB: 10, y: 3, flare: 0.35, scarf: 150 });
     const hit = pose({ tip: -16, hem: 0.7, sy: 0.96, sx: 1.04, lean: 14, arm: 80, sword: to, hipF: 28, kneeF: 18, hipB: -22, kneeB: 8, x: 6, flare: 0.6, scarf: 195, slash: 1, slashFrom: from, slashTo: to });
     const follow = pose({ tip: -6, hem: 0.9, lean: 10, arm: 100, sword: to + 30, hipF: 22, kneeF: 16, hipB: -18, kneeB: 10, x: 7, flare: 0.45, scarf: 185, slash: 0.25, slashFrom: from, slashTo: to });
-    return track(n, [[0, pose({ lean: 2 })], [Math.max(1, contact - 2), wind], [contact, hit], [contact + 1, follow], [n - 1, pose({ lean: 3, arm: 40, sword: 60 })]]);
+    // глибший замах за мить до удару (передчуття) і перехльост після — тіло наздоганяє меч
+    const deep = Object.assign({}, wind, { lean: -12, arm: -75, sword: wind.sword - 20, y: 5, sy: 0.94, sx: 1.04, tip: 18 });
+    const over = Object.assign({}, follow, { lean: 18, x: 10, sword: to + 45, arm: 110, tip: -20, sy: 1.03 });
+    const keys = [[0, pose({ lean: 2 })], [Math.max(1, contact - 2), wind], [contact - 1, deep], [contact, hit],
+      [contact + 1, over], [Math.min(n - 2, contact + 2), follow], [n - 1, pose({ lean: 3, arm: 40, sword: 60, tip: 4 })]];
+    return track(n, keys.filter((k, i) => i === 0 || k[0] > keys[i - 1][0]));
   }
 
   const RUN = n => cycle(n, (t) => {
@@ -90,10 +98,10 @@
     WallSlide: n => cycle(n, t => ({ lean: -8, x: 6, hipF: 30, kneeF: 50, hipB: 10, kneeB: 40, arm: 140, armB: 150, sword: 100, flare: 0.3, scarf: 250, scarfWave: t, y: S(t * PI2) })),
     WallJump: n => track(n, [[0, { lean: -20, x: 4, hipF: 40, kneeF: 60, hipB: 20, kneeB: 50, arm: -40, sword: 170, flare: 0.5, scarf: 260 }], [1, { lean: 10, sy: 1.08, hipF: 10, kneeF: 20, hipB: -30, kneeB: 20, flare: 0.4, scarf: 220 }]]),
     WallRun: n => cycle(n, t => ({ lean: -20, x: 6, y: -S(t * PI2) * 3, hipF: 60 + 20 * S(t * PI2), kneeF: 60, hipB: 20 - 20 * S(t * PI2), kneeB: 60, arm: 150, sword: -60, flare: 0.4, scarf: 270, scarfWave: t })),
-    Attack1: n => swing(n, 3, -80, 50, false),
-    Attack2: n => swing(n, 3, 70, -50, false),
-    Attack3: n => swing(n, 4, -110, 80, false),
-    Heavy: n => swing(n, 7, -150, 90, true),
+    Attack1: n => swing(n, Math.round(n * 0.43), -80, 50, false),
+    Attack2: n => swing(n, Math.round(n * 0.43), 70, -50, false),
+    Attack3: n => swing(n, Math.round(n * 0.44), -110, 80, false),
+    Heavy: n => swing(n, Math.round(n * 0.58), -150, 90, true),
     AttackUp: n => track(n, [[0, {}], [1, { arm: 40, sword: 30, y: 2, hipF: 10, kneeF: 15 }], [2, { arm: 170, sword: -90, slash: 1, slashFrom: 10, slashTo: -170, flare: 0.4, scarf: 200, sy: 1.06 }], [3, { arm: 175, sword: -100, slash: 0.3, slashFrom: 10, slashTo: -170 }], [5, { arm: 40, sword: 60 }]]),
     AttackDown: n => track(n, [[0, { hipF: 20, kneeF: 30, hipB: -6, kneeB: 30 }], [1, { arm: 120, sword: -60, flare: 0.5, scarf: 240 }], [2, { arm: 10, sword: 95, slash: 1, slashFrom: -20, slashTo: 170, hipF: 30, kneeF: 50, hipB: -10, kneeB: 50, flare: 0.7, scarf: 260 }], [3, { arm: 5, sword: 100, slash: 0.3, slashFrom: -20, slashTo: 170 }], [5, { arm: 30, sword: 80 }]]),
     Block: n => cycle(n, t => ({ lean: -4, arm: 70, sword: -70, hipF: 18, kneeF: 18, hipB: -20, kneeB: 12, flare: 0.25, y: 2 + S(t * PI2) * 0.5 })),

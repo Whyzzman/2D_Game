@@ -66,32 +66,33 @@ namespace ForgottenKingdom.EditorTools
         /// </summary>
         public static readonly StateSpec[] States =
         {
-            // A slow breath: two seconds a cycle (hero animation 2.0, 2026-09-28).
-            new StateSpec(PlayerAnimationState.Idle, 12, 6f, true),
+            // A slow breath: two seconds a cycle (hero animation 2.0, 2026-09-28). 2026-10-28 (new hero, user:
+            // «more movement»): more frames in the moves seen most — idle, run, jumps, swings, wall, dash.
+            new StateSpec(PlayerAnimationState.Idle, 16, 8f, true),
             // Smoother motion (2026-10-19, decided by Claude under the standing approval): the
             // frame counts move to the budgets of ANIMATION_LIST.md. The run keeps its half-second
             // stride, so ten frames play at 20 FPS; the feet strike on frames 0 and 5.
-            new StateSpec(PlayerAnimationState.Run, 10, 20f, true),
-            new StateSpec(PlayerAnimationState.JumpStart, 3, 24f, false),
-            new StateSpec(PlayerAnimationState.JumpRise, 3, 12f, true),
-            new StateSpec(PlayerAnimationState.Fall, 3, 12f, true),
-            new StateSpec(PlayerAnimationState.Land, 3, 24f, false),
-            new StateSpec(PlayerAnimationState.Dash, 5, 24f, false),
-            new StateSpec(PlayerAnimationState.AirDash, 5, 24f, false),
-            new StateSpec(PlayerAnimationState.WallSlide, 2, 12f, true),
-            new StateSpec(PlayerAnimationState.WallJump, 2, 24f, false),
-            new StateSpec(PlayerAnimationState.WallRun, 4, 12f, true),
+            new StateSpec(PlayerAnimationState.Run, 14, 28f, true),
+            new StateSpec(PlayerAnimationState.JumpStart, 4, 24f, false),
+            new StateSpec(PlayerAnimationState.JumpRise, 5, 12f, true),
+            new StateSpec(PlayerAnimationState.Fall, 5, 12f, true),
+            new StateSpec(PlayerAnimationState.Land, 5, 24f, false),
+            new StateSpec(PlayerAnimationState.Dash, 7, 32f, false),
+            new StateSpec(PlayerAnimationState.AirDash, 7, 32f, false),
+            new StateSpec(PlayerAnimationState.WallSlide, 6, 12f, true),
+            new StateSpec(PlayerAnimationState.WallJump, 4, 24f, false),
+            new StateSpec(PlayerAnimationState.WallRun, 6, 16f, true),
             // Swings are stretched to the attack's real duration, so more frames only add
             // in-betweens; the strike still lands where AttackDefinition puts it.
-            new StateSpec(PlayerAnimationState.Attack1, 7, 24f, false),
-            new StateSpec(PlayerAnimationState.Attack2, 7, 24f, false),
-            new StateSpec(PlayerAnimationState.Attack3, 9, 24f, false),
-            new StateSpec(PlayerAnimationState.Heavy, 12, 24f, false),
+            new StateSpec(PlayerAnimationState.Attack1, 10, 24f, false),
+            new StateSpec(PlayerAnimationState.Attack2, 10, 24f, false),
+            new StateSpec(PlayerAnimationState.Attack3, 12, 24f, false),
+            new StateSpec(PlayerAnimationState.Heavy, 16, 24f, false),
             new StateSpec(PlayerAnimationState.Block, 2, 12f, true),
             new StateSpec(PlayerAnimationState.BlockImpact, 2, 24f, false),
             new StateSpec(PlayerAnimationState.Parry, 3, 24f, false),
             new StateSpec(PlayerAnimationState.GuardBroken, 3, 12f, false),
-            new StateSpec(PlayerAnimationState.Hurt, 2, 24f, false),
+            new StateSpec(PlayerAnimationState.Hurt, 4, 24f, false),
             new StateSpec(PlayerAnimationState.Stunned, 4, 12f, true),
             new StateSpec(PlayerAnimationState.Death, 6, 12f, false),
             new StateSpec(PlayerAnimationState.CastStart, 4, 12f, true),
@@ -104,11 +105,11 @@ namespace ForgottenKingdom.EditorTools
             new StateSpec(PlayerAnimationState.ShadowStrike, 5, 24f, false),
             new StateSpec(PlayerAnimationState.WeaponSwitch, 3, 24f, false),
             new StateSpec(PlayerAnimationState.ActiveSkill, 4, 24f, false),
-            new StateSpec(PlayerAnimationState.AttackUp, 6, 24f, false),
-            new StateSpec(PlayerAnimationState.AttackDown, 6, 24f, false),
+            new StateSpec(PlayerAnimationState.AttackUp, 9, 24f, false),
+            new StateSpec(PlayerAnimationState.AttackDown, 9, 24f, false),
             new StateSpec(PlayerAnimationState.Heal, 6, 12f, false),
             new StateSpec(PlayerAnimationState.IdleVariant, 10, 12f, false),
-            new StateSpec(PlayerAnimationState.Turn, 2, 24f, false),
+            new StateSpec(PlayerAnimationState.Turn, 3, 24f, false),
             new StateSpec(PlayerAnimationState.HardLand, 5, 12f, false),
             new StateSpec(PlayerAnimationState.IdleGlance, 10, 12f, false)
         };
@@ -120,12 +121,12 @@ namespace ForgottenKingdom.EditorTools
         /// </summary>
         public static readonly StateSpec[] GreatswordStates =
         {
-            new StateSpec(PlayerAnimationState.Attack1, 7, 18f, false),
-            new StateSpec(PlayerAnimationState.Attack2, 7, 18f, false),
-            new StateSpec(PlayerAnimationState.Attack3, 9, 18f, false),
-            new StateSpec(PlayerAnimationState.Heavy, 12, 18f, false),
-            new StateSpec(PlayerAnimationState.AttackUp, 6, 18f, false),
-            new StateSpec(PlayerAnimationState.AttackDown, 6, 18f, false)
+            new StateSpec(PlayerAnimationState.Attack1, 10, 18f, false),
+            new StateSpec(PlayerAnimationState.Attack2, 10, 18f, false),
+            new StateSpec(PlayerAnimationState.Attack3, 12, 18f, false),
+            new StateSpec(PlayerAnimationState.Heavy, 16, 18f, false),
+            new StateSpec(PlayerAnimationState.AttackUp, 9, 18f, false),
+            new StateSpec(PlayerAnimationState.AttackDown, 9, 18f, false)
         };
 
         /// <summary>Writes every missing or changed frame and returns the sprites, per state.</summary>

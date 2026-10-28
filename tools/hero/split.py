@@ -26,8 +26,8 @@ def main():
     for job in jobs:
         row = Image.open(SRC / (job["folder"].replace("/", "__") + ".png")).convert("RGBA")
         folder = PLAYER / job["folder"]
-        names = sorted(f for f in os.listdir(folder) if f.endswith(".png"))
-        for i, name in enumerate(names[: job["n"]]):
+        for i in range(job["n"]):
+            name = f"player_{job['state'].lower()}_{i:02d}.png"
             frame = row.crop((i * 256, 0, i * 256 + 256, 224))
             for target in (FINAL / job["folder"] / name, folder / name):
                 target.parent.mkdir(parents=True, exist_ok=True)
