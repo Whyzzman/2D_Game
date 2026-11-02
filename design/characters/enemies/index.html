@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<title>Вороги — кадри</title>
+<style>
+  html, body { margin: 0; background: transparent; }
+  body.sheet { background: #4a5266; }
+  canvas { display: block; }
+</style>
+</head>
+<body>
+<canvas id="out"></canvas>
+<script src="enemies.js"></script>
+<script>
+// ?actor=ZombieSoldier&state=Idle&frames=6 — кадри стану в ряд (прозорий фон), для нарізки
+// ?sheet=1&actor=ZombieSoldier&states=Idle:6,AttackLight:18 — перегляд
+(function () {
+  const q = new URLSearchParams(location.search);
+  const actor = Enemies.ACTORS[q.get("actor")];
+  const canvas = document.getElementById("out"), g = canvas.getContext("2d");
+  const frame = document.createElement("canvas"); frame.width = actor.w; frame.height = actor.h;
+  const fg = frame.getContext("2d");
+  if (q.get("sheet")) {
+    document.body.classList.add("sheet");
+    const list = q.get("states").split(","), scale = parseFloat(q.get("scale") || "0.8"), cols = parseInt(q.get("cols") || "10", 10);
+    let rows = 0;
+    const plan = list.map(item => { const [name, n] = item.split(":"); const k = parseInt(n, 10); const every = Math.max(1, Math.ceil(k / cols)); const shown = []; for (let i = 0; i < k; i += every) shown.push(i); rows++; return { name, k, shown }; });
+    canvas.width = cols * actor.w * scale; canvas.height = rows * actor.h * scale;
+    plan.forEach((row, r) => {
+      const poses = actor.states[row.name](row.k);
+      row.shown.forEach((i, c) => { Enemies.render(fg, actor, poses[i], i); g.drawImage(frame, c * actor.w * scale, r * actor.h * scale, actor.w * scale, actor.h * scale); });
+    });
+  } else {
+    const n = parseInt(q.get("frames"), 10), poses = actor.states[q.get("state")](n);
+    canvas.width = actor.w * n; canvas.height = actor.h;
+    poses.forEach((p, i) => { Enemies.render(fg, actor, p, i); g.drawImage(frame, i * actor.w, 0); });
+  }
+  document.title = "done";
+})();
+</script>
+</body>
+</html>
