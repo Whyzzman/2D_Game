@@ -112,17 +112,24 @@ namespace ForgottenKingdom.EditorTools
             log($"baseline: {baseline.Strict.Count} stone cells reached, {baseline.Comfort.Count} comfortably, {baseline.MarkerRows.Count} things");
             var changed = 0;
 
+            // How many moves a way between two floors may grow by: none, except while anchoring slabs to the
+            // architecture — a balcony may cost a jump, and a logical room is worth it.
+            var slack = 0;
+            var reject = "";
+
             bool Keep(string what, HashSet<long> gone = null)
             {
                 var now = Measure(zone, abilities, comfort);
                 if (!now.Strict.IsSupersetOf(baseline.Strict) || !now.Comfort.IsSupersetOf(baseline.Comfort))
                 {
+                    reject = "a floor lost";
                     return false;
                 }
 
                 if (baseline.All.Any(c => !now.All.Contains(c) && (gone == null || !gone.Contains(c)))
                     || baseline.ComfortAll.Any(c => !now.ComfortAll.Contains(c) && (gone == null || !gone.Contains(c))))
                 {
+                    reject = "a ledge lost";
                     return false;
                 }
 
@@ -135,8 +142,9 @@ namespace ForgottenKingdom.EditorTools
 
                     foreach (var to in way.Value)
                     {
-                        if (!reached.TryGetValue(to.Key, out var moves) || moves > to.Value)
+                        if (!reached.TryGetValue(to.Key, out var moves) || moves > to.Value + slack)
                         {
+                            reject = "a way longer";
                             return false;
                         }
                     }
@@ -146,12 +154,14 @@ namespace ForgottenKingdom.EditorTools
                 {
                     if (!now.MarkerRows.TryGetValue(pair.Key, out var row) || row != pair.Value)
                     {
+                        reject = "a thing moved";
                         return false;
                     }
                 }
 
                 if (LevelCheck.Problems(zone).Count > 0)
                 {
+                    reject = "LevelCheck";
                     return false;
                 }
 
@@ -159,7 +169,7 @@ namespace ForgottenKingdom.EditorTools
                 baseline.Comfort.UnionWith(now.Comfort);
                 baseline.All = now.All;
                 baseline.ComfortAll = now.ComfortAll;
-                baseline.Ways = now.Ways;
+                if (slack == 0) baseline.Ways = now.Ways; // the slack is counted from the ways before anchoring, never piled up
                 changed++;
                 log("  " + what);
                 return true;
@@ -357,6 +367,79 @@ namespace ForgottenKingdom.EditorTools
                     foreach (var c in up) ledge.Room.Cells[c.Item2, c.Item1] = LevelCell.Ledge;
                 }
             }
+
+            // 4b. Anchors (2026-11-02, user: «every parkour and wall logical and pleasant»): a slab hanging
+            // in mid-hall reads as nonsense in a stone crypt. It moves along its row to the nearer wall
+            // (a balcony), or reaches it (a bridge), or stands on a two-wide column from the floor under it.
+            // Rooms built around chains keep their hanging slabs.
+            log("anchor:");
+            slack = 2;
+            foreach (var ledge in Ledges(zone))
+            {
+                if (ledge.Room.Id.Contains("chain") || GapToWall(ledge.Room, ledge.Y, ledge.X0, -1) == 0
+                    || GapToWall(ledge.Room, ledge.Y, ledge.X1, 1) == 0)
+                {
+                    continue;
+                }
+
+                reject = "no wall in reach, no free cells or floor for a column";
+                var left = WallDistance(ledge.Room, ledge.Y, ledge.X0, -1, 20);
+                var right = WallDistance(ledge.Room, ledge.Y, ledge.X1, 1, 20);
+                var here = Span(ledge.Y, ledge.X0, ledge.X1);
+                var done = false;
+                // move to the nearer wall, then the farther
+                foreach (var (gap, side) in new[] { (left, -1), (right, 1) }.Where(o => o.Item1 > 0).OrderBy(o => o.Item1))
+                {
+                    if (done) break;
+                    var x0 = side < 0 ? ledge.X0 - gap : ledge.X0 + gap;
+                    var moved = Span(ledge.Y, x0, x0 + ledge.Width - 1);
+                    var newCells = moved.Where(c => c.Item1 < ledge.X0 || c.Item1 > ledge.X1).ToList();
+                    var oldCells = here.Where(c => c.Item1 < x0 || c.Item1 > x0 + ledge.Width - 1).ToList();
+                    if (newCells.All(c => Free(ledge.Room, c.Item1, c.Item2)) && AirAbove(ledge.Room, ledge.Y, x0, x0 + ledge.Width - 1))
+                    {
+                        done = Try(ledge, newCells, oldCells, $"{ledge} moves {gap} to the {(side < 0 ? "west" : "east")} wall (a balcony)");
+                    }
+                }
+
+                foreach (var (gap, side) in new[] { (left, -1), (right, 1) }.Where(o => o.Item1 > 0 && o.Item1 <= 6).OrderBy(o => o.Item1))
+                {
+                    if (done) break;
+                    var fill = side < 0 ? Span(ledge.Y, ledge.X0 - gap, ledge.X0 - 1) : Span(ledge.Y, ledge.X1 + 1, ledge.X1 + gap);
+                    done = Try(ledge, fill, new List<(int, int)>(), $"{ledge} reaches the {(side < 0 ? "west" : "east")} wall (a bridge)");
+                }
+
+                if (!done)
+                {
+                    var mid = (ledge.X0 + ledge.X1) / 2;
+                    var floor = FloorUnder(ledge.Room, ledge.Y, mid);
+                    if (floor >= 0 && ledge.Y - floor >= 2 && ledge.Y - floor <= 12
+                        && ledge.Room.Cells[floor, mid] == LevelCell.Solid && ledge.Room.Cells[floor, mid + 1] == LevelCell.Solid)
+                    {
+                        var column = new List<(int, int)>();
+                        for (var y = floor + 1; y < ledge.Y; y++) { column.Add((mid, y)); column.Add((mid + 1, y)); }
+                        if (column.All(c => Free(ledge.Room, c.Item1, c.Item2)))
+                        {
+                            foreach (var c in column) ledge.Room.Cells[c.Item2, c.Item1] = LevelCell.Solid;
+                            var gone = new HashSet<long>();
+                            if (Keep($"{ledge} stands on a column from the floor", gone))
+                            {
+                                done = true;
+                            }
+                            else
+                            {
+                                foreach (var c in column) ledge.Room.Cells[c.Item2, c.Item1] = LevelCell.Empty;
+                            }
+                        }
+                    }
+                }
+
+                if (!done)
+                {
+                    log($"  {ledge}: still hangs ({reject})");
+                }
+            }
+
+            slack = 0;
 
             // 5. Dead ends go: a ledge whose loss makes no way between two floors a move longer and
             // takes no lettered thing its footing. Twice, so a stair to nowhere goes from its top step
@@ -617,6 +700,20 @@ namespace ForgottenKingdom.EditorTools
         }
 
         /// <summary>Air cells between the ledge's end and a wall of its own room on its row; 0 if it touches one, int.MaxValue if none in reach.</summary>
+        /// <summary>Empty cells between the ledge's end and stone on its row, up to <paramref name="max"/>; -1 if no stone that near.</summary>
+        private static int WallDistance(LevelRoom room, int y, int from, int step, int max)
+        {
+            for (var gap = 0; gap <= max; gap++)
+            {
+                var x = from + step * (gap + 1);
+                if (x < 0 || x >= room.Width) return -1;
+                if (Solid(room.Cells[y, x])) return gap;
+                if (room.Cells[y, x] != LevelCell.Empty) return -1;
+            }
+
+            return -1;
+        }
+
         private static int GapToWall(LevelRoom room, int y, int from, int step)
         {
             for (var gap = 0; gap <= AttachGap; gap++)
