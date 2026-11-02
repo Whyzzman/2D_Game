@@ -565,6 +565,13 @@ namespace ForgottenKingdom.EditorTools
             serialized.FindProperty("_pickupColor").colorValue = color;
             serialized.FindProperty("_equipment").objectReferenceValue = equipment;
             serialized.FindProperty("_healAmount").floatValue = healAmount;
+            // A painted icon (Art/Items/Icons/<id>.png) wins over the vector silhouette by kind.
+            var icon = ItemIcons.For(id);
+            if (icon != null)
+            {
+                serialized.FindProperty("_icon").objectReferenceValue = icon;
+            }
+
             serialized.ApplyModifiedPropertiesWithoutUndo();
             EditorUtility.SetDirty(item);
             return item;

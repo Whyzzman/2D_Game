@@ -22,7 +22,7 @@ MonoBehaviour:
     \u043D\u0430 \u0437\u0435\u043C\u043B\u0456, \u044F\u043A\u043E\u0457 \u043D\u0435\u043C\u0430\u0454."
   _category: 7
   _rarity: 4
-  _icon: {fileID: 0}
+  _icon: {fileID: 6583189382661251461, guid: 11f1bcaabf7defa45825cedc4942d02e, type: 3}
   _isStackable: 1
   _maxStack: 1
   _isUnique: 1

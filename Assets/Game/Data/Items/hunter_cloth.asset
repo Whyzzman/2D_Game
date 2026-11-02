@@ -19,7 +19,7 @@ MonoBehaviour:
     \u0441\u0438\u043D\u0456\u043C."
   _category: 0
   _rarity: 0
-  _icon: {fileID: 0}
+  _icon: {fileID: -4982798788191392430, guid: 35c8cab8363020d4da44d9f1a5a4a33a, type: 3}
   _isStackable: 1
   _maxStack: 99
   _isUnique: 0

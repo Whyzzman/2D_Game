@@ -18,7 +18,7 @@ MonoBehaviour:
     \u041A\u0440\u0430\u0449\u0435, \u043D\u0456\u0436 \u043D\u0456\u0447\u043E\u0433\u043E."
   _category: 3
   _rarity: 0
-  _icon: {fileID: 0}
+  _icon: {fileID: -3449822784483905464, guid: 8766e5494ddf54e4a9fa4e8a48de3d76, type: 3}
   _isStackable: 1
   _maxStack: 1
   _isUnique: 1

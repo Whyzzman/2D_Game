@@ -21,7 +21,7 @@ MonoBehaviour:
     \u2014 \u0456 \u043B\u0430\u043C\u0430\u0454\u0442\u044C\u0441\u044F."
   _category: 5
   _rarity: 0
-  _icon: {fileID: 0}
+  _icon: {fileID: 4015449354988236211, guid: 43dd9540b9de7e84888a24b22dcbdb14, type: 3}
   _isStackable: 1
   _maxStack: 9
   _isUnique: 0
