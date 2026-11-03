@@ -1,7 +1,7 @@
 // Кадри ворогів і боса Гробниці з design/characters/enemies (enemies.js) через headless Chrome: кожен стан —
 // ряд кадрів у %TEMP%/enemy-frames, потім tools/enemies/split.py ріже їх у Art/Source/Final/… і на місце заглушок.
 // Кількість кадрів станів — з таблиць PlaceholderEnemyArt (контракт анімації той самий).
-// Запуск: node tools/enemies/render.js   (Chrome: змінна CHROME=<шлях>)
+// Запуск: node tools/enemies/render.js [tomb|forest]   (Chrome: змінна CHROME=<шлях>)
 const fs = require("fs");
 const os = require("os");
 const path = require("path");
@@ -18,8 +18,14 @@ const ACTORS = [
   { actor: "ZombieSoldier", table: "ZombieStates", file: "PlaceholderEnemyArt.cs", folder: "Enemies/ZombieSoldier", prefix: "enemy_zombie", w: 140, h: 176 },
   { actor: "ShieldGuard", table: "GuardStates", file: "PlaceholderEnemyArt.cs", folder: "Enemies/ShieldGuard", prefix: "enemy_shieldguard", w: 168, h: 176 },
   { actor: "BoneArcher", table: "ArcherStates", file: "PlaceholderEnemyArt.Forest.cs", folder: "Enemies/BoneArcher", prefix: "enemy_bone_archer", w: 150, h: 176 },
-  { actor: "GuardianOfTheTomb", table: "BossStates", file: "PlaceholderEnemyArt.cs", folder: "Bosses/GuardianOfTheTomb", prefix: "boss_guardian", w: 272, h: 300 }
-];
+  { actor: "GuardianOfTheTomb", table: "BossStates", file: "PlaceholderEnemyArt.cs", folder: "Bosses/GuardianOfTheTomb", prefix: "boss_guardian", w: 272, h: 300 },
+  // Ліс (enemies-forest.js)
+  { zone: "forest", actor: "CorruptedHound", table: "HoundStates", file: "PlaceholderEnemyArt.Forest.cs", folder: "Enemies/CorruptedHound", prefix: "enemy_hound", w: 200, h: 120 },
+  { zone: "forest", actor: "ForestArcher", table: "ArcherStates", file: "PlaceholderEnemyArt.Forest.cs", folder: "Enemies/ForestArcher", prefix: "enemy_archer", w: 150, h: 176 },
+  { zone: "forest", actor: "RootShaman", table: "ShamanStates", file: "PlaceholderEnemyArt.Forest.cs", folder: "Enemies/RootShaman", prefix: "enemy_shaman", w: 156, h: 178 },
+  { zone: "forest", actor: "RoyalSpearman", table: "SpearmanStates", file: "PlaceholderEnemyArt.Forest.cs", folder: "Enemies/RoyalSpearman", prefix: "enemy_spearman", w: 214, h: 178 },
+  { zone: "forest", actor: "HollowWarden", table: "WardenStates", file: "PlaceholderEnemyArt.Forest.cs", folder: "Bosses/HollowWarden", prefix: "boss_warden", w: 268, h: 260 }
+].filter((a) => (a.zone || "tomb") === (process.argv[2] || "tomb"));
 
 function table(file, name) {
   const src = fs.readFileSync(path.join(EDITOR, file), "utf8");

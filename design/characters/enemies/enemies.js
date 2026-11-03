@@ -13,7 +13,8 @@
     hipF: 6, kneeF: 8, hipB: -6, kneeB: 8,
     arm: 20, elbow: -15, armB: -10, elbowB: -10, weapon: 70,
     flare: 0.2, wave: 0, eyes: 1, glow: 0, slash: 0, slashFrom: -60, slashTo: 60,
-    shield: 0, draw: 0, arrow: 1, alpha: 1, fall: 0
+    shield: 0, draw: 0, arrow: 1, alpha: 1, fall: 0,
+    jaw: 0, tail: 0, spine: 0, roots: 0
   };
   const pose = p => Object.assign({}, BASE, p);
   function lerp(a, b, t) {
@@ -362,5 +363,5 @@
     g.restore();
   }
 
-  root.Enemies = { ACTORS, render };
+  root.Enemies = { ACTORS, render, kit: { S, PI2, R, INK, pose, track, cycle, stroke, limb, shape, eye, blade, slashArc, rags, boot } };
 })(window);
