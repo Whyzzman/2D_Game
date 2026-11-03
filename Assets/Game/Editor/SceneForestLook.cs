@@ -58,6 +58,16 @@ namespace ForgottenKingdom.EditorTools
                 FitArenaBackdrop(art, unlit);
                 DressEdges(art);
             }
+            else
+            {
+                // The painted arena has its own backdrop (painter, then Midjourney): the old abbey
+                // sprite would stand in front of it.
+                var abbey = GameObject.Find(ArenaBackdropName);
+                if (abbey != null)
+                {
+                    Object.DestroyImmediate(abbey);
+                }
+            }
 
             var old = GameObject.Find(RootName);
             if (old != null)

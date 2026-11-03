@@ -161,6 +161,15 @@ Midjourney не копировал чужой вид (`VISUAL_BIBLE.md` §3). Б
 | `prop_tomb_cobweb` | 1:1 | large dusty cobweb in a corner, soft silver strands |
 | `prop_tomb_roots` | 1:2 | pale gnarled roots hanging down from above, thin tendrils |
 
+## §3а. Лес — фоны комнат (35)
+
+2026-11-03, пользователь: «второй уровень — всё так же» (решено Claude по постоянному согласию). Промпты всех 35 комнат —
+`design/levels/midjourney/forest/prompts.json`: текст комнаты + хвост `open` (комнаты под небом — небо разрешено) или
+`enclosed` (закрытые и подземные — `no open sky`, `--no sky`; список закрытых — `looks.js`, `forest.enclosed`), `--ar` — от
+пропорций комнаты, зажатых в 1:3…3:1 (`place.py` всё равно режет по комнате). У каждой комнаты свой мотив (корни-рёбра,
+кладбище под кроной, сломанная арка, сокольня, ядовитый гай, грибная заводь…) и своя гамма; соседи гамму не делят.
+Выбранные варианты — `forest/_picks.txt`, вставка — `python tools/midjourney/place.py forest`.
+
 ## §4. Концепты персонажей (на потом)
 
 В игру напрямую не идут (анимации нужен аниматор), но фиксируют вид героя и врагов — по ним

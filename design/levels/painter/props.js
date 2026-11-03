@@ -78,9 +78,45 @@
     }
   }
 
+  // Лісові (2026-11-03, решено Claude): папороть віялом листочків і бліді гриби з холодним ореолом.
+  function fern(f, x, y, look, h, seed) {
+    const c = f.c, S = f.ppu, ay = f.y(y);
+    const n = 4 + Math.floor(h * 3);
+    c.strokeStyle = rgba(look.moss || look.lip, 0.95); c.fillStyle = rgba(look.moss || look.lip, 0.95);
+    c.lineWidth = Math.max(1, S * 0.025); c.lineCap = "round";
+    for (let k = 0; k < n; k++) {
+      const a = -Math.PI / 2 + (k - (n - 1) / 2) * 0.38 + (N.hash(seed, k, 3) - 0.5) * 0.2;
+      const len = S * (0.55 + h * 0.45) * (0.7 + N.hash(seed, k, 5) * 0.4);
+      const bx = f.x(x), ex = bx + Math.cos(a) * len, ey = ay + Math.sin(a) * len;
+      const mx = bx + Math.cos(a) * len * 0.5 + (a < -Math.PI / 2 ? -1 : 1) * S * 0.05, my = ay + Math.sin(a) * len * 0.6;
+      c.beginPath(); c.moveTo(bx, ay); c.quadraticCurveTo(mx, my, ex, ey + S * 0.06); c.stroke();
+      for (let j = 1; j < 6; j++) {
+        const t = j / 6, px = bx + (ex - bx) * t, py = ay + (ey + S * 0.06 - ay) * t - Math.sin(t * Math.PI) * S * 0.04, l = S * 0.09 * (1 - t * 0.6);
+        c.beginPath(); c.ellipse(px, py, l, l * 0.35, a + 1.2, 0, Math.PI * 2); c.fill();
+        c.beginPath(); c.ellipse(px, py, l, l * 0.35, a - 1.2, 0, Math.PI * 2); c.fill();
+      }
+    }
+  }
+
+  function mushrooms(f, x, y, look, h, seed) {
+    const c = f.c, S = f.ppu, ay = f.y(y);
+    const n = 1 + Math.floor(N.hash(seed, 2, 29) * 3);
+    for (let k = 0; k < n; k++) {
+      const cx = f.x(x + (k - (n - 1) / 2) * 0.16), hh = S * (0.18 + N.hash(seed, k, 31) * 0.26), w = S * (0.12 + N.hash(seed, k, 33) * 0.1);
+      const g = c.createRadialGradient(cx, ay - hh, 1, cx, ay - hh, S * 0.55);
+      g.addColorStop(0, rgba(look.fungusGlow || "#6fd0c4", 0.28)); g.addColorStop(1, rgba(look.fungusGlow || "#6fd0c4", 0));
+      c.fillStyle = g; c.beginPath(); c.arc(cx, ay - hh, S * 0.55, 0, Math.PI * 2); c.fill();
+      c.fillStyle = rgba(look.lipLight, 0.8); c.fillRect(cx - w * 0.18, ay - hh, w * 0.36, hh);
+      c.fillStyle = rgba(look.fungus || "#a6dccd", 0.95);
+      c.beginPath(); c.ellipse(cx, ay - hh, w, w * 0.55, 0, Math.PI, 0); c.fill();
+      c.fillStyle = rgba(look.shadowTint || "#000000", 0.35);
+      c.fillRect(cx - w, ay - hh, w * 2, Math.max(1, S * 0.02));
+    }
+  }
+
   const SETS = {
     tomb: [["moss", 4], ["rubble", 3], ["bones", 2], ["candles", 1.2]],
-    forest: [["moss", 6], ["rubble", 2]],
+    forest: [["moss", 5], ["fern", 3], ["mushrooms", 1.5], ["rubble", 1.5]],
     village: [["moss", 4], ["rubble", 3]],
     capital: [["rubble", 4], ["candles", 1], ["moss", 1]]
   };
@@ -103,6 +139,8 @@
       const what = pick(set, N.hash(Math.round(x * 13), Math.round(y * 7), seed + 7));
       if (what === "moss") moss(f, x, y, look, h);
       else if (what === "rubble") rubble(f, x, y, look, h, seed + Math.round(x * 17));
+      else if (what === "fern") fern(f, x, y, look, h, seed + Math.round(x * 29));
+      else if (what === "mushrooms") mushrooms(f, x, y, look, h, seed + Math.round(x * 31));
       else if (what === "bones") bones(f, x, y, look, h, seed + Math.round(x * 19));
       else candles(f, x, y, look, h, seed + Math.round(x * 23));
     }

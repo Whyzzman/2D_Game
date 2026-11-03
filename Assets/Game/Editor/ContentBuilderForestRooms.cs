@@ -213,7 +213,8 @@ namespace ForgottenKingdom.EditorTools
 
             var inside = Inside(zone, zone.Room(ForestArenaRoom));
             var dressing = Section(arena, "ArenaDressing");
-            var backdrop = ForestProp(dressing, SceneForestLook.ArenaBackdropName,
+            // the painted arena draws its own backdrop (painter, then Midjourney): no abbey sprite in front of it
+            var backdrop = _forestPainted ? null : ForestProp(dressing, SceneForestLook.ArenaBackdropName,
                 new Vector2(inside.center.x, inside.yMin - 2f), "EnvironmentBack", 0);
             if (backdrop != null)
             {
