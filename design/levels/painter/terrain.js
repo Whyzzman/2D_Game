@@ -231,6 +231,7 @@
       y: wy => H - (wy - wy0) * ppu
     };
     drawTops(frame, zone, cx0, cy0, gw, gh, look, seed);
+    if (look.style === "forest") trunksOf(zone).forEach(t => drawTrunk(frame, zone, t, seed));
     drawLedges(frame, zone, cx0, cy0, gw, gh, look, seed);
   }
 
@@ -389,6 +390,93 @@
     }
   }
 
+  // Дерева Лісу (2026-11-03, решено Claude): вільні уступи двома стовпчиками через щілину у 2 клітинки
+  // (tools/level-drafts/trees.py) — гілки одного стовбура. Стовбур у щілині, позаду героя (колайдера нема),
+  // від землі під нижньою гілкою до склепіння або, під небом, трохи вище верхньої — там крона розходиться.
+  const trunkCache = new WeakMap();
+  function trunksOf(zone) {
+    if (trunkCache.has(zone)) return trunkCache.get(zone);
+    const free = [];
+    for (const r of zone.rooms) {
+      for (let y = 0; y < r.h; y++) {
+        const row = r.rows[y];
+        for (let x = 0; x < r.w; x++) {
+          if (row[x] !== "=" || (x > 0 && row[x - 1] === "=")) continue;
+          let e = x;
+          while (e + 1 < r.w && row[e + 1] === "=") e++;
+          const gx0 = r.x + x, gx1 = r.x + e, gy = r.y + y;
+          const touches = T.isRock(T.at(zone, gx0 - 1, gy)) || T.isRock(T.at(zone, gx1 + 1, gy));
+          let above = false;
+          for (let k = gx0; k <= gx1; k++) if (T.isRock(T.at(zone, k, gy + 1))) above = true;
+          if (!touches && !above) free.push({ x0: gx0, x1: gx1, y: gy });
+        }
+      }
+    }
+    // гілка ліворуч закінчується на x, праворуч починається на x+3 — між ними стовбур x+1…x+2
+    const cols = new Map();
+    for (const a of free) for (const b of free) {
+      if (b.x0 === a.x1 + 3 && Math.abs(a.y - b.y) <= 7) {
+        const k = a.x1 + 1;
+        if (!cols.has(k)) cols.set(k, []);
+        cols.get(k).push(a, b);
+      }
+    }
+    const trunks = [];
+    cols.forEach((ls, x) => {
+      const ys = ls.map(l => l.y);
+      let lo = Math.min(...ys), hi = Math.max(...ys);
+      let base = lo;
+      while (base > lo - 60 && !T.isRock(T.at(zone, x, base - 1))) base--;
+      let top = hi + 1, roof = false;
+      while (top < hi + 24) { if (T.isRock(T.at(zone, x, top))) { roof = true; break; } top++; }
+      if (!roof) top = hi + 5;
+      trunks.push({ x, base, top, roof, forks: ls });
+    });
+    trunkCache.set(zone, trunks);
+    return trunks;
+  }
+
+  function drawTrunk(f, zone, t, seed) {
+    const c = f.c, S = f.ppu, pal = root.LevelMaterials.WOOD.forest;
+    const [cxw, by] = T.world(zone, t.x + 1, t.base), ty = T.world(zone, 0, t.top)[1];
+    const sway = y => (N.hash(seed + t.x, Math.floor(y), 31) - 0.5) * 0.06 + Math.sin(y * 0.35 + t.x) * 0.12;
+    const half = y => 0.62 + 0.4 * Math.max(0, 1 - (y - by) / 2.5) ** 2; // корені розходяться внизу
+    c.save();
+    const g = c.createLinearGradient(f.x(cxw - 0.6), 0, f.x(cxw + 0.6), 0);
+    g.addColorStop(0, pal.dark); g.addColorStop(0.35, pal.bark); g.addColorStop(0.6, pal.light); g.addColorStop(1, pal.dark);
+    c.fillStyle = g;
+    c.beginPath();
+    const steps = Math.max(2, Math.ceil((ty - by) / 0.5));
+    for (let i = 0; i <= steps; i++) { const y = by + (ty - by) * i / steps; c.lineTo(f.x(cxw - half(y) + sway(y)), f.y(y)); }
+    for (let i = steps; i >= 0; i--) { const y = by + (ty - by) * i / steps; c.lineTo(f.x(cxw + half(y) + sway(y)), f.y(y)); }
+    c.closePath(); c.fill();
+    // кора: поздовжні борозни
+    c.strokeStyle = rgba(pal.dark, 0.6); c.lineWidth = Math.max(1, S * 0.03);
+    for (let k = -2; k <= 2; k++) {
+      c.beginPath();
+      for (let i = 0; i <= steps; i++) {
+        const y = by + (ty - by) * i / steps, w = half(y) * 0.8;
+        c.lineTo(f.x(cxw + k * w / 2.5 + sway(y) + (N.hash(seed, k, i) - 0.5) * 0.05), f.y(y));
+      }
+      c.stroke();
+    }
+    // мох плямами з тіньового боку
+    c.fillStyle = rgba(pal.leaf, 0.5);
+    for (let i = 0; i < (ty - by) * 1.5; i++) {
+      const y = by + N.hash(seed + t.x, i, 51) * (ty - by), w = half(y);
+      c.beginPath(); c.ellipse(f.x(cxw - w * 0.55 + sway(y)), f.y(y), S * w * 0.35, S * (0.2 + N.hash(seed, i, 53) * 0.4), 0, 0, Math.PI * 2); c.fill();
+    }
+    // без склепіння — стовбур тоншає в розвилку, далі крона в тумані
+    if (!t.roof) {
+      c.fillStyle = rgba(pal.leaf, 0.55);
+      for (let i = 0; i < 9; i++) {
+        const a = N.hash(seed + t.x, i, 41) * Math.PI * 2, d = 0.6 + N.hash(seed + t.x, i, 43) * 1.4;
+        c.beginPath(); c.ellipse(f.x(cxw + Math.cos(a) * d * 1.6), f.y(ty + Math.sin(a) * d * 0.7), S * 1.1, S * 0.6, 0, 0, Math.PI * 2); c.fill();
+      }
+    }
+    c.restore();
+  }
+
   // Уступи «=»: плита з рівним верхом і обламаним низом; вільна — на двох ланцюгах до склепіння.
   function drawLedges(f, zone, cx0, cy0, gw, gh, look, seed) {
     const c = f.c, S = f.ppu, N2 = root.PaintNoise;
@@ -405,7 +493,9 @@
           // колода чи плита у повітрі — на підвісах до першого каменю вгорі.
           const M = root.LevelMaterials, zoneName = look.style || "tomb", pal = M.WOOD[zoneName] || M.WOOD.tomb;
           const wallLeft = T.isRock(T.at(zone, gx0 - 1, gy)), wallRight = T.isRock(T.at(zone, gx1, gy));
-          const kind = M.kindOf(zoneName, wallLeft || wallRight, gx1 - gx0, s2);
+          // гілка дерева росте від стовбура (trunksOf)
+          const tree = zoneName === "forest" && trunksOf(zone).find(t => (t.x === gx1 || t.x + 2 === gx0) && gy >= t.base && gy < t.top);
+          const kind = tree ? "branch" : M.kindOf(zoneName, wallLeft || wallRight, gx1 - gx0, s2);
           const hangKind = look.hang === "roots" ? "root" : zoneName === "village" ? "rope" : "chain";
           const ceilingAt = cx => {
             let top = gy + 1;
@@ -413,7 +503,7 @@
             return top >= gy + 60 ? null : T.world(zone, cx, top)[1];
           };
           const hangers = () => [[wx0 + 0.3, ceilingAt(gx0)], [wx1 - 0.3, ceilingAt(gx1 - 1)]];
-          const wallSide = wallLeft ? -1 : 1;
+          const wallSide = tree ? (tree.x === gx1 ? 1 : -1) : wallLeft ? -1 : 1;
           if (kind === "shelf") M.shelf(f, wx0, wx1, wyt, wallSide, pal, s2);
           else if (kind === "branch") M.branch(f, wx0, wx1, wyt, wallSide, pal, s2);
           else if (kind === "balcony") M.balcony(f, wx0, wx1, wyt, wallSide, pal, s2);

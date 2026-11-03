@@ -171,9 +171,17 @@
     c.beginPath();
     c.moveTo(f.x(from), f.y(top));
     c.lineTo(f.x(to), f.y(top));
-    c.quadraticCurveTo(f.x(to), f.y(top - 0.12), f.x(to + wallSide * 0.3), f.y(top - 0.2));
-    c.quadraticCurveTo(f.x((from + to) / 2), f.y(top - 0.28), f.x(from), f.y(top - 0.62));
+    c.quadraticCurveTo(f.x(to), f.y(top - 0.18), f.x(to + wallSide * 0.3), f.y(top - 0.3));
+    c.quadraticCurveTo(f.x((from + to) / 2), f.y(top - 0.42), f.x(from), f.y(top - 0.85));
     c.closePath(); c.fill();
+    // мох по верху: тут стоять
+    c.strokeStyle = rgba(pal.leaf, 0.9); c.lineWidth = Math.max(1.5, S * 0.05);
+    c.beginPath(); c.moveTo(f.x(from), f.y(top) + 1); c.lineTo(f.x(to), f.y(top) + 1); c.stroke();
+    c.fillStyle = rgba(pal.leaf, 0.85);
+    for (let k = 0; k < Math.abs(to - from) * 3; k++) {
+      const mx = from + (to - from) * N.hash(seed, k, 21);
+      c.beginPath(); c.ellipse(f.x(mx), f.y(top - 0.03), S * (0.05 + N.hash(seed, k, 23) * 0.08), S * 0.05, 0, 0, Math.PI * 2); c.fill();
+    }
     c.strokeStyle = rgba(pal.dark, 0.55); c.lineWidth = Math.max(1, S * 0.02);
     for (let i = 0; i < 3; i++) {
       const yy = top - 0.1 - i * 0.12;
