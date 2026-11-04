@@ -17,3 +17,6 @@ myroslava 462783f0-0067-4855-a043-1f18a008615f 1
 gnat c3beef42-7620-4a0a-b022-cd492d066a17 0
 chest_locked c9d6dbb3-a337-4f42-b877-e0561e883025 1
 chest_open 63b528f2-79b3-4119-b8ff-93a8e3b724e1 0
+stele db08ef0d-1f40-4a38-bc86-196f8fcae2a7 1
+stele_forest 15a2adb5-cd40-49c1-a20c-04b5a7c6fdee 1
+bars 65862f04-5785-451d-9d11-d4eb7e35fd83 2

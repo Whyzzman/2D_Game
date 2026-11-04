@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 
 namespace ForgottenKingdom.EditorTools
@@ -58,6 +59,9 @@ namespace ForgottenKingdom.EditorTools
                 ["InscriptionHunters"] = "stone-hunters"
             };
 
+        /// <summary>Whether the stone of that name is one of the Forest's (its text stands it).</summary>
+        public static bool IsForestStone(string name) => ForestStones.ContainsKey(name);
+
         private static void BuildInscriptions(Transform root)
         {
             Physics2D.SyncTransforms();
@@ -75,14 +79,7 @@ namespace ForgottenKingdom.EditorTools
                 trigger.isTrigger = true;
                 trigger.size = new Vector2(2.2f, 2.6f);
                 trigger.offset = new Vector2(0f, 1.3f);
-                StonePart(stone, "Slab", new Vector2(0f, 0.62f), new Vector2(0.86f, 1.24f), new Color(0.26f, 0.23f, 0.2f));
-                StonePart(stone, "Cap", new Vector2(0f, 1.28f), new Vector2(1f, 0.12f), new Color(0.33f, 0.29f, 0.24f));
-                for (var line = 0; line < 4; line++)
-                {
-                    StonePart(stone, $"Line{line}", new Vector2(0f, 1.02f - line * 0.16f), new Vector2(0.56f, 0.04f),
-                        new Color(0.13f, 0.11f, 0.1f));
-                }
-
+                DressStone(stone, IsForestStone(spot.Name));
                 SetString(Ensure<Inscription>(stone), "_text", spot.Text);
             }
 
@@ -120,6 +117,47 @@ namespace ForgottenKingdom.EditorTools
             SetReference(ending, "_progress", progress);
             SetReference(ending, "_respawner", Object.FindAnyObjectByType<PlayerRespawner>());
             SetReference(ending, "_player", Object.FindAnyObjectByType<PlayerCharacter>());
+        }
+
+        public const string TombStelePath = "Assets/Game/Art/Environment/Story/env_stele_tomb.png";
+        public const string ForestStelePath = "Assets/Game/Art/Environment/Story/env_stele_forest.png";
+        private static readonly string[] StoneParts = { "Stone", "Slab", "Cap", "Line0", "Line1", "Line2", "Line3" };
+
+        /// <summary>
+        /// The stone itself: a painted stele (Midjourney, 2026-11-04 — «the game should look expensive»),
+        /// the Forest's under ivy, everyone else's with the crown; without the painting, the old slab of
+        /// boxes. Whatever stood there before is replaced, so <see cref="SceneStones"/> can run it again.
+        /// </summary>
+        public static void DressStone(GameObject stone, bool forest)
+        {
+            foreach (var name in StoneParts)
+            {
+                var old = stone.transform.Find(name);
+                if (old != null)
+                {
+                    Object.DestroyImmediate(old.gameObject);
+                }
+            }
+
+            var painted = StoryArt.Stele(forest ? ForestStelePath : TombStelePath);
+            if (painted != null)
+            {
+                var part = new GameObject("Stone");
+                part.transform.SetParent(stone.transform, false);
+                var renderer = part.AddComponent<SpriteRenderer>();
+                renderer.sprite = painted;
+                renderer.sharedMaterial = _material != null ? _material : AssetDatabase.LoadAssetAtPath<Material>(MaterialPath);
+                SetSorting(renderer, "EnvironmentBack", 6);
+                return;
+            }
+
+            StonePart(stone, "Slab", new Vector2(0f, 0.62f), new Vector2(0.86f, 1.24f), new Color(0.26f, 0.23f, 0.2f));
+            StonePart(stone, "Cap", new Vector2(0f, 1.28f), new Vector2(1f, 0.12f), new Color(0.33f, 0.29f, 0.24f));
+            for (var line = 0; line < 4; line++)
+            {
+                StonePart(stone, $"Line{line}", new Vector2(0f, 1.02f - line * 0.16f), new Vector2(0.56f, 0.04f),
+                    new Color(0.13f, 0.11f, 0.1f));
+            }
         }
 
         private static void StonePart(GameObject stone, string name, Vector2 at, Vector2 size, Color color)

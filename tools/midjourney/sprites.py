@@ -40,7 +40,8 @@ SHORT = {"env_break_urn_01": "urn", "env_break_crate_01": "crate", "env_break_sk
          "env_tomb_checkpoint_flame_lit": "flame_lit", "env_tomb_checkpoint_flame_cold": "flame_cold",
          "training_dummy": "dummy", "training_attacker": "attacker", "npc_severyn": "severyn",
          "npc_ostap": "ostap", "npc_myroslava": "myroslava", "npc_gnat": "gnat",
-         "chest_locked": "chest_locked", "chest_open": "chest_open"}
+         "chest_locked": "chest_locked", "chest_open": "chest_open",
+         "env_stele_tomb": "stele", "env_stele_forest": "stele_forest"}
 
 
 def pinkness(px):
@@ -148,13 +149,24 @@ def fit(obj, target):
     return canvas
 
 
+def stand(obj, w, h):
+    """Into an empty w × h canvas: as tall as it allows, centred, on its bottom edge."""
+    obj = obj.crop(obj.getchannel("A").point(lambda v: 255 if v > 24 else 0).getbbox())
+    scale = min(h * 0.98 / obj.height, w * 0.98 / obj.width)
+    obj = obj.resize((max(1, round(obj.width * scale)), max(1, round(obj.height * scale))), Image.LANCZOS)
+    canvas = Image.new("RGBA", (w, h))
+    canvas.alpha_composite(obj, ((w - obj.width) // 2, h - obj.height))
+    return canvas
+
+
 def main():
     spec = json.loads((MJ / "prompts.json").read_text(encoding="utf-8"))
     flips = set(spec.get("flip", []))
     only = set(sys.argv[1:])
     done = 0
-    for path, *_ in spec["items"]:
+    for path, *rest in spec["items"]:
         name = SHORT[Path(path).name]
+        canvas = rest[3].get("canvas") if len(rest) > 3 else None
         if only and name not in only:
             continue
         src = MJ / "picks" / f"{name}.png"
@@ -167,6 +179,13 @@ def main():
         # the box comes from the placeholder (a copy under PLACEHOLDERS, else the file in place)
         target = ART / f"{path}.png"
         kept = PLACEHOLDERS / f"{path}.png" if PLACEHOLDERS else None
+        if canvas:
+            # new art with no placeholder before it: standing on the bottom of a canvas of that size
+            sprite = stand(obj, *canvas)
+            target.parent.mkdir(parents=True, exist_ok=True)
+            sprite.save(target)
+            done += 1
+            continue
         sprite = fit(obj, kept if kept and kept.exists() else target)
         for base in (ART, FINAL):
             out = base / f"{path}.png"

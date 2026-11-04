@@ -110,6 +110,20 @@
       "prop",
       "5:4",
       "iron-bound wooden treasure chest with its lid open, gold coins glinting inside"
+    ],
+    [
+      "Environment/Story/env_stele_tomb",
+      "prop",
+      "4:5",
+      "weathered upright stone stele with lines of carved ancient runes, a small crown carved at the top, chipped edges, moss at its base",
+      {"canvas": [240, 300]}
+    ],
+    [
+      "Environment/Story/env_stele_forest",
+      "prop",
+      "4:5",
+      "old upright stone marker overgrown with ivy and moss, carved rune lines half hidden by roots, a hollow tree sign carved at the top",
+      {"canvas": [240, 300]}
     ]
   ],
   "flip": [
