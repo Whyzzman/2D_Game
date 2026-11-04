@@ -59,7 +59,11 @@
     if (h > 0.6) skull(f, f.x(x - 0.12), ay - S * 0.16, S * 0.24, look);
   }
 
+  // Світла, які painter малює (свічки, гриби), — для справжніх Light2D у сцені (tools/level-art/lights.js).
+  function logLight(kind, x, y) { if (root.LevelLightLog) root.LevelLightLog.push({ kind, x: +x.toFixed(2), y: +y.toFixed(2) }); }
+
   function candles(f, x, y, look, h, seed) {
+    logLight("candle", x, y);
     const c = f.c, S = f.ppu, ay = f.y(y);
     const n = 1 + Math.floor(N.hash(seed, 1, 17) * 3);
     for (let k = 0; k < n; k++) {
@@ -99,6 +103,7 @@
   }
 
   function mushrooms(f, x, y, look, h, seed) {
+    logLight("mushroom", x, y);
     const c = f.c, S = f.ppu, ay = f.y(y);
     const n = 1 + Math.floor(N.hash(seed, 2, 29) * 3);
     for (let k = 0; k < n; k++) {

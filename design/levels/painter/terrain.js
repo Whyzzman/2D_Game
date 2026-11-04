@@ -230,9 +230,105 @@
       x: wx => (wx - wx0) * ppu,
       y: wy => H - (wy - wy0) * ppu
     };
+    drawInside(frame, zone, cx0, cy0, gw, gh, look, seed, wx0, wy0, sx, sy);
     drawTops(frame, zone, cx0, cy0, gw, gh, look, seed);
     if (look.style === "forest") trunksOf(zone).forEach(t => drawTrunk(frame, zone, t, seed));
     drawLedges(frame, zone, cx0, cy0, gw, gh, look, seed);
+  }
+
+  // У товщі каменю (2026-11-04, «щоб гра виглядала дуже дорого»; решено Claude): мазки пензля в тоні кімнати,
+  // щоб маса мала фактуру, як намальоване тло; у Гробниці — вмуровані черепи, кістки й тріщини, у Лісі —
+  // коріння крізь скелю й камінці. Малюється лише поверх каменю (source-atop) і лише вглибині, далі від
+  // країв, де стоять, — читається як фон стіни, не як щось, на що можна стати.
+  function drawInside(f, zone, cx0, cy0, gw, gh, look, seed, wx0, wy0, sx, sy) {
+    const c = f.c, S = f.ppu;
+    const solidAround = (wx, wy, r) => {
+      const [gx, gy] = [Math.floor((wx - zone.origin[0]) / zone.cell), Math.floor((wy - zone.origin[1]) / zone.cell)];
+      for (let dy = -r; dy <= r; dy++) for (let dx = -r; dx <= r; dx++) if (!T.isRock(T.at(zone, gx + dx, gy + dy))) return false;
+      return true;
+    };
+    // лише в смузі біля краю, яку видно з кімнати: не ближче 1 юніта до повітря й не далі 3,5
+    const nearAir = (wx, wy, r) => !solidAround(wx, wy, r);
+    c.save();
+    c.globalCompositeOperation = "source-atop";
+    const step = 1.9;
+    for (let gy = Math.floor(wy0 / step); gy * step < wy0 + sy; gy++) for (let gx = Math.floor(wx0 / step); gx * step < wx0 + sx; gx++) {
+      const h = N.hash(gx, gy, seed + 121);
+      const wx = (gx + 0.2 + N.hash(gx, gy, seed + 123) * 0.6) * step, wy = (gy + 0.2 + N.hash(gx, gy, seed + 125) * 0.6) * step;
+      if (!solidAround(wx, wy, 2) || !nearAir(wx, wy, 7)) continue;
+      const lk = lookAt(zone, Math.floor((wx - zone.origin[0]) / zone.cell), Math.floor((wy - zone.origin[1]) / zone.cell), look);
+      const pale = rgba(lk.lipLight || look.rim, 0.14), dark = "rgba(0,0,0,0.32)";
+      if (look.mass === "blocks") {
+        if (h < 0.1) embeddedSkull(f, wx, wy, 0.32 + N.hash(gx, gy, seed + 127) * 0.2, pale, dark);
+        else if (h < 0.22) embeddedBones(f, wx, wy, pale, seed + gx * 7 + gy);
+        else if (h < 0.4) crack(f, wx, wy, dark, seed + gx * 13 + gy);
+      } else {
+        if (h < 0.3) rootThrough(f, wx, wy, lk, seed + gx * 11 + gy);
+        else if (h < 0.45) pebbles(f, wx, wy, pale, seed + gx * 17 + gy);
+      }
+    }
+    c.restore();
+  }
+
+  function embeddedSkull(f, x, y, s, pale, dark) {
+    const c = f.c, S = f.ppu;
+    c.fillStyle = pale;
+    c.beginPath(); c.ellipse(f.x(x), f.y(y), S * s * 0.5, S * s * 0.44, 0, 0, Math.PI * 2); c.fill();
+    c.fillRect(f.x(x - s * 0.26), f.y(y - s * 0.2), S * s * 0.52, S * s * 0.3);
+    c.fillStyle = dark;
+    c.beginPath(); c.ellipse(f.x(x - s * 0.18), f.y(y), S * s * 0.11, S * s * 0.12, 0, 0, Math.PI * 2); c.fill();
+    c.beginPath(); c.ellipse(f.x(x + s * 0.18), f.y(y), S * s * 0.11, S * s * 0.12, 0, 0, Math.PI * 2); c.fill();
+  }
+
+  function embeddedBones(f, x, y, pale, seed) {
+    const c = f.c, S = f.ppu;
+    c.strokeStyle = pale; c.lineCap = "round"; c.lineWidth = S * 0.07;
+    for (let k = 0; k < 3; k++) {
+      const a = N.hash(seed, k, 3) * Math.PI, l = 0.35 + N.hash(seed, k, 5) * 0.35, ox = (N.hash(seed, k, 7) - 0.5) * 0.6;
+      c.beginPath(); c.moveTo(f.x(x + ox - Math.cos(a) * l / 2), f.y(y - Math.sin(a) * l / 2));
+      c.lineTo(f.x(x + ox + Math.cos(a) * l / 2), f.y(y + Math.sin(a) * l / 2)); c.stroke();
+    }
+  }
+
+  function crack(f, x, y, dark, seed) {
+    const c = f.c, S = f.ppu;
+    c.strokeStyle = dark; c.lineWidth = Math.max(1, S * 0.025); c.lineCap = "round";
+    let px = x, py = y;
+    c.beginPath(); c.moveTo(f.x(px), f.y(py));
+    for (let k = 0; k < 5; k++) {
+      px += (N.hash(seed, k, 3) - 0.5) * 0.5; py -= 0.15 + N.hash(seed, k, 5) * 0.3;
+      c.lineTo(f.x(px), f.y(py));
+    }
+    c.stroke();
+  }
+
+  function rootThrough(f, x, y, lk, seed) {
+    const c = f.c, S = f.ppu;
+    // корінь: товстий біля початку, звужується, з тінню під собою й світлом по верху; одна-дві гілочки
+    const a = (N.hash(seed, 1, 3) - 0.5) * 1.4 - Math.PI / 2, len = 1.4 + N.hash(seed, 1, 5) * 1.6;
+    const pts = [];
+    for (let k = 0; k <= 12; k++) {
+      const t = k / 12, bend = Math.sin(t * Math.PI) * (N.hash(seed, 1, 7) - 0.5) * 1.1;
+      pts.push([x + Math.cos(a) * len * t - Math.sin(a) * bend, y + Math.sin(a) * len * t + Math.cos(a) * bend, 0.32 * (1 - t * 0.85)]);
+    }
+    const ribbon = (o, k, col) => {
+      c.fillStyle = col; c.beginPath();
+      pts.forEach(([px, py, w], i) => i ? c.lineTo(f.x(px + o - w * k), f.y(py - o)) : c.moveTo(f.x(px + o - w * k), f.y(py - o)));
+      for (let i = pts.length - 1; i >= 0; i--) { const [px, py, w] = pts[i]; c.lineTo(f.x(px + o + w * k), f.y(py - o)); }
+      c.closePath(); c.fill();
+    };
+    ribbon(0.07, 0.6, "rgba(0,0,0,0.4)");                // its shadow in the stone
+    ribbon(0, 0.5, rgba(lk.lipDark || "#2a3a31", 0.55));  // the root, a shade lighter than the stone
+    ribbon(-0.03, 0.18, rgba(lk.lip || "#4e6656", 0.2));  // the light along it, dim
+  }
+
+  function pebbles(f, x, y, pale, seed) {
+    const c = f.c, S = f.ppu;
+    c.fillStyle = pale;
+    for (let k = 0; k < 4; k++) {
+      const ox = (N.hash(seed, k, 3) - 0.5) * 0.9, oy = (N.hash(seed, k, 5) - 0.5) * 0.6, r = 0.08 + N.hash(seed, k, 7) * 0.12;
+      c.beginPath(); c.ellipse(f.x(x + ox), f.y(y + oy), S * r, S * r * 0.7, N.hash(seed, k, 9) * 3, 0, Math.PI * 2); c.fill();
+    }
   }
 
   // Кант на верху каменю під повітрям: світла лінія, тепліша плита й пил — «тут можна стояти».
@@ -538,5 +634,20 @@
     }
   }
 
-  root.LevelTerrain = { paintChunk, loadTextures };
+  // Де шматок ставить свічки й гриби (для Light2D у сцені): той самий обхід країв, що й paintChunk, але без
+  // малювання. Лише ті, що лежать у самому шматку: у запасі довкола їх малює сусідній шматок.
+  function lightsOfChunk(zone, wx0, wy0, sx, sy, look, seed) {
+    const cell = zone.cell, M = 12;
+    const cx0 = Math.floor((wx0 - zone.origin[0]) / cell) - M, cy0 = Math.floor((wy0 - zone.origin[1]) / cell) - M;
+    const gw = Math.ceil(sx / cell) + 2 * M + 1, gh = Math.ceil(sy / cell) + 2 * M + 1;
+    const nothing = new Proxy(function () {}, { get: () => nothing, apply: () => nothing, set: () => true });
+    const frame = { c: nothing, ppu: 48, x: wx => (wx - wx0) * 48, y: wy => (sy - (wy - wy0)) * 48 };
+    root.LevelLightLog = [];
+    drawTops(frame, zone, cx0, cy0, gw, gh, look, seed);
+    const found = root.LevelLightLog.filter(l => l.x >= wx0 && l.x < wx0 + sx && l.y >= wy0 && l.y < wy0 + sy);
+    root.LevelLightLog = null;
+    return found;
+  }
+
+  root.LevelTerrain = { paintChunk, loadTextures, lightsOfChunk };
 })(window);

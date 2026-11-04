@@ -60,6 +60,14 @@
     const room = zone.rooms.find(r => r.id === q.get("id"));
     if (q.get("layer") === "front") LevelFront.paintFront(canvas, zone, room, ppu, look);
     else LevelBackdrop.paintRoom(canvas, zone, room, q.get("layer"), ppu, look);
+  } else if (what === "lights") {
+    // свічки й гриби всієї зони, шматками 16 × 16, як їх малює render.js (tools/level-art/lights.js)
+    const b = zone.bounds, cs = zone.cell, all = [];
+    const x0 = zone.origin[0] + b.minX * cs, x1 = zone.origin[0] + b.maxX * cs, y0 = zone.origin[1] + b.minY * cs, y1 = zone.origin[1] + b.maxY * cs;
+    for (let ix = Math.floor(x0 / 16); ix * 16 < x1; ix++) for (let iy = Math.floor(y0 / 16); iy * 16 < y1; iy++)
+      all.push(...LevelTerrain.lightsOfChunk(zone, ix * 16, iy * 16, 16, 16, look, seed));
+    const pre = document.createElement("pre"); pre.id = "lights"; pre.textContent = JSON.stringify(all);
+    document.body.appendChild(pre);
   } else if (what === "view") {
     // кадр гри: x, y — лівий нижній кут, 32 × 18 юнітів
     document.body.classList.add("preview");
@@ -69,7 +77,7 @@
     document.body.classList.add("preview");
     LevelBackdrop.paintPreview(canvas, zone, ppu, look, seed);
   }
-  if (what !== "preview" && what !== "view") PaintNoise.dither(canvas, seed);
+  if (what !== "preview" && what !== "view" && what !== "lights") PaintNoise.dither(canvas, seed);
   document.title = "done";
 })();
 </script>

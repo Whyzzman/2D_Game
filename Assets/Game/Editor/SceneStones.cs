@@ -17,7 +17,7 @@ namespace ForgottenKingdom.EditorTools
             var dressed = 0;
             WorldScenes.Edit(() =>
             {
-                foreach (var inscription in Object.FindObjectsByType<Inscription>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+                foreach (var inscription in Object.FindObjectsByType<Inscription>(FindObjectsInactive.Include))
                 {
                     var stone = inscription.gameObject;
                     ContentBuilder.DressStone(stone, ContentBuilder.IsForestStone(stone.name));

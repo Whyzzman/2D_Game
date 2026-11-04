@@ -171,15 +171,18 @@ namespace ForgottenKingdom.EditorTools
             Toning(village, shadows: new Color(0.5f, 0.45f, 0.42f), highlights: new Color(0.62f, 0.52f, 0.4f));
 
             var effects = Profile(EffectsProfile);
+            // Richer light (2026-11-04, «the game should look expensive»; decided by Claude): the lights
+            // bloom wider and softer, the frame's corners darken a little more. No grain or its relatives —
+            // the user's choice (ScreenGradeDataTests).
             var bloom = Ensure<Bloom>(effects);
-            bloom.threshold.Override(0.8f);
-            bloom.intensity.Override(0.4f);
-            bloom.scatter.Override(0.65f);
+            bloom.threshold.Override(0.72f);
+            bloom.intensity.Override(0.6f);
+            bloom.scatter.Override(0.72f);
             bloom.tint.Override(Color.white);
             var vignette = Ensure<Vignette>(effects);
             vignette.color.Override(Color.black);
-            vignette.intensity.Override(0.22f);
-            vignette.smoothness.Override(0.45f);
+            vignette.intensity.Override(0.28f);
+            vignette.smoothness.Override(0.5f);
             vignette.rounded.Override(false);
 
             var boss = Profile(BossProfile);
