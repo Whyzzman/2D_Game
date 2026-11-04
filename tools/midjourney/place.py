@@ -14,7 +14,7 @@ import time
 import sys
 from pathlib import Path
 
-from PIL import Image, ImageChops, ImageEnhance
+from PIL import Image, ImageChops, ImageEnhance, ImageFilter
 
 ROOT = Path(__file__).resolve().parents[2]
 EXTENSIONS = (".png", ".jpg", ".jpeg", ".webp")
@@ -112,6 +112,28 @@ def border(near):
     save(frame, near)
 
 
+# Air between the painting and the playfield (2026-11-04, user: «looks untalented — take it from Hollow Knight»):
+# the far plan is distance, not a second picture. A touch of blur takes its brush detail away, and the room's own
+# tinted haze — the painting's average hue, lifted and kept coloured (a grey one turned them milky) — eats a part
+# of its contrast, more toward the floor, where the mist lies. The dark playfield then stands in front of it.
+HAZE_TOP, HAZE_BOTTOM, HAZE_L, BLUR = 0.22, 0.42, 34.0, 1.4
+
+
+def atmosphere(image):
+    w, h = image.size
+    small = image.resize((1, 1), Image.BOX).getpixel((0, 0))
+    l = srgb_to_lstar(sum(small) / 3)
+    lift = (HAZE_L - l) * 1.6
+    haze = tuple(max(0, min(255, round(c + lift))) for c in small)
+    # keep the hue: push the haze a little further from grey than the average was
+    grey = sum(haze) / 3
+    haze = tuple(max(0, min(255, round(grey + (c - grey) * 1.4))) for c in haze)
+    image = image.filter(ImageFilter.GaussianBlur(BLUR))
+    ramp = Image.linear_gradient("L").resize((w, h))  # 0 at the top, 255 at the bottom
+    mask = ramp.point(lambda v: round(255 * (HAZE_TOP + (HAZE_BOTTOM - HAZE_TOP) * v / 255)))
+    return Image.composite(Image.new("RGB", (w, h), haze), image, mask)
+
+
 def place(source, target):
     tw, th = Image.open(target).size
     image = Image.open(source).convert("RGB")
@@ -122,6 +144,7 @@ def place(source, target):
     left, top = (w - tw) // 2, (h - th) // 2
     image = image.crop((left, top, left + tw, top + th))
     image = ImageEnhance.Color(image).enhance(SATURATION).point(LUT)
+    image = atmosphere(image)
     image = feather(image)
     save(image, target)
     near = target.with_name(target.name.replace("_mid.png", "_near.png"))

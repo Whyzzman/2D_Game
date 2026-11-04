@@ -19,7 +19,7 @@ import sys
 from pathlib import Path
 
 import numpy as np
-from PIL import Image, ImageDraw, ImageFilter
+from PIL import Image, ImageDraw, ImageEnhance, ImageFilter
 
 ROOT = Path(__file__).resolve().parents[2]
 MJ = ROOT / "design/levels/midjourney/props"
@@ -32,7 +32,8 @@ PINK_BG = 0.3    # this magenta looks like the background whatever its brightnes
 PINK_ALWAYS = 0.33  # and this magenta is the background even shut in by the object (between bars, under a cart)
 # and per picture, where a shut-in background is darker: inside the gate's arch, behind its bars
 PINK_ALWAYS_BY = {"gate": 0.13}
-BY_COLOUR = {"barrier"}         # violet ghost fire: pink itself, cut by its distance from the border colour
+BY_COLOUR = {"barrier"}
+UNINKED = {"barrier", "flame_lit", "flame_cold", "severyn"}  # fire and a ghost glow, they take no outline         # violet ghost fire: pink itself, cut by its distance from the border colour
 
 SHORT = {"env_break_urn_01": "urn", "env_break_crate_01": "crate", "env_break_skulls_01": "skulls",
          "env_forest_stump_01": "stump", "env_forest_arena_crest": "crest", "env_tomb_boss_gate": "gate",
@@ -149,6 +150,28 @@ def fit(obj, target):
     return canvas
 
 
+INK = (7, 8, 11)
+
+
+def harmonize(obj):
+    """Into the game's look (2026-11-04, user: «looks untalented — like Hollow Knight»): Midjourney's near-photo
+    detail beside a hand-inked hero read as a pasted photo. The fine texture is calmed (a median), the colours go a
+    little duller and darker, and the object gets the same dark ink outline as the characters."""
+    rgb = obj.convert("RGB").filter(ImageFilter.MedianFilter(5))
+    rgb = ImageEnhance.Color(rgb).enhance(0.72)
+    rgb = ImageEnhance.Brightness(rgb).enhance(0.88)
+    rgb = ImageEnhance.Contrast(rgb).enhance(1.08)
+    alpha = obj.getchannel("A")
+    body = rgb.convert("RGBA")
+    body.putalpha(alpha)
+    ring = max(2, round(min(obj.size) / 90))
+    outline = alpha.filter(ImageFilter.MaxFilter(ring * 2 + 1)).filter(ImageFilter.GaussianBlur(0.6))
+    out = Image.new("RGBA", obj.size, INK + (0,))
+    out.putalpha(outline)
+    out.alpha_composite(body)
+    return out
+
+
 def stand(obj, w, h):
     """Into an empty w × h canvas: as tall as it allows, centred, on its bottom edge."""
     obj = obj.crop(obj.getchannel("A").point(lambda v: 255 if v > 24 else 0).getbbox())
@@ -176,6 +199,8 @@ def main():
         obj = cut(Image.open(src), by_colour=name in BY_COLOUR, always=PINK_ALWAYS_BY.get(name))
         if name in flips:
             obj = obj.transpose(Image.FLIP_LEFT_RIGHT)
+        if name not in UNINKED:
+            obj = harmonize(obj)
         # the box comes from the placeholder (a copy under PLACEHOLDERS, else the file in place)
         target = ART / f"{path}.png"
         kept = PLACEHOLDERS / f"{path}.png" if PLACEHOLDERS else None

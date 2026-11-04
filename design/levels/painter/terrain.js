@@ -695,7 +695,12 @@
           };
           const hangers = () => [[wx0 + 0.3, ceilingAt(gx0)], [wx1 - 0.3, ceilingAt(gx1 - 1)]];
           const wallSide = tree ? (tree.x === gx1 ? 1 : -1) : wallLeft ? -1 : 1;
-          if (kind === "shelf") M.shelf(f, wx0, wx1, wyt, wallSide, pal, s2);
+          if (kind === "outcrop") {
+            // виступ стіни: та сама плита, що й підвісна, у кольорах кімнати, без ланцюгів — росте з каменю
+            const lk = lookAt(zone, gx0, gy, look), tinted = Object.assign({}, lk, { stone: lk.lip, core: lk.shadowTint || lk.core });
+            M.slab(f, wx0 - (wallLeft ? 0.25 : 0), wx1 + (wallRight ? 0.25 : 0), wyt, tinted, s2);
+            lip(f, wx0, wx1, wyt, lk, s2);
+          } else if (kind === "shelf") M.shelf(f, wx0, wx1, wyt, wallSide, pal, s2);
           else if (kind === "branch") M.branch(f, wx0, wx1, wyt, wallSide, pal, s2);
           else if (kind === "balcony") M.balcony(f, wx0, wx1, wyt, wallSide, pal, s2);
           else if (kind === "bridge") {

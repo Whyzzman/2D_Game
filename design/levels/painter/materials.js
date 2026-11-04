@@ -25,9 +25,13 @@
     const r = N.hash(seed, 3, 17);
     if (attached) {
       if (zoneName === "forest") return "branch";
+      // Гробниця — камінь, як її стіни (2026-11-04, «бездарно, як у Hollow Knight»): дерев'яна полиця була
+      // чужим матеріалом і читалась заглушкою; виступ стіни з кантом — одне ціле з каменем.
+      if (zoneName === "tomb") return "outcrop";
       if (zoneName === "capital") return r < 0.6 ? "balcony" : "shelf";
       return "shelf";
     }
+    if (zoneName === "tomb") return "slab"; // і вільні — кам'яні плити на ланцюгах, не дерев'яний настил
     if (width >= 8) return "bridge";
     if (zoneName === "forest") return r < 0.55 ? "log" : "hanging";
     if (zoneName === "tomb") return r < 0.5 ? "slab" : "hanging";
