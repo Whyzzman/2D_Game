@@ -88,6 +88,13 @@ namespace ForgottenKingdom
         public bool IsWallJumpPending { get; set; }
 
         /// <summary>
+        /// This step's press was the jump off the ground (or a coyote jump). The motor keeps it from
+        /// also being taken as a wall's leap: standing against a rise and jumping must go up it, not
+        /// bounce off (user's report 2026-11-04).
+        /// </summary>
+        public bool JumpedOffGround { get; private set; }
+
+        /// <summary>
         /// Gives the air jump and air dash back, as touching a wall does in Hollow Knight: slide or
         /// run on a wall and both are ready again for the leap off it.
         /// </summary>
@@ -163,6 +170,7 @@ namespace ForgottenKingdom
         public Vector2 Step(Vector2 velocity, bool hasGround, MovementInput input, float deltaTime,
             LocomotionMode mode = LocomotionMode.Normal, float movementScale = 1f)
         {
+            JumpedOffGround = false;
             if (deltaTime <= 0f)
             {
                 return velocity;
@@ -238,7 +246,8 @@ namespace ForgottenKingdom
                 var reversing = hasDirection && Mathf.Abs(velocity.x) > MotionThreshold
                     && Mathf.Sign(horizontal) != Mathf.Sign(velocity.x);
                 var acceleration = IsGrounded
-                    ? (hasDirection ? _settings.GroundAcceleration : _settings.GroundDeceleration)
+                    ? (reversing ? _settings.GroundTurnAcceleration
+                        : hasDirection ? _settings.GroundAcceleration : _settings.GroundDeceleration)
                     : (reversing ? _settings.AirTurnAcceleration
                         : hasDirection ? _settings.AirAcceleration : _settings.AirDeceleration);
                 velocity.x = Mathf.MoveTowards(velocity.x, horizontal * speed, acceleration * deltaTime);
@@ -256,6 +265,7 @@ namespace ForgottenKingdom
             else if (_bufferRemaining >= 0f && _coyoteRemaining >= 0f && !_awaitingGroundExit)
             {
                 velocity.y = _settings.JumpSpeed;
+                JumpedOffGround = true;
                 _bufferRemaining = -1f;
                 _coyoteRemaining = -1f;
                 _awaitingGroundExit = true;
@@ -303,7 +313,15 @@ namespace ForgottenKingdom
                     gravity *= _settings.ApexGravityMultiplier;
                 }
 
-                velocity.y = Mathf.Max(velocity.y - gravity * deltaTime, -_settings.MaxFallSpeed);
+                // Held down on the way down: a dive. It only ever comes down sooner.
+                var diving = velocity.y <= 0f && input.Vertical < -0.5f;
+                if (diving)
+                {
+                    gravity *= _settings.FastFallGravityMultiplier;
+                }
+
+                velocity.y = Mathf.Max(velocity.y - gravity * deltaTime,
+                    -(diving ? _settings.FastFallMaxSpeed : _settings.MaxFallSpeed));
             }
 
             State = IsGrounded

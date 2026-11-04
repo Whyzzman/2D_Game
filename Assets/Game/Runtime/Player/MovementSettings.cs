@@ -54,6 +54,13 @@ namespace ForgottenKingdom
             + "be nudged onto it (GAME_FEEL_IDEAS.md, item 2). Measured from the body's side; zero "
             + "turns it off.")]
         [SerializeField, Min(0f)] private float _ledgeForgiveness = 0.1f;
+        // Running feel (user's request 2026-11-04, «more mobile, more mechanics»; decided by Claude):
+        // nothing here raises a jump or widens a gap, the levels are built on those.
+        [Tooltip("Turning round on the ground: twice the start-up, so a reversal snaps instead of skating.")]
+        [SerializeField, Min(0f)] private float _groundTurnAcceleration = 300f;
+        [Tooltip("Held down in the air while falling: gravity times this and the cap below — a dive.")]
+        [SerializeField, Min(1f)] private float _fastFallGravityMultiplier = 1.4f;
+        [SerializeField, Min(0f)] private float _fastFallMaxSpeed = 26f;
 
         public float WalkSpeed => _walkSpeed;
         public float RunSpeed => _runSpeed;
@@ -76,5 +83,8 @@ namespace ForgottenKingdom
         public float AirJumpSpeed => _airJumpSpeed;
         public float PogoSpeed => _pogoSpeed;
         public float LedgeForgiveness => _ledgeForgiveness;
+        public float GroundTurnAcceleration => _groundTurnAcceleration;
+        public float FastFallGravityMultiplier => _fastFallGravityMultiplier;
+        public float FastFallMaxSpeed => _fastFallMaxSpeed;
     }
 }

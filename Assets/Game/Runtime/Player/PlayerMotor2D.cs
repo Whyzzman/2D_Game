@@ -39,6 +39,13 @@ namespace ForgottenKingdom
         private const float LedgeLiftHeight = 0.4f;
         /// <summary>The lift waits for the top of the jump: below this rise the body is no longer climbing.</summary>
         private const float LedgeLiftRise = 1.5f;
+        /// <summary>
+        /// A stone edge pushed into with the feet this close under its top is climbed onto (user's
+        /// report 2026-11-04: «a small rise right of me, right + jump — I must get onto it»). Kept
+        /// inside LevelReach's generous margin (a jump 4% stronger is 0.16 higher), so no gate of
+        /// the second jump opens.
+        /// </summary>
+        private const float MantleHeight = 0.15f;
         private readonly Collider2D[] _liftOverlaps = new Collider2D[8];
         private readonly RaycastHit2D[] _groundHits = new RaycastHit2D[8];
         private readonly Collider2D[] _cornerOverlaps = new Collider2D[4];
@@ -211,7 +218,11 @@ namespace ForgottenKingdom
             if (_skillVelocity.HasValue) { nextVelocity = _skillVelocity.Value; }
             if (_wallMovement != null)
             {
-                nextVelocity = _wallMovement.Step(nextVelocity, input, wall,
+                // The press that just left the ground is spent: against a rise it goes up the rise.
+                var wallInput = _logic.JumpedOffGround
+                    ? new MovementInput(input.Horizontal, false, input.IsJumpHeld, input.JumpPressAge, input.Vertical)
+                    : input;
+                nextVelocity = _wallMovement.Step(nextVelocity, wallInput, wall,
                     IsGrounded, canWall, Time.fixedDeltaTime, canRunWall);
                 // Hollow Knight's rule: a wall gives the air jump and the air dash back — once the
                 // wall is truly the hero's (wall-run), or a wall beside any gate would open it.
@@ -248,7 +259,7 @@ namespace ForgottenKingdom
             }
 
             if (!IsGrounded && nextVelocity.y < LedgeLiftRise && !_skillVelocity.HasValue && !IsDashing
-                && mode != LocomotionMode.Knockback && TryLedgeLift())
+                && mode != LocomotionMode.Knockback && (TryLedgeLift() || TryMantle(input.Horizontal)))
             {
                 nextVelocity.y = 0f;
             }
@@ -579,6 +590,40 @@ namespace ForgottenKingdom
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Pushing into a stone wall in the air with the feet just under its top: up onto the top
+        /// and a step over it. See <see cref="MantleHeight"/>.
+        /// </summary>
+        private bool TryMantle(float horizontal)
+        {
+            if (Mathf.Abs(horizontal) <= 0.1f)
+            {
+                return false;
+            }
+
+            var wall = horizontal > 0f ? 1 : -1;
+            var position = _body.position;
+            var feet = FeetAt(position);
+            var edgeX = position.x + _capsule.offset.x + wall * (_capsule.size.x * 0.5f + 0.06f);
+            var from = new Vector2(edgeX, feet + MantleHeight + 0.02f);
+            var hit = Physics2D.Raycast(from, Vector2.down, MantleHeight + 0.04f, _groundMask);
+            // a ray starting inside stone is a tall wall, not an edge
+            if (hit.collider == null || hit.distance < 0.001f || hit.normal.y < MinimumGroundNormal || hit.point.y <= feet)
+            {
+                return false;
+            }
+
+            var lifted = position + new Vector2(wall * 0.1f, hit.point.y - feet + 0.01f);
+            if (!IsSpaceClear(lifted))
+            {
+                return false;
+            }
+
+            _body.position = lifted;
+            Physics2D.SyncTransforms();
+            return true;
         }
 
         /// <summary>Whether falling <paramref name="fall"/> from there meets ground flat enough to stand on.</summary>

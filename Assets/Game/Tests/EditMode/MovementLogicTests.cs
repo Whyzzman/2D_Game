@@ -20,7 +20,7 @@ namespace ForgottenKingdom.Tests
         public void RunAcceleratesToLimitAndBrakesToZero()
         {
             var velocity = _logic.Step(Vector2.zero, true, new MovementInput(1f), StepTime);
-            Assert.That(velocity.x, Is.EqualTo(1.2f).Within(0.001f));
+            Assert.That(velocity.x, Is.EqualTo(_settings.GroundAcceleration * StepTime).Within(0.001f));
             for (var i = 0; i < 20; i++)
             {
                 velocity = _logic.Step(velocity, true, new MovementInput(1f), StepTime);
@@ -44,15 +44,56 @@ namespace ForgottenKingdom.Tests
             {
                 velocity = _logic.Step(velocity, true, new MovementInput(0.5f), StepTime);
             }
-            Assert.That(velocity.x, Is.EqualTo(3.25f).Within(0.001f));
+            Assert.That(velocity.x, Is.EqualTo(_settings.RunSpeed * 0.5f).Within(0.001f));
             Assert.That(_logic.State, Is.EqualTo(MovementState.Run));
             for (var i = 0; i < 20; i++)
             {
                 velocity = _logic.Step(velocity, true, new MovementInput(0.3f), StepTime);
             }
-            Assert.That(velocity.x, Is.EqualTo(1.95f).Within(0.001f));
+            Assert.That(velocity.x, Is.EqualTo(_settings.RunSpeed * 0.3f).Within(0.001f));
             Assert.That(_logic.State, Is.EqualTo(MovementState.Walk),
                 "A light tilt still reads as a walk for the animation.");
+        }
+
+        [Test]
+        public void TheJumpOffTheGroundIsMarkedSoAWallBesideItDoesNotTakeIt()
+        {
+            _logic.Step(Vector2.zero, true, new MovementInput(1f), StepTime);
+            var velocity = _logic.Step(Vector2.zero, true, new MovementInput(1f, true, true), StepTime);
+            Assert.That(velocity.y, Is.EqualTo(_settings.JumpSpeed - _settings.RiseGravity * StepTime).Within(0.001f));
+            Assert.That(_logic.JumpedOffGround, Is.True, "The motor keeps this press from the wall's leap.");
+            _logic.Step(velocity, false, new MovementInput(1f, false, true), StepTime);
+            Assert.That(_logic.JumpedOffGround, Is.False, "Only the step of the jump itself.");
+        }
+
+        [Test]
+        public void TurningRoundOnTheGroundSnapsQuickerThanStartingUp()
+        {
+            var velocity = _logic.Step(new Vector2(_settings.RunSpeed, 0f), true, new MovementInput(-1f), StepTime);
+            Assert.That(velocity.x, Is.EqualTo(_settings.RunSpeed - _settings.GroundTurnAcceleration * StepTime).Within(0.001f));
+            Assert.That(_settings.GroundTurnAcceleration, Is.GreaterThan(_settings.GroundAcceleration));
+        }
+
+        [Test]
+        public void HoldingDownWhileFallingDivesButNeverRisesHigher()
+        {
+            var plain = new Vector2(0f, -1f);
+            var dive = plain;
+            for (var i = 0; i < 40; i++)
+            {
+                plain = _logic.Step(plain, false, default, StepTime);
+            }
+            _logic.Reset();
+            for (var i = 0; i < 40; i++)
+            {
+                dive = _logic.Step(dive, false, new MovementInput(0f, vertical: -1f), StepTime);
+            }
+            Assert.That(plain.y, Is.EqualTo(-_settings.MaxFallSpeed).Within(0.001f));
+            Assert.That(dive.y, Is.EqualTo(-_settings.FastFallMaxSpeed).Within(0.001f));
+            _logic.Reset();
+            var rising = _logic.Step(new Vector2(0f, 5f), false, new MovementInput(0f, false, true, 0f, -1f), StepTime);
+            Assert.That(rising.y, Is.EqualTo(5f - _settings.RiseGravity * StepTime).Within(0.001f),
+                "Down does nothing on the way up.");
         }
 
         [Test]

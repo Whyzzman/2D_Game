@@ -74,7 +74,8 @@ namespace ForgottenKingdom
                     }
                     else if (velocity.y < 0f)
                     {
-                        velocity.y = Mathf.Max(velocity.y, -_slideSpeed);
+                        // held down, the hero lets the wall go faster
+                        velocity.y = Mathf.Max(velocity.y, -_slideSpeed * (input.Vertical < -0.5f ? 2.5f : 1f));
                         WallSide = wallDirection;
                         State = WallMovementState.Slide;
                     }

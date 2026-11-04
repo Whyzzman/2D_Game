@@ -200,7 +200,8 @@ namespace ForgottenKingdom
                 return default;
             }
 
-            var horizontal = _move.ReadValue<Vector2>().x;
+            var stick = _move.ReadValue<Vector2>();
+            var horizontal = stick.x;
             var isJumpHeld = _jump.IsPressed();
             if (_waitingForRelease)
             {
@@ -221,7 +222,7 @@ namespace ForgottenKingdom
             }
 
             var input = new MovementInput(horizontal, _hasJumpPress, isJumpHeld,
-                (float)System.Math.Max(0d, Time.timeAsDouble - _jumpPressedAt));
+                (float)System.Math.Max(0d, Time.timeAsDouble - _jumpPressedAt), stick.y);
             _hasJumpPress = false;
             return input;
         }

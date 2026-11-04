@@ -6,14 +6,17 @@ namespace ForgottenKingdom
         public readonly bool IsJumpPressed;
         public readonly bool IsJumpHeld;
         public readonly float JumpPressAge;
+        /// <summary>The stick's up/down: held down in the air falls faster and slides a wall quicker.</summary>
+        public readonly float Vertical;
 
         public MovementInput(float horizontal, bool isJumpPressed = false,
-            bool isJumpHeld = false, float jumpPressAge = 0f)
+            bool isJumpHeld = false, float jumpPressAge = 0f, float vertical = 0f)
         {
             Horizontal = horizontal;
             IsJumpPressed = isJumpPressed;
             IsJumpHeld = isJumpHeld;
             JumpPressAge = jumpPressAge;
+            Vertical = vertical;
         }
     }
 
