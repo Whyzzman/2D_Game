@@ -44,10 +44,31 @@
     g.strokeStyle = color; g.lineWidth = w; g.beginPath(); pts.forEach((p, i) => i ? g.lineTo(...p) : g.moveTo(...p)); g.stroke();
   }
   // кінцівка вниз від (x, y): a1 — від вертикалі (+ вперед), a2 — згин
+  // Кінцівка — не палиця однієї товщини (2026-11-04, «на рівні Hollow Knight»): два звужені сегменти з
+  // округлим суглобом, товстіші біля тіла; контур — той самий чорнильний, світло — з tools/characters/shade.py.
+  function taper(g, a, b, wa, wb, color) {
+    const dx = b[0] - a[0], dy = b[1] - a[1], len = Math.hypot(dx, dy) || 1, nx = -dy / len, ny = dx / len;
+    // тіло сегмента — опуклий чотирикутник, кінці — повні круги (дуги з напрямками лишали дірки в суглобах)
+    const body = (grow) => {
+      const ra = wa / 2 + grow, rb = wb / 2 + grow, mx = (a[0] + b[0]) / 2, my = (a[1] + b[1]) / 2, bulge = (ra + rb) * 0.55;
+      g.beginPath();
+      g.moveTo(a[0] + nx * ra, a[1] + ny * ra);
+      g.quadraticCurveTo(mx + nx * bulge, my + ny * bulge, b[0] + nx * rb, b[1] + ny * rb);
+      g.lineTo(b[0] - nx * rb, b[1] - ny * rb);
+      g.quadraticCurveTo(mx - nx * bulge, my - ny * bulge, a[0] - nx * ra, a[1] - ny * ra);
+      g.closePath(); g.fill();
+      g.beginPath(); g.arc(a[0], a[1], ra, 0, PI2); g.fill();
+      g.beginPath(); g.arc(b[0], b[1], rb, 0, PI2); g.fill();
+    };
+    g.fillStyle = INK; body(2);
+    g.fillStyle = color; body(0);
+  }
   function limb(g, x, y, a1, l1, a2, l2, w, color, w2) {
     const r1 = R(a1), r2 = R(a1 - a2);
     const k = [x + S(r1) * l1, y + Math.cos(r1) * l1], e = [k[0] + S(r2) * l2, k[1] + Math.cos(r2) * l2];
-    stroke(g, w, color, [[x, y], k]); stroke(g, w2 || w, color, [k, e]);
+    const lower = w2 || w;
+    taper(g, [x, y], k, w * 1.2, w * 0.85, color);
+    taper(g, k, e, lower * 0.95, lower * 0.62, color);
     return { knee: k, end: e, dir: r2 };
   }
   function shape(g, fill, pts, outline) {
