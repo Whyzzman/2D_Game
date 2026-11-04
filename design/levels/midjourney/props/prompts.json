@@ -116,14 +116,192 @@
       "prop",
       "4:5",
       "weathered upright stone stele with lines of carved ancient runes, a small crown carved at the top, chipped edges, moss at its base",
-      {"canvas": [240, 300]}
+      {
+        "canvas": [
+          240,
+          300
+        ]
+      }
     ],
     [
       "Environment/Story/env_stele_forest",
       "prop",
       "4:5",
       "old upright stone marker overgrown with ivy and moss, carved rune lines half hidden by roots, a hollow tree sign carved at the top",
-      {"canvas": [240, 300]}
+      {
+        "canvas": [
+          240,
+          300
+        ]
+      }
+    ],
+    [
+      "Environment/FallenVillage/Props/env_village_lantern_01",
+      "prop",
+      "1:3",
+      "old iron lantern hanging from a tall crooked wooden post, a dim warm flame inside"
+    ],
+    [
+      "Environment/AshenCapital/Props/env_capital_brazier_01",
+      "prop",
+      "1:2",
+      "tall wrought iron brazier on three legs with glowing embers and a small flame"
+    ],
+    [
+      "Environment/FallenVillage/Props/env_village_barrel_01",
+      "prop",
+      "1:1",
+      "old wooden barrel with iron hoops, a dent and a cracked stave"
+    ],
+    [
+      "Environment/FallenVillage/Props/env_village_fence_01",
+      "prop",
+      "4:1",
+      "short broken wooden village fence, leaning planks tied with rope"
+    ],
+    [
+      "Environment/FallenVillage/Props/env_village_cross_01",
+      "prop",
+      "1:2",
+      "weathered wooden grave cross with a faded cloth tied to it"
+    ],
+    [
+      "Environment/FallenVillage/Props/env_village_garland_01",
+      "prop",
+      "6:1",
+      "string of faded torn festival bunting flags hanging in a sagging curve"
+    ],
+    [
+      "Environment/FallenVillage/Props/env_village_tree_01",
+      "prop",
+      "3:4",
+      "small dead gnarled village tree with bare twisted branches"
+    ],
+    [
+      "Environment/FallenVillage/Props/env_village_house_02",
+      "prop",
+      "4:5",
+      "abandoned half-timbered village house with a collapsed thatched roof and dark windows"
+    ],
+    [
+      "Environment/AshenCapital/Props/env_capital_tree_burnt_01",
+      "prop",
+      "3:5",
+      "tall burnt dead tree, charred black trunk and broken branches, faint embers in the bark"
+    ],
+    [
+      "Environment/FallenVillage/Props/env_village_house_01",
+      "prop",
+      "4:5",
+      "small leaning timber village cottage with a stone chimney and a boarded window"
+    ],
+    [
+      "Environment/FallenVillage/Props/env_village_hay_01",
+      "prop",
+      "3:2",
+      "pile of old hay bales tied with rope, straw sticking out"
+    ],
+    [
+      "Environment/FallenVillage/Props/env_village_cart_01",
+      "prop",
+      "3:2",
+      "broken wooden farm cart with one wheel off, sacks on it"
+    ],
+    [
+      "Environment/AshenCapital/Props/env_capital_gate_01",
+      "prop",
+      "1:1",
+      "huge ruined gothic city gate arch with a broken portcullis, burnt stone and a torn crimson banner"
+    ],
+    [
+      "Environment/AshenCapital/Props/env_capital_column_01",
+      "prop",
+      "1:4",
+      "tall cracked gothic stone column with a carved capital"
+    ],
+    [
+      "Environment/AshenCapital/Props/env_capital_banner_01",
+      "prop",
+      "1:3",
+      "long torn crimson royal banner with a faded golden crown emblem hanging from a pole"
+    ],
+    [
+      "Environment/FallenVillage/Props/env_village_stall_01",
+      "prop",
+      "1:1",
+      "small wooden market stall with a torn cloth awning and empty baskets"
+    ],
+    [
+      "Environment/AshenCapital/Props/env_capital_house_01",
+      "prop",
+      "2:3",
+      "tall narrow burnt gothic townhouse facade with pointed windows and a broken balcony"
+    ],
+    [
+      "Environment/AshenCapital/Props/env_capital_cart_01",
+      "prop",
+      "3:2",
+      "overturned burnt merchant cart with scattered crates"
+    ],
+    [
+      "Environment/AshenCapital/Props/env_capital_ash_bank_01",
+      "prop",
+      "4:1",
+      "low drift of grey ash with half-buried debris"
+    ],
+    [
+      "Environment/FallenVillage/Props/env_village_well_01",
+      "prop",
+      "1:1",
+      "old stone village well with a wooden roof, a rope and bucket"
+    ],
+    [
+      "Environment/FallenVillage/Props/env_village_forge_01",
+      "prop",
+      "4:3",
+      "village forge with a stone hearth, bellows and an anvil, embers glowing"
+    ],
+    [
+      "Environment/FallenVillage/Props/env_village_church_01",
+      "prop",
+      "3:4",
+      "small ruined wooden village church with a bell gable, broken stained glass window glowing amber"
+    ],
+    [
+      "Environment/FallenVillage/Props/env_village_bell_01",
+      "prop",
+      "1:1",
+      "large cracked bronze church bell"
+    ],
+    [
+      "Environment/AshenCapital/Props/env_capital_throne_01",
+      "prop",
+      "4:5",
+      "colossal dark royal throne of iron and gold with a tall spiked back, chains draped over it"
+    ],
+    [
+      "Environment/AshenCapital/Props/env_capital_temple_01",
+      "prop",
+      "6:7",
+      "ruined gothic temple facade with a broken rose window and two burnt spires"
+    ],
+    [
+      "Environment/AshenCapital/Props/env_capital_statue_01",
+      "prop",
+      "1:2",
+      "weeping stone angel statue on a plinth, wings folded, cracked"
+    ],
+    [
+      "Environment/AshenCapital/Props/env_capital_house_02",
+      "prop",
+      "2:3",
+      "burnt gothic townhouse with a collapsed roof and a crooked chimney"
+    ],
+    [
+      "Environment/AshenCapital/Props/env_capital_bell_01",
+      "prop",
+      "1:1",
+      "heavy blackened bronze bell fallen on its side, cracked"
     ]
   ],
   "flip": [

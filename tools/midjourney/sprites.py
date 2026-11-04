@@ -32,7 +32,7 @@ PINK_BG = 0.3    # this magenta looks like the background whatever its brightnes
 PINK_ALWAYS = 0.33  # and this magenta is the background even shut in by the object (between bars, under a cart)
 # and per picture, where a shut-in background is darker: inside the gate's arch, behind its bars
 PINK_ALWAYS_BY = {"gate": 0.13}
-BY_COLOUR = {"barrier"}
+BY_COLOUR = {"barrier", "env_capital_banner_01", "env_capital_throne_01"}
 UNINKED = {"barrier", "flame_lit", "flame_cold", "severyn"}  # fire and a ghost glow, they take no outline         # violet ghost fire: pink itself, cut by its distance from the border colour
 
 SHORT = {"env_break_urn_01": "urn", "env_break_crate_01": "crate", "env_break_skulls_01": "skulls",
@@ -188,7 +188,7 @@ def main():
     only = set(sys.argv[1:])
     done = 0
     for path, *rest in spec["items"]:
-        name = SHORT[Path(path).name]
+        name = SHORT.get(Path(path).name, Path(path).name)  # new ones are picked by their file name
         canvas = rest[3].get("canvas") if len(rest) > 3 else None
         if only and name not in only:
             continue
