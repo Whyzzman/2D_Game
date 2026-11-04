@@ -289,8 +289,16 @@
   const GUARDIAN = {
     w: 272, h: 300, hip: 110, thigh: 52, shin: 52, eyes: "#ffb27a",
     draw(g, p) {
-      const c = { armor: "#3a3340", armorLight: "#5c5266", armorDark: "#1e1a22", cape: "#6e1e22", capeDark: "#40121a", crown: "#c9a24e", shield: "#3a2c2c", emblem: "#e2843c", blade: "#a8a2a0" };
+      // Вигляд підміняють боси на цьому ж ріґу (enemies-vc.js): look — кольори, headgear, weapon, shield, back.
+      const c = Object.assign({ armor: "#3a3340", armorLight: "#5c5266", armorDark: "#1e1a22", cape: "#6e1e22", capeDark: "#40121a", crown: "#c9a24e", shield: "#3a2c2c", emblem: "#e2843c", blade: "#a8a2a0", crack: "#b07cff" }, this.look);
       const hip = -this.hip;
+      if (this.back === "bell") {
+        // дзвін на спині Дзвонаря
+        g.save(); g.translate(-38, hip - 96); g.rotate(R(-8 + p.lean * 0.2));
+        shape(g, c.bell || "#6e522c", [[-30, 40], [-24, -20], [-12, -40], [12, -40], [24, -20], [30, 40]], 5);
+        g.fillStyle = "rgba(255,210,140,0.25)"; g.fillRect(-20, -30, 8, 60);
+        g.restore();
+      }
       // плащ позаду
       g.save(); g.translate(-10, hip - 92);
       rags(g, -34, 0, 22, 50, 150, p, c.cape, 9);
@@ -300,15 +308,23 @@
       // меч у задній руці (замахи — нею)
       const sa = limb(g, -18, hip - 90, p.armB, 40, p.elbowB, 36, 18, c.armorDark);
       g.save(); g.translate(sa.end[0], sa.end[1]); g.rotate(R(p.weapon));
-      shape(g, c.blade, [[10, -9], [120, -5], [134, 0], [120, 5], [10, 9]], 4);
-      g.fillStyle = INK; g.fillRect(2, -20, 10, 40); g.fillStyle = c.crown; g.fillRect(4, -18, 6, 36);
-      g.fillStyle = "#3a2a20"; g.fillRect(-18, -5, 22, 10);
+      if (this.weapon === "hammer") {
+        // молот дзвонаря: довге древко, важкий бронзовий обух
+        g.fillStyle = INK; g.fillRect(-20, -6, 130, 12); g.fillStyle = "#3a2a20"; g.fillRect(-18, -4, 126, 8);
+        shape(g, c.blade, [[96, -30], [132, -30], [138, -20], [138, 20], [132, 30], [96, 30], [90, 20], [90, -20]], 5);
+        g.fillStyle = "rgba(255,220,160,0.25)"; g.fillRect(100, -24, 6, 48);
+      } else {
+        const L = this.weapon === "greatsword" ? 1.3 : 1;
+        shape(g, c.blade, [[10, -9 * L], [120 * L, -5 * L], [134 * L, 0], [120 * L, 5 * L], [10, 9 * L]], 4);
+        g.fillStyle = INK; g.fillRect(2, -20, 10, 40); g.fillStyle = c.crown; g.fillRect(4, -18, 6, 36);
+        g.fillStyle = "#3a2a20"; g.fillRect(-18, -5, 22, 10);
+      }
       g.restore();
       // тулуб: важкий трапецієподібний обладунок, тріщина на грудях
       g.save(); g.translate(0, hip); g.rotate(R(p.lean * 0.35));
       shape(g, c.armor, [[-34, 6], [-46, -74], [-26, -100], [30, -100], [48, -74], [34, 6]], 5);
       g.fillStyle = c.armorLight; g.fillRect(-36, -92, 72, 10);
-      g.strokeStyle = "#b07cff"; g.lineWidth = 3 + p.glow * 2; g.shadowColor = "#b07cff"; g.shadowBlur = 10 + p.glow * 20;
+      g.strokeStyle = c.crack; g.lineWidth = 3 + p.glow * 2; g.shadowColor = c.crack; g.shadowBlur = 10 + p.glow * 20;
       g.beginPath(); g.moveTo(-6, -84); g.lineTo(4, -66); g.lineTo(-4, -50); g.lineTo(8, -36); g.stroke();
       g.shadowBlur = 0;
       if (p.glow > 0.05) {
@@ -324,8 +340,18 @@
       shape(g, c.armor, [[-20, 18], [-22, -26], [-10, -36], [14, -36], [22, -24], [20, 18]], 5);
       g.fillStyle = "#06060a"; g.fillRect(-4, -12, 24, 6);
       eye(g, 6, -9, 3, p.eyes, this.eyes); eye(g, 15, -9, 2.6, p.eyes, this.eyes);
-      shape(g, c.crown, [[-18, -34], [18, -34], [18, -44], [12, -38], [8, -52], [2, -40], [-4, -54], [-8, -40], [-14, -50], [-18, -42]], 3);
+      if (this.headgear === "horns") {
+        shape(g, c.crown, [[-18, -30], [-34, -44], [-38, -64], [-26, -46], [-12, -36]], 3);
+        shape(g, c.crown, [[16, -32], [30, -48], [30, -68], [22, -48], [8, -36]], 3);
+      } else if (this.headgear === "hood") {
+        shape(g, c.cape, [[-26, 22], [-28, -24], [-10, -46], [18, -44], [28, -22], [26, 20], [14, 8], [-12, 10]], 4);
+        g.fillStyle = "#06060a"; g.beginPath(); g.ellipse(6, -8, 13, 14, 0, 0, PI2); g.fill();
+        eye(g, 2, -9, 3, p.eyes, this.eyes); eye(g, 12, -9, 2.6, p.eyes, this.eyes);
+      } else {
+        shape(g, c.crown, [[-18, -34], [18, -34], [18, -44], [12, -38], [8, -52], [2, -40], [-4, -54], [-8, -40], [-14, -50], [-18, -42]], 3);
+      }
       g.restore();
+      if (this.noShield) { slashArc(g, -6, hip - 80, 140, p.slashFrom, p.slashTo, p.slash); return; }
       // щит попереду
       const shx = 46 + p.shield * 10 + Math.max(0, p.x) * 0.3, shy = hip - 44 - p.shield * 20;
       g.save(); g.translate(shx, shy); g.rotate(R(p.lean * 0.3 - 6 + p.shield * 6));

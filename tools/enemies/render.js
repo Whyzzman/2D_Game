@@ -24,7 +24,18 @@ const ACTORS = [
   { zone: "forest", actor: "ForestArcher", table: "ArcherStates", file: "PlaceholderEnemyArt.Forest.cs", folder: "Enemies/ForestArcher", prefix: "enemy_archer", w: 150, h: 176 },
   { zone: "forest", actor: "RootShaman", table: "ShamanStates", file: "PlaceholderEnemyArt.Forest.cs", folder: "Enemies/RootShaman", prefix: "enemy_shaman", w: 156, h: 178 },
   { zone: "forest", actor: "RoyalSpearman", table: "SpearmanStates", file: "PlaceholderEnemyArt.Forest.cs", folder: "Enemies/RoyalSpearman", prefix: "enemy_spearman", w: 214, h: 178 },
-  { zone: "forest", actor: "HollowWarden", table: "WardenStates", file: "PlaceholderEnemyArt.Forest.cs", folder: "Bosses/HollowWarden", prefix: "boss_warden", w: 268, h: 260 }
+  { zone: "forest", actor: "HollowWarden", table: "WardenStates", file: "PlaceholderEnemyArt.Forest.cs", folder: "Bosses/HollowWarden", prefix: "boss_warden", w: 268, h: 260 },
+  // Село й Столиця (enemies-vc.js): таблиці кадрів — ті, на які вони посилаються в PlaceholderEnemyArt
+  { zone: "vc", actor: "PossessedVillager", table: "SpearmanStates", file: "PlaceholderEnemyArt.Forest.cs", folder: "Enemies/PossessedVillager", prefix: "enemy_villager", w: 214, h: 178 },
+  { zone: "vc", actor: "Scarecrow", table: "GargoyleStates", file: "PlaceholderEnemyArt.Capital.cs", folder: "Enemies/Scarecrow", prefix: "enemy_scarecrow", w: 214, h: 178 },
+  { zone: "vc", actor: "Watchdog", table: "HoundStates", file: "PlaceholderEnemyArt.Forest.cs", folder: "Enemies/Watchdog", prefix: "enemy_watchdog", w: 200, h: 120 },
+  { zone: "vc", actor: "RoyalCrossbowman", table: "ArcherStates", file: "PlaceholderEnemyArt.Forest.cs", folder: "Enemies/RoyalCrossbowman", prefix: "enemy_crossbowman", w: 160, h: 176 },
+  { zone: "vc", actor: "PalacePriest", table: "ShamanStates", file: "PlaceholderEnemyArt.Forest.cs", folder: "Enemies/PalacePriest", prefix: "enemy_priest", w: 156, h: 178 },
+  { zone: "vc", actor: "StoneGargoyle", table: "GargoyleStates", file: "PlaceholderEnemyArt.Capital.cs", folder: "Enemies/StoneGargoyle", prefix: "enemy_gargoyle", w: 220, h: 186 },
+  { zone: "vc", actor: "AshRaven", table: "RavenStates", file: "PlaceholderEnemyArt.Capital.cs", folder: "Enemies/AshRaven", prefix: "enemy_raven", w: 140, h: 110 },
+  { zone: "vc", actor: "Bellringer", table: "KingStates", file: "PlaceholderEnemyArt.King.cs", folder: "Bosses/Bellringer", prefix: "boss_bellringer", w: 300, h: 300 },
+  { zone: "vc", actor: "AshCommander", table: "KingStates", file: "PlaceholderEnemyArt.King.cs", folder: "Bosses/AshCommander", prefix: "boss_commander", w: 320, h: 300 },
+  { zone: "vc", actor: "OathBoundKing", table: "KingStates", file: "PlaceholderEnemyArt.King.cs", folder: "Bosses/OathBoundKing", prefix: "boss_king", w: 300, h: 312 }
 ].filter((a) => (a.zone || "tomb") === (process.argv[2] || "tomb"));
 
 function table(file, name) {

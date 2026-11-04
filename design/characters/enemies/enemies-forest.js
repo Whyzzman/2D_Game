@@ -38,7 +38,7 @@
   const HOUND = {
     w: 200, h: 120, eyes: EYE,
     draw(g, p) {
-      const c = { fur: "#26372b", furDark: "#141f17", moss: "#3e5c3c", thorn: "#8a8f6a", bark: "#2e2a20" };
+      const c = Object.assign({ fur: "#26372b", furDark: "#141f17", moss: "#3e5c3c", thorn: "#8a8f6a", bark: "#2e2a20" }, this.look);
       const lift = p.spine * 6;
       const sh = [22, -56 + lift * 0.3], hp = [-46, -54 - lift];
       // далекі лапи (темніші)
@@ -74,6 +74,13 @@
       // ближні лапи
       limb(g, hp[0], hp[1] + 6, -p.hipB, 24, -p.kneeB - 20, 26, 12, c.fur, 7);
       limb(g, sh[0], sh[1] + 8, -p.hipF + 6, 24, p.kneeF + 10, 26, 12, c.fur, 7);
+      if (this.collar) {
+        // нашийник із обірваним ланцюгом (сторожовий пес Села)
+        g.save(); g.translate(sh[0] + 6, sh[1] - 8);
+        shape(g, "#3a2a1c", [[-4, -12], [8, -14], [10, 10], [-2, 12]], 3);
+        for (let i = 0; i < 4; i++) { g.strokeStyle = INK; g.lineWidth = 4; g.beginPath(); g.ellipse(-8 - i * 8, 10 + i * 3, 5, 3, 0.3, 0, PI2); g.stroke(); g.strokeStyle = "#7a7468"; g.lineWidth = 2; g.stroke(); }
+        g.restore();
+      }
       // голова: клин черепа, довга звужена морда, вуха назад, щелепа
       g.save(); g.translate(sh[0] + 8, sh[1] - 10); g.rotate(R(p.head + 6));
       const jaw = p.jaw * 26;

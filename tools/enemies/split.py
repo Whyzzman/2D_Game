@@ -8,6 +8,7 @@ the generator writes it over the placeholder on every build) and straight onto t
 open Editor shows it without a build. Then in Unity: CharacterNormals.AttachAll() for those frames.
 """
 import json
+import time
 import tempfile
 from pathlib import Path
 
@@ -23,6 +24,18 @@ ART = ROOT / "Assets/Game/Art/Characters"
 FINAL = ROOT / "Assets/Game/Art/Source/Final/Characters"
 
 
+def save(image, path):
+    # an open Unity Editor locks a PNG for a moment while it imports the one written before (Windows)
+    for attempt in range(40):
+        try:
+            image.save(path)
+            return
+        except OSError:
+            if attempt == 39:
+                raise
+            time.sleep(0.5)
+
+
 def main():
     jobs = json.loads((SRC / "jobs.json").read_text(encoding="utf-8"))
     written = 0
@@ -34,7 +47,7 @@ def main():
             for base in (FINAL, ART):
                 target = base / job["folder"] / job["state"] / name
                 target.parent.mkdir(parents=True, exist_ok=True)
-                frame.save(target)
+                save(frame, target)
             written += 1
     print(f"enemies: {written} frames written")
 
