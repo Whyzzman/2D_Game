@@ -12,9 +12,13 @@ import os
 import tempfile
 from pathlib import Path
 
+import sys
+
 from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "tools/characters"))
+from shade import shade  # noqa: E402  the painted light on each frame
 SRC = Path(tempfile.gettempdir()) / "hero-frames"
 PLAYER = ROOT / "Assets/Game/Art/Characters/Player"
 FINAL = ROOT / "Assets/Game/Art/Source/Final/Characters/Player"
@@ -28,7 +32,7 @@ def main():
         folder = PLAYER / job["folder"]
         for i in range(job["n"]):
             name = f"player_{job['state'].lower()}_{i:02d}.png"
-            frame = row.crop((i * 256, 0, i * 256 + 256, 224))
+            frame = shade(row.crop((i * 256, 0, i * 256 + 256, 224)))
             for target in (FINAL / job["folder"] / name, folder / name):
                 target.parent.mkdir(parents=True, exist_ok=True)
                 frame.save(target)

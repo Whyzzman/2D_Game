@@ -30,7 +30,7 @@
       style: "forest",
       core: "#090c0b", stone: "#1f2a25", rim: "#b4c8c4",
       lip: "#4e6656", lipDark: "#2a3a31", lipLight: "#b9c9b8", chain: "#121a15",
-      mass: "rock", cap: "grass",
+      mass: "rock", cap: "grass", roomPalette: true,
       moss: "#4e6656", hang: "roots",
       skyTop: "#1a2428", skyBottom: "#0b1012", moon: "#d6e2dc",
       farTree: "#1b2527", midTree: "#141c1d", nearTree: "#0c1111", ruin: "#1d2729", nearRuin: "#131a1a",

@@ -1,0 +1,19 @@
+# Вибрані варіанти Midjourney (ім'я, job id, варіант 0-3): https://cdn.midjourney.com/<id>/0_<n>.png
+urn ba097aa4-8156-4c85-a8ea-b6c0bbc2d323 3
+crate 943bf38c-cc2f-44c8-835c-e13dd8f3e034 1
+skulls bb289081-59a2-4621-96a1-9bdf3a6ee6f7 0
+stump a53963ed-8711-41fb-afbd-74731d781bbc 1
+crest bda76fd8-08a4-40b6-a01f-648c76278dbf 1
+gate 0ededc19-ae83-4cbf-8e28-77269379fa8c 1
+barrier 16ac69d9-de33-4f1f-a1be-5dea60144150 3
+shrine c5560035-ffcc-41ea-a92b-4b1ea911ef14 3
+flame_lit 7664e915-f002-41f7-9a58-bd13630c66ce 3
+flame_cold bd066af9-dc7b-4834-90f9-04b29cb00ff1 3
+dummy ff8e9d6f-90a8-4566-970e-4739ccd628ba 3
+attacker 1d1dd2be-6076-4dae-b73c-72cecba77a8c 2
+severyn 67f30cd5-69c4-4884-9625-0245d8ac3b69 3
+ostap 837d3e1b-3975-4361-8060-ae154494d385 1
+myroslava 462783f0-0067-4855-a043-1f18a008615f 1
+gnat c3beef42-7620-4a0a-b022-cd492d066a17 0
+chest_locked c9d6dbb3-a337-4f42-b877-e0561e883025 1
+chest_open 63b528f2-79b3-4119-b8ff-93a8e3b724e1 0

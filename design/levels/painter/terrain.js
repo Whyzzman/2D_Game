@@ -468,11 +468,26 @@
     }
     // без склепіння — стовбур тоншає в розвилку, далі крона в тумані
     if (!t.roof) {
-      c.fillStyle = rgba(pal.leaf, 0.55);
-      for (let i = 0; i < 9; i++) {
-        const a = N.hash(seed + t.x, i, 41) * Math.PI * 2, d = 0.6 + N.hash(seed + t.x, i, 43) * 1.4;
-        c.beginPath(); c.ellipse(f.x(cxw + Math.cos(a) * d * 1.6), f.y(ty + Math.sin(a) * d * 0.7), S * 1.1, S * 0.6, 0, 0, Math.PI * 2); c.fill();
-      }
+      // розвилка: кілька гілок угору й убік, тоншають і розгалужуються; листя — дрібні купки на кінцях
+      const twig = (x, y, a, len, w, depth, k) => {
+        const ex = x + Math.cos(a) * len, ey = y + Math.sin(a) * len;
+        c.strokeStyle = pal.dark; c.lineWidth = Math.max(1, S * w); c.lineCap = "round";
+        c.beginPath(); c.moveTo(f.x(x), f.y(y)); c.quadraticCurveTo(f.x((x + ex) / 2 + Math.sin(a) * 0.15), f.y((y + ey) / 2), f.x(ex), f.y(ey)); c.stroke();
+        if (depth > 0) {
+          const spread = 0.35 + N.hash(seed + t.x, k, 47) * 0.3;
+          twig(ex, ey, a - spread, len * 0.68, w * 0.62, depth - 1, k * 2 + 1);
+          twig(ex, ey, a + spread, len * 0.62, w * 0.62, depth - 1, k * 2 + 2);
+        } else {
+          c.fillStyle = rgba(pal.leaf, 0.8);
+          for (let j = 0; j < 7; j++) {
+            const lx = ex + (N.hash(seed + k, j, 51) - 0.5) * 0.7, ly = ey + (N.hash(seed + k, j, 53) - 0.3) * 0.5;
+            c.beginPath(); c.ellipse(f.x(lx), f.y(ly), S * 0.13, S * 0.07, N.hash(seed + k, j, 55) * 3, 0, Math.PI * 2); c.fill();
+          }
+        }
+      };
+      const top = ty - 0.2;
+      [2.3, 1.6, 0.85].forEach((a, i) => twig(cxw + sway(top), top, a + (N.hash(seed + t.x, i, 45) - 0.5) * 0.3, 1.6, 0.16, 3, i + 1));
+      [0.5, 2.65].forEach((a, i) => twig(cxw + sway(top - 1.5), top - 1.5, a, 1.1, 0.1, 2, i + 7));
     }
     c.restore();
   }

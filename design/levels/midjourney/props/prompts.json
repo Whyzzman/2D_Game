@@ -1,0 +1,119 @@
+{
+  "_note": "Статичные спрайты Гробницы и Леса из Midjourney (2026-11-04, пользователь: «чтобы игра выглядела очень дорого»; решено Claude по постоянному согласию). Промпт = text + ', ' + хвост (prop / char) + ' --ar ' + ar. Фон — сплошной пурпурный, по нему вырезается прозрачность (tools/midjourney/sprites.py); результат вписывается в рамку прежней заглушки, масштаб в игре тот же. Обличчям праворуч, як усі спрайти гри: ті, кого Midjourney намалював ліворуч, — у flip.",
+  "prop": "single object, isolated on a flat solid pure magenta background (#ff00ff), centered, whole object visible with margin, straight-on side view, hand-painted 2D game asset, painterly dark gothic fantasy, soft ink outlines, soft rim light from the upper left, muted desaturated palette --s 250 --no background scene, floor, ground shadow, text, people, frame, photo, photorealistic, 3d render",
+  "char": "full body character, side view facing right, standing, isolated on a flat solid pure magenta background (#ff00ff), whole figure visible with margin, hand-painted 2D game character sprite, painterly dark gothic fantasy, soft ink outlines, soft rim light from the upper left, muted desaturated palette --s 250 --no background scene, floor, ground shadow, text, frame, photo, photorealistic, 3d render",
+  "items": [
+    [
+      "Environment/Breakables/env_break_urn_01",
+      "prop",
+      "4:5",
+      "old cracked clay funeral urn with a narrow neck, faded painted bands, a chipped lip"
+    ],
+    [
+      "Environment/Breakables/env_break_crate_01",
+      "prop",
+      "9:8",
+      "old wooden crate bound with rusted iron straps, splintered planks, a faded stencilled crown"
+    ],
+    [
+      "Environment/Breakables/env_break_skulls_01",
+      "prop",
+      "5:4",
+      "small heap of old skulls and bones, yellowed ivory, cracked"
+    ],
+    [
+      "Environment/WitheredForest/Props/env_forest_stump_01",
+      "prop",
+      "2:1",
+      "gnarled dead tree stump with moss and pale little mushrooms, roots spreading"
+    ],
+    [
+      "Environment/WitheredForest/Arena/env_forest_arena_crest",
+      "prop",
+      "4:1",
+      "carved stone crest set in the ground, a circle of interlaced roots around a hollow tree emblem, moss in the grooves, faint green glow"
+    ],
+    [
+      "Environment/Tomb/Interactive/env_tomb_boss_gate",
+      "prop",
+      "2:3",
+      "massive gothic iron portcullis gate set in a carved stone arch, crown emblem on the keystone, rusted bars"
+    ],
+    [
+      "Environment/Tomb/Interactive/env_tomb_boss_barrier",
+      "prop",
+      "1:4",
+      "tall vertical wall of pale violet ghostly fire, translucent flames rising"
+    ],
+    [
+      "Environment/Tomb/Interactive/env_tomb_checkpoint_base",
+      "prop",
+      "9:8",
+      "small stone shrine altar shaped like a crown with three pointed tips and an empty flame bowl in the middle, carved runes, worn steps"
+    ],
+    [
+      "Environment/Tomb/Interactive/env_tomb_checkpoint_flame_lit",
+      "prop",
+      "2:3",
+      "a single tall warm golden flame, soft glow, wisps of embers"
+    ],
+    [
+      "Environment/Tomb/Interactive/env_tomb_checkpoint_flame_cold",
+      "prop",
+      "3:4",
+      "a tiny dying cold blue ember with a thin curl of smoke"
+    ],
+    [
+      "Characters/Training/training_dummy",
+      "char",
+      "5:6",
+      "straw training dummy on a wooden post, burlap sack head with stitched cross eyes, old dented breastplate tied with rope"
+    ],
+    [
+      "Characters/Training/training_attacker",
+      "char",
+      "5:6",
+      "straw training dummy on a wooden post holding a wooden practice sword raised, burlap sack head, rope bindings, a round wooden shield"
+    ],
+    [
+      "Characters/Npc/npc_severyn",
+      "char",
+      "2:3",
+      "translucent pale blue ghost of an old royal guard, helm with a plume, breastplate, tattered cloak fading into mist at the hem, spear held upright, sorrowful"
+    ],
+    [
+      "Characters/Npc/npc_ostap",
+      "char",
+      "1:1",
+      "broad bearded blacksmith in a leather apron, bare forearms, hammer in hand, standing beside an anvil, soot-dark cap, warm forge glow on him"
+    ],
+    [
+      "Characters/Npc/npc_myroslava",
+      "char",
+      "2:3",
+      "tall hooded woman pilgrim in long grey robes, face half in shadow, a wooden staff with a small glowing lantern hung from its crook"
+    ],
+    [
+      "Characters/Npc/npc_gnat",
+      "char",
+      "4:3",
+      "stooped old peddler in a wide-brimmed hat with a big pack on his back, pulling a laden wooden hand cart with sacks and a lantern pole"
+    ],
+    [
+      "Characters/Npc/chest_locked",
+      "prop",
+      "5:4",
+      "iron-bound wooden treasure chest, closed, heavy padlock, worn corners"
+    ],
+    [
+      "Characters/Npc/chest_open",
+      "prop",
+      "5:4",
+      "iron-bound wooden treasure chest with its lid open, gold coins glinting inside"
+    ]
+  ],
+  "flip": [
+    "ostap",
+    "myroslava"
+  ]
+}

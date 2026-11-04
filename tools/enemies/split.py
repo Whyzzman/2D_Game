@@ -11,9 +11,13 @@ import json
 import tempfile
 from pathlib import Path
 
+import sys
+
 from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "tools/characters"))
+from shade import shade  # noqa: E402  the painted light on each frame
 SRC = Path(tempfile.gettempdir()) / "enemy-frames"
 ART = ROOT / "Assets/Game/Art/Characters"
 FINAL = ROOT / "Assets/Game/Art/Source/Final/Characters"
@@ -25,7 +29,7 @@ def main():
     for job in jobs:
         row = Image.open(SRC / f"{job['actor']}__{job['state']}.png").convert("RGBA")
         for i in range(job["n"]):
-            frame = row.crop((i * job["w"], 0, (i + 1) * job["w"], job["h"]))
+            frame = shade(row.crop((i * job["w"], 0, (i + 1) * job["w"], job["h"])))
             name = f"{job['prefix']}_{job['state'].lower()}_{i:02d}.png"
             for base in (FINAL, ART):
                 target = base / job["folder"] / job["state"] / name
