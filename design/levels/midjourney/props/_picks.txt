@@ -46,3 +46,5 @@ env_capital_brazier_01 c1d66ad7-2d60-4538-801c-139e5c6b5c8d 2
 env_village_lantern_01 d8244663-e6c4-4202-8093-53a114e1a3e9 2
 env_capital_house_02 9a00ee4d-3996-4d1f-9134-2fa0aac836ff 2
 env_capital_bell_01 80675f42-1d3b-4d10-90d7-12adc4b5a87f 1
+env_capital_statue_01 5d0b3ab4-a18b-4f4b-892a-935f4e765c22 1
+env_village_forge_01 afe92e2f-740b-491d-bde3-1d875b2b0e14 1
