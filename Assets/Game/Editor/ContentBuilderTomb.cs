@@ -53,7 +53,7 @@ namespace ForgottenKingdom.EditorTools
             var root = Section(level, TombRootName);
             var context = LevelContext.FromScene();
             _tombPainted = HasPaintedArt(TombArtFolder);
-            var problems = BuildLayout(zone, root, TombBlock, context);
+            var problems = BuildLayout(zone, root, TombBlock, context, _tombPainted);
             foreach (var problem in problems)
             {
                 Debug.LogError($"Tomb layout: {problem}");

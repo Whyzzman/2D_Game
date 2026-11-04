@@ -77,7 +77,7 @@ namespace ForgottenKingdom.EditorTools
             var root = Section(level, ForestRootName);
             var context = LevelContext.FromScene();
             _forestPainted = HasPaintedArt(ForestArtFolder);
-            foreach (var problem in BuildLayout(zone, root, ForestLayoutBlock, context))
+            foreach (var problem in BuildLayout(zone, root, ForestLayoutBlock, context, _forestPainted))
             {
                 Debug.LogError($"Forest layout: {problem}");
             }

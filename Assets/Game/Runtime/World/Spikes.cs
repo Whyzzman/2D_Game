@@ -18,6 +18,8 @@ namespace ForgottenKingdom
         [SerializeField] private Vector2 _size = new Vector2(2.4f, 0.4f);
         [SerializeField, Min(0f)] private float _damage = 20f;
         [SerializeField] private Color _color = new Color32(142, 131, 117, 255);
+        [Tooltip("The zone's painter draws these spikes into its stone (design/levels/painter/terrain.js): no placeholder teeth.")]
+        [SerializeField] private bool _painted;
 
         private PlayerCharacter _player;
         private PlayerRespawner _respawner;
@@ -52,7 +54,7 @@ namespace ForgottenKingdom
             _player = FindAnyObjectByType<PlayerCharacter>();
             _respawner = FindAnyObjectByType<PlayerRespawner>();
             _playerCollider = _player != null ? _player.GetComponent<CapsuleCollider2D>() : null;
-            if (GetComponentInChildren<SpriteRenderer>() == null)
+            if (!_painted && GetComponentInChildren<SpriteRenderer>() == null)
             {
                 BuildPlaceholder();
             }

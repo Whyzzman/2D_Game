@@ -81,8 +81,9 @@ namespace ForgottenKingdom.EditorTools
         /// Builds the zone under <paramref name="parent"/>, one child per room. Returns what could
         /// not be built (an unknown thing, a missing prefab); an empty list means all of it was.
         /// </summary>
+        /// <param name="paintedSpikes">The zone's painter draws its spikes (a painted zone): no placeholder teeth.</param>
         public static List<string> BuildLayout(LevelZone zone, Transform parent, LevelBlockMaker block,
-            LevelContext context)
+            LevelContext context, bool paintedSpikes = false)
         {
             var problems = new List<string>(zone.Errors);
             // Loaded fresh for each zone: asset references taken before a new scene are dead.
@@ -107,7 +108,7 @@ namespace ForgottenKingdom.EditorTools
                 var name = $"{piece.Kind}_{piece.Cells.x}_{piece.Cells.y}";
                 if (piece.Kind == LevelCell.Spikes)
                 {
-                    LayoutSpikes(rooms[piece.RoomId], name, world, zone.CellSize);
+                    LayoutSpikes(rooms[piece.RoomId], name, world, zone.CellSize, paintedSpikes);
                     continue;
                 }
 
@@ -144,7 +145,7 @@ namespace ForgottenKingdom.EditorTools
         }
 
         /// <summary>Spikes fill the bottom of their cells: a row of them reads as a row of teeth.</summary>
-        private static void LayoutSpikes(Transform parent, string name, Rect world, float cell)
+        private static void LayoutSpikes(Transform parent, string name, Rect world, float cell, bool painted)
         {
             for (var row = 0; row < Mathf.RoundToInt(world.height / cell); row++)
             {
@@ -153,6 +154,7 @@ namespace ForgottenKingdom.EditorTools
                 spikes.transform.position = new Vector2(world.center.x, world.yMin + row * cell + cell * 0.4f);
                 var component = spikes.AddComponent<Spikes>();
                 SetVector(component, "_size", new Vector2(world.width, cell * 0.8f));
+                SetBool(component, "_painted", painted);
             }
         }
 

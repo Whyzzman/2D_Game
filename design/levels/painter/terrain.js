@@ -234,6 +234,86 @@
     drawTops(frame, zone, cx0, cy0, gw, gh, look, seed);
     if (look.style === "forest") trunksOf(zone).forEach(t => drawTrunk(frame, zone, t, seed));
     drawLedges(frame, zone, cx0, cy0, gw, gh, look, seed);
+    drawSpikes(frame, zone, cx0, cy0, gw, gh, look, seed);
+  }
+
+  // Шипи «^» (2026-11-04, користувач: «шипи виглядають некрасиво… по-ігровому, по-мультяшному»; решено Claude):
+  // гра їх не малює (Spikes._painted), painter — тут, у стилі рівня. Гробниця й решта — криві кістяні ікла на
+  // купці уламків, Ліс — терен: скручена лоза з загнутими колючками. Темний контур, світлі кінчики — читається
+  // «не ступай» здалеку, як у Hollow Knight. Висота — уся стопка «^» над підлогою.
+  function drawSpikes(f, zone, cx0, cy0, gw, gh, look, seed) {
+    const c = f.c, S = f.ppu, cell = zone.cell, forest = look.style === "forest";
+    for (let y = 0; y < gh; y++) {
+      let start = -1;
+      for (let x = 0; x <= gw; x++) {
+        const gx = cx0 + x, gy = cy0 + y;
+        const here = x < gw && T.at(zone, gx, gy) === "^" && T.at(zone, gx, gy - 1) !== "^";
+        if (here && start < 0) start = x;
+        if (!here && start >= 0) {
+          const g0 = cx0 + start, g1 = cx0 + x;
+          let stack = 1;
+          while (T.at(zone, g0, gy + stack) === "^") stack++;
+          const [wx0, wy] = T.world(zone, g0, gy), [wx1] = T.world(zone, g1, gy);
+          const lk = lookAt(zone, g0, gy, look);
+          spikeRow(f, wx0, wx1, wy, stack * cell * 0.85 + 0.3, lk, seed + g0 * 7 + gy * 13, forest);
+          start = -1;
+        }
+      }
+    }
+  }
+
+  function spikeRow(f, x0, x1, floor, height, lk, seed, forest) {
+    const c = f.c, S = f.ppu;
+    const ink = "#07080b";
+    const body = forest ? "#4a5a32" : (lk.lip || "#6a5a4c");
+    const tip = forest ? "#f0eebc" : "#fbf0d4";
+    // основа: купка уламків / скручена лоза — щоб шипи росли з чогось
+    c.fillStyle = ink;
+    c.beginPath(); c.moveTo(f.x(x0 - 0.05), f.y(floor));
+    for (let k = 0; k <= 10; k++) {
+      const t = k / 10, x = x0 + (x1 - x0) * t;
+      c.lineTo(f.x(x), f.y(floor + 0.1 + N.hash(seed, k, 3) * 0.12));
+    }
+    c.lineTo(f.x(x1 + 0.05), f.y(floor)); c.closePath(); c.fill();
+    const n = Math.max(2, Math.round((x1 - x0) / 0.36));
+    const order = [];
+    for (let k = 0; k < n; k++) order.push(k);
+    // задні ряди — нижчі й темніші, передні — вищі
+    for (const layer of [0, 1]) {
+      for (const k of order) {
+        const t = (k + 0.5 + (N.hash(seed, k, 5 + layer) - 0.5) * 0.5) / n;
+        const bx = x0 + (x1 - x0) * t;
+        const h = height * (layer ? 0.75 + N.hash(seed, k, 7) * 0.3 : 0.5 + N.hash(seed, k, 9) * 0.25);
+        const w = 0.17 + N.hash(seed, k, 11) * 0.07;
+        const lean = (N.hash(seed, k, 13) - 0.5) * 0.25 + (forest ? (k % 2 ? 0.12 : -0.12) : 0);
+        const tx = bx + lean * h, ty = floor + h;
+        const bend = forest ? 0.12 : 0.05;
+        // контур
+        const shape = (grow) => {
+          c.beginPath();
+          c.moveTo(f.x(bx - w - grow), f.y(floor + 0.05));
+          c.quadraticCurveTo(f.x(bx - w * 0.4 - grow + bend), f.y(floor + h * 0.55), f.x(tx), f.y(ty + grow));
+          c.quadraticCurveTo(f.x(bx + w * 0.5 + grow + bend), f.y(floor + h * 0.45), f.x(bx + w + grow), f.y(floor + 0.05));
+          c.closePath();
+        };
+        shape(0.035); c.fillStyle = ink; c.fill();
+        const g = c.createLinearGradient(0, f.y(floor), 0, f.y(ty));
+        g.addColorStop(0, layer ? body : ink); g.addColorStop(0.55, layer ? body : body); g.addColorStop(1, tip);
+        shape(0); c.fillStyle = g; c.fill();
+        if (layer) {
+          // відблиск уздовж лівого боку — об'єм, як у мальованого
+          c.strokeStyle = rgba(tip, 0.45); c.lineWidth = Math.max(1, S * 0.02);
+          c.beginPath(); c.moveTo(f.x(bx - w * 0.45), f.y(floor + h * 0.2));
+          c.quadraticCurveTo(f.x(bx - w * 0.2 + bend), f.y(floor + h * 0.6), f.x(tx - 0.01), f.y(ty - 0.04)); c.stroke();
+          if (forest && N.hash(seed, k, 17) < 0.5) {
+            // бічна колючка на терні
+            const my = floor + h * 0.45, mx = bx + lean * h * 0.45, side = k % 2 ? 1 : -1;
+            c.fillStyle = ink;
+            c.beginPath(); c.moveTo(f.x(mx), f.y(my + 0.04)); c.lineTo(f.x(mx + side * 0.16), f.y(my + 0.14)); c.lineTo(f.x(mx), f.y(my - 0.04)); c.closePath(); c.fill();
+          }
+        }
+      }
+    }
   }
 
   // У товщі каменю (2026-11-04, «щоб гра виглядала дуже дорого»; решено Claude): мазки пензля в тоні кімнати,

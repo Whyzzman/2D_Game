@@ -60,12 +60,14 @@ def audit(rid, rows, keys):
             out.append(f"spikes-by-enemy {s[0]}:{s[1]}")
             break
     for y, x in openings:
-        if x not in (0, w - 1):
+        # the bottom cell of a side opening: walking in, how far is it down to something to stand on?
+        if x not in (0, w - 1) or (y + 1 < h and air(cell(y + 1, x))):
             continue
+        inward = 1 if x == 0 else w - 2
         depth = 0
-        while y + depth + 1 < h and air(cell(y + depth + 1, x)):
+        while y + depth + 1 < h and air(cell(y + depth + 1, inward)):
             depth += 1
-        if depth > 8 and (y == 0 or not air(cell(y - 1, x))):  # only the bottom cell of each side opening
+        if depth > 8:
             out.append(f"drop-at-door {y}:{x} falls {depth}")
     for y in range(1, h):
         run = 0
@@ -74,7 +76,7 @@ def audit(rid, rows, keys):
             if stand:
                 run += 1
                 continue
-            if run >= 4:
+            if run >= 4 and y > 2:  # a ledge in the top exit itself is under open air
                 xs = range(x - run, x)
                 # a one-way ledge over the head is no ceiling: the jump goes through it
                 clear = min(next((k for k in range(1, 12) if cell(y - k, xx) in SOLID), 12) for xx in xs)
