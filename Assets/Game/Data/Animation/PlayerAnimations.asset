@@ -730,7 +730,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 163ba149c987641fc9161e1ac45f5dbd, type: 3}
       - {fileID: 21300000, guid: 5f802939471514e59a260b3fd0131c5e, type: 3}
       - {fileID: 21300000, guid: 4ffd08b64d1a89544aa92a6acd5ab8a0, type: 3}
-      _framesPerSecond: 24
+      _framesPerSecond: 36
       _isLooping: 0
       _anchors:
       - {x: 0.09821045, y: 0.3207904, z: 0}

@@ -109,7 +109,7 @@ namespace ForgottenKingdom.EditorTools
             new StateSpec(PlayerAnimationState.AttackDown, 9, 24f, false),
             new StateSpec(PlayerAnimationState.Heal, 6, 12f, false),
             new StateSpec(PlayerAnimationState.IdleVariant, 10, 12f, false),
-            new StateSpec(PlayerAnimationState.Turn, 3, 24f, false),
+            new StateSpec(PlayerAnimationState.Turn, 3, 36f, false), // 0,083 s: a Hollow Knight turn
             new StateSpec(PlayerAnimationState.HardLand, 5, 12f, false),
             new StateSpec(PlayerAnimationState.IdleGlance, 10, 12f, false)
         };
