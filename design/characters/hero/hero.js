@@ -132,12 +132,25 @@
     const r1 = ang1 * Math.PI / 180, r2 = (ang1 - ang2) * Math.PI / 180;
     const kx = x + Math.sin(r1) * len1, ky = y + Math.cos(r1) * len1;
     const fx = kx + Math.sin(r2) * len2, fy = ky + Math.cos(r2) * len2;
-    g.lineCap = "round"; g.lineJoin = "round";
-    g.strokeStyle = C.ink; g.lineWidth = w + 4;
-    g.beginPath(); g.moveTo(x, y); g.lineTo(kx, ky); g.lineTo(fx, fy); g.stroke();
-    g.strokeStyle = color; g.lineWidth = w;
-    g.beginPath(); g.moveTo(x, y); g.lineTo(kx, ky); g.lineTo(fx, fy); g.stroke();
+    // звужені сегменти з круглим суглобом (2026-11-04, «на рівні Hollow Knight»): стегно повніше, до стопи тоншає
+    g.fillStyle = C.ink;
+    taper(g, x, y, kx, ky, w * 1.25 + 4, w * 0.95 + 4); taper(g, kx, ky, fx, fy, w * 0.95 + 4, w * 0.7 + 4);
+    g.fillStyle = color;
+    taper(g, x, y, kx, ky, w * 1.25, w * 0.95); taper(g, kx, ky, fx, fy, w * 0.95, w * 0.7);
     return [fx, fy, r2];
+  }
+
+  function taper(g, ax, ay, bx, by, wa, wb) {
+    const len = Math.hypot(bx - ax, by - ay) || 1, nx = -(by - ay) / len, ny = (bx - ax) / len;
+    const ra = wa / 2, rb = wb / 2, mx = (ax + bx) / 2, my = (ay + by) / 2, bulge = (ra + rb) * 0.55;
+    g.beginPath();
+    g.moveTo(ax + nx * ra, ay + ny * ra);
+    g.quadraticCurveTo(mx + nx * bulge, my + ny * bulge, bx + nx * rb, by + ny * rb);
+    g.lineTo(bx - nx * rb, by - ny * rb);
+    g.quadraticCurveTo(mx - nx * bulge, my - ny * bulge, ax - nx * ra, ay - ny * ra);
+    g.closePath(); g.fill();
+    g.beginPath(); g.arc(ax, ay, ra, 0, Math.PI * 2); g.fill();
+    g.beginPath(); g.arc(bx, by, rb, 0, Math.PI * 2); g.fill();
   }
 
   function boot(g, x, y, ang) {
