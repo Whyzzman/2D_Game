@@ -22,6 +22,16 @@
     secret: { vine: 1, chain: 0, root: 2, drip: 2 }
   };
 
+  // Ліс (2026-11-04, «щоб гра виглядала дорого»; решено Claude): лише живе — ліани й коріння, без ланцюгів;
+  // у кімнатах під небом — крона, що звисає з-над кадру.
+  const FOREST_KINDS = {
+    hall: { vine: 4, chain: 0, root: 2, drip: 0 },
+    arena: { vine: 3, chain: 0, root: 2, drip: 0 },
+    shaft: { vine: 3, chain: 0, root: 3, drip: 1 },
+    cave: { vine: 1, chain: 0, root: 4, drip: 3 },
+    secret: { vine: 2, chain: 0, root: 2, drip: 2 }
+  };
+
   function pick(weights, r) {
     let total = 0;
     for (const k in weights) total += weights[k];
@@ -120,6 +130,41 @@
   }
 
   // Розмита світла пляма: вогник, що пролітає ближче до ока, ніж фокус.
+  // Гілка крони: з-над кадру, вигинається вбік (dir) і вниз, тоншає; на ній купки листя й кілька бічних гілочок.
+  function canopyBranch(f, x, top, dir, drop, r, color) {
+    const c = f.c, S = f.S, reach = 3 + r() * 3;
+    const pts = [];
+    for (let i = 0; i <= 16; i++) {
+      const t = i / 16;
+      pts.push([x + dir * reach * t, top - drop * Math.sin(t * Math.PI * 0.55) - t * 0.4, 0.42 * (1 - t * 0.8)]);
+    }
+    c.fillStyle = color;
+    c.beginPath();
+    pts.forEach(([px, py, w], i) => { const [a, b] = f.px(px, py + w); i ? c.lineTo(a, b) : c.moveTo(a, b); });
+    for (let i = pts.length - 1; i >= 0; i--) { const [px, py, w] = pts[i]; const [a, b] = f.px(px, py - w); c.lineTo(a, b); }
+    c.closePath(); c.fill();
+    const leafCluster = (lx, ly, size) => {
+      for (let k = 0; k < 14; k++) {
+        const a = r() * Math.PI * 2, d = r() * size, [px, py] = f.px(lx + Math.cos(a) * d * 1.4, ly + Math.sin(a) * d * 0.8);
+        const s = S * (0.16 + r() * 0.14);
+        c.save(); c.translate(px, py); c.rotate(r() * Math.PI);
+        c.beginPath(); c.ellipse(0, 0, s, s * 0.45, 0, 0, Math.PI * 2); c.fill(); c.restore();
+      }
+    };
+    for (let i = 3; i <= 16; i += 3 + Math.floor(r() * 2)) {
+      const [px, py] = pts[i];
+      if (r() < 0.6) {
+        // бічна гілочка донизу
+        const ex = px + dir * (0.6 + r()), ey = py - 0.6 - r() * 0.8;
+        const [a, b] = f.px(px, py), [cc, d] = f.px(ex, ey);
+        c.strokeStyle = color; c.lineWidth = Math.max(1, S * 0.08); c.lineCap = "round";
+        c.beginPath(); c.moveTo(a, b); c.quadraticCurveTo((a + cc) / 2, b, cc, d); c.stroke();
+        leafCluster(ex, ey, 0.5 + r() * 0.3);
+      }
+      leafCluster(px, py - 0.1, 0.6 + r() * 0.4);
+    }
+  }
+
   function bokeh(f, x, y, radius, color, alpha) {
     const c = f.c, [px, py] = f.px(x, y), R = radius * f.S;
     const g = c.createRadialGradient(px, py, 0, px, py, R);
@@ -132,14 +177,21 @@
     canvas.width = Math.round((rect.w + 2 * MARGIN) * ppu);
     canvas.height = Math.round((rect.h + 2 * MARGIN) * ppu);
     const f = new B.Frame(canvas, rect.x - MARGIN, rect.y - MARGIN, ppu);
-    const r = N.rng(seed), kind = B.kindOf(room, look), weights = KINDS[kind] || KINDS.hall;
+    const forest = look.style === "forest";
+    const underground = forest && (look.underground || []).indexOf(room.id) >= 0;
+    const r = N.rng(seed), kind = underground ? "cave" : B.kindOf(room, look);
+    const table = forest ? FOREST_KINDS : KINDS, weights = table[kind] || table.hall;
     const color = look.front || "#05060a";
     // Стеля над кожним стовпчиком кімнати: найнижча клітинка верхнього каменю. Там, де стелі немає
     // (шахта відкрита вгору) або стовпчик увесь камінь, нічого не звисає.
     const cell = zone.cell, ceilings = [], clearance = [];
+    // Під небом Лісу «стеля» — верх кадру: з-над нього звисає крона.
+    const canopy = forest && (look.enclosed || []).indexOf(room.id) < 0;
     for (let x = 0; x < room.w; x++) {
       let y = room.h - 1;
-      if (root.LevelText.isAir(room.rows[y][x])) { ceilings.push(null); clearance.push(0); continue; }
+      // Під небом Лісу верхній камінь кімнати — лише межа, на картині там небо: з нього нічого не звисає,
+      // там крона (canopyBranch нижче).
+      if (canopy || root.LevelText.isAir(room.rows[y][x])) { ceilings.push(null); clearance.push(0); continue; }
       while (y >= 0 && !root.LevelText.isAir(room.rows[y][x])) y--;
       ceilings.push(y < 0 ? null : zone.origin[1] + (room.y + y + 1) * cell);
       // що під стелею: перша поверхня, на якій стоять (камінь чи уступ), — до неї вільно
@@ -185,6 +237,30 @@
         c.fillStyle = color;
         c.beginPath(); c.ellipse(mx, my, f.S * (0.22 + r() * 0.2), f.S * (0.04 + r() * 0.03), 0, 0, Math.PI * 2); c.fill();
       }
+    }
+    // Крона: дві-три важкі гілки з листям входять у кадр згори, від кутів — і ніколи нижче за чверть кімнати.
+    if (canopy) {
+      const top = rect.y + rect.h + MARGIN;
+      // найвища поверхня під гілкою: над нею лишається HEADROOM, щоб крона не сховала героя
+      const surfaceUnder = (xa, xb) => {
+        let best = -Infinity;
+        for (let k = Math.floor((Math.min(xa, xb) - rect.x) / cell); k <= Math.floor((Math.max(xa, xb) - rect.x) / cell); k++) {
+          if (k < 0 || k >= room.w) continue;
+          let y = room.h - 1;
+          while (y >= 0 && !root.LevelText.isAir(room.rows[y][k])) y--;   // крізь верхню межу
+          while (y >= 0 && root.LevelText.isAir(room.rows[y][k])) y--;    // крізь повітря — до поверхні
+          if (y >= 0) best = Math.max(best, zone.origin[1] + (room.y + y + 1) * cell);
+        }
+        return best;
+      };
+      const spots = [rect.x - 0.5 + r() * 2, rect.x + rect.w + 0.5 - r() * 2];
+      if (rect.w > 30) spots.push(rect.x + rect.w * (0.35 + r() * 0.3));
+      spots.forEach((x, i) => {
+        const dir = i === 1 ? -1 : i === 0 ? 1 : (r() < 0.5 ? 1 : -1);
+        const lowest = surfaceUnder(x, x + dir * 6) + HEADROOM + 1;
+        const drop = Math.min(rect.h * 0.28, 3.2 + r() * 1.5, top - 0.8 - lowest);
+        if (drop > 0.8) canopyBranch(f, x, top, dir, drop, r, color);
+      });
     }
     c.restore();
     // Боке: кілька теплих чи холодних вогників упереді, м'яко розмитих.
