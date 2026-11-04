@@ -19,7 +19,7 @@ namespace ForgottenKingdom.EditorTools
     public static class SceneLevelLights
     {
         public const string RootName = "PaintedLights";
-        private static readonly string[] Zones = { "Tomb", "Forest" };
+        private static readonly string[] Zones = { "Tomb", "Forest", "Village", "Capital" };
 
         [Serializable]
         private sealed class LightList { public PaintedLight[] lights; }

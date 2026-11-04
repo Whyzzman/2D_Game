@@ -1,0 +1,29 @@
+{
+  "_note": "Фоны комнат Села (2026-11-04, «вся игра поэтапно»; решено Claude по постоянному согласию; gamedesign/MIDJOURNEY.md §3б). Промпт = text + ', ' + хвост forest/prompts.json (open — комнаты из looks.js village.open, enclosed — остальные) + ' --ar ' + ar. Настрой Села — сумерки с жаром над Столицей, тёмное дерево, глина, солома, бронза колокола; у каждой комнаты свой оттенок.",
+  "rooms": [
+    ["room_village_hill", "open", "1:1", "grassy slope up to a ruined village at dusk, crooked wooden crosses and a broken fence, smoke rising from distant roofs, dusky amber sky over a burning city far below"],
+    ["room_village_hay_barn", "enclosed", "7:4", "inside an old hay barn, heaped straw bales and hanging sickles, dust in thin beams of light through cracked planks, warm straw gold hues"],
+    ["room_village_lower_street", "open", "3:1", "muddy lower street of an abandoned medieval village, leaning timber houses with dark windows, a cart sunk in mud, dusk with faint ember glow, sepia brown hues"],
+    ["room_village_feather", "open", "1:2", "steep cliff edge behind the village, a single giant black feather stuck in the rock, wind-torn rags on a pole, cold ash grey sky with a red horizon"],
+    ["room_village_market", "open", "3:1", "ruined village market row, collapsed stalls with torn awnings, scattered baskets and pots, hanging lanterns long gone out, smoky rust red hues"],
+    ["room_village_well_cache", "enclosed", "3:2", "damp stone cellar under a well, dripping water, a rope and bucket hanging down a shaft of pale light, moss green and wet stone hues"],
+    ["room_village_cellar", "enclosed", "3:1", "long village root cellar, barrels and shelves of jars, onions hanging from beams, a single candle glow, deep umber hues"],
+    ["room_village_bridge", "enclosed", "3:1", "old wooden bridge over a dark moat under the village wall, mossy pilings, mist on black water, cold teal hues with a warm lantern accent"],
+    ["room_village_stair", "enclosed", "2:3", "narrow stone stair cut down into the moat, worn steps, iron rings in the wall, damp grey hues"],
+    ["room_village_church", "enclosed", "3:2", "inside a ruined village church, broken pews, a cracked stained glass window glowing amber and blue, candles on the altar, dusty violet and gold hues"],
+    ["room_village_crypt_cache", "enclosed", "2:1", "small crypt under the church, stone coffins and a hidden niche, faint golden glow from a reliquary, dusty ochre hues"],
+    ["room_village_forge", "enclosed", "3:1", "village smithy, a cold anvil and tongs, embers still glowing in the hearth, hanging horseshoes and chains, deep ember orange hues"],
+    ["room_village_forge_loft", "enclosed", "3:1", "loft above a smithy, coal sacks and rafters, a round window of red dusk light, charcoal and rust hues"],
+    ["room_village_square", "open", "3:1", "village square around an old stone well, a dead oak in the middle, houses with collapsed roofs around it, bell tower silhouette, warm dusk amber hues"],
+    ["room_village_stilt_houses", "open", "2:1", "wooden houses on tall stilts over a marsh at the village edge, rope walkways between them, reeds and mist below, murky olive green hues"],
+    ["room_village_belfry_base", "enclosed", "3:1", "base of a stone bell tower, heavy wooden beams and fallen ropes, a huge cracked bell clapper on the floor, bronze and shadow hues"],
+    ["room_village_east_lane", "open", "3:1", "narrow eastern lane between tall timber houses, laundry lines with torn cloth, a cat-sized shadow on a roof, smoky lilac dusk hues"],
+    ["room_village_east_cache", "enclosed", "3:2", "hidden room behind a house wall, a chest under a tarp, a lantern with a dying flame, warm honey hues"],
+    ["room_village_marsh_road", "open", "2:1", "road out of the village into the marsh, a leaning signpost, dead willows and fog over water, sickly yellow-green dusk hues"],
+    ["room_village_bell_shaft", "enclosed", "1:2", "inside a tall bell tower shaft, crossing wooden beams and ladders, ropes hanging into darkness, a shaft of dusk light from above, dark bronze hues"],
+    ["room_village_bell", "open", "2:1", "top of a bell tower under the open sky, a gigantic bronze bell hanging from a burnt beam, clouds of smoke and embers, fiery dusk red and gold hues"],
+    ["room_village_upper_houses", "open", "3:1", "upper village houses on the hillside, steep thatched roofs and chimneys, a few windows still lit, cold blue dusk with warm window accents"],
+    ["room_village_attic", "enclosed", "3:2", "cramped attic under a thatched roof, old toys and a cradle, cobwebs and a small round window, faded rose and dust hues"],
+    ["room_village_upper_street", "open", "3:1", "high village street along the ridge, wooden fences and shrines with burnt candles, the ruined capital glowing on the horizon, deep crimson dusk hues"]
+  ]
+}

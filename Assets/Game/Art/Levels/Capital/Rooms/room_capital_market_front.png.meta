@@ -1,0 +1,520 @@
+fileFormatVersion: 2
+guid: 002b3cdfd99d7af48b9872e04f4ffc6a
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 3998408862272109712
+    second: room_capital_market_front_0
+  - first:
+      213: 1624660649361873519
+    second: room_capital_market_front_1
+  - first:
+      213: 3707851182933236227
+    second: room_capital_market_front_2
+  - first:
+      213: -9066633320780539198
+    second: room_capital_market_front_3
+  - first:
+      213: -2683284129627256078
+    second: room_capital_market_front_4
+  - first:
+      213: 6095576218335958036
+    second: room_capital_market_front_5
+  - first:
+      213: 2215489084997141709
+    second: room_capital_market_front_6
+  - first:
+      213: 1230931616637582846
+    second: room_capital_market_front_7
+  - first:
+      213: 7396391871045076249
+    second: room_capital_market_front_8
+  - first:
+      213: -6902629270287942826
+    second: room_capital_market_front_9
+  - first:
+      213: -683584152459725095
+    second: room_capital_market_front_10
+  - first:
+      213: 3914412291226782962
+    second: room_capital_market_front_11
+  - first:
+      213: -5981972123443337921
+    second: room_capital_market_front_12
+  - first:
+      213: -7714665786447309534
+    second: room_capital_market_front_13
+  - first:
+      213: 980457496118678414
+    second: room_capital_market_front_14
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 0
+  alignment: 6
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 32
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: room_capital_market_front_0
+      rect:
+        serializedVersion: 2
+        x: 83
+        y: 385
+        width: 129
+        height: 141
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 09cb08efca33d7730800000000000000
+      internalID: 3998408862272109712
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_market_front_1
+      rect:
+        serializedVersion: 2
+        x: 274
+        y: 411
+        width: 43
+        height: 115
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f6a15c5b044fb8610800000000000000
+      internalID: 1624660649361873519
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_market_front_2
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 433
+        width: 17
+        height: 93
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 30a5fbe710fe47330800000000000000
+      internalID: 3707851182933236227
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_market_front_3
+      rect:
+        serializedVersion: 2
+        x: 339
+        y: 375
+        width: 150
+        height: 151
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2cad7262809dc2280800000000000000
+      internalID: -9066633320780539198
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_market_front_4
+      rect:
+        serializedVersion: 2
+        x: 488
+        y: 408
+        width: 17
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2facf1efc4f03cad0800000000000000
+      internalID: -2683284129627256078
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_market_front_5
+      rect:
+        serializedVersion: 2
+        x: 505
+        y: 416
+        width: 51
+        height: 110
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 414db3b5646d79450800000000000000
+      internalID: 6095576218335958036
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_market_front_6
+      rect:
+        serializedVersion: 2
+        x: 550
+        y: 369
+        width: 51
+        height: 157
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dc4820ba59ffebe10800000000000000
+      internalID: 2215489084997141709
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_market_front_7
+      rect:
+        serializedVersion: 2
+        x: 601
+        y: 375
+        width: 124
+        height: 151
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: efdfa7898c5251110800000000000000
+      internalID: 1230931616637582846
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_market_front_8
+      rect:
+        serializedVersion: 2
+        x: 724
+        y: 416
+        width: 95
+        height: 108
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9158a3d083345a660800000000000000
+      internalID: 7396391871045076249
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_market_front_9
+      rect:
+        serializedVersion: 2
+        x: 873
+        y: 423
+        width: 38
+        height: 103
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 65bf548104fe430a0800000000000000
+      internalID: -6902629270287942826
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_market_front_10
+      rect:
+        serializedVersion: 2
+        x: 911
+        y: 449
+        width: 21
+        height: 77
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9d63d8ac5db6386f0800000000000000
+      internalID: -683584152459725095
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_market_front_11
+      rect:
+        serializedVersion: 2
+        x: 1131
+        y: 388
+        width: 20
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2fccefa4d39c25630800000000000000
+      internalID: 3914412291226782962
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_market_front_12
+      rect:
+        serializedVersion: 2
+        x: 670
+        y: 326
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f35eedd2c04cbfca0800000000000000
+      internalID: -5981972123443337921
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_market_front_13
+      rect:
+        serializedVersion: 2
+        x: 61
+        y: 202
+        width: 25
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 225d2fd575000f490800000000000000
+      internalID: -7714665786447309534
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_capital_market_front_14
+      rect:
+        serializedVersion: 2
+        x: 85
+        y: 168
+        width: 20
+        height: 102
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e83d585e5e84b9d00800000000000000
+      internalID: 980457496118678414
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      room_capital_market_front_0: 3998408862272109712
+      room_capital_market_front_1: 1624660649361873519
+      room_capital_market_front_10: -683584152459725095
+      room_capital_market_front_11: 3914412291226782962
+      room_capital_market_front_12: -5981972123443337921
+      room_capital_market_front_13: -7714665786447309534
+      room_capital_market_front_14: 980457496118678414
+      room_capital_market_front_2: 3707851182933236227
+      room_capital_market_front_3: -9066633320780539198
+      room_capital_market_front_4: -2683284129627256078
+      room_capital_market_front_5: 6095576218335958036
+      room_capital_market_front_6: 2215489084997141709
+      room_capital_market_front_7: 1230931616637582846
+      room_capital_market_front_8: 7396391871045076249
+      room_capital_market_front_9: -6902629270287942826
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

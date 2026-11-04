@@ -28,8 +28,8 @@ for (const r of zone.rooms) {
     console.log(`breakable b_${cx}_${cy} ${w} ${hh} what=breakable&cx=${cx}&cy=${cy}&h=${h}&pad=${BREAK_PAD}&ppu=${TERRAIN_PPU}`);
   }
 }
-// Передній план (front.js) — Гробниця й Ліс (2026-11-04); Село й Столиця ще без шару.
-const FRONT_ZONES = ["tomb", "forest"], FRONT_MARGIN = 2;
+// Передній план (front.js) — усі чотири зони (Ліс, Село й Столиця — 2026-11-04).
+const FRONT_ZONES = ["tomb", "forest", "village", "capital"], FRONT_MARGIN = 2;
 for (const r of zone.rooms) {
   if (FRONT_ZONES.indexOf(zoneName) >= 0) {
     const w = Math.round((r.w * c + 2 * FRONT_MARGIN) * ROOM_PPU), h = Math.round((r.h * c + 2 * FRONT_MARGIN) * ROOM_PPU);

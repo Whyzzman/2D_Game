@@ -186,7 +186,8 @@
     // (шахта відкрита вгору) або стовпчик увесь камінь, нічого не звисає.
     const cell = zone.cell, ceilings = [], clearance = [];
     // Під небом Лісу «стеля» — верх кадру: з-над нього звисає крона.
-    const canopy = forest && (look.enclosed || []).indexOf(room.id) < 0;
+    const canopy = (forest && (look.enclosed || []).indexOf(room.id) < 0)
+      || (look.style === "village" && (look.open || []).indexOf(room.id) >= 0); // і відкриті вулиці Села
     for (let x = 0; x < room.w; x++) {
       let y = room.h - 1;
       // Під небом Лісу верхній камінь кімнати — лише межа, на картині там небо: з нього нічого не звисає,

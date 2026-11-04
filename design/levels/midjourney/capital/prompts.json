@@ -1,0 +1,24 @@
+{
+  "_note": "Фоны комнат Столицы (2026-11-04, «вся игра поэтапно»; решено Claude по постоянному согласию; gamedesign/MIDJOURNEY.md §3б). Промпт = text + ', ' + хвост forest/prompts.json (open — looks.js capital.open, enclosed — остальные) + ' --ar ' + ar. Настрой Столицы — пепельный камень под пепельно-красным небом, сгоревшие шпили, багряные стяги, жар только в жаровнях; у каждой комнаты свой оттенок.",
+  "rooms": [
+    ["room_capital_ash_road", "open", "2:1", "ash-covered royal road into a burnt capital, toppled statues and broken carts, grey ash falling like snow, ash grey hues with a smouldering red horizon"],
+    ["room_capital_city_gate", "open", "7:4", "colossal broken city gate of a fallen gothic capital, torn crimson banners, burnt portcullis, embers drifting, charcoal and crimson hues"],
+    ["room_capital_angel_square", "open", "3:1", "city square with a huge weeping angel statue, cracked fountain, scorched facades, pale moonlight through smoke, silver grey hues with a cold blue accent"],
+    ["room_capital_bell_tower", "enclosed", "1:3", "inside a tall cathedral bell tower, spiral stair fragments and great beams, a falling shaft of red light, soot black and bronze hues"],
+    ["room_capital_palace_approach", "open", "3:1", "grand stair approach to a burnt palace, rows of headless knight statues, crimson banners in the wind, dark crimson and gold hues"],
+    ["room_capital_royal_gallery", "enclosed", "3:1", "royal portrait gallery with slashed paintings and fallen frames, gilded columns blackened by fire, tarnished gold hues"],
+    ["room_capital_hidden_treasury", "enclosed", "2:3", "small hidden treasury vault, heaps of coins and goblets, a single gleam of gold light, warm gold hues"],
+    ["room_capital_throne_hall", "enclosed", "2:1", "vast hall of the commander, burnt banners hanging from a high vault, a war table split in two, cold steel blue and ember hues"],
+    ["room_capital_kings_throne", "enclosed", "5:3", "the king's throne room, a colossal empty throne under a broken rose window, chains and ash, deep royal purple and ember gold hues"],
+    ["room_capital_cathedral_steps", "open", "2:1", "wide steps up to a burnt cathedral facade, broken rose window, saints' statues with melted faces, smoky violet hues"],
+    ["room_capital_temple", "enclosed", "2:1", "temple quarter interior, rows of shattered pillars and incense braziers still glowing, hazy amber hues"],
+    ["room_capital_market", "open", "3:1", "burnt capital market square, collapsed arcades and scorched awnings, a fallen bell in the middle, rust orange hues"],
+    ["room_capital_gardens", "open", "3:1", "burnt royal gardens, charred topiary and dead trees, a dry fountain with a stone swan, ash white and black hues with a faint green accent"],
+    ["room_capital_workshop", "enclosed", "3:1", "royal engineers' workshop, gears and siege machine parts, hanging lamps, copper and soot hues"],
+    ["room_capital_roof_cache", "enclosed", "1:1", "tiny hidden space under a slate roof, a chest between rafters, moonlight through a gap, cold slate hues"],
+    ["room_capital_crypt_cache", "enclosed", "4:3", "small crypt niche with a sealed reliquary, blue sigil glow on the stone, deep blue hues"],
+    ["room_capital_crypts", "enclosed", "3:1", "royal crypts beneath the capital, long rows of stone coffins and kings' effigies, candle stubs, bone and sepia hues"],
+    ["room_capital_cistern", "enclosed", "3:1", "flooded underground cistern with vaulted brick arches reflecting in still black water, a thin waterfall, deep teal hues"],
+    ["room_capital_bell_nest", "enclosed", "1:1", "nest of ash ravens in the bell tower beams, black feathers and bones, a red glow through slats, black and blood red hues"]
+  ]
+}

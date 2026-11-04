@@ -1,0 +1,20 @@
+# Вибрані варіанти Midjourney для фонів (capital): https://cdn.midjourney.com/<id>/0_<n>.png
+room_capital_ash_road 9106e82d-ea0f-4f5a-af1a-656bfcb718e7 2
+room_capital_city_gate 684c7adf-dc73-4430-ac8a-1fcd37a6415d 2
+room_capital_angel_square 8e4239a3-8320-4ecc-9cae-432f1e24d795 1
+room_capital_bell_tower b9364d3d-fc78-46f1-a5bf-c16622bd4470 2
+room_capital_palace_approach bfa54903-183f-48b7-9828-1c74aa672bda 2
+room_capital_royal_gallery 9f35efac-3eca-469c-91c1-14d707f675c9 1
+room_capital_hidden_treasury 751cfe96-57d4-4909-aa34-fcf9a068de36 2
+room_capital_throne_hall c65fb56a-67be-4331-acad-16953555b823 1
+room_capital_kings_throne ea99ce44-8f36-4fc9-9b9b-6955dcfc05c0 2
+room_capital_cathedral_steps ff309faf-1970-4514-8fd8-111364615cb4 1
+room_capital_temple 9a426d0c-821f-4ca0-b76c-31dbbe046910 2
+room_capital_market 3ff6d888-6999-41ec-9cda-e88f1ea3efb4 3
+room_capital_gardens fbdf973d-e3dd-421f-8aa2-31368ad9a746 1
+room_capital_workshop 3e43eca1-a64f-4017-bbe0-c4b420696bd4 1
+room_capital_roof_cache 2b80ec5e-db43-47b7-93f1-216c88928adc 1
+room_capital_crypt_cache 1b126138-28a5-47f8-9e44-2fda55a63d0d 1
+room_capital_crypts 448f474c-b635-4eeb-85dc-9b8447288e39 1
+room_capital_cistern 7d2a2b9a-025b-4942-a499-fa52108cb58c 2
+room_capital_bell_nest 70897035-4665-4d15-9d6d-ddc926e32f0c 0

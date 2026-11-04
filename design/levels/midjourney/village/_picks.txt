@@ -1,0 +1,25 @@
+# Вибрані варіанти Midjourney для фонів (village): https://cdn.midjourney.com/<id>/0_<n>.png
+room_village_hill 04084660-3e25-4bd1-9726-5fd8cfc265a2 1
+room_village_hay_barn 15a3d8cf-3d2c-4b1c-9971-074173a20cb7 1
+room_village_lower_street 03398123-4187-4ca4-882f-d750bef50599 2
+room_village_feather b7a8dda6-382a-4197-8080-6e088917d130 2
+room_village_market 7d129bcf-26c4-4ca3-9308-d92e7f273463 3
+room_village_well_cache 9bc32103-0810-4d5d-9bde-6f75fcfcd3a9 1
+room_village_cellar 276a6190-9faf-4cbc-81db-2b262c769449 1
+room_village_bridge f6304422-3649-4c85-af9e-5d350746a43f 2
+room_village_stair d1d7c7cb-5960-4236-8d15-04e04a94f773 1
+room_village_church fd44c368-5c5c-4eb2-ae38-d77bb33d48a3 3
+room_village_crypt_cache 05143a53-33f1-40c9-9358-67ecf5e00215 2
+room_village_forge 95922df3-b835-4bc4-aa9d-32f369b9f546 2
+room_village_forge_loft 3a72a3a5-b81f-4b10-9fdc-e3f15a255ace 1
+room_village_square 4b247c66-570d-43ac-8cac-bb91b8f45fce 2
+room_village_stilt_houses 7854886f-af07-4645-99ac-4e33683ad78b 3
+room_village_belfry_base bbb08181-386a-4d93-affa-b32b71374807 1
+room_village_east_lane 6d044b34-4b6d-449a-88b8-0a648e0f02ef 0
+room_village_east_cache 89b77e88-b94d-480e-aee0-794cf9a70400 0
+room_village_marsh_road 86f42dd0-337c-460e-b75c-848ac87624aa 1
+room_village_bell_shaft d1fdd557-e515-4bbe-8a03-a9f356f310ad 2
+room_village_bell ff7bd2f2-0cfe-4ca9-b57d-ef49c77843ee 3
+room_village_upper_houses cf9adbf8-e510-4fa3-937c-e59d343f8089 1
+room_village_attic 6c8fae08-164b-4ea5-9035-2ca3f1ce3ae1 2
+room_village_upper_street 81df1dee-4041-41fc-b6d6-8291b69300a2 1
