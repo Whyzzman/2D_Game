@@ -60,6 +60,15 @@
   (`LEVEL_TOOL.md`). [x] Лес (2026-10-19): макет `design/levels/forest-look` (Approval пользователя), painter
   `forest-backdrop.js`, арт `Art/Levels/Forest` (~44 МБ), тесты `ForestLookTests`. [x] Село (2026-10-19): макет `design/levels/village-look`, painter
   `village-backdrop.js`, арт `Art/Levels/Village`, тесты `VillageLookTests`.
+  [x] **Единый вид всех четырёх зон** (2026-11-03…05, пользователь: «как Hollow Knight, конфетка, вся игра поэтапно»;
+  решено Claude по постоянному согласию): фон Midjourney в каждой комнате (Гробница 27, Лес 35, Село 24, Столица 19;
+  `MIDJOURNEY.md` §1, §3а, §3б) уходит в дымку своей комнаты (`place.py`, `atmosphere`); камень и кант — в цветах
+  комнаты (`palette-<зона>.js`); передний план во всех зонах; детали в толще камня; свечи и грибы — настоящий Light2D
+  (`SceneLevelLights`); в Гробнице уступы — камень, не доски; шипы рисует painter. Статичные спрайты — Midjourney с
+  контуром персонажей (`tools/midjourney/sprites.py`, `ART_ASSET_LIST.md` §0), плиты с надписями (`SceneStones`).
+  Враги и боссы всех четырёх зон перерисованы (`design/characters/enemies/enemies*.js`, конечности с объёмом, свет
+  `tools/characters/shade.py`). Логика: `tools/level-drafts/audit.py`, `headroom.py`, `door_enemies.py`; Лес —
+  деревья вместо висящих лестниц (`trees.py`). Не проверено в Play Mode — проверка пользователем.
 - [x] **6. Столица по карте** (Командор, обвальный удар; Король уходит в Трон). Шаги (решено Claude по
   постоянному согласию пользователя, 2026-10-19): [x] 6а (2026-10-19, `CAPITAL.md`) — 18 комнат текстом `Levels/capital.txt` по
   `reference/maps/04_ruined_capital.webp` (башня-лифт в центре, площадь с ангелом, рынок, храм, затопленные
