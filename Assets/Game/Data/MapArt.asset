@@ -241,5 +241,39 @@ MonoBehaviour:
     Texture: {fileID: 2800000, guid: 37c63b10ab9bc4215a4e405c5a8b36f1, type: 3}
   - Id: room_capital_cistern
     Texture: {fileID: 2800000, guid: 131f0421c1e8e4fbb8667f6bef224869, type: 3}
+  - Id: room_marsh_edge
+    Texture: {fileID: 2800000, guid: 330a4e1daeaa4474095a49b1d2e589e2, type: 3}
+  - Id: room_marsh_pier
+    Texture: {fileID: 2800000, guid: f6c6920fa55359144830460947d560ef, type: 3}
+  - Id: room_marsh_rotten_road
+    Texture: {fileID: 2800000, guid: ae459d3e0c9defe4c86f2a50fcf32c22, type: 3}
+  - Id: room_marsh_rotten_tree
+    Texture: {fileID: 2800000, guid: 974786fb490a4294197721d63542deec, type: 3}
+  - Id: room_marsh_drowned_ruins
+    Texture: {fileID: 2800000, guid: fdc9e03a326eeb14a84df6d22d85fb2e, type: 3}
+  - Id: room_marsh_stilt_hut
+    Texture: {fileID: 2800000, guid: f26073c0991cfdd4eaff539c0775a168, type: 3}
+  - Id: room_marsh_chest_nook
+    Texture: {fileID: 2800000, guid: 70a98b6d7b5fb7946ad967a9a0e75123, type: 3}
+  - Id: room_marsh_shrine
+    Texture: {fileID: 2800000, guid: 7689c1bb4211e0c4791c42d2b9165f8e, type: 3}
+  - Id: room_marsh_witch_hut
+    Texture: {fileID: 2800000, guid: 8f4a6612dcbeae8428d9888ec8221767, type: 3}
+  - Id: room_marsh_lair_stair
+    Texture: {fileID: 2800000, guid: 5f5185b58b923ce4c84cf97b66631101, type: 3}
+  - Id: room_marsh_stag_lair
+    Texture: {fileID: 2800000, guid: 34bef7941fe12e24b8d2800a1c107b3c, type: 3}
+  - Id: room_marsh_chapel
+    Texture: {fileID: 2800000, guid: 272d01d27c7d24e4c80a7cdd13a8fa31, type: 3}
+  - Id: room_marsh_north_bridge
+    Texture: {fileID: 2800000, guid: 9ed9a8420e921014983d7ac7a608c707, type: 3}
+  - Id: room_marsh_mushroom_cave
+    Texture: {fileID: 2800000, guid: ee27014e8abcba44fb85d7e72f5a0bc0, type: 3}
+  - Id: room_marsh_graveyard
+    Texture: {fileID: 2800000, guid: 2efd93d52dd2a50459b599ba53e59a39, type: 3}
+  - Id: room_marsh_wreck
+    Texture: {fileID: 2800000, guid: 508c1fdf3c1f52f4c8baaab2931a139c, type: 3}
+  - Id: room_marsh_toxic_drain
+    Texture: {fileID: 2800000, guid: 4afd756658f87dd4a8592ac06799479a, type: 3}
   _fog: {fileID: 2800000, guid: 91b3a940e917a46a6aa7b9bd0fae3632, type: 3}
   _glow: {fileID: 2800000, guid: 15b96ee5584434f6bb7f4223a097a3bc, type: 3}

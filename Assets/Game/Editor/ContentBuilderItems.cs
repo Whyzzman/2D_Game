@@ -494,6 +494,7 @@ namespace ForgottenKingdom.EditorTools
             definitions.AddRange(BuildWorldItems());
             definitions.AddRange(BuildNpcItems());
             definitions.AddRange(BuildCapitalItems());
+            definitions.AddRange(BuildMarshItems());
 
             var database = CreateAsset<ItemDatabase>($"{DataFolder}/ItemDatabase.asset");
             var serialized = new SerializedObject(database);

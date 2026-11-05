@@ -1,0 +1,468 @@
+fileFormatVersion: 2
+guid: 12f8fa38d58c7ec418419ffea2e9543a
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 920281844816159998
+    second: room_marsh_wreck_near_0
+  - first:
+      213: 5728515855952293209
+    second: room_marsh_wreck_near_1
+  - first:
+      213: 19601593121405119
+    second: room_marsh_wreck_near_2
+  - first:
+      213: -2547198820866108066
+    second: room_marsh_wreck_near_3
+  - first:
+      213: -7929818937824514556
+    second: room_marsh_wreck_near_4
+  - first:
+      213: 6567679534641832002
+    second: room_marsh_wreck_near_5
+  - first:
+      213: 3413393921474957037
+    second: room_marsh_wreck_near_6
+  - first:
+      213: 5701960518457727021
+    second: room_marsh_wreck_near_7
+  - first:
+      213: 1324614504250044909
+    second: room_marsh_wreck_near_8
+  - first:
+      213: 2304779758836430566
+    second: room_marsh_wreck_near_9
+  - first:
+      213: 3173428929914511867
+    second: room_marsh_wreck_near_10
+  - first:
+      213: -2999649267373909732
+    second: room_marsh_wreck_near_11
+  - first:
+      213: -1708576062787227086
+    second: room_marsh_wreck_near_12
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 0
+  alignment: 6
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 32
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: room_marsh_wreck_near_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 142
+        height: 416
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ef42285467f75cc00800000000000000
+      internalID: 920281844816159998
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_marsh_wreck_near_1
+      rect:
+        serializedVersion: 2
+        x: 158
+        y: 284
+        width: 77
+        height: 132
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 95daa3ce1d6cf7f40800000000000000
+      internalID: 5728515855952293209
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_marsh_wreck_near_2
+      rect:
+        serializedVersion: 2
+        x: 250
+        y: 0
+        width: 822
+        height: 416
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fb8780b8b83a54000800000000000000
+      internalID: 19601593121405119
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_marsh_wreck_near_3
+      rect:
+        serializedVersion: 2
+        x: 1026
+        y: 346
+        width: 59
+        height: 70
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e555bf50b2886acd0800000000000000
+      internalID: -2547198820866108066
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_marsh_wreck_near_4
+      rect:
+        serializedVersion: 2
+        x: 1082
+        y: 238
+        width: 61
+        height: 178
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 40eedc5a0bf93f190800000000000000
+      internalID: -7929818937824514556
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_marsh_wreck_near_5
+      rect:
+        serializedVersion: 2
+        x: 1165
+        y: 67
+        width: 145
+        height: 349
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 240edec5db5152b50800000000000000
+      internalID: 6567679534641832002
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_marsh_wreck_near_6
+      rect:
+        serializedVersion: 2
+        x: 1181
+        y: 364
+        width: 31
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dee0ef7cfafce5f20800000000000000
+      internalID: 3413393921474957037
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_marsh_wreck_near_7
+      rect:
+        serializedVersion: 2
+        x: 1260
+        y: 364
+        width: 28
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d2899f991ee612f40800000000000000
+      internalID: 5701960518457727021
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_marsh_wreck_near_8
+      rect:
+        serializedVersion: 2
+        x: 1328
+        y: 0
+        width: 112
+        height: 416
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: de1772e9fd9f16210800000000000000
+      internalID: 1324614504250044909
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_marsh_wreck_near_9
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 289
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6e6b4fabaf83cff10800000000000000
+      internalID: 2304779758836430566
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_marsh_wreck_near_10
+      rect:
+        serializedVersion: 2
+        x: 1080
+        y: 265
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bf1a0875cc84a0c20800000000000000
+      internalID: 3173428929914511867
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_marsh_wreck_near_11
+      rect:
+        serializedVersion: 2
+        x: 152
+        y: 51
+        width: 64
+        height: 117
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c19da6752ea1f56d0800000000000000
+      internalID: -2999649267373909732
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_marsh_wreck_near_12
+      rect:
+        serializedVersion: 2
+        x: 1016
+        y: 14
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 232f4d19f1be948e0800000000000000
+      internalID: -1708576062787227086
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      room_marsh_wreck_near_0: 920281844816159998
+      room_marsh_wreck_near_1: 5728515855952293209
+      room_marsh_wreck_near_10: 3173428929914511867
+      room_marsh_wreck_near_11: -2999649267373909732
+      room_marsh_wreck_near_12: -1708576062787227086
+      room_marsh_wreck_near_2: 19601593121405119
+      room_marsh_wreck_near_3: -2547198820866108066
+      room_marsh_wreck_near_4: -7929818937824514556
+      room_marsh_wreck_near_5: 6567679534641832002
+      room_marsh_wreck_near_6: 3413393921474957037
+      room_marsh_wreck_near_7: 5701960518457727021
+      room_marsh_wreck_near_8: 1324614504250044909
+      room_marsh_wreck_near_9: 2304779758836430566
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

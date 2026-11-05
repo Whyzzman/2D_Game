@@ -313,6 +313,12 @@
         g.fillStyle = INK; g.fillRect(-20, -6, 130, 12); g.fillStyle = "#3a2a20"; g.fillRect(-18, -4, 126, 8);
         shape(g, c.blade, [[96, -30], [132, -30], [138, -20], [138, 20], [132, 30], [96, 30], [90, 20], [90, -20]], 5);
         g.fillStyle = "rgba(255,220,160,0.25)"; g.fillRect(100, -24, 6, 48);
+      } else if (this.weapon === "crook") {
+        // посох-гак Оленя: криве древко, на кінці — загнутий кістяний ріг
+        g.fillStyle = INK; g.fillRect(-24, -6, 140, 12); g.fillStyle = "#3a3224"; g.fillRect(-22, -4, 136, 8);
+        // загнутий ріг: товстий біля древка, тоншає до вістря, що дивиться назад
+        shape(g, c.blade, [[104, -7], [124, -16], [142, -12], [152, 2], [150, 20], [140, 34], [142, 18], [138, 4], [126, -2], [106, 6]], 4);
+        stroke(g, 1.5, "rgba(0,0,0,0.3)", [[118, -6], [136, -6], [144, 6]]);
       } else {
         const L = this.weapon === "greatsword" ? 1.3 : 1;
         shape(g, c.blade, [[10, -9 * L], [120 * L, -5 * L], [134 * L, 0], [120 * L, 5 * L], [10, 9 * L]], 4);
@@ -329,7 +335,8 @@
       g.shadowBlur = 0;
       if (p.glow > 0.05) {
         const sm = g.createRadialGradient(0, -70, 4, 0, -110, 90);
-        sm.addColorStop(0, `rgba(170,110,255,${0.45 * Math.min(1, p.glow)})`); sm.addColorStop(1, "rgba(170,110,255,0)");
+        const smoke = this.smoke || "170,110,255";
+        sm.addColorStop(0, `rgba(${smoke},${0.45 * Math.min(1, p.glow)})`); sm.addColorStop(1, `rgba(${smoke},0)`);
         g.fillStyle = sm; g.beginPath(); g.ellipse(-10, -120, 60, 80, -0.3, 0, PI2); g.fill();
       }
       g.restore();
@@ -343,6 +350,15 @@
       if (this.headgear === "horns") {
         shape(g, c.crown, [[-18, -30], [-34, -44], [-38, -64], [-26, -46], [-12, -36]], 3);
         shape(g, c.crown, [[16, -32], [30, -48], [30, -68], [22, -48], [8, -36]], 3);
+      } else if (this.headgear === "antlers") {
+        // Чумний Олень: оленячий череп замість шолома, роги ширші за плечі, мох звисає з відростків
+        shape(g, c.crown, [[-14, 20], [-18, -20], [-6, -34], [14, -32], [26, -10], [34, 6], [22, 14], [8, 22]], 4);
+        g.fillStyle = "#06060a"; g.beginPath(); g.ellipse(2, -12, 6, 7, 0, 0, PI2); g.fill(); g.beginPath(); g.ellipse(14, -10, 5, 6, 0, 0, PI2); g.fill();
+        eye(g, 2, -12, 2.6, p.eyes, this.eyes); eye(g, 14, -10, 2.2, p.eyes, this.eyes);
+        const tine = (x0, y0, pts) => stroke(g, 5, c.crown, [[x0, y0], ...pts]);
+        tine(-8, -30, [[-26, -44], [-50, -50], [-72, -44]]); tine(-26, -44, [[-34, -62], [-30, -74]]); tine(-50, -50, [[-62, -66]]);
+        tine(8, -32, [[22, -46], [44, -54], [66, -50]]); tine(22, -46, [[20, -64], [28, -76]]); tine(44, -54, [[56, -70]]);
+        stroke(g, 2, c.cape, [[-50, -50], [-52, -36 + S(p.wave * PI2) * 3]]); stroke(g, 2, c.cape, [[44, -54], [46, -40 + S(p.wave * PI2 + 1) * 3]]);
       } else if (this.headgear === "hood") {
         shape(g, c.cape, [[-26, 22], [-28, -24], [-10, -46], [18, -44], [28, -22], [26, 20], [14, 8], [-12, 10]], 4);
         g.fillStyle = "#06060a"; g.beginPath(); g.ellipse(6, -8, 13, 14, 0, 0, PI2); g.fill();

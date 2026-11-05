@@ -77,6 +77,31 @@
         "room_village_cellar", "room_village_well_cache", "room_village_bridge", "room_village_stair"],
       caves: []
     },
+    // Болота (п'ятий рівень, 2026-11-05; решено Claude за постійною згодою; макет design/levels/marsh-look):
+    // ліс, що потонув — чорна гнила деревина, торф і мох на кантах, ядовито-зелене світло знизу, туман над водою.
+    marsh: {
+      style: "forest",
+      core: "#070a06", stone: "#1c2418", rim: "#a8c88a",
+      lip: "#4a5a30", lipDark: "#26301a", lipLight: "#a8b88a", chain: "#10160c",
+      mass: "rock", cap: "grass", roomPalette: false,
+      moss: "#5a6e30", hang: "roots",
+      skyTop: "#141c12", skyBottom: "#2a3a1a", moon: "#cfe0a8",
+      farTree: "#18221a", midTree: "#111a12", nearTree: "#0a0f0a", ruin: "#1a2418", nearRuin: "#111810",
+      fog: "#3e5a2e", fogLow: "#4a6a2a", beam: "#c8e0a0", dust: "#d8f0a8",
+      thicketTop: "#121a10", thicketBottom: "#070b06",
+      caveTop: "#0c140c", caveBottom: "#050805", caveRoot: "#121a10", nearRoot: "#060a06", caveFog: "#2e4a22",
+      caveRock: "#0a100a", caveDust: "#d0f0a0", fungus: "#b8e08a", fungusGlow: "#8ae04a",
+      poisonGlow: "#8ae04a", secretGlow: "#d9b45a",
+      // нижче рівня води (y 51) — під землею; закриті — хати, каплиця, печери, корабель
+      groundLine: 50,
+      enclosed: ["room_marsh_stilt_hut", "room_marsh_witch_hut", "room_marsh_chapel", "room_marsh_chapel_cache",
+        "room_marsh_mushroom_cache", "room_marsh_mushroom_cave", "room_marsh_wreck", "room_marsh_toxic_drain",
+        "room_marsh_hold_cache", "room_marsh_chest_nook"],
+      underground: ["room_marsh_mushroom_cache", "room_marsh_mushroom_cave", "room_marsh_hold_cache", "room_marsh_toxic_drain"],
+      poison: ["room_marsh_edge", "room_marsh_pier", "room_marsh_rotten_road", "room_marsh_rotten_tree", "room_marsh_drowned_ruins",
+        "room_marsh_graveyard", "room_marsh_wreck", "room_marsh_toxic_drain", "room_marsh_stag_lair", "room_marsh_mushroom_cave"],
+      caves: []
+    },
     // Столиця — погоджений макет design/levels/capital-look (2026-10-19): попелястий камінь під
     // попелясто-червоним небом, згорілі шпилі, багряні стяги, жар лише в жаровнях; тло — capital-backdrop.js.
     capital: {

@@ -1,0 +1,299 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 649169c22105a06499c9bc0695fd8d1d, type: 3}
+  m_Name: PlagueDoctorAnimations
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.EnemyAnimationSet
+  _clips:
+  - state: 1
+    clip:
+      _clipName: enemy_plague_doctor_idle
+      _frames:
+      - {fileID: 21300000, guid: c9346e3e8b0dace46bf6e98a65049c33, type: 3}
+      - {fileID: 21300000, guid: 2b798f41b87d50d47a5e9e278fb44d79, type: 3}
+      - {fileID: 21300000, guid: 1636db5aababfea4b8fd959379820d16, type: 3}
+      - {fileID: 21300000, guid: 669f796ea0cc1b24d8532616fba63fd1, type: 3}
+      - {fileID: 21300000, guid: 8ba711125971077468654f484c5df2cc, type: 3}
+      - {fileID: 21300000, guid: 900cbaad80b279d4d8839b69a76b354a, type: 3}
+      _framesPerSecond: 8
+      _isLooping: 1
+      _anchors:
+      - {x: -0.13767228, y: 0.6570093, z: 14.9}
+      - {x: -0.13767228, y: 0.6639374, z: 14.9}
+      - {x: -0.13767228, y: 0.6639374, z: 14.9}
+      - {x: -0.13767228, y: 0.6570093, z: 14.9}
+      - {x: -0.13767228, y: 0.65008104, z: 14.9}
+      - {x: -0.13767228, y: 0.65008104, z: 14.9}
+  - state: 2
+    clip:
+      _clipName: enemy_plague_doctor_patrol
+      _frames:
+      - {fileID: 21300000, guid: 024cc8e534de1ec40bf87e5003527734, type: 3}
+      - {fileID: 21300000, guid: 222bc2b5907f98f41a96d0b9b52a0822, type: 3}
+      - {fileID: 21300000, guid: 7f46d3bafb342a04286b4d4a5fbdb5e9, type: 3}
+      - {fileID: 21300000, guid: 832973996a53dba49ba3ab87f2f1164c, type: 3}
+      - {fileID: 21300000, guid: 8e9c2d3dce1ebdd47833d5e19f0f9128, type: 3}
+      - {fileID: 21300000, guid: 83c0ed94d281d8d47a6d2eb856d6820a, type: 3}
+      - {fileID: 21300000, guid: 384139462a4390f439834ce304346693, type: 3}
+      - {fileID: 21300000, guid: be7d44f8a0c1ad948a7e9a78bf61beb6, type: 3}
+      _framesPerSecond: 10
+      _isLooping: 1
+      _anchors:
+      - {x: -0.14257866, y: 0.661901, z: 15.5}
+      - {x: -0.14257866, y: 0.6802858, z: 15.5}
+      - {x: -0.14257866, y: 0.687901, z: 15.5}
+      - {x: -0.14257866, y: 0.6802858, z: 15.5}
+      - {x: -0.14257866, y: 0.661901, z: 15.5}
+      - {x: -0.14257866, y: 0.6802858, z: 15.5}
+      - {x: -0.14257866, y: 0.687901, z: 15.5}
+      - {x: -0.14257866, y: 0.6802858, z: 15.5}
+  - state: 3
+    clip:
+      _clipName: enemy_plague_doctor_alert
+      _frames:
+      - {fileID: 21300000, guid: f8f15a6dbf7e49c4fa2815cb716d6e00, type: 3}
+      - {fileID: 21300000, guid: 64b3ad01565290541b364e50637ece6a, type: 3}
+      - {fileID: 21300000, guid: ab60accf00846c84d988e08a219b7fa0, type: 3}
+      - {fileID: 21300000, guid: 3cadda3a285410543bae6495352b25f9, type: 3}
+      - {fileID: 21300000, guid: a4d720819d08128488c8bb8fb658ed4a, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 0
+      _anchors:
+      - {x: -0.14257866, y: 0.661901, z: 15.5}
+      - {x: -0.14370368, y: 0.6630721, z: 15.640625}
+      - {x: -0.14614482, y: 0.66568065, z: 15.95}
+      - {x: -0.14853859, y: 0.6683327, z: 16.259375}
+      - {x: -0.14961082, y: 0.6695523, z: 16.4}
+  - state: 4
+    clip:
+      _clipName: enemy_plague_doctor_chase
+      _frames:
+      - {fileID: 21300000, guid: a1024455e62a4c649bd91374e16aadb7, type: 3}
+      - {fileID: 21300000, guid: 957435072b27b6641b82020e908a47bd, type: 3}
+      - {fileID: 21300000, guid: 33ee7225a9f2eb94789dd6759beb6125, type: 3}
+      - {fileID: 21300000, guid: 190ef65693e26ed4998c3852f226810b, type: 3}
+      - {fileID: 21300000, guid: ebca2d10ba6b2064b8e95992644c6af3, type: 3}
+      - {fileID: 21300000, guid: ac2c365941916d84c827e9700561c501, type: 3}
+      - {fileID: 21300000, guid: 2e62b38112025114aad5d3de510f87cb, type: 3}
+      - {fileID: 21300000, guid: 4e7148ba81ae2974a9bf2ddee4d9c6d1, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 1
+      _anchors:
+      - {x: -0.15834595, y: 0.6803064, z: 17.6}
+      - {x: -0.15834595, y: 0.7015196, z: 17.6}
+      - {x: -0.15834595, y: 0.7103064, z: 17.6}
+      - {x: -0.15834595, y: 0.7015196, z: 17.6}
+      - {x: -0.15834595, y: 0.6803064, z: 17.6}
+      - {x: -0.15834595, y: 0.7015196, z: 17.6}
+      - {x: -0.15834595, y: 0.7103064, z: 17.6}
+      - {x: -0.15834595, y: 0.7015196, z: 17.6}
+  - state: 0
+    clip:
+      _clipName: enemy_plague_doctor_attacklight
+      _frames:
+      - {fileID: 21300000, guid: 383ab26a63b74434f9931611282aa52a, type: 3}
+      - {fileID: 21300000, guid: be8af8528d881fe49ad6815dae3b4859, type: 3}
+      - {fileID: 21300000, guid: ae41a84410ec38e4c9e5a71e2f76a4c9, type: 3}
+      - {fileID: 21300000, guid: 29e11b99e57364346bca72d01855824d, type: 3}
+      - {fileID: 21300000, guid: 2b9ccf3ede7ca224f952b3b53fa152c1, type: 3}
+      - {fileID: 21300000, guid: b86260939c9c5ec46ade15b5ff3ba3b7, type: 3}
+      - {fileID: 21300000, guid: 8e74ce86a4082414999addac9ba97d20, type: 3}
+      - {fileID: 21300000, guid: 3a57d8ba26e89b240966d0ddc4f6db7c, type: 3}
+      - {fileID: 21300000, guid: a2cefe05f810b124db3cd425aa2d0a79, type: 3}
+      - {fileID: 21300000, guid: e3958cc8ee5cfe34297c0588447a2a49, type: 3}
+      - {fileID: 21300000, guid: 37522c1f4b3dcd04cbade131933c542b, type: 3}
+      - {fileID: 21300000, guid: 90c3e9080dc38be41ac271675c6d3f46, type: 3}
+      - {fileID: 21300000, guid: 0dc585cf8ceb6dd4092d9481f98fb402, type: 3}
+      - {fileID: 21300000, guid: 0b8eeabe95073dd448aa8de4b6fc86d0, type: 3}
+      - {fileID: 21300000, guid: 77735951b713b7245bc19999298ef607, type: 3}
+      - {fileID: 21300000, guid: b87dffc3b48886148aaf0c560b66f739, type: 3}
+      - {fileID: 21300000, guid: 0211d1059479b614ebed79e5c6764477, type: 3}
+      - {fileID: 21300000, guid: 1862588ad9ef0b94e97af058de208ad0, type: 3}
+      - {fileID: 21300000, guid: cca42e97106a0ab4aab518560823f188, type: 3}
+      - {fileID: 21300000, guid: 12f9447006eaaf04b8dd74f85d50a692, type: 3}
+      - {fileID: 21300000, guid: 7d0c4c39a5c38ba4889034c907140b54, type: 3}
+      - {fileID: 21300000, guid: 81fe74664c76dc0408d119bfe746fca4, type: 3}
+      - {fileID: 21300000, guid: 2fa87a88151fd824089f28f6bb70560a, type: 3}
+      - {fileID: 21300000, guid: a1fc2b7e32a7bca469898f1721efcd98, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.113608554, y: 0.637233, z: 12.2}
+      - {x: -0.11345093, y: 0.63656837, z: 12.183358}
+      - {x: -0.113004684, y: 0.6346901, z: 12.136309}
+      - {x: -0.11230926, y: 0.63177264, z: 12.063166}
+      - {x: -0.11140366, y: 0.62799066, z: 11.96824}
+      - {x: -0.11032707, y: 0.6235193, z: 11.855846}
+      - {x: -0.10911896, y: 0.61853296, z: 11.730297}
+      - {x: -0.107819214, y: 0.6132052, z: 11.595907}
+      - {x: -0.10646874, y: 0.6077086, z: 11.456987}
+      - {x: -0.10510925, y: 0.60221446, z: 11.317852}
+      - {x: -0.10378319, y: 0.5968926, z: 11.182815}
+      - {x: -0.10253388, y: 0.5919118, z: 11.056188}
+      - {x: -0.10140541, y: 0.5874393, z: 10.942285}
+      - {x: -0.1004422, y: 0.58364165, z: 10.845418}
+      - {x: -0.09968903, y: 0.58068484, z: 10.769902}
+      - {x: -0.099190824, y: 0.57873464, z: 10.720049}
+      - {x: -0.09899193, y: 0.5779575, z: 10.700172}
+      - {x: -0.103779145, y: 0.5932788, z: 11.182406}
+      - {x: -0.11950508, y: 0.6299734, z: 12.830914}
+      - {x: -0.13423546, y: 0.6537781, z: 14.491501}
+      - {x: -0.14444107, y: 0.66385007, z: 15.733447}
+      - {x: -0.14949776, y: 0.66942275, z: 16.385109}
+      - {x: -0.14961082, y: 0.6695523, z: 16.4}
+      - {x: -0.14961082, y: 0.6695523, z: 16.4}
+  - state: 9
+    clip:
+      _clipName: enemy_plague_doctor_attackheavy
+      _frames:
+      - {fileID: 21300000, guid: 523c62db6570e7f4bafa004bc77229ca, type: 3}
+      - {fileID: 21300000, guid: 58685736e35fb84439c716337cb2a6c5, type: 3}
+      - {fileID: 21300000, guid: 8deb44946d2ec104f8338f0ac9eefb26, type: 3}
+      - {fileID: 21300000, guid: 0dc6ce8b8e786cb4aac936921d334c34, type: 3}
+      - {fileID: 21300000, guid: a62ec90ab8700354d927b43ef787f840, type: 3}
+      - {fileID: 21300000, guid: 5461de4946c17e54e8d2a70d0ecde830, type: 3}
+      - {fileID: 21300000, guid: ede1e6b5c8ef56648bf09d04beec7210, type: 3}
+      - {fileID: 21300000, guid: 9f4c659ed5622274a822a65915d8a6d7, type: 3}
+      - {fileID: 21300000, guid: a8c933b88431bcd4da3545a47111a14e, type: 3}
+      - {fileID: 21300000, guid: 00ede64d3f9d76f468ac7c3a5348c3cc, type: 3}
+      - {fileID: 21300000, guid: 0eb323eb0c990d0488aa84ca4e2bea2b, type: 3}
+      - {fileID: 21300000, guid: a9c618a655360ac40b05144e8a6e72c8, type: 3}
+      - {fileID: 21300000, guid: bbc013343fdda834cb2ea1d1470f8539, type: 3}
+      - {fileID: 21300000, guid: 0a2aa30b3e4a2e64b9c81b26f339c058, type: 3}
+      - {fileID: 21300000, guid: ad0ad43ce7fc31e478229008d4549be6, type: 3}
+      - {fileID: 21300000, guid: efb030d85a9095a40b096d42485d3eeb, type: 3}
+      - {fileID: 21300000, guid: fcdc8dc5c1d99ee44a3151787034ee0a, type: 3}
+      - {fileID: 21300000, guid: f66a0fdd6797f8146a2ce3fb8bad89db, type: 3}
+      - {fileID: 21300000, guid: b6ad9b8b03dd31542a2f814ecd253e10, type: 3}
+      - {fileID: 21300000, guid: 687a4ca8d4349cd4b9d883bab47f0cb0, type: 3}
+      - {fileID: 21300000, guid: e4225beddbc89214e9f69e0654761b51, type: 3}
+      - {fileID: 21300000, guid: 33abfd93b0110f44d8c3d9d31e257cb4, type: 3}
+      - {fileID: 21300000, guid: 423316254f156d84aab68350291cc583, type: 3}
+      - {fileID: 21300000, guid: c03b8e2d2c613e4489ea90f9a2878f62, type: 3}
+      - {fileID: 21300000, guid: d79cfffd4d021ca4eaae9ae20a059e70, type: 3}
+      - {fileID: 21300000, guid: 1e6dd658c90d17948944b451f114cce1, type: 3}
+      - {fileID: 21300000, guid: 93ba979ede652ae4daf1f3e11574d12f, type: 3}
+      - {fileID: 21300000, guid: f089e90c31c3f774da08079e2a596dba, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.113608554, y: 0.637233, z: 12.2}
+      - {x: -0.11351555, y: 0.6368406, z: 12.190175}
+      - {x: -0.11324829, y: 0.635715, z: 12.161985}
+      - {x: -0.11282471, y: 0.63393396, z: 12.117357}
+      - {x: -0.112262115, y: 0.6315754, z: 12.058219}
+      - {x: -0.11157814, y: 0.62871766, z: 11.986497}
+      - {x: -0.1107901, y: 0.62543887, z: 11.904118}
+      - {x: -0.10991554, y: 0.62181693, z: 11.813009}
+      - {x: -0.108972244, y: 0.6179298, z: 11.715097}
+      - {x: -0.10797821, y: 0.613855, z: 11.612311}
+      - {x: -0.1069516, y: 0.6096693, z: 11.506576}
+      - {x: -0.105911024, y: 0.60544986, z: 11.399819}
+      - {x: -0.104875185, y: 0.6012724, z: 11.293969}
+      - {x: -0.1038633, y: 0.597213, z: 11.19095}
+      - {x: -0.10289467, y: 0.5933467, z: 11.092692}
+      - {x: -0.101988904, y: 0.5897486, z: 11.0011215}
+      - {x: -0.101165846, y: 0.58649313, z: 10.918164}
+      - {x: -0.10044548, y: 0.58365464, z: 10.845748}
+      - {x: -0.09984779, y: 0.58130705, z: 10.785801}
+      - {x: -0.09939278, y: 0.57952464, z: 10.740248}
+      - {x: -0.09910042, y: 0.5783815, z: 10.711018}
+      - {x: -0.09899055, y: 0.5779522, z: 10.700036}
+      - {x: -0.10305351, y: 0.59053713, z: 11.1087885}
+      - {x: -0.11894424, y: 0.62340146, z: 12.770172}
+      - {x: -0.13780579, y: 0.6559314, z: 14.916064}
+      - {x: -0.15226975, y: 0.6726661, z: 16.75458}
+      - {x: -0.16245869, y: 0.685951, z: 18.204817}
+      - {x: -0.16630962, y: 0.6916436, z: 18.8}
+  - state: 11
+    clip:
+      _clipName: enemy_plague_doctor_hurt
+      _frames:
+      - {fileID: 21300000, guid: 59b887e983831b44eaca154a89d65bfd, type: 3}
+      - {fileID: 21300000, guid: 1022669a348686d4cb3e3773cfcf9c0a, type: 3}
+      - {fileID: 21300000, guid: cd7605da8f4e13446bc626b8119aad2a, type: 3}
+      - {fileID: 21300000, guid: 5821148e2ac130646ac596049c0bd8cc, type: 3}
+      - {fileID: 21300000, guid: e026c7bdd16bae747b167e6162f65166, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.13, y: 0.65, z: 14}
+      - {x: -0.1334021, y: 0.62741137, z: 10.605887}
+      - {x: -0.1336184, y: 0.6199779, z: 9.2}
+      - {x: -0.1334021, y: 0.62741137, z: 10.605887}
+      - {x: -0.13, y: 0.65, z: 14}
+  - state: 12
+    clip:
+      _clipName: enemy_plague_doctor_stunned
+      _frames:
+      - {fileID: 21300000, guid: 3fc5c712e14ffb249af92eeea45871e2, type: 3}
+      - {fileID: 21300000, guid: 45b90371c4ecddd4dafa902d3f60c180, type: 3}
+      - {fileID: 21300000, guid: f34606a138990e3468221e8c8386ea8a, type: 3}
+      - {fileID: 21300000, guid: bafaee421a8169a40a3865e60d9d1765, type: 3}
+      - {fileID: 21300000, guid: 55ceb8d929d409a4f9753423eced5b08, type: 3}
+      - {fileID: 21300000, guid: cf24b8c2ad88bc343a6fc5e10866cca7, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 1
+      _anchors:
+      - {x: -0.06434288, y: 0.5422236, z: 7.3999996}
+      - {x: -0.04644356, y: 0.54882246, z: 8.958845}
+      - {x: -0.04644356, y: 0.54882246, z: 8.958845}
+      - {x: -0.06434288, y: 0.5422236, z: 7.3999996}
+      - {x: -0.08171341, y: 0.53716797, z: 5.841154}
+      - {x: -0.08171341, y: 0.53716797, z: 5.841154}
+  - state: 13
+    clip:
+      _clipName: enemy_plague_doctor_death
+      _frames:
+      - {fileID: 21300000, guid: 56b6572301b063a47b3b9b6870cb350b, type: 3}
+      - {fileID: 21300000, guid: 163220fdf41e5d64a81ea811ffa19870, type: 3}
+      - {fileID: 21300000, guid: 55aa9d220e0eeae4689680b1b88a9926, type: 3}
+      - {fileID: 21300000, guid: 045802b97084c0449874062639b0f89d, type: 3}
+      - {fileID: 21300000, guid: 245912e9b9e428d48ab051bfd254d922, type: 3}
+      - {fileID: 21300000, guid: 160fd2bb63a42e54c96b3c0acbc6ce2c, type: 3}
+      - {fileID: 21300000, guid: e706e40fab1d087438fd24c8ed0c1e4e, type: 3}
+      - {fileID: 21300000, guid: 0d8c923861d5b384da8292c700111af6, type: 3}
+      - {fileID: 21300000, guid: 857c6feb307656148891b93083192f87, type: 3}
+      - {fileID: 21300000, guid: 422451010ebbdaf4e8d6ae07416b01a4, type: 3}
+      - {fileID: 21300000, guid: aa30d2360fee5a242af682785414559b, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 0
+      _anchors:
+      - {x: -0.10785889, y: 0.6333673, z: 11.6}
+      - {x: -0.10825661, y: 0.6129072, z: 11.012}
+      - {x: -0.108753964, y: 0.5575449, z: 9.416}
+      - {x: -0.10818024, y: 0.47804305, z: 7.0639997}
+      - {x: -0.106006086, y: 0.38596475, z: 4.2079997}
+      - {x: -0.102776185, y: 0.29183716, z: 1.0999994}
+      - {x: -0.09978195, y: 0.20356217, z: -2.008002}
+      - {x: -0.098233186, y: 0.12538469, z: -4.864}
+      - {x: -0.09845658, y: 0.057554856, z: -7.216001}
+      - {x: -0.099632114, y: -0.0034885884, z: -8.812001}
+      - {x: -0.1003064, y: -0.06474594, z: -9.400001}
+  _fallback:
+    _clipName: enemy_plague_doctor_idle
+    _frames:
+    - {fileID: 21300000, guid: c9346e3e8b0dace46bf6e98a65049c33, type: 3}
+    - {fileID: 21300000, guid: 2b798f41b87d50d47a5e9e278fb44d79, type: 3}
+    - {fileID: 21300000, guid: 1636db5aababfea4b8fd959379820d16, type: 3}
+    - {fileID: 21300000, guid: 669f796ea0cc1b24d8532616fba63fd1, type: 3}
+    - {fileID: 21300000, guid: 8ba711125971077468654f484c5df2cc, type: 3}
+    - {fileID: 21300000, guid: 900cbaad80b279d4d8839b69a76b354a, type: 3}
+    _framesPerSecond: 8
+    _isLooping: 1
+    _anchors:
+    - {x: -0.13767228, y: 0.6570093, z: 14.9}
+    - {x: -0.13767228, y: 0.6639374, z: 14.9}
+    - {x: -0.13767228, y: 0.6639374, z: 14.9}
+    - {x: -0.13767228, y: 0.6570093, z: 14.9}
+    - {x: -0.13767228, y: 0.65008104, z: 14.9}
+    - {x: -0.13767228, y: 0.65008104, z: 14.9}
+  _carriesShield: 0

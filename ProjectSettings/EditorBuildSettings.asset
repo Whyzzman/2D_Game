@@ -21,6 +21,9 @@ EditorBuildSettings:
     path: Assets/Game/Scenes/Zones/Zone_Village.unity
     guid: a051f21656706491ebadf51038dad486
   - enabled: 1
+    path: Assets/Game/Scenes/Zones/Zone_Marsh.unity
+    guid: 34efbd09b4eda4843bbd7a74cc877017
+  - enabled: 1
     path: Assets/Game/Scenes/Zones/Zone_Capital.unity
     guid: e2e96b3303676439ebcbc4193940f0ef
   - enabled: 1

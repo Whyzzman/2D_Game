@@ -82,6 +82,23 @@
     {"id":"room_capital_gardens","art":"capital","w":555,"h":210,"boss":false},
     {"id":"room_capital_workshop","art":"capital","w":495,"h":180,"boss":false},
     {"id":"room_capital_crypts","art":"capital","w":585,"h":210,"boss":false},
-    {"id":"room_capital_cistern","art":"capital","w":765,"h":240,"boss":false}
+    {"id":"room_capital_cistern","art":"capital","w":765,"h":240,"boss":false},
+    {"id":"room_marsh_edge","art":"marsh","w":360,"h":180,"boss":false},
+    {"id":"room_marsh_pier","art":"marsh","w":510,"h":180,"boss":false},
+    {"id":"room_marsh_rotten_road","art":"marsh","w":315,"h":180,"boss":false},
+    {"id":"room_marsh_rotten_tree","art":"marsh","w":510,"h":180,"boss":false},
+    {"id":"room_marsh_drowned_ruins","art":"marsh","w":435,"h":180,"boss":false},
+    {"id":"room_marsh_stilt_hut","art":"marsh","w":405,"h":180,"boss":false},
+    {"id":"room_marsh_chest_nook","art":"marsh","w":210,"h":180,"boss":false},
+    {"id":"room_marsh_shrine","art":"marsh","w":435,"h":180,"boss":false},
+    {"id":"room_marsh_witch_hut","art":"marsh","w":285,"h":180,"boss":false},
+    {"id":"room_marsh_lair_stair","art":"marsh","w":165,"h":180,"boss":false},
+    {"id":"room_marsh_stag_lair","art":"marsh","w":615,"h":180,"boss":true},
+    {"id":"room_marsh_chapel","art":"marsh","w":435,"h":180,"boss":false},
+    {"id":"room_marsh_north_bridge","art":"marsh","w":360,"h":180,"boss":false},
+    {"id":"room_marsh_mushroom_cave","art":"marsh","w":360,"h":180,"boss":false},
+    {"id":"room_marsh_graveyard","art":"marsh","w":390,"h":180,"boss":false},
+    {"id":"room_marsh_wreck","art":"marsh","w":660,"h":180,"boss":false},
+    {"id":"room_marsh_toxic_drain","art":"marsh","w":285,"h":180,"boss":false}
   ]
 }

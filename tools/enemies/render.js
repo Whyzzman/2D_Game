@@ -1,7 +1,7 @@
 // Кадри ворогів і боса Гробниці з design/characters/enemies (enemies.js) через headless Chrome: кожен стан —
 // ряд кадрів у %TEMP%/enemy-frames, потім tools/enemies/split.py ріже їх у Art/Source/Final/… і на місце заглушок.
 // Кількість кадрів станів — з таблиць PlaceholderEnemyArt (контракт анімації той самий).
-// Запуск: node tools/enemies/render.js [tomb|forest]   (Chrome: змінна CHROME=<шлях>)
+// Запуск: node tools/enemies/render.js [tomb|forest|vc|marsh]   (Chrome: змінна CHROME=<шлях>)
 const fs = require("fs");
 const os = require("os");
 const path = require("path");
@@ -35,7 +35,12 @@ const ACTORS = [
   { zone: "vc", actor: "AshRaven", table: "RavenStates", file: "PlaceholderEnemyArt.Capital.cs", folder: "Enemies/AshRaven", prefix: "enemy_raven", w: 140, h: 110 },
   { zone: "vc", actor: "Bellringer", table: "KingStates", file: "PlaceholderEnemyArt.King.cs", folder: "Bosses/Bellringer", prefix: "boss_bellringer", w: 300, h: 300 },
   { zone: "vc", actor: "AshCommander", table: "KingStates", file: "PlaceholderEnemyArt.King.cs", folder: "Bosses/AshCommander", prefix: "boss_commander", w: 320, h: 300 },
-  { zone: "vc", actor: "OathBoundKing", table: "KingStates", file: "PlaceholderEnemyArt.King.cs", folder: "Bosses/OathBoundKing", prefix: "boss_king", w: 300, h: 312 }
+  { zone: "vc", actor: "OathBoundKing", table: "KingStates", file: "PlaceholderEnemyArt.King.cs", folder: "Bosses/OathBoundKing", prefix: "boss_king", w: 300, h: 312 },
+  // Болота (enemies-marsh.js)
+  { zone: "marsh", actor: "MarshCorpseEater", table: "HoundStates", file: "PlaceholderEnemyArt.Forest.cs", folder: "Enemies/MarshCorpseEater", prefix: "enemy_corpse_eater", w: 200, h: 120 },
+  { zone: "marsh", actor: "PlagueDoctor", table: "ShamanStates", file: "PlaceholderEnemyArt.Forest.cs", folder: "Enemies/PlagueDoctor", prefix: "enemy_plague_doctor", w: 156, h: 178 },
+  { zone: "marsh", actor: "MarshLeech", table: "RavenStates", file: "PlaceholderEnemyArt.Capital.cs", folder: "Enemies/MarshLeech", prefix: "enemy_leech", w: 140, h: 110 },
+  { zone: "marsh", actor: "PlagueStag", table: "KingStates", file: "PlaceholderEnemyArt.King.cs", folder: "Bosses/PlagueStag", prefix: "boss_stag", w: 300, h: 312 }
 ].filter((a) => (a.zone || "tomb") === (process.argv[2] || "tomb"));
 
 function table(file, name) {

@@ -126,10 +126,12 @@ namespace ForgottenKingdom.EditorTools
             var forest = LayoutGraphJson(LoadLayout(ForestLayoutFile));
             var village = LayoutGraphJson(LoadLayout(VillageLayoutFile));
             var capital = LayoutGraphJson(LoadLayout(CapitalLayoutFile));
+            var marsh = LayoutGraphJson(LoadLayout(MarshLayoutFile));
             json.Append("\"_areas\":[").Append(string.Join(",", tomb.areas)).Append(",")
                 .Append(string.Join(",", forest.areas)).Append(",")
                 .Append(string.Join(",", village.areas)).Append(",")
-                .Append(string.Join(",", capital.areas)).Append(",").Append(string.Join(",", new[]
+                .Append(string.Join(",", capital.areas)).Append(",")
+                .Append(string.Join(",", marsh.areas)).Append(",").Append(string.Join(",", new[]
             {
                 AreaJson(BeyondCapital, FutureZoneId, string.Empty,
                     new Vector2(536f * MapScale, 0f), new Vector2(0.8f, 1.2f),
@@ -147,8 +149,12 @@ namespace ForgottenKingdom.EditorTools
             json.Append("\"_connections\":[").Append(string.Join(",", tomb.links)).Append(",")
                 .Append(string.Join(",", forest.links)).Append(",")
                 .Append(string.Join(",", village.links)).Append(",")
-                .Append(string.Join(",", capital.links)).Append(",").Append(string.Join(",", new[]
+                .Append(string.Join(",", capital.links)).Append(",")
+                .Append(string.Join(",", marsh.links)).Append(",").Append(string.Join(",", new[]
             {
+                // East along the old road out of the Village into the Plague Marsh (the fifth level).
+                LinkJson("conn_village_to_marsh", "room_village_marsh_road", "room_marsh_edge",
+                    MapDirection.East, ConnectionType.ZoneTransition),
                 LinkJson("conn_tomb_to_forest", TombEastHall, ForestTunnel,
                     type: ConnectionType.ZoneTransition, boss: GuardianBossId),
                 // Up the hill from the forest's edge, through the hatch the Warden kept.
@@ -173,7 +179,8 @@ namespace ForgottenKingdom.EditorTools
             json.Append("\"_checkpoints\":[").Append(string.Join(",", tomb.altars)).Append(",")
                 .Append(string.Join(",", forest.altars)).Append(",")
                 .Append(string.Join(",", village.altars)).Append(",")
-                .Append(string.Join(",", capital.altars)).Append("],");
+                .Append(string.Join(",", capital.altars)).Append(",")
+                .Append(string.Join(",", marsh.altars)).Append("],");
 
             json.Append("\"_abilities\":[").Append(string.Join(",", new[]
             {

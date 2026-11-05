@@ -87,7 +87,7 @@ namespace ForgottenKingdom.EditorTools
             }
 
             var encounter = BuildBellringerFloor(zone, rooms[VillageBellRoom], context);
-            BuildMarshGate(zone, rooms["room_village_marsh_road"], context.Progress);
+            // The marsh road is open since the Plague Marsh was built (2026-11-05); BuildMarshGate is kept for a sealed road.
             BuildVillageGateHints(zone, rooms, context.Progress);
             BuildNightBellTrial(rooms["room_village_square"], context.Progress);
             foreach (var room in zone.Rooms)

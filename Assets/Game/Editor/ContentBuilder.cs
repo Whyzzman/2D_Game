@@ -154,6 +154,9 @@ namespace ForgottenKingdom.EditorTools
             BuildVillageBoss();
             // The capital's Commander (item 6b), in the hall before the King's throne.
             BuildCapitalCommander();
+            // The Plague Marsh's three and its Stag (the fifth level); the marsh places them by name.
+            BuildMarshEnemies();
+            BuildMarshBoss();
             var checkpointPrefab = BuildCheckpointPrefab();
             var dummyPrefab = BuildDummyPrefab();
             var attackerPrefab = BuildAttackerPrefab();

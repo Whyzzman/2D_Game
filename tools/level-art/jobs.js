@@ -29,7 +29,7 @@ for (const r of zone.rooms) {
   }
 }
 // Передній план (front.js) — усі чотири зони (Ліс, Село й Столиця — 2026-11-04).
-const FRONT_ZONES = ["tomb", "forest", "village", "capital"], FRONT_MARGIN = 2;
+const FRONT_ZONES = ["tomb", "forest", "village", "capital", "marsh"], FRONT_MARGIN = 2;
 for (const r of zone.rooms) {
   if (FRONT_ZONES.indexOf(zoneName) >= 0) {
     const w = Math.round((r.w * c + 2 * FRONT_MARGIN) * ROOM_PPU), h = Math.round((r.h * c + 2 * FRONT_MARGIN) * ROOM_PPU);

@@ -1,5 +1,5 @@
 // LevelCheck of every zone text from the live Editor; the result goes to Artifacts/levelcheck.txt.
-var names = new[]{"tomb","forest","village","capital"};
+var names = new[]{"tomb","forest","village","capital","marsh"};
 var sb = new System.Text.StringBuilder();
 foreach (var n in names) {
   var z = ForgottenKingdom.LevelZone.Parse(System.IO.File.ReadAllText("Assets/Game/Levels/"+n+".txt"));

@@ -1,0 +1,144 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 649169c22105a06499c9bc0695fd8d1d, type: 3}
+  m_Name: LeechAnimations
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.EnemyAnimationSet
+  _clips:
+  - state: 1
+    clip:
+      _clipName: enemy_leech_idle
+      _frames:
+      - {fileID: 21300000, guid: fdec0c10b3e9cbf4d9468bd62da8a14a, type: 3}
+      - {fileID: 21300000, guid: bb917be001a735449ac0d85784cf84eb, type: 3}
+      - {fileID: 21300000, guid: 5cb29ccee99509140a165163fa7aa2fb, type: 3}
+      - {fileID: 21300000, guid: fbc4d2bcb1bc40446ac722fb3fc2e203, type: 3}
+      - {fileID: 21300000, guid: 7937a228164708544b06e62f9a48beff, type: 3}
+      - {fileID: 21300000, guid: 24da1146278e1a24681fec1ae02fa001, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 1
+      _anchors: []
+  - state: 2
+    clip:
+      _clipName: enemy_leech_patrol
+      _frames:
+      - {fileID: 21300000, guid: e462867edbcffc4439015d29b3a009e6, type: 3}
+      - {fileID: 21300000, guid: 6176a71ba842c8548a0c16b2660edf12, type: 3}
+      - {fileID: 21300000, guid: a99db51269a80e340a334062690ec9e5, type: 3}
+      - {fileID: 21300000, guid: 7605a4c4d0ba60d4485c9a63c221710a, type: 3}
+      - {fileID: 21300000, guid: 97df740004653f14a93e97305a7df41e, type: 3}
+      - {fileID: 21300000, guid: a5ddc625c8fbdaf4190d0680ffa9e119, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 1
+      _anchors: []
+  - state: 3
+    clip:
+      _clipName: enemy_leech_alert
+      _frames:
+      - {fileID: 21300000, guid: aa4e1181494ba104e8056d07c34286b2, type: 3}
+      - {fileID: 21300000, guid: 218c82f6411b1a341bf5ae83acc137fa, type: 3}
+      - {fileID: 21300000, guid: ba78993c2f24b8845abf37e75f8bbffa, type: 3}
+      - {fileID: 21300000, guid: acadf791971d66b4ab46d5eac5e5f64e, type: 3}
+      - {fileID: 21300000, guid: ad496ca5546191f44b014e6961799241, type: 3}
+      _framesPerSecond: 14
+      _isLooping: 0
+      _anchors: []
+  - state: 4
+    clip:
+      _clipName: enemy_leech_chase
+      _frames:
+      - {fileID: 21300000, guid: 819d0cd55ba05fa43a0ae90b2a35c24c, type: 3}
+      - {fileID: 21300000, guid: 36ebc8199507d9e44a94196bfdfc3a6b, type: 3}
+      - {fileID: 21300000, guid: 116cb6f46c3c38c44aeb08840cd5e7a1, type: 3}
+      - {fileID: 21300000, guid: 1ca4b8d717f2b5b488a138e063b128a8, type: 3}
+      - {fileID: 21300000, guid: 9e59c0bdf24ea364b8c0baf6d83d75a5, type: 3}
+      - {fileID: 21300000, guid: 35b63023d1715c04c9dd8cd7a682c248, type: 3}
+      _framesPerSecond: 16
+      _isLooping: 1
+      _anchors: []
+  - state: 0
+    clip:
+      _clipName: enemy_leech_attacklight
+      _frames:
+      - {fileID: 21300000, guid: c161bb9c0ebc37643a8a4af217a6af58, type: 3}
+      - {fileID: 21300000, guid: f4eec505f22f34d45be50dce0be4dde7, type: 3}
+      - {fileID: 21300000, guid: f2f6f9bd2a09b5741b7988e9377d111b, type: 3}
+      - {fileID: 21300000, guid: 761709c10e23675419f7ea29d29c76f0, type: 3}
+      - {fileID: 21300000, guid: 369963f108eae194982b72be2ea670f2, type: 3}
+      - {fileID: 21300000, guid: dc8058ea1bf22bd4a9e4a94373ebb477, type: 3}
+      - {fileID: 21300000, guid: 3a545716880c9844e8672532c8cbb64c, type: 3}
+      - {fileID: 21300000, guid: 6c9459b83a0d787499c2b16ba5338de8, type: 3}
+      - {fileID: 21300000, guid: eb48532d5cf6ace48a25787a0474c0d6, type: 3}
+      - {fileID: 21300000, guid: 48f3e5840e36aaf4f928de444fce18b5, type: 3}
+      - {fileID: 21300000, guid: 697b1eaac8b232940919d03502be7e62, type: 3}
+      - {fileID: 21300000, guid: 3dba7038df23bdb40bc7c57d3f65b028, type: 3}
+      - {fileID: 21300000, guid: 4e224459dbffb9b49b8f04e827a44d54, type: 3}
+      - {fileID: 21300000, guid: 023df694c3c8c6249a9a3d2e8fa2a90d, type: 3}
+      - {fileID: 21300000, guid: 863c9bfc101976f4f8c0d2cd904bd2e0, type: 3}
+      - {fileID: 21300000, guid: 58bf9aaec9008d44592150a8fa50bbf7, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors: []
+  - state: 11
+    clip:
+      _clipName: enemy_leech_hurt
+      _frames:
+      - {fileID: 21300000, guid: e41aa2bdee691ef4f93c45671d1b0be3, type: 3}
+      - {fileID: 21300000, guid: 9adfe7a25c1af7a46b0c12147e450246, type: 3}
+      - {fileID: 21300000, guid: dd50596b42c6c8b47b5792827509e643, type: 3}
+      - {fileID: 21300000, guid: da0a1bd2c1da3214f828b10db16a3eaa, type: 3}
+      - {fileID: 21300000, guid: 5252dd53e7d723f48a6d29bb6d581e75, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors: []
+  - state: 12
+    clip:
+      _clipName: enemy_leech_stunned
+      _frames:
+      - {fileID: 21300000, guid: 3142585fae7e2234289202eeb161aade, type: 3}
+      - {fileID: 21300000, guid: 0ea5cdcbf961263408af62a47d30fc10, type: 3}
+      - {fileID: 21300000, guid: 937ba620b1ca897428d5d9c07179da98, type: 3}
+      - {fileID: 21300000, guid: b8ac8e8a6a165e545b33831ccf2dfa91, type: 3}
+      - {fileID: 21300000, guid: aeb4d084e8a08e94a8a63b687fe21ce6, type: 3}
+      - {fileID: 21300000, guid: 45d5c9c25ae71cc41ad84a2d6380acf9, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 1
+      _anchors: []
+  - state: 13
+    clip:
+      _clipName: enemy_leech_death
+      _frames:
+      - {fileID: 21300000, guid: 1ecee3add8c01d34bac9a3c04f0bf1b9, type: 3}
+      - {fileID: 21300000, guid: 23748a4967ca11048b7294cb2d20d866, type: 3}
+      - {fileID: 21300000, guid: bcfe0a7ba58631a4f9781910b3a84301, type: 3}
+      - {fileID: 21300000, guid: d086b723bcb2e4e4682b025076dc44b1, type: 3}
+      - {fileID: 21300000, guid: a42ac5f6aab652042b73fda3cfb207dc, type: 3}
+      - {fileID: 21300000, guid: 881b299d78a121d40967d3ccf7dc6cb4, type: 3}
+      - {fileID: 21300000, guid: 7c03a3cfd9ebc1f469df1e3141c2d16f, type: 3}
+      - {fileID: 21300000, guid: c9a73b0e5eba3ff478ae9aedcf9d2408, type: 3}
+      - {fileID: 21300000, guid: c354cb1afd4857641ab3a006e5b5f866, type: 3}
+      - {fileID: 21300000, guid: 0f3907d2c1083d545b8f0fa5fdc4a001, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 0
+      _anchors: []
+  _fallback:
+    _clipName: enemy_leech_idle
+    _frames:
+    - {fileID: 21300000, guid: fdec0c10b3e9cbf4d9468bd62da8a14a, type: 3}
+    - {fileID: 21300000, guid: bb917be001a735449ac0d85784cf84eb, type: 3}
+    - {fileID: 21300000, guid: 5cb29ccee99509140a165163fa7aa2fb, type: 3}
+    - {fileID: 21300000, guid: fbc4d2bcb1bc40446ac722fb3fc2e203, type: 3}
+    - {fileID: 21300000, guid: 7937a228164708544b06e62f9a48beff, type: 3}
+    - {fileID: 21300000, guid: 24da1146278e1a24681fec1ae02fa001, type: 3}
+    _framesPerSecond: 12
+    _isLooping: 1
+    _anchors: []
+  _carriesShield: 0

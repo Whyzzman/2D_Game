@@ -29,8 +29,8 @@ namespace ForgottenKingdom.Tests
             Assert.That(regions.Length, Is.EqualTo(5));
             Assert.That(regions.Select(z => z.Art).Distinct().Count(), Is.EqualTo(5), "Each island is its own.");
             Assert.That(regions.Where(z => z.IsImplemented).Select(z => z.ZoneId), Is.EquivalentTo(new[]
-                { "zone_forgotten_tomb", "zone_withered_forest", "zone_fallen_village", "zone_ashen_capital" }),
-                "Four are built so far.");
+                { "zone_forgotten_tomb", "zone_withered_forest", "zone_fallen_village", "zone_ashen_capital", "zone_plague_marsh" }),
+                "All five are built.");
             foreach (var zone in regions)
             {
                 Assert.That(new Rect(0f, 0f, 1470f, 900f).Contains(zone.WorldPosition), Is.True, zone.ZoneId);

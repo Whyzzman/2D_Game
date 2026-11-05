@@ -5,6 +5,7 @@
 # Головний шлях: Край болота → Причал на палях (вівтар) → Хижа на палях → Закуток зі скринею →
 # Святиня Утопленої (вівтар) → Хата відьми (Ярина) → Сходи до лігва → Лігво Чумного Оленя.
 # Друга дорога: Гнила гать → Гниле дерево → угору в Хату відьми. Отрута (^) — ядовита вода: до маски шкодить.
+# 2026-11-05 (п'ять рівнів, Глибини відкладено): Отруйний стік — переправа уступами над отрутою до Схрону у трюмі, без маски.
 zone zone_plague_marsh
 cell 0.5
 origin 523 51
@@ -13,7 +14,7 @@ abilities dash double-jump grapple
 room room_marsh_edge «Край болота» at 0 0
 flags exit=W
 key s start
-key z spot corpse-eater-edge
+key z enemy MarshCorpseEater
 key t spot dead-tree
 grid
 ##################################################
@@ -46,8 +47,8 @@ end
 
 room room_marsh_pier «Причал на палях» at 50 0
 key a altar marsh-altar-01 «Вівтар причалу»
-key z spot corpse-eater-pier
-key l spot leech-pier
+key z enemy MarshCorpseEater
+key l enemy MarshLeech
 key b spot rotten-boards-pier
 grid
 ######..............##################################################
@@ -79,7 +80,7 @@ grid
 end
 
 room room_marsh_rotten_road «Гнила гать» at 120 0
-key d spot plague-doctor-road
+key d enemy PlagueDoctor
 key b spot rotten-boards-road
 grid
 ############################################
@@ -112,9 +113,9 @@ end
 
 room room_marsh_rotten_tree «Гниле дерево» at 164 0
 key c spot hanging-cage
-key d spot plague-doctor-tree
-key l spot leech-tree
-key p spot poison-plant-tree
+key d enemy PlagueDoctor
+key l enemy MarshLeech
+key p enemy PoisonPlant
 grid
 ##################################################............########
 ##################################################............########
@@ -179,7 +180,7 @@ end
 
 room room_marsh_stilt_hut «Хижа на палях» at 50 26
 key k spot ferryman-hut
-key z spot leech-hut
+key z enemy MarshLeech
 grid
 ########################################################
 ########################################################
@@ -244,7 +245,7 @@ end
 room room_marsh_shrine «Святиня Утопленої» at 136 26
 key a altar marsh-altar-02 «Вівтар святині»
 key x spot drowned-saint-statue
-key d spot plague-doctor-shrine
+key d enemy PlagueDoctor
 grid
 ############################################################
 ############################################################
@@ -307,7 +308,7 @@ grid
 end
 
 room room_marsh_lair_stair «Сходи до лігва» at 236 26
-key l spot leech-stair
+key l enemy MarshLeech
 grid
 ####............########
 ####............########
@@ -373,7 +374,7 @@ end
 room room_marsh_chapel «Зруйнована каплиця» at 200 52
 flags optional
 key h shard health marsh-chapel
-key d spot plague-doctor-chapel
+key d enemy PlagueDoctor
 key v spot chapel-window
 grid
 ############################################################
@@ -406,7 +407,7 @@ end
 
 room room_marsh_north_bridge «Північна кладка» at 260 52
 flags optional
-key z spot leech-bridge
+key z enemy MarshLeech
 grid
 ##################################################
 ##################################################
@@ -506,8 +507,8 @@ end
 
 room room_marsh_mushroom_cave «Грибна печера» at 60 -26
 flags optional
-key p spot poison-plant-cave
-key q spot poison-plant-cave-2
+key p enemy PoisonPlant
+key q enemy PoisonPlant
 key u spot glowing-mushrooms
 grid
 ##################################################
@@ -541,7 +542,7 @@ end
 room room_marsh_graveyard «Затоплений цвинтар» at 110 -26
 flags optional
 key o ring
-key z spot corpse-eater-grave
+key z enemy MarshCorpseEater
 key x spot sunk-graves
 grid
 ##############################..........##############
@@ -576,9 +577,9 @@ room room_marsh_wreck «Затонулий корабель» at 164 -26
 flags optional
 key a altar marsh-altar-03 «Вівтар на кормі»
 key o ring
-key z spot corpse-eater-wreck
+key z enemy MarshCorpseEater
 key k spot sunken-ship
-key l spot leech-wreck
+key l enemy MarshLeech
 grid
 ##########...........#####################################################################
 ##########...........#####################################################################
@@ -609,8 +610,7 @@ grid
 end
 
 room room_marsh_toxic_drain «Отруйний стік» at 254 -26
-flags optional needs=plague-mask exit=E
-key m spot mask-water
+flags optional
 grid
 ########################################
 ########################################
@@ -633,15 +633,15 @@ grid
 ........................................
 ........................................
 ........................................
+........====....====....====............
 ........................................
-....m...................................
-..^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^..
-##^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^##
+.....^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^.....
+#####^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^#####
 ########################################
 end
 
 room room_marsh_hold_cache «Схрон у трюмі» at 294 -26
-flags secret needs=plague-mask
+flags secret
 key w breakable explore-wall-marsh_hold_cache 8
 key g gold 280 marsh-chest-hold
 key h shard mana marsh-hold-cache
@@ -675,4 +675,3 @@ w.........g.....h.....##
 end
 
 link room_marsh_lair_stair room_marsh_stag_lair door
-link room_marsh_wreck room_marsh_toxic_drain ability=plague-mask

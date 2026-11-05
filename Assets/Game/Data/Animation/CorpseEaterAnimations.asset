@@ -1,0 +1,269 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 649169c22105a06499c9bc0695fd8d1d, type: 3}
+  m_Name: CorpseEaterAnimations
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.EnemyAnimationSet
+  _clips:
+  - state: 1
+    clip:
+      _clipName: enemy_corpse_eater_idle
+      _frames:
+      - {fileID: 21300000, guid: d767e0ad6ae359e4da028655ac8cde6c, type: 3}
+      - {fileID: 21300000, guid: 31c68f4afee15894d93a07e3ad990725, type: 3}
+      - {fileID: 21300000, guid: 588ed49a5ad33ef42b10e1ea0e966f66, type: 3}
+      - {fileID: 21300000, guid: 67033c4618bcb3042b6e2729b4ebb371, type: 3}
+      - {fileID: 21300000, guid: 243ac02054152de4c82b8dee66fcaaf8, type: 3}
+      - {fileID: 21300000, guid: 986a858386629b04997b2d3fb9c0d7df, type: 3}
+      _framesPerSecond: 8
+      _isLooping: 1
+      _anchors:
+      - {x: -0.4226183, y: 0.40256822, z: 68.00001}
+      - {x: -0.42607582, y: 0.4232725, z: 74.92821}
+      - {x: -0.42607582, y: 0.4232725, z: 74.92821}
+      - {x: -0.4226183, y: 0.40256822, z: 68.00001}
+      - {x: -0.41794214, y: 0.3823563, z: 61.071796}
+      - {x: -0.41794214, y: 0.3823563, z: 61.071796}
+  - state: 2
+    clip:
+      _clipName: enemy_corpse_eater_patrol
+      _frames:
+      - {fileID: 21300000, guid: bd8f5658106030e44a0d2a63a3897558, type: 3}
+      - {fileID: 21300000, guid: 0f6e7e3ffd39067428c88296cd2c7796, type: 3}
+      - {fileID: 21300000, guid: 057770b82bd4e0f458312f540062dc98, type: 3}
+      - {fileID: 21300000, guid: 3b172368a7a216142a9e4594ff50134d, type: 3}
+      - {fileID: 21300000, guid: 04f7b84dadda9e94a8ef964faee4f8b3, type: 3}
+      - {fileID: 21300000, guid: 2e6e321affe4eb54dbe562315fb0aa1f, type: 3}
+      - {fileID: 21300000, guid: 0b378ff857cde5a48a078172ea14fe43, type: 3}
+      - {fileID: 21300000, guid: ab3cf0ace769a984ca9b6963032ff9f0, type: 3}
+      _framesPerSecond: 14
+      _isLooping: 1
+      _anchors:
+      - {x: -0.4200632, y: 0.39682943, z: 64}
+      - {x: -0.4243047, y: 0.4212294, z: 71.07107}
+      - {x: -0.42568532, y: 0.43147546, z: 74}
+      - {x: -0.4243047, y: 0.4212294, z: 71.07107}
+      - {x: -0.4200632, y: 0.39682943, z: 64}
+      - {x: -0.41459125, y: 0.40131387, z: 56.928932}
+      - {x: -0.4119833, y: 0.40338215, z: 54.000004}
+      - {x: -0.41459125, y: 0.4013138, z: 56.928932}
+  - state: 3
+    clip:
+      _clipName: enemy_corpse_eater_alert
+      _frames:
+      - {fileID: 21300000, guid: 6a7335655faa53b4887a0005ad0d5636, type: 3}
+      - {fileID: 21300000, guid: ad3c1142253a20d4bbfad698618359b4, type: 3}
+      - {fileID: 21300000, guid: bc3e26d0984596e408503a1e7c610900, type: 3}
+      - {fileID: 21300000, guid: 57bf3a854e4514a44b36fdd9ed57e610, type: 3}
+      - {fileID: 21300000, guid: 031921e058b347045ad4322ca3204e06, type: 3}
+      _framesPerSecond: 14
+      _isLooping: 0
+      _anchors:
+      - {x: -0.42139083, y: 0.3996765, z: 66}
+      - {x: -0.42681503, y: 0.416751, z: 75.6875}
+      - {x: -0.42932916, y: 0.45596826, z: 97}
+      - {x: -0.41884214, y: 0.4936853, z: 118.3125}
+      - {x: -0.41009274, y: 0.5091267, z: 128}
+  - state: 4
+    clip:
+      _clipName: enemy_corpse_eater_chase
+      _frames:
+      - {fileID: 21300000, guid: a82da68a97d91744d8ad8f2ef7c47bdf, type: 3}
+      - {fileID: 21300000, guid: bcd79410abd83cd42b86aa39e1c8475c, type: 3}
+      - {fileID: 21300000, guid: 92fa4f571c880474686ae0b37b619128, type: 3}
+      - {fileID: 21300000, guid: 15f10c40aaa72e849bf37872859bfd6e, type: 3}
+      - {fileID: 21300000, guid: 68d2387931f497e48abcffe8a519f56a, type: 3}
+      - {fileID: 21300000, guid: c4b17e877f958834282797972728fb05, type: 3}
+      - {fileID: 21300000, guid: b3edac7e5788ef54e8124cc8fa801e2e, type: 3}
+      - {fileID: 21300000, guid: 0b4a9f26c1c79df4b8b964f6490d6e6b, type: 3}
+      _framesPerSecond: 18
+      _isLooping: 1
+      _anchors:
+      - {x: -0.40708145, y: 0.39160946, z: 50}
+      - {x: -0.41430455, y: 0.46401024, z: 55.656853}
+      - {x: -0.41611725, y: 0.49417314, z: 58}
+      - {x: -0.41430455, y: 0.46401024, z: 55.656853}
+      - {x: -0.40708145, y: 0.39160946, z: 50}
+      - {x: -0.39589348, y: 0.32011825, z: 44.34315}
+      - {x: -0.39012226, y: 0.29086348, z: 42}
+      - {x: -0.39589348, y: 0.32011825, z: 44.34315}
+  - state: 0
+    clip:
+      _clipName: enemy_corpse_eater_attacklight
+      _frames:
+      - {fileID: 21300000, guid: 9bd377802ddf55a4186303dd38257ab9, type: 3}
+      - {fileID: 21300000, guid: fd4bb49af338df34bb93465580a24640, type: 3}
+      - {fileID: 21300000, guid: 621be2a3fbc8a8445aa34803cdea760a, type: 3}
+      - {fileID: 21300000, guid: 47bf5a54b091c9942bee5ab098388a4e, type: 3}
+      - {fileID: 21300000, guid: 97b14952ab403b046a4bbca1beaca879, type: 3}
+      - {fileID: 21300000, guid: 14f91d4de76fa8640bf98bf6c16f1440, type: 3}
+      - {fileID: 21300000, guid: 96955e950bfcb5a4c9bd2d85caad8154, type: 3}
+      - {fileID: 21300000, guid: 88426692d38412b4282271cd8fea7256, type: 3}
+      - {fileID: 21300000, guid: 0b8511ac67ccac245b7c6ab915f73c18, type: 3}
+      - {fileID: 21300000, guid: 61e1f4d8cda25414bb898b6ff8d7bec4, type: 3}
+      - {fileID: 21300000, guid: 51a88dd564caecd469a055d3faa79b5b, type: 3}
+      - {fileID: 21300000, guid: b463cc81320e31d4fa80889bd51cfdc4, type: 3}
+      - {fileID: 21300000, guid: 9aa50a5566bacee409b9391ccbb31c85, type: 3}
+      - {fileID: 21300000, guid: 46533dacfd545eb4e9a00ac7949310bd, type: 3}
+      - {fileID: 21300000, guid: a313d016dc4ed8e47a9eb67a0eddd6c9, type: 3}
+      - {fileID: 21300000, guid: 605c6ed76aa43c54b93507d5950d80df, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.44940698, y: 0.3701778, z: 70}
+      - {x: -0.44876793, y: 0.36323383, z: 69.598946}
+      - {x: -0.44715178, y: 0.34659737, z: 68.637024}
+      - {x: -0.44504467, y: 0.3265566, z: 67.47608}
+      - {x: -0.44309682, y: 0.30936217, z: 66.47798}
+      - {x: -0.44212905, y: 0.30121854, z: 66.004555}
+      - {x: -0.4366451, y: 0.34584877, z: 66.377785}
+      - {x: -0.41231206, y: 0.4071826, z: 64.23072}
+      - {x: -0.3804018, y: 0.43501595, z: 59.962273}
+      - {x: -0.36446175, y: 0.44784695, z: 58}
+      - {x: -0.36570793, y: 0.44784695, z: 58}
+      - {x: -0.37087554, y: 0.44784695, z: 58}
+      - {x: -0.37827864, y: 0.44784695, z: 58}
+      - {x: -0.38597327, y: 0.44784695, z: 58}
+      - {x: -0.3920157, y: 0.44784695, z: 58}
+      - {x: -0.39446175, y: 0.44784695, z: 58}
+  - state: 9
+    clip:
+      _clipName: enemy_corpse_eater_attackheavy
+      _frames:
+      - {fileID: 21300000, guid: ff8fdb735a379cd4e800ac07de0ad5d6, type: 3}
+      - {fileID: 21300000, guid: d10ca0be7da0b75489083d8a9ed40b99, type: 3}
+      - {fileID: 21300000, guid: 6b693fb83c8b7ea47b7155531c75149b, type: 3}
+      - {fileID: 21300000, guid: d654f8ea13d63c142a125c2f079d5c63, type: 3}
+      - {fileID: 21300000, guid: 377b86368c24f5e4d983ac9cea43b64a, type: 3}
+      - {fileID: 21300000, guid: 246664434c94e3345a512e8589536451, type: 3}
+      - {fileID: 21300000, guid: 023db5faaf7102a4faa44dcf7449c5e0, type: 3}
+      - {fileID: 21300000, guid: be4297b3d5c733640b5c0c9bdc9184b8, type: 3}
+      - {fileID: 21300000, guid: 78b471e6ffe27a648a5c0c651ab4b665, type: 3}
+      - {fileID: 21300000, guid: f4d79363f01f1d6468947360d09a61fe, type: 3}
+      - {fileID: 21300000, guid: 35961e84b999321498ed2204d676c4fd, type: 3}
+      - {fileID: 21300000, guid: 0e2dfc556cbcb514a956e096cf9be0f2, type: 3}
+      - {fileID: 21300000, guid: eb3b83f9381f757488bb04ec1607d35a, type: 3}
+      - {fileID: 21300000, guid: 0c261f55070b59c40894f4ad95dc41c9, type: 3}
+      - {fileID: 21300000, guid: 37f08f47e5cb23840a9953c233768701, type: 3}
+      - {fileID: 21300000, guid: 5dea64238448987409af0dfef9dd0e79, type: 3}
+      - {fileID: 21300000, guid: 3568a125aa959b04eb51b5713feebbf6, type: 3}
+      - {fileID: 21300000, guid: 0499b569dcf886344be8d9eb33863346, type: 3}
+      - {fileID: 21300000, guid: 6f0a9cdbd721f2b41bbaa12fe425547b, type: 3}
+      - {fileID: 21300000, guid: 66c741d945022d54dae73002711546f9, type: 3}
+      - {fileID: 21300000, guid: d97eb69c74092eb4da8a1b9bf92c8384, type: 3}
+      - {fileID: 21300000, guid: efa5ac02ee77a694f8957d02fdcac422, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.42139083, y: 0.3996765, z: 66}
+      - {x: -0.42161775, y: 0.38864738, z: 67.052315}
+      - {x: -0.42164665, y: 0.35980487, z: 69.822464}
+      - {x: -0.42027825, y: 0.31965226, z: 73.73022}
+      - {x: -0.41667804, y: 0.2745626, z: 78.19538}
+      - {x: -0.4109101, y: 0.23047502, z: 82.63773}
+      - {x: -0.4041021, y: 0.19272429, z: 86.477066}
+      - {x: -0.3982447, y: 0.16606943, z: 89.13316}
+      - {x: -0.3956585, y: 0.15497813, z: 90.026344}
+      - {x: -0.3946694, y: 0.19087669, z: 87.2013}
+      - {x: -0.37572518, y: 0.35572326, z: 74.21737}
+      - {x: -0.3294857, y: 0.52154845, z: 59.213657}
+      - {x: -0.30950263, y: 0.56978613, z: 54.000004}
+      - {x: -0.30950263, y: 0.56978613, z: 54.000004}
+      - {x: -0.30950263, y: 0.56978613, z: 54.000004}
+      - {x: -0.30950263, y: 0.56978613, z: 54.000004}
+      - {x: -0.3095198, y: 0.5673027, z: 54.200977}
+      - {x: -0.30948058, y: 0.5480057, z: 55.762676}
+      - {x: -0.3087857, y: 0.5171253, z: 58.260662}
+      - {x: -0.30716315, y: 0.48373005, z: 60.9577}
+      - {x: -0.30521423, y: 0.4569304, z: 63.116558}
+      - {x: -0.30425072, y: 0.44594038, z: 64}
+  - state: 11
+    clip:
+      _clipName: enemy_corpse_eater_hurt
+      _frames:
+      - {fileID: 21300000, guid: b38722f3f20356d4eb3b78f5cadf1986, type: 3}
+      - {fileID: 21300000, guid: 40b446cf3a6399744be7c1807ded5159, type: 3}
+      - {fileID: 21300000, guid: 3bc2af23f48c3314bb0d5cc9542822bf, type: 3}
+      - {fileID: 21300000, guid: 3c8e43eb7b3f4b04fa43d32d80a27785, type: 3}
+      - {fileID: 21300000, guid: e0baabd81ed12c64497aea31685985ab, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.45546165, y: 0.320655, z: 80}
+      - {x: -0.44921166, y: 0.320655, z: 80}
+      - {x: -0.4354616, y: 0.320655, z: 80}
+      - {x: -0.42171162, y: 0.320655, z: 80}
+      - {x: -0.41546163, y: 0.320655, z: 80}
+  - state: 12
+    clip:
+      _clipName: enemy_corpse_eater_stunned
+      _frames:
+      - {fileID: 21300000, guid: 37e17aed828970345ae6d1f11403d923, type: 3}
+      - {fileID: 21300000, guid: 6d2b30c151053ef45b19e06b22ba3b95, type: 3}
+      - {fileID: 21300000, guid: 63514e4a6de71954faecda0a60cff70d, type: 3}
+      - {fileID: 21300000, guid: c0a0f59da0d0a7b4289b439a1a3ebf58, type: 3}
+      - {fileID: 21300000, guid: 99db0cd29a528494c834bec3857c3283, type: 3}
+      - {fileID: 21300000, guid: 42315e80c74668b4aa98023fe431090b, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 1
+      _anchors:
+      - {x: -0.42929992, y: 0.37872657, z: 84}
+      - {x: -0.42980087, y: 0.40470514, z: 87.4641}
+      - {x: -0.42980087, y: 0.40470514, z: 87.4641}
+      - {x: -0.42929992, y: 0.37872657, z: 84}
+      - {x: -0.42723003, y: 0.35282585, z: 80.535904}
+      - {x: -0.42723003, y: 0.35282585, z: 80.535904}
+  - state: 13
+    clip:
+      _clipName: enemy_corpse_eater_death
+      _frames:
+      - {fileID: 21300000, guid: b6fec8ea0e2abf6409b54b76319ad12c, type: 3}
+      - {fileID: 21300000, guid: e7d11d6010f072340a5681d700b58772, type: 3}
+      - {fileID: 21300000, guid: 0bc940609d2dca4438d1b202ec0f2952, type: 3}
+      - {fileID: 21300000, guid: 8cfbfce66556468478898169a66a7975, type: 3}
+      - {fileID: 21300000, guid: cd1ad62329e58674c8ad2fe1bdf6d514, type: 3}
+      - {fileID: 21300000, guid: e2d8b15b60570d145a656ef00cca6af8, type: 3}
+      - {fileID: 21300000, guid: 176b017c50704db4dbbfbe5cf3cf0c7b, type: 3}
+      - {fileID: 21300000, guid: 73b2b8849f0cb5d44aebc2deff869b64, type: 3}
+      - {fileID: 21300000, guid: e523fd3414b35b44f909287550c5f5b1, type: 3}
+      - {fileID: 21300000, guid: 48b92a8748d8a3b4cb136dcd7b318d46, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 0
+      _anchors:
+      - {x: -0.42139083, y: 0.3996765, z: 66}
+      - {x: -0.4225209, y: 0.39507258, z: 67.44033}
+      - {x: -0.42509443, y: 0.38330775, z: 71.300415}
+      - {x: -0.42763084, y: 0.3676984, z: 76.888885}
+      - {x: -0.4287876, y: 0.35124305, z: 83.514404}
+      - {x: -0.42781535, y: 0.3361451, z: 90.485596}
+      - {x: -0.42480668, y: 0.32371408, z: 97.111115}
+      - {x: -0.42069978, y: 0.31454727, z: 102.69959}
+      - {x: -0.4170346, y: 0.30886036, z: 106.55968}
+      - {x: -0.4154956, y: 0.30686498, z: 108.00001}
+  _fallback:
+    _clipName: enemy_corpse_eater_idle
+    _frames:
+    - {fileID: 21300000, guid: d767e0ad6ae359e4da028655ac8cde6c, type: 3}
+    - {fileID: 21300000, guid: 31c68f4afee15894d93a07e3ad990725, type: 3}
+    - {fileID: 21300000, guid: 588ed49a5ad33ef42b10e1ea0e966f66, type: 3}
+    - {fileID: 21300000, guid: 67033c4618bcb3042b6e2729b4ebb371, type: 3}
+    - {fileID: 21300000, guid: 243ac02054152de4c82b8dee66fcaaf8, type: 3}
+    - {fileID: 21300000, guid: 986a858386629b04997b2d3fb9c0d7df, type: 3}
+    _framesPerSecond: 8
+    _isLooping: 1
+    _anchors:
+    - {x: -0.4226183, y: 0.40256822, z: 68.00001}
+    - {x: -0.42607582, y: 0.4232725, z: 74.92821}
+    - {x: -0.42607582, y: 0.4232725, z: 74.92821}
+    - {x: -0.4226183, y: 0.40256822, z: 68.00001}
+    - {x: -0.41794214, y: 0.3823563, z: 61.071796}
+    - {x: -0.41794214, y: 0.3823563, z: 61.071796}
+  _carriesShield: 0

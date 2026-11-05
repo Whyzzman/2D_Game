@@ -1,0 +1,751 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84f4db3b7222ee046a84610767e996ec, type: 3}
+  m_Name: PlagueStagAnimations
+  m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.BossAnimationSet
+  _clips:
+  - state: 1
+    clip:
+      _clipName: boss_stag_dormant
+      _frames:
+      - {fileID: 21300000, guid: 15716396e528001469faf7c8f1ba846c, type: 3}
+      - {fileID: 21300000, guid: 6ee986f7aaa6ad0449999963383e211b, type: 3}
+      - {fileID: 21300000, guid: 4f3491645bc151a4eba5756fe7fc1de7, type: 3}
+      - {fileID: 21300000, guid: 31d762130962f3641ac6f04cb89a4b9b, type: 3}
+      _framesPerSecond: 8
+      _isLooping: 1
+      _anchors:
+      - {x: -0.28832427, y: 1.39444, z: 13.2}
+      - {x: -0.28832427, y: 1.39444, z: 13.2}
+      - {x: -0.28832427, y: 1.39444, z: 13.2}
+      - {x: -0.28832427, y: 1.39444, z: 13.2}
+  - state: 2
+    clip:
+      _clipName: boss_stag_intro
+      _frames:
+      - {fileID: 21300000, guid: c0de64c4fd3f55746bd00b3c3842528a, type: 3}
+      - {fileID: 21300000, guid: b8eca37303bdaa24a8587b60d09f39bc, type: 3}
+      - {fileID: 21300000, guid: 17d451adafe50f2458eaa1eb4283e70c, type: 3}
+      - {fileID: 21300000, guid: 9d08a42743a7a894b9d315bb6eca89d7, type: 3}
+      - {fileID: 21300000, guid: ba6ee5ba804357e4db4825b2da06825d, type: 3}
+      - {fileID: 21300000, guid: e0413b81b1bee3945afd75a313fa4c91, type: 3}
+      - {fileID: 21300000, guid: 0be4793352c61c74ea85582963842550, type: 3}
+      - {fileID: 21300000, guid: b4665f207cfc77b4c9dd00dbc0eec293, type: 3}
+      - {fileID: 21300000, guid: e517b0782557bc24ab6bf8504754d732, type: 3}
+      - {fileID: 21300000, guid: 9893e590085c5054cb943b4859399b32, type: 3}
+      - {fileID: 21300000, guid: de3f261d3cf64a348a05f319f9a8ae38, type: 3}
+      - {fileID: 21300000, guid: d6d761fc70b75ce45b3aca719acb1d1f, type: 3}
+      - {fileID: 21300000, guid: da18c85d406d23f4ab9042a5c8b459ae, type: 3}
+      - {fileID: 21300000, guid: e7146d4615ee5e246b6ec45980d63102, type: 3}
+      - {fileID: 21300000, guid: cc8aefd00065cf4479e90a1eb91b900e, type: 3}
+      - {fileID: 21300000, guid: 05f7d080b66c8d748a26d58c500afaa0, type: 3}
+      - {fileID: 21300000, guid: d07446b898e000240b72bf4363840360, type: 3}
+      - {fileID: 21300000, guid: 264bc029a81f1404a8ea25c0935d1f6f, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 0
+      _anchors:
+      - {x: -0.28832427, y: 1.39444, z: 13.2}
+      - {x: -0.2882775, y: 1.3945404, z: 13.205984}
+      - {x: -0.28814447, y: 1.3948249, z: 13.2229595}
+      - {x: -0.28793624, y: 1.3952692, z: 13.249461}
+      - {x: -0.28766364, y: 1.3958478, z: 13.284022}
+      - {x: -0.28733766, y: 1.3965361, z: 13.325178}
+      - {x: -0.28696883, y: 1.3973093, z: 13.371464}
+      - {x: -0.2865686, y: 1.3981427, z: 13.421412}
+      - {x: -0.28614822, y: 1.3990114, z: 13.47356}
+      - {x: -0.28571916, y: 1.3998913, z: 13.526441}
+      - {x: -0.28529343, y: 1.4007573, z: 13.578588}
+      - {x: -0.28488326, y: 1.4015857, z: 13.628536}
+      - {x: -0.28450105, y: 1.4023523, z: 13.674822}
+      - {x: -0.2841594, y: 1.4030331, z: 13.715978}
+      - {x: -0.28387114, y: 1.4036041, z: 13.75054}
+      - {x: -0.28364936, y: 1.4040418, z: 13.7770405}
+      - {x: -0.28350708, y: 1.4043218, z: 13.794016}
+      - {x: -0.2834567, y: 1.4044205, z: 13.8}
+  - state: 3
+    clip:
+      _clipName: boss_stag_idlep1
+      _frames:
+      - {fileID: 21300000, guid: c40ec0121ef71dd4e9042e21eabe0532, type: 3}
+      - {fileID: 21300000, guid: 6e95eda052720844cb358150424c41de, type: 3}
+      - {fileID: 21300000, guid: 701cf32379376d6429d845f96817c4dc, type: 3}
+      - {fileID: 21300000, guid: 882f2037eec291141bd32d52f3b333cb, type: 3}
+      - {fileID: 21300000, guid: 360a227c017027845a92cd6a09787509, type: 3}
+      - {fileID: 21300000, guid: a66a3b59656f6bc4583548e17e6b32e1, type: 3}
+      _framesPerSecond: 8
+      _isLooping: 1
+      _anchors:
+      - {x: -0.285934, y: 1.3994515, z: 13.5}
+      - {x: -0.285934, y: 1.4081117, z: 13.5}
+      - {x: -0.285934, y: 1.4081117, z: 13.5}
+      - {x: -0.285934, y: 1.3994515, z: 13.5}
+      - {x: -0.285934, y: 1.3907912, z: 13.5}
+      - {x: -0.285934, y: 1.3907912, z: 13.5}
+  - state: 4
+    clip:
+      _clipName: boss_stag_walkp1
+      _frames:
+      - {fileID: 21300000, guid: 0ebf5a69ceea1364db196f6ea8e197d3, type: 3}
+      - {fileID: 21300000, guid: 0e218c1a0bea218479deb065f4728b34, type: 3}
+      - {fileID: 21300000, guid: 455e9318dde7b854daee92abd9676f57, type: 3}
+      - {fileID: 21300000, guid: 752f80ac9d2801f48a50385c1563c6a3, type: 3}
+      - {fileID: 21300000, guid: 2558fb996680e02478502544a4b4599a, type: 3}
+      - {fileID: 21300000, guid: a10625f1512b969438b148915bb05c83, type: 3}
+      - {fileID: 21300000, guid: 131dc1fce2556464a91390ab5b583610, type: 3}
+      - {fileID: 21300000, guid: ab21631ea15bbdc44b0e87d72eee25d2, type: 3}
+      _framesPerSecond: 10
+      _isLooping: 1
+      _anchors:
+      - {x: -0.2808931, y: 1.4093454, z: 14.1}
+      - {x: -0.2808931, y: 1.4333872, z: 14.1}
+      - {x: -0.2808931, y: 1.4433453, z: 14.1}
+      - {x: -0.2808931, y: 1.4333872, z: 14.1}
+      - {x: -0.2808931, y: 1.4093454, z: 14.1}
+      - {x: -0.2808931, y: 1.4333872, z: 14.1}
+      - {x: -0.2808931, y: 1.4433453, z: 14.1}
+      - {x: -0.2808931, y: 1.4333872, z: 14.1}
+  - state: 0
+    clip:
+      _clipName: boss_stag_slashp1
+      _frames:
+      - {fileID: 21300000, guid: cb7a9c541be98bc49b631572354de9d5, type: 3}
+      - {fileID: 21300000, guid: 5b3e30fcd798f794bbab3a81ad32f97f, type: 3}
+      - {fileID: 21300000, guid: 6031f5d62d505414da8ce72ceed25103, type: 3}
+      - {fileID: 21300000, guid: cf677e2dc4faf16438e5dabb154cf6d9, type: 3}
+      - {fileID: 21300000, guid: 269013464d8f37141936d6b9fe5cabc8, type: 3}
+      - {fileID: 21300000, guid: 8cea19e7e350043429b28ae8a033f8ec, type: 3}
+      - {fileID: 21300000, guid: 4fbecad069c7ea94b9c8786db0866358, type: 3}
+      - {fileID: 21300000, guid: 3c86da25a8283c64db487cc40e0db71e, type: 3}
+      - {fileID: 21300000, guid: 2e6c195bf499e364486502004c3bde46, type: 3}
+      - {fileID: 21300000, guid: 1f272920d23c4744b8d145896300c308, type: 3}
+      - {fileID: 21300000, guid: 301253dbaeb562b46a5f61a045657e17, type: 3}
+      - {fileID: 21300000, guid: 953c194a6cc6e0043bf11fd59b9662e9, type: 3}
+      - {fileID: 21300000, guid: 72ca914ec52e0754288a9eedbd8c9d37, type: 3}
+      - {fileID: 21300000, guid: e31f00d9bacd1154a9f8a36f305c9ce4, type: 3}
+      - {fileID: 21300000, guid: 37db08003e359d6408fd42a83a549a87, type: 3}
+      - {fileID: 21300000, guid: 6c07dca34a9e2ea478e4414c2d069bd1, type: 3}
+      - {fileID: 21300000, guid: be6d10283a542664ebf4863ce26f9ecf, type: 3}
+      - {fileID: 21300000, guid: 97085d759fc91e649b1369fcace57ce9, type: 3}
+      - {fileID: 21300000, guid: f47fec378487fe045997cfa8180bddee, type: 3}
+      - {fileID: 21300000, guid: 5fb47d70840d3c24194645c34abb6b1e, type: 3}
+      - {fileID: 21300000, guid: 586773dd5fc1439459b32d315d3b5441, type: 3}
+      - {fileID: 21300000, guid: 4357baf505d4f8d42bb80c4d030efc38, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.3421775, y: 1.3212396, z: 9.03}
+      - {x: -0.3421775, y: 1.3212396, z: 9.03}
+      - {x: -0.3421775, y: 1.3212396, z: 9.03}
+      - {x: -0.3421775, y: 1.3212396, z: 9.03}
+      - {x: -0.3421775, y: 1.3212396, z: 9.03}
+      - {x: -0.3421775, y: 1.3212396, z: 9.03}
+      - {x: -0.3421775, y: 1.3212396, z: 9.03}
+      - {x: -0.34000215, y: 1.3242276, z: 9.194687}
+      - {x: -0.33008727, y: 1.3373086, z: 9.919696}
+      - {x: -0.31325722, y: 1.3577429, z: 11.0683565}
+      - {x: -0.29087266, y: 1.382098, z: 12.471209}
+      - {x: -0.26500154, y: 1.4070327, z: 13.958791}
+      - {x: -0.2386673, y: 1.4295422, z: 15.361643}
+      - {x: -0.21576615, y: 1.4471391, z: 16.510303}
+      - {x: -0.2007167, y: 1.4578204, z: 17.235313}
+      - {x: -0.19723587, y: 1.4601986, z: 17.4}
+      - {x: -0.19723587, y: 1.4601986, z: 17.4}
+      - {x: -0.19723587, y: 1.4601986, z: 17.4}
+      - {x: -0.19723587, y: 1.4601986, z: 17.4}
+      - {x: -0.19723587, y: 1.4601986, z: 17.4}
+      - {x: -0.19723587, y: 1.4601986, z: 17.4}
+      - {x: -0.19723587, y: 1.4601986, z: 17.4}
+  - state: 6
+    clip:
+      _clipName: boss_stag_chargestart
+      _frames:
+      - {fileID: 21300000, guid: fae80e6677bc2c642834f8c3b5ec643a, type: 3}
+      - {fileID: 21300000, guid: a35beca48456e6c4280dc3ec7db17875, type: 3}
+      - {fileID: 21300000, guid: 67fe805de2d6fd141ab0809a4ad79b8c, type: 3}
+      - {fileID: 21300000, guid: ed1c08eeb7326494fa4bbacf42c20ffd, type: 3}
+      - {fileID: 21300000, guid: ea370c7721368cf47aed8840fb75c4cf, type: 3}
+      - {fileID: 21300000, guid: 5c8b277e60496324f9a595120f0222f5, type: 3}
+      - {fileID: 21300000, guid: e31a4f7e4efe6d547b6152bdc44e7403, type: 3}
+      - {fileID: 21300000, guid: cbdf353c248acf043b975ef1b110eee1, type: 3}
+      - {fileID: 21300000, guid: 0f987c09e6ce0af42b6cec5b281fb1ec, type: 3}
+      - {fileID: 21300000, guid: 0568faf3861342a4382ced6a1cee1b14, type: 3}
+      - {fileID: 21300000, guid: 0f3604fed6a67a04e8f891d01e08e471, type: 3}
+      - {fileID: 21300000, guid: 5e7511c6fb80f3d418dd5b903424fe4f, type: 3}
+      - {fileID: 21300000, guid: 9c3cd24dd57dd5840b1f626c69a2cf9a, type: 3}
+      - {fileID: 21300000, guid: f0a6e1716d865da40aad27e6754f1a7b, type: 3}
+      - {fileID: 21300000, guid: 29effc09941857241bedf1c6a3648dec, type: 3}
+      - {fileID: 21300000, guid: 6b2ad5d304102c948b1503d2dd243250, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.29284057, y: 1.3842957, z: 12.6}
+      - {x: -0.29200494, y: 1.3844628, z: 12.714666}
+      - {x: -0.2895836, y: 1.3849024, z: 13.0373335}
+      - {x: -0.2856413, y: 1.38549, z: 13.536}
+      - {x: -0.2802066, y: 1.3860725, z: 14.178667}
+      - {x: -0.2733254, y: 1.3864865, z: 14.933333}
+      - {x: -0.2651018, y: 1.3865781, z: 15.768}
+      - {x: -0.2557257, y: 1.3862232, z: 16.650667}
+      - {x: -0.24548721, y: 1.3853493, z: 17.549334}
+      - {x: -0.23477784, y: 1.3839527, z: 18.432001}
+      - {x: -0.22408096, y: 1.3821121, z: 19.266666}
+      - {x: -0.21395385, y: 1.3799903, z: 20.021334}
+      - {x: -0.20500366, y: 1.3778262, z: 20.664001}
+      - {x: -0.19786102, y: 1.3759135, z: 21.162666}
+      - {x: -0.19315003, y: 1.3745642, z: 21.485334}
+      - {x: -0.1914595, y: 1.3740636, z: 21.6}
+  - state: 7
+    clip:
+      _clipName: boss_stag_charge
+      _frames:
+      - {fileID: 21300000, guid: 7c5a2c0b3ba4d3f44a55aa83abdcbde2, type: 3}
+      - {fileID: 21300000, guid: 518170ac07e89c8489cc669f13d7e382, type: 3}
+      - {fileID: 21300000, guid: bb4eff3affd24964ca65ca50b7f9b701, type: 3}
+      - {fileID: 21300000, guid: 4a6d9b1e64110844ca881b319e6315a6, type: 3}
+      - {fileID: 21300000, guid: c9d061163744b1747a57d80f106f66a4, type: 3}
+      - {fileID: 21300000, guid: af86da0baa1b3db41bc080af04ecebeb, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 1
+      _anchors:
+      - {x: -0.15423736, y: 1.438237, z: 24}
+      - {x: -0.15423736, y: 1.4642177, z: 24}
+      - {x: -0.15423736, y: 1.4642177, z: 24}
+      - {x: -0.15423736, y: 1.438237, z: 24}
+      - {x: -0.15423736, y: 1.4642177, z: 24}
+      - {x: -0.15423736, y: 1.4642177, z: 24}
+  - state: 8
+    clip:
+      _clipName: boss_stag_chargerecover
+      _frames:
+      - {fileID: 21300000, guid: 1db90553a5ad17144984883cbf1ddadf, type: 3}
+      - {fileID: 21300000, guid: bf6f2c2ac162fda43a7973d9a3a17f8f, type: 3}
+      - {fileID: 21300000, guid: ddaccca1224fd4f4fb3e049bb90b9fd3, type: 3}
+      - {fileID: 21300000, guid: 06c9838673c49cd48a9898e72ec1e98a, type: 3}
+      - {fileID: 21300000, guid: f1f4abc89edeab24196cd648b0c80713, type: 3}
+      - {fileID: 21300000, guid: ba689d334e5280147a9815334d64f652, type: 3}
+      - {fileID: 21300000, guid: 0f6e368c2a6d3ad49baed1bfffc28f0a, type: 3}
+      - {fileID: 21300000, guid: 20474d155dfba5d41afcdca1f0dd2351, type: 3}
+      - {fileID: 21300000, guid: a81454b3cbc374b4f80d433655908109, type: 3}
+      - {fileID: 21300000, guid: 9e58be3b62cf01a44b3328de6bd8be04, type: 3}
+      - {fileID: 21300000, guid: d12f8acd7df24fd43ad46d42686abf70, type: 3}
+      - {fileID: 21300000, guid: bd8e08315b4a6374fa44fa624f3bf473, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.06385376, y: 1.3726848, z: 23.4}
+      - {x: -0.06971588, y: 1.3742568, z: 23.176409}
+      - {x: -0.0856427, y: 1.3783337, z: 22.563337}
+      - {x: -0.10901611, y: 1.383801, z: 21.647333}
+      - {x: -0.1371579, y: 1.3895636, z: 20.514952}
+      - {x: -0.1674643, y: 1.3947551, z: 19.252743}
+      - {x: -0.19753708, y: 1.3988463, z: 17.947258}
+      - {x: -0.22529404, y: 1.4016604, z: 16.68505}
+      - {x: -0.2490271, y: 1.4033121, z: 15.552667}
+      - {x: -0.26737884, y: 1.4040968, z: 14.636664}
+      - {x: -0.27922517, y: 1.4043689, z: 14.023591}
+      - {x: -0.2834567, y: 1.4044205, z: 13.8}
+  - state: 9
+    clip:
+      _clipName: boss_stag_combo1
+      _frames:
+      - {fileID: 21300000, guid: 06758319d3373ff46a51549ed036dc23, type: 3}
+      - {fileID: 21300000, guid: 87bcd72f15e362c40b2d6a9d05809f91, type: 3}
+      - {fileID: 21300000, guid: 8784fe780740c6248be5305b7955b719, type: 3}
+      - {fileID: 21300000, guid: d1d2dc3cadbb7cf4280d2864863e30f3, type: 3}
+      - {fileID: 21300000, guid: 9e0557db688796546afec0c2819ece3f, type: 3}
+      - {fileID: 21300000, guid: 85edac3a0cd2b1d41a8b9b7c2bced18c, type: 3}
+      - {fileID: 21300000, guid: 1d0193999ef905045a0fa8a28c7b221b, type: 3}
+      - {fileID: 21300000, guid: dd0745b4f3f2efb46b8d5a7e8b995b4d, type: 3}
+      - {fileID: 21300000, guid: 0ffe5caf32096e445a65dfe35502c590, type: 3}
+      - {fileID: 21300000, guid: fd9bf57b845ec4a488d30a3b66daad2c, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.33813462, y: 1.3391082, z: 10.0199995}
+      - {x: -0.33813462, y: 1.3391082, z: 10.0199995}
+      - {x: -0.33813462, y: 1.3391082, z: 10.0199995}
+      - {x: -0.3360489, y: 1.3410748, z: 10.129791}
+      - {x: -0.30532515, y: 1.368406, z: 11.6774}
+      - {x: -0.2560109, y: 1.4067671, z: 13.9426}
+      - {x: -0.21948318, y: 1.4315509, z: 15.490209}
+      - {x: -0.21680802, y: 1.4332587, z: 15.6}
+      - {x: -0.21680802, y: 1.4332587, z: 15.6}
+      - {x: -0.21680802, y: 1.4332587, z: 15.6}
+  - state: 10
+    clip:
+      _clipName: boss_stag_combo2
+      _frames:
+      - {fileID: 21300000, guid: 30c9f607bd164254daefbeead45a1b2e, type: 3}
+      - {fileID: 21300000, guid: ee4b83f6bf26b524fbd27c3771817d84, type: 3}
+      - {fileID: 21300000, guid: 70e0263c435fb0b4fba0015da70165f5, type: 3}
+      - {fileID: 21300000, guid: 64ff66a1c9638fe49ab7cadb8e95ac02, type: 3}
+      - {fileID: 21300000, guid: 37e98731161f3fa4796e3e083c8cd4a2, type: 3}
+      - {fileID: 21300000, guid: 9480d4e35d8020a408c11ab77beb6297, type: 3}
+      - {fileID: 21300000, guid: f3e1d7f4468c4e74b80bcd0b6f064a4c, type: 3}
+      - {fileID: 21300000, guid: 736a8d4a4bacb0b4c9e18f78d942f56f, type: 3}
+      - {fileID: 21300000, guid: dcfca1283ba4ec24c8fd9b2ef8b881fe, type: 3}
+      - {fileID: 21300000, guid: 7ca275849cb858145ba4008eb67ce9fa, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.3409442, y: 1.327221, z: 9.36}
+      - {x: -0.3409442, y: 1.327221, z: 9.36}
+      - {x: -0.3409442, y: 1.327221, z: 9.36}
+      - {x: -0.33878648, y: 1.3298669, z: 9.506389}
+      - {x: -0.30599746, y: 1.3665329, z: 11.569866}
+      - {x: -0.25028306, y: 1.4172932, z: 14.590134}
+      - {x: -0.20726746, y: 1.4492774, z: 16.653612}
+      - {x: -0.20407195, y: 1.4514481, z: 16.8}
+      - {x: -0.20407195, y: 1.4514481, z: 16.8}
+      - {x: -0.20407195, y: 1.4514481, z: 16.8}
+  - state: 11
+    clip:
+      _clipName: boss_stag_combo3
+      _frames:
+      - {fileID: 21300000, guid: ba353fcddf421ee4c9518ee71b5b3884, type: 3}
+      - {fileID: 21300000, guid: 257ff5eb9560bfa43894299a79d544ff, type: 3}
+      - {fileID: 21300000, guid: 938e4f79eba0bfe4d9a2f4ea87617edf, type: 3}
+      - {fileID: 21300000, guid: f4cbba8417c0ed64d99a2486ddb4948c, type: 3}
+      - {fileID: 21300000, guid: d4a20c97d26ba5e4eb50ad9d0de6001b, type: 3}
+      - {fileID: 21300000, guid: 808035480ff03f14285137f17f03f42d, type: 3}
+      - {fileID: 21300000, guid: 0392111d89b13e64ea19c4895f7fca79, type: 3}
+      - {fileID: 21300000, guid: d707624aaacfc7440a72335507e1f4fc, type: 3}
+      - {fileID: 21300000, guid: e62fb8d3be19d3f4e8deb32dd40de863, type: 3}
+      - {fileID: 21300000, guid: 332510d32e471984091bcd264d0e9965, type: 3}
+      - {fileID: 21300000, guid: 1f7f2a35d649ced4dbb21242f826ec55, type: 3}
+      - {fileID: 21300000, guid: 1e8f4680e477e744a92511b64b1ec148, type: 3}
+      - {fileID: 21300000, guid: 1df6354163f4ac3489bacb5fb675bea6, type: 3}
+      - {fileID: 21300000, guid: caed2ffff64ef1048bf9d8bf50066ce6, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.3466097, y: 1.2910367, z: 7.3799996}
+      - {x: -0.3466097, y: 1.2910367, z: 7.3799996}
+      - {x: -0.3466097, y: 1.2910367, z: 7.3799996}
+      - {x: -0.3466097, y: 1.2910367, z: 7.3799996}
+      - {x: -0.34649634, y: 1.2912995, z: 7.39426}
+      - {x: -0.3334703, y: 1.3185382, z: 8.881381}
+      - {x: -0.29816177, y: 1.3746091, z: 12.035264}
+      - {x: -0.24394341, y: 1.435499, z: 15.744736}
+      - {x: -0.1880893, y: 1.4809663, z: 18.898619}
+      - {x: -0.15900238, y: 1.499916, z: 20.38574}
+      - {x: -0.15871567, y: 1.5000889, z: 20.4}
+      - {x: -0.15871567, y: 1.5000889, z: 20.4}
+      - {x: -0.15871567, y: 1.5000889, z: 20.4}
+      - {x: -0.15871567, y: 1.5000889, z: 20.4}
+  - state: 12
+    clip:
+      _clipName: boss_stag_stunned
+      _frames:
+      - {fileID: 21300000, guid: 83ab172f6fc5aaa498ee68895787c6a3, type: 3}
+      - {fileID: 21300000, guid: 3bf8d8f0329bbb34fa27b31f05012703, type: 3}
+      - {fileID: 21300000, guid: e21863ab22bd4e448b330342677ec92c, type: 3}
+      - {fileID: 21300000, guid: 40008f3c4aa629844ba7d678caed5f7a, type: 3}
+      - {fileID: 21300000, guid: 4dfcd716ab188fa46a5ce1a468aa3011, type: 3}
+      - {fileID: 21300000, guid: 67651d973f1fb4b49aff4205cdd38acd, type: 3}
+      - {fileID: 21300000, guid: 8a12fa560defe1e4faa2c7bdd0a2ed9d, type: 3}
+      - {fileID: 21300000, guid: cd8790840abe22040a11b584e2cadd6c, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 1
+      _anchors:
+      - {x: -0.31769103, y: 1.1033432, z: 4.7999997}
+      - {x: -0.31805268, y: 1.126892, z: 6.072792}
+      - {x: -0.3176917, y: 1.1366425, z: 6.6}
+      - {x: -0.31805268, y: 1.126892, z: 6.072792}
+      - {x: -0.31769103, y: 1.1033432, z: 4.7999997}
+      - {x: -0.31558824, y: 1.0798862, z: 3.5272071}
+      - {x: -0.31420958, y: 1.0702269, z: 2.9999995}
+      - {x: -0.31558815, y: 1.0798862, z: 3.5272079}
+  - state: 13
+    clip:
+      _clipName: boss_stag_recoil
+      _frames:
+      - {fileID: 21300000, guid: b08ccbc7ee9d5734791baf8955e3c79c, type: 3}
+      - {fileID: 21300000, guid: a8c24c2b48b99d44c9accd44c3ef367e, type: 3}
+      - {fileID: 21300000, guid: 28e6c92ce02979646928ae0699f58159, type: 3}
+      - {fileID: 21300000, guid: acbbf0c4d6d28af4f9a17cd108a930cf, type: 3}
+      - {fileID: 21300000, guid: fdc5ff651c0972d4c95fb11354cd84c3, type: 3}
+      - {fileID: 21300000, guid: ad8e87b7af3cc1243bd01295794f728a, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.29699996, y: 1.374, z: 12}
+      - {x: -0.3540274, y: 1.3175296, z: 8.825959}
+      - {x: -0.38397226, y: 1.281525, z: 6.864294}
+      - {x: -0.38397226, y: 1.281525, z: 6.864295}
+      - {x: -0.3540274, y: 1.3175296, z: 8.82596}
+      - {x: -0.29700005, y: 1.374, z: 12}
+  - state: 14
+    clip:
+      _clipName: boss_stag_phasetransition
+      _frames:
+      - {fileID: 21300000, guid: e944430ccbc10254d85067b141b2899f, type: 3}
+      - {fileID: 21300000, guid: ccdb07dea50a14644bf12fe60c6f62bc, type: 3}
+      - {fileID: 21300000, guid: e3aa1d8de483a904d8cd0a5e479acb67, type: 3}
+      - {fileID: 21300000, guid: f1ba217d6497f234da01dcf17da87811, type: 3}
+      - {fileID: 21300000, guid: d49d30996a38ca54e9af1c7ecba15ee1, type: 3}
+      - {fileID: 21300000, guid: faf6bfad3c5e4884f88693ed5014e8a9, type: 3}
+      - {fileID: 21300000, guid: 97359de1daed76246a57567325745d51, type: 3}
+      - {fileID: 21300000, guid: ef96c1c1a7937e24ab12225439cd2f29, type: 3}
+      - {fileID: 21300000, guid: 69b02cd6d9a70d3489a901444151fb48, type: 3}
+      - {fileID: 21300000, guid: c6d24f22e2c514f449558d97d7f7e1a3, type: 3}
+      - {fileID: 21300000, guid: 9fa237ea8075a5a469beb4c11502ed62, type: 3}
+      - {fileID: 21300000, guid: 662b34117bfe0b446bfd634d88651a80, type: 3}
+      - {fileID: 21300000, guid: 27581547c86ab024c9eb00441b8c4256, type: 3}
+      - {fileID: 21300000, guid: f8e17f7a44938a14b8809cd0ae5c5047, type: 3}
+      - {fileID: 21300000, guid: 283df81fbc455a6448e36b6dfca2c391, type: 3}
+      - {fileID: 21300000, guid: 91d2dccd532850541aeb353570b4014d, type: 3}
+      - {fileID: 21300000, guid: 34874d7034c2a2f44abecbad267ed022, type: 3}
+      - {fileID: 21300000, guid: d8cb1baffa3bd4448abf46ae55c11e26, type: 3}
+      - {fileID: 21300000, guid: a80bb99f26f09824f8de1b924c7d60db, type: 3}
+      - {fileID: 21300000, guid: d6f6a5998b6615f42a402064ba49ffb1, type: 3}
+      - {fileID: 21300000, guid: 83842671aa068034684254054c5fdcd7, type: 3}
+      - {fileID: 21300000, guid: a8a6de6c06118c84c85d1aa3cf599f63, type: 3}
+      - {fileID: 21300000, guid: 028f7e646229ed64599cc8625bae11f6, type: 3}
+      - {fileID: 21300000, guid: 359c55af8988c034c8cda9a232424ac2, type: 3}
+      - {fileID: 21300000, guid: 591e6a678f9558a4ca260f186128bfd0, type: 3}
+      - {fileID: 21300000, guid: f35612031c800dd40bb4c35f07d869bb, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 0
+      _anchors:
+      - {x: -0.28832427, y: 1.39444, z: 13.2}
+      - {x: -0.28946486, y: 1.3883986, z: 13.052826}
+      - {x: -0.29248947, y: 1.3717473, z: 12.648389}
+      - {x: -0.2967185, y: 1.3466656, z: 12.042311}
+      - {x: -0.30145293, y: 1.3153443, z: 11.290218}
+      - {x: -0.30607072, y: 1.2800293, z: 10.447736}
+      - {x: -0.3100978, y: 1.2430358, z: 9.570488}
+      - {x: -0.31325004, y: 1.2067431, z: 8.7141}
+      - {x: -0.31544465, y: 1.173571, z: 7.9341955}
+      - {x: -0.31677413, y: 1.1459522, z: 7.2863994}
+      - {x: -0.31744498, y: 1.1263111, z: 6.826337}
+      - {x: -0.31768236, y: 1.117054, z: 6.609633}
+      - {x: -0.31760812, y: 1.1192003, z: 6.68257}
+      - {x: -0.3171804, y: 1.1298639, z: 7.026929}
+      - {x: -0.3161899, y: 1.1475371, z: 7.5984}
+      - {x: -0.31434762, y: 1.1708021, z: 8.352668}
+      - {x: -0.3113855, y: 1.1982147, z: 9.245417}
+      - {x: -0.30713385, y: 1.2283126, z: 10.232334}
+      - {x: -0.30157745, y: 1.2596356, z: 11.269106}
+      - {x: -0.29488602, y: 1.2907547, z: 12.311416}
+      - {x: -0.28741875, y: 1.3203021, z: 13.314952}
+      - {x: -0.27970794, y: 1.3469958, z: 14.235396}
+      - {x: -0.2724206, y: 1.3696481, z: 15.0284395}
+      - {x: -0.2663051, y: 1.3871524, z: 15.649764}
+      - {x: -0.26212814, y: 1.3984488, z: 16.055056}
+      - {x: -0.26059875, y: 1.4024646, z: 16.2}
+  - state: 15
+    clip:
+      _clipName: boss_stag_idlep2
+      _frames:
+      - {fileID: 21300000, guid: a75177f8beac80e44aa4c68869ce7dea, type: 3}
+      - {fileID: 21300000, guid: fe2f37b0770e3064cb752b291486ddcc, type: 3}
+      - {fileID: 21300000, guid: ba2a0737b0c8b18418b82ad4d691d25e, type: 3}
+      - {fileID: 21300000, guid: ec0209d02873206498954a134a4b2180, type: 3}
+      - {fileID: 21300000, guid: dfdd1b15f0472b245b562be8fb7774fd, type: 3}
+      - {fileID: 21300000, guid: 3fc30bb95e3f1184baeb9b84b4261d1c, type: 3}
+      _framesPerSecond: 10
+      _isLooping: 1
+      _anchors:
+      - {x: -0.25407204, y: 1.4514481, z: 16.8}
+      - {x: -0.25407204, y: 1.4618405, z: 16.8}
+      - {x: -0.25407204, y: 1.4618405, z: 16.8}
+      - {x: -0.25407204, y: 1.4514481, z: 16.8}
+      - {x: -0.25407204, y: 1.4410559, z: 16.8}
+      - {x: -0.25407204, y: 1.4410559, z: 16.8}
+  - state: 16
+    clip:
+      _clipName: boss_stag_movep2
+      _frames:
+      - {fileID: 21300000, guid: 1f8644f8f45d56644abec0619c78f12c, type: 3}
+      - {fileID: 21300000, guid: be6f883a7765f6942976903ee5e558cd, type: 3}
+      - {fileID: 21300000, guid: 595f29bc124bbef4c863770b9bb767e1, type: 3}
+      - {fileID: 21300000, guid: 29493b95daeace24da81a5038e3792a3, type: 3}
+      - {fileID: 21300000, guid: 4d22761d87771ba4a87c75fe3d0f485a, type: 3}
+      - {fileID: 21300000, guid: 14608b508f3d1214a952789fa1acdb5a, type: 3}
+      - {fileID: 21300000, guid: f51139c1076207a4fa6c018fb12091b3, type: 3}
+      - {fileID: 21300000, guid: 1ca66b8e2cb074a4f8faa8a73a65d8da, type: 3}
+      _framesPerSecond: 14
+      _isLooping: 1
+      _anchors:
+      - {x: -0.23266853, y: 1.4769571, z: 18.6}
+      - {x: -0.23266853, y: 1.5024129, z: 18.6}
+      - {x: -0.23266853, y: 1.5129571, z: 18.6}
+      - {x: -0.23266853, y: 1.5024129, z: 18.6}
+      - {x: -0.23266853, y: 1.4769571, z: 18.6}
+      - {x: -0.23266853, y: 1.5024129, z: 18.6}
+      - {x: -0.23266853, y: 1.5129571, z: 18.6}
+      - {x: -0.23266853, y: 1.5024129, z: 18.6}
+  - state: 17
+    clip:
+      _clipName: boss_stag_slashp2
+      _frames:
+      - {fileID: 21300000, guid: 15b5c0f85991bd74bb665916ac68330c, type: 3}
+      - {fileID: 21300000, guid: 22fa8877839365346a12fa17347de7d3, type: 3}
+      - {fileID: 21300000, guid: 8bf9f003bc57a9c40882c310b6a67291, type: 3}
+      - {fileID: 21300000, guid: 742d036a881d56e4d954be01c02737e0, type: 3}
+      - {fileID: 21300000, guid: 6ca44ac0bcc485f42b19451e3397e200, type: 3}
+      - {fileID: 21300000, guid: 6945362bd1021bb43b75f75c135b8d28, type: 3}
+      - {fileID: 21300000, guid: 023246f58ea19e443802ad5539d6630d, type: 3}
+      - {fileID: 21300000, guid: 1090a0aaa09bfdc4d8310d1d3fd29fa6, type: 3}
+      - {fileID: 21300000, guid: 7459cd2f3ae577943accd4d960d57cb5, type: 3}
+      - {fileID: 21300000, guid: 6d05247e81a03d843b15827a50e781f7, type: 3}
+      - {fileID: 21300000, guid: 7ba299d4d93ea8a4687422ff9f7425b9, type: 3}
+      - {fileID: 21300000, guid: 2a55fc191f0315b4f9df8b75cb6abb81, type: 3}
+      - {fileID: 21300000, guid: dba48faee137ba349a9cefb34b3b2067, type: 3}
+      - {fileID: 21300000, guid: 6b5fc3248a666fb48884cc758622588f, type: 3}
+      - {fileID: 21300000, guid: ec9f38c4811513e44a57e70436d38989, type: 3}
+      - {fileID: 21300000, guid: 580cb8764e1e3f3449e9c19db6913ca1, type: 3}
+      - {fileID: 21300000, guid: 86875c681bd12e543a92ea90043a9e2f, type: 3}
+      - {fileID: 21300000, guid: ddfd14a0eafb491408a02182acaa3537, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.345185, y: 1.3031678, z: 8.04}
+      - {x: -0.345185, y: 1.3031678, z: 8.04}
+      - {x: -0.345185, y: 1.3031678, z: 8.04}
+      - {x: -0.345185, y: 1.3031678, z: 8.04}
+      - {x: -0.345185, y: 1.3031678, z: 8.04}
+      - {x: -0.345185, y: 1.3031678, z: 8.04}
+      - {x: -0.33985656, y: 1.3129505, z: 8.574731}
+      - {x: -0.3222004, y: 1.3417392, z: 10.166927}
+      - {x: -0.293041, y: 1.3808457, z: 12.39799}
+      - {x: -0.2554265, y: 1.4213283, z: 14.84201}
+      - {x: -0.21624543, y: 1.4554602, z: 17.073072}
+      - {x: -0.18567596, y: 1.477839, z: 18.665268}
+      - {x: -0.17495498, y: 1.4849449, z: 19.2}
+      - {x: -0.17495498, y: 1.4849449, z: 19.2}
+      - {x: -0.17495498, y: 1.4849449, z: 19.2}
+      - {x: -0.17495498, y: 1.4849449, z: 19.2}
+      - {x: -0.17495498, y: 1.4849449, z: 19.2}
+      - {x: -0.17495498, y: 1.4849449, z: 19.2}
+  - state: 18
+    clip:
+      _clipName: boss_stag_combop2
+      _frames:
+      - {fileID: 21300000, guid: 494a0c9b288442748b81d5d146c132ee, type: 3}
+      - {fileID: 21300000, guid: e62ae432418239c418f26c2444686ecd, type: 3}
+      - {fileID: 21300000, guid: 3481916be18b6644699a2c62eb0f6287, type: 3}
+      - {fileID: 21300000, guid: 264ec1ed94c1bbf4f948b359e3de3b02, type: 3}
+      - {fileID: 21300000, guid: 77c33c16f8cf0354384ee56b1906c39a, type: 3}
+      - {fileID: 21300000, guid: 03b155bf212929f4c875a23be4cbad9e, type: 3}
+      - {fileID: 21300000, guid: 03002dd07dec9e947aa655e198d9daf2, type: 3}
+      - {fileID: 21300000, guid: e3e71c8e17292a047bb910885479461c, type: 3}
+      - {fileID: 21300000, guid: 5b1d2e2029601fe4ebb1a5dc9446cfba, type: 3}
+      - {fileID: 21300000, guid: 481cdd7636a41b2489bfc2686e8914d6, type: 3}
+      - {fileID: 21300000, guid: 07333ee50d4fe3241848b5dbdc935080, type: 3}
+      - {fileID: 21300000, guid: 76a7207d9c4091e4b8580b01f5fd0167, type: 3}
+      - {fileID: 21300000, guid: f05333d6976b6064aa5aa3da2b0f593f, type: 3}
+      - {fileID: 21300000, guid: d356caba73525514e8a792c573daa004, type: 3}
+      - {fileID: 21300000, guid: 943800920e423c24a9c81218722f917b, type: 3}
+      - {fileID: 21300000, guid: 47fb1939737c4d4499a2c74d2d71aeab, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.34714723, y: 1.284953, z: 7.0499997}
+      - {x: -0.34714723, y: 1.284953, z: 7.0499997}
+      - {x: -0.34714723, y: 1.284953, z: 7.0499997}
+      - {x: -0.34714723, y: 1.284953, z: 7.0499997}
+      - {x: -0.34714723, y: 1.284953, z: 7.0499997}
+      - {x: -0.3451343, y: 1.290014, z: 7.324479}
+      - {x: -0.32894492, y: 1.3248619, z: 9.229687}
+      - {x: -0.29489067, y: 1.3791213, z: 12.297395}
+      - {x: -0.24535187, y: 1.4356205, z: 15.752605}
+      - {x: -0.19236863, y: 1.4799215, z: 18.820312}
+      - {x: -0.15570587, y: 1.5039984, z: 20.725521}
+      - {x: -0.1502095, y: 1.5072268, z: 21}
+      - {x: -0.1502095, y: 1.5072268, z: 21}
+      - {x: -0.1502095, y: 1.5072268, z: 21}
+      - {x: -0.1502095, y: 1.5072268, z: 21}
+      - {x: -0.1502095, y: 1.5072268, z: 21}
+  - state: 19
+    clip:
+      _clipName: boss_stag_jumpstart
+      _frames:
+      - {fileID: 21300000, guid: d2d6885b633e4b846a17184ac2d5fa2d, type: 3}
+      - {fileID: 21300000, guid: f4b60882f59557049bf40bc77d78815f, type: 3}
+      - {fileID: 21300000, guid: 29194e8935f0d274a8ad4e42ba37e566, type: 3}
+      - {fileID: 21300000, guid: c2c92199dd9fb6148b3c347c65fd7181, type: 3}
+      - {fileID: 21300000, guid: 0e86e4d3f00b84b40bd2f70ac53206e7, type: 3}
+      - {fileID: 21300000, guid: 3dba5f6a5699dbc4b89c7ff4770ec1a4, type: 3}
+      - {fileID: 21300000, guid: 15bfd43a41fe416459a87a0d92cb6e52, type: 3}
+      - {fileID: 21300000, guid: bcfb98218c4be974dbd53d112ed52c76, type: 3}
+      - {fileID: 21300000, guid: 48aad3474e6f53b4492536e2aed17bb3, type: 3}
+      - {fileID: 21300000, guid: 04e04267082dc4f4ea36cc8be317cd65, type: 3}
+      - {fileID: 21300000, guid: 0f01252c9b022df49bcd84bbb01973e5, type: 3}
+      - {fileID: 21300000, guid: 5a9785414d66ab2419f7e530bcd8f9c7, type: 3}
+      - {fileID: 21300000, guid: f66e9e96d3c8abc49a14801dfec4d021, type: 3}
+      - {fileID: 21300000, guid: 33aa62902d6e4fc4b93d9146b948523b, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.26059875, y: 1.4424646, z: 16.2}
+      - {x: -0.26024246, y: 1.4332694, z: 16.280838}
+      - {x: -0.2593187, y: 1.40782, z: 16.505873}
+      - {x: -0.2581025, y: 1.36945, z: 16.848885}
+      - {x: -0.25689164, y: 1.3215588, z: 17.283659}
+      - {x: -0.25595185, y: 1.2674954, z: 17.783978}
+      - {x: -0.2554753, y: 1.2104663, z: 18.323624}
+      - {x: -0.2555565, y: 1.1534635, z: 18.876377}
+      - {x: -0.25618088, y: 1.099221, z: 19.416023}
+      - {x: -0.257231, y: 1.0501999, z: 19.916342}
+      - {x: -0.25850374, y: 1.0086102, z: 20.351116}
+      - {x: -0.25973907, y: 0.97647095, z: 20.694128}
+      - {x: -0.26065856, y: 0.95571184, z: 20.919163}
+      - {x: -0.2610095, y: 0.94831824, z: 21}
+  - state: 20
+    clip:
+      _clipName: boss_stag_jump
+      _frames:
+      - {fileID: 21300000, guid: 0274891b1b6e35047baf85f040a3f4d9, type: 3}
+      - {fileID: 21300000, guid: 9356a009ddcefae4081f8d99cd0a119a, type: 3}
+      - {fileID: 21300000, guid: 8d79fc940080e41448126f3b143caae6, type: 3}
+      - {fileID: 21300000, guid: ccfad3898c5146843920052765b9f319, type: 3}
+      - {fileID: 21300000, guid: 78cfee151f4e16d41849983673f4084b, type: 3}
+      - {fileID: 21300000, guid: ec62543344fcdae419417feb70855a9a, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 1
+      _anchors:
+      - {x: -0.25732726, y: 1.6170621, z: 15.6}
+      - {x: -0.25732726, y: 1.6170621, z: 15.6}
+      - {x: -0.25732726, y: 1.6170621, z: 15.6}
+      - {x: -0.25732726, y: 1.6170621, z: 15.6}
+      - {x: -0.25732726, y: 1.6170621, z: 15.6}
+      - {x: -0.25732726, y: 1.6170621, z: 15.6}
+  - state: 21
+    clip:
+      _clipName: boss_stag_slam
+      _frames:
+      - {fileID: 21300000, guid: de69d3972238af1409ecd02ed397e98f, type: 3}
+      - {fileID: 21300000, guid: 7052301ad2cdc714eb84a5c36ae46868, type: 3}
+      - {fileID: 21300000, guid: 2a0fe6fc1da59ab429f3272168fc22ab, type: 3}
+      - {fileID: 21300000, guid: 8ccc6b6d090f9e044ba08a82f8fefd54, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.23695725, y: 1.2068737, z: 19.800001}
+      - {x: -0.23750511, y: 1.1467526, z: 20.6}
+      - {x: -0.23919342, y: 1.0885586, z: 21.4}
+      - {x: -0.24197434, y: 1.0323809, z: 22.2}
+  - state: 22
+    clip:
+      _clipName: boss_stag_slamrecover
+      _frames:
+      - {fileID: 21300000, guid: 11df041881df20a40863f07b49334e2c, type: 3}
+      - {fileID: 21300000, guid: 7919791e98b41604eafc0db61ad1196e, type: 3}
+      - {fileID: 21300000, guid: 37470e87d3909944e90a7e9c2681e1a0, type: 3}
+      - {fileID: 21300000, guid: 3f6e8edeaf49f124da50f98942533711, type: 3}
+      - {fileID: 21300000, guid: 9cb48691928ffcc4dbc2509ccb12b5ab, type: 3}
+      - {fileID: 21300000, guid: 00d99a2ce762fd5479dbfc6dedaee1f5, type: 3}
+      - {fileID: 21300000, guid: 44e45ff79e08d8d4a99b40e5719375ca, type: 3}
+      - {fileID: 21300000, guid: 7b6ac036081ac16439f69c986982553f, type: 3}
+      - {fileID: 21300000, guid: 80d877de535581a44ba4d945662182c8, type: 3}
+      - {fileID: 21300000, guid: 917619232e7a997459d0459db15048f1, type: 3}
+      - {fileID: 21300000, guid: ae6f1fb9363190542b72999cb370291c, type: 3}
+      - {fileID: 21300000, guid: df79e0baccec6ad40b8b242ad49f5f13, type: 3}
+      - {fileID: 21300000, guid: f411fbd92e6ca7a4089bb4308d6accd4, type: 3}
+      - {fileID: 21300000, guid: ff31bc9735630984e963f726d89fe41c, type: 3}
+      _framesPerSecond: 24
+      _isLooping: 0
+      _anchors:
+      - {x: -0.24197434, y: 1.0323809, z: 22.2}
+      - {x: -0.24188873, y: 1.038723, z: 22.109058}
+      - {x: -0.24169838, y: 1.0565162, z: 21.855894}
+      - {x: -0.24154519, y: 1.0840256, z: 21.470005}
+      - {x: -0.24159454, y: 1.1195586, z: 20.980883}
+      - {x: -0.24199776, y: 1.1613492, z: 20.418024}
+      - {x: -0.2428605, y: 1.2074802, z: 19.810925}
+      - {x: -0.24421714, y: 1.255838, z: 19.189075}
+      - {x: -0.24601471, y: 1.3040985, z: 18.581976}
+      - {x: -0.248107, y: 1.3497412, z: 18.019117}
+      - {x: -0.25026283, y: 1.3900876, z: 17.529997}
+      - {x: -0.25218773, y: 1.422356, z: 17.144106}
+      - {x: -0.25355867, y: 1.4437306, z: 16.890942}
+      - {x: -0.25407204, y: 1.4514481, z: 16.8}
+  - state: 23
+    clip:
+      _clipName: boss_stag_death
+      _frames:
+      - {fileID: 21300000, guid: 276af3de24effb647b37e943a419deb3, type: 3}
+      - {fileID: 21300000, guid: c2965f057bef8ab40bcce306b3bfd2a1, type: 3}
+      - {fileID: 21300000, guid: e6c6a3e874f76434791b130123a0b1c6, type: 3}
+      - {fileID: 21300000, guid: da590bd09cf2ee84688438419ed7359b, type: 3}
+      - {fileID: 21300000, guid: d71f9e608ace5614886ea5d051dfe0f2, type: 3}
+      - {fileID: 21300000, guid: 67095d0d2d5499c46b9293874fa91faa, type: 3}
+      - {fileID: 21300000, guid: c57999094bb9c024b92b6af0aa4f0f99, type: 3}
+      - {fileID: 21300000, guid: 44aa5ed39448bcd4e84bae6e5fa232b0, type: 3}
+      - {fileID: 21300000, guid: 80ac2159e04a499409ef0d689325d7de, type: 3}
+      - {fileID: 21300000, guid: e7eb4b9d3f813204ea8a94b25ad11793, type: 3}
+      - {fileID: 21300000, guid: c0fc3b1512de0b34ea9372798bc89802, type: 3}
+      - {fileID: 21300000, guid: 56425506a9efc56458ffe69f49092214, type: 3}
+      - {fileID: 21300000, guid: 01a2c2aa6b5b4544795eae3a29784439, type: 3}
+      - {fileID: 21300000, guid: 5268e0ef331b0cb45976a7e6df255ab5, type: 3}
+      - {fileID: 21300000, guid: 004b79afb095353459c2408e8a4a1bdd, type: 3}
+      - {fileID: 21300000, guid: ecc8c4b5e41c80546a7ba12cb472e221, type: 3}
+      - {fileID: 21300000, guid: 6312c74c3a259b84e8fc0b37200f6341, type: 3}
+      - {fileID: 21300000, guid: 9701da997ea1e274c9ae95377f234813, type: 3}
+      - {fileID: 21300000, guid: 1ab9024a9ecb53b4599046a0c3140179, type: 3}
+      - {fileID: 21300000, guid: 522079860b3070c43ae170e4dd6c62e0, type: 3}
+      - {fileID: 21300000, guid: 11554aeb2e120e744bf90a65fca3553d, type: 3}
+      - {fileID: 21300000, guid: 37f5d6c38b66f0741ade41707e09bd45, type: 3}
+      - {fileID: 21300000, guid: 857b88e9818d3cf4a9883dc2ed79cb6a, type: 3}
+      - {fileID: 21300000, guid: 719c2827ed3ddde4597d4519980bb1a2, type: 3}
+      - {fileID: 21300000, guid: 5b7f129ad0f81aa48898c3e31f02be35, type: 3}
+      - {fileID: 21300000, guid: 75c8e4b3da21a8f46a2e03b65dfbeace, type: 3}
+      _framesPerSecond: 12
+      _isLooping: 0
+      _anchors:
+      - {x: -0.27269197, y: 1.4238417, z: 15}
+      - {x: -0.27531883, y: 1.4158076, z: 14.882266}
+      - {x: -0.28270417, y: 1.3924009, z: 14.541965}
+      - {x: -0.2938559, y: 1.3546593, z: 13.998451}
+      - {x: -0.30753022, y: 1.3036641, z: 13.271079}
+      - {x: -0.32232466, y: 1.2406071, z: 12.3792}
+      - {x: -0.33677346, y: 1.1668437, z: 11.34217}
+      - {x: -0.34943953, y: 1.0839305, z: 10.17934}
+      - {x: -0.3590103, y: 0.9936346, z: 8.910068}
+      - {x: -0.3643843, y: 0.8979113, z: 7.5537014}
+      - {x: -0.3647486, y: 0.7988556, z: 6.1295996}
+      - {x: -0.35963538, y: 0.69862235, z: 4.6571126}
+      - {x: -0.34895217, y: 0.5993298, z: 3.155597}
+      - {x: -0.33298263, y: 0.50295377, z: 1.6444035}
+      - {x: -0.31235543, y: 0.41122139, z: 0.14288588}
+      - {x: -0.28798607, y: 0.3255201, z: -1.3296026}
+      - {x: -0.260997, y: 0.2468274, z: -2.753703}
+      - {x: -0.23262726, y: 0.17567092, z: -4.1100683}
+      - {x: -0.20414093, y: 0.11211998, z: -5.3793416}
+      - {x: -0.17674637, y: 0.055808447, z: -6.542169}
+      - {x: -0.15153655, y: 0.0059856414, z: -7.5792007}
+      - {x: -0.12945236, y: -0.038411066, z: -8.471078}
+      - {x: -0.11127655, y: -0.07867012, z: -9.19845}
+      - {x: -0.09765121, y: -0.116208345, z: -9.741965}
+      - {x: -0.08911896, y: -0.15246876, z: -10.082267}
+      - {x: -0.08616867, y: -0.18881428, z: -10.200001}
+  _fallback:
+    _clipName: boss_stag_idlep1
+    _frames:
+    - {fileID: 21300000, guid: c40ec0121ef71dd4e9042e21eabe0532, type: 3}
+    - {fileID: 21300000, guid: 6e95eda052720844cb358150424c41de, type: 3}
+    - {fileID: 21300000, guid: 701cf32379376d6429d845f96817c4dc, type: 3}
+    - {fileID: 21300000, guid: 882f2037eec291141bd32d52f3b333cb, type: 3}
+    - {fileID: 21300000, guid: 360a227c017027845a92cd6a09787509, type: 3}
+    - {fileID: 21300000, guid: a66a3b59656f6bc4583548e17e6b32e1, type: 3}
+    _framesPerSecond: 8
+    _isLooping: 1
+    _anchors:
+    - {x: -0.285934, y: 1.3994515, z: 13.5}
+    - {x: -0.285934, y: 1.4081117, z: 13.5}
+    - {x: -0.285934, y: 1.4081117, z: 13.5}
+    - {x: -0.285934, y: 1.3994515, z: 13.5}
+    - {x: -0.285934, y: 1.3907912, z: 13.5}
+    - {x: -0.285934, y: 1.3907912, z: 13.5}
+  _requiredStates: 0100000002000000030000000400000000000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f0000001000000011000000120000001300000014000000150000001600000017000000

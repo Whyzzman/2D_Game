@@ -54,7 +54,9 @@ namespace ForgottenKingdom.Tests
             // The Village over the capital (item 5 of the 15 zones): the forest's edge climbs to it,
             // its drop falls into the capital, the old road from the forest is a shortcut.
             Assert.That(ZoneStreamingPlan.Needed(_graph, Forest, 1), Is.EquivalentTo(new[] { Forest, Tomb, Village, Capital }));
-            Assert.That(ZoneStreamingPlan.Needed(_graph, Village, 1), Is.EquivalentTo(new[] { Village, Forest, Capital }));
+            // The Plague Marsh east of the Village along the old road (the fifth level).
+            Assert.That(ZoneStreamingPlan.Needed(_graph, Village, 1), Is.EquivalentTo(new[] { Village, Forest, Capital, "zone_plague_marsh" }));
+            Assert.That(ZoneStreamingPlan.Needed(_graph, "zone_plague_marsh", 1), Is.EquivalentTo(new[] { "zone_plague_marsh", Village }));
             Assert.That(ZoneStreamingPlan.Needed(_graph, Capital, 1), Is.EquivalentTo(new[] { Capital, Forest, Village }),
                 "The road east of the throne is a future connection with no scene.");
             Assert.That(ZoneStreamingPlan.Needed(_graph, Capital, 5), Has.No.Member(East));

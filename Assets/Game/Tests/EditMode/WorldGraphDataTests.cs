@@ -216,8 +216,8 @@ namespace ForgottenKingdom.Tests
         [Test]
         public void EveryAltarIsATravelDestinationInABuiltZone()
         {
-            Assert.That(_graph.Checkpoints.Count, Is.EqualTo(14),
-                "Four in the Tomb, four in the Forest, three in the Village, three in the Capital.");
+            Assert.That(_graph.Checkpoints.Count, Is.EqualTo(17),
+                "Four in the Tomb, four in the Forest, three in the Village, three in the Capital, three in the Marsh.");
             foreach (var checkpoint in _graph.Checkpoints)
             {
                 Assert.That(checkpoint.CanFastTravel, Is.True, checkpoint.CheckpointId);
