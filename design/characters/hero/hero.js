@@ -304,6 +304,17 @@
     g.beginPath(); g.arc(cx, cy, r * 1.05, f, t, ccw); g.arc(cx, cy, r * 0.6, t, f, !ccw); g.closePath(); g.fill();
     g.strokeStyle = "rgba(255,255,255,0.9)"; g.lineWidth = 2.5;
     g.beginPath(); g.arc(cx, cy, r * 0.98, f, t, ccw); g.stroke();
+    // на кадрі удару — суцільний серп сліду (як у Hollow Knight): тонкий на кінцях, товстий посередині
+    if (a >= 0.9) {
+      g.globalAlpha = 1; g.fillStyle = "#eef3ff";
+      const n = 24, outer = [], inner = [];
+      for (let i = 0; i <= n; i++) {
+        const k = i / n, ang = f + (t - f) * k, w = Math.sin(Math.PI * k);
+        outer.push([cx + Math.cos(ang) * r * 1.02, cy + Math.sin(ang) * r * 1.02]);
+        inner.push([cx + Math.cos(ang) * r * (1.02 - 0.3 * w), cy + Math.sin(ang) * r * (1.02 - 0.3 * w)]);
+      }
+      g.beginPath(); g.moveTo(...outer[0]); outer.forEach(q => g.lineTo(...q)); inner.reverse().forEach(q => g.lineTo(...q)); g.closePath(); g.fill();
+    }
     g.restore();
   }
 
@@ -363,5 +374,77 @@
     g.restore();
   }
 
-  root.Hero = { STATES, draw, track, pose };
+  // ---------- лялька з мальованих частин (2026-11-05, користувач: «персонаж має виглядати як картинка Midjourney») ----------
+  // Частини вирізає tools/hero/puppet.py з аркуша Midjourney (parts/source.png); скелет і пози — ті самі, що вище:
+  // тіло (каптур, плащ, шарф) — на стегнах, ноги — стегно й гомілка з колінами, рукавиця з мечем — на кінці руки.
+  const PARTS = {}, K = 0.27;               // масштаб частин: каптур на 178 px над стопами
+  const SWORD_ANGLE = 138.3;                 // кут клинка в аркуші (від руків'я до вістря), градуси
+  function loadParts(base) {
+    return fetch(base + "parts.json").then(r => r.json()).then(meta => Promise.all(Object.keys(meta).map(name => new Promise(res => {
+      const img = new Image(); img.onload = () => { PARTS[name] = Object.assign({ img }, meta[name]); res(); }; img.src = base + name + ".png";
+    }))));
+  }
+  function piece(g, name, x, y, deg, k) {
+    const q = PARTS[name]; if (!q) return;
+    g.save(); g.translate(x, y); g.rotate(deg * Math.PI / 180); g.scale(k || K, k || K);
+    g.drawImage(q.img, -q.px, -q.py); g.restore();
+  }
+  // нога лялькою: стегно від стегна (hip — від вертикалі, + вперед), гомілка від коліна (knee — згин назад)
+  function puppetLeg(g, side, x, y, hip, knee) {
+    const t = PARTS["leg_" + side + "_thigh"], s = PARTS["leg_" + side + "_shin"];
+    const len = 19, r1 = hip * Math.PI / 180;
+    const kx = x + Math.sin(r1) * len, ky = y + Math.cos(r1) * len;
+    if (s) piece(g, "leg_" + side + "_shin", kx, ky, -(hip - knee));
+    if (t) piece(g, "leg_" + side + "_thigh", x, y, -hip);
+  }
+  function drawPuppet(g, p, frame, big) {
+    g.clearRect(0, 0, 256, 224);
+    g.save();
+    g.translate(128 + p.x, 219 + p.y);
+    g.globalAlpha = p.alpha;
+    if (p.streak > 0.01) {
+      g.strokeStyle = `rgba(200,215,240,${0.35 * p.streak})`; g.lineCap = "round";
+      for (let i = 0; i < 5; i++) {
+        g.lineWidth = 3 - i * 0.4;
+        const y = -30 - i * 16, l = 40 + i * 9;
+        g.beginPath(); g.moveTo(-30 - l * p.streak, y); g.lineTo(-24, y); g.stroke();
+      }
+    }
+    if (p.glow > 0.01) {
+      const grad = g.createRadialGradient(0, -80, 10, 0, -80, 100);
+      grad.addColorStop(0, `rgba(154,107,255,${0.35 * Math.min(1, p.glow)})`); grad.addColorStop(1, "rgba(154,107,255,0)");
+      g.fillStyle = grad; g.fillRect(-120, -200, 240, 210);
+    }
+    g.scale(p.sx, p.sy);
+    g.rotate(p.lean * Math.PI / 180 * 0.5);
+    const hipY = -36;
+    puppetLeg(g, "back", -4, hipY, p.hipB, p.kneeB);
+    // задня рука з «Тінню»: світло на кулаці, сама рука під плащем
+    const rb = p.armB * Math.PI / 180, ax = -8 + Math.sin(rb) * 26, ay = -84 + Math.cos(rb) * 26;
+    const gl = 0.35 + 0.65 * Math.min(1, p.glow);
+    const gg = g.createRadialGradient(ax, ay, 1, ax, ay, 9 + 8 * p.glow);
+    gg.addColorStop(0, `rgba(190,160,255,${gl})`); gg.addColorStop(1, "rgba(154,107,255,0)");
+    g.fillStyle = gg; g.beginPath(); g.arc(ax, ay, 10 + 8 * p.glow, 0, Math.PI * 2); g.fill();
+    // тіло: плащ розлітається в русі (flare), каптур хитається (hood)
+    g.save(); g.translate(0, hipY); g.rotate(p.hood * Math.PI / 180 * 0.25); g.scale(1 + p.flare * 0.08, 1);
+    piece(g, "body", 0, 0, 0);
+    // очі: заплющуються (eyes < 1) і спалахують перед ударом (eyes > 1)
+    const eyes = [[38 * K, -370 * K + 0], [95 * K, -372 * K]];
+    if (p.eyes < 0.95) eyes.forEach(([ex, ey]) => { g.fillStyle = "#020204"; g.beginPath(); g.ellipse(ex, ey, 3.2, 4.6 * (1 - p.eyes) + 0.4, 0, 0, Math.PI * 2); g.fill(); });
+    if (p.eyes > 1.02 || p.glow > 0.3) eyes.forEach(([ex, ey]) => {
+      const k = Math.max(p.eyes - 1, p.glow * 0.5), e = g.createRadialGradient(ex, ey, 0, ex, ey, 9);
+      e.addColorStop(0, `rgba(235,242,255,${Math.min(0.9, k)})`); e.addColorStop(1, "rgba(235,242,255,0)");
+      g.fillStyle = e; g.beginPath(); g.arc(ex, ey, 9, 0, Math.PI * 2); g.fill();
+    });
+    g.restore();
+    puppetLeg(g, "front", 4, hipY, p.hipF, p.kneeF);
+    slashArc(g, 8, -70, p.slashFrom, p.slashTo, p.slash);
+    // рука з мечем: рукав у темряві плаща, рукавиця й мальований меч на кінці
+    const [hx, hy] = limb(g, 8, -84, p.arm, 15, -18, 13, 6, "#1a2433");
+    piece(g, "sword", hx, hy, p.sword - SWORD_ANGLE, K * (big ? 1.25 : 0.92));
+    piece(g, "glove", hx, hy, p.sword * 0.3 - 20, K * 0.8);
+    g.restore();
+  }
+
+  root.Hero = { STATES, draw: (g, p, frame, big) => (PARTS.body ? drawPuppet : draw)(g, p, frame, big), track, pose, loadParts };
 })(window);

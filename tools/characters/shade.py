@@ -52,8 +52,29 @@ def shade(img):
     out *= (1 - FEET_DARK * t[:, None] ** 2)[..., None]
     glow = np.clip(facing, 0, 1) * deep * (1 - edge)
     out += (RIM * 0.22 * glow[..., None] * ink[..., None])
+    # the eyes stay as drawn: bright, coloured pixels are light sources, not surfaces
+    mx, mn = rgb.max(-1), rgb.min(-1)
+    lit = ((mx >= 200) & (mx - mn >= 60)) | (rgb.mean(-1) >= 235)
+    out[lit] = rgb[lit]
     res = np.dstack([np.clip(out, 0, 255), px[..., 3]]).astype(np.uint8)
     return Image.fromarray(res, "RGBA")
+
+
+def hero_rim(img, strength=0.6):
+    """The hero only: the outermost opaque pixels facing the light take the cool rim, so his edge reads the
+    brightest and coldest on screen (VISUAL_BIBLE: the hero is the one cold light among warm enemies)."""
+    px = np.asarray(img.convert("RGBA"), np.float32).copy()
+    solid = px[..., 3] >= 255
+    left = np.zeros_like(solid); left[:, 1:] = solid[:, :-1]
+    up = np.zeros_like(solid); up[1:, :] = solid[:-1, :]
+    upleft = np.zeros_like(solid); upleft[1:, 1:] = solid[:-1, :-1]
+    edge = solid & ~(left & up & upleft)
+    inner = np.zeros_like(edge)  # and one pixel further in, so the line has body
+    inner[:, 1:] |= edge[:, :-1]; inner[1:, :] |= edge[:-1, :]
+    band = (edge | (inner & solid))
+    k = np.where(edge, strength, strength * 0.5)[band][:, None]
+    px[..., :3][band] = px[..., :3][band] * (1 - k) + RIM * k
+    return Image.fromarray(px.astype(np.uint8), "RGBA")
 
 
 def main():

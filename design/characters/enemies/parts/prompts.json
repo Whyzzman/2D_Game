@@ -1,0 +1,29 @@
+{
+  "_note": "Painted enemies and bosses for the puppet rig (2026-11-05, user: «every model at the level of the Midjourney hero, Hollow Knight-like: smooth, dark, a little mysterious, cloaks»; decided by Claude under standing approval). Left: the figure without its weapon, side view facing right; right: the weapon alone lying horizontally, handle on the left. tools/enemies/puppet.py cuts them.",
+  "style": "hand-painted 2D game art in the style of a dark storybook, smooth simple shapes, dark silhouette with glowing eyes, mysterious, soft ink outlines, soft rim light from the upper left, muted desaturated palette, isolated on a flat solid pure magenta background (#ff00ff), wide empty space between the figure and the weapon --s 250 --no background scene, floor, ground shadow, text, frame, photo, photorealistic, 3d render, hands holding weapon",
+  "items": [
+    ["ZombieSoldier", "a hunched undead soldier in a long tattered dark grey-green hooded robe to the ground, a dented helmet under the hood, two dim violet eyes, hands hidden in sleeves", "a short notched rusty sword"],
+    ["ShieldGuard", "a broad armoured tomb guard wrapped in a heavy dark blue-grey cloak to the ground, a tall closed helm with a slit glowing violet, a big round iron shield strapped on its front", "a heavy iron mace"],
+    ["BoneArcher", "a thin skeletal archer in a ragged dark brown hooded mantle to the ground, a pale skull face in the hood with pale blue eyes", "a long bone bow"],
+    ["GuardianOfTheTomb", "a towering ancient knight wrapped in a long torn crimson-black cape, a crowned closed helm, eyes glowing orange through the visor, a violet crack of light across his chest, huge and monumental", "a huge straight greatsword"],
+    ["CorruptedHound", "a gaunt corrupted forest hound, side view, long thin legs, dark moss-grown fur, thorn spines along its back, glowing amber eyes, low prowling stance", "none"],
+    ["ForestArcher", "a slender forest archer in a long dark moss-green hooded cloak to the ground, a leaf mask, two pale green glowing eyes", "a curved wooden longbow"],
+    ["RootShaman", "a root shaman with a pale deer skull mask and branching antlers, a long dark robe of woven roots dragging on the ground, pale green glowing eyes", "a crooked root staff with a glowing green orb on top"],
+    ["RoyalSpearman", "a tall royal spearman in a long dark navy tabard and cloak to the ground, a tall pointed helm, a faded gold crown emblem on the chest, glowing yellow eyes", "a long spear with a leaf blade"],
+    ["HollowWarden", "a giant hollow forest warden made of dark bark and roots wrapped in a moss cloak, an empty hollow face with a glowing amber heart inside its chest, huge", "a huge wooden club made of a root"],
+    ["PossessedVillager", "a possessed peasant in a long dark patched smock and a wide straw hat shading the face, two ember-orange glowing eyes under the hat", "a long wooden pitchfork"],
+    ["Scarecrow", "a living scarecrow in a long tattered dark coat to the ground, a sackcloth head with stitched cross eyes glowing faint yellow, straw sticking out of its sleeves, a slouched hat", "a long rusty scythe"],
+    ["Watchdog", "a big lean dark village watchdog, side view, shaggy brown-grey fur, an iron spiked collar with a broken chain, glowing ember eyes, growling", "none"],
+    ["RoyalCrossbowman", "a royal crossbowman in a long dark crimson tabard and grey cloak to the ground, a brimmed kettle helmet shading a dark face with two glowing gold eyes", "a heavy wooden crossbow"],
+    ["PalacePriest", "a palace priest in a long pale ash-white robe to the ground, a tall hood, a golden mask with glowing eyes", "a tall golden staff with a sun emblem"],
+    ["StoneGargoyle", "a hunched stone gargoyle with folded wings and short horns, cracked grey stone body, glowing pale blue eyes, crouching", "none"],
+    ["AshRaven", "a large ash-black raven in flight, side view, ragged feathers, glowing red eye", "none"],
+    ["Bellringer", "the bellringer, a huge hooded bell-keeper in a long dark brown robe to the ground, a cracked bronze bell carried on his back, glowing ember eyes in the hood", "a huge bronze bell hammer"],
+    ["AshCommander", "the ash commander, a tall knight in burnt black plate and a long torn crimson cape to the ground, a horned helm, coal-orange glowing visor and seams", "a huge two-handed greatsword"],
+    ["OathBoundKing", "the oath-bound king, a tall gaunt king in a long royal violet mantle to the ground, a golden crown on a dark shadow face with two pale gold glowing eyes", "a long ornate royal sword"],
+    ["MarshCorpseEater", "a drowned marsh corpse-eater beast, side view, low and long, grey-green slimy skin, waterweed hanging from it, glowing poison-green eyes, prowling", "none"],
+    ["PlagueDoctor", "a plague doctor in a long black coat to the ground, a wide-brimmed hat, a pale beaked mask with round glass eyes glowing green, small glowing green flasks on the belt", "a thin black cane"],
+    ["MarshLeech", "a giant flying marsh leech, side view, fat ringed dark red-brown body, translucent insect wings, a round toothy mouth, glowing yellow-green eye", "none"],
+    ["PlagueStag", "the plague stag, a towering gaunt figure with a pale deer skull head and huge branching antlers with moss hanging, a long rotten dark green cloak to the ground, glowing poison-green eyes, huge", "a long staff with a curved bone hook"]
+  ]
+}

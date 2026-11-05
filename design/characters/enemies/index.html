@@ -11,6 +11,7 @@
 </head>
 <body>
 <canvas id="out"></canvas>
+<script src="../_shared/paint.js"></script>
 <script src="enemies.js"></script>
 <script src="enemies-forest.js"></script>
 <script src="enemies-vc.js"></script>
@@ -18,12 +19,13 @@
 <script>
 // ?actor=ZombieSoldier&state=Idle&frames=6 — кадри стану в ряд (прозорий фон), для нарізки
 // ?sheet=1&actor=ZombieSoldier&states=Idle:6,AttackLight:18 — перегляд
-(function () {
+(async function () {
   const q = new URLSearchParams(location.search);
+  if (q.get("flat") !== "1") await Enemies.loadPuppet(q.get("actor"), `parts/${q.get("actor")}/`);
   const actor = Enemies.ACTORS[q.get("actor")];
   const canvas = document.getElementById("out"), g = canvas.getContext("2d");
   const frame = document.createElement("canvas"); frame.width = actor.w; frame.height = actor.h;
-  const fg = frame.getContext("2d");
+  const fg = Paint.wrap(frame.getContext("2d"));
   if (q.get("sheet")) {
     document.body.classList.add("sheet");
     const list = q.get("states").split(","), scale = parseFloat(q.get("scale") || "0.8"), cols = parseInt(q.get("cols") || "10", 10);

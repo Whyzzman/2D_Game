@@ -80,7 +80,11 @@
     const gl = g.createRadialGradient(x, y, 0, x, y, r * 3);
     gl.addColorStop(0, color + "aa"); gl.addColorStop(1, color + "00");
     g.fillStyle = gl; g.beginPath(); g.arc(x, y, r * 3, 0, PI2); g.fill();
-    g.fillStyle = "#f3e6ff"; g.beginPath(); g.ellipse(x, y, r, r * open, 0, 0, PI2); g.fill();
+    // ядро ока — його колір (видно, що це око, а не відблиск сталі), у центрі білий відблиск;
+    // перед ударом (open > 1) відблиск розгоряється — замах читається по очах
+    g.fillStyle = color; g.beginPath(); g.ellipse(x, y, r * 1.15, r * 1.15 * Math.min(1, open), 0, 0, PI2); g.fill();
+    const flare = r * (0.35 + Math.max(0, open - 1) * 3.4);
+    g.fillStyle = "#fffaf0"; g.beginPath(); g.ellipse(x, y, flare, flare * Math.min(1, open), 0, 0, PI2); g.fill();
   }
   function blade(g, hx, hy, ang, len, wid, colors, broken) {
     g.save(); g.translate(hx, hy); g.rotate(R(ang));
@@ -415,7 +419,7 @@
 
   const ACTORS = { ZombieSoldier: ZOMBIE, BoneArcher: ARCHER, ShieldGuard: GUARD, GuardianOfTheTomb: GUARDIAN };
 
-  function render(g, actor, p, frame) {
+  function renderVector(g, actor, p, frame) {
     g.clearRect(0, 0, actor.w, actor.h);
     g.save();
     g.translate(actor.w / 2 - 6 + p.x, actor.h - 2 + p.y);
@@ -426,5 +430,82 @@
     g.restore();
   }
 
-  root.Enemies = { ACTORS, render, kit: { S, PI2, R, INK, pose, track, cycle, stroke, limb, shape, eye, blade, slashArc, rags, boot } };
+  // ---------- лялька з мальованого Midjourney (2026-11-05, користувач: «усі моделі на рівні героя з Midjourney,
+  // як у Hollow Knight: згладжені, темні, у плащах»; решено Claude за постійною згодою) ----------
+  // tools/enemies/puppet.py ріже parts/<Actor>/source.png на тіло й зброю; пози ті самі, що вище: тіло стоїть на
+  // стопах і хилиться (lean), присідає (sy, y), поділ гойдається з кроком (hipF/hipB), зброя — у руці (arm) під кутом
+  // weapon, очі спалахують (eyes) перед ударом. Удари падають на ті самі кадри: таблиці станів не змінюються.
+  const PUPPETS = {};
+  function loadPuppet(name, base) {
+    return fetch(base + "parts.json").then(r => r.ok ? r.json() : null).then(meta => {
+      if (!meta) return;
+      const pz = { meta, img: {} };
+      return Promise.all(["body", "weapon", "glow"].filter(k => k === "glow" || meta[k]).map(k => new Promise(res => {
+        const im = new Image(); im.onload = () => { pz.img[k] = im; res(); }; im.onerror = res; im.src = base + k + ".png";
+      }))).then(() => { if (pz.img.body) PUPPETS[name] = pz; });
+    }).catch(() => {});
+  }
+  function drawPuppet(g, actor, pz, p, frame) {
+    const m = pz.meta, body = pz.img.body;
+    // масштаб: висота старої фігури (і не ширша за кадр)
+    const k = Math.min(m.height / m.body.h, (actor.w * 0.98) / m.body.w);
+    const bw = m.body.w * k, bh = m.body.h * k;
+    const flier = !!actor.flier;
+    g.clearRect(0, 0, actor.w, actor.h);
+    g.save();
+    g.translate(m.centre + p.x, actor.h - 2 + p.y - (flier ? (actor.h - bh) / 2 : 0));
+    g.globalAlpha = p.alpha;
+    g.scale(p.sx, p.sy);
+    // нахил від стоп; поділ гойдається з кроком — тіло трохи «йде», хоч ніг і не видно
+    g.rotate(R(p.lean * 0.45));
+    const step = ((p.hipF || 0) - (p.hipB || 0)) / 600;
+    g.transform(1, 0, -step, 1, 0, 0);
+    const dark = `rgb(${(m.dark || [20, 20, 26]).join(",")})`;
+    // фаза-2 і магія: світло з-за спини
+    if (p.glow > 0.02) {
+      const gl = g.createRadialGradient(0, -bh * 0.55, 4, 0, -bh * 0.55, bh * 0.75);
+      gl.addColorStop(0, `rgba(${actor.glowRgb || "170,110,255"},${0.4 * Math.min(1, p.glow)})`); gl.addColorStop(1, "rgba(0,0,0,0)");
+      g.fillStyle = gl; g.fillRect(-bw, -bh * 1.4, bw * 2, bh * 1.5);
+    }
+    // рука й зброя: плече на 0.68 висоти, рука — 0.3 висоти
+    // рука під плащем: плече біля переднього краю, кулак ходить невеликим колом — зброя біля тіла, як у Hollow Knight
+    const sh = [bw * 0.16, -bh * 0.58], armLen = bh * 0.16, ra = R(p.arm || 0);
+    const hand = [sh[0] + Math.sin(ra) * armLen, sh[1] + Math.cos(ra) * armLen];
+    const weapon = pz.img.weapon;
+    const drawWeapon = () => {
+      if (!weapon) return;
+      const wk = Math.min((bh * (actor.weaponLen || 0.75)) / m.weapon.w, 1);
+      g.save(); g.translate(hand[0], hand[1]); g.rotate(R(p.weapon));
+      g.drawImage(weapon, -m.weapon.w * wk * 0.2, -m.weapon.h * wk / 2, m.weapon.w * wk, m.weapon.h * wk);
+      g.restore();
+    };
+    g.drawImage(body, -bw / 2, -bh, bw, bh);
+    // світло фігури (очі, маска, вогник): завжди тихо світить, перед ударом спалахує, у смерті гасне
+    if (pz.img.glow) {
+      const lit = Math.max(0, Math.min(1, p.eyes)) * 0.6 + Math.max(0, p.eyes - 1) * 1.8;
+      g.save(); g.globalCompositeOperation = "lighter";
+      for (let a = lit; a > 0.01; a -= 1) { g.globalAlpha = p.alpha * Math.min(1, a); g.drawImage(pz.img.glow, -bw / 2, -bh, bw, bh); }
+      g.restore();
+    }
+    if (weapon) {
+      drawWeapon();
+      // кулак — темна пляма плаща на руків'ї
+      g.fillStyle = dark; g.beginPath(); g.arc(hand[0], hand[1], Math.max(3, bh * 0.03), 0, PI2); g.fill();
+    }
+    // очі — поверх зброї (піднята булава не ховає замах); дві найяскравіші плями малюнка, у розмірі, що читається в кадрі; перед ударом спалахують (eye)
+    (m.eyes || []).forEach(([ex, ey, er, col]) => {
+      const r = Math.max(2.6, er * k * 0.8);
+      if (p.eyes > 0.05) eye(g, -bw / 2 + ex * k, -bh + ey * k, r, p.eyes, col || actor.eyes || "#ffd27a");
+    });
+    slashArc(g, sh[0], sh[1] + bh * 0.1, bh * 0.55, p.slashFrom, p.slashTo, p.slash);
+    g.restore();
+  }
+
+  function render(g, actor, p, frame) {
+    const pz = actor.__name && PUPPETS[actor.__name];
+    if (pz) { drawPuppet(g, actor, pz, p, frame); return; }
+    renderVector(g, actor, p, frame);
+  }
+
+  root.Enemies = { ACTORS, render, loadPuppet: (name, base) => { ACTORS[name].__name = name; return loadPuppet(name, base); }, kit: { S, PI2, R, INK, pose, track, cycle, stroke, limb, shape, eye, blade, slashArc, rags, boot } };
 })(window);

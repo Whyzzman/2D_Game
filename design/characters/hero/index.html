@@ -11,15 +11,17 @@
 </head>
 <body>
 <canvas id="out"></canvas>
+<script src="../_shared/paint.js"></script>
 <script src="hero.js"></script>
 <script>
 // ?state=Run&frames=10[&big=1] — кадри стану в ряд (прозорий фон), для нарізки
 // ?sheet=1 — усі стани для перегляду
-(function () {
+(async function () {
   const q = new URLSearchParams(location.search);
+  if (q.get("flat") !== "1") await Hero.loadParts("parts/");
   const canvas = document.getElementById("out"), g = canvas.getContext("2d");
   const frame = document.createElement("canvas"); frame.width = 256; frame.height = 224;
-  const fg = frame.getContext("2d");
+  const fg = Paint.wrap(frame.getContext("2d"));
   const big = q.get("big") === "1";
   if (q.get("sheet")) {
     document.body.classList.add("sheet");
