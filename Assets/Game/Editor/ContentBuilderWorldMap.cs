@@ -121,6 +121,17 @@ namespace ForgottenKingdom.EditorTools
                 : new Color(0.36f, 0.42f, 0.5f);
         }
 
+        /// <summary>
+        /// Regions taken out of the game for now (user, 2026-11-05: «only five levels; take the rest away so they
+        /// can be restored»). They keep their records, so rooms and seals that name them still resolve, but they
+        /// leave the world map and its roads. To restore a region, delete its id here and rebuild.
+        /// </summary>
+        public static readonly HashSet<string> ShelvedZones = new HashSet<string>
+        {
+            CathedralZoneId, AqueductsZoneId, DepthsZoneId, CavernsZoneId, CitadelZoneId,
+            BastionZoneId, ObservatoryZoneId, PalaceZoneId, ShadowZoneId, ThroneZoneId
+        };
+
         /// <summary>[from, to, gated]: the map of WORLD_DESIGN.md, «Порядок и связи».</summary>
         private static readonly (string from, string to, bool gated)[] Roads =
         {
@@ -137,7 +148,7 @@ namespace ForgottenKingdom.EditorTools
         private static string WorldZonesJson()
         {
             var zones = Regions.Select(r => ZoneJson(r.Id, r.Name, r.Name, r.Spawn, r.IsBuilt, r.Rooms, r.Scene,
-                r.Position, r.Art, r.Glow, r.Description)).ToList();
+                ShelvedZones.Contains(r.Id) ? Vector2.zero : r.Position, r.Art, r.Glow, r.Description)).ToList();
             // Unnamed on purpose: the map shows a sealed road east of the throne hall, not what lies
             // there. It has no island; the rebuilt capital (item 6) takes it away.
             zones.Add(ZoneJson(FutureZoneId, string.Empty, string.Empty, Vector2.zero, false,
@@ -147,7 +158,8 @@ namespace ForgottenKingdom.EditorTools
 
         private static string WorldRoadsJson()
         {
-            return "\"_roads\":[" + string.Join(",", Roads.Select(r => "{" + Str("_fromZoneId", r.from) + ","
+            return "\"_roads\":[" + string.Join(",", Roads
+                .Where(r => !ShelvedZones.Contains(r.from) && !ShelvedZones.Contains(r.to)).Select(r => "{" + Str("_fromZoneId", r.from) + ","
                 + Str("_toZoneId", r.to) + ",\"_isGated\":" + Bool(r.gated) + "}")) + "],";
         }
 

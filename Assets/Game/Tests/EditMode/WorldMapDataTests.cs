@@ -22,11 +22,12 @@ namespace ForgottenKingdom.Tests
         }
 
         [Test]
-        public void FifteenRegionsStandOnTheWorldMapWithTheirPictures()
+        public void FiveRegionsStandOnTheWorldMapWithTheirPictures()
         {
             var regions = _graph.Zones.Where(z => z.IsOnWorldMap).ToArray();
-            Assert.That(regions.Length, Is.EqualTo(15));
-            Assert.That(regions.Select(z => z.Art).Distinct().Count(), Is.EqualTo(15), "Each island is its own.");
+            // Five levels for now (user, 2026-11-05); the other ten are shelved, not deleted.
+            Assert.That(regions.Length, Is.EqualTo(5));
+            Assert.That(regions.Select(z => z.Art).Distinct().Count(), Is.EqualTo(5), "Each island is its own.");
             Assert.That(regions.Where(z => z.IsImplemented).Select(z => z.ZoneId), Is.EquivalentTo(new[]
                 { "zone_forgotten_tomb", "zone_withered_forest", "zone_fallen_village", "zone_ashen_capital" }),
                 "Four are built so far.");
@@ -63,7 +64,7 @@ namespace ForgottenKingdom.Tests
         [Test]
         public void TheRoadsJoinTheRegionsAsThePlanSays()
         {
-            Assert.That(_graph.Roads.Count, Is.EqualTo(19));
+            Assert.That(_graph.Roads.Count, Is.EqualTo(4));
             foreach (var road in _graph.Roads)
             {
                 Assert.That(_graph.Zone(road.FromZoneId)?.IsOnWorldMap, Is.True, road.FromZoneId);
@@ -82,9 +83,9 @@ namespace ForgottenKingdom.Tests
                 }
             }
 
-            Assert.That(reached.Count, Is.EqualTo(15));
-            Assert.That(_graph.Roads.Single(r => r.Touches("zone_royal_palace") && r.Touches("zone_ashen_capital")).IsGated,
-                Is.True, "The palace waits for the three seals.");
+            Assert.That(reached.Count, Is.EqualTo(5));
+            Assert.That(_graph.Roads.Single(r => r.Touches("zone_fallen_village") && r.Touches("zone_ashen_capital")).IsGated,
+                Is.True, "The capital opens with the grapple.");
         }
 
         [Test]
