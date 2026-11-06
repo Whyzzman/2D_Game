@@ -159,16 +159,24 @@ namespace ForgottenKingdom.Tests
             var zombie = _zombies[0];
             var blocked = false;
             DamageResult lastResult = default;
+            var lastHit = string.Empty;
             _player.Blocked += _ => blocked = true;
-            _player.Actor.DamageTaken += (_, result) => lastResult = result;
+            _player.Actor.DamageTaken += (info, result) =>
+            {
+                lastResult = result;
+                lastHit = $"{(info.Attacker != null ? info.Attacker.name : "?")} dir {info.HitDirection.x:0.0}";
+            };
 
             // Knockback slides the player out of reach, so close the gap again between swings and
             // keep him alive; the check is about what a block does, not about surviving a fight.
+            var attempts = new System.Text.StringBuilder();
             for (var attempt = 0; attempt < 8 && !blocked; attempt++)
             {
                 yield return StandNextTo(zombie, 1.3f);
                 _player.Health.RestoreToFull();
                 _player.Stamina.RestoreToFull();
+                attempts.Append($" [{attempt}: zombie {zombie.transform.position.x:0.00} facing {zombie.FacingDirection} {zombie.State},"
+                    + $" hero {_player.transform.position.x:0.00} facing {_motor.FacingDirection} {_player.Action}");
                 InputSystem.QueueStateEvent(_keyboard, new KeyboardState(Key.Q));
                 yield return Realtime(0.35f);
                 var guardedHealth = _player.Health.Current;
@@ -176,6 +184,8 @@ namespace ForgottenKingdom.Tests
 
                 yield return WaitUntil(() => blocked || lastResult.Outcome == DamageOutcome.Hit,
                     3.5f);
+                attempts.Append($" -> {(blocked ? "blocked" : lastResult.Outcome.ToString())} by {lastHit}, hero {_player.transform.position.x:0.00}"
+                    + $" facing {_motor.FacingDirection} guard {_player.Defense.Phase}]");
                 if (!blocked)
                 {
                     lastResult = default;
@@ -189,7 +199,7 @@ namespace ForgottenKingdom.Tests
                     "A blocked swing must not reach health.");
             }
 
-            Assert.That(blocked, Is.True, "A raised guard has to stop a zombie slash.");
+            Assert.That(blocked, Is.True, "A raised guard has to stop a zombie slash." + attempts);
             yield return Neutral(4);
         }
 
@@ -479,13 +489,11 @@ namespace ForgottenKingdom.Tests
                 zombie.transform.position.y + 0.1f));
             yield return Neutral(2);
 
-            // ResetTo faces the player right; tap the other way when the zombie is on the left.
-            if (side > 0f)
-            {
-                InputSystem.QueueStateEvent(_keyboard, new KeyboardState(Key.A));
-                yield return Realtime(0.12f);
-                yield return Neutral(2);
-            }
+            // ResetTo faces the player right; turn him to the zombie on the spot. A tap of the key used to do it,
+            // and on slow frames it carried him half a metre on, into the zombie: walking through him, it turned
+            // and struck his back (2026-11-06, the block test failed every attempt).
+            _motor.Face(side > 0f ? -1 : 1);
+            yield return Neutral(2);
         }
 
         private IEnumerator Neutral(int frames)

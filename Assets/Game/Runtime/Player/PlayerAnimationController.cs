@@ -33,6 +33,12 @@ namespace ForgottenKingdom
         /// so only a real fall earns it (the user's choice, 2026-09-28: visual only).
         /// </summary>
         public const float HardLandHeight = 5.5f;
+
+        /// <summary>
+        /// A drop shorter than this lands without the Land pose (2026-11-05: a step of the painted floor,
+        /// a bump or the few centimetres after a respawn played the whole crouch and read as a stumble).
+        /// </summary>
+        public const float LandPoseHeight = 0.35f;
         [SerializeField] private PlayerAnimationSet _set;
         [Tooltip("The renderer showing the character; frames are written here.")]
         [SerializeField] private SpriteRenderer _body;
@@ -499,7 +505,7 @@ namespace ForgottenKingdom
                 Landed?.Invoke();
                 var isRunning = _motor != null && Mathf.Abs(_motor.Velocity.x) > LandSkipSpeed;
                 var isFree = _character == null || _character.Action == PlayerAction.None;
-                if (!isRunning && isFree)
+                if (!isRunning && isFree && _airTop - height >= LandPoseHeight)
                 {
                     Flash(_airTop - height >= HardLandHeight
                         ? PlayerAnimationState.HardLand

@@ -87,14 +87,15 @@ namespace ForgottenKingdom.Tests
                 .Single(w => w.WallId.EndsWith(room));
 
         [UnityTest]
-        public IEnumerator SixteenWallsEachHideAFindInTheDark()
+        public IEnumerator NineteenWallsEachHideAFindInTheDark()
         {
             // Two in the Capital, four in the Tomb's text (its three caches and the walled cell),
-            // three in the Forest's (the three skulls of the user's map), five in the Village's (its red rooms).
+            // three in the Forest's (the three skulls of the user's map), five in the Village's (its red rooms),
+            // three in the Marsh's (the fifth level, 2026-11-05).
             yield return TestWorld.LoadEveryZone();
             var walls = Object.FindObjectsByType<BreakableWall>(FindObjectsInactive.Include);
-            Assert.That(walls.Length, Is.EqualTo(16));
-            Assert.That(walls.Select(w => w.WallId).Distinct().Count(), Is.EqualTo(16));
+            Assert.That(walls.Length, Is.EqualTo(19));
+            Assert.That(walls.Select(w => w.WallId).Distinct().Count(), Is.EqualTo(19));
             var finds = Object.FindObjectsByType<WorldPickup>(FindObjectsInactive.Include);
             var shards = finds.Where(p => p.IsVesselShard).ToArray();
             foreach (var wall in walls)
@@ -108,9 +109,9 @@ namespace ForgottenKingdom.Tests
             }
 
             Assert.That(shards.Count(s => VesselShards.TryKind(s.ItemId, out var k) && k == VesselKind.Health),
-                Is.EqualTo(13), "Thirteen health shards: the night bell's prize joined them (item 5c).");
+                Is.EqualTo(15), "Fifteen health shards: the Marsh's chapel and mushroom cache joined them.");
             Assert.That(shards.Count(s => VesselShards.TryKind(s.ItemId, out var k) && k == VesselKind.Mana),
-                Is.EqualTo(9), "Nine mana shards: the capital's crypt cache joined them (item 6a).");
+                Is.EqualTo(11), "Eleven mana shards: the Marsh's two caches joined them.");
             yield return null;
         }
 

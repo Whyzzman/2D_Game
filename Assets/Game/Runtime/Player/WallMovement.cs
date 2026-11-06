@@ -18,6 +18,8 @@ namespace ForgottenKingdom
         [SerializeField, Min(0f)] private float _runSpeed = 4f;
         [SerializeField, Min(0f)] private float _runDuration = 0.8f;
         [SerializeField, Min(0f)] private float _runStaminaPerSecond = 25f;
+        /// <summary>How fast the hero must already fall for the wall to take him into a slide.</summary>
+        public const float SlideStartSpeed = 1.5f;
         private float _regrabRemaining;
         private float _runUsed;
         private float _jumpDirection;
@@ -56,7 +58,10 @@ namespace ForgottenKingdom
                 }
                 else if (wallDirection != 0 && input.Horizontal * wallDirection > 0.1f)
                 {
-                    if (input.IsJumpPressed)
+                    // the leap off is taken only from a cling (sliding down, running up); a press while still
+                    // rising past the wall is the second jump's (the motor leaves it to the logic)
+                    var clinging = previous == WallMovementState.Slide || previous == WallMovementState.Run;
+                    if (input.IsJumpPressed && clinging)
                     {
                         _jumpDirection = -wallDirection;
                         WallSide = wallDirection;
@@ -72,7 +77,9 @@ namespace ForgottenKingdom
                         velocity = new Vector2(0f, _runSpeed);
                         State = WallMovementState.Run;
                     }
-                    else if (velocity.y < 0f)
+                    // the cling begins once the hero is truly falling, not at the top of a jump: around the apex a
+                    // press beside a block is the second jump up onto it (2026-11-05, «стрибок на стінку блока»)
+                    else if (velocity.y < -SlideStartSpeed)
                     {
                         // held down, the hero lets the wall go faster
                         velocity.y = Mathf.Max(velocity.y, -_slideSpeed * (input.Vertical < -0.5f ? 2.5f : 1f));

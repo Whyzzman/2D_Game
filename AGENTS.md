@@ -129,6 +129,10 @@
   править `Assets/Game` и не запускать второй. `Assets/Settings` и `ProjectSettings/EditorBuildSettings.asset` (сцены зон) копировать отдельно.
   Сменились кадры персонажей — `Build` один раз идёт ~40 мин (атлас перепаковывается на каждый
   импорт); тогда префабы врагов — не шум, не откатывать.
+- **Windows** (с 2026-11): Unity CLI `unity test --mode EditMode|PlayMode --filter … --output <xml> <копия>`;
+  синхронизация — `robocopy Assets\Game <копия>\Assets\Game /MIR /XF Zz*.cs Zz*.cs.meta` (тесты `Zz*` живут
+  только в копии), полный цикл без `Build` — `tools/tests/cycle.sh <метка>` (сцены `ZzApplyScenes` → EditMode →
+  PlayMode, провалы — `tools/tests/failures.py`); сцены и `Art/CharacterNormals` потом скопировать обратно.
 - PlayMode-тесты ждут по `Time.realtimeSinceStartup`, не по числу кадров. Под нагрузкой кадр
   бывает 0,1 с: бот, решающий раз в кадр, ставит `Time.maximumDeltaTime = fixedDeltaTime`;
   плавность мерить скоростью (путь / dt), не шагом за кадр. Нестабильность воспроизводить

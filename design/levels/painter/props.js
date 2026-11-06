@@ -119,10 +119,34 @@
     }
   }
 
+  // Сільські (2026-11-06, вирішено Claude за постійною згодою: у Селі не було жодного світла, герой ішов вулицями
+  // без жодного теплого боку): низький кілок, гачок, ліхтар у кіптяві під дашком і теплий ореол — Light2D у сцені
+  // (lights.js → SceneLevelLights), що мерехтить, як свічки Гробниці.
+  function lantern(f, x, y, look, h, seed) {
+    const c = f.c, S = f.ppu, ay = f.y(y), dark = rgba(look.shadowTint || look.lipDark, 1);
+    const lean = (N.hash(seed, 1, 3) - 0.5) * 0.06, px = f.x(x), top = ay - S * (0.72 + h * 0.22);
+    const lx = px + S * (lean + 0.2), ly = top + S * 0.17;
+    logLight("lantern", x + lean + 0.2, y + (ay - ly) / S);
+    c.strokeStyle = dark; c.lineWidth = Math.max(1.5, S * 0.05); c.lineCap = "round";
+    c.beginPath(); c.moveTo(px, ay); c.lineTo(px + S * lean, top);
+    c.quadraticCurveTo(px + S * (lean + 0.12), top - S * 0.04, lx, top + S * 0.02); c.stroke();
+    const g = c.createRadialGradient(lx, ly, 1, lx, ly, S * 0.9);
+    g.addColorStop(0, "rgba(255,178,92,0.34)"); g.addColorStop(1, "rgba(255,150,70,0)");
+    c.fillStyle = g; c.beginPath(); c.arc(lx, ly, S * 0.9, 0, Math.PI * 2); c.fill();
+    c.lineWidth = Math.max(1, S * 0.02);
+    c.beginPath(); c.moveTo(lx, top + S * 0.02); c.lineTo(lx, ly - S * 0.1); c.stroke();
+    c.fillStyle = dark;
+    c.beginPath(); c.moveTo(lx - S * 0.095, ly - S * 0.08); c.lineTo(lx, ly - S * 0.15); c.lineTo(lx + S * 0.095, ly - S * 0.08); c.closePath(); c.fill();
+    c.fillStyle = "rgba(255,192,108,0.92)"; c.fillRect(lx - S * 0.065, ly - S * 0.08, S * 0.13, S * 0.15);
+    c.fillStyle = "#fff0c4"; c.beginPath(); c.ellipse(lx, ly, S * 0.025, S * 0.045, 0, 0, Math.PI * 2); c.fill();
+    c.fillStyle = dark; c.fillRect(lx - S * 0.08, ly + S * 0.07, S * 0.16, S * 0.028);
+    c.fillRect(lx - S * 0.012, ly - S * 0.08, S * 0.024, S * 0.15);
+  }
+
   const SETS = {
     tomb: [["moss", 4], ["rubble", 3], ["bones", 2], ["candles", 1.2]],
     forest: [["moss", 5], ["fern", 3], ["mushrooms", 1.5], ["rubble", 1.5]],
-    village: [["moss", 4], ["rubble", 3]],
+    village: [["moss", 4], ["rubble", 3], ["lantern", 0.45]],
     capital: [["rubble", 4], ["candles", 1], ["moss", 1]]
   };
 
@@ -147,6 +171,7 @@
       else if (what === "fern") fern(f, x, y, look, h, seed + Math.round(x * 29));
       else if (what === "mushrooms") mushrooms(f, x, y, look, h, seed + Math.round(x * 31));
       else if (what === "bones") bones(f, x, y, look, h, seed + Math.round(x * 19));
+      else if (what === "lantern") lantern(f, x, y, look, h, seed + Math.round(x * 37));
       else candles(f, x, y, look, h, seed + Math.round(x * 23));
     }
   }

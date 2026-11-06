@@ -96,11 +96,14 @@ namespace ForgottenKingdom.EditorTools
             var forest = level.transform.Find(ForestRootName);
             var village = level.transform.Find(VillageRootName);
             var capital = level.transform.Find(CapitalRootName);
+            // the fifth level's too (2026-11-05: every other zone's rebuild deleted the Marsh's shards and gold)
+            var marsh = level.transform.Find(MarshRootName);
             foreach (var find in Object.FindObjectsByType<WorldPickup>(FindObjectsInactive.Include))
             {
                 if ((tomb != null && find.transform.IsChildOf(tomb)) || (forest != null && find.transform.IsChildOf(forest))
                     || (village != null && find.transform.IsChildOf(village))
-                    || (capital != null && find.transform.IsChildOf(capital)))
+                    || (capital != null && find.transform.IsChildOf(capital))
+                    || (marsh != null && find.transform.IsChildOf(marsh)))
                 {
                     continue;
                 }
@@ -163,7 +166,8 @@ namespace ForgottenKingdom.EditorTools
                 ("Village/PossessedVillager", VillageZoneId), ("Village/Scarecrow", VillageZoneId),
                 ("Village/Watchdog", VillageZoneId),
                 ("Capital/AshRaven", CapitalZoneId), ("Capital/StoneGargoyle", CapitalZoneId),
-                ("Capital/PalacePriest", CapitalZoneId), ("Capital/RoyalCrossbowman", CapitalZoneId)
+                ("Capital/PalacePriest", CapitalZoneId), ("Capital/RoyalCrossbowman", CapitalZoneId),
+                ("Marsh/MarshCorpseEater", MarshZoneId), ("Marsh/PlagueDoctor", MarshZoneId), ("Marsh/MarshLeech", MarshZoneId)
             };
             var serialized = new SerializedObject(catalog);
             var enemies = serialized.FindProperty("_enemies");
@@ -185,6 +189,8 @@ namespace ForgottenKingdom.EditorTools
             {
                 (GuardianBossId, "Страж Гробниці", TombZoneId),
                 (WardenBossId, "Порожній Вартовий", ForestZoneId),
+                (BellringerBossId, "Дзвонар", VillageZoneId),
+                (StagBossId, "Чумний Олень", MarshZoneId),
                 (CommanderBossId, "Командор Попелу", CapitalZoneId),
                 (CapitalKingBossId, "Король-Заклятий", CapitalZoneId)
             };

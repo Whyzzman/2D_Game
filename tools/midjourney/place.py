@@ -116,7 +116,11 @@ def border(near):
 # the far plan is distance, not a second picture. A touch of blur takes its brush detail away, and the room's own
 # tinted haze — the painting's average hue, lifted and kept coloured (a grey one turned them milky) — eats a part
 # of its contrast, more toward the floor, where the mist lies. The dark playfield then stands in front of it.
-HAZE_TOP, HAZE_BOTTOM, HAZE_L, BLUR = 0.22, 0.42, 34.0, 1.4
+HAZE_TOP, HAZE_BOTTOM, HAZE_L, BLUR = 0.32, 0.52, 36.0, 2.2
+# 2026-11-05, user: «jumping onto the side of a block works badly»: a dark backdrop column read as a block of the
+# playfield. The darks of the far plan are lifted toward the haze, so nothing behind is ever as dark as the stone
+# the hero stands on (Hollow Knight: the background is always lighter and softer than the ground).
+DARK_LIFT = 0.55
 
 
 def atmosphere(image):
@@ -131,7 +135,13 @@ def atmosphere(image):
     image = image.filter(ImageFilter.GaussianBlur(BLUR))
     ramp = Image.linear_gradient("L").resize((w, h))  # 0 at the top, 255 at the bottom
     mask = ramp.point(lambda v: round(255 * (HAZE_TOP + (HAZE_BOTTOM - HAZE_TOP) * v / 255)))
-    return Image.composite(Image.new("RGB", (w, h), haze), image, mask)
+    image = Image.composite(Image.new("RGB", (w, h), haze), image, mask)
+    import numpy as np
+    a = np.asarray(image, np.float32)
+    hz = np.array(haze, np.float32)
+    lum, hl = a.mean(-1), max(1.0, hz.mean())
+    k = np.clip((hl - lum) / hl, 0, 1)[..., None] * DARK_LIFT
+    return Image.fromarray(np.clip(a + (hz - a) * k, 0, 255).astype(np.uint8), "RGB")
 
 
 def place(source, target):

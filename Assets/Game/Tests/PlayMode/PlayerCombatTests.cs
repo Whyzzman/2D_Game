@@ -182,6 +182,12 @@ namespace ForgottenKingdom.Tests
         [UnityTest]
         public IEnumerator AttackingKeepsTheHeroRunning()
         {
+            // In the open: a foe right in front stops the swing's step (PlayerMotor2D.EnemyAhead), so neither dummy is
+            // in the way — the second stands three metres on, where the run of the test takes the hero.
+            foreach (var dummy in Object.FindObjectsByType<TrainingDummy>())
+            {
+                dummy.gameObject.SetActive(false);
+            }
             InputSystem.QueueStateEvent(_keyboard, new KeyboardState(Key.D));
             yield return WaitForSecondsRealtime(0.4f);
             var runSpeed = Mathf.Abs(_motor.Velocity.x);

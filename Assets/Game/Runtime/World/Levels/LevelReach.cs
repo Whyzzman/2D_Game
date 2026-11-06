@@ -94,6 +94,32 @@ namespace ForgottenKingdom
 
         public IReadOnlyList<ReachSegment> Segments => _segments;
 
+        public LevelZone Zone => _zone;
+
+        /// <summary>
+        /// A floor that is no floor: the bottom of the zone's grid under a room opening down into the next zone
+        /// (<c>exit=S</c>). Outside the grid reads as stone, so the model stands the hero there; in the game he has
+        /// fallen through into the zone below (the Village's feather drop into the Capital).
+        /// </summary>
+        public bool LeavesZone(int index)
+        {
+            var segment = _segments[index];
+            if (segment.IsRing || segment.Row != _grid.y)
+            {
+                return false;
+            }
+
+            foreach (var room in _zone.Rooms)
+            {
+                if (room.Id == segment.RoomId)
+                {
+                    return room.ZoneExits.IndexOf('S') >= 0;
+                }
+            }
+
+            return false;
+        }
+
         private static MovementSettings Scaled(MovementSettings source, float jump, float run)
         {
             var scaled = new MovementSettings();
@@ -587,6 +613,12 @@ namespace ForgottenKingdom
                 var horizontal = pastApex ? plan.After : plan.Before;
                 velocity = logic.Step(velocity, ground, new MovementInput(horizontal, press, held), Dt);
                 feet = Move(feet, ref velocity);
+                // The motor's help at the top of a jump: onto a one-way ledge the feet are just under,
+                // or over a stone edge pushed into (PlayerMotor2D.TryLedgeLift, TryMantle).
+                if (leftGround && step > 0 && velocity.y < PlayerMotor2D.LedgeLiftRise && Lift(ref feet, horizontal))
+                {
+                    velocity.y = 0f;
+                }
                 if (OnSpikes(feet) || feet.y < _zone.CellCorner(new Vector2Int(0, _grid.yMin)).y)
                 {
                     return null;
@@ -604,6 +636,79 @@ namespace ForgottenKingdom
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// What PlayerMotor2D does for a jump that falls a hand short: a one-way ledge whose top is up
+        /// to <see cref="PlayerMotor2D.LedgeLiftHeight"/> above the feet, under the middle of the body,
+        /// lifts them onto it; a stone edge pushed into with its top up to
+        /// <see cref="PlayerMotor2D.MantleHeight"/> above the feet is climbed.
+        /// </summary>
+        private bool Lift(ref Vector2 feet, float horizontal)
+        {
+            const float Eps = 0.001f;
+            var size = _zone.CellSize;
+            var origin = _zone.Origin;
+            if (Supported(feet))
+            {
+                return false;
+            }
+
+            var cx = Mathf.FloorToInt((feet.x - origin.x) / size);
+            var yLow = Mathf.FloorToInt((feet.y + Eps - origin.y) / size);
+            var yHigh = Mathf.FloorToInt((feet.y + PlayerMotor2D.LedgeLiftHeight - origin.y) / size);
+            for (var y = yLow; y <= yHigh; y++)
+            {
+                var top = origin.y + (y + 1) * size;
+                if (top <= feet.y + Eps || top > feet.y + PlayerMotor2D.LedgeLiftHeight + Eps || Cell(cx, y) != LevelCell.Ledge)
+                {
+                    continue;
+                }
+
+                var lifted = new Vector2(feet.x, top);
+                if (!Blocked(lifted))
+                {
+                    feet = lifted;
+                    return true;
+                }
+            }
+
+            if (Mathf.Abs(horizontal) <= 0.1f)
+            {
+                return false;
+            }
+
+            var dir = horizontal > 0f ? 1f : -1f;
+            if (!Blocked(feet + new Vector2(dir * 0.06f, 0f)))
+            {
+                return false;
+            }
+
+            var column = Mathf.FloorToInt((feet.x + dir * (BodyWidth * 0.5f + 0.06f) - origin.x) / size);
+            var row = Mathf.FloorToInt((feet.y + PlayerMotor2D.MantleHeight + 0.02f - origin.y) / size);
+            if (IsWall(Cell(column, row)))
+            {
+                return false; // a tall wall, not an edge
+            }
+
+            for (var y = row - 1; origin.y + (y + 1) * size > feet.y + Eps; y--)
+            {
+                if (!IsWall(Cell(column, y)))
+                {
+                    continue;
+                }
+
+                var climbed = new Vector2(feet.x + dir * 0.1f, origin.y + (y + 1) * size + 0.01f);
+                if (Blocked(climbed))
+                {
+                    return false;
+                }
+
+                feet = climbed;
+                return true;
+            }
+
+            return false;
         }
 
         private Vector2 Move(Vector2 feet, ref Vector2 velocity)

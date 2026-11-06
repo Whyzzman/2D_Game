@@ -209,8 +209,14 @@ namespace ForgottenKingdom.Tests
                 }
             }
 
-            top = default;
-            return false;
+            // The rebuilt Tomb has no shaft that tall by the start: a floor of the test's own, far from the level
+            // (as LevelReachTests builds its shelves), with the open air over it.
+            var floorGo = new GameObject("TestDropFloor") { layer = 9 };
+            floorGo.AddComponent<BoxCollider2D>().size = new Vector2(20f, 1f);
+            floorGo.transform.position = new Vector3(3200f, 300f, 0f);
+            Physics2D.SyncTransforms();
+            top = new Vector2(3200f, 300.5f + height);
+            return true;
         }
 
         private void Hold(params Key[] keys) => InputSystem.QueueStateEvent(_keyboard, new KeyboardState(keys));

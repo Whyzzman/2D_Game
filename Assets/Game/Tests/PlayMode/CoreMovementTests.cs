@@ -373,6 +373,90 @@ namespace ForgottenKingdom.Tests
                 "Past the forgiveness the fall is an honest miss.");
         }
 
+        // ---------- climbing onto a rise and the wall (user's reports 2026-11-04 and 11-05) ----------
+
+        [UnityTest]
+        public IEnumerator AJumpIntoARiseAHandAboveTheJumpClimbsOntoIt()
+        {
+            yield return NeutralFrames(5);
+            var floor = _body.position.y - 0.8f;
+            // The full jump tops out about 1.97 up; a rise 0.3 over that is gone over by the mantle.
+            yield return JumpIntoRise(floor, 2.27f);
+            Assert.That(_player.IsGrounded, Is.True, "Stood on the rise, not slid down its face.");
+            Assert.That(_body.position.y - 0.8f, Is.EqualTo(floor + 2.27f).Within(0.08f));
+        }
+
+        [UnityTest]
+        public IEnumerator ARiseWellOverTheJumpIsNotClimbed()
+        {
+            yield return NeutralFrames(5);
+            var floor = _body.position.y - 0.8f;
+            yield return JumpIntoRise(floor, 2.75f);
+            Assert.That(_body.position.y - 0.8f, Is.LessThan(floor + 0.3f), "The second jump's gates stay shut.");
+        }
+
+        [UnityTest]
+        public IEnumerator AWallIsSlidDownSlowlyAndLeaptOffUpAndAway()
+        {
+            yield return NeutralFrames(5);
+            var floor = _body.position.y - 0.8f;
+            var x = _body.position.x;
+            var wall = new GameObject("TestWall") { layer = 9 };
+            wall.AddComponent<BoxCollider2D>().size = new Vector2(1f, 10f);
+            wall.transform.position = new Vector3(x + 0.4f + 0.02f + 0.5f, floor + 5f, 0f);
+            Physics2D.SyncTransforms();
+            Time.maximumDeltaTime = Time.fixedDeltaTime;
+            try
+            {
+                _player.ResetTo(new Vector2(x, floor + 5f + 0.8f));
+                InputSystem.QueueStateEvent(_keyboard, new KeyboardState());
+                yield return Frames(1);
+                InputSystem.QueueStateEvent(_keyboard, new KeyboardState(Key.D));
+                yield return Frames(40);
+                Assert.That(_body.linearVelocity.y, Is.GreaterThan(-2.8f), "Sliding, not falling.");
+                Assert.That(_body.position.y - 0.8f, Is.GreaterThan(floor + 1f), "Still on the wall.");
+                var before = _body.position;
+                InputSystem.QueueStateEvent(_keyboard, new KeyboardState(Key.D, Key.Space));
+                yield return Frames(8);
+                Assert.That(_body.position.y, Is.GreaterThan(before.y + 0.3f), "The leap goes up.");
+                Assert.That(_body.position.x, Is.LessThan(before.x - 0.3f), "And away from the wall.");
+            }
+            finally
+            {
+                Time.maximumDeltaTime = 0.3333333f;
+                Object.Destroy(wall);
+            }
+
+            yield return NeutralFrames(40);
+        }
+
+        /// <summary>A stone rise <paramref name="height"/> tall just right of the body, jumped into holding right.</summary>
+        private IEnumerator JumpIntoRise(float floor, float height)
+        {
+            var x = _body.position.x;
+            var rise = new GameObject("TestRise") { layer = 9 };
+            rise.AddComponent<BoxCollider2D>().size = new Vector2(10f, height);
+            // smooth stone: no cling, slide or wall run on it (the sandbox hero has the wall run), only the mantle
+            rise.AddComponent<NonClimbableSurface>();
+            rise.transform.position = new Vector3(x + 0.4f + 0.25f + 5f, floor + height * 0.5f, 0f);
+            Physics2D.SyncTransforms();
+            Time.maximumDeltaTime = Time.fixedDeltaTime;
+            try
+            {
+                InputSystem.QueueStateEvent(_keyboard, new KeyboardState(Key.D, Key.Space));
+                yield return Frames(30);
+                InputSystem.QueueStateEvent(_keyboard, new KeyboardState(Key.D));
+                yield return Frames(40);
+                InputSystem.QueueStateEvent(_keyboard, new KeyboardState());
+                yield return Frames(20);
+            }
+            finally
+            {
+                Time.maximumDeltaTime = 0.3333333f;
+                Object.Destroy(rise);
+            }
+        }
+
         private const float LedgeHeight = 1f;
 
         /// <summary>

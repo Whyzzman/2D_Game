@@ -36,16 +36,17 @@ namespace ForgottenKingdom
         /// sinks back through the ledge the body is already mostly above — read as falling through
         /// the block (user's report 2026-10-27).
         /// </summary>
-        private const float LedgeLiftHeight = 0.4f;
+        public const float LedgeLiftHeight = 0.4f;
         /// <summary>The lift waits for the top of the jump: below this rise the body is no longer climbing.</summary>
-        private const float LedgeLiftRise = 1.5f;
+        public const float LedgeLiftRise = 1.5f;
         /// <summary>
         /// A stone edge pushed into with the feet this close under its top is climbed onto (user's
-        /// report 2026-11-04: «a small rise right of me, right + jump — I must get onto it»). Kept
-        /// inside LevelReach's generous margin (a jump 4% stronger is 0.16 higher), so no gate of
-        /// the second jump opens.
+        /// reports 2026-11-04 and 11-05: «a small rise right of me, right + jump — I must get onto it»,
+        /// «jumping onto the side of a block works badly again»). Almost a cell: a jump that falls a
+        /// hand short of the top still gets up. LevelReach climbs the same way (it asks these
+        /// numbers), so LevelCheck sees any gate of the second jump it would open.
         /// </summary>
-        private const float MantleHeight = 0.15f;
+        public const float MantleHeight = 0.45f;
         private readonly Collider2D[] _liftOverlaps = new Collider2D[8];
         private readonly RaycastHit2D[] _groundHits = new RaycastHit2D[8];
         private readonly Collider2D[] _cornerOverlaps = new Collider2D[4];
@@ -54,6 +55,8 @@ namespace ForgottenKingdom
         private CapsuleCollider2D _capsule;
         private readonly SlopeWalker _slope = new SlopeWalker();
         private const float GroundSnapDistance = 0.3f;
+        /// <summary>Below this upward speed the body that was on the ground still sticks to it; a jump is 11.</summary>
+        private const float CrestRiseSpeed = 1f;
         private bool _wasGrounded;
         private Vector2 _groundNormal = Vector2.up;
         private PlayerInputReader _input;
@@ -188,11 +191,18 @@ namespace ForgottenKingdom
             var velocity = _body.linearVelocity;
             // Walking up a slope rises along it; that is still standing on the ground.
             var hasGround = (velocity.y <= 0.01f || _slope.IsOnSlope) && ProbeGround();
-            if (!hasGround && _wasGrounded && (velocity.y <= 0.01f || _slope.IsOnSlope))
+            if (!hasGround && _wasGrounded && (velocity.y <= CrestRiseSpeed || _slope.IsOnSlope))
             {
                 // Over the crest of a slope, or onto the downhill side: stay on the ground rather
-                // than being thrown off it. A real drop is deeper than this and is a fall.
+                // than being thrown off it. A real drop is deeper than this and is a fall. The rise
+                // left over from walking up the slope (a few tenths) is no jump (2026-11-05: at the
+                // crest of the sandbox ramp 0.12 of it threw the hero over the whole downhill side).
                 hasGround = SnapToGround();
+                if (hasGround && velocity.y > 0f)
+                {
+                    // stuck to the ground, the leftover rise is gone: the logic reads a standing body
+                    velocity.y = 0f;
+                }
             }
             var mode = _authority?.LocomotionMode ?? LocomotionMode.Normal;
             var movementScale = _authority?.MovementScale ?? 1f;
@@ -209,9 +219,13 @@ namespace ForgottenKingdom
             var canWall = mode == LocomotionMode.Normal && !IsDashing;
             var canRunWall = _progress == null || _progress.HasAbility(AbilityIds.WallRun);
             var wall = _wallMovement != null && canWall ? ProbeWall() : 0;
-            // A press while pushing into a wall in the air is the wall's jump, not the second one.
+            // A press while clinging to a wall (sliding down it, or running up it) is the wall's jump, not the
+            // second one. Rising past a wall is not clinging: there the press is the second jump, as in Hollow
+            // Knight (2026-11-05: a second jump beside a block threw the hero off it instead of up onto it).
+            var clinging = _wallMovement != null
+                && (_wallMovement.State == WallMovementState.Slide || _wallMovement.State == WallMovementState.Run);
             _logic.IsWallJumpPending = wall != 0 && !IsGrounded && input.IsJumpPressed
-                && input.Horizontal * wall > 0.1f;
+                && input.Horizontal * wall > 0.1f && clinging;
             var nextVelocity = _logic.Step(_slope.ToFlat(velocity), hasGround, input,
                 Time.fixedDeltaTime, mode, movementScale);
             _logic.IsWallJumpPending = false;
@@ -236,6 +250,15 @@ namespace ForgottenKingdom
             if (!IsDashing && mode != LocomotionMode.Knockback && _statuses != null)
             {
                 nextVelocity.x *= _statuses.MovementMultiplier;
+            }
+
+            // Swinging while holding forward, the hero stops at the foe instead of running through it: the next
+            // swing of the combo still finds it in front (2026-11-05: held forward, the second swing walked past
+            // the dummy and the third cut the air).
+            if (mode == LocomotionMode.Attacking && !IsDashing && Mathf.Abs(nextVelocity.x) > 0.01f
+                && EnemyAhead(nextVelocity.x > 0f ? 1 : -1))
+            {
+                nextVelocity.x = 0f;
             }
 
             if (!_skillVelocity.HasValue)
@@ -689,6 +712,36 @@ namespace ForgottenKingdom
             transform.position = new Vector3(destination.x, destination.y, transform.position.z);
             _body.linearVelocity = Vector2.zero;
             return true;
+        }
+
+        private readonly Collider2D[] _aheadHits = new Collider2D[8];
+        private const int EnemyLayer = 10;
+        /// <summary>How close to a foe's body the swing's own step stops.</summary>
+        private const float FoeStopDistance = 0.55f;
+
+        /// <summary>Whether a foe's body (its hurtbox) is right in front, within <see cref="FoeStopDistance"/>.</summary>
+        private bool EnemyAhead(int direction)
+        {
+            if (_capsule == null)
+            {
+                return false;
+            }
+
+            var bounds = _capsule.bounds;
+            var centre = new Vector2(bounds.center.x + direction * (bounds.extents.x + FoeStopDistance * 0.5f), bounds.center.y);
+            var filter = new ContactFilter2D { useTriggers = true };
+            filter.SetLayerMask(1 << EnemyLayer);
+            var count = Physics2D.OverlapBox(centre, new Vector2(FoeStopDistance, bounds.size.y * 0.8f), 0f, filter, _aheadHits);
+            for (var i = 0; i < count; i++)
+            {
+                var hit = _aheadHits[i];
+                if (hit != null && hit.attachedRigidbody != _body && hit.GetComponentInParent<Hurtbox>() != null)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private int ProbeWall()

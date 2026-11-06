@@ -58,7 +58,11 @@ namespace ForgottenKingdom
             {
                 var delta = anchors[i] - origin;
                 var distance = delta.magnitude;
-                if (distance > range || distance < 0.3f || delta.x * facing < -BehindAllowance)
+                // Behind the hero is out, unless the ring hangs mostly overhead: a ring straight up is taken
+                // whichever way he faces (2026-11-05: a step forward put the ring over his head a hand behind
+                // the hand, and the line refused it).
+                var overhead = delta.y > 0f && Mathf.Abs(delta.x) <= delta.y * 0.75f;
+                if (distance > range || distance < 0.3f || (delta.x * facing < -BehindAllowance && !overhead))
                 {
                     continue;
                 }

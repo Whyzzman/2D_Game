@@ -146,9 +146,13 @@ namespace ForgottenKingdom.Tests
             var none = new HashSet<string>();
             var second = new HashSet<string> { AbilityIds.DoubleJump };
             Assert.That(Reaches(ShelfZone(3), 5, 14, none), Is.True, "1.5 is under a jump (1.97).");
-            Assert.That(Reaches(ShelfZone(4), 6, 14, none), Is.False, "2.0 is over it.");
+            // 2026-11-05: a jump that tops out a hand under a ledge is lifted onto it (PlayerMotor2D.LedgeLiftHeight 0.4,
+            // in the game since 10-27); the check now lifts the same way.
+            Assert.That(Reaches(ShelfZone(4), 6, 14, none), Is.True, "2.0 is a hand over the jump: lifted onto it.");
+            Assert.That(Reaches(ShelfZone(5), 7, 14, none), Is.False, "2.5 is over the jump and the lift.");
             Assert.That(Reaches(ShelfZone(6), 8, 14, second), Is.True, "3.0 is under the second jump (3.43).");
-            Assert.That(Reaches(ShelfZone(7), 9, 14, second), Is.False, "3.5 is over it.");
+            Assert.That(Reaches(ShelfZone(7), 9, 14, second), Is.True, "3.5: the second jump tops out a hand under it, lifted.");
+            Assert.That(Reaches(ShelfZone(8), 10, 14, second), Is.False, "4.0 is over the second jump and the lift.");
             Assert.That(Reaches(GapZone(8), 6, 30, none), Is.True, "4.0 across is a running jump.");
             Assert.That(Reaches(GapZone(11), 6, 33, none), Is.False, "5.5 across is not.");
         }
@@ -174,6 +178,40 @@ namespace ForgottenKingdom.Tests
             var wrong = text.Replace("needs=double-jump", "needs=air-dash");
             var problems = LevelCheck.Problems(LevelZone.Parse(wrong));
             Assert.That(problems, Has.Some.Contains("room_shelf is not reached even with air-dash"));
+        }
+
+        /// <summary>
+        /// A gate's way in must be a way out (2026-11-06, the Forest's deep roots): a pit behind a grapple gate,
+        /// with nothing to climb back by, strands the hero who has the grapple; a lit altar in it is a way out.
+        /// </summary>
+        [Test]
+        public void TheCheckFindsAPitBehindAGate()
+        {
+            string Pit(string pitKeys, bool openBelow = false)
+            {
+                // the ring lifts onto the ledge (as in the test below); past a gap under the ring, so the grapple's
+                // line stays clear, a walkway leads through the east wall into the pit
+                var hall = Box(40, 30);
+                for (var x = 20; x < 30; x++) { Put(hall, x, 15, '='); }
+                for (var x = 33; x < 39; x++) { Put(hall, x, 15, '='); }
+                for (var y = 16; y < 21; y++) { Put(hall, 39, y, '.'); }
+                Put(hall, 31, 17, 'r');
+                Put(hall, 4, 2, 's');
+                var pit = Box(20, 30);
+                for (var y = 16; y < 21; y++) { Put(pit, 0, y, '.'); }
+                if (!string.IsNullOrEmpty(pitKeys)) { Put(pit, 8, 2, 'a'); }
+                if (openBelow) { for (var x = 2; x < 18; x++) { Put(pit, x, 0, '.'); Put(pit, x, 1, '.'); } }
+                return Zone("zone zone_test\nabilities double-jump",
+                    ("room_hall", string.Empty, 0, 0, hall, "key s start\nkey r ring"),
+                    ("room_pit", "optional needs=grapple" + (openBelow ? " exit=S" : string.Empty), 40, 0, pit, pitKeys));
+            }
+
+            var trap = LevelCheck.Problems(LevelZone.Parse(Pit(string.Empty)));
+            Assert.That(trap, Has.Some.StartsWith("stranded with grapple"), string.Join("; ", trap));
+            var rest = LevelCheck.Problems(LevelZone.Parse(Pit("key a altar test-altar «Вівтар»")));
+            Assert.That(rest, Is.Empty, "A lit altar takes him away.");
+            var drop = LevelCheck.Problems(LevelZone.Parse(Pit(string.Empty, openBelow: true)));
+            Assert.That(drop, Is.Empty, "A pit open into the zone below is a way on, not a trap.");
         }
 
         [Test]

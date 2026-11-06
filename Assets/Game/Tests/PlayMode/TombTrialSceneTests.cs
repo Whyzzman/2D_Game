@@ -169,7 +169,14 @@ namespace ForgottenKingdom.Tests
             Assert.That(_player.IsAlive, Is.False);
             Assert.That(_player.Action, Is.EqualTo(PlayerAction.Dead));
 
-            yield return new WaitForSeconds(2f);
+            // Real time with a deadline, not two seconds of game time: under the fade the respawn may stream the
+            // altar's zone in first, which takes longer on a loaded machine (2026-11-06, failed once in a full run).
+            var deadline = Time.realtimeSinceStartup + 8f;
+            while (Time.realtimeSinceStartup < deadline && (!_player.IsAlive || _player.Action != PlayerAction.None))
+            {
+                yield return null;
+            }
+
             Assert.That(_player.IsAlive, Is.True, "The player comes back after the death delay.");
             Assert.That(_player.Health.Current, Is.EqualTo(_player.Health.Max));
             Assert.That(_player.transform.position.x, Is.EqualTo(altar.x).Within(0.6f));

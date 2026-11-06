@@ -70,11 +70,14 @@ namespace ForgottenKingdom
                 }
             }
 
-            foreach (var ability in Gates(zone, abilities))
+            var gates = Gates(zone, abilities);
+            foreach (var ability in gates)
             {
                 var more = new HashSet<string>(abilities) { ability };
                 var wider = new LevelReach(zone, more);
-                var rooms = wider.Rooms(wider.Forward(wider.SegmentUnder(start.Cell)));
+                var widerFrom = wider.SegmentUnder(start.Cell);
+                var widerForward = wider.Forward(widerFrom);
+                var rooms = wider.Rooms(widerForward);
                 foreach (var room in zone.Rooms)
                 {
                     if (room.NeedsAbility == ability && !rooms.Contains(room.Id))
@@ -82,9 +85,62 @@ namespace ForgottenKingdom
                         problems.Add($"room {room.Id} is not reached even with {ability}");
                     }
                 }
+
+                Strands(wider, widerFrom, widerForward, $" with {ability}", problems);
+            }
+
+            // A gate opened is a way in; it must be a way out too (2026-11-06, user: «bugs everywhere»): the
+            // Forest's deep roots took the hero down on the grapple and had no ring to climb back by. Asked with
+            // each gate's ability and with all of them, the kit a returning hero carries.
+            if (gates.Count > 1)
+            {
+                var all = new HashSet<string>(abilities);
+                all.UnionWith(gates);
+                var full = new LevelReach(zone, all);
+                var fullFrom = full.SegmentUnder(start.Cell);
+                Strands(full, fullFrom, full.Forward(fullFrom), " with every gate's ability", problems);
             }
 
             return problems;
+        }
+
+        /// <summary>
+        /// Floors that lead back to the start no more. With a gate's ability the hero has long passed the
+        /// Guardian, so a lit altar he can still walk to takes him away (FAST_TRAVEL.md): that floor is no trap;
+        /// nor is one from which he drops out of the zone into the next (<see cref="LevelReach.LeavesZone"/>).
+        /// </summary>
+        private static void Strands(LevelReach reach, int from, HashSet<int> forward, string with, List<string> problems)
+        {
+            var back = reach.Backward(from);
+            var away = new HashSet<int>();
+            foreach (var marker in reach.Zone.Markers())
+            {
+                var under = marker.Kind == "altar" ? reach.SegmentUnder(marker.Cell) : -1;
+                if (under >= 0)
+                {
+                    away.Add(under);
+                }
+            }
+
+            for (var i = 0; i < reach.Segments.Count; i++)
+            {
+                if (reach.LeavesZone(i))
+                {
+                    away.Add(i);
+                }
+            }
+
+            foreach (var index in forward)
+            {
+                if (!back.Contains(index) && !reach.Forward(index).Overlaps(away))
+                {
+                    var problem = $"stranded{with}: no way back to the start from {reach.Segments[index]}";
+                    if (!problems.Contains(problem))
+                    {
+                        problems.Add(problem);
+                    }
+                }
+            }
         }
 
         public static LevelMarker Start(LevelZone zone)
