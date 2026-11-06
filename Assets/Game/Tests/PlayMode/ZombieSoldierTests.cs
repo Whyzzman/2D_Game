@@ -466,6 +466,31 @@ namespace ForgottenKingdom.Tests
             _player.Actor.ClearInvulnerability();
         }
 
+        [UnityTest]
+        public IEnumerator AZombieGivesGroundToAHeroInItsFace()
+        {
+            // Between swings it used to stand still, and a hero pressed against it got walked through and struck in
+            // the back. Now it backs off a hero inside its near line (EnemySpacing), still facing him.
+            var zombie = _zombies[0];
+            var zombieMotor = zombie.GetComponent<EnemyMotor2D>();
+            _player.Actor.SetInvulnerable(ImmunitySource.Script, 1000f);
+            yield return StandNextTo(zombie, 0.35f);
+
+            var backedOff = false;
+            var deadline = Time.realtimeSinceStartup + 6f;
+            while (!backedOff && Time.realtimeSinceStartup < deadline)
+            {
+                var toHero = Mathf.Sign(_player.transform.position.x - zombie.transform.position.x);
+                backedOff = zombie.State == EnemyState.Chase && zombieMotor.Velocity.x * toHero < -0.1f
+                    && zombie.FacingDirection == (int)toHero;
+                yield return null;
+            }
+
+            _player.Actor.ClearInvulnerability();
+            Assert.That(backedOff, Is.True, $"It never stepped back. state={zombie.State} "
+                + $"gap={Mathf.Abs(_player.transform.position.x - zombie.transform.position.x):0.00}");
+        }
+
         /// <summary>Accepts any of several states, for checks where the exact tick does not matter.</summary>
         private static NUnit.Framework.Constraints.EqualConstraint OneOf(params EnemyState[] states)
         {

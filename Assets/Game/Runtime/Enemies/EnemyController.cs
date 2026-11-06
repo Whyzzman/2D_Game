@@ -62,6 +62,7 @@ namespace ForgottenKingdom
         private float _decisionReadyAt;
         private float[] _attackReadyPerOption = Array.Empty<float>();
         private EnemySenses _senses;
+        private EnemySpacing _spacing;
         /// <summary>
         /// Hit by an attacker it could not see. Instead of shrugging it off and walking home, the
         /// enemy goes after where the blow came from, at chase speed — as Hollow Knight's enemies
@@ -141,6 +142,7 @@ namespace ForgottenKingdom
             }
 
             _senses = new EnemySenses(_definition, _motor, transform);
+            _spacing = new EnemySpacing(_motor, transform, _definition);
             _knockback = new EnemyKnockback(_motor, _bodyCollider, _motor.GroundMask);
             _spawnPosition = transform.position;
             _spawnFacing = _motor.FacingDirection;
@@ -519,7 +521,7 @@ namespace ForgottenKingdom
                 return;
             }
 
-            if (TryKeepDistance(horizontal))
+            if (_spacing.TryKeepDistance(_target.transform, horizontal))
             {
                 return;
             }
@@ -528,38 +530,19 @@ namespace ForgottenKingdom
             var holdAt = _definition.KeepsDistance
                 ? _definition.PreferredRange
                 : _definition.AttackRange * 0.85f;
-            if (horizontal <= holdAt || IsBlockedAhead())
+            if (horizontal <= holdAt)
+            {
+                _spacing.Hold(horizontal, holdAt);
+                return;
+            }
+
+            if (IsBlockedAhead())
             {
                 _motor.Stop();
                 return;
             }
 
             _motor.Drive(_definition.ChaseSpeed);
-        }
-
-        /// <summary>
-        /// The archer's footwork. A ranged enemy that stood still while being hit in the face would
-        /// be a free kill and would make the bow pointless, so inside its retreat range it backs
-        /// away — still facing the player, and never over a ledge or into a wall. When it has
-        /// nowhere left to go it stops retreating and fights, rather than grinding against the
-        /// scenery until it dies.
-        /// </summary>
-        private bool TryKeepDistance(float horizontal)
-        {
-            if (!_definition.KeepsDistance || horizontal > _definition.RetreatRange
-                || _target == null)
-            {
-                return false;
-            }
-
-            var away = _target.transform.position.x > transform.position.x ? -1 : 1;
-            if (!_motor.HasGroundToward(away) || _motor.HasWallToward(away))
-            {
-                return false;
-            }
-
-            _motor.DriveToward(away, _definition.RetreatSpeed);
-            return true;
         }
 
         /// <summary>
