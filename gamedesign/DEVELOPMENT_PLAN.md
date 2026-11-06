@@ -195,6 +195,7 @@ merge-коммитом из `cloud/verified`: компиляция и `.meta` и
 
 | Тема | Документ |
 | --- | --- |
+| Движок (Unity 6) и свой игровой слой | `ENGINE.md` |
 | Числа баланса | `TUNING.md` (источник истины — ассеты `Assets/Game/Data`) |
 | Клавиши и отладка | `CONTROLS.md` |
 | Визуальный стиль | `VISUAL_BIBLE.md`, `CONCEPT_BRIEFS.md`, `ART_REQUIREMENTS.md` |
