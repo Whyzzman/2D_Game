@@ -84,6 +84,7 @@ namespace ForgottenKingdom
         private Vector2 _spawnPosition;
         private int _spawnFacing = -1;
         private int _lastAttackIndex = -1;
+        private BossFootwork _footwork;
 
         public event Action<float, float> HealthChanged;
         public event Action<int> PhaseChanged;
@@ -162,6 +163,7 @@ namespace ForgottenKingdom
             _attackReadyAt = new float[_attacks != null ? _attacks.Length : 0];
             _spawnPosition = transform.position;
             _spawnFacing = _motor.FacingDirection;
+            _footwork = new BossFootwork(_motor, transform, SetState);
         }
 
         private void Start() => _actor.Toughen(NewGamePlus.Scale);
@@ -266,19 +268,22 @@ namespace ForgottenKingdom
                 SetState(BossState.Idle);
                 _motor.Stop();
                 _motor.FaceTowards(_player.position.x);
-                yield return new WaitForSeconds(_idlePause * PauseScale);
+                // the pause between moves, spent on its feet (BossFootwork): as long as it always was
+                yield return _footwork.Stalk(_player, _idlePause * PauseScale,
+                    Mathf.Max(_tooCloseRange * 1.25f, _preferredRange * 0.5f), _preferredRange * 1.5f,
+                    _repositionSpeed * MoveScale);
 
                 var distance = DistanceToPlayer;
                 if (distance < _tooCloseRange)
                 {
                     // Standing inside the boss is not a safe spot; it steps back and swings.
-                    yield return BackOff();
+                    yield return _footwork.BackOff(_player, _repositionSpeed * MoveScale);
                 }
 
                 var index = PickAttack();
                 if (index < 0)
                 {
-                    yield return Reposition();
+                    yield return _footwork.Close(_player, _preferredRange, _repositionTimeout, _repositionSpeed * MoveScale);
                     continue;
                 }
 
@@ -300,54 +305,6 @@ namespace ForgottenKingdom
             ShieldDropped?.Invoke();
             PhaseChanged?.Invoke(Phase);
             yield return new WaitForSeconds(_phaseTransitionTime);
-        }
-
-        private IEnumerator BackOff()
-        {
-            SetState(BossState.Reposition);
-            var elapsed = 0f;
-            var away = _player != null && _player.position.x > transform.position.x ? -1 : 1;
-            while (elapsed < 0.4f)
-            {
-                _motor.Face(-away);
-                if (!_motor.HasGroundAhead() || _motor.HasWallAhead())
-                {
-                    break;
-                }
-
-                // Face the player while stepping backwards.
-                _motor.Drive(-_repositionSpeed * 0.6f * MoveScale);
-                elapsed += Time.deltaTime;
-                yield return null;
-            }
-
-            _motor.Stop();
-        }
-
-        private IEnumerator Reposition()
-        {
-            SetState(BossState.Reposition);
-            var elapsed = 0f;
-            while (elapsed < _repositionTimeout && _player != null)
-            {
-                var delta = _player.position.x - transform.position.x;
-                if (Mathf.Abs(delta) <= _preferredRange)
-                {
-                    break;
-                }
-
-                _motor.FaceTowards(_player.position.x);
-                if (!_motor.HasGroundAhead() || _motor.HasWallAhead())
-                {
-                    break;
-                }
-
-                _motor.Drive(_repositionSpeed * MoveScale);
-                elapsed += Time.deltaTime;
-                yield return null;
-            }
-
-            _motor.Stop();
         }
 
         private IEnumerator RunAttack(BossAttack attack)

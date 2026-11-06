@@ -80,6 +80,30 @@ namespace ForgottenKingdom.Tests
             Assert.That(_boss.State, Is.Not.EqualTo(BossState.Intro), "The fight has to begin.");
         }
 
+        /// <summary>
+        /// The pause between moves is spent on its feet (2026-11-06, <see cref="BossFootwork"/>): a far hero is
+        /// walked in on, not waited for.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator BetweenMovesTheGuardianWalksInOnAFarHero()
+        {
+            yield return EnterArena();
+            yield return WaitUntil(() => _boss.State != BossState.Intro, 4f);
+            var hero = _player.transform.position.x;
+            var before = Mathf.Abs(hero - _boss.transform.position.x);
+            Assume.That(before, Is.GreaterThan(4f), "The arena's entry lies far from the Guardian.");
+            var walked = false;
+            var deadline = Time.realtimeSinceStartup + 0.8f;
+            while (Time.realtimeSinceStartup < deadline && _boss.State != BossState.Attacking)
+            {
+                walked |= _boss.State == BossState.Reposition;
+                yield return null;
+            }
+
+            Assert.That(walked, Is.True, "It walks in on a far hero instead of standing.");
+            Assert.That(Mathf.Abs(hero - _boss.transform.position.x), Is.LessThan(before - 0.2f), "Closer than it was.");
+        }
+
         [UnityTest]
         public IEnumerator PhaseTwoTriggersOnceAndThrowsTheShieldAway()
         {
