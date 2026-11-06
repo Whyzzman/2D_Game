@@ -57,35 +57,61 @@
   };
 
   // ---------- Болотна п'явка: товсте кільчасте тіло, перетинчасті крила, кругла паща ----------
+  // 2026-11-06 (вирішено Claude за постійною згодою): не мультяшні кільця двох кольорів, а слизька темна трубка з
+  // глянцем по спині й ледь видними перетяжками, крила — прозорі перетинки з прожилками, паща — коло блідих зубів.
   const LEECH = {
     w: 140, h: 110, eyes: "#e8ff8a",
     draw(g, p) {
-      const c = { body: "#3a2a26", ring: "#5a443a", belly: "#7a5a46", wing: "rgba(170,200,140,0.45)", vein: "rgba(60,80,40,0.7)" };
       g.save(); g.translate(0, -45); g.rotate(R(p.lean));
-      const wing = (sign) => {
-        g.save(); g.translate(0, -8); g.rotate(R(-90 + p.wingUp * 70 * sign + p.flap * 35));
-        g.fillStyle = c.wing; g.strokeStyle = c.vein; g.lineWidth = 1.5;
-        g.beginPath(); g.ellipse(18 + 10 * p.spread, 0, 22 + 10 * p.spread, 8, 0, 0, PI2); g.fill(); g.stroke();
-        g.beginPath(); g.moveTo(0, 0); g.lineTo(38, -2); g.stroke();
+      const wing = (sign, alpha) => {
+        g.save(); g.translate(2, -9); g.rotate(R(-90 + p.wingUp * 70 * sign + p.flap * 35));
+        const len = 30 + 12 * p.spread;
+        g.globalAlpha = alpha;
+        g.fillStyle = "#b8cf9a";
+        g.beginPath(); g.moveTo(0, -2); g.quadraticCurveTo(len * 0.6, -11, len, -3); g.quadraticCurveTo(len * 0.7, 6, 0, 3); g.closePath(); g.fill();
+        g.globalAlpha = Math.min(1, alpha * 2.2);
+        g.strokeStyle = "#1c2616"; g.lineWidth = 1.1; g.lineCap = "round";
+        [[-4, 0.95], [-1, 0.75], [2, 0.55]].forEach(([dy, k]) => {
+          g.beginPath(); g.moveTo(0, 0); g.quadraticCurveTo(len * k * 0.5, dy - 3, len * k, dy * 0.6); g.stroke();
+        });
         g.restore();
       };
-      wing(-1);
-      // тіло з п'яти кілець, від хвоста до голови, хвилясте
-      for (let k = 0; k < 5; k++) {
-        const x = -30 + k * 13, y = S(p.wave * PI2 + k * 0.9 + (p.flap || 0)) * 3, r = 9 + Math.min(k, 4 - k) * 2.5;
-        g.fillStyle = INK; g.beginPath(); g.ellipse(x, y, r + 2, r * 0.8 + 2, 0, 0, PI2); g.fill();
-        g.fillStyle = k % 2 ? c.ring : c.body; g.beginPath(); g.ellipse(x, y, r, r * 0.8, 0, 0, PI2); g.fill();
-        g.fillStyle = c.belly; g.fillRect(x - r * 0.6, y + r * 0.3, r * 1.2, 2);
+      wing(-1, 0.22);
+      // хребет від хвоста до голови, хвилястий; товщина — тонкий хвіст, товста середина, шия
+      const spine = [];
+      for (let k = 0; k <= 12; k++) {
+        const t = k / 12, x = -36 + t * 62, y = S(p.wave * PI2 + t * 5.5 + (p.flap || 0)) * 3.2;
+        spine.push([x, y, 2.2 + 11 * Math.pow(Math.sin(Math.PI * (0.03 + t * 0.89)), 0.75)]);
       }
-      // голова-присосок: кругла паща із зубцями
-      g.save(); g.translate(28, 0); g.rotate(R(p.head));
-      g.fillStyle = INK; g.beginPath(); g.arc(0, 0, 11, 0, PI2); g.fill();
-      g.fillStyle = c.ring; g.beginPath(); g.arc(0, 0, 9, 0, PI2); g.fill();
-      g.fillStyle = "#1a0e0c"; g.beginPath(); g.arc(5, 0, 4 + (p.jaw || 0) * 2, 0, PI2); g.fill();
-      for (let i = 0; i < 6; i++) { const a = i * PI2 / 6; stroke(g, 1.2, "#d8c8a8", [[5 + Math.cos(a) * 4, Math.sin(a) * 4], [5 + Math.cos(a) * 6, Math.sin(a) * 6]]); }
-      eye(g, -2, -5, 1.8, p.eyes, this.eyes);
+      const top = spine.map(([x, y, r]) => [x, y - r]), bottom = spine.map(([x, y, r]) => [x, y + r * 0.82]).reverse();
+      const skin = g.createLinearGradient(0, -14, 0, 12);
+      skin.addColorStop(0, "#3c4a30"); skin.addColorStop(0.3, "#1a2214"); skin.addColorStop(0.75, "#0d110a"); skin.addColorStop(1, "#241f16");
+      g.beginPath(); top.concat(bottom).forEach((q, i) => i ? g.lineTo(q[0], q[1]) : g.moveTo(q[0], q[1])); g.closePath();
+      g.lineJoin = "round"; g.strokeStyle = INK; g.lineWidth = 2.5; g.stroke(); g.fillStyle = skin; g.fill();
+      // перетяжки кілець — темні дуги впоперек, і глянець по спині
+      g.strokeStyle = "rgba(4,6,3,0.55)"; g.lineWidth = 1.4;
+      for (let k = 2; k <= 10; k += 1) {
+        const [x, y, r] = spine[k];
+        g.beginPath(); g.moveTo(x - 1, y - r * 0.92); g.quadraticCurveTo(x + 2.2, y, x - 0.5, y + r * 0.76); g.stroke();
+      }
+      g.strokeStyle = "rgba(170,200,130,0.38)"; g.lineWidth = 1.8; g.lineCap = "round";
+      g.beginPath(); spine.slice(2, 11).forEach(([x, y, r], i) => i ? g.lineTo(x, y - r * 0.62) : g.moveTo(x, y - r * 0.62)); g.stroke();
+      // паща-присосок: темне коло, всередині кільце блідих зубів; відкривається з jaw
+      const [hx, hy, hr] = spine[12];
+      g.save(); g.translate(hx + 3, hy); g.rotate(R(p.head));
+      const jaw = p.jaw || 0, mouth = 5 + jaw * 2.5;
+      g.fillStyle = "#1a1f14"; g.strokeStyle = INK; g.lineWidth = 2;
+      g.beginPath(); g.ellipse(2, 0, 6, hr * 0.95, 0, 0, PI2); g.stroke(); g.fill();
+      g.fillStyle = "#070806"; g.beginPath(); g.ellipse(4, 0, mouth * 0.55, mouth, 0, 0, PI2); g.fill();
+      g.fillStyle = "#d6cbb0";
+      for (let i = 0; i < 9; i++) {
+        const a = i / 9 * PI2, ax = 4 + Math.cos(a) * mouth * 0.55, ay = Math.sin(a) * mouth;
+        g.beginPath(); g.moveTo(ax, ay); g.lineTo(4 + Math.cos(a + 0.18) * mouth * 0.25, Math.sin(a + 0.18) * mouth * 0.45);
+        g.lineTo(4 + Math.cos(a + 0.36) * mouth * 0.55, Math.sin(a + 0.36) * mouth); g.closePath(); g.fill();
+      }
+      eye(g, -5, -hr * 0.62, 1.7, p.eyes, this.eyes); eye(g, -9, -hr * 0.5, 1.3, p.eyes, this.eyes);
       g.restore();
-      wing(1);
+      wing(1, 0.34);
       g.restore();
     },
     states: A.AshRaven.states

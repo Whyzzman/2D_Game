@@ -27,7 +27,35 @@ def blur(a, sigma):
     return np.asarray(img.filter(ImageFilter.GaussianBlur(sigma)), np.float32) / 255
 
 
+def close_seams(img):
+    """The mesh's triangles (design/characters/_shared/mesh.js) meet along seams a hair less than opaque inside the
+    figure, and the light below read each one as an edge and lit it (2026-11-06: diagonal stripes over the hero's
+    cloak). Inside the silhouette alpha goes back to full; where it was well under, the colour comes from the opaque
+    pixels round it. Gaps of up to two pixels close; the outline is left as it is."""
+    px = np.asarray(img.convert("RGBA"), np.float32).copy()
+    a = px[..., 3]
+    alpha = Image.fromarray(np.clip(a, 0, 255).astype(np.uint8))
+    closed = np.asarray(alpha.filter(ImageFilter.MaxFilter(3)).filter(ImageFilter.MinFilter(3)), np.float32)
+    lift = closed > a                     # a hair under full counts too: the rim below asks for 255
+    if not lift.any():
+        return img
+
+    def around(x):
+        p = np.pad(x, 1, mode="edge")
+        return sum(p[1 + dy:1 + dy + x.shape[0], 1 + dx:1 + dx + x.shape[1]] for dy in (-1, 0, 1) for dx in (-1, 0, 1))
+
+    solid = (a >= 250).astype(np.float32)
+    weight = around(solid)
+    faint = lift & (a < 200) & (weight > 0)
+    for c in range(3):
+        mean = around(px[..., c] * solid) / np.maximum(weight, 1)
+        px[..., c][faint] = mean[faint]
+    px[..., 3][lift] = closed[lift]
+    return Image.fromarray(np.clip(px, 0, 255).astype(np.uint8), "RGBA")
+
+
 def shade(img):
+    img = close_seams(img)
     px = np.asarray(img.convert("RGBA"), np.float32)
     rgb, a = px[..., :3], px[..., 3] / 255
     if a.max() < 0.05:
@@ -60,11 +88,11 @@ def shade(img):
     return Image.fromarray(res, "RGBA")
 
 
-def hero_rim(img, strength=0.6):
+def hero_rim(img, strength=0.38):
     """The hero only: the outermost opaque pixels facing the light take the cool rim, so his edge reads the
     brightest and coldest on screen (VISUAL_BIBLE: the hero is the one cold light among warm enemies)."""
     px = np.asarray(img.convert("RGBA"), np.float32).copy()
-    solid = px[..., 3] >= 255
+    solid = px[..., 3] >= 250                # where the mesh's corners meet, a pixel may come out at 254
     left = np.zeros_like(solid); left[:, 1:] = solid[:, :-1]
     up = np.zeros_like(solid); up[1:, :] = solid[:-1, :]
     upleft = np.zeros_like(solid); upleft[1:, 1:] = solid[:-1, :-1]
@@ -72,7 +100,7 @@ def hero_rim(img, strength=0.6):
     inner = np.zeros_like(edge)  # and one pixel further in, so the line has body
     inner[:, 1:] |= edge[:, :-1]; inner[1:, :] |= edge[:-1, :]
     band = (edge | (inner & solid))
-    k = np.where(edge, strength, strength * 0.5)[band][:, None]
+    k = np.where(edge, strength, strength * 0.35)[band][:, None]
     px[..., :3][band] = px[..., :3][band] * (1 - k) + RIM * k
     return Image.fromarray(px.astype(np.uint8), "RGBA")
 

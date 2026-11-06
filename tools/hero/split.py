@@ -24,6 +24,19 @@ PLAYER = ROOT / "Assets/Game/Art/Characters/Player"
 FINAL = ROOT / "Assets/Game/Art/Source/Final/Characters/Player"
 
 
+def save(image, path):
+    # an open Unity Editor locks a PNG for a moment while it imports the one written before (Windows)
+    import time
+    for attempt in range(60):
+        try:
+            image.save(path)
+            return
+        except OSError:
+            if attempt == 59:
+                raise
+            time.sleep(0.5)
+
+
 def main():
     jobs = json.loads((SRC / "jobs.json").read_text(encoding="utf-8"))
     written = 0
@@ -35,7 +48,7 @@ def main():
             frame = hero_rim(shade(row.crop((i * 256, 0, i * 256 + 256, 224))))
             for target in (FINAL / job["folder"] / name, folder / name):
                 target.parent.mkdir(parents=True, exist_ok=True)
-                frame.save(target)
+                save(frame, target)
             written += 1
     print(f"hero: {written} frames written")
 

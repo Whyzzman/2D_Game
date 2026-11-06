@@ -82,9 +82,23 @@
     g.fillStyle = gl; g.beginPath(); g.arc(x, y, r * 3, 0, PI2); g.fill();
     // ядро ока — його колір (видно, що це око, а не відблиск сталі), у центрі білий відблиск;
     // перед ударом (open > 1) відблиск розгоряється — замах читається по очах
+    // перед ударом — відблиск, а не білий диск на пів обличчя (2026-11-06): широкий м'який ореол кольору ока, невелике
+    // біле ядро й два тонкі промені навхрест; замах читається так само ясно (вирішено Claude за постійною згодою)
+    const over = Math.max(0, open - 1);
+    if (over > 0.05) {
+      const halo = g.createRadialGradient(x, y, 0, x, y, r * (3 + over * 6));
+      halo.addColorStop(0, color + "cc"); halo.addColorStop(0.35, color + "55"); halo.addColorStop(1, color + "00");
+      g.fillStyle = halo; g.beginPath(); g.arc(x, y, r * (3 + over * 6), 0, PI2); g.fill();
+    }
     g.fillStyle = color; g.beginPath(); g.ellipse(x, y, r * 1.15, r * 1.15 * Math.min(1, open), 0, 0, PI2); g.fill();
-    const flare = r * (0.35 + Math.max(0, open - 1) * 3.4);
-    g.fillStyle = "#fffaf0"; g.beginPath(); g.ellipse(x, y, flare, flare * Math.min(1, open), 0, 0, PI2); g.fill();
+    const core = r * (0.35 + over * 0.8);
+    g.fillStyle = "#fffaf0"; g.beginPath(); g.ellipse(x, y, core, core * Math.min(1, open), 0, 0, PI2); g.fill();
+    if (over > 0.05) {
+      const len = r * (2 + over * 7), wid = r * 0.22;
+      g.fillStyle = "rgba(255,250,240,0.9)";
+      g.beginPath(); g.moveTo(x - len, y); g.lineTo(x, y - wid); g.lineTo(x + len, y); g.lineTo(x, y + wid); g.closePath(); g.fill();
+      g.beginPath(); g.moveTo(x, y - len * 0.6); g.lineTo(x + wid, y); g.lineTo(x, y + len * 0.6); g.lineTo(x - wid, y); g.closePath(); g.fill();
+    }
   }
   function blade(g, hx, hy, ang, len, wid, colors, broken) {
     g.save(); g.translate(hx, hy); g.rotate(R(ang));
@@ -445,57 +459,111 @@
       }))).then(() => { if (pz.img.body) PUPPETS[name] = pz; });
     }).catch(() => {});
   }
+  // Звірі на чотирьох лапах: їхній малюнок гнеться інакше, ніж фігура в плащі.
+  const QUADS = new Set(["CorruptedHound", "Watchdog", "MarshCorpseEater"]);
+  const smooth01 = (a, b, x) => { const t = Math.max(0, Math.min(1, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
+
+  // Де стоїть вершина малюнка (u, v; v = 0 — верх) у позі p: стопи на місці, усе інше — за позою.
+  function deformRobed(p, bw, bh, u, v) {
+    const t = 1 - v, HEM = 0.32, HEAD = 0.8;
+    let q = [(u - 0.5) * bw, -t * bh];
+    const stepSwing = ((p.hipF || 0) - (p.hipB || 0)) / 90;
+    if (t < HEM) {
+      // поділ: гойдається з кроком, хвилюється, відлітає назад у русі (flare) і відстає від нахилу (інерція тканини)
+      const w = Math.pow((HEM - t) / HEM, 1.5);
+      const step = stepSwing * 0.07 * bw;
+      const lag = -(p.lean || 0) * 0.0035 * bw;
+      q[0] += (step + lag + Math.sin(PI2 * (p.wave || 0) + u * 4) * 0.022 * bw - (p.flare || 0) * 0.05 * bw) * w;
+    }
+    // дихання: на вдиху (присід пози спокою) груди трохи ширшають
+    const breath = Math.max(0, p.y || 0) / 1.5;
+    if (breath > 0) q[0] *= 1 + 0.025 * breath * smooth01(0.4, 0.6, t) * smooth01(0.9, 0.7, t);
+    if (t > HEAD) {
+      // голова кивне окремо від корпуса
+      q = Mesh.rot(q, [0, -bh * HEAD], R(p.head || 0) * 0.8 * smooth01(HEAD, 1, t));
+    }
+    // корпус гнеться від стоп: верх нахиляється повністю, низ — ледь; з кожним кроком ледь хитається
+    return Mesh.rot(q, [0, 0], (R(p.lean || 0) * 0.55 + R(stepSwing * 3)) * Math.pow(t, 1.2));
+  }
+
+  function deformQuad(p, bw, bh, u, v) {
+    const t = 1 - v, LEG = 0.45;
+    let q = [(u - 0.5) * bw, -t * bh];
+    if (t < LEG) {
+      // лапи ходять навколо плечей і стегон: передні — hipF, задні — hipB, між ними плавно
+      const f = smooth01(0.4, 0.6, u);
+      const pivot = [(-0.3 + 0.58 * f) * bw, -bh * LEG];
+      const hip = R((p.hipB || 0) * (1 - f) + (p.hipF || 0) * f) * 0.6;
+      q = Mesh.rot(q, pivot, -hip * Math.min(1, (LEG - t) / LEG * 1.3));
+    }
+    // хребет вигинається
+    q[1] -= (p.spine || 0) * 0.06 * bh * Math.sin(Math.PI * u) * smooth01(0.2, LEG, t);
+    if (u > 0.7) q = Mesh.rot(q, [bw * 0.2, -bh * 0.62], R(p.head || 0) * 0.7 * smooth01(0.7, 0.95, u) * smooth01(0.25, 0.5, t));
+    if (u < 0.18) q = Mesh.rot(q, [-bw * 0.33, -bh * 0.62], -(p.tail || 0) * 0.45 * smooth01(0.18, 0.02, u) * smooth01(0.3, 0.5, t));
+    return Mesh.rot(q, [0, 0], R(p.lean || 0) * 0.45);
+  }
+
   function drawPuppet(g, actor, pz, p, frame) {
-    const m = pz.meta, body = pz.img.body;
+    const m = pz.meta;
     // масштаб: висота старої фігури (і не ширша за кадр)
     const k = Math.min(m.height / m.body.h, (actor.w * 0.98) / m.body.w);
     const bw = m.body.w * k, bh = m.body.h * k;
-    const flier = !!actor.flier;
+    if (!pz.cache) {
+      // чисто зменшений малюнок, у півтора раза більший за кадр: згин і поворот беруть пікселі з запасом
+      pz.cache = { body: Mesh.prescale(pz.img.body, bw * 1.5, bh * 1.5) };
+      if (pz.img.glow) pz.cache.glow = Mesh.prescale(pz.img.glow, bw * 1.5, bh * 1.5);
+      if (pz.img.weapon) {
+        const wk = Math.min((bh * (actor.weaponLen || 0.75)) / m.weapon.w, 1);
+        pz.cache.wk = wk;
+        pz.cache.weapon = Mesh.prescale(pz.img.weapon, m.weapon.w * wk * 1.5, m.weapon.h * wk * 1.5);
+      }
+    }
+    const quad = QUADS.has(actor.__name);
+    const map = (u, v) => (quad ? deformQuad : deformRobed)(p, bw, bh, u, v);
+    const COLS = 8, ROWS = 12;
     g.clearRect(0, 0, actor.w, actor.h);
     g.save();
-    g.translate(m.centre + p.x, actor.h - 2 + p.y - (flier ? (actor.h - bh) / 2 : 0));
+    // стопи на землі: присід векторної пози (y донизу — коліна гнуться) для мальованої фігури — стиск тіла донизу,
+    // а не з'їзд за край кадру; підскок угору (y < 0) лишається підскоком
+    const crouch = Math.max(0, p.y || 0);
+    g.translate(m.centre + p.x, actor.h - 2 + Math.min(0, p.y || 0));
     g.globalAlpha = p.alpha;
-    g.scale(p.sx, p.sy);
-    // нахил від стоп; поділ гойдається з кроком — тіло трохи «йде», хоч ніг і не видно
-    g.rotate(R(p.lean * 0.45));
-    const step = ((p.hipF || 0) - (p.hipB || 0)) / 600;
-    g.transform(1, 0, -step, 1, 0, 0);
-    const dark = `rgb(${(m.dark || [20, 20, 26]).join(",")})`;
+    g.scale(p.sx * (1 + crouch / bh * 0.35), p.sy * (1 - crouch / bh * 0.9));
     // фаза-2 і магія: світло з-за спини
     if (p.glow > 0.02) {
-      const gl = g.createRadialGradient(0, -bh * 0.55, 4, 0, -bh * 0.55, bh * 0.75);
+      // the whole circle of the gradient, ending at the feet: a narrower fill showed the light as a box with straight
+      // sides once the frame had room round it (2026-11-06)
+      const c = map(0.5, 0.45), r = bh * 0.6;
+      const gl = g.createRadialGradient(c[0], c[1], 4, c[0], c[1], r);
       gl.addColorStop(0, `rgba(${actor.glowRgb || "170,110,255"},${0.4 * Math.min(1, p.glow)})`); gl.addColorStop(1, "rgba(0,0,0,0)");
-      g.fillStyle = gl; g.fillRect(-bw, -bh * 1.4, bw * 2, bh * 1.5);
+      g.fillStyle = gl; g.fillRect(c[0] - r, c[1] - r, r * 2, r * 2);
     }
-    // рука й зброя: плече на 0.68 висоти, рука — 0.3 висоти
-    // рука під плащем: плече біля переднього краю, кулак ходить невеликим колом — зброя біля тіла, як у Hollow Knight
-    const sh = [bw * 0.16, -bh * 0.58], armLen = bh * 0.16, ra = R(p.arm || 0);
+    // рука під плащем: плече біля переднього краю грудей іде за згином тіла, кулак ходить невеликим колом
+    const sh = map(0.66, 0.42), armLen = bh * 0.16, ra = R(p.arm || 0);
     const hand = [sh[0] + Math.sin(ra) * armLen, sh[1] + Math.cos(ra) * armLen];
-    const weapon = pz.img.weapon;
+    const weapon = pz.cache.weapon;
     const drawWeapon = () => {
-      if (!weapon) return;
-      const wk = Math.min((bh * (actor.weaponLen || 0.75)) / m.weapon.w, 1);
+      const ww = weapon.width / 1.5, wh = weapon.height / 1.5;
       g.save(); g.translate(hand[0], hand[1]); g.rotate(R(p.weapon));
-      g.drawImage(weapon, -m.weapon.w * wk * 0.2, -m.weapon.h * wk / 2, m.weapon.w * wk, m.weapon.h * wk);
+      g.drawImage(weapon, -ww * 0.2, -wh / 2, ww, wh);
       g.restore();
     };
-    g.drawImage(body, -bw / 2, -bh, bw, bh);
+    // у спокої зброя тримається збоку, за тілом; у замаху — попереду
+    const front = (p.arm || 0) > 20 || p.slash > 0.05;
+    if (weapon && !front) drawWeapon();
+    Mesh.draw(g, pz.cache.body, COLS, ROWS, map);
     // світло фігури (очі, маска, вогник): завжди тихо світить, перед ударом спалахує, у смерті гасне
-    if (pz.img.glow) {
+    if (pz.cache.glow) {
       const lit = Math.max(0, Math.min(1, p.eyes)) * 0.6 + Math.max(0, p.eyes - 1) * 1.8;
       g.save(); g.globalCompositeOperation = "lighter";
-      for (let a = lit; a > 0.01; a -= 1) { g.globalAlpha = p.alpha * Math.min(1, a); g.drawImage(pz.img.glow, -bw / 2, -bh, bw, bh); }
+      for (let a = lit; a > 0.01; a -= 1) { g.globalAlpha = p.alpha * Math.min(1, a); Mesh.draw(g, pz.cache.glow, COLS, ROWS, map, 0.4); }
       g.restore();
     }
-    if (weapon) {
-      drawWeapon();
-      // кулак — темна пляма плаща на руків'ї
-      g.fillStyle = dark; g.beginPath(); g.arc(hand[0], hand[1], Math.max(3, bh * 0.03), 0, PI2); g.fill();
-    }
-    // очі — поверх зброї (піднята булава не ховає замах); дві найяскравіші плями малюнка, у розмірі, що читається в кадрі; перед ударом спалахують (eye)
+    if (weapon && front) drawWeapon();
+    // очі — поверх зброї (піднята булава не ховає замах); у розмірі, що читається в кадрі; перед ударом спалахують
     (m.eyes || []).forEach(([ex, ey, er, col]) => {
-      const r = Math.max(2.6, er * k * 0.8);
-      if (p.eyes > 0.05) eye(g, -bw / 2 + ex * k, -bh + ey * k, r, p.eyes, col || actor.eyes || "#ffd27a");
+      const r = Math.max(2.6, er * k * 0.8), at = map(ex / m.body.w, ey / m.body.h);
+      if (p.eyes > 0.05) eye(g, at[0], at[1], r, p.eyes, col || actor.eyes || "#ffd27a");
     });
     slashArc(g, sh[0], sh[1] + bh * 0.1, bh * 0.55, p.slashFrom, p.slashTo, p.slash);
     g.restore();

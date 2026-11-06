@@ -12,6 +12,7 @@
 <body>
 <canvas id="out"></canvas>
 <script src="../_shared/paint.js"></script>
+<script src="../_shared/mesh.js"></script>
 <script src="enemies.js"></script>
 <script src="enemies-forest.js"></script>
 <script src="enemies-vc.js"></script>
@@ -37,9 +38,21 @@
       row.shown.forEach((i, c) => { Enemies.render(fg, actor, poses[i], i); g.drawImage(frame, c * actor.w * scale, r * actor.h * scale, actor.w * scale, actor.h * scale); });
     });
   } else {
+    // &px=…&pt=…&cols=… — кадр із запасом px з боків і pt згори, стопи на тому самому місці (низ, середина), кадри
+    // сіткою по cols: дуга удару чи ривок, що виходять за кадр, не зрізаються прямою лінією; tools/enemies/split.py
+    // потім обрізає запас до намальованого (2026-11-06, вирішено Claude за постійною згодою)
     const n = parseInt(q.get("frames"), 10), poses = actor.states[q.get("state")](n);
-    canvas.width = actor.w * n; canvas.height = actor.h;
-    poses.forEach((p, i) => { Enemies.render(fg, actor, p, i); g.drawImage(frame, i * actor.w, 0); });
+    const px = parseInt(q.get("px") || "0", 10), pt = parseInt(q.get("pt") || "0", 10);
+    const cols = Math.min(n, parseInt(q.get("cols") || String(n), 10));
+    const W = actor.w + 2 * px, H = actor.h + pt;
+    frame.width = W; frame.height = H;
+    canvas.width = W * cols; canvas.height = H * Math.ceil(n / cols);
+    poses.forEach((p, i) => {
+      fg.save(); fg.setTransform(1, 0, 0, 1, 0, 0); fg.clearRect(0, 0, W, H); fg.translate(px, pt);
+      Enemies.render(fg, actor, p, i);
+      fg.restore();
+      g.drawImage(frame, (i % cols) * W, Math.floor(i / cols) * H);
+    });
   }
   document.title = "done";
 })();

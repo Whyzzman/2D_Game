@@ -390,13 +390,36 @@
     g.drawImage(q.img, -q.px, -q.py); g.restore();
   }
   // нога лялькою: стегно від стегна (hip — від вертикалі, + вперед), гомілка від коліна (knee — згин назад)
+  // Ноги — темні щільні силуети з чоботами, як у Hollow Knight: мальовані ноги Midjourney в кадрі виходили
+  // тоненькими й світлими (контур героя робив їх плямою біля стоп).
   function puppetLeg(g, side, x, y, hip, knee) {
-    const t = PARTS["leg_" + side + "_thigh"], s = PARTS["leg_" + side + "_shin"];
-    const len = 19, r1 = hip * Math.PI / 180;
-    const kx = x + Math.sin(r1) * len, ky = y + Math.cos(r1) * len;
-    if (s) piece(g, "leg_" + side + "_shin", kx, ky, -(hip - knee));
-    if (t) piece(g, "leg_" + side + "_thigh", x, y, -hip);
+    const [fx, fy, fr] = limb(g, x, y, hip, 19, knee, 17, 8, side === "back" ? "#0d1119" : "#151b27");
+    boot(g, fx, fy, fr);
   }
+  const smooth01 = (a, b, x) => { const t = Math.max(0, Math.min(1, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
+  // Пікселі мальованого тіла (від півоту на стегнах) — у позі p.
+  function bodyMap(p) {
+    const q = PARTS.body, W = q.w, H = q.h, Rad = Math.PI / 180;
+    const top = -q.py * K, bottom = (H - q.py) * K, span = bottom - top;
+    const neck = [0, top + span * 0.28];
+    return (sx, sy) => {
+      let x = (sx - q.px) * K, y = (sy - q.py) * K;
+      const t = (bottom - y) / span;
+      if (t < 0.42) {
+        const w = Math.pow((0.42 - t) / 0.42, 1.5);
+        const step = ((p.hipF || 0) - (p.hipB || 0)) / 80 * 0.06 * W * K;
+        // і відстає від нахилу: тканина не встигає за тілом
+        const lag = -(p.lean || 0) * 0.003 * W * K;
+        x += (step + lag + Math.sin(Math.PI * 2 * (p.hem || 0) + sx / W * 5) * 0.03 * W * K - (p.flare || 0) * 0.08 * W * K) * w;
+      }
+      if (t > 0.7) {
+        const r = Mesh.rot([x, y], neck, ((p.tip || 0) * 0.5 + (p.hood || 0) * 0.4) * Rad * smooth01(0.7, 1, t));
+        x = r[0]; y = r[1];
+      }
+      return [x, y];
+    };
+  }
+
   function drawPuppet(g, p, frame, big) {
     g.clearRect(0, 0, 256, 224);
     g.save();
@@ -425,11 +448,14 @@
     const gg = g.createRadialGradient(ax, ay, 1, ax, ay, 9 + 8 * p.glow);
     gg.addColorStop(0, `rgba(190,160,255,${gl})`); gg.addColorStop(1, "rgba(154,107,255,0)");
     g.fillStyle = gg; g.beginPath(); g.arc(ax, ay, 10 + 8 * p.glow, 0, Math.PI * 2); g.fill();
-    // тіло: плащ розлітається в русі (flare), каптур хитається (hood)
-    g.save(); g.translate(0, hipY); g.rotate(p.hood * Math.PI / 180 * 0.25); g.scale(1 + p.flare * 0.08, 1);
-    piece(g, "body", 0, 0, 0);
+    // тіло — жива сітка (design/characters/_shared/mesh.js): поділ гойдається з кроком і відлітає назад у русі
+    // (flare), вістря каптура відстає в бігу й падає назад у стрибку (tip), голова хитається (hood)
+    g.save(); g.translate(0, hipY);
+    const q = PARTS.body, map = bodyMap(p);
+    if (!q.mesh) q.mesh = Mesh.prescale(q.img, q.w * K * 1.5, q.h * K * 1.5);
+    Mesh.draw(g, q.mesh, 8, 12, (u, v) => map(u * q.w, v * q.h));
     // очі: заплющуються (eyes < 1) і спалахують перед ударом (eyes > 1)
-    const eyes = [[38 * K, -370 * K + 0], [95 * K, -372 * K]];
+    const eyes = [map(q.px + 38, q.py - 370), map(q.px + 95, q.py - 372)];
     if (p.eyes < 0.95) eyes.forEach(([ex, ey]) => { g.fillStyle = "#020204"; g.beginPath(); g.ellipse(ex, ey, 3.2, 4.6 * (1 - p.eyes) + 0.4, 0, 0, Math.PI * 2); g.fill(); });
     if (p.eyes > 1.02 || p.glow > 0.3) eyes.forEach(([ex, ey]) => {
       const k = Math.max(p.eyes - 1, p.glow * 0.5), e = g.createRadialGradient(ex, ey, 0, ex, ey, 9);

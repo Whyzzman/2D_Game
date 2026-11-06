@@ -210,30 +210,69 @@
   };
 
   // ---------- Попелястий ворон: птах завбільшки з пса; крила назад-угору — і пікірування ----------
+  // 2026-11-06 (вирішено Claude за постійною згодою): не мультяшний овал із сірим крилом, а рваний силует із пер —
+  // попіл на кінчиках, кістяний дзьоб-маска, червоне око; рухи й таблиця кадрів ті самі.
   const RAVEN = {
     w: 140, h: 110, eyes: "#ff6a4a",
     draw(g, p) {
-      const c = { body: "#1a1716", feather: "#2c2826", light: "#5a524c", beak: "#3a3430" };
+      const c = { far: "#0d0b0b", near: "#1c1817", ash: "rgba(150,142,132,0.85)", bone: "#c4b8a2", boneDark: "#6a6050" };
       g.save(); g.translate(0, -45); g.rotate(R(p.lean));
-      const wing = (sign, col) => {
-        // крило з трьох пер-сегментів, від плеча; spread 0…1, кут — flap
-        const a = R(-90 + p.wingUp * 80 * sign + p.flap * 40) ;
-        g.save(); g.translate(4, -6); g.rotate(a);
-        for (let k = 0; k < 3; k++) shape(g, col, [[0, 0], [10 + k * 12, -6 - k * 4], [34 + k * 10 * p.spread, -2 - k * 8], [30 + k * 8, 4], [0, 6]], 3);
+      // перо вздовж +x: довгий лист із рваним кінцем; попіл — світліший кінчик
+      const feather = (len, wid, col, ash) => {
+        g.beginPath(); g.moveTo(0, -wid * 0.35);
+        g.quadraticCurveTo(len * 0.55, -wid * 1.05, len, -wid * 0.12);
+        g.quadraticCurveTo(len * 0.93, wid * 0.05, len * 0.97, wid * 0.3);
+        g.quadraticCurveTo(len * 0.5, wid * 1.0, 0, wid * 0.35); g.closePath();
+        g.fillStyle = col; g.fill();
+        if (ash) { g.fillStyle = ash; g.beginPath(); g.ellipse(len * 0.84, wid * 0.05, len * 0.12, wid * 0.32, 0, 0, PI2); g.fill(); }
+      };
+      const wing = (sign, col, ash) => {
+        g.save(); g.translate(4, -6); g.rotate(R(-90 + p.wingUp * 80 * sign + p.flap * 40));
+        // шість махових віялом (розкриваються зі spread), над ними три покривні
+        for (let k = 5; k >= 0; k--) {
+          g.save(); g.rotate(R((k - 2.5) * (4 + 7 * p.spread)));
+          feather(26 + k * 3.5 + 12 * p.spread, 5.5, col, ash && k % 2 === 0 ? ash : null);
+          g.restore();
+        }
+        for (let k = 0; k < 3; k++) { g.save(); g.rotate(R((k - 1) * 14)); feather(17, 7.5, col, null); g.restore(); }
         g.restore();
       };
-      wing(-1, c.feather);
-      shape(g, c.feather, [[-20, 2], [-44, -2], [-48, 8], [-40, 10], [-22, 8]], 3); // хвіст
-      g.fillStyle = INK; g.beginPath(); g.ellipse(0, 0, 25, 15, 0, 0, PI2); g.fill();
-      g.fillStyle = c.body; g.beginPath(); g.ellipse(0, 0, 22, 12, 0, 0, PI2); g.fill();
+      wing(-1, c.far, null);
+      // хвіст — віяло з п'яти пер, гойдається з помахом
+      for (let k = 0; k < 5; k++) {
+        g.save(); g.translate(-15, 3); g.rotate(R(180 + (k - 2) * 9 + S(p.wave * PI2 + k) * 3 - p.flap * 6));
+        feather(28 + (k % 2) * 6, 5, c.near, k === 1 || k === 3 ? c.ash : null);
+        g.restore();
+      }
+      // тулуб — рвана крапля з пір'я: спина ловить світло, черево в тіні
+      const body = [];
+      for (let i = 0; i < 28; i++) {
+        const t = i / 28 * PI2, rag = i % 2 ? 1.1 : 0.96;
+        body.push([Math.cos(t) * 24 * rag - (Math.cos(t) < -0.6 ? 4 : 0), Math.sin(t) * 13.5 * rag]);
+      }
+      const tone = g.createLinearGradient(0, -14, 0, 14);
+      tone.addColorStop(0, "#2e2826"); tone.addColorStop(0.45, "#181414"); tone.addColorStop(1, "#090808");
+      g.beginPath(); body.forEach((q, i) => i ? g.lineTo(q[0], q[1]) : g.moveTo(q[0], q[1])); g.closePath();
+      g.lineJoin = "round"; g.strokeStyle = INK; g.lineWidth = 2.5; g.stroke(); g.fillStyle = tone; g.fill();
+      // голова з комірцем пір'я, дзьоб-маска з кістки
       g.save(); g.translate(20, -8); g.rotate(R(p.head));
-      g.fillStyle = INK; g.beginPath(); g.arc(0, 0, 11, 0, PI2); g.fill();
-      g.fillStyle = c.body; g.beginPath(); g.arc(0, 0, 9, 0, PI2); g.fill();
-      shape(g, c.beak, [[6, -4], [24, 1 + p.jaw * 2], [6, 4]], 2);
-      eye(g, 3, -2, 2, p.eyes, this.eyes);
+      const ruff = [];
+      for (let i = 0; i < 18; i++) { const t = i / 18 * PI2, r = (i % 2 ? 12.5 : 10) * (Math.cos(t) < 0 ? 1.15 : 1); ruff.push([Math.cos(t) * r, Math.sin(t) * r * 0.92]); }
+      const head = g.createLinearGradient(0, -12, 0, 12);
+      head.addColorStop(0, "#2a2422"); head.addColorStop(1, "#0b0909");
+      g.beginPath(); ruff.forEach((q, i) => i ? g.lineTo(q[0], q[1]) : g.moveTo(q[0], q[1])); g.closePath();
+      g.strokeStyle = INK; g.lineWidth = 2.5; g.stroke(); g.fillStyle = head; g.fill();
+      const jaw = p.jaw || 0, beak = g.createLinearGradient(4, -6, 26, 4);
+      beak.addColorStop(0, c.bone); beak.addColorStop(1, c.boneDark);
+      g.beginPath(); g.moveTo(3, -6); g.quadraticCurveTo(16, -7.5, 27, 0.5 + jaw * 1.5); g.quadraticCurveTo(16, 1 + jaw * 3, 4, 2 + jaw * 2);
+      g.quadraticCurveTo(16, 3 + jaw * 4, 22, 3.5 + jaw * 5); g.quadraticCurveTo(12, 6 + jaw * 3, 3, 4.5); g.closePath();
+      g.strokeStyle = INK; g.lineWidth = 2; g.stroke(); g.fillStyle = beak; g.fill();
+      eye(g, 3.5, -2.5, 2.2, p.eyes, this.eyes);
       g.restore();
-      wing(1, c.light);
-      if (p.legs > 0) { stroke(g, 2, c.beak, [[-2, 10], [-4, 20]]); stroke(g, 2, c.beak, [[6, 10], [6, 20]]); }
+      wing(1, c.near, c.ash);
+      if (p.legs > 0) {
+        stroke(g, 1.6, "#2a2422", [[-2, 11], [-4, 21], [-1, 23]]); stroke(g, 1.6, "#2a2422", [[6, 11], [7, 21], [10, 23]]);
+      }
       g.restore();
     },
     states: {}

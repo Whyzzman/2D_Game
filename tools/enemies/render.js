@@ -12,6 +12,9 @@ const ROOT = path.resolve(__dirname, "..", "..");
 const OUT = path.join(os.tmpdir(), "enemy-frames");
 const URL = "http://localhost:8123/design/characters/enemies/index.html";
 const EDITOR = path.join(ROOT, "Assets/Game/Editor");
+// 2026-11-06: the big bosses' arcs and the villager's bash ran past the frame and were cut straight (decided by Claude
+// under standing approval)
+const PAD_SIDE = 0.9, PAD_TOP = 0.5, PAD_COLS = 8;
 
 // actor → таблиця станів, файл таблиці, тека, префікс, розмір кадру
 const ACTORS = [
@@ -87,7 +90,12 @@ async function main() {
   const worker = async () => {
     while (next < jobs.length) {
       const j = jobs[next++];
-      await shot(chrome, path.join(OUT, `${j.actor}__${j.state}.png`), j.w * j.n, j.h, `${URL}?actor=${j.actor}&state=${j.state}&frames=${j.n}`);
+      // room round the frame (most of its width each side, half its height above), frames in a grid: an arc or a
+      // lunge past the frame is not cut by a straight line; split.py trims each state to what was drawn
+      j.px = Math.round(j.w * PAD_SIDE); j.pt = Math.round(j.h * PAD_TOP); j.cols = Math.min(j.n, PAD_COLS);
+      const W = j.w + 2 * j.px, H = j.h + j.pt;
+      await shot(chrome, path.join(OUT, `${j.actor}__${j.state}.png`), W * j.cols, H * Math.ceil(j.n / j.cols),
+        `${URL}?actor=${j.actor}&state=${j.state}&frames=${j.n}&px=${j.px}&pt=${j.pt}&cols=${j.cols}`);
     }
   };
   await Promise.all([1, 2, 3, 4, 5, 6].map(worker));
