@@ -129,10 +129,19 @@
         const nx = (N.fbm(wx * 0.9, wy * 0.9, seed, 4) - 0.5) * 2, ny = (N.fbm(wx * 0.9, wy * 0.9, seed + 7, 4) - 0.5) * 2;
         const su = fx - 0.5 + nx * amp * free, sv = fy - 0.5 + ny * amp * free;
         let s = sample(soft, gw, gh, su, sv);
-        s += (N.fbm(wx * 4.5, wy * 4.5, seed + 3, 2) - 0.5) * 0.16 * free;
+        s += (N.fbm(wx * 4.5, wy * 4.5, seed + 3, 2) - 0.5) * 0.09 * free;
         const sharp = rockAt(ix, iy);
         s = s * free + sharp * guard;
-        if (s <= 0.47) continue;
+        if (s <= 0.47) {
+          // Тінь довкола каменю на фоні (2026-11-07, «фон, який насправді стінка»): м'який темний ореол
+          // відриває перший план від фону Midjourney; над підлогою, де стоять, його немає.
+          const halo = smoothstep(0.26, 0.47, s) * free;
+          if (halo > 0.01) {
+            const o = (j * W + i) * 4;
+            px[o] = 4; px[o + 1] = 6; px[o + 2] = 8; px[o + 3] = 255 * halo * 0.5;
+          }
+          continue;
+        }
         // Заокруглені кути: верх, що закінчується обривом убік, закруглюється (2026-10-28, «менше прямих
         // кутів»). Верх лишається рівним — по ньому ходять.
         if (sharp > 0.5 && airAt(ix, iy + 1)) {
@@ -210,10 +219,17 @@
         const glen = Math.hypot(gx, gy);
         if (glen > 0.02) {
           const ox = -gx / glen, oy = -gy / glen; // назовні з каменю
-          const facing = Math.max(0, oy * 0.9 + ox * 0.25);
+          // Бічні грані теж ловлять світло (2026-11-07, користувач: «посеред блоками фон, який насправді не фон
+          // а стінка»; решено Claude): вузька стіна з одним верхнім відблиском губилася у фоні Midjourney того ж
+          // тону. Тепер кожна відкрита грань має світлий край — сильніший угорі, слабший з боків, — і тонкий
+          // контур по самій межі, тож усе, у що впираєшся, читається як камінь на першому плані.
+          const facing = Math.max(0, oy * 0.9 + Math.abs(ox) * 0.55);
           const near = smoothstep(0.78, 0.5, s);
-          const lit = facing * near * 0.55;
+          const lit = facing * near * 0.6;
           r += (rim[0] - r) * lit; g += (rim[1] - g) * lit; b += (rim[2] - b) * lit;
+          // контур: світла нитка по самій межі каменю, з будь-якого боку
+          const line = smoothstep(0.6, 0.5, s) * (0.22 + 0.2 * Math.max(0, oy));
+          r += (rim[0] - r) * line; g += (rim[1] - g) * line; b += (rim[2] - b) * line;
           // знизу — темніше (тінь під навісом)
           const under = Math.max(0, -oy) * near * 0.35;
           r *= 1 - under; g *= 1 - under; b *= 1 - under;
