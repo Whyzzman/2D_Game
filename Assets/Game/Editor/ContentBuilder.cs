@@ -492,6 +492,10 @@ namespace ForgottenKingdom.EditorTools
             SetFloat(motor, "_settings._releasedJumpSpeed", 1.5f);
             SetFloat(motor, "_settings._releasedJumpDeceleration", 600f);
             SetFloat(motor, "_settings._jumpBuffer", 0.15f);
+            // 2026-11-07 («персонаж досі погано рухається, зажато»): a run of about five of his own heights a second
+            // instead of four, and a jump that clips a ledge with its head slides past a little further.
+            SetFloat(motor, "_settings._runSpeed", 7.8f);
+            SetFloat(motor, "_cornerCorrection", 0.3f);
             var visual = root.transform.Find("Visual");
             SetReference(motor, "_visual", visual != null ? visual : root.transform);
 
@@ -1384,7 +1388,7 @@ namespace ForgottenKingdom.EditorTools
             Ensure<AudioListener>(cameraObject);
             var camera = cameraObject.AddComponent<Camera>();
             camera.orthographic = true;
-            camera.orthographicSize = 6f;
+            camera.orthographicSize = 6.5f;
             camera.backgroundColor = new Color(0.07f, 0.07f, 0.1f);
             camera.clearFlags = CameraClearFlags.SolidColor;
             cameraObject.transform.position = new Vector3(0f, 2f, -10f);

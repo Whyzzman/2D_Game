@@ -154,7 +154,9 @@ namespace ForgottenKingdom.Tests
             Assert.That(Reaches(ShelfZone(7), 9, 14, second), Is.True, "3.5: the second jump tops out a hand under it, lifted.");
             Assert.That(Reaches(ShelfZone(8), 10, 14, second), Is.False, "4.0 is over the second jump and the lift.");
             Assert.That(Reaches(GapZone(8), 6, 30, none), Is.True, "4.0 across is a running jump.");
-            Assert.That(Reaches(GapZone(11), 6, 33, none), Is.False, "5.5 across is not.");
+            // 2026-11-07: the run is 7.8 (was 6.8), and a running jump clears 5.5 now.
+            Assert.That(Reaches(GapZone(11), 6, 33, none), Is.True, "5.5 across is a running jump at 7.8.");
+            Assert.That(Reaches(GapZone(13), 6, 35, none), Is.False, "6.5 across is not.");
         }
 
         [Test]

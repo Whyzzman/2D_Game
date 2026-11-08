@@ -27,7 +27,7 @@ namespace ForgottenKingdom
         [SerializeField] private Transform _visual;
         [Tooltip("How far sideways a rising jump may be nudged when only the corner of a ledge "
             + "catches the head. About a quarter of the body's width.")]
-        [SerializeField, Min(0f)] private float _cornerCorrection = 0.2f;
+        [SerializeField, Min(0f)] private float _cornerCorrection = 0.3f;
         private const int CornerCorrectionSteps = 4;
         private const int LedgeForgivenessSteps = 4;
         /// <summary>

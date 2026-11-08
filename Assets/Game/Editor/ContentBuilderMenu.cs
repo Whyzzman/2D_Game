@@ -29,7 +29,7 @@ namespace ForgottenKingdom.EditorTools
             cameraObject.AddComponent<AudioListener>();
             var camera = cameraObject.AddComponent<Camera>();
             camera.orthographic = true;
-            camera.orthographicSize = 6f;
+            camera.orthographicSize = 6.5f;
             camera.clearFlags = CameraClearFlags.SolidColor;
             camera.backgroundColor = new Color(0.03f, 0.03f, 0.045f);
             cameraObject.transform.position = new Vector3(0f, 3.4f, -10f);

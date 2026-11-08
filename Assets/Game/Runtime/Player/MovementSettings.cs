@@ -10,7 +10,7 @@ namespace ForgottenKingdom
             + "There is no walking gait: on the ground the player always runs.")]
         [SerializeField, Min(0f)] private float _walkSpeed = 3f;
         [Tooltip("Ground speed at full stick or a held key; a half-tilted stick moves at half of it.")]
-        [SerializeField, Min(0f)] private float _runSpeed = 6.8f;
+        [SerializeField, Min(0f)] private float _runSpeed = 7.8f;
         [SerializeField, Min(0f)] private float _groundAcceleration = 150f;
         [SerializeField, Min(0f)] private float _groundDeceleration = 180f;
         [SerializeField, Min(0f)] private float _airAcceleration = 120f;
