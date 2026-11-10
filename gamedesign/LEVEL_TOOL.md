@@ -131,6 +131,10 @@ link room_a room_b door | oneway | ability=id | boss=id | shortcut=id from=room_
 не потеряла ни одного пола. Без последнего правила уходили целые подъёмы: зона — одно кольцо, «дальним путём»
 досягаемо всё.
 
+**Где прыжок на грани** (2026-11-10): `-executeMethod ForgottenKingdom.EditorTools.LevelTidy.ComfortReport` (batchmode,
+~1 мин) пишет `Artifacts/LevelComfort.txt` — `LevelCheck` каждой зоны и полы/уступы, которые берёт строгая модель, но не
+удобная (со способностями зоны и со всеми воротами). Пусто — паркур зоны удобен.
+
 ## Сборка и просмотр
 
 - `ContentBuilder.BuildLayout(zone, parent, block, context)` — блоки (их вид даёт зона через `block`),

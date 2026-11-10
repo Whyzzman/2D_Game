@@ -85,6 +85,80 @@ namespace ForgottenKingdom.EditorTools
             });
         }
 
+        /// <summary>
+        /// Where a zone asks for a jump at the very edge: every floor and ledge the strict model reaches
+        /// and the comfortable one does not, by room, for the zone's own abilities and with every gate's.
+        /// Also the zone's <see cref="LevelCheck"/> problems. Goes to Artifacts/LevelComfort.txt.
+        /// Run: -executeMethod ForgottenKingdom.EditorTools.LevelTidy.ComfortReport
+        /// </summary>
+        public static void ComfortReport()
+        {
+            var comfort = Comfort();
+            var report = new System.Text.StringBuilder();
+            foreach (var path in Directory.GetFiles("Assets/Game/Levels", "*.txt"))
+            {
+                var zone = LevelZone.Parse(File.ReadAllText(path));
+                var problems = LevelCheck.Problems(zone);
+                report.AppendLine($"== {Path.GetFileNameWithoutExtension(path)}: "
+                    + (problems.Count == 0 ? "LevelCheck OK" : string.Join(" | ", problems)));
+                var own = new HashSet<string>(zone.Abilities);
+                var every = new HashSet<string>(own);
+                foreach (var room in zone.Rooms)
+                {
+                    if (!string.IsNullOrEmpty(room.NeedsAbility))
+                    {
+                        every.Add(room.NeedsAbility);
+                    }
+                }
+
+                HardSpots(zone, own, comfort, "own abilities", report);
+                if (every.Count > own.Count)
+                {
+                    HardSpots(zone, every, comfort, "every gate's ability", report);
+                }
+            }
+
+            Directory.CreateDirectory("Artifacts");
+            File.WriteAllText("Artifacts/LevelComfort.txt", report.ToString());
+        }
+
+        private static void HardSpots(LevelZone zone, HashSet<string> abilities, MovementSettings comfort,
+            string label, System.Text.StringBuilder report)
+        {
+            var start = LevelCheck.Start(zone).Cell;
+            var strict = new LevelReach(zone, abilities);
+            var loose = new LevelReach(zone, abilities, comfort);
+            var easy = new HashSet<long>();
+            foreach (var index in loose.Forward(loose.SegmentUnder(start)))
+            {
+                var segment = loose.Segments[index];
+                if (!segment.IsRing)
+                {
+                    for (var x = segment.XMin; x <= segment.XMax; x++) easy.Add(Pack(x, segment.Row));
+                }
+            }
+
+            report.AppendLine($"  -- {label} ({string.Join(" ", abilities)})");
+            foreach (var index in strict.Forward(strict.SegmentUnder(start)).OrderBy(i => strict.Segments[i].RoomId))
+            {
+                var segment = strict.Segments[index];
+                if (segment.IsRing)
+                {
+                    continue;
+                }
+
+                var hard = false;
+                for (var x = segment.XMin; x <= segment.XMax && !hard; x++) hard = !easy.Contains(Pack(x, segment.Row));
+                if (hard)
+                {
+                    var room = zone.Room(segment.RoomId);
+                    var local = room == null ? "" : $" (in room: x {segment.XMin - room.Origin.x}…{segment.XMax - room.Origin.x}, "
+                        + $"row from top {room.Origin.y + room.Height - segment.Row})";
+                    report.AppendLine($"     {segment}{local}");
+                }
+            }
+        }
+
         private static MovementSettings Comfort()
         {
             var source = new MovementSettings();
