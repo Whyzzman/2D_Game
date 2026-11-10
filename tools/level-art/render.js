@@ -3,7 +3,8 @@
 // Потім у Unity: ContentBuilder.RefreshLevelArt і Scene<Зона>.Apply; кімнати з фоном Midjourney —
 // ще раз `python tools/midjourney/place.py <зона>` (render перемальовує їхні mid і near).
 // Запуск (macOS і Windows): node tools/level-art/render.js tomb [паралельно=4]
-// Chrome: змінна CHROME=<шлях>, інакше — звичайне місце встановлення.
+// Браузер — Chrome або Brave (tools/_shared/browser.js); змінна CHROME=<шлях> задає інший.
+// Лише частина робіт: третій аргумент — початок імені файлу через кому (t_10_,room_tomb_column).
 const fs = require("fs");
 const os = require("os");
 const path = require("path");
@@ -16,18 +17,6 @@ const jobsAtOnce = Math.max(1, parseInt(process.argv[3] || "4", 10));
 const Zone = zone.charAt(0).toUpperCase() + zone.slice(1);
 const OUT = path.join(ROOT, "Assets/Game/Art/Levels", Zone);
 const URL = "http://localhost:8123/design/levels/painter/index.html";
-
-function chromePath() {
-  if (process.env.CHROME) return process.env.CHROME;
-  const candidates = process.platform === "win32"
-    ? ["C:/Program Files/Google/Chrome/Application/chrome.exe",
-       "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe",
-       path.join(os.homedir(), "AppData/Local/Google/Chrome/Application/chrome.exe")]
-    : ["/Applications/Google Chrome.app/Contents/MacOS/Google Chrome", "/usr/bin/google-chrome", "/usr/bin/chromium"];
-  const found = candidates.find((p) => fs.existsSync(p));
-  if (!found) throw new Error("no Chrome found; set CHROME=<path>");
-  return found;
-}
 
 function answers(url) {
   return new Promise((resolve) => {
@@ -42,35 +31,9 @@ async function serve() {
   return server;
 }
 
-// Chrome writes the picture and may not quit by itself: wait for the file, then stop it.
-function shot(chrome, file, w, h, url) {
-  return new Promise((resolve) => {
-    const profile = fs.mkdtempSync(path.join(os.tmpdir(), "level-art-"));
-    fs.rmSync(file, { force: true });
-    const child = spawn(chrome, ["--headless=new", "--disable-gpu", "--hide-scrollbars",
-      "--default-background-color=00000000", `--user-data-dir=${profile}`, "--no-first-run",
-      "--no-default-browser-check", `--window-size=${w},${h}`, "--virtual-time-budget=60000",
-      `--screenshot=${file}`, url], { stdio: "ignore" });
-    const started = Date.now();
-    const timer = setInterval(() => {
-      const done = fs.existsSync(file) && fs.statSync(file).size > 0;
-      if (done || Date.now() - started > 60000) {
-        clearInterval(timer);
-        setTimeout(() => {
-          child.kill();
-          // Windows keeps the profile locked for a moment after the kill: retry, then let it be.
-          fs.rm(profile, { recursive: true, force: true, maxRetries: 10, retryDelay: 200 }, () => {});
-          if (!done) console.log(`failed: ${file}`);
-          resolve(done);
-        }, 300);
-      }
-    }, 100);
-  });
-}
-
 async function main() {
-  const chrome = chromePath();
   const server = await serve();
+  const browser = await require("../_shared/browser.js").open();
   for (const dir of ["Terrain", "Rooms", "Breakables"]) fs.mkdirSync(path.join(OUT, dir), { recursive: true });
   const listed = spawnSync(process.execPath, [path.join(__dirname, "jobs.js"), zone], { encoding: "utf8" });
   if (listed.status !== 0) throw new Error(listed.stderr);
@@ -79,14 +42,21 @@ async function main() {
     const dir = kind === "terrain" ? "Terrain" : kind === "breakable" ? "Breakables" : "Rooms";
     return { file: path.join(OUT, dir, `${name}.png`), w, h, url: `${URL}?zone=${zone}&${query}` };
   });
+  const only = (process.argv[4] || "").split(",").filter(Boolean);
+  if (only.length) {
+    for (let i = jobs.length - 1; i >= 0; i--) {
+      if (!only.some((prefix) => path.basename(jobs[i].file).startsWith(prefix))) jobs.splice(i, 1);
+    }
+  }
   let next = 0;
   const worker = async () => {
     while (next < jobs.length) {
       const job = jobs[next++];
-      await shot(chrome, job.file, job.w, job.h, job.url);
+      await browser.shot(job.file, job.w, job.h, job.url);
     }
   };
   await Promise.all(Array.from({ length: jobsAtOnce }, worker));
+  await browser.close();
   if (server) server.kill();
   const count = (dir) => fs.readdirSync(path.join(OUT, dir)).filter((f) => f.endsWith(".png")).length;
   console.log(`level art: ${count("Terrain")} terrain, ${count("Rooms")} rooms, ${count("Breakables")} walls -> ${OUT}`);

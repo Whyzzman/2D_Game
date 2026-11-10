@@ -208,7 +208,16 @@ link room_a room_b door | oneway | ability=id | boss=id | shortcut=id from=room_
 Командора и Короля — тронные залы. Закрашенная Столица не строит тайлы и общий параллакс; реквизит, жаровни и
 печати со светом остаются.
 
-Порядок: правка текста → `node tools/level-art/render.js <зона>` (headless Chrome, ~1 мин) →
+**Mac без Chrome и без открытого Editor** (2026-11-10): снимки делает `tools/_shared/browser.js` — один headless-браузер
+на весь прогон по протоколу DevTools, Chrome или Brave (Brave на `--screenshot` зависает). `render.js <зона> 4
+<начала имён через запятую>` рисует только названные файлы (`t_-2_2.,room_tomb_column_front,b_`) — куски камня под
+изменёнными комнатами, без шума в остальных. Python-инструменты — `.venv/bin/python` (Pillow, numpy; папка вне git).
+Сцена без живого Editor: `Unity -batchmode -quit -executeMethod ForgottenKingdom.EditorTools.ScenePasses.ApplyZone
+-zone <зона>` (импорт арта, `Scene<Зона>.Apply`, `SceneReactive`, `SceneStones`, `SceneLevelLights`; ~3 мин). Проходы
+переписывают fileID во всех сценах — чужие зоны и `MainMenu` откатить `git checkout`, как и `ProjectSettings/*`,
+которые Unity переформатировал.
+
+Порядок: правка текста → `node tools/level-art/render.js <зона>` (headless-браузер, ~1 мин) →
 `ContentBuilder.Build` → `ContentBuilder.RefreshLevelArt` (импорт) → `Scene<Зона>.Apply`. Просмотр без Unity:
 `node design/ui/_shared/serve.js` → `/design/levels/painter/index.html?zone=tomb&what=preview&ppu=12`
 (вся зона) или `&what=view&x=<левый край>&y=<низ>&ppu=60` (кадр камеры 32 × 18 юнитов). Зона без папки арта

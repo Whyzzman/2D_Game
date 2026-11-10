@@ -131,6 +131,11 @@
   править `Assets/Game` и не запускать второй. `Assets/Settings` и `ProjectSettings/EditorBuildSettings.asset` (сцены зон) копировать отдельно.
   Сменились кадры персонажей — `Build` один раз идёт ~40 мин (атлас перепаковывается на каждый
   импорт); тогда префабы врагов — не шум, не откатывать.
+- **Mac пользователя** (с 2026-11-10; тесты — по минимуму, просьба пользователя: компиляция и результат, полный прогон
+  только для рискованной правки): Editor обычно закрыт — шаги идут batchmode прямо в проекте (`LevelTidy.ComfortReport`,
+  `ScenePasses.ApplyZone -zone <зона>`; `gamedesign/LEVEL_TOOL.md`), перед запуском убедиться, что Unity не открыт
+  (`pgrep -f Unity.app/Contents/MacOS/Unity`). Браузер для рендера — Brave через `tools/_shared/browser.js`; Python —
+  `.venv/bin/python`.
 - **Windows** (с 2026-11): Unity CLI `unity test --mode EditMode|PlayMode --filter … --output <xml> <копия>`;
   синхронизация — `robocopy Assets\Game <копия>\Assets\Game /MIR /XF Zz*.cs Zz*.cs.meta` (тесты `Zz*` живут
   только в копии), полный цикл без `Build` — `tools/tests/cycle.sh <метка>` (сцены `ZzApplyScenes` → EditMode →
