@@ -1,5 +1,5 @@
 // Кадри ворогів і боса Гробниці з design/characters/enemies (enemies.js) через headless Chrome: кожен стан —
-// ряд кадрів у %TEMP%/enemy-frames, потім tools/enemies/split.py ріже їх у Art/Source/Final/… і на місце заглушок.
+// ряд кадрів у %TEMP%/enemy-frames, потім tools/enemies/split.py ріже їх на місце заглушок (і в Art/Painted.txt).
 // Кількість кадрів станів — з таблиць PlaceholderEnemyArt (контракт анімації той самий).
 // Запуск: node tools/enemies/render.js [tomb|forest|vc|marsh]   (Chrome: змінна CHROME=<шлях>)
 const fs = require("fs");

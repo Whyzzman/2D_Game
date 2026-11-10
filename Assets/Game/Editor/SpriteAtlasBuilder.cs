@@ -16,8 +16,8 @@ namespace ForgottenKingdom.EditorTools
     /// a single texture instead of a texture per frame (1 365 of them before this).
     ///
     /// Every atlas packs a whole folder rather than a list of sprites, so the placeholder
-    /// generator can rewrite frames, and final art can replace them through
-    /// <c>Art/Source/Final</c>, without the atlases going stale. The environment is left out on
+    /// generator can rewrite frames, and drawn art can replace them in place
+    /// (<c>Art/Painted.txt</c>), without the atlases going stale. The environment is left out on
     /// purpose: its tiled walls and floors repeat their textures, and a texture inside an atlas
     /// cannot repeat.
     ///

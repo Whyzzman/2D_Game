@@ -131,8 +131,8 @@
   (pre-roll), стык проверяется на непрерывном проигрывании 10 минут.
 - Слой пульса и барабанов — **та же длина и темп** до сэмпла (тест `AFightLayerIsExactlyAsLongAsItsTrack`).
 - Имена файлов — как у плейсхолдеров: `music_<zone>`, `music_<zone>_pulse`, `music_boss_<boss-id>`,
-  `music_boss_<boss-id>_drums`, `music_boss_<boss-id>_intro`, `stinger_<id>`. Класть в
-  `Assets/Game/Art/Source/Final/Audio/Music/` (как арт — `ART_ASSET_LIST.md` §1); генератор не перезаписывает финальные.
+  `music_boss_<boss-id>_drums`, `music_boss_<boss-id>_intro`, `stinger_<id>`. Подключать клипами в полях
+  `MusicDirector` (`SceneMusic`, `MUSIC_SYSTEM.md`); генератор пишет только свои процедурные файлы.
 - Стемы сдаются отдельно (струнные / народные / голос / ударные / орган) — для дакинга и будущих
   динамических слоёв.
 

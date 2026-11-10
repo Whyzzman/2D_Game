@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
@@ -322,37 +323,65 @@ namespace ForgottenKingdom.EditorTools
         public const float PixelsPerUnit = 100f;
         private const string ArtRoot = "Assets/Game/Art/";
 
-        /// <summary>Where hand-drawn replacements are dropped; see gamedesign/ART_ASSET_LIST.md.</summary>
-        public const string FinalRoot = ArtRoot + "Source/Final";
+        /// <summary>
+        /// The list of drawn files, one path under Art/ per line; see gamedesign/ART_ASSET_LIST.md.
+        /// A file named here is never overwritten by the generator.
+        /// </summary>
+        public const string PaintedList = ArtRoot + "Painted.txt";
 
-        /// <summary>How many generated files were replaced by final art in this run.</summary>
+        private static HashSet<string> _painted;
+
+        /// <summary>How many generated files were left alone because they are drawn art.</summary>
         public static int FinalArtUsed { get; set; }
 
-        /// <summary>The final-art path mirroring a generated one, or null outside Art/.</summary>
-        public static string FinalPathFor(string path)
+        /// <summary>Reads the list again; called at the start of every build.</summary>
+        public static void ReloadPainted()
         {
-            if (!path.StartsWith(ArtRoot) || path.StartsWith(ArtRoot + "Source/"))
+            _painted = new HashSet<string>();
+            var full = Path.GetFullPath(PaintedList);
+            if (!File.Exists(full))
             {
-                return null;
+                return;
             }
 
-            return $"{FinalRoot}/{path.Substring(ArtRoot.Length)}";
+            foreach (var line in File.ReadAllLines(full))
+            {
+                var entry = line.Trim();
+                if (entry.Length > 0 && entry[0] != '#')
+                {
+                    _painted.Add(entry);
+                }
+            }
+        }
+
+        /// <summary>True when the file at this path is drawn art the generator must not touch.</summary>
+        public static bool IsPainted(string path)
+        {
+            if (!path.StartsWith(ArtRoot))
+            {
+                return false;
+            }
+
+            if (_painted == null)
+            {
+                ReloadPainted();
+            }
+
+            return _painted.Contains(path.Substring(ArtRoot.Length));
         }
 
         /// <summary>
-        /// Writes only when the bytes actually differ, so a rebuild never churns art an artist has
-        /// already replaced, and never rewrites a file that has not changed.
+        /// Writes only when the bytes actually differ, so a rebuild never rewrites a file that has
+        /// not changed.
         /// </summary>
         public static void WriteIfChanged(string path, byte[] png)
         {
-            // Hand-drawn art wins: a file at the mirrored path under Source/Final replaces the
-            // procedural bytes, so the sprite keeps its GUID and every animation set, prefab and
-            // scene that points at it shows the final art without a single reference changing.
-            var final = FinalPathFor(path);
-            if (final != null && File.Exists(Path.GetFullPath(final)))
+            // Drawn art wins: a file listed in Painted.txt stays as it is, so the sprite keeps its
+            // GUID and every animation set, prefab and scene that points at it shows the drawn art.
+            if (IsPainted(path) && File.Exists(Path.GetFullPath(path)))
             {
-                png = File.ReadAllBytes(Path.GetFullPath(final));
                 FinalArtUsed++;
+                return;
             }
 
             var full = Path.GetFullPath(path);

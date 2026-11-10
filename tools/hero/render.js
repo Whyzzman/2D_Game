@@ -1,6 +1,6 @@
 // Кадри героя з design/characters/hero (hero.js) через headless Chrome: кожен стан — ряд кадрів, потім
-// tools/hero/split.py ріже їх на PNG у Art/Source/Final/Characters/Player/<Стан>/ (рисований арт, генератор
-// його не стирає) і на місце заглушок. Далі в Unity: CharacterNormals.AttachAll() для героя.
+// tools/hero/split.py ріже їх на PNG на місце заглушок у Art/Characters/Player/<Стан>/ (рисований арт: шлях у
+// Art/Painted.txt, генератор його не стирає). Далі в Unity: CharacterNormals.AttachAll() для героя.
 // Запуск: node tools/hero/render.js   (Chrome: змінна CHROME=<шлях>, інакше звичайне місце)
 const fs = require("fs");
 const os = require("os");

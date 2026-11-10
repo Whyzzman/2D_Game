@@ -76,3 +76,7 @@ npm-debug.log*
 
 # Knowledge graph from /graphify (local only)
 graphify-out/
+
+# Python
+__pycache__/
+*.pyc

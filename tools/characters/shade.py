@@ -8,8 +8,8 @@
 Only the silhouette is known, so the light is read off its shape: a cool rim where the outline faces the
 upper left (the light the rooms are painted with), a soft shade where it faces away, the body a little darker
 toward the feet, and a faint inner glow off the lit side. The flat fills of the drawing turn into volume; the
-ink outline and the eyes stay as they were. Run after tools/hero/split.py or tools/enemies/split.py, on both
-the frames and their Source/Final copies, then CharacterNormals.AttachAll for the normals.
+ink outline and the eyes stay as they were. Run after tools/hero/split.py or tools/enemies/split.py on the
+frames, then CharacterNormals.AttachAll for the normals.
 """
 import sys
 from pathlib import Path

@@ -6,7 +6,7 @@ differ from the project's, or that the project does not have. The copy-only test
   python tools/tests/copy_back.py [prefix ...]            list them (only under the prefixes, if given)
   python tools/tests/copy_back.py --apply [prefix ...]    copy them into the project (the Editor imports them when idle)
 
-The character frames themselves (Art/Characters, Art/Source/Final/Characters) are made in the project by
+The character frames themselves (Art/Characters) are made in the project by
 tools/*/split.py and never come back from the copy, which may hold an older render.
 """
 import hashlib
@@ -17,7 +17,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 MAIN = ROOT / "Assets/Game"
 COPY = ROOT / "Artifacts/Verification/Project/Assets/Game"
-MADE_HERE = ("Art/Characters/", "Art/Source/Final/Characters/")
+MADE_HERE = ("Art/Characters/",)
 
 
 def digest(path):

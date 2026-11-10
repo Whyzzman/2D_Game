@@ -3,9 +3,9 @@
 
   python tools/enemies/split.py
 
-Each frame goes to Assets/Game/Art/Source/Final/Characters/<folder>/<State>/<prefix>_<state>_NN.png (drawn art,
-the generator writes it over the placeholder on every build) and straight onto the placeholder's own file, so the
-open Editor shows it without a build. Then in Unity: CharacterNormals.AttachAll() for those frames.
+Each frame goes straight onto the placeholder's own file, Assets/Game/Art/Characters/<folder>/<State>/
+<prefix>_<state>_NN.png, so the open Editor shows it without a build, and into Art/Painted.txt, so the generator
+never overwrites it. Then in Unity: CharacterNormals.AttachAll() for those frames.
 """
 import json
 import time
@@ -21,7 +21,8 @@ sys.path.insert(0, str(ROOT / "tools/characters"))
 from shade import shade  # noqa: E402  the painted light on each frame
 SRC = Path(tempfile.gettempdir()) / "enemy-frames"
 ART = ROOT / "Assets/Game/Art/Characters"
-FINAL = ROOT / "Assets/Game/Art/Source/Final/Characters"
+sys.path.insert(0, str(ROOT / "tools/_shared"))
+from painted import mark  # noqa: E402  the generator leaves listed files alone
 
 
 def save(image, path):
@@ -66,6 +67,7 @@ def trim(job, frames):
 def main():
     jobs = json.loads((SRC / "jobs.json").read_text(encoding="utf-8"))
     written = grown = 0
+    targets = []
     for job in jobs:
         sheet = Image.open(SRC / f"{job['actor']}__{job['state']}.png").convert("RGBA")
         frames, side, top = trim(job, frames_of(job, sheet))
@@ -73,11 +75,12 @@ def main():
         for i, raw in enumerate(frames):
             frame = shade(raw)
             name = f"{job['prefix']}_{job['state'].lower()}_{i:02d}.png"
-            for base in (FINAL, ART):
-                target = base / job["folder"] / job["state"] / name
-                target.parent.mkdir(parents=True, exist_ok=True)
-                save(frame, target)
+            target = ART / job["folder"] / job["state"] / name
+            target.parent.mkdir(parents=True, exist_ok=True)
+            save(frame, target)
+            targets.append(target)
             written += 1
+    mark(targets)
     print(f"enemies: {written} frames written, {grown} state(s) given a wider or taller frame")
 
 

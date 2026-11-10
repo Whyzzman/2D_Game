@@ -90,6 +90,7 @@ namespace ForgottenKingdom.EditorTools
             }
 
             PlaceholderImport.FinalArtUsed = 0;
+            PlaceholderImport.ReloadPainted();
             // The layer order has to exist before anything is assigned to it.
             SortingLayerSetup.Ensure();
             _tomb = PlaceholderTombArt.Generate();
@@ -196,7 +197,7 @@ namespace ForgottenKingdom.EditorTools
             }
             AssetDatabase.Refresh();
             Debug.Log("Forgotten Kingdom: MVP content rebuilt; "
-                + $"{PlaceholderImport.FinalArtUsed} file(s) taken from final art.");
+                + $"{PlaceholderImport.FinalArtUsed} file(s) kept as drawn art.");
         }
 
         // ---------- data ----------

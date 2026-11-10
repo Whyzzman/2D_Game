@@ -76,7 +76,8 @@ Assets/Game/
   Runtime/     код игры (сборка Game.Runtime)
   Editor/      генератор контента ContentBuilder и сценные проходы Scene*.Apply (Game.Editor)
   Levels/      зоны текстом: tomb, forest, village, marsh, capital (.txt; gamedesign/LEVEL_TOOL.md)
-  Art/ Audio/  процедурные плейсхолдеры; Art/Levels — нарисованные painter'ом зоны
+  Art/ Audio/  арт и звук генератора; рисованные файлы — по списку Art/Painted.txt (генератор их не трогает);
+               Art/Levels — нарисованные painter'ом зоны
   Scenes/      MainMenu, TombTrial (мир: игрок, камера, службы), Zones/Zone_* (уровни зон)
   Tests/       EditMode и PlayMode
 design/

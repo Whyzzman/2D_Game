@@ -9,8 +9,8 @@ The background is what is magenta or close to the colours of the picture's frame
 lose the pink they took from it, so no fringe is left. Needs Pillow and numpy. The
 object is fitted into the old placeholder's box — same canvas, same pivot, same height in the world — so
 nothing in the game moves: standing things keep their feet on the bottom of the box, hanging ones their top.
-Writes Assets/Game/Art/<path>.png and Assets/Game/Art/Source/Final/<path>.png (drawn art: the generator
-keeps it over its placeholder). Then in Unity: refresh; characters get normals (CharacterNormals.AttachAll).
+Writes Assets/Game/Art/<path>.png and lists it in Art/Painted.txt (drawn art: the generator leaves it
+alone). Then in Unity: refresh; characters get normals (CharacterNormals.AttachAll).
 """
 import json
 import os
@@ -24,7 +24,8 @@ from PIL import Image, ImageDraw, ImageEnhance, ImageFilter
 ROOT = Path(__file__).resolve().parents[2]
 MJ = ROOT / "design/levels/midjourney/props"
 ART = ROOT / "Assets/Game/Art"
-FINAL = ART / "Source/Final"
+sys.path.insert(0, str(ROOT / "tools/_shared"))
+from painted import mark  # noqa: E402  the generator leaves listed files alone
 # the placeholders' own boxes, kept aside before the first run (else the file in place is read)
 PLACEHOLDERS = Path(os.environ["SPRITE_PLACEHOLDERS"]) if os.environ.get("SPRITE_PLACEHOLDERS") else None
 NEAR = 30.0      # this close to a frame colour looks like the background
@@ -212,10 +213,9 @@ def main():
             done += 1
             continue
         sprite = fit(obj, kept if kept and kept.exists() else target)
-        for base in (ART, FINAL):
-            out = base / f"{path}.png"
-            out.parent.mkdir(parents=True, exist_ok=True)
-            sprite.save(out)
+        target.parent.mkdir(parents=True, exist_ok=True)
+        sprite.save(target)
+        mark([target])
         done += 1
     print(f"{done} sprites written")
 

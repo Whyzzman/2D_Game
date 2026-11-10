@@ -17,9 +17,9 @@ namespace ForgottenKingdom.EditorTools
     /// against the same contract.
     ///
     /// Each frame is its own PNG under `Assets/Game/Art/Characters/Player/&lt;state&gt;/`. These files
-    /// are regenerated on every build; an artist's frame goes to the mirrored path under
-    /// `Art/Source/Final/`, and <see cref="PlaceholderImport.WriteIfChanged"/> writes it in place
-    /// of the drawn one (gamedesign/ART_ASSET_LIST.md). Nothing in code changes.
+    /// are regenerated on every build; an artist's frame replaces the file in place and is listed in
+    /// `Art/Painted.txt`, and <see cref="PlaceholderImport.WriteIfChanged"/> leaves it alone
+    /// (gamedesign/ART_ASSET_LIST.md). Nothing in code changes.
     /// </summary>
     public static class PlaceholderPlayerArt
     {

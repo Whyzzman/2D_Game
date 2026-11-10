@@ -32,16 +32,17 @@
 
 Конвеєр уже працює і нічого в коді змінювати не треба.
 
-1. Покласти PNG у **`Assets/Game/Art/Source/Final/`** за тим самим відносним
-   шляхом і з тим самим іменем, що й плейсхолдер у `Assets/Game/Art/`.
-   Приклад: плейсхолдер `Assets/Game/Art/Characters/Player/Idle/player_idle_00.png`
-   → фінальний `Assets/Game/Art/Source/Final/Characters/Player/Idle/player_idle_00.png`.
-2. Запустити генератор контенту
-   (`-executeMethod ForgottenKingdom.EditorTools.ContentBuilder.Build`).
-   `PlaceholderImport.WriteIfChanged` бачить фінальний файл і записує **його
-   байти** замість процедурних. GUID спрайта не змінюється, тож анімаційні
+1. Записати PNG **просто на місце плейсхолдера** в `Assets/Game/Art/` (те саме ім'я, той самий
+   розмір полотна) і додати його шлях відносно `Art/` рядком у **`Assets/Game/Art/Painted.txt`**.
+   Приклад: `Assets/Game/Art/Characters/Player/Idle/player_idle_00.png` → рядок
+   `Characters/Player/Idle/player_idle_00.png`. Інструменти (`tools/hero/split.py`,
+   `tools/enemies/split.py`, `tools/midjourney/sprites.py`) роблять обидва кроки самі
+   (`tools/_shared/painted.py`). Другої копії файлу немає (до 2026-11-10 була тека `Art/Source/Final`).
+2. Генератор контенту (`ContentBuilder.Build`) файл зі списку **не чіпає**
+   (`PlaceholderImport.IsPainted`). GUID спрайта не змінюється, тож анімаційні
    набори, префаби, сцени й HUD показують новий арт без жодної зміненої
-   посилки. Лог збірки пише, скільки файлів узято з фінального арту.
+   посилки. Лог збірки пише, скільки файлів лишено як намальовані. Прибрати рядок зі списку —
+   наступна збірка поверне процедурний кадр.
 3. Імпорт виставляється автоматично: Sprite, PPU **100**, bilinear, без mipmaps,
    alpha is transparency, без стиснення, півот — як у таблицях нижче.
 4. Прогнати EditMode + PlayMode і тур скриншотів (`-screenshotTour`), подивитися
@@ -69,7 +70,7 @@
 обраний користувачем):** маленький мандрівник у гострому каптурі, дві бліді очі з темряви, сіро-блакитний шарф,
 плащ-дзвін, короткий меч, фіолетова «Тінь» на лівій руці. Кадри малює `design/characters/hero/hero.js` (ключові пози
 стану, між ними — інтерполяція; контакт удару — той самий кадр, що в заглушки): `node tools/hero/render.js` →
-`python tools/hero/split.py` (кладе в `Source/Final/…` і на місце заглушок) → у Unity `CharacterNormals.AttachAll`.
+`python tools/hero/split.py` (пише на місце заглушок і в `Art/Painted.txt`) → у Unity `CharacterNormals.AttachAll`.
 Окремий шар краю плаща (`Cloak/player_cloak_tail.png`) лишився старим — перевірити в грі.
 
 Зріст фігури **160 px** (капсула 0.8 × 1.6 юніта). Півот — центр стоп.
@@ -127,7 +128,7 @@
 Кістяний лучник, Щитоносець і Страж Гробниці. Midjourney не тримає персонажа від кадру до кадру, тож кадри малює
 `design/characters/enemies/enemies.js` за концептом (спільний скелет, вигляд кожного, пози станів ключами-частками,
 удар — на тій же частці, що в атаки: 0,45 для меча, 0,4 для поштовху щитом, постріл — 0,7). `node tools/enemies/render.js`
-→ `python tools/enemies/split.py` (у `Source/Final/…` і на місце заглушок) → `CharacterNormals.AttachAll`. Стопи — на
+→ `python tools/enemies/split.py` (на місце заглушок і в `Art/Painted.txt`) → `CharacterNormals.AttachAll`. Стопи — на
 нижньому краї кадру (заглушки стояли на 25 px вище й висіли в повітрі).
 
 **Вороги й бос Лісу перемальовані (2026-11-03, просьба користувача «другий рівень так само»; концепти Midjourney
@@ -276,7 +277,7 @@
 
 Уточнення 2026-09-25 до таблиць нижче: полотно кадру гравця тепер
 **256 × 224** (меч намальований у кадрі, а не окремим спрайтом); заміна PNG —
-лише через `Source/Final` (§1), бо генератор перезаписує файли в теках станів;
+лише зі списком `Art/Painted.txt` (§1), бо генератор перезаписує решту файлів у теках станів;
 HUD у грі — UI Toolkit із процедурними рамками та іконками (§6).
 ### Персонажі
 

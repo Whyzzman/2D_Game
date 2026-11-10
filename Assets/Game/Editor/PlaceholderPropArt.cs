@@ -8,7 +8,7 @@ namespace ForgottenKingdom.EditorTools
     /// Placeholder art for the things the hero can break (GAME_FEEL_IDEAS item 14): a funeral urn for
     /// the Tomb and the Capital, a heap of skulls for crypts, a crate for the Forest and the Village.
     /// Round, leaning shapes rather than boxes; each from its own seed. Feet at the bottom middle, as
-    /// every prop. Rewritten by every build; drawn art goes in `Art/Source/Final` under the same path.
+    /// every prop. Rewritten by every build; drawn art replaces the file and is listed in `Art/Painted.txt`.
     /// </summary>
     public static class PlaceholderPropArt
     {
