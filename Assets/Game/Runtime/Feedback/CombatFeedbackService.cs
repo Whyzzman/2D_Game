@@ -57,6 +57,15 @@ namespace ForgottenKingdom
         private FeedbackProfile _frameOwner;
         private Vector2 _frameDirection;
         private readonly HashSet<CombatActor> _actors = new HashSet<CombatActor>();
+        /// <summary>Each enemy's own handler, kept so it can be taken off again: it knows who was struck.</summary>
+        private readonly Dictionary<CombatActor, System.Action<DamageInfo, DamageResult>> _struck =
+            new Dictionary<CombatActor, System.Action<DamageInfo, DamageResult>>();
+
+        /// <summary>
+        /// What the body struck by the blow being played is made of; read by the sound in
+        /// <see cref="Played"/> (GAME_FEEL_IDEAS.md, item 7). Flesh outside a landed physical blow.
+        /// </summary>
+        public HitMaterial StruckMaterial { get; private set; }
         private readonly HashSet<StatusEffects> _statuses = new HashSet<StatusEffects>();
         private readonly HashSet<EnemyController> _enemies = new HashSet<EnemyController>();
         private readonly HashSet<BossController> _bosses = new HashSet<BossController>();
@@ -329,7 +338,10 @@ namespace ForgottenKingdom
                     continue;
                 }
 
-                actor.DamageTaken += OnDamageTaken;
+                var victim = actor;
+                System.Action<DamageInfo, DamageResult> struck = (info, result) => OnDamageTaken(victim, info, result);
+                _struck[actor] = struck;
+                actor.DamageTaken += struck;
                 actor.Killed += OnKilled;
             }
 
@@ -393,13 +405,18 @@ namespace ForgottenKingdom
                     continue;
                 }
 
-                actor.DamageTaken -= OnDamageTaken;
+                if (_struck.TryGetValue(actor, out var struck))
+                {
+                    actor.DamageTaken -= struck;
+                }
+
                 actor.DamageTaken -= OnPlayerDamaged;
                 actor.AttackParried -= OnParried;
                 actor.Killed -= OnKilled;
             }
 
             _actors.Clear();
+            _struck.Clear();
             _statuses.Clear();
         }
 
@@ -408,7 +425,7 @@ namespace ForgottenKingdom
         /// blocked or parried hit is a different moment from a hit that landed — not a quieter
         /// version of it.
         /// </summary>
-        private void OnDamageTaken(DamageInfo info, DamageResult result)
+        private void OnDamageTaken(CombatActor victim, DamageInfo info, DamageResult result)
         {
             var position = ImpactPoint(info);
 
@@ -426,7 +443,18 @@ namespace ForgottenKingdom
                     return;
             }
 
-            PlayInternal(KindForHit(info), position, BurstDirection(info), ScaleForHit(info));
+            var kind = KindForHit(info);
+            if (victim != null && (kind == FeedbackKind.LightHit || kind == FeedbackKind.HeavyHit
+                || kind == FeedbackKind.CriticalHit))
+            {
+                // A plain blade on a body: the spark and the sound say what the body is made of.
+                StruckMaterial = HitMaterials.Of(victim);
+                PlayInternal(kind, position, BurstDirection(info), ScaleForHit(info), HitMaterials.Tint(StruckMaterial));
+                StruckMaterial = HitMaterial.Flesh;
+                return;
+            }
+
+            PlayInternal(kind, position, BurstDirection(info), ScaleForHit(info));
         }
 
         /// <summary>
@@ -444,7 +472,7 @@ namespace ForgottenKingdom
                 return;
             }
 
-            OnDamageTaken(info, result);
+            OnDamageTaken(null, info, result);
         }
 
         private static Vector2 ImpactPoint(in DamageInfo info) =>

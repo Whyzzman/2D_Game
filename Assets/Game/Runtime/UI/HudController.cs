@@ -395,11 +395,34 @@ namespace ForgottenKingdom
             UpdateConditions();
             _purse?.Update(_progress != null ? _progress.Currency : 0, dt);
             UpdatePrompt();
+            InviteGlyphs();
+            _keyGlyphs?.Tick(dt);
             UpdateFade(dt);
             _zoneTitle?.Tick(dt);
             _bossTitle?.Tick(dt);
             _zoneCurtain?.Tick(dt);
             TickLowHealth(dt);
+        }
+
+        /// <summary>Glyphs point themselves out the first time their action can be used (item 21).</summary>
+        private void InviteGlyphs()
+        {
+            if (_keyGlyphs == null || _player == null || !_player.IsAlive)
+            {
+                return;
+            }
+
+            if (!string.IsNullOrEmpty(_shownPrompt))
+            {
+                _keyGlyphs.Invite("Interact");
+            }
+
+            var health = _player.Health;
+            var flasks = _player.Flasks;
+            if (health != null && flasks != null && flasks.Charges > 0 && health.Current < health.Max)
+            {
+                _keyGlyphs.Invite("Heal");
+            }
         }
 
         private void TickLowHealth(float dt)

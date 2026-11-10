@@ -191,7 +191,7 @@ namespace ForgottenKingdom
             }
             else
             {
-                AudioManager.Play(id, position, 1f, _streak.PitchFor(kind, Time.unscaledTime));
+                AudioManager.Play(id, position, 1f, _streak.PitchFor(kind, Time.unscaledTime) * MaterialPitch(kind));
             }
 
             // The loudest moments make room for themselves instead of shouting over the room.
@@ -213,6 +213,14 @@ namespace ForgottenKingdom
                     manager.Duck(AudioBus.Ambience, 0.35f);
                     break;
             }
+        }
+
+        /// <summary>A blade on armour rings higher than on wood or flesh (GAME_FEEL_IDEAS.md, item 7).</summary>
+        private float MaterialPitch(FeedbackKind kind)
+        {
+            var landed = kind == FeedbackKind.LightHit || kind == FeedbackKind.HeavyHit
+                || kind == FeedbackKind.CriticalHit;
+            return landed && _feedback != null ? HitMaterials.Pitch(_feedback.StruckMaterial) : 1f;
         }
 
         /// <summary>Landed blows climb in pitch through a run (GAME_FEEL_IDEAS.md, item 8).</summary>
