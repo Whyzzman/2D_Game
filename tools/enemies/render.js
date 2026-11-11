@@ -1,7 +1,7 @@
 // Кадри ворогів і боса Гробниці з design/characters/enemies (enemies.js) через headless Chrome: кожен стан —
 // ряд кадрів у %TEMP%/enemy-frames, потім tools/enemies/split.py ріже їх на місце заглушок (і в Art/Painted.txt).
 // Кількість кадрів станів — з таблиць PlaceholderEnemyArt (контракт анімації той самий).
-// Запуск: node tools/enemies/render.js [tomb|forest|vc|marsh]   (Chrome: змінна CHROME=<шлях>)
+// Запуск: node tools/enemies/render.js [tomb|forest|vc|marsh] [Актор,Актор]   (браузер — tools/_shared/browser.js)
 const fs = require("fs");
 const os = require("os");
 const path = require("path");
@@ -53,39 +53,19 @@ function table(file, name) {
   return [...body.matchAll(/AnimationState\.(\w+), (\d+),/g)].map((m) => ({ state: m[1], n: +m[2] }));
 }
 
-function chromePath() {
-  if (process.env.CHROME) return process.env.CHROME;
-  return ["C:/Program Files/Google/Chrome/Application/chrome.exe", "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome", "/usr/bin/google-chrome"].find((p) => fs.existsSync(p));
-}
-
 const answers = (url) => new Promise((r) => http.get(url, (res) => { res.resume(); r(res.statusCode === 200); }).on("error", () => r(false)));
 
-function shot(chrome, file, w, h, url) {
-  return new Promise((resolve) => {
-    const profile = fs.mkdtempSync(path.join(os.tmpdir(), "enemy-"));
-    fs.rmSync(file, { force: true });
-    const child = spawn(chrome, ["--headless=new", "--disable-gpu", "--hide-scrollbars", "--default-background-color=00000000",
-      `--user-data-dir=${profile}`, "--no-first-run", `--window-size=${w},${h}`, "--virtual-time-budget=20000", `--screenshot=${file}`, url], { stdio: "ignore" });
-    const started = Date.now();
-    const timer = setInterval(() => {
-      const done = fs.existsSync(file) && fs.statSync(file).size > 0;
-      if (done || Date.now() - started > 60000) {
-        clearInterval(timer);
-        setTimeout(() => { child.kill(); fs.rm(profile, { recursive: true, force: true, maxRetries: 10, retryDelay: 200 }, () => {}); resolve(done); }, 300);
-      }
-    }, 100);
-  });
-}
-
 async function main() {
-  const chrome = chromePath();
+  const browser = await require("../_shared/browser.js").open();
   if (!(await answers(URL))) {
     spawn(process.execPath, [path.join(ROOT, "design/ui/_shared/serve.js")], { stdio: "ignore", detached: true }).unref();
     for (let i = 0; i < 50 && !(await answers(URL)); i++) await new Promise((r) => setTimeout(r, 100));
   }
   fs.mkdirSync(OUT, { recursive: true });
   const jobs = [];
-  for (const a of ACTORS) for (const s of table(a.file, a.table)) jobs.push({ ...a, ...s });
+  // node tools/enemies/render.js <zone> [Actor,Actor] — only the named actors of the zone
+  const only = (process.argv[3] || "").split(",").filter(Boolean);
+  for (const a of ACTORS) if (!only.length || only.includes(a.actor)) for (const s of table(a.file, a.table)) jobs.push({ ...a, ...s });
   let next = 0;
   const worker = async () => {
     while (next < jobs.length) {
@@ -94,11 +74,12 @@ async function main() {
       // lunge past the frame is not cut by a straight line; split.py trims each state to what was drawn
       j.px = Math.round(j.w * PAD_SIDE); j.pt = Math.round(j.h * PAD_TOP); j.cols = Math.min(j.n, PAD_COLS);
       const W = j.w + 2 * j.px, H = j.h + j.pt;
-      await shot(chrome, path.join(OUT, `${j.actor}__${j.state}.png`), W * j.cols, H * Math.ceil(j.n / j.cols),
+      await browser.shot(path.join(OUT, `${j.actor}__${j.state}.png`), W * j.cols, H * Math.ceil(j.n / j.cols),
         `${URL}?actor=${j.actor}&state=${j.state}&frames=${j.n}&px=${j.px}&pt=${j.pt}&cols=${j.cols}`);
     }
   };
   await Promise.all([1, 2, 3, 4, 5, 6].map(worker));
+  await browser.close();
   fs.writeFileSync(path.join(OUT, "jobs.json"), JSON.stringify(jobs));
   console.log(`enemies: ${jobs.length} states -> ${OUT}`);
 }

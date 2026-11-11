@@ -62,6 +62,25 @@ seamless tileable texture, flat top-down orthographic, even soft lighting, no sh
 single object, isolated on pure black background, centered, whole object visible with margin, straight-on side view, painterly dark gothic fantasy game asset, soft rim light, muted desaturated palette, faded gold accents --sref <STYLE> --no background, floor, shadow on ground, text, people, frame, photo, 3d render
 ```
 
+## Nano Banana вместо Midjourney (2026-11-11, решение пользователя)
+
+У Midjourney кончились быстрые часы (до 24.11.2026); рисует Google Nano Banana в чате **gemini.google.com** —
+бесплатно в пределах дневного лимита. API (`tools/nanobanana/generate.py`, ключ в `.env`) платный: у ключа без
+биллинга лимит картинок 0. Порядок, как сделаны 9 врагов:
+
+1. Браузер — Brave **на этом Mac** с расширением Claude (не браузер на Windows: его загрузки остаются там); в
+   `brave://settings/downloads` выключено «спрашивать, куда сохранять».
+2. Все картинки одного набора — **в одной беседе** («Same art style, a new image, landscape 3:2. …»): стиль держится.
+   Текст — тот же, что шёл в Midjourney (`prompts.json`; собрать — `enemy_prompt` в `generate.py`), фон
+   `flat solid pure magenta (#ff00ff)`.
+3. Забрать файл: кнопка «Download» Gemini из автоматизации не срабатывает. На странице картинка — `<img>` с
+   `blob:`-адресом: нарисовать её в canvas и скачать ссылкой `a[download]` (1024×687). Если адрес `https://lh3…`
+   (canvas «tainted») — открыть этот адрес с `=s0` в новой вкладке и сделать то же там (1264×848). Файл падает в
+   `~/Downloads`.
+4. Лист → `design/characters/enemies/parts/<Actor>/source.png` → `tools/enemies/puppet.py` (актёр в `NANO`: вырез по
+   цвету; глаза — в `EYES`) → `node tools/enemies/render.js <зона> <Актёр,…>` → `tools/enemies/split.py` → в Unity
+   `CharacterNormals.AttachAll`.
+
 ## §0. Якорь стиля (для фонов не используется с 2026-10-25)
 
 Карта зоны — в Style reference; Raw выключен. Промпт, давший якорь Гробницы (2026-10-25, вариант 4 из 4):

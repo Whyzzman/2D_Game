@@ -42,46 +42,33 @@ BOXES = {
     # roots on the ground joined the shaman to his staff, standing apart on the sheet: one piece, the staff floating
     # by his side in every frame (2026-11-06); boxed apart, the staff is his weapon again
     "RootShaman": {"body": (0.0, 0.0, 0.52, 0.97), "weapon": (0.62, 0.1, 0.76, 0.935)},
-    "AshCommander": {"body": (0.0, 0.0, 0.78, 0.97)},
-    "OathBoundKing": {"body": (0.0, 0.0, 0.62, 0.97)},
-    "PlagueStag": {"body": (0.0, 0.0, 0.62, 1.0), "weapon": (0.62, 0.0, 1.0, 0.97)},
-    "PlagueDoctor": {"body": (0.0, 0.0, 0.5, 1.0)},
-    "Bellringer": {"body": (0.0, 0.0, 0.62, 1.0)},
-    # the Capital's weeping angel without its plinth: the statue wakes
-    "StoneGargoyle": {"body": (0.0, 0.0, 1.0, 0.7)},
 }
 # a background that glows behind the figure (lighter than the frame's colours, so the cut kept it as a cloud by
 # his side, 2026-11-06): the cut-out grows into what continues it smoothly — warm, not dark — and stops at the
 # figure's sharp dark edge
 GLOW_BG = {"HollowWarden"}
 # figures Midjourney drew facing left
-FLIP_BODY = {"Watchdog", "BoneArcher", "GuardianOfTheTomb", "RoyalSpearman", "ZombieSoldier", "AshCommander",
-             "OathBoundKing", "Bellringer"}
+FLIP_BODY = {"Watchdog", "BoneArcher", "GuardianOfTheTomb", "RoyalSpearman", "ZombieSoldier"}
 # manual eyes already measured on the turned figure (the rest are read off the picture as Midjourney drew it)
-EYES_ON_FLIPPED = {"Watchdog", "AshCommander", "OathBoundKing", "Bellringer", "GuardianOfTheTomb"}
+EYES_ON_FLIPPED = {"Watchdog", "GuardianOfTheTomb"}
 # the body and the weapon cut differently: the weapon's red is pink enough to go with the background, the body's
 # feet stand on a pink shadow that only the plain cut removes
 SPLIT_CUT = {"Scarecrow"}
-# characters whose own Midjourney sheet is still to come (fast hours ran out, 2026-11-05): an unused variant of a
-# kindred sheet, recoloured, with a weapon borrowed from another where its own was not drawn apart. Each stays
-# its own silhouette (a different variant), as Hollow Knight's palette-swapped husks do.
+# a recolour of the cut pieces. Until 2026-11-11 seven characters wore a recoloured variant of a kindred sheet;
+# each has its own sheet now (Nano Banana, tools/nanobanana), so only the priest's robe is left here.
 TINT = {
-    "AshCommander": {"hue": 14, "sat": 0.9, "val": 0.78},
-    "OathBoundKing": {"hue": -72, "sat": 0.95, "val": 0.95},
-    "PlagueStag": {"hue": 18, "sat": 1.25, "val": 0.95},
-    "MarshCorpseEater": {"hue": 25, "sat": 0.75, "val": 0.95},
-    "PlagueDoctor": {"hue": 0, "sat": 0.18, "val": 0.62},
-    "Bellringer": {"hue": -125, "sat": 1.1, "val": 0.9},
     # its own sheet, but Midjourney drew the robe pale and the magenta ground tinged it pink: the one light figure
     # among dark ones (mean 178 against 20–60). Ash-violet dusk robe; the gold staff and the eyes keep their light
     # (2026-11-06, decided by Claude under standing approval)
     "PalacePriest": {"hue": -104, "sat": 1.0, "val": 0.36},
 }
-WEAPON_FROM = {"AshCommander": "GuardianOfTheTomb", "OathBoundKing": "GuardianOfTheTomb", "Bellringer": "ShieldGuard"}
+WEAPON_FROM = {}
 # a source that is already cut out (transparent), not on magenta: the Capital's weeping-angel statue wakes as the gargoyle
 PREMADE = set()
 # beasts hold nothing: a second piece of their picture is a shadow or a stray tuft
-NO_WEAPON = {"CorruptedHound", "Watchdog", "MarshCorpseEater", "StoneGargoyle", "HollowWarden"}
+NO_WEAPON = {"CorruptedHound", "Watchdog", "MarshCorpseEater", "StoneGargoyle", "HollowWarden", "AshRaven", "MarshLeech"}
+# they fly: nothing under them is ground, and the rig hangs the picture by its middle
+FLYERS = {"AshRaven", "MarshLeech"}
 # eyes read off the pictures by hand (body pixels: x, y, radius, colour), where the brightest spots are not the eyes
 EYES = {
     "BoneArcher": [[42, 95, 6, "#9ae8ff"], [64, 93, 5, "#9ae8ff"]],
@@ -96,14 +83,18 @@ EYES = {
     "RoyalSpearman": [[109, 171, 6, "#ffe040"], [127, 171, 6, "#ffe040"]],
     "Scarecrow": [[138, 131, 9, "#ffd070"], [186, 134, 9, "#ffd070"]],
     "ShieldGuard": [[318, 40, 7, "#c080ff"]],
-    "MarshCorpseEater": [[825, 188, 7, "#b6ff5a"]],
     "ZombieSoldier": [[62, 67, 6, "#b0a0ff"], [76, 66, 5, "#b0a0ff"]],
-    # read off the turned figures
-    "AshCommander": [[365, 104, 8, "#ff8a3a"]],
-    "OathBoundKing": [[216, 99, 7, "#ffd27a"]],
-    "StoneGargoyle": [[205, 108, 5, "#9ad0ff"], [228, 106, 5, "#9ad0ff"]],
-    "Bellringer": [[540, 95, 6, "#ffb060"], [562, 93, 6, "#ffb060"]],
     "Watchdog": [[1080, 165, 13, "#ff5030"]],
+    # the Nano Banana sheets (2026-11-11), read off the cut bodies
+    "Bellringer": [[420, 133, 7, "#ffa040"], [441, 135, 6, "#ffa040"]],
+    "AshCommander": [[198, 86, 9, "#ff8a3a"]],
+    "OathBoundKing": [[222, 76, 6, "#ffe09d"], [236, 76, 6, "#ffe09d"]],
+    "PlagueStag": [[303, 186, 8, "#78ff78"], [335, 186, 6, "#78ff78"]],
+    "PlagueDoctor": [[307, 96, 9, "#68ff6b"], [344, 96, 5, "#68ff6b"]],
+    "MarshCorpseEater": [[757, 226, 10, "#69ff6f"]],
+    "StoneGargoyle": [[610, 313, 10, "#b9fdfe"]],
+    "AshRaven": [[576, 274, 7, "#ff5a4a"]],
+    "MarshLeech": [[468, 248, 10, "#e8ff8a"]],
 }
 BY_COLOUR = {"GuardianOfTheTomb", "RoyalCrossbowman", "Scarecrow", "HollowWarden", "AshCommander", "OathBoundKing",
              "PlagueDoctor"}
@@ -326,6 +317,28 @@ def strip_ground(piece):
     return piece.crop(box)
 
 
+# sheets from Nano Banana (tools/nanobanana, 2026-11-11): the ground is one even magenta, so it is keyed by colour
+# alone — every pixel near (255, 0, 255) goes, pockets between an arm and the body too, and no eye or red cloth
+# is mistaken for it
+NANO = {"Bellringer", "AshCommander", "OathBoundKing", "PlagueStag", "PlagueDoctor", "MarshCorpseEater",
+        "StoneGargoyle", "AshRaven", "MarshLeech"}
+
+
+def key_magenta(image, near=135.0):
+    px = np.asarray(image.convert("RGB"), dtype=np.float32)
+    far = np.sqrt(((px - np.array([255.0, 0.0, 255.0])) ** 2).sum(-1))
+    alpha = Image.fromarray(np.where(far < near, 0, 255).astype(np.uint8))
+    alpha = alpha.filter(ImageFilter.MinFilter(3)).filter(ImageFilter.GaussianBlur(0.8))
+    a = np.asarray(alpha, dtype=np.float32) / 255
+    r, g, b = px[..., 0], px[..., 1], px[..., 2]
+    # the magenta mixed into a soft edge: red and blue pulled down to the green, as much as it was background
+    t = np.where((a > 0) & (a < 0.98), 1 - a, 0)
+    spill = np.clip(np.minimum(r, b) - g, 0, None)
+    r2 = r - spill * np.maximum(t, 0.0) * 0.9
+    b2 = b - spill * np.maximum(t, 0.0) * 0.9
+    return Image.fromarray(np.dstack([r2, g, b2, a * 255]).clip(0, 255).astype(np.uint8), "RGBA")
+
+
 def build(actor):
     src = PARTS / actor / "source.png"
     if not src.exists():
@@ -335,7 +348,7 @@ def build(actor):
     if actor in PREMADE:
         clean = weapon_clean = raw
     else:
-        clean = cut(raw, by_colour=actor in BY_COLOUR)
+        clean = key_magenta(raw) if actor in NANO else cut(raw, by_colour=actor in BY_COLOUR)
         if actor in GLOW_BG:
             clean = eat_glow(clean)
         weapon_clean = cut(raw, by_colour=True) if actor in SPLIT_CUT else clean
@@ -375,7 +388,8 @@ def build(actor):
             if actor in FLIP_WEAPON:
                 piece = piece.transpose(Image.FLIP_LEFT_RIGHT)
         else:
-            piece = strip_ground(piece)
+            if actor not in FLYERS:
+                piece = strip_ground(piece)
             if actor in FLIP_BODY:
                 piece = piece.transpose(Image.FLIP_LEFT_RIGHT)
         if actor in TINT:
@@ -403,6 +417,7 @@ def build(actor):
     meta["height"] = box[3] - box[1]
     meta["width"] = box[2] - box[0]
     meta["centre"] = (box[0] + box[2]) / 2
+    meta["middle"] = (box[1] + box[3]) / 2
     (PARTS / actor / "parts.json").write_text(json.dumps(meta, indent=1), encoding="utf-8")
     print(actor, "pieces:", ", ".join(k for k in ("body", "weapon") if k in meta), "eyes:", len(meta.get("eyes", [])))
 

@@ -461,6 +461,8 @@
   }
   // Звірі на чотирьох лапах: їхній малюнок гнеться інакше, ніж фігура в плащі.
   const QUADS = new Set(["CorruptedHound", "Watchdog", "MarshCorpseEater"]);
+  // Летючі (ворон, п'явка): малюнок висить у повітрі, махає тим, що над тулубом, і хвилюється вздовж.
+  const FLYERS = new Set(["AshRaven", "MarshLeech"]);
   const smooth01 = (a, b, x) => { const t = Math.max(0, Math.min(1, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
 
   // Де стоїть вершина малюнка (u, v; v = 0 — верх) у позі p: стопи на місці, усе інше — за позою.
@@ -503,6 +505,18 @@
     return Mesh.rot(q, [0, 0], R(p.lean || 0) * 0.45);
   }
 
+  function deformFlyer(p, bw, bh, u, v) {
+    let q = [(u - 0.5) * bw, (v - 0.5) * bh];
+    // помах: усе, що вище середини тулуба (крила), стискається й розтягується по вертикалі, край — найбільше
+    const beat = ((p.wingUp || 0) * 2 - 1) * 0.3 + (p.flap || 0) * 0.3;
+    const above = smooth01(0.52, 0.12, v);
+    q[1] += -(v - 0.5) * bh * beat * above * -1 - beat * bh * 0.08 * above;
+    // тіло хвилюється від хвоста до голови; голова кивне
+    q[1] += Math.sin(PI2 * (p.wave || 0) + u * 5) * bh * 0.025 * smooth01(0.3, 0.6, v);
+    if (u > 0.72) q = Mesh.rot(q, [bw * 0.22, 0], R(p.head || 0) * 0.6 * smooth01(0.72, 0.95, u));
+    return Mesh.rot(q, [0, 0], R(p.lean || 0) * 0.7);
+  }
+
   function drawPuppet(g, actor, pz, p, frame) {
     const m = pz.meta;
     // масштаб: висота старої фігури (і не ширша за кадр)
@@ -518,17 +532,25 @@
         pz.cache.weapon = Mesh.prescale(pz.img.weapon, m.weapon.w * wk * 1.5, m.weapon.h * wk * 1.5);
       }
     }
-    const quad = QUADS.has(actor.__name);
-    const map = (u, v) => (quad ? deformQuad : deformRobed)(p, bw, bh, u, v);
+    const quad = QUADS.has(actor.__name), flyer = FLYERS.has(actor.__name);
+    const map = (u, v) => (flyer ? deformFlyer : quad ? deformQuad : deformRobed)(p, bw, bh, u, v);
     const COLS = 8, ROWS = 12;
     g.clearRect(0, 0, actor.w, actor.h);
     g.save();
     // стопи на землі: присід векторної пози (y донизу — коліна гнуться) для мальованої фігури — стиск тіла донизу,
     // а не з'їзд за край кадру; підскок угору (y < 0) лишається підскоком
     const crouch = Math.max(0, p.y || 0);
-    g.translate(m.centre + p.x, actor.h - 2 + Math.min(0, p.y || 0));
-    g.globalAlpha = p.alpha;
-    g.scale(p.sx * (1 + crouch / bh * 0.35), p.sy * (1 - crouch / bh * 0.9));
+    if (flyer) {
+      // у повітрі: середина малюнка там, де була середина старої фігури
+      // …але не нижче землі: малюнок із розкритими крилами вищий за стару фігуру, що сиділа
+      g.translate(m.centre + p.x, Math.min((m.middle || actor.h * 0.55) + (p.y || 0), actor.h - 2 - bh * 0.5));
+      g.globalAlpha = p.alpha;
+      g.scale(p.sx, p.sy);
+    } else {
+      g.translate(m.centre + p.x, actor.h - 2 + Math.min(0, p.y || 0));
+      g.globalAlpha = p.alpha;
+      g.scale(p.sx * (1 + crouch / bh * 0.35), p.sy * (1 - crouch / bh * 0.9));
+    }
     // фаза-2 і магія: світло з-за спини
     if (p.glow > 0.02) {
       // the whole circle of the gradient, ending at the feet: a narrower fill showed the light as a box with straight
