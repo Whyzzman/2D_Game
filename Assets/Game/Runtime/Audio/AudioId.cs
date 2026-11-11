@@ -256,6 +256,9 @@ namespace ForgottenKingdom
         // ---- ringing ears when the hero is hit (GAME_FEEL_IDEAS item 10, appended) ----
         HurtRing,
         // ---- the heart heard at low health (GAME_FEEL_IDEAS item 17, appended) ----
-        Heartbeat
+        Heartbeat,
+        // ---- a find heard over the zone's music (GAME_FEEL_IDEAS item 16, appended) ----
+        DiscoverySecret,
+        DiscoveryAltar
     }
 }

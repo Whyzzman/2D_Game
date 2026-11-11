@@ -29,6 +29,7 @@ namespace ForgottenKingdom
     {
         private const string OpenClass = "pause--open";
         private readonly VisualElement _overlay;
+        private readonly PauseBackdrop _backdrop = new PauseBackdrop();
         private readonly OptionsPanel _options;
         private readonly List<Button> _items = new List<Button>();
         private readonly List<System.Action> _actions = new List<System.Action>();
@@ -179,6 +180,7 @@ namespace ForgottenKingdom
                 return;
             }
 
+            _backdrop.Show(_overlay);
             _overlay.AddToClassList(OpenClass);
             MenuMotion.Reveal(_overlay);
             MenuMotion.Reveal(_panel);
@@ -199,6 +201,7 @@ namespace ForgottenKingdom
             _options?.Close();
             CloseControls();
             _overlay.RemoveFromClassList(OpenClass);
+            _backdrop.Hide(_overlay);
             MenuMotion.Hide(_overlay);
             MenuMotion.Hide(_panel);
             GamePause.Pop();

@@ -313,6 +313,9 @@ namespace ForgottenKingdom.EditorTools
             // ---- the hero falls into shadow (a long low breath); the altar answers (a low chime) ----
             new Spec(AudioId.HeroFall, "SFX/Player", "sfx_player_fall_to_shadow", Recipe.Shadow, 2, 1.8f, 0.42f),
             new Spec(AudioId.AltarCall, "SFX/World", "sfx_altar_call", Recipe.Chime, 2, 1.6f, 0.5f),
+            // ---- a find: a bright rising phrase for a secret room, a low warm one for a new altar ----
+            new Spec(AudioId.DiscoverySecret, "SFX/World", "sfx_discovery_secret", Recipe.Chime, 1, 1.9f, 1.5f),
+            new Spec(AudioId.DiscoveryAltar, "SFX/World", "sfx_discovery_altar", Recipe.Chime, 1, 2.2f, 0.75f),
             // ---- ringing ears after a blow to the hero ----
             new Spec(AudioId.HurtRing, "SFX/Player", "sfx_player_hurt_ring", Recipe.Ring, 2, 0.9f, 1f),
             // ---- the heart at low health: lub-dub, felt more than heard ----
