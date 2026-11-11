@@ -76,7 +76,8 @@ single object, isolated on pure black background, centered, whole object visible
 3. Забрать файл: кнопка «Download» Gemini из автоматизации не срабатывает. На странице картинка — `<img>` с
    `blob:`-адресом: нарисовать её в canvas и скачать ссылкой `a[download]` (1024×687). Если адрес `https://lh3…`
    (canvas «tainted») — открыть этот адрес с `=s0` в новой вкладке и сделать то же там (1264×848). Файл падает в
-   `~/Downloads`.
+   `~/Downloads`. Brave пропускает из одной вкладки только первую такую загрузку, остальные молча глушит
+   («несколько загрузок»): на каждую картинку `lh3` — **новая вкладка**, потом закрыть (2026-11-11).
 4. Лист → `design/characters/enemies/parts/<Actor>/source.png` → `tools/enemies/puppet.py` (актёр в `NANO`: вырез по
    цвету; глаза — в `EYES`) → `node tools/enemies/render.js <зона> <Актёр,…>` → `tools/enemies/split.py` → в Unity
    `CharacterNormals.AttachAll`.
@@ -163,7 +164,12 @@ Midjourney не копировал чужой вид (`VISUAL_BIBLE.md` §3). Б
 ## §3. Гробница — декор (12)
 
 Промпт = **текст** + `, ` + **PROP** + `--ar` из строки. Файл: `design/levels/midjourney/tomb/props/<имя>.png`.
-Фон должен быть именно чёрным — по нему вырезается прозрачность.
+
+✅ 2026-11-11 — нарисованы Nano Banana (одна беседа, решено Claude по постоянному согласию): фон не чёрный, а
+`flat solid pure magenta (#ff00ff)` — по нему режет `sprites.py` `cut`; хвост PROP с magenta — как в
+`props/prompts.json`, первый промпт целиком, дальше «Same art style, same magenta background, a new image, …» +
+текст строки; 1:3 у Gemini не выходит — просили 9:16. Ставит их `python tools/midjourney/dress.py tomb`
+(`LEVEL_TOOL.md`, «Нарисованный уровень»).
 
 | Имя файла | --ar | Текст |
 | --- | --- | --- |
@@ -179,6 +185,19 @@ Midjourney не копировал чужой вид (`VISUAL_BIBLE.md` §3). Б
 | `prop_tomb_crown_altar` | 1:1 | small stone altar shaped like a crown with three pointed tips and a flame bowl in the middle, warm amber glow |
 | `prop_tomb_cobweb` | 1:1 | large dusty cobweb in a corner, soft silver strands |
 | `prop_tomb_roots` | 1:2 | pale gnarled roots hanging down from above, thin tendrils |
+
+## §3в. Лес — декор (12, Nano Banana, 2026-11-11)
+
+Решено Claude по постоянному согласию, одна беседа, тот же хвост PROP с magenta, но свет «soft silver rim light»
+и гамма «cold greens and dark browns» (`VISUAL_BIBLE.md`: Лес — холодный зелёный с лунным серебром). Файлы —
+`design/levels/midjourney/forest/props/prop_forest_<имя>.png`: `stump`, `gravestone`, `abbey_arch`, `hunter_shrine`,
+`mushrooms`, `fallen_log`, `cart_wheel`, `thorns`, `deer_skull` (стоят), `vines`, `roots` (висят, 9:16), `cobweb`
+(угол). Ставит `python tools/midjourney/dress.py forest`.
+
+**Село** (тот же день, своя беседа): свет «soft warm rim light», гамма «muted desaturated sepia and soot palette with
+small ember-orange accents» (`WORLD_DESIGN.md`: сепия, угли). `design/levels/midjourney/village/props/prop_village_<имя>.png`:
+`barrels`, `cart`, `well`, `fence`, `fallen_bell`, `scarecrow`, `wayside_cross`, `brazier`, `jugs` (стоят), `lantern`,
+`herbs` (висят), `cobweb` (угол). Ставит `dress.py village`.
 
 ## §3а. Лес — фоны комнат (35)
 

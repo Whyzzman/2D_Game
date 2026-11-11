@@ -96,7 +96,7 @@
   `SceneVillage.Apply` (после `Build`), тесты берут места из текста (`TombScene.Spot`, `ForestScene.Spot`),
   не числами. Новая зона — ещё `ProjectSettings/EditorBuildSettings.asset` из копии (сцена зоны). Картинки комнат карты — `ExportMapRooms` → `tools/map-art/render.sh
   rooms` → `RefreshMapArt`. Нарисованная зона (Гробница): сменил текст — `node tools/level-art/render.js <зона>`
-  → `RefreshLevelArt` → `Scene<Зона>.Apply` (`LEVEL_TOOL.md`, «Нарисованный уровень»).
+  → `place.py` → `dress.py` (Гробница) → `RefreshLevelArt` → `Scene<Зона>.Apply` (`LEVEL_TOOL.md`, «Нарисованный уровень»).
 - `Build` пересоздаёт дочерние объекты префабов врагов с новыми fileID — переопределения
   сцены на них пропадут; настраивать через генератор.
 - Арт и звук пишет генератор и перезаписывает при каждой сборке — кроме рисованного: файл, чей путь
