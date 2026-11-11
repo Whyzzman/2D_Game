@@ -69,8 +69,14 @@ namespace ForgottenKingdom.EditorTools
                 importer.alphaIsTransparency = true;
                 importer.npotScale = TextureImporterNPOTScale.None;
                 importer.maxTextureSize = 2048;
-                // Uncompressed: block compression turns the dark gradients into visible tiles and triangles.
-                importer.textureCompression = TextureImporterCompression.Uncompressed;
+                // BC7 (CompressedHQ), 2026-11-11, KI-012: uncompressed the painted world held 1-2.4 GB of
+                // textures and an 8 GB Mac paged, freezing frames for up to 1.3 s. Normal-quality DXT turned the
+                // dark gradients into visible tiles and triangles; BC7 keeps them and takes a quarter of the memory.
+                // The see-through near and front layers stay uncompressed: on their soft alpha BC7 left dotted blocks.
+                var seeThrough = path.EndsWith("_near.png") || path.EndsWith("_front.png");
+                importer.textureCompression = seeThrough
+                    ? TextureImporterCompression.Uncompressed
+                    : TextureImporterCompression.CompressedHQ;
                 importer.SaveAndReimport();
                 count++;
             }

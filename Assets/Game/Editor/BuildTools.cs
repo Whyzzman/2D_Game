@@ -40,7 +40,10 @@ namespace ForgottenKingdom.EditorTools
                 scenes = scenes,
                 locationPathName = output,
                 target = target,
-                options = BuildOptions.None
+                // -development: profiler markers for HitchLog (KNOWN_ISSUES KI-012); never the build that ships
+                options = System.Array.IndexOf(System.Environment.GetCommandLineArgs(), "-development") >= 0
+                    ? BuildOptions.Development
+                    : BuildOptions.None
             });
 
             Debug.Log($"Build {report.summary.result}: {output}, {report.summary.totalErrors} errors.");
