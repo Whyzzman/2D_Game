@@ -551,7 +551,7 @@ namespace ForgottenKingdom.EditorTools
         private static GameObject BuildHazardPrefab(string name, string path, Vector2 size,
             Color telegraph, Color active, float telegraphTime, float activeTime, float dormantTime,
             StatusType status, float buildupPerSecond, float damagePerTick,
-            DamageType damageType = DamageType.Poison)
+            DamageType damageType = DamageType.Poison, Color? drop = null)
         {
             var root = new GameObject(name);
             var visualObject = FindOrCreateChild(root, "Visual");
@@ -579,6 +579,20 @@ namespace ForgottenKingdom.EditorTools
             SetReference(zone, "_visual", visual);
             SetColor(zone, "_telegraphColor", telegraph);
             SetColor(zone, "_activeColor", active);
+            if (drop.HasValue)
+            {
+                // what comes down on the zone while it gathers: it lands as the zone turns dangerous
+                var dropObject = FindOrCreateChild(root, "Drop");
+                dropObject.transform.localScale = new Vector3(size.x * 0.55f, size.x * 0.55f, 1f);
+                var dropRenderer = Ensure<SpriteRenderer>(dropObject);
+                dropRenderer.sprite = Shape("shape_projectile_orb");
+                dropRenderer.sharedMaterial = _material;
+                dropRenderer.color = drop.Value;
+                SetSorting(dropRenderer, "VFXFront", 1);
+                dropObject.SetActive(false);
+                SetReference(zone, "_dropVisual", dropObject.transform);
+            }
+
             return SavePrefab(root, path);
         }
 

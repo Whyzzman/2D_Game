@@ -57,6 +57,9 @@ namespace ForgottenKingdom
         [SerializeField] private SpriteRenderer _visual;
         [SerializeField] private Color _telegraphColor = new Color(0.55f, 0.85f, 0.35f, 0.35f);
         [SerializeField] private Color _activeColor = new Color(0.45f, 0.95f, 0.3f, 0.7f);
+        [Tooltip("Something that falls onto the zone while it gathers: a skull, a stone from the vault.")]
+        [SerializeField] private Transform _dropVisual;
+        [SerializeField, Min(0f)] private float _dropHeight = 7f;
 
         private readonly Collider2D[] _overlaps = new Collider2D[8];
         private ContactFilter2D _filter;
@@ -144,6 +147,7 @@ namespace ForgottenKingdom
             }
 
             _phaseTimer += Time.deltaTime;
+            MoveDrop();
             switch (_phase)
             {
                 case HazardPhase.Dormant when _phaseTimer >= _dormantTime:
@@ -157,6 +161,27 @@ namespace ForgottenKingdom
                 case HazardPhase.Active:
                     TickActive();
                     break;
+            }
+        }
+
+        /// <summary>The falling thing arrives exactly as the zone turns dangerous, and is gone after.</summary>
+        private void MoveDrop()
+        {
+            if (_dropVisual == null)
+            {
+                return;
+            }
+
+            var falling = _phase == HazardPhase.Telegraph;
+            if (_dropVisual.gameObject.activeSelf != falling)
+            {
+                _dropVisual.gameObject.SetActive(falling);
+            }
+
+            if (falling)
+            {
+                var t = Mathf.Clamp01(_phaseTimer / _telegraphTime);
+                _dropVisual.localPosition = new Vector3(_offset.x, _offset.y + _dropHeight * (1f - t * t), 0f);
             }
         }
 
@@ -269,6 +294,7 @@ namespace ForgottenKingdom
         /// </summary>
         public static void ClearSpawned(Faction faction)
         {
+            HazardVolley.Cancel(faction);
             for (var i = Spawned.Count - 1; i >= 0; i--)
             {
                 var zone = Spawned[i];

@@ -201,6 +201,11 @@ merge-коммитом из `cloud/verified`: компиляция и `.meta` и
   (`Assets/Scenes/SampleScene`, `Lit2DSceneTemplate`, `URP2DSceneTemplate`). `CLAUDE.md` подключает `AGENTS.md`
   в каждую сессию Claude Code. Мёртвого кода и ассетов без ссылок проверка не нашла (кроме 8 плиток
   `Art/Levels/*/Terrain`, оставлены до следующего рендера зон).
+- [x] **Свои механики боссов** (2026-11-11, пользователь: «сделай сложную часть игры, реши сам»; решено Claude по
+  постоянному согласию). Было: Дзвонар, Командор и Чумний Олень — один список ударов с разными числами. Сделано:
+  удар в пол (`GroundStrike`) и узоры зон (`HazardPattern`, `HazardVolley`): набат-гребёнка Дзвонаря, обвал цепочкой
+  у Командора, лужи яда, двойной разгон и падающие черепа Оленя. Подробности — `BOSSES_SIGNATURES.md`. Тесты
+  `BossSignatureTests` (3). В игре не смотрено.
 
 Дальше по ощущению игры — `GAME_FEEL_IDEAS.md` (23 пункта по пользе).
 
@@ -235,6 +240,7 @@ merge-коммитом из `cloud/verified`: компиляция и `.meta` и
 | Звук и музыка | `AUDIO_DESIGN.md`, `AUDIO_ASSET_LIST.md`, `MUSIC_SYSTEM.md`; бриф на живую музыку и запись — `AUDIO_BRIEF.md` |
 | Интерфейс | `UI_UX_GUIDE.md`, `design/ui/` |
 | Мир | `WORLD_DESIGN.md` (план 15 зон, карты — `reference/maps/`), `LEVEL_TOOL.md` (зоны текстом), `WORLD_GRAPH.md`, `WORLD_SCENES.md`, `CAPITAL.md`, `WORLD_MAP.md`, `PROGRESSION_GATES.md`, `FAST_TRAVEL.md` |
+| Боссы: свои механики (набат, обвал, отравленная земля) | `BOSSES_SIGNATURES.md`; боссы зон 7–10 — `BOSSES_7_10.md` |
 | Жители, разговоры, торговец | `NPC_AND_SHOP.md` |
 | Обереги (сборка героя: намисто, цены, сочетания) | `CHARMS.md`, макет `design/ui/charms/` |
 | Осколки, тайные комнаты, испытания, бестиарий | `EXPLORATION.md` |

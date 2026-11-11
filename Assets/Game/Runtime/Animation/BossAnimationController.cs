@@ -301,6 +301,15 @@ namespace ForgottenKingdom
                         default: return BossAnimationState.JumpStart;
                     }
 
+                // Struck where it stands: the leap's gathering and its landing, without the leap between.
+                case BossAttackKind.GroundStrike:
+                    switch (phase)
+                    {
+                        case BossSwingPhase.Active: return BossAnimationState.Slam;
+                        case BossSwingPhase.Recovery: return BossAnimationState.SlamRecover;
+                        default: return BossAnimationState.JumpStart;
+                    }
+
                 case BossAttackKind.Sweep:
                     return BossAnimationState.Sweep;
 

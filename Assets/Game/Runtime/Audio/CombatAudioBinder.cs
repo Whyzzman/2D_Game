@@ -499,6 +499,11 @@ namespace ForgottenKingdom
                 case BossAttackKind.JumpSlam:
                     AudioManager.Play(AudioId.BossJump, at);
                     break;
+                case BossAttackKind.GroundStrike:
+                    // what it calls out of the floor is not where the boss is: it has to be heard coming
+                    AudioManager.Play(AudioId.BossJump, at, 1.2f);
+                    AudioManager.Instance?.Duck(AudioBus.Ambience, 0.6f);
+                    break;
                 case BossAttackKind.ShieldBash:
                     AudioManager.Play(AudioId.BossBash, at);
                     break;

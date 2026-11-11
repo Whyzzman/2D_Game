@@ -324,10 +324,17 @@ namespace ForgottenKingdom
                 CurrentSwingIndex = i;
                 CurrentSwing = swing;
                 SwingPhase = BossSwingPhase.Windup;
-                SwingWindup?.Invoke(i == 0 ? attack.Movement : BossAttackMovement.None, i);
+                var moves = i == 0 || attack.MovesEverySwing;
+                SwingWindup?.Invoke(moves ? attack.Movement : BossAttackMovement.None, i);
 
-                if (i == 0)
+                if (moves)
                 {
+                    if (i > 0 && _player != null)
+                    {
+                        // the turn at the wall: it comes back at where the hero is now
+                        _motor.FaceTowards(_player.position.x);
+                    }
+
                     yield return RunApproach(attack, swing);
                 }
                 else
@@ -335,7 +342,7 @@ namespace ForgottenKingdom
                     yield return TrackThenCommit(swing.Windup / AttackSpeed, attack.TrackingTime);
                 }
 
-                yield return RunActiveWindow(swing, i == 0 ? attack.Spawn : null);
+                yield return RunActiveWindow(swing, i == 0 || attack.SpawnsEverySwing ? attack.Spawn : null);
                 SwingPhase = BossSwingPhase.Recovery;
                 yield return new WaitForSeconds(swing.Recovery / AttackSpeed);
                 if (i + 1 < attack.SwingCount)

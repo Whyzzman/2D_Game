@@ -45,7 +45,23 @@ namespace ForgottenKingdom
         [Tooltip("How far from the attacker the zone may be placed, so it cannot cross the arena.")]
         [SerializeField, Min(0f)] private float _maxPlacementDistance = 7f;
 
+        [Header("Hazard pattern")]
+        [SerializeField] private HazardPattern _pattern = HazardPattern.Single;
+        [Tooltip("How many zones a rain drops, or how many steps a march takes each way.")]
+        [SerializeField, Min(1)] private int _count = 1;
+        [Tooltip("Seconds between one zone and the next.")]
+        [SerializeField, Min(0f)] private float _interval = 0.25f;
+        [Tooltip("March: distance between neighbouring zones.")]
+        [SerializeField, Min(0.1f)] private float _spacing = 2.5f;
+        [Tooltip("March: the row runs behind the attacker too.")]
+        [SerializeField] private bool _bothSides;
+        [Tooltip("March: every second use lands in the gaps of the one before it.")]
+        [SerializeField] private bool _alternate;
+
+        [NonSerialized] private int _emissions;
+
         public AttackSpawnKind Kind => _kind;
+        public HazardPattern Pattern => _pattern;
         public GameObject Prefab => _prefab;
         public Vector2 Offset => _offset;
         public float Speed => _speed;
@@ -79,7 +95,7 @@ namespace ForgottenKingdom
                 return;
             }
 
-            EmitHazard(damage, faction, attacker, origin, target);
+            EmitHazard(damage, faction, attacker, origin, facing, target);
         }
 
         private void EmitProjectile(in DamageInfo damage, Faction faction, Vector2 origin,
@@ -110,8 +126,22 @@ namespace ForgottenKingdom
         }
 
         private void EmitHazard(in DamageInfo damage, Faction faction, Transform attacker,
-            Vector2 origin, Transform target)
+            Vector2 origin, int facing, Transform target)
         {
+            if (_pattern == HazardPattern.Rain)
+            {
+                HazardVolley.Rain(_prefab, faction, damage.Attacker, target, _count, _interval);
+                return;
+            }
+
+            if (_pattern == HazardPattern.March)
+            {
+                var steps = HazardPatterns.March(_count, Mathf.Abs(_offset.x), _spacing, _bothSides,
+                    _alternate && _emissions++ % 2 == 1);
+                HazardVolley.March(_prefab, faction, damage.Attacker, attacker.position, facing, steps, _interval);
+                return;
+            }
+
             var position = origin;
             if (_atTargetPosition && target != null)
             {

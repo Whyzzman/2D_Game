@@ -18,7 +18,9 @@ namespace ForgottenKingdom
         RootShot,
         RootSlam,
         PoisonField,
-        LeapStrike
+        LeapStrike,
+        /// <summary>The weapon driven into the floor where the boss stands; what follows comes out of the ground.</summary>
+        GroundStrike
     }
 
     /// <summary>How the boss moves while an attack plays.</summary>
@@ -53,6 +55,10 @@ namespace ForgottenKingdom
         [Tooltip("Pause between the swings of a multi-hit attack.")]
         [SerializeField, Min(0f)] private float _swingInterval = 0.12f;
         [SerializeField] private bool _endsWithShockwave = false;
+        [Tooltip("Every swing runs or leaps again, as the first does: a charge that turns and comes back.")]
+        [SerializeField] private bool _movesEverySwing = false;
+        [Tooltip("Every swing sends out the spawn, not only the first.")]
+        [SerializeField] private bool _spawnsEverySwing = false;
         [Tooltip("What the attack sends out when it turns active: a root shot, a poison field.")]
         [SerializeField] private AttackSpawn _spawn = new AttackSpawn();
         [SerializeField] private AttackDefinition[] _swings = { new AttackDefinition() };
@@ -68,6 +74,8 @@ namespace ForgottenKingdom
         public float MovementSpeed => _movementSpeed;
         public float SwingInterval => _swingInterval;
         public bool EndsWithShockwave => _endsWithShockwave;
+        public bool MovesEverySwing => _movesEverySwing;
+        public bool SpawnsEverySwing => _spawnsEverySwing;
         public AttackSpawn Spawn => _spawn;
         public int SwingCount => _swings != null ? _swings.Length : 0;
 

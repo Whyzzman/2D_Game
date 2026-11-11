@@ -95,6 +95,7 @@ namespace ForgottenKingdom.EditorTools
             SetFloat(boss, "_parryRecoilTime", 0.8f);
             SetFloat(boss, "_tooCloseRange", 1.0f);
             ApplyCommanderAttacks(boss);
+            AddCommanderSignature(boss);
 
             SetAudioProfile(root, AudioId.BossAwaken, AudioId.BossStunned, AudioId.BossDeath,
                 AudioId.BossStep, AudioId.BossSlash, AudioId.BossSlam, AudioId.BossPhase);

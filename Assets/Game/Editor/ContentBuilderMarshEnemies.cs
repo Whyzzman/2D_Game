@@ -226,6 +226,7 @@ namespace ForgottenKingdom.EditorTools
             SetFloat(boss, "_parryRecoilTime", 0.8f);
             SetFloat(boss, "_tooCloseRange", 1.0f);
             ApplyStagAttacks(boss);
+            AddStagSignature(boss, leap: 1, leapPhaseTwo: 4, charge: 3);
 
             SetAudioProfile(root, AudioId.BossAwaken, AudioId.BossStunned, AudioId.BossDeath,
                 AudioId.BossStep, AudioId.BossSlash, AudioId.BossSlam, AudioId.BossPhase);
