@@ -199,6 +199,12 @@ small ember-orange accents» (`WORLD_DESIGN.md`: сепия, угли). `design/
 `barrels`, `cart`, `well`, `fence`, `fallen_bell`, `scarecrow`, `wayside_cross`, `brazier`, `jugs` (стоят), `lantern`,
 `herbs` (висят), `cobweb` (угол). Ставит `dress.py village`.
 
+**Столица** (своя беседа): «ash grey stone with dull gold and deep crimson accents». Готовы `angel_statue`,
+`armor_stand`, `weapon_rack`, `gilded_brazier`, `barricade`, `fallen_head`, `rubble`; не дорисованы (лимит Gemini до
+12.11 ~8:36) — груда щитов и шлемов, аналой с книгой на цепи, багряное знамя, люстра, клетка (висят). **Болото** —
+все 12 впереди: гнилой пень с грибами, покосившийся крест в тряпках, камыш, полузатонувшая лодка, болотный фонарь
+на шесте, тотем из костей, сети на кольях, светящиеся трутовики, котёл ведьмы; мох, бутылки-обереги, корни (висят).
+
 ## §3а. Лес — фоны комнат (35)
 
 2026-11-03, пользователь: «второй уровень — всё так же» (решено Claude по постоянному согласию). Промпты всех 35 комнат —

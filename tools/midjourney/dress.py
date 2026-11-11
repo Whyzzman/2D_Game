@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Stands the painted props of a zone (Nano Banana, 2026-11-11) in its rooms, on the near layer.
 
-  python tools/midjourney/dress.py tomb|forest|village     -> every room of the zone
+  python tools/midjourney/dress.py tomb|forest|village|capital|marsh     -> every room of the zone
   python tools/midjourney/dress.py tomb room_tomb_entrance
 
 Pictures: design/levels/midjourney/<zone>/props/prop_<zone>_<name>.png, one object each on flat magenta.
@@ -16,6 +16,7 @@ ContentBuilder.RefreshLevelArt (gamedesign/LEVEL_TOOL.md, «Нарисованн
 import hashlib
 import random
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -71,6 +72,16 @@ PROPS = {
         "herbs": (2.2, "hang", 0.9),
         "cobweb": (1.6, "corner", 0.8),
     },
+    # 7 of 12 (2026-11-11: Gemini's daily picture limit); the rest — shields, lectern, banner, chandelier, cage
+    "capital": {
+        "angel_statue": (3.6, "stand", 0.8),
+        "armor_stand": (2.6, "stand", 1.0),
+        "weapon_rack": (1.8, "stand", 1.0),
+        "gilded_brazier": (2.2, "stand", 1.0),
+        "barricade": (1.6, "stand", 0.8),
+        "fallen_head": (1.7, "stand", 0.5),
+        "rubble": (0.9, "stand", 1.2),
+    },
 }
 # Rooms by character: what may stand there (others are skipped in that room).
 CAVE_WORDS = ("cache", "nest", "slope", "collapsed", "falls", "flooded", "drowned", "cell", "lower")
@@ -99,12 +110,19 @@ ALLOWED = {
         "arena": ["fallen_bell", "brazier", "lantern", "wayside_cross", "barrels"],
         "secret": ["jugs", "barrels", "cobweb", "herbs"],
     },
+    "capital": {
+        "open": ["angel_statue", "barricade", "fallen_head", "rubble", "gilded_brazier", "weapon_rack"],
+        "crypts": ["angel_statue", "gilded_brazier", "rubble", "armor_stand", "weapon_rack", "fallen_head"],
+        "inside": ["armor_stand", "weapon_rack", "gilded_brazier", "rubble", "angel_statue"],
+        "arena": ["angel_statue", "gilded_brazier", "armor_stand", "fallen_head", "rubble", "barricade"],
+        "secret": ["rubble", "weapon_rack", "armor_stand", "gilded_brazier", "angel_statue"],
+    },
 }
 DARKEN, DESATURATE = 0.78, 0.85  # the near wall sits behind the playfield: a step darker and duller
 SOLID = "#%"
 # big landmarks stand once in a room
 UNIQUE = {"sarcophagus", "crown_altar", "effigy_statue", "mourner_statue", "abbey_arch", "hunter_shrine",
-          "cart_wheel", "deer_skull", "well", "fallen_bell", "scarecrow", "wayside_cross", "cart"}
+          "cart_wheel", "deer_skull", "fallen_head", "angel_statue", "well", "fallen_bell", "scarecrow", "wayside_cross", "cart"}
 
 
 def parse(text):
@@ -151,7 +169,7 @@ def room_lists(zone_name):
     text = (ROOT / "design/levels/painter/looks.js").read_text(encoding="utf-8")
     start = text.find(zone_name + ": {")
     out = {}
-    for name in ("enclosed", "underground", "poison", "open", "stone"):
+    for name in ("enclosed", "underground", "poison", "open", "stone", "crypts"):
         m = re.search(name + r": \[([^\]]*)\]", text[start:]) if start >= 0 else None
         out[name] = set(re.findall(r'"([^"]+)"', m.group(1))) if m else set()
     return out
@@ -172,6 +190,11 @@ def kind_of(zone_name, room, lists):
             if room["id"] in lists[name]:
                 return name
         return "house"
+    if zone_name == "capital":
+        for name in ("crypts", "open"):
+            if room["id"] in lists[name]:
+                return name
+        return "inside"
     if any(w in room["id"] for w in CAVE_WORDS):
         return "cave"
     return "hall"
@@ -267,7 +290,7 @@ def dress(zone_name, zone, room, sprites, used_sets, lists):
         if len(placed) < budget and name not in UNIQUE:
             stand(name)
     if not placed:  # a narrow room: whatever small thing of its kind fits
-        for name in ("bone_pile", "urn", "candelabra", "mushrooms", "stump", "thorns", "jugs", "barrels"):
+        for name in ("bone_pile", "urn", "candelabra", "mushrooms", "stump", "thorns", "jugs", "barrels", "rubble"):
             if name in allowed and stand(name):
                 break
     for name in sorted(hanging, key=lambda n: rng.random()):
@@ -308,6 +331,13 @@ def main():
     sprites = Sprites(zone_name)
     used_sets = set()
     lists = room_lists(zone_name)
+    backdrops = ROOT / "design/levels/midjourney" / zone_name
+    painted = [r["id"] for r in zone["rooms"] if not any((backdrops / f"{r['id']}{e}").exists()
+                                                         for e in (".png", ".jpg", ".jpeg", ".webp"))]
+    painted = [r for r in painted if not only or r in only]
+    if painted:  # the painter's near wall, fresh, so a second run is the same
+        subprocess.run(["node", str(ROOT / "tools/level-art/render.js"), zone_name, "4",
+                        ",".join(f"{r}_near" for r in painted)], check=True)
     for room in zone["rooms"]:
         near = rooms_dir / f"{room['id']}_near.png"
         if not near.exists():
@@ -315,7 +345,8 @@ def main():
         chosen, placed = dress(zone_name, zone, room, sprites, used_sets, lists)
         if only and room["id"] not in only:
             continue
-        border(near)  # back to place.py's frame, so a second run is the same
+        if room["id"] not in painted:
+            border(near)  # back to place.py's frame, so a second run is the same
         layer = Image.open(near).convert("RGBA")
         for img, x, y in placed:
             layer.alpha_composite(img, (max(0, x), max(0, y)))
