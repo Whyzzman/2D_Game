@@ -210,7 +210,7 @@ namespace ForgottenKingdom.EditorTools
             barrier.SetActive(false);
             BuildCapitalEncounter(section, CommanderPrefabName, "CommanderEncounter", barrier, progress, respawner,
                 CapitalSpot("commander") + new Vector2(0f, 1.4f), new Vector2(hall.xMin + 4f, hall.yMin + 2f),
-                CommanderRewardItemId, "Хоругва Командора", 900, 1500);
+                CommanderRewardItemId, "Хоругва Командора", 1100, 2000);
 
             var door = CapitalBlock(section, "KingsDoor", new Vector2(hall.xMax + 0.5f, hall.yMin + 2.5f), new Vector2(1f, 5f),
                 CapitalSurface.Masonry);

@@ -295,7 +295,7 @@ namespace ForgottenKingdom.EditorTools
                     VillageZoneId, "room_village_attic",
                     "Над верхніми хатами є горище, куди не ведуть сходи. Хто туди лазив — не жалівся.",
                     WardenBossId),
-                Good("flask-village", GoodKind.FlaskShard, "Уламок фляги", "+1 фляга", 450, shardText, shardEffect,
+                Good("flask-village", GoodKind.FlaskShard, "Уламок фляги", "+1 фляга", 650, shardText, shardEffect,
                     requires: WardenBossId)
             };
 

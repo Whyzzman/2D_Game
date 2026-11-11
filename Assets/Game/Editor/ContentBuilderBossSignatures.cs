@@ -146,6 +146,29 @@ namespace ForgottenKingdom.EditorTools
             EditorUtility.SetDirty(boss);
         }
 
+        /// <summary>
+        /// Brings a boss's own blows to the share of the hero's health the world's ladder asks for
+        /// (BALANCE_WORLD.md §4, tools/balance/report.py): the heaviest about a fifth of the hero as he
+        /// arrives. The moves keep their proportions; what comes out of the floor is not touched.
+        /// </summary>
+        private static void ScaleBossBlows(BossController boss, float factor)
+        {
+            var serialized = new SerializedObject(boss);
+            var attacks = serialized.FindProperty("_attacks");
+            for (var i = 0; i < attacks.arraySize; i++)
+            {
+                var swings = attacks.GetArrayElementAtIndex(i).FindPropertyRelative("_swings");
+                for (var j = 0; j < swings.arraySize; j++)
+                {
+                    var damage = swings.GetArrayElementAtIndex(j).FindPropertyRelative("_damage");
+                    damage.floatValue = Mathf.Round(damage.floatValue * factor);
+                }
+            }
+
+            serialized.ApplyModifiedPropertiesWithoutUndo();
+            EditorUtility.SetDirty(boss);
+        }
+
         private static (SerializedObject serialized, SerializedProperty element, int index) AppendBossAttack(
             BossController boss)
         {

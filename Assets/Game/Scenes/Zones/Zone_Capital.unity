@@ -11250,8 +11250,8 @@ MonoBehaviour:
   _respawner: {fileID: 0}
   _rewardId: commander_banner
   _rewardName: "\u0425\u043E\u0440\u0443\u0433\u0432\u0430 \u041A\u043E\u043C\u0430\u043D\u0434\u043E\u0440\u0430"
-  _rewardCurrency: 900
-  _rewardExperience: 1500
+  _rewardCurrency: 1100
+  _rewardExperience: 2000
   _rewardAbilityId: 
   _progression: {fileID: 0}
   _unlockDelay: 1.2

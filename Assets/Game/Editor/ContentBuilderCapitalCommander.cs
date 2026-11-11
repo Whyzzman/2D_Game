@@ -96,6 +96,7 @@ namespace ForgottenKingdom.EditorTools
             SetFloat(boss, "_tooCloseRange", 1.0f);
             ApplyCommanderAttacks(boss);
             AddCommanderSignature(boss);
+            ScaleBossBlows(boss, 1.2f);
 
             SetAudioProfile(root, AudioId.BossAwaken, AudioId.BossStunned, AudioId.BossDeath,
                 AudioId.BossStep, AudioId.BossSlash, AudioId.BossSlam, AudioId.BossPhase);

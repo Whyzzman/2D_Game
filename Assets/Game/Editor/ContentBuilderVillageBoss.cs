@@ -97,6 +97,7 @@ namespace ForgottenKingdom.EditorTools
             SetFloat(boss, "_tooCloseRange", 1.0f);
             ApplyBellringerAttacks(boss);
             AddBellringerSignature(boss);
+            ScaleBossBlows(boss, 1.13f);
 
             SetAudioProfile(root, AudioId.BossAwaken, AudioId.BossStunned, AudioId.BossDeath,
                 AudioId.BossStep, AudioId.BossSlash, AudioId.BossSlam, AudioId.BossPhase);

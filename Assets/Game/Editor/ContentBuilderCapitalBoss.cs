@@ -99,7 +99,7 @@ namespace ForgottenKingdom.EditorTools
             SetVector(motor, "_ledgeProbeOffset", new Vector2(0.85f, -1.35f));
             SetVector(motor, "_wallProbeOffset", new Vector2(0f, -0.6f));
 
-            SetFloat(Ensure<Health>(root), "_maxHealth", 1150f);
+            SetFloat(Ensure<Health>(root), "_maxHealth", 1250f);
             var stagger = Ensure<StaggerMeter>(root);
             SetFloat(stagger, "_threshold", 210f);
             SetFloat(stagger, "_resistance", 0.45f);
@@ -143,6 +143,7 @@ namespace ForgottenKingdom.EditorTools
             SetFloat(boss, "_parryRecoilTime", 0.8f);
             SetFloat(boss, "_tooCloseRange", 1.0f);
             ApplyKingAttacks(boss, emberScar);
+            ScaleBossBlows(boss, 1.28f);
 
             SetAudioProfile(root, AudioId.KingAwaken, AudioId.KingStunned, AudioId.KingDeath,
                 AudioId.KingStep, AudioId.BossSlash, AudioId.BossJump, AudioId.KingRage);
