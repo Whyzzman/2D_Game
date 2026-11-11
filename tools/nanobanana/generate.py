@@ -23,7 +23,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 PARTS = ROOT / "design/characters/enemies/parts"
 API = "https://generativelanguage.googleapis.com/v1beta"
-DEFAULT_MODEL = "gemini-2.5-flash-image"
+DEFAULT_MODEL = "gemini-3.1-flash-image"
 
 
 def env():
