@@ -205,6 +205,39 @@ small ember-orange accents» (`WORLD_DESIGN.md`: сепия, угли). `design/
 все 12 впереди: гнилой пень с грибами, покосившийся крест в тряпках, камыш, полузатонувшая лодка, болотный фонарь
 на шесте, тотем из костей, сети на кольях, светящиеся трутовики, котёл ведьмы; мох, бутылки-обереги, корни (висят).
 
+**Промпты на дорисовку** (2026-11-12, решено Claude по постоянному согласию; API без биллинга даёт 429 — только чат
+gemini.google.com через расширение Claude в Brave). Первый промпт беседы — текст + хвост целиком, дальше
+«Same art style, same magenta background, a new image, …» + текст. Хвост: `single object, isolated on flat solid pure
+magenta (#ff00ff) background, centered, whole object visible with margin, straight-on side view, painterly dark gothic
+fantasy game asset, <свет>, <гамма>. No floor, no ground shadow, no text, no people, no frame, not a photo, not 3D.`
+Столица (беседа Столицы, свет «soft rim light», гамма «ash grey stone with dull gold and deep crimson accents»); Болото
+(новая беседа, свет «soft sickly green rim light», гамма «murky olive, bog brown and bone, with faint poison-green
+glow accents» — `palette` Болота в `looks.js`). Высоты и куда ставить — `PROPS` / `ALLOWED` в `dress.py`; предмет
+без картинки `dress.py` пропускает, поэтому ставить можно по мере готовности.
+
+| Файл | AR | Текст |
+| --- | --- | --- |
+| `capital/props/prop_capital_shields` | 3:2 | a heap of dented royal shields and crested knight helmets fallen in a pile |
+| `capital/props/prop_capital_lectern` | 2:3 | a carved stone lectern with a huge open book chained to it, pages singed |
+| `capital/props/prop_capital_crimson_banner` | 9:16 | a long hanging crimson royal banner, torn and burnt at the bottom, dull gold crown emblem |
+| `capital/props/prop_capital_chandelier` | 1:1 | a broken wrought iron chandelier hanging on a chain, cold candles, one arm snapped |
+| `capital/props/prop_capital_cage` | 9:16 | a rusted iron gibbet cage hanging from a chain, door ajar, empty |
+| `marsh/props/prop_marsh_rotten_stump` | 1:1 | a rotten hollow tree stump overgrown with pale mushrooms |
+| `marsh/props/prop_marsh_leaning_cross` | 2:3 | a leaning wooden grave cross wrapped in wet rags and twine |
+| `marsh/props/prop_marsh_reeds` | 3:2 | a dense clump of tall marsh reeds and cattails |
+| `marsh/props/prop_marsh_sunken_boat` | 2:1 | a half-sunken rotten rowing boat, broken planks, tilted |
+| `marsh/props/prop_marsh_swamp_lantern` | 9:16 | a crooked wooden pole with a hanging lantern, dim green flame |
+| `marsh/props/prop_marsh_bone_totem` | 9:16 | a tall totem of antlers, skulls and bones lashed to a stake with cord |
+| `marsh/props/prop_marsh_nets` | 3:2 | torn fishing nets drying on three crooked stakes |
+| `marsh/props/prop_marsh_glow_fungus` | 1:1 | a cluster of glowing bracket fungi on a mossy log, faint green light |
+| `marsh/props/prop_marsh_witch_cauldron` | 1:1 | a black iron cauldron on three legs, bubbling green murk, bones at its rim |
+| `marsh/props/prop_marsh_moss` | 9:16 | long strands of grey hanging swamp moss draping down from above |
+| `marsh/props/prop_marsh_charm_bottles` | 9:16 | charm bottles and small bone fetishes hanging down on strings |
+| `marsh/props/prop_marsh_roots` | 9:16 | dark wet tangled roots hanging down from above, dripping |
+
+Ставит `python tools/midjourney/dress.py capital` / `dress.py marsh` (Болото — первый раз: `render.js` перерисует
+ближний слой painter'а, у Болота нет фонов Midjourney), затем в Unity `ContentBuilder.RefreshLevelArt`.
+
 ## §3а. Лес — фоны комнат (35)
 
 2026-11-03, пользователь: «второй уровень — всё так же» (решено Claude по постоянному согласию). Промпты всех 35 комнат —

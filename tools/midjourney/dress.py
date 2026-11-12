@@ -72,7 +72,7 @@ PROPS = {
         "herbs": (2.2, "hang", 0.9),
         "cobweb": (1.6, "corner", 0.8),
     },
-    # 7 of 12 (2026-11-11: Gemini's daily picture limit); the rest — shields, lectern, banner, chandelier, cage
+    # a prop whose picture is not drawn yet is left out (Sprites.has): 7 of 12 on 2026-11-11 (Gemini's limit)
     "capital": {
         "angel_statue": (3.6, "stand", 0.8),
         "armor_stand": (2.6, "stand", 1.0),
@@ -81,6 +81,25 @@ PROPS = {
         "barricade": (1.6, "stand", 0.8),
         "fallen_head": (1.7, "stand", 0.5),
         "rubble": (0.9, "stand", 1.2),
+        "shields": (1.1, "stand", 1.0),
+        "lectern": (2.0, "stand", 0.6),
+        "crimson_banner": (3.0, "hang", 1.0),
+        "chandelier": (2.4, "hang", 0.8),
+        "cage": (2.8, "hang", 0.7),
+    },
+    "marsh": {
+        "rotten_stump": (1.7, "stand", 1.1),
+        "leaning_cross": (2.4, "stand", 0.8),
+        "reeds": (1.5, "stand", 1.2),
+        "sunken_boat": (1.2, "stand", 0.6),
+        "swamp_lantern": (2.8, "stand", 0.8),
+        "bone_totem": (2.6, "stand", 0.6),
+        "nets": (1.9, "stand", 0.8),
+        "glow_fungus": (1.0, "stand", 1.0),
+        "witch_cauldron": (1.4, "stand", 0.5),
+        "moss": (2.6, "hang", 1.0),
+        "charm_bottles": (2.2, "hang", 0.8),
+        "roots": (3.0, "hang", 0.9),
     },
 }
 # Rooms by character: what may stand there (others are skipped in that room).
@@ -111,18 +130,33 @@ ALLOWED = {
         "secret": ["jugs", "barrels", "cobweb", "herbs"],
     },
     "capital": {
-        "open": ["angel_statue", "barricade", "fallen_head", "rubble", "gilded_brazier", "weapon_rack"],
-        "crypts": ["angel_statue", "gilded_brazier", "rubble", "armor_stand", "weapon_rack", "fallen_head"],
-        "inside": ["armor_stand", "weapon_rack", "gilded_brazier", "rubble", "angel_statue"],
-        "arena": ["angel_statue", "gilded_brazier", "armor_stand", "fallen_head", "rubble", "barricade"],
-        "secret": ["rubble", "weapon_rack", "armor_stand", "gilded_brazier", "angel_statue"],
+        "open": ["angel_statue", "barricade", "fallen_head", "rubble", "gilded_brazier", "weapon_rack", "shields"],
+        "crypts": ["angel_statue", "gilded_brazier", "rubble", "armor_stand", "weapon_rack", "fallen_head", "lectern",
+                   "cage", "chandelier"],
+        "inside": ["armor_stand", "weapon_rack", "gilded_brazier", "rubble", "angel_statue", "lectern", "shields",
+                   "crimson_banner", "chandelier", "cage"],
+        "arena": ["angel_statue", "gilded_brazier", "armor_stand", "fallen_head", "rubble", "barricade",
+                  "crimson_banner", "chandelier"],
+        "secret": ["rubble", "weapon_rack", "armor_stand", "gilded_brazier", "angel_statue", "shields", "cage"],
+    },
+    # open marsh: nothing hangs from the frame over the sky (front.js rule, as in the Forest)
+    "marsh": {
+        "open": ["rotten_stump", "leaning_cross", "reeds", "sunken_boat", "swamp_lantern", "bone_totem", "nets",
+                 "glow_fungus"],
+        "poison": ["rotten_stump", "reeds", "sunken_boat", "bone_totem", "glow_fungus", "leaning_cross", "nets"],
+        "enclosed": ["witch_cauldron", "charm_bottles", "moss", "nets", "glow_fungus", "leaning_cross", "roots",
+                     "rotten_stump"],
+        "underground": ["glow_fungus", "roots", "moss", "rotten_stump", "bone_totem"],
+        "arena": ["bone_totem", "leaning_cross", "reeds", "rotten_stump", "swamp_lantern"],
+        "secret": ["charm_bottles", "glow_fungus", "moss", "witch_cauldron", "sunken_boat"],
     },
 }
 DARKEN, DESATURATE = 0.78, 0.85  # the near wall sits behind the playfield: a step darker and duller
 SOLID = "#%"
 # big landmarks stand once in a room
 UNIQUE = {"sarcophagus", "crown_altar", "effigy_statue", "mourner_statue", "abbey_arch", "hunter_shrine",
-          "cart_wheel", "deer_skull", "fallen_head", "angel_statue", "well", "fallen_bell", "scarecrow", "wayside_cross", "cart"}
+          "cart_wheel", "deer_skull", "fallen_head", "angel_statue", "well", "fallen_bell", "scarecrow", "wayside_cross", "cart",
+          "lectern", "sunken_boat", "bone_totem", "witch_cauldron"}
 
 
 def parse(text):
@@ -195,6 +229,11 @@ def kind_of(zone_name, room, lists):
             if room["id"] in lists[name]:
                 return name
         return "inside"
+    if zone_name == "marsh":
+        for name in ("underground", "enclosed", "poison"):
+            if room["id"] in lists[name]:
+                return name
+        return "open"
     if any(w in room["id"] for w in CAVE_WORDS):
         return "cave"
     return "hall"
@@ -205,6 +244,9 @@ class Sprites:
         self.dir = ROOT / "design/levels/midjourney" / zone / "props"
         self.zone = zone
         self.cache = {}
+
+    def has(self, name):
+        return (self.dir / f"prop_{self.zone}_{name}.png").exists()
 
     def get(self, name, height_px, flip):
         key = (name, height_px, flip)
@@ -244,7 +286,7 @@ def spots(room):
 def dress(zone_name, zone, room, sprites, used_sets, lists):
     rng = random.Random(int(hashlib.md5(room["id"].encode()).hexdigest()[:8], 16))
     kind = kind_of(zone_name, room, lists)
-    allowed = ALLOWED[zone_name][kind]
+    allowed = [n for n in ALLOWED[zone_name][kind] if sprites.has(n)]
     props = PROPS[zone_name]
     c = zone["cell"]
     cpx = round(c * PPU)  # pixels per cell
@@ -265,8 +307,8 @@ def dress(zone_name, zone, room, sprites, used_sets, lists):
 
     placed = []
     budget = max(2, round(width_units / 7))
-    standing = [n for n in chosen if props[n][1] == "stand"]
-    hanging = [n for n in chosen if props[n][1] == "hang"]
+    standing = [n for n in sorted(chosen) if props[n][1] == "stand"]  # a set walks in the hash seed's order
+    hanging = [n for n in sorted(chosen) if props[n][1] == "hang"]
     def stand(name):
         h_units = props[name][0] * (0.9 + rng.random() * 0.2)
         img = sprites.get(name, round(h_units * PPU), rng.random() < 0.5)
@@ -290,7 +332,8 @@ def dress(zone_name, zone, room, sprites, used_sets, lists):
         if len(placed) < budget and name not in UNIQUE:
             stand(name)
     if not placed:  # a narrow room: whatever small thing of its kind fits
-        for name in ("bone_pile", "urn", "candelabra", "mushrooms", "stump", "thorns", "jugs", "barrels", "rubble"):
+        for name in ("bone_pile", "urn", "candelabra", "mushrooms", "stump", "thorns", "jugs", "barrels", "rubble",
+                     "glow_fungus", "reeds"):
             if name in allowed and stand(name):
                 break
     for name in sorted(hanging, key=lambda n: rng.random()):
