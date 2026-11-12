@@ -70,28 +70,30 @@
     return track(n, keys.filter((k, i) => i === 0 || k[0] > keys[i - 1][0]));
   }
 
+  // Біг (2026-11-12, «приємні анімації»): довгий крок довгих ніг із фазою польоту, тіло легко пливе над кроком
+  // (найвище — у польоті, найнижче — на контакті), плащ і шарф летять назад, каптур відстає.
   const RUN = n => cycle(n, (t) => {
-    const a = t * PI2;
+    const a = t * PI2, up = Math.abs(S(a)), contact = Math.max(0, Math.cos(a * 2));
     return {
-      lean: 14, y: -Math.abs(S(a)) * 7 + 3, sy: 1 + (Math.abs(S(a)) - 0.5) * 0.08, sx: 1 - (Math.abs(S(a)) - 0.5) * 0.05,
-      tip: -14 - Math.abs(S(a)) * 8, hem: t * 2, hood: -Math.abs(S(a)) * 3,
-      hipF: 30 * S(a), kneeF: 18 + 26 * Math.max(0, -S(a + 0.6)),
-      hipB: -30 * S(a), kneeB: 18 + 26 * Math.max(0, S(a + 0.6)),
-      arm: -28 * S(a) + 20, sword: 150 - 10 * S(a), armB: 36 * S(a) - 10,
-      flare: 0.55 + 0.1 * S(a * 2), scarf: 188, scarfWave: t, scarfLen: 1.2
+      lean: 10 + up * 3, y: -up * 9 + 4 + contact * 2, sy: 1 + (up - 0.5) * 0.07, sx: 1 - (up - 0.5) * 0.04,
+      tip: -20 - up * 10, hem: t * 2, hood: -up * 3 + 1,
+      hipF: 38 * S(a), kneeF: 14 + 52 * Math.max(0, -S(a + 0.9)),
+      hipB: -38 * S(a), kneeB: 14 + 52 * Math.max(0, S(a + 0.9)),
+      arm: -24 * S(a) + 30, sword: 150 - 12 * S(a), armB: 40 * S(a) - 6,
+      flare: 0.85 + 0.15 * S(a * 2), scarf: 192 + 6 * S(a * 2), scarfWave: t, scarfLen: 1.35
     };
   });
 
   const STATES = {
-    Idle: n => cycle(n, t => ({ y: S(t * PI2) * 2.2, sy: 1 + S(t * PI2) * 0.03, sx: 1 - S(t * PI2) * 0.015, arm: 18 + S(t * PI2) * 4, sword: 52 + S(t * PI2) * 3, armB: -10 - S(t * PI2) * 4, scarf: 160 + S(t * PI2) * 10, scarfWave: t, flare: 0.12 + S(t * PI2) * 0.05, tip: S(t * PI2 - 0.8) * 8, hem: t, hood: S(t * PI2 - 0.4) * 2 })),
+    Idle: n => cycle(n, t => ({ y: S(t * PI2) * 1.6, sy: 1 + S(t * PI2) * 0.022, sx: 1 - S(t * PI2) * 0.012, arm: 18 + S(t * PI2) * 4, sword: 52 + S(t * PI2) * 3, armB: -10 - S(t * PI2) * 4, scarf: 160 + S(t * PI2) * 10, scarfWave: t, flare: 0.12 + S(t * PI2) * 0.05, tip: S(t * PI2 - 0.8) * 8, hem: t, hood: S(t * PI2 - 0.4) * 2 })),
     IdleGlance: n => track(n, [[0, {}], [3, { hood: -10, lean: -3 }], [6, { hood: 8, lean: 2 }], [9, {}]]),
     IdleVariant: n => track(n, [[0, {}], [3, { armB: 60, hood: 6, y: 1 }], [6, { armB: 70, hood: -4, scarf: 140, scarfWave: 0.5 }], [9, {}]]),
     Run: RUN,
     Turn: n => track(n, [[0, { lean: -10, sx: 0.9, scarf: 120 }], [1, { lean: 4, sx: 1, scarf: 175 }]]),
-    JumpStart: n => track(n, [[0, { y: 5, sy: 0.9, hipF: 20, kneeF: 30, hipB: -10, kneeB: 30 }], [2, { y: -2, sy: 1.08, hipF: 10, kneeF: 5, hipB: -6, kneeB: 25, arm: -10, sword: 160, flare: 0.3 }]]),
-    JumpRise: n => cycle(n, t => ({ sy: 1.08, sx: 0.95, tip: 18, hem: t, hipF: 18, kneeF: 30, hipB: -8, kneeB: 35, arm: -20, sword: 160, armB: -30, flare: 0.25 + t * 0.1, scarf: 150, scarfWave: t, scarfLen: 1.1 })),
-    Fall: n => cycle(n, t => ({ tip: -22, hem: t * 2, hipF: 12, kneeF: 12, hipB: -10, kneeB: 18, arm: 35, sword: 120, armB: -40, flare: 0.75 + 0.1 * S(t * PI2), scarf: 215, scarfWave: t, scarfLen: 1.15, y: 0 })),
-    Land: n => track(n, [[0, { y: 9, sy: 0.8, sx: 1.08, hipF: 32, kneeF: 50, hipB: -22, kneeB: 45, flare: 0.7, tip: 20 }], [1, { y: -2, sy: 1.05, sx: 0.97, tip: -8 }], [2, {}]]),
+    JumpStart: n => track(n, [[0, { y: 9, sy: 0.86, sx: 1.06, hipF: 34, kneeF: 58, hipB: -14, kneeB: 54, lean: 8, tip: 12 }], [2, { y: -4, sy: 1.12, sx: 0.93, hipF: 6, kneeF: 4, hipB: -12, kneeB: 30, arm: -20, sword: 165, flare: 0.45, tip: 24, scarf: 140 }]]),
+    JumpRise: n => cycle(n, t => ({ sy: 1.07, sx: 0.95, tip: 24, hem: t, hipF: 26, kneeF: 62, hipB: -16, kneeB: 28, arm: -14, sword: 162, armB: -40, flare: 0.35 + t * 0.15, scarf: 145, scarfWave: t, scarfLen: 1.25 })),
+    Fall: n => cycle(n, t => ({ tip: -26, hem: t * 2, hipF: 16, kneeF: 22, hipB: -14, kneeB: 34, arm: 50, sword: 115, armB: -55, flare: 0.95 + 0.12 * S(t * PI2), scarf: 228, scarfWave: t, scarfLen: 1.35, y: -2, sy: 1.03, sx: 0.97 })),
+    Land: n => track(n, [[0, { y: 14, sy: 0.84, sx: 1.07, hipF: 40, kneeF: 72, hipB: -26, kneeB: 64, flare: 0.9, tip: 26, arm: 40 }], [1, { y: 2, sy: 1.03, sx: 0.98, tip: -10, flare: 0.4, hipF: 12, kneeF: 18, hipB: -8, kneeB: 16 }], [2, {}]]),
     HardLand: n => track(n, [[0, { y: 12, sy: 0.75, hipF: 40, kneeF: 70, hipB: -30, kneeB: 60, arm: 60, sword: 100, flare: 0.8, lean: 20 }], [2, { y: 10, sy: 0.8, lean: 18, hipF: 38, kneeF: 65, hipB: -28, kneeB: 55 }], [4, {}]]),
     Dash: n => track(n, [[0, { tip: -24, hem: 0.5, lean: 30, x: -6, streak: 0.4, arm: 60, sword: 175, flare: 0.9, scarf: 185, scarfLen: 1.4 }], [2, { lean: 34, x: 4, streak: 1, hipF: 50, kneeF: 30, hipB: -45, kneeB: 20, flare: 1, scarfLen: 1.5 }], [4, { lean: 16, x: 2, streak: 0.3, flare: 0.5 }]]),
     AirDash: n => track(n, [[0, { lean: 26, x: -6, streak: 0.4, arm: 60, sword: 175, flare: 0.9, scarf: 180, scarfLen: 1.4, hipF: 30, kneeF: 50, hipB: -10, kneeB: 60 }], [2, { lean: 30, x: 4, streak: 1, hipF: 40, kneeF: 60, hipB: 0, kneeB: 70, flare: 1, scarfLen: 1.5 }], [4, { lean: 12, x: 2, streak: 0.3, flare: 0.6 }]]),
@@ -378,6 +380,9 @@
   // Частини вирізає tools/hero/puppet.py з аркуша Midjourney (parts/source.png); скелет і пози — ті самі, що вище:
   // тіло (каптур, плащ, шарф) — на стегнах, ноги — стегно й гомілка з колінами, рукавиця з мечем — на кінці руки.
   const PARTS = {}, K = 0.27;               // масштаб частин: каптур на 178 px над стопами
+  // Стрункий силует (2026-11-12, користувач: «розміри персонажа дуже товсті, треба елегантніший, вільніший»; решено
+  // Claude за постійною згодою): тіло вужче (KX), каптур менший (KY), ноги довші й тонші — зріст той самий.
+  const KX = 0.205, KY = 0.236, HIP = -58, SHOULDER = -100, THIGH = 30, SHIN = 28, LEG_W = 6.2, ARM1 = 19, ARM2 = 17;
   const SWORD_ANGLE = 138.3;                 // кут клинка в аркуші (від руків'я до вістря), градуси
   function loadParts(base) {
     return fetch(base + "parts.json").then(r => r.json()).then(meta => Promise.all(Object.keys(meta).map(name => new Promise(res => {
@@ -393,24 +398,26 @@
   // Ноги — темні щільні силуети з чоботами, як у Hollow Knight: мальовані ноги Midjourney в кадрі виходили
   // тоненькими й світлими (контур героя робив їх плямою біля стоп).
   function puppetLeg(g, side, x, y, hip, knee) {
-    const [fx, fy, fr] = limb(g, x, y, hip, 19, knee, 17, 8, side === "back" ? "#0d1119" : "#151b27");
+    const [fx, fy, fr] = limb(g, x, y, hip, THIGH, knee, SHIN, LEG_W, side === "back" ? "#0d1119" : "#151b27");
     boot(g, fx, fy, fr);
   }
   const smooth01 = (a, b, x) => { const t = Math.max(0, Math.min(1, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
   // Пікселі мальованого тіла (від півоту на стегнах) — у позі p.
   function bodyMap(p) {
     const q = PARTS.body, W = q.w, H = q.h, Rad = Math.PI / 180;
-    const top = -q.py * K, bottom = (H - q.py) * K, span = bottom - top;
+    const top = -q.py * KY, bottom = (H - q.py) * KY, span = bottom - top;
     const neck = [0, top + span * 0.28];
     return (sx, sy) => {
-      let x = (sx - q.px) * K, y = (sy - q.py) * K;
+      let x = (sx - q.px) * KX, y = (sy - q.py) * KY;
       const t = (bottom - y) / span;
       if (t < 0.42) {
         const w = Math.pow((0.42 - t) / 0.42, 1.5);
-        const step = ((p.hipF || 0) - (p.hipB || 0)) / 80 * 0.06 * W * K;
+        const step = ((p.hipF || 0) - (p.hipB || 0)) / 80 * 0.08 * W * KX;
         // і відстає від нахилу: тканина не встигає за тілом
-        const lag = -(p.lean || 0) * 0.003 * W * K;
-        x += (step + lag + Math.sin(Math.PI * 2 * (p.hem || 0) + sx / W * 5) * 0.03 * W * K - (p.flare || 0) * 0.08 * W * K) * w;
+        const lag = -(p.lean || 0) * 0.004 * W * KX;
+        // поділ вільніший: летить назад сильніше й ширше розвівається
+        x += (step + lag + Math.sin(Math.PI * 2 * (p.hem || 0) + sx / W * 5) * 0.045 * W * KX - (p.flare || 0) * 0.16 * W * KX) * w;
+        y += (p.flare || 0) * -0.05 * H * KY * w * w;
       }
       if (t > 0.7) {
         const r = Mesh.rot([x, y], neck, ((p.tip || 0) * 0.5 + (p.hood || 0) * 0.4) * Rad * smooth01(0.7, 1, t));
@@ -440,10 +447,10 @@
     }
     g.scale(p.sx, p.sy);
     g.rotate(p.lean * Math.PI / 180 * 0.5);
-    const hipY = -36;
-    puppetLeg(g, "back", -4, hipY, p.hipB, p.kneeB);
+    const hipY = HIP;
+    puppetLeg(g, "back", -3, hipY, p.hipB, p.kneeB);
     // задня рука з «Тінню»: світло на кулаці, сама рука під плащем
-    const rb = p.armB * Math.PI / 180, ax = -8 + Math.sin(rb) * 26, ay = -84 + Math.cos(rb) * 26;
+    const rb = p.armB * Math.PI / 180, ax = -6 + Math.sin(rb) * (ARM1 + ARM2), ay = SHOULDER + Math.cos(rb) * (ARM1 + ARM2);
     const gl = 0.35 + 0.65 * Math.min(1, p.glow);
     const gg = g.createRadialGradient(ax, ay, 1, ax, ay, 9 + 8 * p.glow);
     gg.addColorStop(0, `rgba(190,160,255,${gl})`); gg.addColorStop(1, "rgba(154,107,255,0)");
@@ -452,7 +459,7 @@
     // (flare), вістря каптура відстає в бігу й падає назад у стрибку (tip), голова хитається (hood)
     g.save(); g.translate(0, hipY);
     const q = PARTS.body, map = bodyMap(p);
-    if (!q.mesh) q.mesh = Mesh.prescale(q.img, q.w * K * 1.5, q.h * K * 1.5);
+    if (!q.mesh) q.mesh = Mesh.prescale(q.img, q.w * KX * 1.5, q.h * KY * 1.5);
     Mesh.draw(g, q.mesh, 8, 12, (u, v) => map(u * q.w, v * q.h));
     // очі: заплющуються (eyes < 1) і спалахують перед ударом (eyes > 1)
     const eyes = [map(q.px + 38, q.py - 370), map(q.px + 95, q.py - 372)];
@@ -463,10 +470,10 @@
       g.fillStyle = e; g.beginPath(); g.arc(ex, ey, 9, 0, Math.PI * 2); g.fill();
     });
     g.restore();
-    puppetLeg(g, "front", 4, hipY, p.hipF, p.kneeF);
-    slashArc(g, 8, -70, p.slashFrom, p.slashTo, p.slash);
+    puppetLeg(g, "front", 3, hipY, p.hipF, p.kneeF);
+    slashArc(g, 8, SHOULDER + 14, p.slashFrom, p.slashTo, p.slash);
     // рука з мечем: рукав у темряві плаща, рукавиця й мальований меч на кінці
-    const [hx, hy] = limb(g, 8, -84, p.arm, 15, -18, 13, 6, "#1a2433");
+    const [hx, hy] = limb(g, 6, SHOULDER, p.arm, ARM1, -18, ARM2, 5, "#1a2433");
     piece(g, "sword", hx, hy, p.sword - SWORD_ANGLE, K * (big ? 1.25 : 0.92));
     piece(g, "glove", hx, hy, p.sword * 0.3 - 20, K * 0.8);
     g.restore();

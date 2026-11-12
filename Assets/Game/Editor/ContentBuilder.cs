@@ -492,7 +492,7 @@ namespace ForgottenKingdom.EditorTools
             SetFloat(motor, "_settings._airTurnAcceleration", 250f);
             SetFloat(motor, "_settings._releasedJumpSpeed", 1.5f);
             SetFloat(motor, "_settings._releasedJumpDeceleration", 600f);
-            SetFloat(motor, "_settings._jumpBuffer", 0.15f);
+            SetFloat(motor, "_settings._jumpBuffer", 0.18f);
             // 2026-11-07 («персонаж досі погано рухається, зажато»): a run of about five of his own heights a second
             // instead of four, and a jump that clips a ledge with its head slides past a little further.
             SetFloat(motor, "_settings._runSpeed", 7.8f);

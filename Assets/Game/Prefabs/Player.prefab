@@ -1254,8 +1254,8 @@ MonoBehaviour:
     _releasedJumpDeceleration: 600
     _apexSpeedThreshold: 2
     _apexGravityMultiplier: 0.5
-    _coyoteTime: 0.1
-    _jumpBuffer: 0.15
+    _coyoteTime: 0.12
+    _jumpBuffer: 0.18
     _airJumps: 1
     _airJumpSpeed: 9.5
     _pogoSpeed: 9.5

@@ -53,22 +53,24 @@ function jobs() {
 }
 
 async function main() {
-  const chrome = chromePath();
+  // один headless-браузер на весь прогін (tools/_shared/browser.js: Chrome або Brave; Brave на --screenshot зависає)
   if (!(await answers(URL))) {
     spawn(process.execPath, [path.join(ROOT, "design/ui/_shared/serve.js")], { stdio: "ignore", detached: true }).unref();
     for (let i = 0; i < 50 && !(await answers(URL)); i++) await new Promise((r) => setTimeout(r, 100));
   }
   fs.mkdirSync(OUT, { recursive: true });
   const all = jobs();
+  const browser = await require("../_shared/browser.js").open();
   let next = 0;
   const worker = async () => {
     while (next < all.length) {
       const j = all[next++];
       const file = path.join(OUT, `${j.folder.replace("/", "__")}.png`);
-      await shot(chrome, file, 256 * j.n, 224, `${URL}?state=${j.state}&frames=${j.n}${j.big ? "&big=1" : ""}`);
+      await browser.shot(file, 256 * j.n, 224, `${URL}?state=${j.state}&frames=${j.n}${j.big ? "&big=1" : ""}`);
     }
   };
-  await Promise.all([1, 2, 3, 4, 5, 6].map(worker));
+  await Promise.all([1, 2, 3, 4].map(worker));
+  await browser.close();
   fs.writeFileSync(path.join(OUT, "jobs.json"), JSON.stringify(all));
   console.log(`hero: ${all.length} states -> ${OUT}`);
 }

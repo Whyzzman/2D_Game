@@ -40,9 +40,9 @@ namespace ForgottenKingdom
         [Tooltip("Share of gravity near the apex while jump is held. 0.5 nearly doubles the hang "
             + "(about 0.1 to 0.2 s) and raises a full jump from 1.91 to 1.97 at 50 Hz.")]
         [SerializeField, Range(0.1f, 1f)] private float _apexGravityMultiplier = 0.5f;
-        [SerializeField, Min(0f)] private float _coyoteTime = 0.10f;
+        [SerializeField, Min(0f)] private float _coyoteTime = 0.12f;
         [Tooltip("A press this long before landing, or before a dash ends, still jumps.")]
-        [SerializeField, Min(0f)] private float _jumpBuffer = 0.15f;
+        [SerializeField, Min(0f)] private float _jumpBuffer = 0.18f;
         [Tooltip("Extra jumps in the air, once the ability is owned. Gated by progression, not here.")]
         [SerializeField, Min(0)] private int _airJumps = 1;
         [Tooltip("A shade weaker than the ground jump, so the second one reads as a recovery.")]

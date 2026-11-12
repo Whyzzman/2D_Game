@@ -201,6 +201,8 @@ namespace ForgottenKingdom.EditorTools
 
         // How far above the hem's back corner the live edge starts, so it grows out of the cloak.
         private const float TrailInset = 6f;
+        private const float HeroCloakNarrow = 0.76f;
+        private const float HeroHemLift = 0.2f;
 
         private static Vector3 TrailAnchor(Pose pose)
         {
@@ -218,8 +220,10 @@ namespace ForgottenKingdom.EditorTools
                 angle = level;
             }
 
-            return new Vector3((point.x - Width * 0.5f) / PlaceholderImport.PixelsPerUnit,
-                height, angle);
+            // The drawn hero (design/characters/hero) is slimmer and stands on longer legs than this skeleton
+            // (2026-11-12): his cloak's back edge is nearer the middle and its hem higher.
+            return new Vector3((point.x - Width * 0.5f) * HeroCloakNarrow / PlaceholderImport.PixelsPerUnit,
+                height + HeroHemLift, angle);
         }
 
         /// <summary>
