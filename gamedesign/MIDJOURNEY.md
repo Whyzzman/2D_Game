@@ -274,6 +274,29 @@ Claude правит процедурные спрайты, а позже раб�
 | `concept_bone_archer` | 3:2 | character turnaround sheet of a skeletal archer, tall thin silhouette, long bow forming a strong horizontal line, tattered hood, quiver of black arrows, dark gothic fantasy, painterly concept art, plain dark grey background --sref <STYLE> --no text, logo, photo, 3d render |
 | `concept_tomb_guardian` | 3:2 | character turnaround sheet of a colossal tomb guardian knight boss, monumental trapezoid silhouette, crown on the helmet, dark crimson cape, great shield with a crown and flame emblem, symmetrical and solemn, second variant with cracked armor and purple shadow smoke pouring from the chest, dark gothic fantasy, painterly concept art, plain dark grey background --sref <STYLE> --no text, logo, photo, 3d render |
 
+## §5. Интерфейс и эффекты ударов (Nano Banana, 2026-11-12)
+
+Решено Claude по постоянному согласию. Хвост иконок (первый промпт беседы целиком, дальше «Same art style, same
+magenta background, a new square image: …»): `Game UI icon: one object, isolated on a flat solid pure magenta
+(#ff00ff) background, centered, bold readable silhouette that still reads at 96 pixels, whole object visible with
+margin, painterly dark gothic fantasy game icon, soft cool rim light, muted desaturated palette with one strong accent
+colour. No text, no frame, no border, no circle or badge behind it, no floor, no shadow, not a photo, not 3D.`
+
+- **Иконки HUD** (одна беседа, ✅ все 15): 13 иконок `IconArt` (`ART_ASSET_LIST.md` §6: меч, двуручник, четыре
+  ветви, пять стихий/состояний, алтарь, деньги) + `ui_slot_frame` + `ui_ornament` → `design/art/icons/<имя>.png`.
+  `python tools/midjourney/ui_art.py` — превью в `design/art/icons/out/`; `--install` — на место заглушек в
+  `Assets/Game/Art/UI/` + `Painted.txt`. Режет хромакеем (`key`): `sprites.cut` (под градиент Midjourney) съедал
+  багровое (капля крови, щит Воина) и не резал пурпур внутри рамки. Полосы (`ui_bar_frame*`), блик и виньетка
+  остаются кодом — тонкие 9-slice, рисунок там не нужен.
+- **Эффекты ударов** (своя беседа): один аркуш на эффект — сетка равных клеток, кадр в центре клетки
+  («grid of C columns and R rows … each frame centered in its own cell, nothing crosses a cell edge, no grid lines»;
+  лишняя клетка — «left empty magenta»), число кадров — как в `PlaceholderVfxArt.Effects`. Готовы `vfx_hit_heavy`
+  (3×2), `vfx_hit_light` (2×2), `vfx_hit_critical` (4×2, 7), `vfx_block` (3×2, 5), `vfx_parry` (4×2; Gemini всё же
+  провёл тонкие линии сетки) → `design/art/vfx/`. Ждут дневного лимита Gemini: `guard_break` (5×2), `stagger`,
+  `fire_impact`, `frost_impact`, `shadow_impact`, `enemy_death`. Резчика кадров пока нет.
+- Дневной лимит картинок в чате Gemini — около 20 (2026-11-12 кончился на 20-й, сброс через ~2,5 ч). Промпт,
+  посланный, пока картинка рисуется, пропадает: следующий слать, когда число картинок на странице выросло.
+
 ## Как Claude вписывает результат
 
 - **Фоны** → слой `mid` комнаты (`Art/Levels/Tomb/Rooms/<id>_mid.png`) — непрозрачная картинка за стеной,
