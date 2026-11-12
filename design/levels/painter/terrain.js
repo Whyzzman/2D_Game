@@ -711,7 +711,23 @@
           };
           const hangers = () => [[wx0 + 0.3, ceilingAt(gx0)], [wx1 - 0.3, ceilingAt(gx1 - 1)]];
           const wallSide = tree ? (tree.x === gx1 ? 1 : -1) : wallLeft ? -1 : 1;
-          if (kind === "outcrop") {
+          if (kind === "chunk") {
+            // товщина брили — з місця під нею: найменший вільний стовпчик повітря під уступом
+            let free = 40;
+            for (let k = gx0; k < gx1; k++) {
+              let d = 0;
+              while (d < 40 && !T.isRock(T.at(zone, k, gy - 1 - d)) && !T.isLedge(T.at(zone, k, gy - 1 - d))) d++;
+              free = Math.min(free, d);
+            }
+            const room = free * zone.cell, attach = wallLeft ? -1 : wallRight ? 1 : 0;
+            const most = attach ? 1.9 : 1.35;
+            const depth = Math.max(0.42, Math.min(most, room * 0.45, room - 1.9));
+            const lk = lookAt(zone, gx0, gy, look), tinted = Object.assign({}, lk, { stone: lk.lip, core: lk.shadowTint || lk.core });
+            // вільна брила в Гробниці висить на двох ланцюгах до склепіння, якщо воно не надто високо
+            if (!attach) hangers().forEach(([hx, up]) => { if (up !== null && up - wyt < 12) M.rope(f, hx, up, wyt - depth * 0.3, pal, s2 + Math.round(hx * 7), hangKind); });
+            M.chunk(f, wx0, wx1, wyt, depth, tinted, s2, attach);
+            lip(f, wx0, wx1, wyt, lk, s2);
+          } else if (kind === "outcrop") {
             // виступ стіни: та сама плита, що й підвісна, у кольорах кімнати, без ланцюгів — росте з каменю
             const lk = lookAt(zone, gx0, gy, look), tinted = Object.assign({}, lk, { stone: lk.lip, core: lk.shadowTint || lk.core });
             M.slab(f, wx0 - (wallLeft ? 0.25 : 0), wx1 + (wallRight ? 0.25 : 0), wyt, tinted, s2);

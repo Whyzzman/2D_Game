@@ -1389,7 +1389,7 @@ namespace ForgottenKingdom.EditorTools
             Ensure<AudioListener>(cameraObject);
             var camera = cameraObject.AddComponent<Camera>();
             camera.orthographic = true;
-            camera.orthographicSize = 6.5f;
+            camera.orthographicSize = 5.5f; // 2026-11-12: closer, the hero was lost in the rooms (6.5 before)
             camera.backgroundColor = new Color(0.07f, 0.07f, 0.1f);
             camera.clearFlags = CameraClearFlags.SolidColor;
             cameraObject.transform.position = new Vector3(0f, 2f, -10f);

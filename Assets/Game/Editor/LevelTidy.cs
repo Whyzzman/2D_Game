@@ -131,7 +131,7 @@ namespace ForgottenKingdom.EditorTools
             var every = new[] { AbilityIds.Dash, AbilityIds.DoubleJump, AbilityIds.AirDash, AbilityIds.WallRun,
                 AbilityIds.ShadowDash, AbilityIds.Grapple };
             var report = new System.Text.StringBuilder();
-            foreach (var path in Directory.GetFiles("Assets/Game/Levels", "*.txt"))
+            foreach (var path in Directory.GetFiles(LevelsDir(), "*.txt"))
             {
                 var bypasses = LevelCheck.Bypasses(LevelZone.Parse(File.ReadAllText(path)), every);
                 report.AppendLine($"== {Path.GetFileNameWithoutExtension(path)}: "
@@ -139,7 +139,16 @@ namespace ForgottenKingdom.EditorTools
             }
 
             Directory.CreateDirectory("Artifacts");
-            File.WriteAllText("Artifacts/LevelBypasses.txt", report.ToString());
+            File.WriteAllText(LevelsDir() == "Assets/Game/Levels" ? "Artifacts/LevelBypasses.txt" : "Artifacts/LevelBypasses-other.txt",
+                report.ToString());
+        }
+
+        /// <summary>The zone texts to report on: <c>-levels &lt;dir&gt;</c> (another version, to compare), else the game's.</summary>
+        private static string LevelsDir()
+        {
+            var args = Environment.GetCommandLineArgs();
+            var at = Array.IndexOf(args, "-levels");
+            return at >= 0 && at + 1 < args.Length ? args[at + 1] : "Assets/Game/Levels";
         }
 
         private static void HardSpots(LevelZone zone, HashSet<string> abilities, MovementSettings comfort,

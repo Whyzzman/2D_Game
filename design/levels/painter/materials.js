@@ -23,6 +23,8 @@
   // Яким бути уступу: що каже місце і зона.
   function kindOf(zoneName, attached, width, seed) {
     const r = N.hash(seed, 3, 17);
+    // Камінь — брила (chunk): Гробниця, Столиця, Болота (style forest з look.hang roots, але свій kind нижче).
+    if (zoneName === "tomb" || (zoneName === "capital" && !attached && width < 8)) return "chunk";
     if (attached) {
       if (zoneName === "forest") return "branch";
       // Гробниця — камінь, як її стіни (2026-11-04, «бездарно, як у Hollow Knight»): дерев'яна полиця була
@@ -41,7 +43,7 @@
 
   // Дошки настилу: верхня широка, під нею тонша, шви, цвяхи, рвані кінці; світла кромка зверху.
   function planks(f, x0, x1, top, pal, seed, thick) {
-    const c = f.c, S = f.ppu, t = thick || 0.3;
+    const c = f.c, S = f.ppu, t = (thick || 0.3) * 1.45; // 2026-11-12: товщі — тонкі дошки читались заглушкою
     const y0 = f.y(top), h = S * t;
     // тінь під настилом
     c.fillStyle = "rgba(0,0,0,0.35)";
@@ -126,7 +128,7 @@
     const c = f.c, S = f.ppu;
     // поперечини під настилом
     for (let x = x0 + 0.4; x < x1 - 0.2; x += 1.6) {
-      c.fillStyle = pal.dark; c.fillRect(f.x(x), f.y(top - 0.28), S * 0.22, S * 0.22);
+      c.fillStyle = pal.dark; c.fillRect(f.x(x), f.y(top - 0.42), S * 0.26, S * 0.3);
     }
     ceilings.forEach(([x, up]) => { if (up !== null) rope(f, x, up, top, pal, seed + Math.round(x * 7), hangKind); });
     planks(f, x0, x1, top, pal, seed, 0.3);
@@ -134,7 +136,7 @@
 
   // Колода: заокруглена, кора смугами, торці з кільцями.
   function log(f, x0, x1, top, pal, seed) {
-    const c = f.c, S = f.ppu, h = 0.46, y0 = f.y(top), y1 = f.y(top - h);
+    const c = f.c, S = f.ppu, h = 0.66, y0 = f.y(top), y1 = f.y(top - h);
     const g = c.createLinearGradient(0, y0, 0, y1);
     g.addColorStop(0, pal.light); g.addColorStop(0.3, pal.bark || pal.wood); g.addColorStop(1, pal.dark);
     c.fillStyle = g;
@@ -175,8 +177,8 @@
     c.beginPath();
     c.moveTo(f.x(from), f.y(top));
     c.lineTo(f.x(to), f.y(top));
-    c.quadraticCurveTo(f.x(to), f.y(top - 0.18), f.x(to + wallSide * 0.3), f.y(top - 0.3));
-    c.quadraticCurveTo(f.x((from + to) / 2), f.y(top - 0.42), f.x(from), f.y(top - 0.85));
+    c.quadraticCurveTo(f.x(to), f.y(top - 0.26), f.x(to + wallSide * 0.3), f.y(top - 0.42));
+    c.quadraticCurveTo(f.x((from + to) / 2), f.y(top - 0.62), f.x(from), f.y(top - 1.25));
     c.closePath(); c.fill();
     // мох по верху: тут стоять
     c.strokeStyle = rgba(pal.leaf, 0.9); c.lineWidth = Math.max(1.5, S * 0.05);
@@ -203,7 +205,7 @@
   // Кам'яний балкон на фігурній консолі (Столиця).
   function balcony(f, x0, x1, top, wallSide, pal, seed) {
     const c = f.c, S = f.ppu;
-    const y0 = f.y(top), h = S * 0.32;
+    const y0 = f.y(top), h = S * 0.48;
     const g = c.createLinearGradient(0, y0, 0, y0 + h);
     g.addColorStop(0, pal.stoneLight); g.addColorStop(0.3, pal.stone); g.addColorStop(1, pal.stoneDark);
     c.fillStyle = g; c.fillRect(f.x(x0), y0, f.x(x1) - f.x(x0), h);
@@ -239,5 +241,94 @@
     c.strokeStyle = "rgba(0,0,0,0.6)"; c.lineWidth = Math.max(1, f.ppu * 0.02); c.stroke();
   }
 
-  root.LevelMaterials = { WOOD, kindOf, planks, rope, shelf, bridge, log, branch, balcony, slab };
+  // Брила (2026-11-12, користувач: «елементи платформеру дуже прості й не красиві»; решено Claude за постійною
+  // згодою): уступ — не тонка плитка, а шматок скелі чи кладки. Верх рівний (там коллайдер), низ — товща маса:
+  // у вільної — кіль, найглибший посередині, у прирослої до стіни — клин, найтовщий біля стіни (консоль).
+  // depth — товщина під верхом, юніти; її вирішує terrain.js з місця під уступом (прохід не закриває).
+  // attach: -1 стіна ліворуч, 1 праворуч, 0 вільна.
+  function chunk(f, x0, x1, top, depth, look, seed, attach) {
+    const c = f.c, S = f.ppu, w = Math.max(0.2, x1 - x0);
+    const ax0 = x0 - (attach < 0 ? 0.12 : 0), ax1 = x1 + (attach > 0 ? 0.12 : 0);
+    const under = x => {
+      const u = (x - x0) / w;
+      let d;
+      if (attach < 0) d = depth * (1 - 0.72 * Math.min(1, u) ** 0.8);
+      else if (attach > 0) d = depth * (1 - 0.72 * Math.min(1, 1 - u) ** 0.8);
+      else d = depth * (0.3 + 0.7 * Math.sin(Math.PI * Math.max(0, Math.min(1, u))) ** 0.7);
+      d *= 0.82 + (N.fbm(x * 1.6, top * 0.7, seed, 3) - 0.5) * 0.5 + 0.18;
+      // вільний кінець заокруглений: біля краю низ підходить до верху
+      const fromFree = Math.min(attach < 0 ? 9 : x - x0, attach > 0 ? 9 : x1 - x);
+      d = Math.min(d, 0.22 + fromFree * 1.4);
+      return Math.max(0.2, d);
+    };
+    const pts = [];
+    for (let x = ax1; x >= ax0 - 0.001; x -= 0.09) pts.push([x, top - under(Math.max(x0, Math.min(x1, x)))]);
+    // гострі краплі-сталактити під масою
+    const drips = [];
+    for (let k = 0; k < w * 0.9; k++) {
+      const h = N.hash(seed, k, 61);
+      if (h < 0.55) continue;
+      const x = x0 + 0.3 + N.hash(seed, k, 63) * Math.max(0.1, w - 0.6);
+      drips.push([x, 0.12 + (h - 0.55) * 1.1, 0.08 + N.hash(seed, k, 65) * 0.1]);
+    }
+    const body = () => {
+      c.beginPath();
+      c.moveTo(f.x(ax0), f.y(top));
+      c.lineTo(f.x(ax1), f.y(top));
+      pts.forEach(([x, y]) => c.lineTo(f.x(x), f.y(y)));
+      c.closePath();
+    };
+    // тінь-ореол під брилою: відокремлює її від тла
+    c.save();
+    c.shadowColor = "rgba(0,0,0,0.55)"; c.shadowBlur = S * 0.35; c.shadowOffsetY = S * 0.12;
+    body();
+    const g = c.createLinearGradient(0, f.y(top), 0, f.y(top - depth * 1.1));
+    g.addColorStop(0, look.stone); g.addColorStop(0.55, look.core); g.addColorStop(1, look.core);
+    c.fillStyle = g; c.fill();
+    c.restore();
+    // краплі
+    c.fillStyle = look.core;
+    drips.forEach(([x, len, half]) => {
+      const y = top - under(x) + 0.02;
+      c.beginPath(); c.moveTo(f.x(x - half), f.y(y)); c.quadraticCurveTo(f.x(x - half * 0.3), f.y(y - len * 0.6), f.x(x), f.y(y - len));
+      c.quadraticCurveTo(f.x(x + half * 0.3), f.y(y - len * 0.6), f.x(x + half), f.y(y)); c.fill();
+    });
+    c.save(); body(); c.clip();
+    // пласти: дві-три хвилясті тріщини вздовж маси
+    c.strokeStyle = "rgba(0,0,0,0.45)"; c.lineWidth = Math.max(1, S * 0.025);
+    for (let i = 1; i <= 3; i++) {
+      const yy = top - depth * (0.22 + i * 0.2);
+      c.beginPath();
+      for (let x = ax0; x <= ax1 + 0.001; x += 0.15) c.lineTo(f.x(x), f.y(yy + (N.fbm(x * 1.3, i * 5, seed + 7, 2) - 0.5) * 0.25));
+      c.stroke();
+    }
+    // вертикальні шви кладки біля верху (камінь тесаний, не глина)
+    c.strokeStyle = "rgba(0,0,0,0.35)";
+    for (let x = ax0 + 0.5 + N.hash(seed, 1, 71) * 0.6; x < ax1 - 0.3; x += 0.7 + N.hash(seed, Math.round(x * 10), 73) * 0.7) {
+      c.beginPath(); c.moveTo(f.x(x), f.y(top - 0.12)); c.lineTo(f.x(x + 0.04), f.y(top - Math.min(depth * 0.5, 0.55))); c.stroke();
+    }
+    // відблиск світла на верхній третині й мох/сіль на краю
+    const rim = c.createLinearGradient(0, f.y(top), 0, f.y(top - depth * 0.45));
+    rim.addColorStop(0, rgba(look.rim || "#a9bdd8", 0.22)); rim.addColorStop(1, rgba(look.rim || "#a9bdd8", 0));
+    c.fillStyle = rim; c.fillRect(f.x(ax0), f.y(top), f.x(ax1) - f.x(ax0), S * depth * 0.45);
+    c.restore();
+    body();
+    c.strokeStyle = "rgba(0,0,0,0.7)"; c.lineWidth = Math.max(1, S * 0.03); c.stroke();
+    // мох і коріння, що звисають з-під брили (Ліс, Болота)
+    if (look.moss && look.hang === "roots") {
+      c.strokeStyle = rgba(look.moss, 0.65); c.lineCap = "round";
+      for (let k = 0; k < w * 1.2; k++) {
+        const h = N.hash(seed, k, 81);
+        if (h < 0.5) continue;
+        const x = x0 + 0.2 + N.hash(seed, k, 83) * Math.max(0.1, w - 0.4), y = top - under(x);
+        const len = 0.3 + (h - 0.5) * 2.2;
+        c.lineWidth = Math.max(1, S * 0.035);
+        c.beginPath(); c.moveTo(f.x(x), f.y(y + 0.05));
+        c.quadraticCurveTo(f.x(x + (N.hash(seed, k, 85) - 0.5) * 0.4), f.y(y - len * 0.5), f.x(x + (N.hash(seed, k, 87) - 0.5) * 0.3), f.y(y - len));
+        c.stroke();
+      }
+    }
+  }
+
+  root.LevelMaterials = { WOOD, kindOf, planks, rope, shelf, bridge, log, branch, balcony, slab, chunk };
 })(window);

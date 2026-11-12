@@ -95,7 +95,32 @@ namespace ForgottenKingdom
                 }
 
                 hitches.Place = area.AreaId;
-                motor.ResetTo(point);
+                if (!string.IsNullOrEmpty(_shots))
+                {
+                    // for the picture the hero stands on the floor under the room's middle and the camera frames
+                    // him as in play, not hanging in the air in the middle of a hall (2026-11-12)
+                    point = FloorUnder(point, area.WorldBounds);
+                    // nothing may happen to the hero while he stands for the picture: no blows, no boss fight
+                    // (a started fight held the camera in its arena for every room after it)
+                    motor.GetComponent<CombatActor>()?.SetInvulnerable(ImmunitySource.Script, 9999f);
+                    foreach (var encounter in FindObjectsByType<BossEncounter>(FindObjectsSortMode.None))
+                    {
+                        foreach (var trigger in encounter.GetComponents<Collider2D>())
+                        {
+                            trigger.enabled = false;
+                        }
+                    }
+
+                    motor.enabled = true;
+                    body.simulated = true;
+                    motor.ResetTo(point);
+                    yield return new WaitForSecondsRealtime(0.8f);
+                }
+                else
+                {
+                    motor.ResetTo(point);
+                }
+
                 motor.enabled = false;
                 body.simulated = false;
                 yield return new WaitForSecondsRealtime(SettleSeconds);
@@ -128,6 +153,23 @@ namespace ForgottenKingdom
             yield return null;
             stash.Restore();
             Application.Quit();
+        }
+
+        /// <summary>
+        /// A point just above the ground under <paramref name="point"/> inside the room: up out of stone first,
+        /// then down to the first ground. Without ground in the room, the point itself.
+        /// </summary>
+        private static Vector2 FloorUnder(Vector2 point, Rect room)
+        {
+            var ground = LayerMask.GetMask("Ground");
+            var probe = point;
+            while (probe.y < room.yMax && Physics2D.OverlapPoint(probe, ground) != null)
+            {
+                probe.y += 0.5f;
+            }
+
+            var hit = Physics2D.Raycast(probe, Vector2.down, probe.y - room.yMin, ground);
+            return hit.collider != null ? hit.point + Vector2.up * 1.2f : point;
         }
 
         private static string Row(string zone, string area, List<float> frames)

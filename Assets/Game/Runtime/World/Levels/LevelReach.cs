@@ -60,6 +60,11 @@ namespace ForgottenKingdom
         private readonly Dictionary<int, List<ReachSegment>> _byRow = new Dictionary<int, List<ReachSegment>>();
         private RectInt _grid;
         private LevelCell[,] _cells;
+        // Where the body passed on every move that landed, by the floor it left from (LevelShape, 2026-11-12):
+        // only when asked for — it is the space a room needs, the rest of its air is free to become rock.
+        private readonly Dictionary<int, HashSet<Vector2Int>> _trace;
+        private readonly List<Vector2> _flight = new List<Vector2>();
+        private int _leaving = -1;
 
         /// <summary>
         /// The two models. The real hero sits between them: the strict one jumps a little lower and
@@ -74,9 +79,10 @@ namespace ForgottenKingdom
         public const float GenerousRun = 1.05f;
 
         public LevelReach(LevelZone zone, ICollection<string> abilities,
-            MovementSettings move = null, DashSettings dash = null, bool generous = false)
+            MovementSettings move = null, DashSettings dash = null, bool generous = false, bool trace = false)
         {
             _zone = zone;
+            _trace = trace ? new Dictionary<int, HashSet<Vector2Int>>() : null;
             _move = Scaled(move ?? new MovementSettings(), generous ? GenerousJump : StrictJump,
                 generous ? GenerousRun : StrictRun);
             _dash = dash ?? new DashSettings();
@@ -401,6 +407,7 @@ namespace ForgottenKingdom
 
         private void Moves(ReachSegment from)
         {
+            _leaving = from.Index;
             if (from.IsRing)
             {
                 var release = from.RingPoint - new Vector2(0f, RingRelease + BodyHeight * 0.5f);
@@ -465,6 +472,15 @@ namespace ForgottenKingdom
                 if (ring.IsRing && Vector2.Distance(hand, ring.RingPoint) <= RingRange && Clear(hand, ring.RingPoint))
                 {
                     _edges[from.Index].Add(i);
+                    if (_trace != null)
+                    {
+                        var steps = Mathf.CeilToInt(Vector2.Distance(hand, ring.RingPoint) / _zone.CellSize);
+                        for (var k = 0; k <= steps; k++)
+                        {
+                            var p = Vector2.Lerp(hand, ring.RingPoint, k / (float)Mathf.Max(1, steps));
+                            Traced(from.Index).Add(_zone.CellOf(p));
+                        }
+                    }
                 }
             }
         }
@@ -574,6 +590,8 @@ namespace ForgottenKingdom
                 return null;
             }
 
+            _flight.Clear();
+
             var leftGround = airborne;
             var pastApex = false;
             var secondDone = false;
@@ -613,6 +631,11 @@ namespace ForgottenKingdom
                 var horizontal = pastApex ? plan.After : plan.Before;
                 velocity = logic.Step(velocity, ground, new MovementInput(horizontal, press, held), Dt);
                 feet = Move(feet, ref velocity);
+                if (_trace != null)
+                {
+                    _flight.Add(feet);
+                }
+
                 // The motor's help at the top of a jump: onto a one-way ledge the feet are just under,
                 // or over a stone edge pushed into (PlayerMotor2D.TryLedgeLift, TryMantle).
                 if (leftGround && step > 0 && velocity.y < PlayerMotor2D.LedgeLiftRise && Lift(ref feet, horizontal))
@@ -626,6 +649,7 @@ namespace ForgottenKingdom
 
                 if (leftGround && step > 0 && velocity.y <= 0f && Supported(feet))
                 {
+                    KeepFlight();
                     return feet;
                 }
 
@@ -709,6 +733,73 @@ namespace ForgottenKingdom
             }
 
             return false;
+        }
+
+        private HashSet<Vector2Int> Traced(int segment)
+        {
+            if (!_trace.TryGetValue(segment, out var cells))
+            {
+                _trace[segment] = cells = new HashSet<Vector2Int>();
+            }
+
+            return cells;
+        }
+
+        /// <summary>The cells under the body at every step of the flight that just landed.</summary>
+        private void KeepFlight()
+        {
+            if (_trace == null || _leaving < 0)
+            {
+                return;
+            }
+
+            var cells = Traced(_leaving);
+            var size = _zone.CellSize;
+            foreach (var feet in _flight)
+            {
+                var x0 = Mathf.FloorToInt((feet.x - BodyWidth * 0.5f - _zone.Origin.x) / size);
+                var x1 = Mathf.FloorToInt((feet.x + BodyWidth * 0.5f - _zone.Origin.x) / size);
+                var y0 = Mathf.FloorToInt((feet.y - _zone.Origin.y) / size);
+                var y1 = Mathf.FloorToInt((feet.y + BodyHeight - _zone.Origin.y) / size);
+                for (var y = y0; y <= y1; y++)
+                {
+                    for (var x = x0; x <= x1; x++)
+                    {
+                        cells.Add(new Vector2Int(x, y));
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Every cell the body passes through moving from the given floors (built with <c>trace</c>), and the
+        /// body standing anywhere along them.
+        /// </summary>
+        public HashSet<Vector2Int> Space(IEnumerable<int> segments)
+        {
+            var space = new HashSet<Vector2Int>();
+            var tall = Mathf.CeilToInt(BodyHeight / _zone.CellSize);
+            foreach (var index in segments)
+            {
+                var segment = _segments[index];
+                if (!segment.IsRing)
+                {
+                    for (var x = segment.XMin - 1; x <= segment.XMax; x++)
+                    {
+                        for (var y = segment.Row; y < segment.Row + tall; y++)
+                        {
+                            space.Add(new Vector2Int(x, y));
+                        }
+                    }
+                }
+
+                if (_trace != null && _trace.TryGetValue(index, out var cells))
+                {
+                    space.UnionWith(cells);
+                }
+            }
+
+            return space;
         }
 
         private Vector2 Move(Vector2 feet, ref Vector2 velocity)
