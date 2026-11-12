@@ -6,7 +6,9 @@ namespace ForgottenKingdom
 {
     /// <summary>
     /// The end of the game (item 5 of the big list, gamedesign/STORY.md): a few seconds after the
-    /// Oath-Bound King falls the world stops, three lines come one by one, the credits roll, and
+    /// Oath-Bound King falls, his farewell — the world still going, the eclipse lifting, the camera
+    /// drawn in, his last two lines under him (gamedesign/KING_FINALE.md, 2026-11-12); then the world
+    /// stops, three lines come one by one, the credits roll, and
     /// the summary waits for «Продовжити», which takes the hero back to the last altar with the
     /// grapple in hand to play on. Holding interact skips a part. The save marks the game
     /// completed before the first line, so quitting during the ending loses nothing.
@@ -17,6 +19,17 @@ namespace ForgottenKingdom
     {
         public const string FinalBossId = "ashen-king";
         public const float LineSeconds = 4.5f;
+        public const float FarewellLineSeconds = 4f;
+
+        /// <summary>The camera's size through the farewell, against its usual one: drawn in to him.</summary>
+        public const float FarewellZoom = 0.8f;
+
+        /// <summary>The King's last words, under him while the world still runs (decided by Claude, 2026-11-12).</summary>
+        public static readonly string[] FarewellLines =
+        {
+            "Я дав слово, що вас не забудуть…",
+            "…і тримав його, доки від вас не лишився попіл. Пам'ятай їх ти."
+        };
         public const float CreditsSeconds = 20f;
 
         public static readonly string[] Lines =
@@ -31,7 +44,9 @@ namespace ForgottenKingdom
             None,
             Lines,
             Credits,
-            Summary
+            Summary,
+            /// <summary>The King's last words, before the dark: the world is not paused yet.</summary>
+            Farewell
         }
 
         [SerializeField] private GameProgress _progress;
@@ -41,13 +56,15 @@ namespace ForgottenKingdom
         [SerializeField, Min(0f)] private float _delay = 3f;
 
         private PlayerInputReader _input;
+        private CameraFollow2D _camera;
+        private bool _paused;
         private Coroutine _running;
         private bool _skip;
         private float _clock;
 
         public Part Current { get; private set; }
 
-        /// <summary>The line on screen now, 0–2, while the lines run.</summary>
+        /// <summary>The line on screen now: 0–2 while the lines run, 0–1 through the farewell.</summary>
         public int Line { get; private set; }
 
         /// <summary>Seconds into the credits, for the view to roll them.</summary>
@@ -64,6 +81,7 @@ namespace ForgottenKingdom
             if (_respawner == null) { _respawner = FindAnyObjectByType<PlayerRespawner>(); }
             if (_player == null) { _player = FindAnyObjectByType<PlayerCharacter>(); }
             _input = _player != null ? _player.GetComponent<PlayerInputReader>() : null;
+            _camera = FindAnyObjectByType<CameraFollow2D>();
         }
 
         private void OnEnable()
@@ -98,7 +116,7 @@ namespace ForgottenKingdom
         }
 
         /// <summary>The rest of the part on screen is skipped; the summary is never skipped.</summary>
-        public void Skip() => _skip = Current == Part.Lines || Current == Part.Credits;
+        public void Skip() => _skip = Current == Part.Farewell || Current == Part.Lines || Current == Part.Credits;
 
         /// <summary>«Продовжити» on the summary: back to the world at the last altar.</summary>
         public void Continue()
@@ -120,7 +138,18 @@ namespace ForgottenKingdom
 
             Inscription.Close();
             _input?.SetGameplayEnabled(false);
+            Current = Part.Farewell;
+            _camera?.SetZoom(FarewellZoom, 2.5f);
+            for (Line = 0; Line < FarewellLines.Length && !_skip; Line++)
+            {
+                Changed?.Invoke();
+                yield return Wait(FarewellLineSeconds);
+            }
+
+            _skip = false;
+            _camera?.SetZoom(1f, 0.5f);
             GamePause.Push();
+            _paused = true;
             Current = Part.Lines;
             for (Line = 0; Line < Lines.Length && !_skip; Line++)
             {
@@ -159,7 +188,13 @@ namespace ForgottenKingdom
 
             _skip = false;
             Current = Part.None;
-            GamePause.Pop();
+            if (_paused)
+            {
+                GamePause.Pop();
+                _paused = false;
+            }
+
+            _camera?.SetZoom(1f, 0.5f);
             _input?.SetGameplayEnabled(true);
             Changed?.Invoke();
             if (travel && _respawner != null)

@@ -77,6 +77,7 @@ namespace ForgottenKingdom
         private VisualElement _root;
         private VisualElement _boss;
         private VisualElement _bossMark;
+        private VisualElement _bossMarkThree;
         private Label _bossName;
         private Label _bossPhase;
         private Label _bossValue;
@@ -262,6 +263,7 @@ namespace ForgottenKingdom
             _bossMeter.Bind(_root, "boss");
             _boss = _root.Q("boss");
             _bossMark = _root.Q("boss-mark");
+            _bossMarkThree = _root.Q("boss-mark-three");
             _bossName = _root.Q<Label>("boss-name");
             _bossPhase = _root.Q<Label>("boss-phase");
             _bossValue = _root.Q<Label>("boss-value");
@@ -498,10 +500,17 @@ namespace ForgottenKingdom
                     _bossMark.style.left = Length.Percent(boss.PhaseTwoHealthFraction * 100f);
                     _bossMark.style.display = boss.TotalPhases > 1 ? DisplayStyle.Flex : DisplayStyle.None;
                 }
+
+                if (_bossMarkThree != null)
+                {
+                    _bossMarkThree.style.left = Length.Percent(boss.PhaseThreeHealthFraction * 100f);
+                    _bossMarkThree.style.display = boss.TotalPhases > 2 ? DisplayStyle.Flex : DisplayStyle.None;
+                }
             }
 
             _bossMeter.Set(share, dt);
             _bossMark?.EnableInClassList("boss__mark--passed", boss.Phase > 1);
+            _bossMarkThree?.EnableInClassList("boss__mark--passed", boss.Phase > 2);
             if (_bossPhase != null && boss.Phase != _shownBossPhase)
             {
                 _shownBossPhase = boss.Phase;

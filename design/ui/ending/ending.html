@@ -43,6 +43,20 @@
   .ending .past { color: var(--ink-dim); }
   .ending .now { color: var(--ink-bright); text-shadow: 0 0 40px rgba(201,161,74,0.25); }
 
+  /* Прощання Короля (2026-11-12, рішення Claude за постійною згодою): світ ще живе, камера ближче,
+     його слова низько під ним; потім екран за 2 с темніє до кадру 3. */
+  .throne { position: absolute; inset: 0;
+    background: radial-gradient(30% 34% at 56% 58%, rgba(255,150,70,0.30), transparent 70%),
+      radial-gradient(70% 60% at 50% 20%, rgba(255,190,120,0.10), transparent 70%), linear-gradient(180deg, #1a130e, #0b0807); }
+  .king { position: absolute; left: 960px; bottom: 300px; width: 120px; height: 170px; background: #120d0a;
+    border-radius: 40px 40px 6px 6px; transform: rotate(-8deg); box-shadow: 0 -60px 60px -30px rgba(255,140,60,0.35); }
+  .king::before { content: ""; position: absolute; left: 34px; top: -26px; width: 52px; height: 22px;
+    background: linear-gradient(180deg, #ffb060, #9a5420); clip-path: polygon(0 100%, 0 30%, 25% 70%, 50% 0, 75% 70%, 100% 30%, 100% 100%); }
+  .hero--near { left: 760px; bottom: 300px; }
+  .ground--throne { bottom: 0; height: 300px; }
+  .farewell { position: absolute; left: 0; right: 0; bottom: 150px; text-align: center; margin: 0;
+    font-family: var(--font-display); font-style: italic; font-size: 34px; color: #f0d6b0; text-shadow: 0 2px 8px rgba(0,0,0,0.9); }
+
   /* Титри: повільний підйом, знизу підказка про пропуск. */
   .credits { position: absolute; left: 0; right: 0; top: 140px; text-align: center; }
   .credits h1 { margin: 0 0 90px; font-family: var(--font-display); font-size: 72px; letter-spacing: 0.1em; color: var(--ink-bright); font-weight: 400; }
@@ -108,6 +122,17 @@
       </div>
     </div>
     <div class="frame__caption">2 · Напис — текст (гра не на паузі, рух закриває)</div>
+  </div>
+
+  <!-- 2а. прощання Короля -->
+  <div class="frame">
+    <div class="stage-inner">
+      <div class="throne"></div><div class="ground ground--throne"></div>
+      <div class="king"></div><div class="hero hero--near"></div>
+      <p class="farewell">…і тримав його, доки від вас не лишився попіл. Пам'ятай їх ти.</p>
+      <div class="skip"><b>E</b>утримати — пропустити</div>
+    </div>
+    <div class="frame__caption">2а · Прощання Короля — гра не на паузі, камера ближче, два рядки по 4 с</div>
   </div>
 
   <!-- 3. фінал -->

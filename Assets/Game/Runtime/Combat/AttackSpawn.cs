@@ -51,7 +51,7 @@ namespace ForgottenKingdom
         [SerializeField, Min(1)] private int _count = 1;
         [Tooltip("Seconds between one zone and the next.")]
         [SerializeField, Min(0f)] private float _interval = 0.25f;
-        [Tooltip("March: distance between neighbouring zones.")]
+        [Tooltip("March, Converge: distance between neighbouring zones.")]
         [SerializeField, Min(0.1f)] private float _spacing = 2.5f;
         [Tooltip("March: the row runs behind the attacker too.")]
         [SerializeField] private bool _bothSides;
@@ -134,11 +134,12 @@ namespace ForgottenKingdom
                 return;
             }
 
-            if (_pattern == HazardPattern.March)
+            if (_pattern == HazardPattern.March || _pattern == HazardPattern.Converge)
             {
                 var steps = HazardPatterns.March(_count, Mathf.Abs(_offset.x), _spacing, _bothSides,
                     _alternate && _emissions++ % 2 == 1);
-                HazardVolley.March(_prefab, faction, damage.Attacker, attacker.position, facing, steps, _interval);
+                HazardVolley.March(_prefab, faction, damage.Attacker, attacker.position, facing, steps, _interval,
+                    converge: _pattern == HazardPattern.Converge);
                 return;
             }
 

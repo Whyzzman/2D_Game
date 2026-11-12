@@ -43,7 +43,8 @@ id `ashen-king` прежний). Подробности — `WORLD_DESIGN.md`.
 ## Концовка (этап B)
 
 `EndingSequence` (на объекте `GameProgress` в сцене мира) ждёт `BossDefeated` «ashen-king»: через 3 с
-пишет `completed` в сохранение, ставит паузу, строки по 4,5 с, титры 20 с, итоги ждут
+пишет `completed` в сохранение, прощание Короля поверх живого мира (две его строки, камера ближе — `KING_FINALE.md`,
+2026-11-12), ставит паузу, строки по 4,5 с, титры 20 с, итоги ждут
 «Продовжити» → `BeginTravel` к последнему алтарю. Удержание Interact 1 с пропускает строки или
 титры. Рисует `EndingView` (`Story.uss`, префикс `end-`). Смерти копятся в `GameProgressData.deaths`
 (`PlayerRespawner`); цифры итогов — `GameSummary`. Тесты `EndingTests` (2).

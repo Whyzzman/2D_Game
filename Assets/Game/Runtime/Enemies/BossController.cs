@@ -39,7 +39,7 @@ namespace ForgottenKingdom
     /// </summary>
     [DisallowMultipleComponent]
     [RequireComponent(typeof(EnemyMotor2D), typeof(CombatActor))]
-    public sealed class BossController : MonoBehaviour
+    public sealed partial class BossController : MonoBehaviour
     {
         [SerializeField] private string _bossId = "guardian-of-the-tomb";
         [SerializeField] private string _displayName = "Страж Гробниці";
@@ -53,17 +53,6 @@ namespace ForgottenKingdom
         [Tooltip("Carried in phase one and thrown away for phase two.")]
         [SerializeField] private GameObject _shieldVisual;
         [SerializeField] private BossAttack[] _attacks = { new BossAttack() };
-
-        [Header("Phases")]
-        [SerializeField, Min(1)] private int _totalPhases = 2;
-        [SerializeField, Range(0.05f, 0.95f)] private float _phaseTwoHealthFraction = 0.5f;
-        [SerializeField, Min(0f)] private float _phaseTransitionTime = 2f;
-        [Tooltip("Attack speed multiplier in phase two.")]
-        [SerializeField, Min(0.1f)] private float _phaseTwoAttackSpeed = 1.2f;
-        [Tooltip("Pause multiplier in phase two; below 1 means shorter pauses.")]
-        [SerializeField, Range(0.1f, 1f)] private float _phaseTwoPauseScale = 0.7f;
-        [Tooltip("Move speed multiplier in phase two.")]
-        [SerializeField, Min(0.1f)] private float _phaseTwoMoveScale = 1.15f;
 
         [Header("Pacing")]
         [SerializeField, Min(0f)] private float _introDuration = 1.4f;
@@ -111,11 +100,8 @@ namespace ForgottenKingdom
         public string DisplayName => _displayName;
         public string Epithet => _epithet;
 
-        /// <summary>Health share at which phase two begins; the boss bar marks it.</summary>
-        public float PhaseTwoHealthFraction => _phaseTwoHealthFraction;
         public BossState State { get; private set; } = BossState.Dormant;
         public int Phase { get; private set; } = 1;
-        public int TotalPhases => _totalPhases;
         public CombatActor Actor => _actor;
         public bool IsFighting => State != BossState.Dormant && State != BossState.Dead;
         public BossAttackKind? LastAttack => _lastAttackIndex >= 0 && _attacks != null
@@ -260,9 +246,9 @@ namespace ForgottenKingdom
             SetState(BossState.Idle);
             while (_actor.IsAlive && _player != null)
             {
-                if (Phase == 1 && _actor.Health.Normalized <= _phaseTwoHealthFraction)
+                while (NextPhaseDue())
                 {
-                    yield return EnterPhaseTwo();
+                    yield return EnterNextPhase();
                 }
 
                 SetState(BossState.Idle);
@@ -291,20 +277,6 @@ namespace ForgottenKingdom
                 _lastAttackIndex = index;
                 yield return RunAttack(_attacks[index]);
             }
-        }
-
-        private IEnumerator EnterPhaseTwo()
-        {
-            SetState(BossState.PhaseTransition);
-            StopHitboxes();
-            _motor.Stop();
-            _actor.SetInvulnerable(ImmunitySource.Script, _phaseTransitionTime);
-            _actor.Stagger?.ResetStagger();
-            Phase = 2;
-            SetShieldVisible(false);
-            ShieldDropped?.Invoke();
-            PhaseChanged?.Invoke(Phase);
-            yield return new WaitForSeconds(_phaseTransitionTime);
         }
 
         private IEnumerator RunAttack(BossAttack attack)
@@ -509,9 +481,6 @@ namespace ForgottenKingdom
             ? Mathf.Abs(_player.position.x - transform.position.x)
             : float.MaxValue;
 
-        private float AttackSpeed => Phase >= 2 ? _phaseTwoAttackSpeed : 1f;
-        private float PauseScale => Phase >= 2 ? _phaseTwoPauseScale : 1f;
-        private float MoveScale => Phase >= 2 ? _phaseTwoMoveScale : 1f;
         private Vector2 GroundPoint => new Vector2(transform.position.x, transform.position.y - 0.9f);
 
         private void OnHealthChanged(float current, float max)

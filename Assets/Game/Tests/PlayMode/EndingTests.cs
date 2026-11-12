@@ -54,8 +54,14 @@ namespace ForgottenKingdom.Tests
             Assert.That(_ending, Is.Not.Null, "The world scene carries the ending.");
             _progress.Data.deaths = 2;
             _progress.MarkBossDefeated(EndingSequence.FinalBossId);
-            yield return Until(() => _ending.Current == EndingSequence.Part.Lines, 8f, "The lines come after the fall.");
+            yield return Until(() => _ending.Current == EndingSequence.Part.Farewell, 8f, "His farewell comes after the fall.");
             yield return null;
+            Assert.That(GamePause.IsPaused, Is.False, "The world still runs while he speaks.");
+            Assert.That(_hud.Ending.FarewellShown, Is.EqualTo(EndingSequence.FarewellLines[0]));
+            _ending.Skip();
+            yield return Until(() => _ending.Current == EndingSequence.Part.Lines, 2f, "Skipping the farewell brings the lines.");
+            yield return null;
+            Assert.That(_hud.Ending.FarewellShown, Is.Empty, "His words are gone with the dark.");
             Assert.That(_progress.Data.completed, Is.True, "The save knows the game is done.");
             Assert.That(SaveSystem.Read().completed, Is.True, "Written at once.");
             Assert.That(GamePause.IsPaused, Is.True, "The world stops for the ending.");

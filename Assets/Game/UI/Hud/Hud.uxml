@@ -50,6 +50,7 @@
                 <ui:VisualElement name="boss-fill" class="bar__fill bar__fill--boss" picking-mode="Ignore" />
                 <ui:VisualElement class="bar__sheen" picking-mode="Ignore" />
                 <ui:VisualElement name="boss-mark" class="boss__mark" picking-mode="Ignore" />
+                <ui:VisualElement name="boss-mark-three" class="boss__mark" picking-mode="Ignore" />
                 <ui:VisualElement class="bar__frame" picking-mode="Ignore" />
             </ui:VisualElement>
             <ui:VisualElement class="boss__meta" picking-mode="Ignore">
@@ -663,6 +664,7 @@
         </ui:VisualElement>
         <!-- design/ui/ending/ending.html frames 3-5: the ending, the credits, the summary. Last, so over all. -->
         <ui:VisualElement name="end" class="end">
+            <ui:Label name="end-farewell" class="end__farewell display" text="" picking-mode="Ignore" />
             <ui:VisualElement class="end__lines" picking-mode="Ignore">
                 <ui:Label name="end-line-0" class="end__line display" text="" picking-mode="Ignore" />
                 <ui:Label name="end-line-1" class="end__line display" text="" picking-mode="Ignore" />

@@ -142,7 +142,10 @@ namespace ForgottenKingdom.EditorTools
             SetFloat(boss, "_staggerImmunityAfterStun", 1.5f);
             SetFloat(boss, "_parryRecoilTime", 0.8f);
             SetFloat(boss, "_tooCloseRange", 1.0f);
+            // The eclipse: the last third of him, in the dark, with his oath (ContentBuilderKingFinale).
+            SetKingPhaseThree(boss);
             ApplyKingAttacks(boss, emberScar);
+            AddKingOathWall(boss);
             ScaleBossBlows(boss, 1.28f);
 
             SetAudioProfile(root, AudioId.KingAwaken, AudioId.KingStunned, AudioId.KingDeath,

@@ -52,9 +52,41 @@
     bottom: 0;
     display: none;
     background-color: rgb(3, 2, 2);
+    transition-property: background-color;
+    transition-duration: 2s;
 }
 
 .end--open {
+    display: flex;
+}
+
+/* the King's farewell (2026-11-12, decided by Claude under the standing consent): the world shows
+   through, his words low under him like a voice, and the dark comes in when the lines begin */
+.end--farewell {
+    background-color: rgba(3, 2, 2, 0);
+}
+
+.end__farewell {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 150px;
+    font-size: 34px;
+    color: rgb(240, 214, 176);
+    -unity-text-align: middle-center;
+    -unity-font-style: italic;
+    white-space: normal;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+    opacity: 0;
+    transition-property: opacity;
+    transition-duration: 1.2s;
+}
+
+.end__farewell--on {
+    opacity: 1;
+}
+
+.end--farewell .end__skip {
     display: flex;
 }
 

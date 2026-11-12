@@ -5,7 +5,8 @@ namespace ForgottenKingdom
 {
     /// <summary>
     /// The ending from design/ui/ending/ending.html (frames 3–5), drawn for
-    /// <see cref="EndingSequence"/>, which keeps the behaviour: the three lines on black, the
+    /// <see cref="EndingSequence"/>, which keeps the behaviour: the King's farewell under him over the
+    /// still-running world (the overlay clear, darkening to black as it ends), the three lines on black, the
     /// earlier ones dimmed; the credits rolling up; the summary with «Продовжити». Holding
     /// interact for a second skips the lines or the credits; Enter, Space, interact or A on the
     /// summary go on.
@@ -18,6 +19,7 @@ namespace ForgottenKingdom
 
         private readonly VisualElement _overlay;
         private readonly Label[] _lines = new Label[EndingSequence.Lines.Length];
+        private readonly Label _farewell;
         private readonly VisualElement _roll;
         private readonly VisualElement _credits;
         private readonly Label _time;
@@ -45,6 +47,7 @@ namespace ForgottenKingdom
                 _lines[i] = _overlay.Q<Label>($"end-line-{i}");
             }
 
+            _farewell = _overlay.Q<Label>("end-farewell");
             _credits = _overlay.Q("end-credits");
             _roll = _overlay.Q("end-roll");
             _time = _overlay.Q<Label>("end-time");
@@ -64,6 +67,11 @@ namespace ForgottenKingdom
         {
             _time?.text, _deaths?.text, _map?.text, _kills?.text, _secrets?.text, _level?.text
         };
+
+        /// <summary>The King's line under him now, empty when he is not speaking, for tests.</summary>
+        public string FarewellShown => _farewell != null && _farewell.ClassListContains("end__farewell--on")
+            ? _farewell.text
+            : string.Empty;
 
         /// <summary>The lines on screen now (dimmed or not), for tests.</summary>
         public int LinesShown
@@ -132,6 +140,18 @@ namespace ForgottenKingdom
                 _lines[i].text = EndingSequence.Lines[i];
                 _lines[i].EnableInClassList("end__line--on", part == EndingSequence.Part.Lines && i <= _ending.Line);
                 _lines[i].EnableInClassList("end__line--past", i < _ending.Line);
+            }
+
+            if (_farewell != null)
+            {
+                var speaking = part == EndingSequence.Part.Farewell;
+                if (speaking)
+                {
+                    _farewell.text = EndingSequence.FarewellLines[Mathf.Clamp(_ending.Line, 0,
+                        EndingSequence.FarewellLines.Length - 1)];
+                }
+
+                _farewell.EnableInClassList("end__farewell--on", speaking);
             }
 
             _held = 0f;

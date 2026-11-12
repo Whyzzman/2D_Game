@@ -11,7 +11,12 @@ namespace ForgottenKingdom
         /// <summary>One zone after another, each where the target stands at that moment.</summary>
         Rain,
         /// <summary>A row of zones running out from the attacker, one step at a time.</summary>
-        March
+        March,
+        /// <summary>
+        /// The same row, dropped the other way round: from where it ends (a wall, the edge of the floor)
+        /// in toward the attacker, on both sides at once — the King's «Моє слово — стіна».
+        /// </summary>
+        Converge
     }
 
     /// <summary>The geometry of a hazard pattern, kept apart from the scene so it can be checked alone.</summary>
@@ -51,6 +56,30 @@ namespace ForgottenKingdom
             }
 
             return steps;
+        }
+
+        /// <summary>
+        /// When each zone of a converging row drops: a side's farthest zone first, then one step nearer
+        /// every <paramref name="interval"/>, so both fronts start at once wherever their sides end.
+        /// </summary>
+        public static float[] ConvergeTimes(IReadOnlyList<Step> kept, float interval)
+        {
+            var farAhead = -1;
+            var farBehind = -1;
+            foreach (var step in kept)
+            {
+                if (step.Offset >= 0f) { farAhead = Mathf.Max(farAhead, step.Index); }
+                else { farBehind = Mathf.Max(farBehind, step.Index); }
+            }
+
+            var times = new float[kept.Count];
+            for (var i = 0; i < kept.Count; i++)
+            {
+                var far = kept[i].Offset >= 0f ? farAhead : farBehind;
+                times[i] = (far - kept[i].Index) * interval;
+            }
+
+            return times;
         }
 
         /// <summary>The floor under a point: the centre a zone of that height takes when it rests on it.</summary>
@@ -120,7 +149,7 @@ namespace ForgottenKingdom
         /// floor does or a wall stands, so nothing erupts outside the arena.
         /// </summary>
         public static HazardVolley March(GameObject prefab, Faction faction, GameObject owner, Vector2 origin,
-            int facing, List<HazardPatterns.Step> steps, float interval)
+            int facing, List<HazardPatterns.Step> steps, float interval, bool converge = false)
         {
             if (prefab == null || steps == null)
             {
@@ -132,6 +161,7 @@ namespace ForgottenKingdom
             var blockedAhead = float.MaxValue;
             var blockedBehind = float.MaxValue;
             steps.Sort((a, b) => Mathf.Abs(a.Offset).CompareTo(Mathf.Abs(b.Offset)));
+            var kept = new List<HazardPatterns.Step>();
             foreach (var step in steps)
             {
                 var ahead = step.Offset >= 0f;
@@ -151,6 +181,19 @@ namespace ForgottenKingdom
                 }
 
                 volley._drops.Add(new Drop { At = step.Index * interval, Point = point });
+                kept.Add(step);
+            }
+
+            if (converge)
+            {
+                // timed from where each side really ends, so a wall near the attacker starts its front at once
+                var times = HazardPatterns.ConvergeTimes(kept, interval);
+                for (var i = 0; i < times.Length; i++)
+                {
+                    var drop = volley._drops[i];
+                    drop.At = times[i];
+                    volley._drops[i] = drop;
+                }
             }
 
             volley._drops.Sort((a, b) => a.At.CompareTo(b.At));
