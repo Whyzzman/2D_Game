@@ -75,6 +75,12 @@ MonoBehaviour:
       _color: {r: 1, g: 1, b: 1, a: 1}
       _atTargetPosition: 1
       _maxPlacementDistance: 7
+      _pattern: 0
+      _count: 1
+      _interval: 0.25
+      _spacing: 2.5
+      _bothSides: 0
+      _alternate: 0
     _lunge: {x: 0, y: 0}
   - _kind: 1
     _attack:
@@ -116,6 +122,12 @@ MonoBehaviour:
       _color: {r: 1, g: 1, b: 1, a: 1}
       _atTargetPosition: 1
       _maxPlacementDistance: 7
+      _pattern: 0
+      _count: 1
+      _interval: 0.25
+      _spacing: 2.5
+      _bothSides: 0
+      _alternate: 0
     _lunge: {x: 10.5, y: 5.5}
   _preferredRange: 1.2
   _retreatRange: 0

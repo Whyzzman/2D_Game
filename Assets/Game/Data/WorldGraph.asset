@@ -584,13 +584,13 @@ MonoBehaviour:
   - _areaId: room_tomb_reliquary
     _zoneId: zone_forgotten_tomb
     _displayName: "\u0420\u0435\u043B\u0456\u043A\u0432\u0456\u0430\u0440\u0456\u0439"
-    _mapPosition: {x: -0.9, y: 0.7}
-    _mapSize: {x: 0.6, y: 0.7}
+    _mapPosition: {x: -0.925, y: 0.7}
+    _mapSize: {x: 0.65, y: 0.7}
     _worldBounds:
       serializedVersion: 2
-      x: -12.5
+      x: -13
       y: 3
-      width: 7
+      width: 7.5
       height: 8
     _isSecret: 0
     _isOptional: 1

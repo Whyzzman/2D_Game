@@ -1260,6 +1260,9 @@ MonoBehaviour:
     _airJumpSpeed: 9.5
     _pogoSpeed: 9.5
     _ledgeForgiveness: 0.1
+    _groundTurnAcceleration: 300
+    _fastFallGravityMultiplier: 1.4
+    _fastFallMaxSpeed: 26
   _dashSettings:
     _dashSpeed: 16
     _dashDuration: 0.18
@@ -1631,6 +1634,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.WallMovement
   _slideSpeed: 2.5
   _jumpUpSpeed: 10
+  _basicJumpUpSpeed: 7
   _jumpAwaySpeed: 7
   _regrabDelay: 0.25
   _runSpeed: 4
