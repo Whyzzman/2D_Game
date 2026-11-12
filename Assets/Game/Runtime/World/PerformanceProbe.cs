@@ -25,6 +25,7 @@ namespace ForgottenKingdom
         private const float SampleSeconds = 3f;
 
         private string _report;
+        private string _shots;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         private static void StartIfRequested()
@@ -52,6 +53,10 @@ namespace ForgottenKingdom
 
             var probe = new GameObject("PerformanceProbe").AddComponent<PerformanceProbe>();
             probe._report = args[index + 1];
+            // -roomShots <folder>: a picture of every room as the probe stands in it, for the user to look the
+            // zones through without playing (2026-11-12)
+            var shots = Array.IndexOf(args, "-roomShots");
+            probe._shots = shots >= 0 && shots + 1 < args.Length ? args[shots + 1] : null;
             DontDestroyOnLoad(probe.gameObject);
         }
 
@@ -94,6 +99,13 @@ namespace ForgottenKingdom
                 motor.enabled = false;
                 body.simulated = false;
                 yield return new WaitForSecondsRealtime(SettleSeconds);
+                if (!string.IsNullOrEmpty(_shots))
+                {
+                    Directory.CreateDirectory(_shots);
+                    ScreenCapture.CaptureScreenshot(Path.Combine(_shots, $"{area.ZoneId}__{area.AreaId}.png"));
+                    yield return null;
+                    yield return null;
+                }
 
                 var frames = new List<float>();
                 var end = Time.realtimeSinceStartup + SampleSeconds;

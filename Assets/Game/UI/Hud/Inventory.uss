@@ -1179,6 +1179,18 @@
     padding: 0;
 }
 
+/* a boss's hint under its row (2026-11-12): a rumour, quieter than the names */
+.bst__hint {
+    margin: 0;
+    padding: 2px 16px 10px 32px;
+    font-size: 14px;
+    -unity-font-style: italic;
+    color: rgb(160, 148, 128);
+    white-space: normal;
+    border-bottom-width: 1px;
+    border-bottom-color: rgba(58, 47, 37, 0.6);
+}
+
 .bst__row--new .bst__name {
     color: rgb(240, 214, 150);
 }

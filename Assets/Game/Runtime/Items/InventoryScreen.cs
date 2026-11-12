@@ -468,7 +468,7 @@ namespace ForgottenKingdom
             var current = worn.Weapon;
             if (candidate != null && current != null)
             {
-                AddDelta(lines, "Урон", candidate.BaseDamage, current.BaseDamage);
+                AddDelta(lines, "Шкода", candidate.BaseDamage, current.BaseDamage);
                 AddDelta(lines, "Швидкість", candidate.AttackSpeed, current.AttackSpeed);
                 AddDelta(lines, "Оглушення", candidate.StaggerMultiplier,
                     current.StaggerMultiplier);

@@ -21,14 +21,14 @@ namespace ForgottenKingdom
         private static readonly Dictionary<string, (string text, string how, string action)> Lessons =
             new Dictionary<string, (string, string, string)>
             {
-                [AbilityIds.Dash] = ("Короткий ривок уперед, крізь удари.", "Натисни", "Dash"),
+                [AbilityIds.Dash] = ("Короткий ривок уперед, крізь удари.", "Натисніть", "Dash"),
                 [AbilityIds.DoubleJump] = ("Тепер можна відштовхнутися від повітря.",
-                    "У повітрі натисни", "Jump"),
-                [AbilityIds.AirDash] = ("Ривок тепер працює й у повітрі.", "У повітрі натисни", "Dash"),
+                    "У повітрі натисніть", "Jump"),
+                [AbilityIds.AirDash] = ("Ривок тепер працює й у повітрі.", "У повітрі натисніть", "Dash"),
                 [AbilityIds.WallRun] = ("Стіна більше не перешкода: по ній можна бігти вгору.",
-                    "Притиснись до стіни й тримай", "Jump"),
+                    "Притисніться до стіни й тримайте", "Jump"),
                 [AbilityIds.Grapple] = ("Залізні кільця тепер тримають: гак підтягне до них і підкине вгору.",
-                    "Біля кільця натисни", "Grapple"),
+                    "Біля кільця натисніть", "Grapple"),
             };
 
         private readonly VisualElement _card;

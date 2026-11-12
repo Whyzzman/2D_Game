@@ -5695,8 +5695,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Game.Runtime::ForgottenKingdom.MainMenuController
   _vignette: {fileID: 21300000, guid: 6ead2ab3ff343db4793776a2d261f182, type: 3}
   _ornament: {fileID: 21300000, guid: 5a6e7790749d3914d99dba16ba4872fa, type: 3}
-  _buildLabel: "\u0412\u0435\u0440\u0442\u0438\u043A\u0430\u043B\u044C\u043D\u0438\u0439
-    \u0437\u0440\u0456\u0437"
+  _buildLabel: 
 --- !u!114 &563852941
 MonoBehaviour:
   m_ObjectHideFlags: 0

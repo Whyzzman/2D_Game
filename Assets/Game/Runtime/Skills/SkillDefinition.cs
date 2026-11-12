@@ -120,7 +120,7 @@ namespace ForgottenKingdom
                 case SkillEffectType.GuardRecovery:
                     return $"Пауза регенерації після блоку {total:0.##} с";
                 case SkillEffectType.MomentumDamage:
-                    return $"Після ідеального ухилу: урон {sign}{total * 100f:0}%";
+                    return $"Після ідеального ухилу: шкода {sign}{total * 100f:0}%";
                 case SkillEffectType.AdrenalineRegen:
                     return $"Після вбивства: регенерація витривалості {sign}{total * 100f:0}%";
                 case SkillEffectType.SecondWindResistance:
@@ -134,19 +134,19 @@ namespace ForgottenKingdom
         {
             switch (type)
             {
-                case SkillEffectType.MeleeDamage: return "Урон у ближньому бою";
-                case SkillEffectType.HeavyDamage: return "Урон важкої атаки";
+                case SkillEffectType.MeleeDamage: return "Шкода в ближньому бою";
+                case SkillEffectType.HeavyDamage: return "Шкода важкої атаки";
                 case SkillEffectType.HeavyStagger: return "Оглушення важкою атакою";
                 case SkillEffectType.StaggerResistance: return "Опір оглушенню";
                 case SkillEffectType.GuardCost: return "Вартість блоку";
                 case SkillEffectType.ParryStagger: return "Оглушення від парирування";
-                case SkillEffectType.StunnedDamage: return "Урон по оглушених";
-                case SkillEffectType.BackAttackDamage: return "Урон зі спини";
+                case SkillEffectType.StunnedDamage: return "Шкода по оглушених";
+                case SkillEffectType.BackAttackDamage: return "Шкода зі спини";
                 case SkillEffectType.DashStaminaCost: return "Вартість ривка";
                 case SkillEffectType.WallRunStaminaCost: return "Вартість бігу по стіні";
                 case SkillEffectType.DashCooldown: return "Відкат ривка";
                 case SkillEffectType.CritChance: return "Шанс критичного удару";
-                case SkillEffectType.DexterityWeaponDamage: return "Урон легкою зброєю";
+                case SkillEffectType.DexterityWeaponDamage: return "Шкода легкою зброєю";
                 case SkillEffectType.SpellDamage: return "Шкода заклять";
                 case SkillEffectType.FireDamage: return "Шкода вогнем";
                 case SkillEffectType.FrostDamage: return "Шкода льодом";

@@ -31,6 +31,9 @@ namespace ForgottenKingdom
         /// <summary>The rows shown now as «name · count» (count empty for bosses and unknowns), for tests.</summary>
         public List<string> Shown { get; } = new List<string>();
 
+        /// <summary>The bosses' hint lines on the page now, for tests.</summary>
+        public List<string> Hints { get; } = new List<string>();
+
         /// <summary>The zone headers shown now, for tests.</summary>
         public List<string> Zones { get; } = new List<string>();
 
@@ -44,6 +47,7 @@ namespace ForgottenKingdom
         public void Draw()
         {
             Shown.Clear();
+            Hints.Clear();
             Zones.Clear();
             _list?.Clear();
             var catalog = _progress != null ? _progress.BestiaryCatalog : null;
@@ -120,6 +124,7 @@ namespace ForgottenKingdom
                 var beaten = _progress.IsBossDefeated(boss.BossId);
                 AddRow(beaten ? boss.DisplayName : Unknown, string.Empty,
                     beaten ? "bst__row--boss" : "bst__row--unknown");
+                AddHint(BossHints.For(boss.BossId));
             }
 
             if (_kinds != null) { _kinds.text = $"{known} з {listed} видів"; }
@@ -130,6 +135,18 @@ namespace ForgottenKingdom
         {
             Zones.Add(name);
             _list?.Add(UiParts.Text(name.ToUpperInvariant(), "bst__zone"));
+        }
+
+        /// <summary>What is said about a boss whose zone the hero has seen, beaten or not: help, not a name.</summary>
+        private void AddHint(string line)
+        {
+            if (string.IsNullOrEmpty(line))
+            {
+                return;
+            }
+
+            Hints.Add(line);
+            _list?.Add(UiParts.Text(line, "bst__hint"));
         }
 
         private void AddRow(string name, string count, string modifier)

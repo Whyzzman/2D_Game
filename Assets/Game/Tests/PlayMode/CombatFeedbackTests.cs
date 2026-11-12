@@ -53,7 +53,18 @@ namespace ForgottenKingdom.Tests
             GameTimeScale.Reset();
         }
 
-        private void OnPlayed(FeedbackKind kind, Vector2 position) => _played.Add(kind);
+        // Dust of the hero's own movement (a landing that falls in the same frame) is not the hit's feedback:
+        // counted, it made the one-impact check fail now and then in the full run (2026-11-12).
+        private void OnPlayed(FeedbackKind kind, Vector2 position)
+        {
+            if (kind == FeedbackKind.JumpDust || kind == FeedbackKind.LandDust || kind == FeedbackKind.RunDust
+                || kind == FeedbackKind.WallSlideDust || kind == FeedbackKind.WallJump || kind == FeedbackKind.AirJump)
+            {
+                return;
+            }
+
+            _played.Add(kind);
+        }
 
         // ---------- wiring ----------
 

@@ -156,6 +156,44 @@ namespace ForgottenKingdom
             return null;
         }
 
+        /// <summary>
+        /// Gates another ability gets past (KI-009, 2026-11-12): a room built for one ability that a hero carrying
+        /// every other ability of the game — as on a return trip — reaches without it. Asked of the generous model,
+        /// as the gate checks are. Each line: the room, the ability it waits for.
+        /// </summary>
+        public static List<string> Bypasses(LevelZone zone, ICollection<string> everyAbility)
+        {
+            var found = new List<string>();
+            var start = Start(zone);
+            if (!zone.IsValid || start == null)
+            {
+                return found;
+            }
+
+            foreach (var gate in Gates(zone, new HashSet<string>(zone.Abilities)))
+            {
+                var kit = new HashSet<string>(everyAbility);
+                kit.Remove(gate);
+                var loose = new LevelReach(zone, kit, generous: true);
+                var from = loose.SegmentUnder(start.Cell);
+                if (from < 0)
+                {
+                    continue;
+                }
+
+                var rooms = loose.Rooms(loose.Forward(from));
+                foreach (var room in zone.Rooms)
+                {
+                    if (room.NeedsAbility == gate && rooms.Contains(room.Id))
+                    {
+                        found.Add($"{room.Id} (needs {gate})");
+                    }
+                }
+            }
+
+            return found;
+        }
+
         private static HashSet<string> Gates(LevelZone zone, ICollection<string> abilities)
         {
             var gates = new HashSet<string>();

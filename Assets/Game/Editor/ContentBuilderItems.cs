@@ -144,7 +144,7 @@ namespace ForgottenKingdom.EditorTools
                         new SkillEffect(SkillEffectType.HeavyStagger, 0.2f)
                     }),
                 BuildSkill("warrior_executioner", "Кат", SkillBranch.Warrior,
-                    "Удари по оглушеному чи зі зламаним блоком ворогу завдають більше шкоди.",
+                    "Удари по оглушеному ворогу чи ворогу зі зламаним блоком завдають більше шкоди.",
                     1, 1, 1, new Vector2Int(2, 1), new[] { "warrior_heavy_mastery" },
                     new[] { new SkillEffect(SkillEffectType.StunnedDamage, 0.15f) }),
                 BuildSkill("warrior_efficient_guard", "Ощадливий блок", SkillBranch.Warrior,
@@ -164,7 +164,7 @@ namespace ForgottenKingdom.EditorTools
                     1, 3, 1, new Vector2Int(3, 2), new[] { "warrior_efficient_guard" },
                     new[] { new SkillEffect(SkillEffectType.StaggerResistance, 0.05f) }),
                 BuildSkill("warrior_second_wind", "Друге дихання", SkillBranch.Warrior,
-                    "На малому здоров'ї ви ненадовго стаєте стійкішим. Не лікує.",
+                    "На малому здоров'ї ви ненадовго стаєте стійкішими. Не лікує.",
                     1, 1, 4, new Vector2Int(4, 2), new[] { "warrior_iron_body" },
                     new[] { new SkillEffect(SkillEffectType.SecondWindResistance, 0.2f) }),
 
@@ -312,7 +312,7 @@ namespace ForgottenKingdom.EditorTools
         private static SkillDefinition BuildGroundBreaker()
         {
             var skill = BuildSkill("warrior_ground_breaker", "Розлом", SkillBranch.Warrior,
-                "Обвалює зброю в землю перед собою. Величезна шкода рівновазі й блоку.",
+                "Обрушує зброю на землю перед собою. Величезна шкода рівновазі й блоку.",
                 2, 1, 5, new Vector2Int(2, 0), new[] { "warrior_heavy_mastery" },
                 System.Array.Empty<SkillEffect>(), SkillType.Active);
             JsonUtility.FromJsonOverwrite(@"{
@@ -439,7 +439,7 @@ namespace ForgottenKingdom.EditorTools
                 // Half a flask (user's choice, 2026-09-27): eaten from the bag like a flask is drunk.
                 BuildItem("healing_herb", "Лікувальна трава",
                     "Гірке листя, що затягує рани. Відновлює 20 здоров'я. Їсти треба стоячи, "
-                    + "і удар до кінця ковтка його зводить нанівець.",
+                    + "а удар, що влучить, поки ви жуєте, зводить усе нанівець.",
                     ItemCategory.Consumable, ItemRarity.Common, 20, false, false, 8,
                     new Color(0.45f, 0.75f, 0.42f), healAmount: 20f),
                 BuildItem("guard_emblem", "Емблема варти",
@@ -471,7 +471,7 @@ namespace ForgottenKingdom.EditorTools
                     ItemCategory.Armor, ItemRarity.Uncommon, 1, true, false, 150,
                     new Color(0.6f, 0.62f, 0.7f), chestplate),
                 BuildItem("ring_of_life", "Перстень Життя",
-                    "Тепло, що тримає серце битися трохи довше.",
+                    "Тепло, що змушує серце битися трохи довше.",
                     ItemCategory.Accessory, ItemRarity.Uncommon, 1, true, false, 120,
                     new Color(0.85f, 0.35f, 0.4f), ringOfLife),
                 BuildItem("ring_of_endurance", "Перстень Витривалості",

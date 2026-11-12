@@ -582,7 +582,7 @@ namespace ForgottenKingdom
             AddLegend(MapGlyph.Ability, "Потрібна здібність");
             AddLegend(MapGlyph.Ring, "Кільця гака");
             AddLegend(MapGlyph.Gate, "Ворота");
-            AddLegend(MapGlyph.ShortcutShut, "Шорткат (закритий)");
+            AddLegend(MapGlyph.ShortcutShut, "Короткий шлях (закритий)");
             if (_screen != null && _screen.HasQuill)
             {
                 AddLegend(MapGlyph.Here, "R / Y — позначка пером");

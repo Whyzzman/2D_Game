@@ -70,6 +70,6 @@
         </ui:VisualElement>
 
         <ui:Label name="save-meta" class="save-meta" text="Збереження не знайдено" picking-mode="Ignore" />
-        <ui:Label name="build-tag" class="build-tag" text="Вертикальний зріз" picking-mode="Ignore" />
+        <ui:Label name="build-tag" class="build-tag" text="" picking-mode="Ignore" />
     </ui:VisualElement>
 </ui:UXML>
