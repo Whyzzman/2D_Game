@@ -122,6 +122,26 @@ namespace ForgottenKingdom.EditorTools
             File.WriteAllText("Artifacts/LevelComfort.txt", report.ToString());
         }
 
+        /// <summary>
+        /// KI-009: rooms built for one ability that every other ability of the game reaches without it.
+        /// Run: -executeMethod ForgottenKingdom.EditorTools.LevelTidy.BypassReport → Artifacts/LevelBypasses.txt
+        /// </summary>
+        public static void BypassReport()
+        {
+            var every = new[] { AbilityIds.Dash, AbilityIds.DoubleJump, AbilityIds.AirDash, AbilityIds.WallRun,
+                AbilityIds.ShadowDash, AbilityIds.Grapple };
+            var report = new System.Text.StringBuilder();
+            foreach (var path in Directory.GetFiles("Assets/Game/Levels", "*.txt"))
+            {
+                var bypasses = LevelCheck.Bypasses(LevelZone.Parse(File.ReadAllText(path)), every);
+                report.AppendLine($"== {Path.GetFileNameWithoutExtension(path)}: "
+                    + (bypasses.Count == 0 ? "no bypass" : string.Join(" | ", bypasses)));
+            }
+
+            Directory.CreateDirectory("Artifacts");
+            File.WriteAllText("Artifacts/LevelBypasses.txt", report.ToString());
+        }
+
         private static void HardSpots(LevelZone zone, HashSet<string> abilities, MovementSettings comfort,
             string label, System.Text.StringBuilder report)
         {
