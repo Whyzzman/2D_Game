@@ -122,7 +122,7 @@ namespace ForgottenKingdom
         public override void DescribeInto(List<string> lines)
         {
             lines.Add($"Тип: {TypeName(_weaponType)}");
-            lines.Add($"Урон {_baseDamage:0.#}");
+            lines.Add($"Шкода {_baseDamage:0.#}");
             lines.Add($"Швидкість {_attackSpeed:0.##}×");
             lines.Add($"Витривалість {_staminaMultiplier:0.##}×");
             lines.Add($"Оглушення {_staggerMultiplier:0.##}×");

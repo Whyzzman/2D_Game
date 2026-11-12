@@ -65,7 +65,7 @@ namespace ForgottenKingdom
         public ModifierOperation Operation => _operation;
         public float Value => _value;
 
-        /// <summary>Human-readable line for the item panel, e.g. "Максимум HP +10".</summary>
+        /// <summary>Human-readable line for the item panel, e.g. "Максимум здоров'я +10".</summary>
         public string Describe()
         {
             var name = StatNames.Display(_stat);
@@ -85,7 +85,7 @@ namespace ForgottenKingdom
         {
             switch (stat)
             {
-                case StatType.MaxHealth: return "Максимум HP";
+                case StatType.MaxHealth: return "Максимум здоров'я";
                 case StatType.MaxStamina: return "Максимум витривалості";
                 case StatType.PhysicalDefense: return "Захист";
                 case StatType.StaggerResistance: return "Опір оглушенню";

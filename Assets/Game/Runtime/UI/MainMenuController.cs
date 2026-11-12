@@ -26,7 +26,7 @@ namespace ForgottenKingdom
 
         [SerializeField] private Sprite _vignette;
         [SerializeField] private Sprite _ornament;
-        [SerializeField] private string _buildLabel = "Вертикальний зріз";
+        [SerializeField] private string _buildLabel = string.Empty;
 
         private readonly List<VisualElement> _items = new List<VisualElement>();
         private readonly List<System.Action> _actions = new List<System.Action>();
@@ -119,7 +119,12 @@ namespace ForgottenKingdom
             }
 
             var tag = _root.Q<Label>("build-tag");
-            if (tag != null) { tag.text = $"{_buildLabel} · {Application.version}"; }
+            if (tag != null)
+            {
+                tag.text = string.IsNullOrEmpty(_buildLabel)
+                    ? $"v{Application.version}"
+                    : $"{_buildLabel} · {Application.version}";
+            }
         }
 
         private void BindButtons()

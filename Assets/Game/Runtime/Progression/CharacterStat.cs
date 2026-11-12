@@ -48,9 +48,9 @@ namespace ForgottenKingdom
             switch (stat)
             {
                 case CharacterStat.Strength:
-                    return "Підвищує урон зброї, що масштабується від сили.";
+                    return "Підвищує шкоду зброї, що масштабується від сили.";
                 case CharacterStat.Dexterity:
-                    return "Підвищує урон зброї, що масштабується від спритності.";
+                    return "Підвищує шкоду зброї, що масштабується від спритності.";
                 case CharacterStat.Vitality:
                     return "Підвищує максимум здоров'я.";
                 case CharacterStat.Endurance:

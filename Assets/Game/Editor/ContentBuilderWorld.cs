@@ -101,7 +101,7 @@ namespace ForgottenKingdom.EditorTools
                     ItemCategory.Accessory, ItemRarity.Legendary, 1, true, true, 400,
                     new Color(0.45f, 0.82f, 0.45f), heart),
                 BuildItem(BellringerRewardItemId, "Язик дзвона",
-                    "Бронзовий язик зі сільського дзвону. Коли тримаєш його, у вухах ще гуде.",
+                    "Бронзовий язик із сільського дзвона. Коли тримаєш його, у вухах ще гуде.",
                     ItemCategory.Progression, ItemRarity.Legendary, 1, true, true, 0,
                     new Color(0.82f, 0.62f, 0.32f))
             };

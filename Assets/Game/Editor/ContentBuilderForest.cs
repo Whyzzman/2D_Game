@@ -105,7 +105,7 @@ namespace ForgottenKingdom.EditorTools
                     ItemCategory.Armor, ItemRarity.Rare, 1, true, false, 190,
                     new Color(0.42f, 0.5f, 0.42f), pauldron),
                 BuildItem("venom_charm", "Оберіг від Отрути",
-                    "Висушений корінь на шнурку. Гіркий запах відганяє гірше.",
+                    "Висушений корінь на шнурку. Його гіркий запах відганяє отруту.",
                     ItemCategory.Accessory, ItemRarity.Uncommon, 1, true, false, 150,
                     new Color(0.5f, 0.78f, 0.4f), venomCharm),
                 BuildItem("hunter_sigil", "Знак Мисливця",
