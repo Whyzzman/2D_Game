@@ -401,6 +401,23 @@
     const [fx, fy, fr] = limb(g, x, y, hip, THIGH, knee, SHIN, LEG_W, side === "back" ? "#0d1119" : "#151b27");
     boot(g, fx, fy, fr);
   }
+  function sleeve(g, x, y, ang1, len1, ang2, len2) {
+    const r1 = ang1 * Math.PI / 180, r2 = (ang1 - ang2) * Math.PI / 180;
+    const ex = x + Math.sin(r1) * len1, ey = y + Math.cos(r1) * len1;
+    const hx = ex + Math.sin(r2) * len2, hy = ey + Math.cos(r2) * len2;
+    g.fillStyle = C.ink;
+    taper(g, x, y, ex, ey, 15, 11); taper(g, ex, ey, hx, hy, 11, 8);
+    g.fillStyle = C.cloak;
+    taper(g, x, y, ex, ey, 11, 8); taper(g, ex, ey, hx, hy, 8, 5);
+    // складка й кромка світла по зовнішньому боці
+    g.strokeStyle = C.cloakLight; g.lineWidth = 1.6; g.lineCap = "round";
+    const nx = Math.cos(r1), ny = -Math.sin(r1);
+    g.beginPath(); g.moveTo(x + nx * 3.5, y + ny * 3.5); g.quadraticCurveTo(ex + nx * 3.2, ey + ny * 3.2, hx + Math.cos(r2) * 2, hy - Math.sin(r2) * 2); g.stroke();
+    // розтруб рукава біля рукавиці
+    g.fillStyle = C.ink; g.beginPath(); g.ellipse(hx, hy, 6, 4.5, -r2, 0, Math.PI * 2); g.fill();
+    g.fillStyle = C.cloakDark; g.beginPath(); g.ellipse(hx, hy, 4.6, 3.3, -r2, 0, Math.PI * 2); g.fill();
+    return [hx, hy];
+  }
   const smooth01 = (a, b, x) => { const t = Math.max(0, Math.min(1, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
   // Пікселі мальованого тіла (від півоту на стегнах) — у позі p.
   function bodyMap(p) {
@@ -473,7 +490,8 @@
     puppetLeg(g, "front", 3, hipY, p.hipF, p.kneeF);
     slashArc(g, 8, SHOULDER + 14, p.slashFrom, p.slashTo, p.slash);
     // рука з мечем: рукав у темряві плаща, рукавиця й мальований меч на кінці
-    const [hx, hy] = limb(g, 6, SHOULDER, p.arm, ARM1, -18, ARM2, 5, "#1a2433");
+    // рукав плаща (2026-11-12): ширший біля плеча, звужується до рукавиці, з холодною кромкою зверху — не паличка
+    const [hx, hy] = sleeve(g, 6, SHOULDER, p.arm, ARM1, -18, ARM2);
     piece(g, "sword", hx, hy, p.sword - SWORD_ANGLE, K * (big ? 1.25 : 0.92));
     piece(g, "glove", hx, hy, p.sword * 0.3 - 20, K * 0.8);
     g.restore();

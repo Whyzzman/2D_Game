@@ -30,6 +30,8 @@ namespace ForgottenKingdom.EditorTools
         private const int ThingRoom = 4;
         private const int EnemyRoom = 7;
         private const int DoorRoom = 5;
+        private const int TightMargin = 2;
+        private const int TightNoise = 4;
 
         private static readonly string[] EveryAbility =
         {
@@ -42,6 +44,10 @@ namespace ForgottenKingdom.EditorTools
             var args = Environment.GetCommandLineArgs();
             var at = Array.IndexOf(args, "-zone");
             var only = at >= 0 && at + 1 < args.Length ? args[at + 1] : null;
+            // -rooms a,b: only those rooms, shaped tight — to the way the zone asks for (its abilities and each
+            // gate's one at a time, the strict model), with a narrower margin: the room takes the shape of its path
+            var roomsAt = Array.IndexOf(args, "-rooms");
+            _tight = roomsAt >= 0 && roomsAt + 1 < args.Length ? new HashSet<string>(args[roomsAt + 1].Split(',')) : null;
             var report = new System.Text.StringBuilder();
             foreach (var path in Directory.GetFiles("Assets/Game/Levels", "*.txt").OrderBy(p => p))
             {
@@ -69,6 +75,8 @@ namespace ForgottenKingdom.EditorTools
         }
 
         /// <summary>The zone's text with the dead air of its rooms turned to stone.</summary>
+        private static HashSet<string> _tight;
+
         public static string Shape(string text, string zoneName, System.Text.StringBuilder report)
         {
             var zone = LevelZone.Parse(text);
@@ -78,10 +86,13 @@ namespace ForgottenKingdom.EditorTools
             var seed = zoneName.GetHashCode() & 0xffff;
             foreach (var room in zone.Rooms)
             {
-                if (!string.IsNullOrEmpty(room.BossId) || room.IsSecret)
+                if (!string.IsNullOrEmpty(room.BossId) || room.IsSecret || _tight != null && !_tight.Contains(room.Id))
                 {
                     continue;
                 }
+
+                var margin = _tight != null ? TightMargin : Margin;
+                var noise = _tight != null ? TightNoise : MarginNoise;
 
                 var keep = new HashSet<Vector2Int>(used.Where(room.Contains));
                 foreach (var marker in room.Markers)
@@ -142,7 +153,7 @@ namespace ForgottenKingdom.EditorTools
 
                         var cell = room.Origin + new Vector2Int(x, y);
                         var wander = Mathf.PerlinNoise((cell.x + seed) * 0.11f, (cell.y - seed) * 0.11f);
-                        if (distance[x, y] > Margin + wander * MarginNoise)
+                        if (distance[x, y] > margin + wander * noise)
                         {
                             fill.Add(cell);
                             count++;
@@ -177,10 +188,22 @@ namespace ForgottenKingdom.EditorTools
                 return space;
             }
 
-            var kits = new List<HashSet<string>> { new HashSet<string>(zone.Abilities), new HashSet<string>(EveryAbility) };
+            var kits = new List<HashSet<string>> { new HashSet<string>(zone.Abilities) };
+            if (_tight == null)
+            {
+                kits.Add(new HashSet<string>(EveryAbility));
+            }
+            else
+            {
+                foreach (var gate in zone.Rooms.Select(r => r.NeedsAbility).Where(a => !string.IsNullOrEmpty(a)).Distinct())
+                {
+                    kits.Add(new HashSet<string>(zone.Abilities) { gate });
+                }
+            }
+
             foreach (var kit in kits)
             {
-                foreach (var generous in new[] { false, true })
+                foreach (var generous in _tight == null ? new[] { false, true } : new[] { false })
                 {
                     var reach = new LevelReach(zone, kit, generous: generous, trace: true);
                     var from = reach.SegmentUnder(start.Cell);
