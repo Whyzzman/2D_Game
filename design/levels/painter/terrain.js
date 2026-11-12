@@ -684,9 +684,61 @@
     c.restore();
   }
 
+  // Опори драбин (2026-11-12, «елементи платформеру прості й некрасиві»; решено Claude за постійною згодою):
+  // вільні уступи, що стоять один над одним (перекриття ≥ 2 клітинки, 3–8 рядів між ними), — щаблі однієї будови.
+  // Під такою драбиною — опора від найнижчого щабля до каменю внизу (якщо близько) і до найвищого: у Селі дерев'яний
+  // стовп риштовання, у Болотах гнилий стовбур, у Столиці кам'яний стовп. Лише малюнок — коллайдерів не додає.
+  const postCache = new WeakMap();
+  function postsOf(zone) {
+    if (postCache.has(zone)) return postCache.get(zone);
+    const free = [];
+    for (const r of zone.rooms) {
+      for (let y = 0; y < r.h; y++) {
+        const row = r.rows[y];
+        for (let x = 0; x < r.w; x++) {
+          if (row[x] !== "=" || (x > 0 && row[x - 1] === "=")) continue;
+          let e = x;
+          while (e + 1 < r.w && row[e + 1] === "=") e++;
+          const gx0 = r.x + x, gx1 = r.x + e, gy = r.y + y;
+          const touches = T.isRock(T.at(zone, gx0 - 1, gy)) || T.isRock(T.at(zone, gx1 + 1, gy));
+          if (!touches) free.push({ x0: gx0, x1: gx1, y: gy, group: -1 });
+        }
+      }
+    }
+    const stacked = (a, b) => Math.min(a.x1, b.x1) - Math.max(a.x0, b.x0) >= 1 && Math.abs(a.y - b.y) >= 3 && Math.abs(a.y - b.y) <= 8;
+    const posts = [];
+    free.forEach((l, i) => {
+      if (l.group >= 0) return;
+      const members = [l]; l.group = i;
+      for (let k = 0; k < members.length; k++) free.forEach(o => { if (o.group < 0 && stacked(members[k], o)) { o.group = i; members.push(o); } });
+      if (members.length < 2) return;
+      const mid = members.reduce((s, m) => s + (m.x0 + m.x1 + 1) / 2, 0) / members.length;
+      const px = Math.round(mid * 2) / 2;
+      const low = Math.min(...members.map(m => m.y)), high = Math.max(...members.map(m => m.y));
+      let base = low;
+      while (base > low - 10 && !T.isRock(T.at(zone, Math.floor(px), base - 1))) base--;
+      const grounded = T.isRock(T.at(zone, Math.floor(px), base - 1));
+      posts.push({ x: px, bottom: grounded ? base : low - 1, top: high + 1, grounded });
+    });
+    postCache.set(zone, posts);
+    return posts;
+  }
+
+  function drawPosts(f, zone, look, seed) {
+    const zoneName = look.style || "tomb", M = root.LevelMaterials;
+    const kind = zoneName === "village" ? "timber" : zoneName === "capital" ? "stone" : look.hang === "roots" && zoneName === "forest" && look.groundLine > 0 ? "trunk" : null;
+    if (!kind || !M.post) return;
+    postsOf(zone).forEach((p, i) => {
+      const wx = zone.origin[0] + p.x * zone.cell;
+      const yb = zone.origin[1] + p.bottom * zone.cell, yt = zone.origin[1] + p.top * zone.cell;
+      M.post(f, wx, yb, yt, kind, look, seed + i * 31, p.grounded);
+    });
+  }
+
   // Уступи «=»: плита з рівним верхом і обламаним низом; вільна — на двох ланцюгах до склепіння.
   function drawLedges(f, zone, cx0, cy0, gw, gh, look, seed) {
     const c = f.c, S = f.ppu, N2 = root.PaintNoise;
+    drawPosts(f, zone, look, seed);
     for (let y = 0; y < gh; y++) {
       let start = -1;
       for (let x = 0; x <= gw; x++) {

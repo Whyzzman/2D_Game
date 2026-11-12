@@ -330,5 +330,56 @@
     }
   }
 
-  root.LevelMaterials = { WOOD, kindOf, planks, rope, shelf, bridge, log, branch, balcony, slab, chunk };
+  // Опора драбини уступів (terrain.js, postsOf): стовп від каменю внизу до найвищого щабля.
+  // timber — тесаний стовп із залізними скобами й підкосами під щаблями (Село); trunk — гнилий стовбур із мохом
+  // (Болота); stone — колона з кладки з базою й капітеллю (Столиця).
+  function post(f, x, yb, yt, kind, look, seed, grounded) {
+    const c = f.c, S = f.ppu;
+    const half = kind === "stone" ? 0.34 : kind === "trunk" ? 0.3 : 0.2;
+    const pal = WOOD[kind === "stone" ? "capital" : kind === "trunk" ? "forest" : "village"];
+    const sway = y => kind === "trunk" ? (N.fbm(x, y * 0.4, seed, 2) - 0.5) * 0.25 : 0;
+    const body = () => {
+      c.beginPath();
+      const n = Math.max(2, Math.ceil((yt - yb) / 0.4));
+      for (let i = 0; i <= n; i++) { const y = yb + (yt - yb) * i / n; c.lineTo(f.x(x - half * (kind === "trunk" ? 1 + 0.25 * (1 - i / n) : 1) + sway(y)), f.y(y)); }
+      for (let i = n; i >= 0; i--) { const y = yb + (yt - yb) * i / n; c.lineTo(f.x(x + half * (kind === "trunk" ? 1 + 0.25 * (1 - i / n) : 1) + sway(y)), f.y(y)); }
+      c.closePath();
+    };
+    const g = c.createLinearGradient(f.x(x - half), 0, f.x(x + half), 0);
+    const dark = kind === "stone" ? pal.stoneDark : pal.dark, mid = kind === "stone" ? pal.stone : kind === "trunk" ? pal.bark : pal.wood,
+      light = kind === "stone" ? pal.stoneLight : pal.light;
+    g.addColorStop(0, dark); g.addColorStop(0.35, mid); g.addColorStop(0.62, light); g.addColorStop(1, dark);
+    c.save();
+    c.globalAlpha = 0.92;
+    body(); c.fillStyle = g; c.fill();
+    c.strokeStyle = "rgba(0,0,0,0.7)"; c.lineWidth = Math.max(1, S * 0.03); c.stroke();
+    if (kind === "timber") {
+      // волокна і скоби
+      c.strokeStyle = rgba(pal.dark, 0.6); c.lineWidth = Math.max(1, S * 0.02);
+      [-0.08, 0.06].forEach(o => { c.beginPath(); c.moveTo(f.x(x + o), f.y(yb)); c.lineTo(f.x(x + o), f.y(yt)); c.stroke(); });
+      c.fillStyle = rgba(pal.iron, 0.95);
+      for (let y = yb + 0.6; y < yt - 0.2; y += 1.6 + N.hash(seed, Math.round(y * 3), 5) * 0.8) c.fillRect(f.x(x - half - 0.02), f.y(y + 0.08), S * (half * 2 + 0.04), S * 0.12);
+    } else if (kind === "stone") {
+      // шви кладки, база й капітель
+      c.strokeStyle = "rgba(0,0,0,0.4)"; c.lineWidth = Math.max(1, S * 0.02);
+      for (let y = yb + 0.55; y < yt; y += 0.55) { c.beginPath(); c.moveTo(f.x(x - half), f.y(y)); c.lineTo(f.x(x + half), f.y(y)); c.stroke(); }
+      c.fillStyle = pal.stoneDark;
+      if (grounded) c.fillRect(f.x(x - half - 0.14), f.y(yb + 0.32), S * (half * 2 + 0.28), S * 0.32);
+    } else {
+      // кора й мох
+      c.strokeStyle = rgba(pal.dark, 0.55); c.lineWidth = Math.max(1, S * 0.025);
+      for (let k = -1; k <= 1; k++) { c.beginPath(); for (let y = yb; y <= yt; y += 0.3) c.lineTo(f.x(x + k * half * 0.45 + sway(y)), f.y(y)); c.stroke(); }
+      if (look.moss) {
+        c.fillStyle = rgba(look.moss, 0.55);
+        for (let y = yb + 0.3; y < yt; y += 0.7) {
+          const h = N.hash(seed, Math.round(y * 5), 9);
+          if (h < 0.45) continue;
+          c.beginPath(); c.ellipse(f.x(x - half * 0.6 + sway(y)), f.y(y), S * 0.12, S * (0.15 + h * 0.25), 0, 0, Math.PI * 2); c.fill();
+        }
+      }
+    }
+    c.restore();
+  }
+
+  root.LevelMaterials = { WOOD, kindOf, planks, rope, shelf, bridge, log, branch, balcony, slab, chunk, post };
 })(window);
