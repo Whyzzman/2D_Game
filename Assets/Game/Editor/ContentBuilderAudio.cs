@@ -202,6 +202,7 @@ namespace ForgottenKingdom.EditorTools
             // A find, over the music: flat (it is the hero's, not the room's) and never dropped.
             events.Add(Sound(AudioId.DiscoverySecret, clips, 0.6f, voices: 1, priority: 115, spatial: 0f));
             events.Add(Sound(AudioId.DiscoveryAltar, clips, 0.55f, voices: 1, priority: 115, spatial: 0f));
+            events.Add(Sound(AudioId.DiscoveryVista, clips, 0.5f, voices: 1, priority: 115, spatial: 0f));
             // Ringing ears after a blow to the hero: quiet, flat (it is in the head), never stacked.
             events.Add(Sound(AudioId.HurtRing, clips, 0.22f, voices: 1, priority: 85, interval: 0.3f,
                 spatial: 0f));

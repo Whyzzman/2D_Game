@@ -259,6 +259,8 @@ namespace ForgottenKingdom
         Heartbeat,
         // ---- a find heard over the zone's music (GAME_FEEL_IDEAS item 16, appended) ----
         DiscoverySecret,
-        DiscoveryAltar
+        DiscoveryAltar,
+        /// <summary>The first look out over far country, from a height (appended 2026-11-12).</summary>
+        DiscoveryVista
     }
 }

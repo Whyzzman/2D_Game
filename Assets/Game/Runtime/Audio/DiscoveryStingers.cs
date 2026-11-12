@@ -4,7 +4,7 @@ namespace ForgottenKingdom
 {
     /// <summary>
     /// A short phrase over the zone's music when the hero finds something: a secret room, an altar lit
-    /// for the first time (GAME_FEEL_IDEAS item 16). The music steps back for it, so the find is an
+    /// for the first time, the first look out from a height over far country (GAME_FEEL_IDEAS item 16). The music steps back for it, so the find is an
     /// event and not one more sound in the room. It makes itself and listens to whatever world is
     /// loaded, so no scene has to carry it.
     /// </summary>
@@ -13,6 +13,20 @@ namespace ForgottenKingdom
         /// <summary>A load marks rooms and altars all at once; none of that is a find.</summary>
         private const float QuietAfterLoad = 2f;
         private const float Gap = 3f;
+
+        /// <summary>
+        /// Rooms with a view: high and open, another zone seen from them (decided by Claude under the standing
+        /// consent, 2026-11-12). Not a secret room (that has its own phrase) and not an arena (the boss has music).
+        /// </summary>
+        public static readonly System.Collections.Generic.HashSet<string> Vistas =
+            new System.Collections.Generic.HashSet<string>
+            {
+                "room_forest_watchtower",   // the ruined tower: the forest's crowns to the village
+                "room_forest_far_gate",     // the forest's edge: the hill and the village above
+                "room_village_feather",     // the cliff under the feather: the capital burning below
+                "room_capital_bell_tower",  // the capital's belfry: the city to the palace
+                "room_marsh_north_bridge"   // the north walkway: the marsh to its chapel
+            };
 
         private WorldState _world;
         private float _quietUntil;
@@ -77,7 +91,12 @@ namespace ForgottenKingdom
                     return AudioId.DiscoveryAltar;
                 case WorldFlag.AreaDiscovered:
                     var area = graph != null ? graph.Area(id) : null;
-                    return area != null && area.IsSecret ? AudioId.DiscoverySecret : (AudioId?)null;
+                    if (area != null && area.IsSecret)
+                    {
+                        return AudioId.DiscoverySecret;
+                    }
+
+                    return Vistas.Contains(id) ? AudioId.DiscoveryVista : (AudioId?)null;
                 default:
                     return null;
             }

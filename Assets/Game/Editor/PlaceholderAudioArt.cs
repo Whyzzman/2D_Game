@@ -316,6 +316,8 @@ namespace ForgottenKingdom.EditorTools
             // ---- a find: a bright rising phrase for a secret room, a low warm one for a new altar ----
             new Spec(AudioId.DiscoverySecret, "SFX/World", "sfx_discovery_secret", Recipe.Chime, 1, 1.9f, 1.5f),
             new Spec(AudioId.DiscoveryAltar, "SFX/World", "sfx_discovery_altar", Recipe.Chime, 1, 2.2f, 0.75f),
+            // a wide, slow phrase between the two: the first look out over far country
+            new Spec(AudioId.DiscoveryVista, "SFX/World", "sfx_discovery_vista", Recipe.Chime, 1, 3.2f, 1.0f),
             // ---- ringing ears after a blow to the hero ----
             new Spec(AudioId.HurtRing, "SFX/Player", "sfx_player_hurt_ring", Recipe.Ring, 2, 0.9f, 1f),
             // ---- the heart at low health: lub-dub, felt more than heard ----
