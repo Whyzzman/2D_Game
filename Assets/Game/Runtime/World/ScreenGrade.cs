@@ -51,6 +51,9 @@ namespace ForgottenKingdom
         [SerializeField, Range(-100f, 0f)] private float _eclipseSaturation = -40f;
         [SerializeField, Range(0f, 0.5f)] private float _eclipseVignette = 0.18f;
         [SerializeField, Min(0.05f)] private float _eclipseFadeIn = 2.5f;
+        [Tooltip("How much of the eclipse is left with the post effects switched off — the setting a player turns "
+            + "off when the picture is too dark: the fight stays dim, never unreadable.")]
+        [SerializeField, Range(0f, 1f)] private float _eclipseWithoutEffects = 0.4f;
         [Tooltip("The light coming back when the fight ends: slower, the dawn after it.")]
         [SerializeField, Min(0.05f)] private float _eclipseFadeOut = 5f;
 
@@ -84,6 +87,10 @@ namespace ForgottenKingdom
         /// <summary>How much of the boss grade a fight in this state wants.</summary>
         public static float BossTarget(bool fighting, int phase, float phaseOneShare) =>
             !fighting ? 0f : phase >= 2 ? 1f : phaseOneShare;
+
+        /// <summary>The eclipse as drawn: all of it, or a share of it for a player who switched the effects off.</summary>
+        public static float EclipseWeight(float amount, bool postEffects, float withoutEffects) =>
+            amount * (postEffects ? 1f : withoutEffects);
 
         /// <summary>A fight in its third phase is under the eclipse; anything else is not.</summary>
         public static float EclipseTarget(bool fighting, int phase) => fighting && phase >= 3 ? 1f : 0f;
@@ -177,7 +184,7 @@ namespace ForgottenKingdom
                 dt / (eclipseTarget > EclipseAmount ? _eclipseFadeIn : _eclipseFadeOut));
             if (_eclipse != null)
             {
-                _eclipse.weight = EclipseAmount;
+                _eclipse.weight = EclipseWeight(EclipseAmount, GameSettings.Current.postEffects, _eclipseWithoutEffects);
             }
 
             BossAmount = Mathf.MoveTowards(BossAmount, bossTarget, dt / _bossFadeTime);

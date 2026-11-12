@@ -28,6 +28,9 @@ namespace ForgottenKingdom.Tests
             Assert.That(ScreenGrade.EclipseTarget(true, 3), Is.EqualTo(1f));
             Assert.That(ScreenGrade.EclipseTarget(true, 2), Is.EqualTo(0f));
             Assert.That(ScreenGrade.EclipseTarget(false, 3), Is.EqualTo(0f), "The fight over, the light comes back.");
+            Assert.That(ScreenGrade.EclipseWeight(1f, true, 0.4f), Is.EqualTo(1f));
+            Assert.That(ScreenGrade.EclipseWeight(1f, false, 0.4f), Is.EqualTo(0.4f).Within(1e-5f),
+                "Effects off — the picture too dark for the player — the eclipse is shallower.");
         }
 
         [Test]
