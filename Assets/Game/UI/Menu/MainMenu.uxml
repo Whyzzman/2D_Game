@@ -10,7 +10,6 @@
             <ui:Label class="title display motion" text="ТІНЬ" picking-mode="Ignore" />
             <ui:Label class="title title--second display motion" text="Забутого Королівства" picking-mode="Ignore" />
             <ui:VisualElement class="title__rule ornament motion" picking-mode="Ignore" />
-            <ui:Label class="title__small display motion" text="Пролог" picking-mode="Ignore" />
 
             <!-- design/ui/menus/menus.html: words without boxes; MenuFocus draws the light, the flame and the threads. -->
             <ui:VisualElement name="list" class="menu-list">
