@@ -38,8 +38,14 @@ namespace ForgottenKingdom
                 return; // a trace records what the game makes by itself; warming would hide it
             }
 
-            Warming = Pick(Resources.LoadAll<GraphicsStateCollection>(Folder), SystemInfo.graphicsDeviceType,
-                Application.platform);
+            var all = Resources.LoadAll<GraphicsStateCollection>(Folder);
+            Warming = Pick(all, SystemInfo.graphicsDeviceType, Application.platform);
+            if (Warming == null && all.Length > 0)
+            {
+                Debug.Log($"[ShaderWarmup] nothing for {SystemInfo.graphicsDeviceType}/{Application.platform} among "
+                    + string.Join(", ", Array.ConvertAll(all, c => $"{c.name} {c.graphicsDeviceType}/{c.runtimePlatform}")));
+            }
+
             if (Warming != null)
             {
                 var host = new GameObject("ShaderWarmup");
@@ -49,13 +55,23 @@ namespace ForgottenKingdom
         }
 
         private JobHandle _job;
+        private int _lastCount = -1;
+        private int _stalled;
+
+        /// <summary>
+        /// Warming gives up after this long, or when two batches in a row warm nothing more (2026-11-12: in the Mac
+        /// build the collection never reported itself warmed and was asked for a batch every frame for good).
+        /// </summary>
+        public const float GiveUpSeconds = 10f;
 
         private void Update()
         {
-            if (Warming == null || Warming.isWarmedUp)
+            if (Warming == null || Warming.isWarmedUp || _stalled >= 2 || Time.realtimeSinceStartup > GiveUpSeconds)
             {
                 _job.Complete();
-                Debug.Log($"[ShaderWarmup] {(Warming != null ? Warming.completedWarmupCount : 0)} states warmed");
+                Debug.Log($"[ShaderWarmup] {(Warming != null ? Warming.completedWarmupCount : 0)} of "
+                    + $"{(Warming != null ? Warming.totalGraphicsStateCount : 0)} states warmed"
+                    + (Warming != null && !Warming.isWarmedUp ? " (stopped early)" : string.Empty));
                 Destroy(gameObject);
                 return;
             }
@@ -64,6 +80,9 @@ namespace ForgottenKingdom
             if (_job.IsCompleted)
             {
                 _job.Complete();
+                var count = Warming.completedWarmupCount;
+                _stalled = count == _lastCount ? _stalled + 1 : 0;
+                _lastCount = count;
                 _job = Warming.WarmUpProgressively(PerFrame, default);
             }
         }
