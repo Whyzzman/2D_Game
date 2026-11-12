@@ -28,6 +28,19 @@ namespace ForgottenKingdom.EditorTools
     {
         public const string AtlasFolder = "Assets/Game/Art/Atlases";
         private const string CharacterFolder = "Assets/Game/Art/Characters";
+        private const string BossFolder = CharacterFolder + "/Bosses";
+
+        /// <summary>
+        /// Bosses ship as a variant of their atlas at this scale (KI-012, 2026-11-12, decided by Claude under
+        /// the standing consent). Their frames are drawn at 100 px a unit, but a boss is seen through the
+        /// boss zoom (6.5 × 1.18 units half-height): about 70 screen px a unit at 1080p. At 0.75 a boss atlas
+        /// goes from 3 pages of 4096² (and as many of normals) to 2 — the heaviest textures left in memory.
+        /// </summary>
+        public const float BossVariantScale = 0.75f;
+
+        /// <summary>The variant atlas that ships for a boss's master atlas.</summary>
+        public static string VariantPath(string masterPath) =>
+            masterPath.Replace(".spriteatlasv2", "Variant.spriteatlasv2");
 
         public int callbackOrder => 0;
 
@@ -76,6 +89,10 @@ namespace ForgottenKingdom.EditorTools
             foreach (var entry in Plan())
             {
                 GenerateForFolder(entry.Value, entry.Key);
+                if (entry.Value.StartsWith(BossFolder + "/"))
+                {
+                    GenerateVariant(entry.Key);
+                }
             }
 
             AssetDatabase.SaveAssets();
@@ -109,6 +126,42 @@ namespace ForgottenKingdom.EditorTools
             SpriteAtlasAsset.Save(atlas, atlasPath);
             AssetDatabase.ImportAsset(atlasPath);
             Configure(atlasPath);
+        }
+
+        /// <summary>
+        /// The boss's master atlas stays the source of its frames but leaves the build; its variant, a
+        /// scaled copy of the master's pages (normals included), is what the player loads and binds to.
+        /// </summary>
+        private static void GenerateVariant(string masterPath)
+        {
+            var master = AssetDatabase.LoadAssetAtPath<SpriteAtlas>(masterPath);
+            var variantPath = VariantPath(masterPath);
+            var variant = File.Exists(variantPath) ? SpriteAtlasAsset.Load(variantPath) : new SpriteAtlasAsset();
+            variant.SetIsVariant(true);
+            variant.SetMasterAtlas(master);
+            SpriteAtlasAsset.Save(variant, variantPath);
+            AssetDatabase.ImportAsset(variantPath);
+
+            if (AssetImporter.GetAtPath(variantPath) is SpriteAtlasImporter importer)
+            {
+                var texture = importer.textureSettings;
+                texture.filterMode = FilterMode.Bilinear;
+                texture.generateMipMaps = false;
+                texture.readable = false;
+                importer.textureSettings = texture;
+                var platform = importer.GetPlatformSettings("DefaultTexturePlatform");
+                platform.maxTextureSize = 4096;
+                importer.SetPlatformSettings(platform);
+                importer.variantScale = BossVariantScale;
+                importer.includeInBuild = true;
+                importer.SaveAndReimport();
+            }
+
+            if (AssetImporter.GetAtPath(masterPath) is SpriteAtlasImporter masterImporter)
+            {
+                masterImporter.includeInBuild = false;
+                masterImporter.SaveAndReimport();
+            }
         }
 
         private static void Configure(string atlasPath)

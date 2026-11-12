@@ -15,6 +15,7 @@ namespace ForgottenKingdom.Tests
     public sealed class SpriteAtlasTests
     {
         private const string AtlasFolder = "Assets/Game/Art/Atlases";
+        private const float BossVariantScale = 0.75f; // SpriteAtlasBuilder.BossVariantScale
 
         private static string[] PackedFolders()
         {
@@ -23,6 +24,8 @@ namespace ForgottenKingdom.Tests
                 .Concat(AssetDatabase.GetSubFolders("Assets/Game/Art/Characters/Bosses"))
                 .ToArray();
         }
+
+        private static bool IsBoss(string folder) => folder.StartsWith("Assets/Game/Art/Characters/Bosses/");
 
         private static string AtlasFor(string folder)
         {
@@ -53,7 +56,8 @@ namespace ForgottenKingdom.Tests
                     $"{path} packs the folder, so new frames join it on their own.");
 
                 var importer = (SpriteAtlasImporter)AssetImporter.GetAtPath(path);
-                Assert.That(importer.includeInBuild, Is.True, path);
+                Assert.That(importer.includeInBuild, Is.EqualTo(!IsBoss(folder)),
+                    $"{path}: a boss ships as its variant, everyone else as the atlas itself.");
                 Assert.That(importer.packingSettings.enableTightPacking, Is.False,
                     "FullRect frames would show neighbours packed into their corners.");
 
@@ -62,6 +66,30 @@ namespace ForgottenKingdom.Tests
                     .Select(p => AssetDatabase.LoadAssetAtPath<Sprite>(p))
                     .First(s => s != null);
                 Assert.That(atlas.CanBindTo(sprite), Is.True, $"{sprite.name} is in {path}.");
+            }
+        }
+
+        [Test]
+        public void EveryBossShipsAsAScaledVariantOfItsAtlas()
+        {
+            // KI-012: the six boss atlases were the heaviest textures left in memory.
+            var bosses = AssetDatabase.GetSubFolders("Assets/Game/Art/Characters/Bosses");
+            Assert.That(bosses, Has.Length.EqualTo(6));
+            foreach (var folder in bosses)
+            {
+                var path = AtlasFor(folder).Replace(".spriteatlasv2", "Variant.spriteatlasv2");
+                var variant = AssetDatabase.LoadAssetAtPath<SpriteAtlas>(path);
+                Assert.That(variant, Is.Not.Null, path);
+                Assert.That(variant.isVariant, Is.True, path);
+
+                var importer = (SpriteAtlasImporter)AssetImporter.GetAtPath(path);
+                Assert.That(importer.includeInBuild, Is.True, path);
+                Assert.That(importer.variantScale, Is.EqualTo(BossVariantScale).Within(0.001f), path);
+
+                var sprite = AssetDatabase.FindAssets("t:Sprite", new[] { folder })
+                    .Select(g => AssetDatabase.LoadAssetAtPath<Sprite>(AssetDatabase.GUIDToAssetPath(g)))
+                    .First(s => s != null);
+                Assert.That(variant.CanBindTo(sprite), Is.True, $"{sprite.name} is in {path}.");
             }
         }
 
