@@ -60,11 +60,11 @@
   // Удар збоку: замах назад, удар (кадр контакту з дугою), проведення. contact — номер кадру удару.
   function swing(n, contact, from, to, heavy) {
     const wind = pose({ tip: 12, hem: 0.3, lean: -8, arm: -60, sword: -120 + (heavy ? -20 : 0), hipF: 12, kneeF: 20, hipB: -14, kneeB: 10, y: 3, flare: 0.35, scarf: 150 });
-    const hit = pose({ tip: -16, hem: 0.7, sy: 0.96, sx: 1.04, lean: 14, arm: 80, sword: to, hipF: 28, kneeF: 18, hipB: -22, kneeB: 8, x: 6, flare: 0.6, scarf: 195, slash: 1, slashFrom: from, slashTo: to });
-    const follow = pose({ tip: -6, hem: 0.9, lean: 10, arm: 100, sword: to + 30, hipF: 22, kneeF: 16, hipB: -18, kneeB: 10, x: 7, flare: 0.45, scarf: 185, slash: 0.25, slashFrom: from, slashTo: to });
+    const hit = pose({ tip: -22, hem: 0.7, sy: 0.94, sx: 1.07, lean: 21, arm: 86, sword: to, hipF: 42, kneeF: 30, hipB: -32, kneeB: 6, x: 13, y: 3, flare: 0.8, scarfLen: 1.3, scarf: 195, slash: 1, slashFrom: from, slashTo: to });
+    const follow = pose({ tip: -8, hem: 0.9, lean: 13, arm: 100, sword: to + 30, hipF: 30, kneeF: 22, hipB: -24, kneeB: 10, x: 11, y: 2, flare: 0.55, scarf: 185, slash: 0.25, slashFrom: from, slashTo: to });
     // глибший замах за мить до удару (передчуття) і перехльост після — тіло наздоганяє меч
     const deep = Object.assign({}, wind, { lean: -12, arm: -75, sword: wind.sword - 20, y: 5, sy: 0.94, sx: 1.04, tip: 18 });
-    const over = Object.assign({}, follow, { lean: 18, x: 10, sword: to + 45, arm: 110, tip: -20, sy: 1.03 });
+    const over = Object.assign({}, follow, { lean: 25, x: 16, sword: to + 45, arm: 112, tip: -26, sy: 1.03, hipF: 40, kneeF: 28, flare: 0.75 });
     const keys = [[0, pose({ lean: 2 })], [Math.max(1, contact - 2), wind], [contact - 1, deep], [contact, hit],
       [contact + 1, over], [Math.min(n - 2, contact + 2), follow], [n - 1, pose({ lean: 3, arm: 40, sword: 60, tip: 4 })]];
     return track(n, keys.filter((k, i) => i === 0 || k[0] > keys[i - 1][0]));
@@ -85,7 +85,8 @@
   });
 
   const STATES = {
-    Idle: n => cycle(n, t => ({ y: S(t * PI2) * 1.6, sy: 1 + S(t * PI2) * 0.022, sx: 1 - S(t * PI2) * 0.012, arm: 18 + S(t * PI2) * 4, sword: 52 + S(t * PI2) * 3, armB: -10 - S(t * PI2) * 4, scarf: 160 + S(t * PI2) * 10, scarfWave: t, flare: 0.12 + S(t * PI2) * 0.05, tip: S(t * PI2 - 0.8) * 8, hem: t, hood: S(t * PI2 - 0.4) * 2 })),
+    // 2026-11-13, «анімації»: стійка дихає помітно — плечі й каптур ходять, плащ і шарф колише вітер, меч гойдається
+    Idle: n => cycle(n, t => ({ y: S(t * PI2) * 2.6, sy: 1 + S(t * PI2) * 0.034, sx: 1 - S(t * PI2) * 0.02, lean: S(t * PI2 - 1.2) * 1.6, arm: 18 + S(t * PI2 - 0.5) * 7, sword: 52 + S(t * PI2 - 0.9) * 6, armB: -10 - S(t * PI2) * 6, scarf: 162 + S(t * PI2 - 0.6) * 18, scarfWave: t, scarfLen: 1.1 + S(t * PI2) * 0.06, flare: 0.2 + S(t * PI2 - 1) * 0.12, tip: S(t * PI2 - 0.8) * 13, hem: t, hood: S(t * PI2 - 0.4) * 3.5, hipF: 5 + S(t * PI2) * 2, kneeF: 7 + S(t * PI2) * 4, kneeB: 7 + S(t * PI2) * 4 })),
     IdleGlance: n => track(n, [[0, {}], [3, { hood: -10, lean: -3 }], [6, { hood: 8, lean: 2 }], [9, {}]]),
     IdleVariant: n => track(n, [[0, {}], [3, { armB: 60, hood: 6, y: 1 }], [6, { armB: 70, hood: -4, scarf: 140, scarfWave: 0.5 }], [9, {}]]),
     Run: RUN,
@@ -110,7 +111,7 @@
     BlockImpact: n => track(n, [[0, { lean: -14, x: -5, arm: 60, sword: -60, hipF: 20, kneeF: 25, hipB: -26, kneeB: 18, flare: 0.5, scarf: 140 }], [1, { lean: -6, arm: 70, sword: -70, hipF: 18, kneeF: 18, hipB: -20, kneeB: 12 }]]),
     Parry: n => track(n, [[0, { arm: 60, sword: -70, lean: -4 }], [1, { arm: 95, sword: -20, lean: 8, slash: 1, slashFrom: -80, slashTo: -10, glow: 0.4 }], [2, { arm: 70, sword: 20, lean: 4 }]]),
     GuardBroken: n => track(n, [[0, { lean: -24, x: -8, arm: -40, sword: -150, armB: -60, flare: 0.8, scarf: 130, hood: -10 }], [2, { lean: -16, x: -6, arm: -10, sword: 160, hood: -6 }]]),
-    Hurt: n => track(n, [[0, { lean: -20, x: -6, arm: -30, sword: 150, armB: -50, flare: 0.7, scarf: 130, hood: -12, eyes: 0.3 }], [1, { lean: -10, x: -3, hood: -6, eyes: 0.8 }]]),
+    Hurt: n => track(n, [[0, { lean: -30, x: -11, y: -5, sy: 1.06, sx: 0.95, arm: -50, sword: 165, armB: -80, hipF: 30, kneeF: 40, hipB: 12, kneeB: 46, flare: 1, scarf: 110, scarfLen: 1.3, hood: -16, tip: 26, eyes: 0.3 }], [1, { lean: -12, x: -4, y: 4, sy: 0.95, hipF: 16, kneeF: 30, hipB: -10, kneeB: 26, hood: -6, eyes: 0.8, flare: 0.5 }]]),
     Stunned: n => cycle(n, t => ({ lean: -6 + S(t * PI2) * 8, hood: S(t * PI2) * 10, arm: 30, sword: 80, eyes: 0.4, scarf: 150, scarfWave: t })),
     Death: n => track(n, [[0, { lean: -20, hood: -10, eyes: 0.5 }], [2, { lean: 30, y: 14, sy: 0.85, hipF: 60, kneeF: 90, hipB: 20, kneeB: 90, arm: 60, sword: 120, eyes: 0.2, flare: 0.9 }], [5, { lean: 70, y: 30, sy: 0.8, hipF: 80, kneeF: 100, hipB: 40, kneeB: 100, arm: 90, sword: 0, eyes: 0, flare: 1, alpha: 0.85 }]]),
     CastStart: n => cycle(n, t => ({ lean: -4, armB: 80, arm: 10, sword: 80, glow: 0.6 + 0.4 * S(t * PI2), flare: 0.3, scarf: 150, scarfWave: t })),
@@ -297,7 +298,7 @@
 
   function slashArc(g, cx, cy, from, to, a) {
     if (a <= 0.01) return;
-    const r = 70, f = from * Math.PI / 180, t = to * Math.PI / 180, ccw = to < from;
+    const r = 92, f = from * Math.PI / 180, t = to * Math.PI / 180, ccw = to < from;
     g.save();
     g.globalAlpha = a;
     const grad = g.createRadialGradient(cx, cy, r * 0.55, cx, cy, r * 1.1);
