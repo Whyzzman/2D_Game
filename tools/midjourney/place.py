@@ -22,8 +22,12 @@ EXTENSIONS = (".png", ".jpg", ".jpeg", ".webp")
 # Midjourney paints the far plan too bright: compress the lights into a soft shoulder and take out a
 # little colour, so the playfield stays the brightest thing on screen. Blacks stay deep (a lifted black
 # turned the paintings milky grey); each room keeps its own hue (rooms differ in colour by design).
-BLACK_L, WHITE_L, SHOULDER = 2.0, 55.0, 40.0
-SATURATION = 0.8
+# 2026-11-13, user (gallery 6, a Hollow Knight board as the reference): «rooms are ugly» — the far plan had become one
+# flat brown smear: its lights were pressed to L 55, a third to a half of it was haze, the colour was taken out.
+# Hollow Knight's far plan glows: the lights and the colour stay, only the darks are lifted into the room's mist
+# (DARK_LIFT below), so the black playfield still stands in front.
+BLACK_L, WHITE_L, SHOULDER = 2.0, 80.0, 62.0
+SATURATION = 1.05
 
 
 def srgb_to_lstar(v):
@@ -117,11 +121,11 @@ def border(near):
 # the far plan is distance, not a second picture. A touch of blur takes its brush detail away, and the room's own
 # tinted haze — the painting's average hue, lifted and kept coloured (a grey one turned them milky) — eats a part
 # of its contrast, more toward the floor, where the mist lies. The dark playfield then stands in front of it.
-HAZE_TOP, HAZE_BOTTOM, HAZE_L, BLUR = 0.32, 0.52, 36.0, 2.2
+HAZE_TOP, HAZE_BOTTOM, HAZE_L, BLUR = 0.06, 0.2, 36.0, 1.3
 # 2026-11-05, user: «jumping onto the side of a block works badly»: a dark backdrop column read as a block of the
 # playfield. The darks of the far plan are lifted toward the haze, so nothing behind is ever as dark as the stone
 # the hero stands on (Hollow Knight: the background is always lighter and softer than the ground).
-DARK_LIFT = 0.55
+DARK_LIFT = 0.5
 
 
 def atmosphere(image):
