@@ -36,7 +36,8 @@ namespace ForgottenKingdom.EditorTools
             var wall = BuildHazardPrefab("OathWall", OathWallPrefabPath, new Vector2(1.8f, 1.3f),
                 new Color(1f, 0.62f, 0.3f, 0.32f), new Color(1f, 0.5f, 0.2f, 0.85f),
                 telegraphTime: 0.5f, activeTime: 0.3f, dormantTime: 0f, StatusType.Burn,
-                buildupPerSecond: 30f, damagePerTick: 22f, DamageType.Fire);
+                buildupPerSecond: 30f, damagePerTick: 22f, DamageType.Fire,
+                art: ProductionSpriteArt.HazardOathFire, artBox: new Vector2(2.6f, 1.3f), artFloor: -0.6f);
 
             var oath = AppendBossAttack(boss);
             SetBossAttack(oath.element, BossAttackKind.GroundStrike, 3, 0,

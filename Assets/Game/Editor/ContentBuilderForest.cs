@@ -547,18 +547,38 @@ namespace ForgottenKingdom.EditorTools
         /// <summary>
         /// A patch of dangerous ground. The repeating version is a plant rooted in the level; the
         /// one-shot version is what a shaman or the Warden drops and then leaves behind briefly.
+        /// A drawn <paramref name="art"/> (a shape standing on its bottom edge) replaces the mist: it is fitted
+        /// whole into <paramref name="artBox"/> with its bottom at <paramref name="artFloor"/> below the zone's
+        /// centre, shown as a faint tinted ghost while the zone gathers and in its own colours when it bites.
+        /// A drawn <paramref name="dropArt"/> replaces the orb that falls, fitted into a square of
+        /// <paramref name="dropSize"/>. Not drawn yet — the old mist and orb (ProductionSpriteArt.IsDrawn).
         /// </summary>
         private static GameObject BuildHazardPrefab(string name, string path, Vector2 size,
             Color telegraph, Color active, float telegraphTime, float activeTime, float dormantTime,
             StatusType status, float buildupPerSecond, float damagePerTick,
-            DamageType damageType = DamageType.Poison, Color? drop = null)
+            DamageType damageType = DamageType.Poison, Color? drop = null,
+            string art = null, Vector2 artBox = default, float artFloor = 0f,
+            string dropArt = null, float dropSize = 0f)
         {
             var root = new GameObject(name);
             var visualObject = FindOrCreateChild(root, "Visual");
-            // A low cloud that fills the zone, not a translucent rectangle over it.
-            visualObject.transform.localScale = new Vector3(size.x * 1.15f, size.y * 1.3f, 1f);
             var visual = Ensure<SpriteRenderer>(visualObject);
-            visual.sprite = Shape("shape_hazard_mist");
+            if (art != null && ProductionSpriteArt.IsDrawn(art))
+            {
+                visual.sprite = Shape(art);
+                var fit = FitScale(visual.sprite, artBox);
+                visualObject.transform.localScale = new Vector3(fit, fit, 1f);
+                visualObject.transform.localPosition = new Vector3(0f, artFloor, 0f);
+                telegraph = new Color(telegraph.r, telegraph.g, telegraph.b, 0.38f);
+                active = new Color(1f, 1f, 1f, 0.96f);
+            }
+            else
+            {
+                // A low cloud that fills the zone, not a translucent rectangle over it.
+                visualObject.transform.localScale = new Vector3(size.x * 1.15f, size.y * 1.3f, 1f);
+                visual.sprite = Shape("shape_hazard_mist");
+            }
+
             visual.sharedMaterial = _material;
             visual.color = telegraph;
             SetSorting(visual, "VFXBack", 0);
@@ -583,17 +603,35 @@ namespace ForgottenKingdom.EditorTools
             {
                 // what comes down on the zone while it gathers: it lands as the zone turns dangerous
                 var dropObject = FindOrCreateChild(root, "Drop");
-                dropObject.transform.localScale = new Vector3(size.x * 0.55f, size.x * 0.55f, 1f);
                 var dropRenderer = Ensure<SpriteRenderer>(dropObject);
-                dropRenderer.sprite = Shape("shape_projectile_orb");
+                if (dropArt != null && ProductionSpriteArt.IsDrawn(dropArt))
+                {
+                    dropRenderer.sprite = Shape(dropArt);
+                    var fit = FitScale(dropRenderer.sprite, new Vector2(dropSize, dropSize));
+                    dropObject.transform.localScale = new Vector3(fit, fit, 1f);
+                    dropRenderer.color = Color.white;
+                }
+                else
+                {
+                    dropObject.transform.localScale = new Vector3(size.x * 0.55f, size.x * 0.55f, 1f);
+                    dropRenderer.sprite = Shape("shape_projectile_orb");
+                    dropRenderer.color = drop.Value;
+                }
+
                 dropRenderer.sharedMaterial = _material;
-                dropRenderer.color = drop.Value;
                 SetSorting(dropRenderer, "VFXFront", 1);
                 dropObject.SetActive(false);
                 SetReference(zone, "_dropVisual", dropObject.transform);
             }
 
             return SavePrefab(root, path);
+        }
+
+        /// <summary>The one scale that fits the whole sprite into the box, keeping its proportions.</summary>
+        private static float FitScale(Sprite sprite, Vector2 box)
+        {
+            var bounds = sprite.bounds.size;
+            return Mathf.Min(box.x / Mathf.Max(bounds.x, 0.01f), box.y / Mathf.Max(bounds.y, 0.01f));
         }
 
         // ---------- the Hollow Warden ----------

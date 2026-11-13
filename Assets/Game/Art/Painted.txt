@@ -3666,3 +3666,9 @@ Environment/Tomb/Interactive/env_tomb_checkpoint_flame_cold.png
 Environment/Tomb/Interactive/env_tomb_checkpoint_flame_lit.png
 Environment/WitheredForest/Arena/env_forest_arena_crest.png
 Environment/WitheredForest/Props/env_forest_stump_01.png
+Shapes/shape_hazard_bell_stone.png
+Shapes/shape_hazard_ember_scar.png
+Shapes/shape_hazard_oath_fire.png
+Shapes/shape_hazard_plague_pool.png
+Shapes/shape_hazard_rubble.png
+Shapes/shape_hazard_skull.png

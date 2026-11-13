@@ -60,8 +60,10 @@ MonoBehaviour:
   _damageType: 1
   _knockback: 4
   _visual: {fileID: 4190706971945604870}
-  _telegraphColor: {r: 1, g: 0.5, b: 0.22, a: 0.32}
-  _activeColor: {r: 1, g: 0.42, b: 0.16, a: 0.66}
+  _telegraphColor: {r: 1, g: 0.5, b: 0.22, a: 0.38}
+  _activeColor: {r: 1, g: 1, b: 1, a: 0.96}
+  _dropVisual: {fileID: 0}
+  _dropHeight: 7
 --- !u!1 &6273921473007234527
 GameObject:
   m_ObjectHideFlags: 0
@@ -88,8 +90,8 @@ Transform:
   m_GameObject: {fileID: 6273921473007234527}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 5.29, y: 1.5600001, z: 1}
+  m_LocalPosition: {x: 0, y: -0.38, z: 0}
+  m_LocalScale: {x: 0.93750006, y: 0.93750006, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4162036564514626169}
@@ -143,12 +145,12 @@ SpriteRenderer:
   m_SortingLayer: 5
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: 7b551287be6289443b011c8a4bd10175, type: 3}
-  m_Color: {r: 1, g: 0.5, b: 0.22, a: 0.32}
+  m_Sprite: {fileID: 21300000, guid: 8012d3428a1d540708b75a0665b65c53, type: 3}
+  m_Color: {r: 1, g: 0.5, b: 0.22, a: 0.38}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 5.12, y: 0.41}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

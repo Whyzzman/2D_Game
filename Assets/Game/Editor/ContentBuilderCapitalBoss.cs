@@ -64,7 +64,8 @@ namespace ForgottenKingdom.EditorTools
             var scar = BuildHazardPrefab("EmberScar", EmberScarPrefabPath, new Vector2(4.6f, 1.2f),
                 new Color(1f, 0.5f, 0.22f, 0.32f), new Color(1f, 0.42f, 0.16f, 0.66f),
                 telegraphTime: 0.45f, activeTime: 2.4f, dormantTime: 0f, StatusType.Burn,
-                buildupPerSecond: 38f, damagePerTick: 8f, DamageType.Fire);
+                buildupPerSecond: 38f, damagePerTick: 8f, DamageType.Fire,
+                art: ProductionSpriteArt.HazardEmberScar, artBox: new Vector2(4.8f, 0.9f), artFloor: -0.38f);
             return BuildKingPrefab(scar);
         }
 

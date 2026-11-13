@@ -29,7 +29,8 @@ namespace ForgottenKingdom.EditorTools
                 new Color(1f, 0.8f, 0.42f, 0.3f), new Color(1f, 0.86f, 0.55f, 0.78f),
                 telegraphTime: 0.6f, activeTime: 0.35f, dormantTime: 0f, StatusType.Bleed,
                 buildupPerSecond: 0f, damagePerTick: 20f, DamageType.Physical,
-                drop: new Color(0.62f, 0.56f, 0.48f));
+                drop: new Color(0.62f, 0.56f, 0.48f),
+                dropArt: ProductionSpriteArt.HazardBellStone, dropSize: 1.5f);
 
             var first = AppendBossAttack(boss);
             SetBossAttack(first.element, BossAttackKind.GroundStrike, 1, 1,
@@ -66,7 +67,8 @@ namespace ForgottenKingdom.EditorTools
             var rubble = BuildHazardPrefab("RubbleBurst", RubbleBurstPrefabPath, new Vector2(2.0f, 2.2f),
                 new Color(1f, 0.55f, 0.3f, 0.3f), new Color(1f, 0.62f, 0.34f, 0.8f),
                 telegraphTime: 0.5f, activeTime: 0.35f, dormantTime: 0f, StatusType.Burn,
-                buildupPerSecond: 26f, damagePerTick: 24f, DamageType.Physical);
+                buildupPerSecond: 26f, damagePerTick: 24f, DamageType.Physical,
+                art: ProductionSpriteArt.HazardRubble, artBox: new Vector2(2.2f, 2.2f), artFloor: -1.05f);
 
             var first = AppendBossAttack(boss);
             SetBossAttack(first.element, BossAttackKind.GroundStrike, 1, 1,
@@ -103,16 +105,19 @@ namespace ForgottenKingdom.EditorTools
             var pool = BuildHazardPrefab("PlaguePool", PlaguePoolPrefabPath, new Vector2(3.6f, 1.2f),
                 new Color(0.5f, 0.85f, 0.3f, 0.3f), new Color(0.44f, 0.95f, 0.3f, 0.62f),
                 telegraphTime: 0.45f, activeTime: 4f, dormantTime: 0f, StatusType.Poison,
-                buildupPerSecond: 40f, damagePerTick: 4f);
+                buildupPerSecond: 40f, damagePerTick: 4f,
+                art: ProductionSpriteArt.HazardPlaguePool, artBox: new Vector2(3.9f, 0.9f), artFloor: -0.32f);
             var poolLong = BuildHazardPrefab("PlaguePoolLong", PlaguePoolLongPrefabPath, new Vector2(3.6f, 1.2f),
                 new Color(0.5f, 0.85f, 0.3f, 0.3f), new Color(0.44f, 0.95f, 0.3f, 0.62f),
                 telegraphTime: 0.45f, activeTime: 6f, dormantTime: 0f, StatusType.Poison,
-                buildupPerSecond: 40f, damagePerTick: 4f);
+                buildupPerSecond: 40f, damagePerTick: 4f,
+                art: ProductionSpriteArt.HazardPlaguePool, artBox: new Vector2(3.9f, 0.9f), artFloor: -0.32f);
             var skull = BuildHazardPrefab("SkullFall", SkullFallPrefabPath, new Vector2(1.5f, 2.4f),
                 new Color(0.75f, 0.95f, 0.5f, 0.3f), new Color(0.85f, 1f, 0.6f, 0.8f),
                 telegraphTime: 0.6f, activeTime: 0.3f, dormantTime: 0f, StatusType.Poison,
                 buildupPerSecond: 30f, damagePerTick: 18f, DamageType.Physical,
-                drop: new Color(0.86f, 0.84f, 0.7f));
+                drop: new Color(0.86f, 0.84f, 0.7f),
+                dropArt: ProductionSpriteArt.HazardSkull, dropSize: 1.5f);
 
             SetBossSpawn(boss, leap, AttackSpawnKind.Hazard, pool, new Vector2(0f, -1.2f), atTarget: false);
             SetBossSpawn(boss, leapPhaseTwo, AttackSpawnKind.Hazard, poolLong, new Vector2(0f, -1.2f), atTarget: false);

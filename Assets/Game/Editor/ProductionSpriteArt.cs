@@ -19,7 +19,16 @@ namespace ForgottenKingdom.EditorTools
     public static class ProductionSpriteArt
     {
         public const string Root = "Assets/Game/Art/Shapes";
+        public const string HazardBellStone = "shape_hazard_bell_stone";
+        public const string HazardSkull = "shape_hazard_skull";
+        public const string HazardRubble = "shape_hazard_rubble";
+        public const string HazardPlaguePool = "shape_hazard_plague_pool";
+        public const string HazardEmberScar = "shape_hazard_ember_scar";
+        public const string HazardOathFire = "shape_hazard_oath_fire";
         private const int Size = 100;
+
+        /// <summary>Whether a shape is the drawn picture rather than this class's placeholder.</summary>
+        public static bool IsDrawn(string name) => PlaceholderImport.IsPainted($"{Root}/{name}.png");
 
         public static Dictionary<string, Sprite> Generate()
         {
@@ -32,6 +41,15 @@ namespace ForgottenKingdom.EditorTools
             Write(result, "shape_projectile_arrow", Arrow());
             Write(result, "shape_projectile_orb", Orb());
             Write(result, "shape_hazard_mist", Mist(17));
+            // The bosses' hazards, drawn (tools/midjourney/hazards.py; BOSSES_SIGNATURES.md). What lies on the
+            // floor stands on its bottom edge, what falls turns about its middle. Until drawn they are the
+            // old mist and orb, and the prefab keeps its old look (ContentBuilder.BuildHazardPrefab).
+            Write(result, HazardBellStone, Orb());
+            Write(result, HazardSkull, Orb());
+            Write(result, HazardRubble, Mist(23), new Vector2(0.5f, 0f));
+            Write(result, HazardPlaguePool, Mist(29), new Vector2(0.5f, 0f));
+            Write(result, HazardEmberScar, Mist(31), new Vector2(0.5f, 0f));
+            Write(result, HazardOathFire, Mist(37), new Vector2(0.5f, 0f));
             Write(result, "shape_shockwave", Shockwave());
             Write(result, "shape_soft_glow", Glow());
             Write(result, "shape_light_shaft", Shaft());

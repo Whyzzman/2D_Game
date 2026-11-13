@@ -62,6 +62,8 @@ MonoBehaviour:
   _visual: {fileID: 6978443930621734443}
   _telegraphColor: {r: 0.55, g: 0.85, b: 0.35, a: 0.3}
   _activeColor: {r: 0.45, g: 0.95, b: 0.3, a: 0.62}
+  _dropVisual: {fileID: 0}
+  _dropHeight: 7
 --- !u!1 &9220918236190491370
 GameObject:
   m_ObjectHideFlags: 0
