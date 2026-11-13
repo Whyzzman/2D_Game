@@ -463,8 +463,10 @@
   // Аркада під мостом (Столиця, 2026-11-13, решено Claude за постійною згодою): широкий уступ над рівною землею —
   // карниз зруйнованої аркади: колони з базами й капітелями, між ними півкруглі арки з кладкою в пазухах.
   // Лише малюнок позаду героя: під аркадою ходять, на карниз застрибують знизу.
+  // RUIN — палітра руїн абатства в Лісі (look.ruins): той самий камінь, холодний і замшілий.
+  const RUIN = { stone: "#2c3832", stoneLight: "#5a6c60", stoneDark: "#111814" };
   function arcade(f, x0, x1, yb, yt, look, seed) {
-    const c = f.c, S = f.ppu, pal = WOOD.capital, X = f.x, Y = f.y;
+    const c = f.c, S = f.ppu, pal = look.ruins ? RUIN : WOOD.capital, X = f.x, Y = f.y;
     const w = x1 - x0, h = yt - yb, n = Math.max(1, Math.round(w / 3.2)), span = w / n, colW = 0.5;
     const rise = Math.min(span * 0.5 - colW * 0.5, h * 0.45), spring = yt - 0.25 - rise;   // п'ята арки
     c.save();
@@ -507,6 +509,20 @@
         c.fillStyle = pal.stone; c.fillRect(X(cx - colW / 2 - 0.08), Y(spring), (colW + 0.16) * S, 0.12 * S);
       }
     }
+    // Ліс: мох на карнизі й капітелях, плющ по колонах
+    if (look.ruins && look.moss) {
+      for (let i = 0; i <= n; i++) {
+        const cx = x0 + span * i + (i === 0 ? colW * 0.5 : i === n ? -colW * 0.5 : 0);
+        c.strokeStyle = rgba(look.moss, 0.7); c.lineWidth = Math.max(1, S * 0.05); c.lineCap = "round";
+        c.beginPath(); c.moveTo(X(cx - 0.2), Y(spring + 0.1));
+        for (let y = spring; y > yb + 0.4; y -= 0.35) c.lineTo(X(cx + Math.sin(y * 2.3 + i) * 0.22), Y(y));
+        c.stroke();
+        c.fillStyle = rgba(look.moss, 0.75);
+        for (let k = 0; k < 5; k++) { const y = yb + 0.5 + N.hash(seed + i, k, 77) * (spring - yb - 0.5); c.beginPath(); c.ellipse(X(cx + Math.sin(y * 2.3 + i) * 0.22), Y(y), S * 0.13, S * 0.08, N.hash(seed, k, 79) * 3, 0, Math.PI * 2); c.fill(); }
+      }
+      c.fillStyle = rgba(look.moss, 0.6);
+      for (let x = x0; x < x1; x += 0.35) { const hh = N.hash(seed, Math.round(x * 9), 81); if (hh > 0.4) { c.beginPath(); c.ellipse(X(x), Y(yt - 0.05), S * (0.2 + hh * 0.25), S * (0.1 + hh * 0.2), 0, 0, Math.PI); c.fill(); } }
+    }
     // тінь під аркадою біля землі
     const sh = c.createLinearGradient(0, Y(yb + 0.4), 0, Y(yb));
     sh.addColorStop(0, "rgba(0,0,0,0)"); sh.addColorStop(1, "rgba(0,0,0,0.4)");
@@ -515,8 +531,8 @@
   }
 
   // Карниз аркади: тесана плита з поясом і зубцями знизу — на ній стоять.
-  function cornice(f, x0, x1, top, seed) {
-    const c = f.c, S = f.ppu, pal = WOOD.capital, y0 = f.y(top), h = S * 0.5;
+  function cornice(f, x0, x1, top, seed, look) {
+    const c = f.c, S = f.ppu, pal = look && look.ruins ? RUIN : WOOD.capital, y0 = f.y(top), h = S * 0.5;
     const g = c.createLinearGradient(0, y0, 0, y0 + h);
     g.addColorStop(0, pal.stoneLight); g.addColorStop(0.3, pal.stone); g.addColorStop(1, pal.stoneDark);
     c.fillStyle = g; c.fillRect(f.x(x0 - 0.2), y0, f.x(x1 + 0.2) - f.x(x0 - 0.2), h);

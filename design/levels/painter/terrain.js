@@ -729,7 +729,7 @@
   function housesOf(zone, look) {
     if (houseCache.has(zone)) return houseCache.get(zone);
     // Село — лише відкриті вулиці (хати); Столиця — усі кімнати (аркади), і міст має бути довшим
-    const out = [], open = look.open || [], village = (look.style || "tomb") === "village", least = look.stilts ? 6 : village ? 8 : 10;
+    const out = [], open = look.open || [], village = (look.style || "tomb") === "village", least = look.stilts || look.ruins ? 6 : village ? 8 : 10;
     for (const r of zone.rooms) {
       if (village && open.indexOf(r.id) < 0) continue;
       for (let y = 0; y < r.h; y++) {
@@ -759,7 +759,7 @@
   function drawHouses(f, zone, look, seed) {
     const M = root.LevelMaterials;
     const style = look.style || "tomb";
-    if ((style !== "village" && style !== "capital" && !look.stilts) || !M.facade) return;
+    if ((style !== "village" && style !== "capital" && !look.stilts && !look.ruins) || !M.facade) return;
     housesOf(zone, look).forEach((h, i) => {
       const [wx0, wyb] = T.world(zone, h.x0, h.bottom), [wx1, wyt] = T.world(zone, h.x1, h.top);
       (look.stilts ? M.stilts : style === "village" ? M.facade : M.arcade)(f, wx0, wx1, wyb, wyt, look, seed + h.x0 * 7 + h.top * 13);
@@ -806,10 +806,10 @@
           };
           const hangers = () => [[wx0 + 0.3, ceilingAt(gx0)], [wx1 - 0.3, ceilingAt(gx1 - 1)]];
           const wallSide = tree ? (tree.x === gx1 ? 1 : -1) : wallLeft ? -1 : 1;
-          const isRoof = (zoneName === "village" || zoneName === "capital" || look.stilts) && housesOf(zone, look).some(h => h.x0 === gx0 && h.top === gy);
+          const isRoof = (zoneName === "village" || zoneName === "capital" || look.stilts || look.ruins) && housesOf(zone, look).some(h => h.x0 === gx0 && h.top === gy);
           if (isRoof) {
             // дах хати / карниз аркади (housesOf): без підвісів — його тримає будова
-            if (zoneName === "capital") M.cornice(f, wx0, wx1, wyt, s2);
+            if (zoneName === "capital" || look.ruins) M.cornice(f, wx0, wx1, wyt, s2, look);
             else M.planks(f, wx0 - (look.stilts ? 0.15 : 0.35), wx1 + (look.stilts ? 0.15 : 0.35), wyt, pal, s2, 0.3);
           } else if (kind === "chunk") {
             // товщина брили — з місця під нею: найменший вільний стовпчик повітря під уступом
