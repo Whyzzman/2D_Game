@@ -97,13 +97,15 @@ def feather(image):
 # The far layer slides, so its own fade cannot hold the seam still; the near layer is exactly the room
 # and does not move. It becomes a soft dark frame, clear in the middle: wherever the camera is, two
 # rooms meet in the same shadow.
-BORDER = 1.4
-BORDER_ALPHA = 0.6
+# 2026-11-13: with the far plan glowing again, two rooms of different hue met in a hard line (the Tomb's chain
+# shaft, orange against teal): the frame is wider and deeper, so neighbours meet in the same shadow.
+BORDER = 1.9
+BORDER_ALPHA = 0.85
 
 
 def border(near):
     w, h = Image.open(near).size
-    reach = BORDER * NEAR_PPU
+    reach = min(BORDER * NEAR_PPU, min(w, h) * 0.3)
     xs = [smooth(min(x, w - 1 - x) / reach) for x in range(w)]
     ys = [smooth(min(y, h - 1 - y) / reach) for y in range(h)]
     row = Image.new("L", (w, 1))
