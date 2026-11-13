@@ -381,5 +381,198 @@
     c.restore();
   }
 
-  root.LevelMaterials = { WOOD, kindOf, planks, rope, shelf, bridge, log, branch, balcony, slab, chunk, post };
+  // Хата під дахом-уступом (Село, 2026-11-13; користувач: «кімнати різного типу», решено Claude за постійною згодою):
+  // широкий уступ над рівною землею на відкритій вулиці — це дах, під ним фасад: глина в дубовому каркасі, двері,
+  // віконниці, подекуди вогник; під дахом — солом'яна стріха. Лише малюнок позаду героя: перед хатою ходять,
+  // на дах застрибують знизу (уступ односторонній).
+  function facade(f, x0, x1, yb, yt, look, seed) {
+    const c = f.c, S = f.ppu, pal = WOOD.village, o = look.nearHouse || {};
+    const l = x0 + 0.3, r = x1 - 0.3, w = r - l, h = yt - yb;
+    const X = f.x, Y = f.y;
+    c.save();
+    // стіна
+    const g = c.createLinearGradient(0, Y(yt), 0, Y(yb));
+    g.addColorStop(0, "#3b2e23"); g.addColorStop(0.6, "#2c2119"); g.addColorStop(1, "#1a130e");
+    c.fillStyle = g; c.fillRect(X(l), Y(yt), (r - l) * S, h * S);
+    // плями глини
+    for (let k = 0; k < w * h * 0.5; k++) {
+      const px = l + N.hash(seed, k, 3) * w, py = yb + N.hash(seed, k, 5) * h;
+      c.fillStyle = `rgba(${N.hash(seed, k, 7) < 0.5 ? "90,70,50" : "10,8,6"},0.10)`;
+      c.beginPath(); c.ellipse(X(px), Y(py), S * (0.2 + N.hash(seed, k, 9) * 0.5), S * (0.12 + N.hash(seed, k, 11) * 0.3), 0, 0, Math.PI * 2); c.fill();
+    }
+    // каркас: стовпи, поверхові балки, укосини
+    const storeys = Math.max(1, Math.round(h / 2.7)), bays = Math.max(2, Math.round(w / 2.1));
+    const beam = (ax, ay, bx, by, t) => {
+      c.strokeStyle = "#0d0906"; c.lineWidth = S * (t + 0.06); c.beginPath(); c.moveTo(X(ax), Y(ay)); c.lineTo(X(bx), Y(by)); c.stroke();
+      c.strokeStyle = pal.wood; c.lineWidth = S * t; c.beginPath(); c.moveTo(X(ax), Y(ay)); c.lineTo(X(bx), Y(by)); c.stroke();
+      c.strokeStyle = rgba(pal.light, 0.35); c.lineWidth = Math.max(1, S * 0.03); c.beginPath(); c.moveTo(X(ax) - S * t * 0.3, Y(ay)); c.lineTo(X(bx) - S * t * 0.3, Y(by)); c.stroke();
+    };
+    c.lineCap = "butt";
+    const door = Math.floor(N.hash(seed, 1, 21) * bays);
+    for (let s2 = 0; s2 < storeys; s2++) {
+      const y0 = yb + h * s2 / storeys, y1 = yb + h * (s2 + 1) / storeys;
+      for (let i = 0; i < bays; i++) {
+        const bx0 = l + w * i / bays, bx1 = l + w * (i + 1) / bays, cx = (bx0 + bx1) / 2, pick = N.hash(seed + s2 * 13, i, 23);
+        if (s2 === 0 && i === door) {
+          // двері: темний отвір, одвірок, клямка
+          const dw = Math.min(1.0, (bx1 - bx0) * 0.6), dh = Math.min(1.9, (y1 - y0) * 0.8);
+          c.fillStyle = "#090605"; c.fillRect(X(cx - dw / 2), Y(yb + dh), dw * S, dh * S);
+          c.strokeStyle = pal.wood; c.lineWidth = S * 0.1; c.strokeRect(X(cx - dw / 2), Y(yb + dh), dw * S, dh * S);
+          c.fillStyle = rgba(pal.iron, 1); c.fillRect(X(cx + dw * 0.25), Y(yb + dh * 0.5), S * 0.08, S * 0.08);
+        } else if (pick < 0.62) {
+          // вікно: з вогником або з віконницями
+          const ww = Math.min(0.8, (bx1 - bx0) * 0.45), wh = 0.9, wy = y0 + (y1 - y0) * 0.42;
+          const lit = N.hash(seed + s2 * 7, i, 29) < (o.lit || 0.35);
+          if (lit) {
+            const gl = c.createRadialGradient(X(cx), Y(wy + wh / 2), 0, X(cx), Y(wy + wh / 2), S * 2.2);
+            gl.addColorStop(0, rgba(o.windowLit || "#f4a852", 0.3)); gl.addColorStop(1, rgba(o.windowLit || "#f4a852", 0));
+            c.fillStyle = gl; c.fillRect(X(cx - 2.2), Y(wy + wh / 2 + 2.2), S * 4.4, S * 4.4);
+          }
+          c.fillStyle = lit ? (o.windowLit || "#f4a852") : "#0a0706";
+          c.fillRect(X(cx - ww / 2), Y(wy + wh), ww * S, wh * S);
+          c.strokeStyle = "#0d0906"; c.lineWidth = S * 0.08; c.strokeRect(X(cx - ww / 2), Y(wy + wh), ww * S, wh * S);
+          c.beginPath(); c.moveTo(X(cx), Y(wy + wh)); c.lineTo(X(cx), Y(wy)); c.moveTo(X(cx - ww / 2), Y(wy + wh / 2)); c.lineTo(X(cx + ww / 2), Y(wy + wh / 2)); c.stroke();
+          if (!lit && N.hash(seed, i + s2 * 5, 31) < 0.5) { // причинена віконниця
+            c.fillStyle = pal.dark; c.fillRect(X(cx - ww / 2), Y(wy + wh), ww * 0.55 * S, wh * S);
+          }
+        } else if (pick < 0.85) {
+          const flip = pick < 0.74;
+          beam(flip ? bx0 : bx1, y0, flip ? bx1 : bx0, y1, 0.1);
+        }
+      }
+      beam(l, y0 === yb ? yb + 0.08 : y0, r, y0 === yb ? yb + 0.08 : y0, 0.16);
+    }
+    for (let i = 0; i <= bays; i++) beam(l + w * i / bays, yb, l + w * i / bays, yt, i === 0 || i === bays ? 0.2 : 0.13);
+    // стріха під дахом: солома, що звисає
+    c.fillStyle = "#231a11";
+    c.beginPath(); c.moveTo(X(x0 - 0.35), Y(yt - 0.02));
+    for (let x = x0 - 0.35; x <= x1 + 0.35 + 0.001; x += 0.12) c.lineTo(X(x), Y(yt - 0.34 - N.hash(seed, Math.round(x * 20), 41) * 0.28));
+    c.lineTo(X(x1 + 0.35), Y(yt - 0.02)); c.closePath(); c.fill();
+    c.strokeStyle = rgba(o.roofLight || "#6a5634", 0.55); c.lineWidth = Math.max(1, S * 0.025);
+    for (let x = x0 - 0.3; x < x1 + 0.3; x += 0.09) {
+      const d = 0.2 + N.hash(seed, Math.round(x * 30), 43) * 0.4;
+      c.beginPath(); c.moveTo(X(x), Y(yt - 0.05)); c.lineTo(X(x + (N.hash(seed, Math.round(x * 30), 45) - 0.5) * 0.1), Y(yt - d)); c.stroke();
+    }
+    // земля під стіною темніша: хата стоїть, а не намальована
+    const sh = c.createLinearGradient(0, Y(yb + 0.5), 0, Y(yb));
+    sh.addColorStop(0, "rgba(0,0,0,0)"); sh.addColorStop(1, "rgba(0,0,0,0.5)");
+    c.fillStyle = sh; c.fillRect(X(l), Y(yb + 0.5), w * S, 0.5 * S);
+    c.restore();
+  }
+
+  // Аркада під мостом (Столиця, 2026-11-13, решено Claude за постійною згодою): широкий уступ над рівною землею —
+  // карниз зруйнованої аркади: колони з базами й капітелями, між ними півкруглі арки з кладкою в пазухах.
+  // Лише малюнок позаду героя: під аркадою ходять, на карниз застрибують знизу.
+  function arcade(f, x0, x1, yb, yt, look, seed) {
+    const c = f.c, S = f.ppu, pal = WOOD.capital, X = f.x, Y = f.y;
+    const w = x1 - x0, h = yt - yb, n = Math.max(1, Math.round(w / 3.2)), span = w / n, colW = 0.5;
+    const rise = Math.min(span * 0.5 - colW * 0.5, h * 0.45), spring = yt - 0.25 - rise;   // п'ята арки
+    c.save();
+    // пазухи арок: кладка від карниза до дуги
+    const g = c.createLinearGradient(0, Y(yt), 0, Y(spring));
+    g.addColorStop(0, pal.stone); g.addColorStop(1, pal.stoneDark);
+    c.fillStyle = g;
+    c.beginPath(); c.rect(X(x0), Y(yt), w * S, (yt - spring) * S);
+    for (let i = 0; i < n; i++) {
+      const cx = x0 + span * (i + 0.5), r = span * 0.5 - colW * 0.5;
+      c.moveTo(X(cx + r), Y(spring));
+      c.ellipse(X(cx), Y(spring), r * S, rise * S, 0, 0, Math.PI, true);
+    }
+    c.fill("evenodd");
+    // шви кладки в пазухах і замковий камінь кожної арки
+    c.strokeStyle = "rgba(0,0,0,0.35)"; c.lineWidth = Math.max(1, S * 0.02);
+    for (let i = 0; i < n; i++) {
+      const cx = x0 + span * (i + 0.5), r = span * 0.5 - colW * 0.5;
+      c.beginPath(); c.ellipse(X(cx), Y(spring), r * S, rise * S, 0, Math.PI, 0); c.stroke();
+      c.beginPath(); c.ellipse(X(cx), Y(spring), (r + 0.22) * S, (rise + 0.2) * S, 0, Math.PI, 0); c.stroke();
+      c.fillStyle = pal.stoneLight; c.fillRect(X(cx - 0.12), Y(spring + rise + 0.22), S * 0.24, S * 0.26);
+    }
+    // колони: стовбур із канелюрами, база, капітель; одна з середніх — надломлена
+    const broken = n > 2 ? 1 + Math.floor(N.hash(seed, 3, 51) * (n - 1)) : -1;
+    for (let i = 0; i <= n; i++) {
+      const cx = x0 + span * i + (i === 0 ? colW * 0.5 : i === n ? -colW * 0.5 : 0);
+      const top = i === broken ? yb + h * (0.3 + N.hash(seed, i, 53) * 0.2) : spring;
+      const cg = c.createLinearGradient(X(cx - colW / 2), 0, X(cx + colW / 2), 0);
+      cg.addColorStop(0, pal.stoneDark); cg.addColorStop(0.4, pal.stone); cg.addColorStop(0.65, pal.stoneLight); cg.addColorStop(1, pal.stoneDark);
+      c.fillStyle = cg; c.fillRect(X(cx - colW / 2), Y(top), colW * S, (top - yb) * S);
+      c.strokeStyle = "rgba(0,0,0,0.3)"; c.lineWidth = Math.max(1, S * 0.02);
+      [-0.12, 0.02, 0.14].forEach(o => { c.beginPath(); c.moveTo(X(cx + o), Y(top)); c.lineTo(X(cx + o), Y(yb + 0.3)); c.stroke(); });
+      c.fillStyle = pal.stoneDark; c.fillRect(X(cx - colW / 2 - 0.14), Y(yb + 0.3), (colW + 0.28) * S, 0.3 * S);
+      if (i === broken) {
+        // злам: рваний верх
+        c.fillStyle = pal.stone; c.beginPath(); c.moveTo(X(cx - colW / 2), Y(top));
+        c.lineTo(X(cx - colW * 0.2), Y(top + 0.22)); c.lineTo(X(cx + colW * 0.1), Y(top + 0.05)); c.lineTo(X(cx + colW / 2), Y(top + 0.3)); c.lineTo(X(cx + colW / 2), Y(top)); c.closePath(); c.fill();
+      } else {
+        c.fillStyle = pal.stoneLight; c.fillRect(X(cx - colW / 2 - 0.16), Y(spring + 0.2), (colW + 0.32) * S, 0.2 * S);
+        c.fillStyle = pal.stone; c.fillRect(X(cx - colW / 2 - 0.08), Y(spring), (colW + 0.16) * S, 0.12 * S);
+      }
+    }
+    // тінь під аркадою біля землі
+    const sh = c.createLinearGradient(0, Y(yb + 0.4), 0, Y(yb));
+    sh.addColorStop(0, "rgba(0,0,0,0)"); sh.addColorStop(1, "rgba(0,0,0,0.4)");
+    c.fillStyle = sh; c.fillRect(X(x0), Y(yb + 0.4), w * S, 0.4 * S);
+    c.restore();
+  }
+
+  // Карниз аркади: тесана плита з поясом і зубцями знизу — на ній стоять.
+  function cornice(f, x0, x1, top, seed) {
+    const c = f.c, S = f.ppu, pal = WOOD.capital, y0 = f.y(top), h = S * 0.5;
+    const g = c.createLinearGradient(0, y0, 0, y0 + h);
+    g.addColorStop(0, pal.stoneLight); g.addColorStop(0.3, pal.stone); g.addColorStop(1, pal.stoneDark);
+    c.fillStyle = g; c.fillRect(f.x(x0 - 0.2), y0, f.x(x1 + 0.2) - f.x(x0 - 0.2), h);
+    c.strokeStyle = "rgba(0,0,0,0.75)"; c.lineWidth = Math.max(1, S * 0.03); c.strokeRect(f.x(x0 - 0.2), y0, f.x(x1 + 0.2) - f.x(x0 - 0.2), h);
+    c.strokeStyle = "rgba(0,0,0,0.4)"; c.beginPath(); c.moveTo(f.x(x0 - 0.2), y0 + h * 0.45); c.lineTo(f.x(x1 + 0.2), y0 + h * 0.45); c.stroke();
+    c.fillStyle = pal.stoneDark;
+    for (let x = x0; x < x1 - 0.1; x += 0.42) c.fillRect(f.x(x), y0 + h, S * 0.22, S * 0.14);
+    c.strokeStyle = rgba(pal.stoneLight, 0.8); c.lineWidth = Math.max(1.5, S * 0.03);
+    c.beginPath(); c.moveTo(f.x(x0 - 0.2) + 1, y0 + 1); c.lineTo(f.x(x1 + 0.2) - 1, y0 + 1); c.stroke();
+  }
+
+  // Кладка на палях (Болота, 2026-11-13, решено Claude за постійною згодою): широкий настил над рівною землею
+  // стоїть на гнилих палях із хрестовинами й мотузяними в'язками, з мохом і корінням. Лише малюнок позаду героя.
+  function stilts(f, x0, x1, yb, yt, look, seed) {
+    const c = f.c, S = f.ppu, pal = WOOD.forest, X = f.x, Y = f.y;
+    const w = x1 - x0, n = Math.max(1, Math.round(w / 2.4)), span = w / n;
+    const lean = i => (N.hash(seed, i, 61) - 0.5) * 0.3;
+    const px = i => x0 + 0.25 + (w - 0.5) * i / n;
+    c.save(); c.lineCap = "round";
+    // хрестовини між палями
+    for (let i = 0; i < n; i++) {
+      const a = px(i), b = px(i + 1), lo = yb + 0.3, hi = yt - 0.5;
+      if (hi - lo < 0.8) continue;
+      [[a + lean(i) * 0.2, lo, b + lean(i + 1) * 0.8, hi], [b + lean(i + 1) * 0.2, lo, a + lean(i) * 0.8, hi]].forEach(([ax, ay, bx, by], k) => {
+        if (N.hash(seed, i * 2 + k, 63) < 0.25) return; // деякі відгнили
+        c.strokeStyle = "#060805"; c.lineWidth = S * 0.16; c.beginPath(); c.moveTo(X(ax), Y(ay)); c.lineTo(X(bx), Y(by)); c.stroke();
+        c.strokeStyle = pal.wood; c.lineWidth = S * 0.1; c.beginPath(); c.moveTo(X(ax), Y(ay)); c.lineTo(X(bx), Y(by)); c.stroke();
+      });
+    }
+    // палі: товщі внизу, трохи криві
+    for (let i = 0; i <= n; i++) {
+      const bx = px(i), tx = bx + lean(i);
+      c.strokeStyle = "#060805"; c.lineWidth = S * 0.34; c.beginPath(); c.moveTo(X(bx), Y(yb)); c.quadraticCurveTo(X(bx + lean(i) * 0.2), Y((yb + yt) / 2), X(tx), Y(yt)); c.stroke();
+      c.strokeStyle = pal.bark; c.lineWidth = S * 0.26; c.beginPath(); c.moveTo(X(bx), Y(yb)); c.quadraticCurveTo(X(bx + lean(i) * 0.2), Y((yb + yt) / 2), X(tx), Y(yt)); c.stroke();
+      c.strokeStyle = rgba(pal.light, 0.5); c.lineWidth = Math.max(1, S * 0.05); c.beginPath(); c.moveTo(X(bx - 0.06), Y(yb)); c.quadraticCurveTo(X(bx - 0.06 + lean(i) * 0.2), Y((yb + yt) / 2), X(tx - 0.06), Y(yt)); c.stroke();
+      // в'язка мотузкою під настилом, мох біля води
+      c.strokeStyle = "#3a3a24"; c.lineWidth = S * 0.07;
+      [0.35, 0.47].forEach(d => { c.beginPath(); c.moveTo(X(tx - 0.17), Y(yt - d)); c.lineTo(X(tx + 0.17), Y(yt - d - 0.04)); c.stroke(); });
+      if (look.moss) {
+        c.fillStyle = rgba(look.moss, 0.7);
+        c.beginPath(); c.ellipse(X(bx), Y(yb + 0.25), S * 0.26, S * 0.3, 0, 0, Math.PI * 2); c.fill();
+        c.beginPath(); c.ellipse(X(bx - 0.08), Y(yb + 0.8 + N.hash(seed, i, 65) * 0.8), S * 0.12, S * 0.22, 0, 0, Math.PI * 2); c.fill();
+      }
+    }
+    // поперечна балка під настилом і коріння, що звисає
+    c.strokeStyle = "#060805"; c.lineWidth = S * 0.2; c.beginPath(); c.moveTo(X(x0 + 0.1), Y(yt - 0.14)); c.lineTo(X(x1 - 0.1), Y(yt - 0.14)); c.stroke();
+    c.strokeStyle = pal.dark; c.lineWidth = S * 0.13; c.beginPath(); c.moveTo(X(x0 + 0.1), Y(yt - 0.14)); c.lineTo(X(x1 - 0.1), Y(yt - 0.14)); c.stroke();
+    if (look.moss) {
+      c.strokeStyle = rgba(look.moss, 0.6); c.lineWidth = Math.max(1, S * 0.035);
+      for (let k = 0; k < w * 1.5; k++) {
+        const hx = x0 + N.hash(seed, k, 67) * w, len = 0.3 + N.hash(seed, k, 69) * 1.1;
+        c.beginPath(); c.moveTo(X(hx), Y(yt - 0.2)); c.quadraticCurveTo(X(hx + (N.hash(seed, k, 71) - 0.5) * 0.3), Y(yt - 0.2 - len * 0.5), X(hx + (N.hash(seed, k, 73) - 0.5) * 0.25), Y(yt - 0.2 - len)); c.stroke();
+      }
+    }
+    c.restore();
+  }
+
+  root.LevelMaterials = { WOOD, kindOf, planks, rope, shelf, bridge, log, branch, balcony, slab, chunk, post, facade, arcade, cornice, stilts };
 })(window);

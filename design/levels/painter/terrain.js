@@ -724,6 +724,48 @@
     return posts;
   }
 
+  // Хати Села: уступ від 8 клітинок на відкритій вулиці, під яким до рівної землі 4–22 ряди чистого повітря, — дах.
+  const houseCache = new WeakMap();
+  function housesOf(zone, look) {
+    if (houseCache.has(zone)) return houseCache.get(zone);
+    // Село — лише відкриті вулиці (хати); Столиця — усі кімнати (аркади), і міст має бути довшим
+    const out = [], open = look.open || [], village = (look.style || "tomb") === "village", least = look.stilts ? 6 : village ? 8 : 10;
+    for (const r of zone.rooms) {
+      if (village && open.indexOf(r.id) < 0) continue;
+      for (let y = 0; y < r.h; y++) {
+        const row = r.rows[y];
+        for (let x = 0; x < r.w; x++) {
+          if (row[x] !== "=" || (x > 0 && row[x - 1] === "=")) continue;
+          let e = x;
+          while (e + 1 < r.w && row[e + 1] === "=") e++;
+          if (e - x + 1 < least) continue;
+          const gx0 = r.x + x, gx1 = r.x + e, gy = r.y + y;
+          let base = null, ok = true;
+          for (let k = gx0; k <= gx1 && ok; k++) {
+            let d = 1;
+            while (d <= 23 && !T.isRock(T.at(zone, k, gy - d))) { if (T.isLedge(T.at(zone, k, gy - d))) ok = false; d++; }
+            if (d < (look.stilts ? 4 : 5) || d > 23) ok = false;
+            // палі Боліт стоять і на нерівному дні: кожна до свого каменю, малюємо до найглибшого
+            if (base === null) base = d; else if (look.stilts) base = Math.max(base, d); else if (base !== d) ok = false;
+          }
+          if (ok) out.push({ x0: gx0, x1: gx1 + 1, top: gy, bottom: gy - base + 1 });
+        }
+      }
+    }
+    houseCache.set(zone, out);
+    return out;
+  }
+
+  function drawHouses(f, zone, look, seed) {
+    const M = root.LevelMaterials;
+    const style = look.style || "tomb";
+    if ((style !== "village" && style !== "capital" && !look.stilts) || !M.facade) return;
+    housesOf(zone, look).forEach((h, i) => {
+      const [wx0, wyb] = T.world(zone, h.x0, h.bottom), [wx1, wyt] = T.world(zone, h.x1, h.top);
+      (look.stilts ? M.stilts : style === "village" ? M.facade : M.arcade)(f, wx0, wx1, wyb, wyt, look, seed + h.x0 * 7 + h.top * 13);
+    });
+  }
+
   function drawPosts(f, zone, look, seed) {
     const zoneName = look.style || "tomb", M = root.LevelMaterials;
     const kind = zoneName === "village" ? "timber" : zoneName === "capital" ? "stone" : look.hang === "roots" && zoneName === "forest" && look.groundLine > 0 ? "trunk" : null;
@@ -738,6 +780,7 @@
   // Уступи «=»: плита з рівним верхом і обламаним низом; вільна — на двох ланцюгах до склепіння.
   function drawLedges(f, zone, cx0, cy0, gw, gh, look, seed) {
     const c = f.c, S = f.ppu, N2 = root.PaintNoise;
+    drawHouses(f, zone, look, seed);
     drawPosts(f, zone, look, seed);
     for (let y = 0; y < gh; y++) {
       let start = -1;
@@ -763,7 +806,12 @@
           };
           const hangers = () => [[wx0 + 0.3, ceilingAt(gx0)], [wx1 - 0.3, ceilingAt(gx1 - 1)]];
           const wallSide = tree ? (tree.x === gx1 ? 1 : -1) : wallLeft ? -1 : 1;
-          if (kind === "chunk") {
+          const isRoof = (zoneName === "village" || zoneName === "capital" || look.stilts) && housesOf(zone, look).some(h => h.x0 === gx0 && h.top === gy);
+          if (isRoof) {
+            // дах хати / карниз аркади (housesOf): без підвісів — його тримає будова
+            if (zoneName === "capital") M.cornice(f, wx0, wx1, wyt, s2);
+            else M.planks(f, wx0 - (look.stilts ? 0.15 : 0.35), wx1 + (look.stilts ? 0.15 : 0.35), wyt, pal, s2, 0.3);
+          } else if (kind === "chunk") {
             // товщина брили — з місця під нею: найменший вільний стовпчик повітря під уступом
             let free = 40;
             for (let k = gx0; k < gx1; k++) {

@@ -84,7 +84,7 @@
       core: "#070a06", stone: "#1c2418", rim: "#a8c88a",
       lip: "#4a5a30", lipDark: "#26301a", lipLight: "#a8b88a", chain: "#10160c",
       mass: "rock", cap: "grass", roomPalette: false,
-      moss: "#5a6e30", hang: "roots",
+      moss: "#5a6e30", hang: "roots", stilts: true,
       skyTop: "#141c12", skyBottom: "#2a3a1a", moon: "#cfe0a8",
       farTree: "#18221a", midTree: "#111a12", nearTree: "#0a0f0a", ruin: "#1a2418", nearRuin: "#111810",
       fog: "#3e5a2e", fogLow: "#4a6a2a", beam: "#c8e0a0", dust: "#d8f0a8",
