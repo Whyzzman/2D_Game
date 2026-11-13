@@ -98,6 +98,20 @@
         "room_marsh_mushroom_cache", "room_marsh_mushroom_cave", "room_marsh_wreck", "room_marsh_toxic_drain",
         "room_marsh_hold_cache", "room_marsh_chest_nook"],
       underground: ["room_marsh_mushroom_cache", "room_marsh_mushroom_cave", "room_marsh_hold_cache", "room_marsh_toxic_drain"],
+      // Настрої кімнат (2026-11-12, решено Claude за постійною згодою): двадцять кімнат одного кислотного зеленого
+      // зливалися в одну. Відкрита вода — місячна, дорога й цвинтар — у брудних сутінках, хати й корабель — глибокий
+      // смарагд; лігво Оленя, стік і грибна печера лишаються отруйними (кольори зони вище).
+      moods: {
+        moon: { rooms: ["room_marsh_edge", "room_marsh_pier", "room_marsh_north_bridge", "room_marsh_lair_stair"],
+          colors: { skyTop: "#0e1418", skyBottom: "#24323a", moon: "#dfe8ee", farTree: "#141c20", midTree: "#0e1418",
+            fog: "#3a4c56", fogLow: "#465e60", beam: "#d4e4ec", dust: "#e0ecf0" } },
+        dusk: { rooms: ["room_marsh_rotten_road", "room_marsh_graveyard", "room_marsh_drowned_ruins", "room_marsh_rotten_tree", "room_marsh_shrine"],
+          colors: { skyTop: "#16150f", skyBottom: "#33301c", moon: "#e0d098", farTree: "#1a1a12", midTree: "#12120c",
+            fog: "#4c4a2c", fogLow: "#5a5a30", beam: "#e0d49a", dust: "#ece0a8", ruin: "#1e1c14", nearRuin: "#15140e" } },
+        deep: { rooms: ["room_marsh_wreck", "room_marsh_stilt_hut", "room_marsh_witch_hut", "room_marsh_chapel", "room_marsh_chapel_cache", "room_marsh_chest_nook", "room_marsh_hold_cache"],
+          colors: { thicketTop: "#0a1612", thicketBottom: "#040a08", fog: "#1c4436", fogLow: "#245442", beam: "#9ce0c4", dust: "#b8f0d8",
+            caveTop: "#08140f", caveBottom: "#030806", caveFog: "#1c4436" } }
+      },
       poison: ["room_marsh_edge", "room_marsh_pier", "room_marsh_rotten_road", "room_marsh_rotten_tree", "room_marsh_drowned_ruins",
         "room_marsh_graveyard", "room_marsh_wreck", "room_marsh_toxic_drain", "room_marsh_stag_lair", "room_marsh_mushroom_cave"],
       caves: []

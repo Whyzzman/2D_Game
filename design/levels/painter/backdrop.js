@@ -389,6 +389,9 @@
   }
 
   function paintRoom(canvas, zone, room, layer, ppu, look) {
+    // настрій кімнати поверх кольорів зони (looks.js, moods: Болота, 2026-11-12)
+    const mood = look.moods && Object.keys(look.moods).find(k => look.moods[k].rooms.includes(room.id));
+    if (mood) look = Object.assign({}, look, look.moods[mood].colors);
     const rect = roomRect(zone, room), seed = N.seedOf(room.id);
     const m = layer === "mid" ? MARGIN : 0;
     canvas.width = Math.round((rect.w + 2 * m) * ppu);
