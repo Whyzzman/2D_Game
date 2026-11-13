@@ -30,7 +30,7 @@ namespace ForgottenKingdom.EditorTools
         /// cut by a mask at the room's edge — its picture fades out in alpha over its margin (tools/midjourney/place.py
         /// SOFT_ZONES) and lies over its neighbours, so two paintings cross-fade. It slides a unit at most there.
         /// </summary>
-        private static readonly string[] SoftSeamZones = { "Tomb" };
+        private static readonly string[] SoftSeamZones = { "Tomb", "Forest", "Village", "Capital" };
 
         private const float SoftParallaxMargin = 1f;
         // The room's foreground (design/levels/painter/front.js): painted 2 units wider on each side,

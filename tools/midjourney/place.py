@@ -83,7 +83,7 @@ def smooth(t):
 # in these zones a room's far plan is not cut by a mask at the room's edge and does not sink into a dark frame —
 # it fades out in alpha over its margin and lies over its neighbours, so two paintings cross-fade in the air
 # between two rooms. ContentBuilderLevelArt.SoftSeamZones is the same list; the layer slides 1 unit at most there.
-SOFT_ZONES = {"tomb"}
+SOFT_ZONES = {"tomb", "forest", "village", "capital"}  # the Marsh has no paintings yet: its far plan is the painter's
 SOFT_CLEAR, SOFT_FULL = 0.5, 4.0  # units from the picture's edge: see-through up to the first, solid from the second
 
 
