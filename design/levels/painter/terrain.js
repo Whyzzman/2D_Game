@@ -586,21 +586,52 @@
       c.strokeStyle = rgba(look.lipLight, 0.75); c.lineWidth = Math.max(1.5, S * 0.035);
       c.beginPath(); c.moveTo(f.x(x0) + 1, ay + 1); c.lineTo(f.x(x1) - 1, ay + 1); c.stroke();
     } else if (look.cap === "grass") {
-      const grass = look.grass || look.moss || "#4a5a3a";
-      // темна смуга ґрунту під травою
-      const g = c.createLinearGradient(0, ay, 0, ay + S * 0.3);
-      g.addColorStop(0, rgba(grass, 0.9)); g.addColorStop(1, rgba(look.lipDark, 0));
-      c.fillStyle = g; c.fillRect(f.x(x0), ay, f.x(x1) - f.x(x0), S * 0.3);
-      // кущики травинок: густо там, де шум, рідко між ними
-      c.lineCap = "round";
-      for (let x = x0 + 0.05; x < x1 - 0.05; x += 0.07) {
-        const dense = N2.fbm(x * 0.9, y, seed + 61, 2);
-        if (N2.hash(Math.round(x * 41), Math.round(y * 7), seed + 63) > dense * 1.3) continue;
-        const h = S * (0.08 + dense * 0.28) * (0.6 + N2.hash(Math.round(x * 37), 1, seed + 65) * 0.6);
-        const lean = (N2.hash(Math.round(x * 29), 2, seed + 67) - 0.5) * S * 0.12;
-        c.strokeStyle = rgba(N2.hash(Math.round(x * 31), 3, seed) > 0.7 ? (look.lipLight || grass) : grass, 0.95);
-        c.lineWidth = Math.max(1, S * 0.03);
-        c.beginPath(); c.moveTo(f.x(x), ay + S * 0.04); c.quadraticCurveTo(f.x(x) + lean * 0.3, ay - h * 0.6, f.x(x) + lean, ay - h); c.stroke();
+      const grass = look.grass || look.moss || "#4a5a3a", light = look.lipLight || grass;
+      // Дернина (2026-11-13, великий прохід «гарно»: Ori, Hollow Knight): не тонка лінія, а товста м'яка подушка
+      // по верху землі — світла зверху, з хвилястим низом, що напливає на ґрунт; із неї ростуть жмутки трави.
+      const turf = c.createLinearGradient(0, ay, 0, ay + S * 0.5);
+      turf.addColorStop(0, rgba(light, 0.55)); turf.addColorStop(0.12, rgba(grass, 0.95)); turf.addColorStop(0.7, rgba(look.lipDark, 0.9)); turf.addColorStop(1, rgba(look.lipDark, 0));
+      c.fillStyle = turf;
+      c.beginPath(); c.moveTo(f.x(x0), ay);
+      c.lineTo(f.x(x1), ay);
+      for (let x = x1; x >= x0 - 0.001; x -= 0.08) {
+        const lobe = Math.abs(Math.sin(x * 4.3 + N2.fbm(x * 0.7, y, seed + 71, 2) * 6)) * 0.14;
+        c.lineTo(f.x(x), ay + S * (0.2 + lobe + N2.fbm(x * 1.6, y + 3, seed + 73, 2) * 0.16));
+      }
+      c.closePath(); c.fill();
+      // світла кромка: тут стоять
+      c.strokeStyle = rgba(light, 0.5); c.lineWidth = Math.max(1.5, S * 0.035); c.lineCap = "round";
+      c.beginPath(); c.moveTo(f.x(x0) + 2, ay + 1); c.lineTo(f.x(x1) - 2, ay + 1); c.stroke();
+      // жмутки: кілька широких стеблин віялом з однієї точки, кожна — загострений лист, а не риска
+      const blade = (bx, h, lean, w, col) => {
+        const tx = bx + lean, ty = ay - h, mx = bx + lean * 0.35, my = ay - h * 0.6;
+        c.fillStyle = col;
+        c.beginPath(); c.moveTo(bx - w, ay + S * 0.05);
+        c.quadraticCurveTo(mx - w * 0.7, my, tx, ty);
+        c.quadraticCurveTo(mx + w * 0.9, my, bx + w, ay + S * 0.05);
+        c.closePath(); c.fill();
+      };
+      for (let x = x0 + 0.12; x < x1 - 0.12; x += 0.16) {
+        const dense = N2.fbm(x * 0.8, y, seed + 61, 2);
+        const pick = N2.hash(Math.round(x * 41), Math.round(y * 7), seed + 63);
+        if (pick > dense * 1.5) continue;
+        const n = 2 + Math.floor(N2.hash(Math.round(x * 23), 5, seed + 64) * 4), big = dense > 0.62 ? 1.5 : 1;
+        for (let k = 0; k < n; k++) {
+          const hh = S * (0.12 + N2.hash(Math.round(x * 37), k, seed + 65) * 0.3) * big;
+          const lean = (k - (n - 1) / 2) * S * 0.07 + (N2.hash(Math.round(x * 29), k, seed + 67) - 0.5) * S * 0.1;
+          const tone = N2.hash(Math.round(x * 31), k, seed + 69);
+          blade(f.x(x) + (k - n / 2) * S * 0.025, hh, lean, S * 0.028, rgba(tone > 0.72 ? light : grass, tone > 0.72 ? 0.8 : 0.95));
+        }
+        // подекуди — дрібна квітка чи насінина, що світиться в тон зони
+        if (pick < 0.035 && look.rim) {
+          const fx = f.x(x) + S * 0.05, fy = ay - S * (0.28 + dense * 0.2);
+          c.strokeStyle = rgba(grass, 0.9); c.lineWidth = Math.max(1, S * 0.02);
+          c.beginPath(); c.moveTo(fx, ay); c.quadraticCurveTo(fx + S * 0.04, (ay + fy) / 2, fx, fy); c.stroke();
+          const gl = c.createRadialGradient(fx, fy, 0, fx, fy, S * 0.22);
+          gl.addColorStop(0, rgba(look.rim, 0.5)); gl.addColorStop(1, rgba(look.rim, 0));
+          c.fillStyle = gl; c.beginPath(); c.arc(fx, fy, S * 0.22, 0, Math.PI * 2); c.fill();
+          c.fillStyle = rgba(look.rim, 0.95); c.beginPath(); c.arc(fx, fy, S * 0.045, 0, Math.PI * 2); c.fill();
+        }
       }
     } else if (look.cap === "trim") {
       // тесаний карниз: світла верхня смуга, тонка тінь, ряд зубців під нею

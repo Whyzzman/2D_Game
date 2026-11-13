@@ -153,21 +153,21 @@ namespace ForgottenKingdom.EditorTools
             PlaceholderImport.EnsureFolder(Folder);
 
             var tomb = Profile(TombProfile);
-            Adjustments(tomb, contrast: 8f, saturation: -8f, filter: new Color(0.96f, 0.98f, 1.03f));
+            Adjustments(tomb, contrast: 10f, saturation: 6f, filter: new Color(0.96f, 0.98f, 1.03f));
             Toning(tomb, shadows: new Color(0.46f, 0.49f, 0.56f), highlights: new Color(0.57f, 0.52f, 0.45f));
 
             var forest = Profile(ForestProfile);
-            Adjustments(forest, contrast: 6f, saturation: -4f, filter: new Color(0.95f, 1f, 0.99f));
+            Adjustments(forest, contrast: 8f, saturation: 10f, filter: new Color(0.95f, 1f, 0.99f));
             Toning(forest, shadows: new Color(0.45f, 0.52f, 0.5f), highlights: new Color(0.52f, 0.54f, 0.56f));
 
             // The capital: ash in the shadows, the embers' warmth in the highlights.
             var capital = Profile(CapitalProfile);
-            Adjustments(capital, contrast: 10f, saturation: -12f, filter: new Color(1.02f, 0.98f, 0.96f));
+            Adjustments(capital, contrast: 11f, saturation: 6f, filter: new Color(1.02f, 0.98f, 0.96f));
             Toning(capital, shadows: new Color(0.5f, 0.46f, 0.46f), highlights: new Color(0.6f, 0.5f, 0.42f));
 
             // The village: sepia, the warmth of the fires nobody tends, soft shadows.
             var village = Profile(VillageProfile);
-            Adjustments(village, contrast: 7f, saturation: -10f, filter: new Color(1.03f, 0.99f, 0.94f));
+            Adjustments(village, contrast: 9f, saturation: 8f, filter: new Color(1.03f, 0.99f, 0.94f));
             Toning(village, shadows: new Color(0.5f, 0.45f, 0.42f), highlights: new Color(0.62f, 0.52f, 0.4f));
 
             var effects = Profile(EffectsProfile);
@@ -176,12 +176,15 @@ namespace ForgottenKingdom.EditorTools
             // the user's choice (ScreenGradeDataTests).
             var bloom = Ensure<Bloom>(effects);
             bloom.threshold.Override(0.72f);
-            bloom.intensity.Override(0.6f);
+            // 2026-11-13 (the user's references: Hollow Knight, Ori and the Blind Forest, Blasphemous 2; «radically
+            // beautiful»): the zones are no longer drained of colour (saturation -4…-12 became +6…+10) and the
+            // glowing far plan blooms a step more.
+            bloom.intensity.Override(0.75f);
             bloom.scatter.Override(0.72f);
             bloom.tint.Override(Color.white);
             var vignette = Ensure<Vignette>(effects);
             vignette.color.Override(Color.black);
-            vignette.intensity.Override(0.28f);
+            vignette.intensity.Override(0.3f);
             vignette.smoothness.Override(0.5f);
             vignette.rounded.Override(false);
 

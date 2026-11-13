@@ -84,3 +84,7 @@ __pycache__/
 
 # Local secrets (API keys)
 .env
+
+# Written by the Unity Test Framework on every build
+/Assets/Resources/PerformanceTestRun*
+/Assets/Resources.meta

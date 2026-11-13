@@ -50,7 +50,7 @@ namespace ForgottenKingdom.Tests
         {
             Load("grade_effects").TryGet(out Bloom bloom);
             Load("grade_effects").TryGet(out Vignette vignette);
-            Assert.That(bloom.intensity.value, Is.LessThanOrEqualTo(0.6f));
+            Assert.That(bloom.intensity.value, Is.LessThanOrEqualTo(0.8f));
             Assert.That(bloom.threshold.value, Is.GreaterThanOrEqualTo(0.7f),
                 "Only the bright things glow: flames, runes, the moon, magic.");
             Assert.That(vignette.intensity.value, Is.LessThanOrEqualTo(0.3f));
