@@ -27,7 +27,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from sprites import cut  # noqa: E402
 from place import border  # noqa: E402
 
-PPU = 32
+PPU = 48  # the near layer (tools/level-art/jobs.js NEAR_PPU)
 # name: (height in world units, how it sits, weight). Heights beside the hero (2.2 units tall).
 PROPS = {
     "tomb": {

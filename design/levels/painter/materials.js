@@ -167,39 +167,88 @@
     }
   }
 
-  // Гілка з дерева, що росте зі стіни: товща біля стіни, з листям на кінці.
+  // Гілка з дерева, що росте зі стіни чи стовбура (2026-11-13, користувач: «наче дитина гралася геометричними
+  // фігурами»; решено Claude за постійною згодою): не клин, а сук — майже рівної товщини, з плавним наростом біля
+  // стовбура, вузлуватим низом, обламаним кінцем, з якого вгору йде тонка гілочка з листям, і пасмами моху знизу.
   function branch(f, x0, x1, top, wallSide, pal, seed) {
-    const c = f.c, S = f.ppu;
-    const from = wallSide < 0 ? x0 - 0.3 : x1 + 0.3, to = wallSide < 0 ? x1 + 0.2 : x0 - 0.2;
-    const g = c.createLinearGradient(0, f.y(top), 0, f.y(top - 0.5));
-    g.addColorStop(0, pal.light); g.addColorStop(0.35, pal.bark); g.addColorStop(1, pal.dark);
+    const c = f.c, S = f.ppu, X = f.x, Y = f.y;
+    const from = wallSide < 0 ? x0 - 0.3 : x1 + 0.3, to = wallSide < 0 ? x1 + 0.15 : x0 - 0.15;
+    const len = Math.abs(to - from), dir = to > from ? 1 : -1;
+    const at = u => from + (to - from) * u;
+    // товщина вздовж суку: наріст біля стовбура, далі рівно, до кінця тоншає; вузли — шум
+    const thick = u => 0.2 + 0.26 * (1 - u) + 0.55 * Math.pow(1 - u, 5) + (N.fbm(u * len * 1.7, top, seed, 2) - 0.5) * 0.12 * (1 - u * 0.5);
+    const lift = u => -0.05 * Math.sin(u * Math.PI); // низ ледь вигнутий
+    c.save();
+    const g = c.createLinearGradient(0, Y(top), 0, Y(top - 0.75));
+    g.addColorStop(0, pal.light); g.addColorStop(0.22, pal.bark); g.addColorStop(1, pal.dark);
     c.fillStyle = g;
     c.beginPath();
-    c.moveTo(f.x(from), f.y(top));
-    c.lineTo(f.x(to), f.y(top));
-    c.quadraticCurveTo(f.x(to), f.y(top - 0.26), f.x(to + wallSide * 0.3), f.y(top - 0.42));
-    c.quadraticCurveTo(f.x((from + to) / 2), f.y(top - 0.62), f.x(from), f.y(top - 1.25));
+    c.moveTo(X(from), Y(top));
+    c.lineTo(X(to - dir * 0.12), Y(top));
+    c.quadraticCurveTo(X(to + dir * 0.06), Y(top - 0.02), X(to + dir * 0.02), Y(top - 0.13)); // обламаний кінець
+    c.lineTo(X(to - dir * 0.05), Y(top - thick(1)));
+    for (let i = 19; i >= 0; i--) { const u = i / 20; c.lineTo(X(at(u)), Y(top - thick(u) + lift(u))); }
     c.closePath(); c.fill();
-    // мох по верху: тут стоять
-    c.strokeStyle = rgba(pal.leaf, 0.9); c.lineWidth = Math.max(1.5, S * 0.05);
-    c.beginPath(); c.moveTo(f.x(from), f.y(top) + 1); c.lineTo(f.x(to), f.y(top) + 1); c.stroke();
-    c.fillStyle = rgba(pal.leaf, 0.85);
-    for (let k = 0; k < Math.abs(to - from) * 3; k++) {
-      const mx = from + (to - from) * N.hash(seed, k, 21);
-      c.beginPath(); c.ellipse(f.x(mx), f.y(top - 0.03), S * (0.05 + N.hash(seed, k, 23) * 0.08), S * 0.05, 0, 0, Math.PI * 2); c.fill();
+    c.strokeStyle = rgba(pal.dark, 0.85); c.lineWidth = Math.max(1, S * 0.025); c.stroke();
+    // кора: довгі борозни вздовж суку, що сходяться до кінця
+    c.strokeStyle = rgba(pal.dark, 0.5); c.lineWidth = Math.max(1, S * 0.018);
+    for (let i = 1; i <= 3; i++) {
+      const q = i / 4, u0 = N.hash(seed, i, 61) * 0.15, u1 = 0.6 + N.hash(seed, i, 63) * 0.35;
+      c.beginPath();
+      for (let k = 0; k <= 10; k++) {
+        const u = u0 + (u1 - u0) * k / 10;
+        c.lineTo(X(at(u)), Y(top - thick(u) * q + lift(u) * q + (N.hash(seed + i, k, 65) - 0.5) * 0.02));
+      }
+      c.stroke();
     }
-    c.strokeStyle = rgba(pal.dark, 0.55); c.lineWidth = Math.max(1, S * 0.02);
-    for (let i = 0; i < 3; i++) {
-      const yy = top - 0.1 - i * 0.12;
-      c.beginPath(); c.moveTo(f.x(from), f.y(yy - 0.1)); c.quadraticCurveTo(f.x((from + to) / 2), f.y(yy), f.x(to), f.y(top - 0.06 - i * 0.03)); c.stroke();
+    // сучок-око
+    const ku = 0.25 + N.hash(seed, 2, 67) * 0.35;
+    c.strokeStyle = rgba(pal.dark, 0.6); c.beginPath(); c.ellipse(X(at(ku)), Y(top - thick(ku) * 0.55), S * 0.07, S * 0.045, 0, 0, Math.PI * 2); c.stroke();
+    // гілочки: одна з кінця вгору, одна-дві знизу; на кінцях листя купками
+    const leafTuft = (x, y, n, k0) => {
+      for (let j = 0; j < n; j++) {
+        const lx = x + (N.hash(seed + k0, j, 71) - 0.5) * 0.55, ly = y + (N.hash(seed + k0, j, 73) - 0.4) * 0.4;
+        c.fillStyle = rgba(pal.leaf, 0.55 + N.hash(seed + k0, j, 75) * 0.4);
+        c.save(); c.translate(X(lx), Y(ly)); c.rotate((N.hash(seed + k0, j, 77) - 0.5) * 2.6);
+        c.beginPath(); c.moveTo(-S * 0.13, 0); c.quadraticCurveTo(0, -S * 0.07, S * 0.13, 0); c.quadraticCurveTo(0, S * 0.07, -S * 0.13, 0); c.fill();
+        c.restore();
+      }
+    };
+    const twig = (x, y, a, l, w, k0) => {
+      const mx = x + Math.cos(a) * l * 0.5 + dir * 0.08, my = y + Math.sin(a) * l * 0.55;
+      const ex = x + Math.cos(a) * l, ey = y + Math.sin(a) * l;
+      c.strokeStyle = pal.dark; c.lineWidth = Math.max(1, S * w); c.lineCap = "round";
+      c.beginPath(); c.moveTo(X(x), Y(y)); c.quadraticCurveTo(X(mx), Y(my), X(ex), Y(ey)); c.stroke();
+      leafTuft(ex, ey, 6, k0);
+    };
+    twig(to - dir * 0.08, top - 0.1, dir > 0 ? 0.5 : Math.PI - 0.5, 0.75 + N.hash(seed, 1, 81) * 0.4, 0.05, 11);
+    const drops = 1 + (N.hash(seed, 3, 83) < 0.5 ? 1 : 0);
+    for (let k = 0; k < drops; k++) {
+      const u = 0.35 + k * 0.3 + N.hash(seed, k, 85) * 0.15;
+      twig(at(u), top - thick(u) + 0.03, (dir > 0 ? -0.6 : Math.PI + 0.6) - (N.hash(seed, k, 87) - 0.5) * 0.5, 0.45 + N.hash(seed, k, 89) * 0.35, 0.04, 20 + k * 7);
     }
-    // листя на кінці
-    c.fillStyle = rgba(pal.leaf, 0.95);
-    for (let k = 0; k < 6; k++) {
-      const lx = f.x(to + wallSide * (0.1 + N.hash(seed, k, 3) * 0.4)), ly = f.y(top - 0.05 - N.hash(seed, k, 5) * 0.35);
-      c.save(); c.translate(lx, ly); c.rotate((N.hash(seed, k, 9) - 0.5) * 2.4);
-      c.beginPath(); c.ellipse(0, 0, S * 0.16, S * 0.07, 0, 0, Math.PI * 2); c.fill(); c.restore();
+    // мох: подушка по верху (тут стоять) нерівними купинами і пасма, що звисають з краю
+    c.fillStyle = rgba(pal.leaf, 0.92);
+    c.beginPath(); c.moveTo(X(from), Y(top - 0.05));
+    for (let k = 0; k <= 24; k++) {
+      const u = k / 24;
+      c.lineTo(X(at(u * 0.97)), Y(top + 0.015 + N.fbm(u * len * 3, 7, seed, 2) * 0.05));
     }
+    for (let k = 24; k >= 0; k--) {
+      const u = k / 24;
+      c.lineTo(X(at(u * 0.97)), Y(top - 0.05 - N.fbm(u * len * 2.2, 3, seed, 2) * 0.12));
+    }
+    c.closePath(); c.fill();
+    c.strokeStyle = rgba(pal.leaf, 0.7); c.lineWidth = Math.max(1, S * 0.022); c.lineCap = "round";
+    for (let k = 0; k < len * 2.2; k++) {
+      const u = N.hash(seed, k, 91); if (u < 0.12) continue;
+      const hx = at(u), d = 0.12 + N.hash(seed, k, 93) * 0.3;
+      c.beginPath(); c.moveTo(X(hx), Y(top - 0.06)); c.quadraticCurveTo(X(hx + 0.03), Y(top - 0.06 - d * 0.6), X(hx + (N.hash(seed, k, 95) - 0.5) * 0.08), Y(top - 0.06 - d)); c.stroke();
+    }
+    // світло зверху
+    c.strokeStyle = "rgba(190,215,190,0.22)"; c.lineWidth = Math.max(1, S * 0.02);
+    c.beginPath(); c.moveTo(X(at(0.05)), Y(top + 0.02)); c.lineTo(X(at(0.95)), Y(top + 0.02)); c.stroke();
+    c.restore();
   }
 
   // Кам'яний балкон на фігурній консолі (Столиця).
@@ -385,11 +434,90 @@
   // широкий уступ над рівною землею на відкритій вулиці — це дах, під ним фасад: глина в дубовому каркасі, двері,
   // віконниці, подекуди вогник; під дахом — солом'яна стріха. Лише малюнок позаду героя: перед хатою ходять,
   // на дах застрибують знизу (уступ односторонній).
-  function facade(f, x0, x1, yb, yt, look, seed) {
+  function facade(f, x0, x1, yb, yt, look, seed, up) {
     const c = f.c, S = f.ppu, pal = WOOD.village, o = look.nearHouse || {};
     const l = x0 + 0.3, r = x1 - 0.3, w = r - l, h = yt - yb;
     const X = f.x, Y = f.y;
     c.save();
+    // Верх хати над настилом (2026-11-13, «хата-коробка»): настил, яким ходять, — ґанок-піддашшя; за ним стіна
+    // горища і крута солом'яна стріха з димарем. Далі від героя, тому темніше й без різких ліній.
+    up = Math.min(up || 0, 7.5);
+    if (up >= 1.6) {
+      const roofH = Math.min(up * 0.62, 1.4 + w * 0.22, 3.6), wallH = Math.min(2.1, up - roofH - 0.1);
+      const wy0 = yt, wy1 = yt + Math.max(0, wallH), ul = l + 0.15, ur = r - 0.15;
+      if (wallH > 0.6) {
+        const g2 = c.createLinearGradient(0, Y(wy1), 0, Y(wy0));
+        g2.addColorStop(0, "#211811"); g2.addColorStop(1, "#2a2018");
+        c.fillStyle = g2; c.fillRect(X(ul), Y(wy1), (ur - ul) * S, (wy1 - wy0) * S);
+        const n2 = Math.max(2, Math.round((ur - ul) / 2.4));
+        c.lineCap = "butt";
+        for (let i = 0; i <= n2; i++) {
+          const bx = ul + (ur - ul) * i / n2;
+          c.strokeStyle = "#110b07"; c.lineWidth = S * 0.14; c.beginPath(); c.moveTo(X(bx), Y(wy0)); c.lineTo(X(bx), Y(wy1)); c.stroke();
+          if (i < n2) {
+            const cx = bx + (ur - ul) / n2 / 2, pick = N.hash(seed, i, 101);
+            if (pick < 0.6) {
+              const ww = 0.55, wh = Math.min(0.8, wallH * 0.5), wy = wy0 + wallH * 0.3, lit = N.hash(seed, i, 103) < 0.4;
+              if (lit) {
+                const gl = c.createRadialGradient(X(cx), Y(wy + wh / 2), 0, X(cx), Y(wy + wh / 2), S * 1.6);
+                gl.addColorStop(0, rgba(o.windowLit || "#f4a852", 0.22)); gl.addColorStop(1, rgba(o.windowLit || "#f4a852", 0));
+                c.fillStyle = gl; c.fillRect(X(cx - 1.6), Y(wy + wh / 2 + 1.6), S * 3.2, S * 3.2);
+              }
+              c.fillStyle = lit ? rgba(o.windowLit || "#f4a852", 0.85) : "#080504";
+              c.beginPath(); c.moveTo(X(cx - ww / 2), Y(wy)); c.lineTo(X(cx - ww / 2), Y(wy + wh * 0.7));
+              c.quadraticCurveTo(X(cx), Y(wy + wh * 1.15), X(cx + ww / 2), Y(wy + wh * 0.7)); c.lineTo(X(cx + ww / 2), Y(wy)); c.closePath(); c.fill();
+              c.strokeStyle = "#0d0906"; c.lineWidth = S * 0.06; c.stroke();
+              c.beginPath(); c.moveTo(X(cx), Y(wy)); c.lineTo(X(cx), Y(wy + wh * 0.92)); c.stroke();
+            } else if (pick < 0.85) {
+              c.strokeStyle = "#110b07"; c.lineWidth = S * 0.1; c.beginPath();
+              c.moveTo(X(bx), Y(wy0)); c.lineTo(X(bx + (ur - ul) / n2), Y(wy1)); c.stroke();
+            }
+          }
+        }
+      }
+      // стріха: два схили, що провисають, гребінь трохи збоку, звис за стіни; солома шарами
+      const ov = 0.55, ex0 = x0 - ov, ex1 = x1 + ov, ry = wy1 - 0.12, ridgeX = (x0 + x1) / 2 + (N.hash(seed, 5, 105) - 0.5) * w * 0.12, ridgeY = ry + roofH;
+      const slope = (t, left) => { // t 0 — звис, 1 — гребінь
+        const ex = left ? ex0 : ex1, x = ex + (ridgeX - ex) * t, sag = Math.sin(t * Math.PI) * roofH * 0.09;
+        return [x, ry + roofH * t - sag];
+      };
+      // димар за гребенем
+      const chx = ridgeX + (N.hash(seed, 6, 107) < 0.5 ? -1 : 1) * w * 0.22, chTop = ridgeY + 0.25;
+      if (up - (wallH > 0.6 ? wallH : 0) - roofH > 0.4) {
+        c.fillStyle = "#1a1512"; c.fillRect(X(chx - 0.22), Y(chTop), 0.44 * S, roofH * 0.7 * S);
+        c.fillStyle = "#26201b"; c.fillRect(X(chx - 0.28), Y(chTop + 0.1), 0.56 * S, 0.14 * S);
+      }
+      const rg = c.createLinearGradient(0, Y(ridgeY), 0, Y(ry));
+      rg.addColorStop(0, "#3a2e1c"); rg.addColorStop(0.5, "#2a2014"); rg.addColorStop(1, "#18110a");
+      c.fillStyle = rg;
+      c.beginPath();
+      for (let k = 0; k <= 12; k++) { const [x, y] = slope(k / 12, true); c.lineTo(X(x), Y(y)); }
+      for (let k = 12; k >= 0; k--) { const [x, y] = slope(k / 12, false); c.lineTo(X(x), Y(y)); }
+      // нерівний звис соломи понизу
+      for (let x = ex1; x >= ex0 - 0.001; x -= 0.14) c.lineTo(X(x), Y(ry - 0.1 - N.hash(seed, Math.round(x * 17), 109) * 0.2));
+      c.closePath(); c.fill();
+      // шари соломи: ряди вздовж схилів і короткі штрихи вниз
+      for (let row = 1; row <= 4; row++) {
+        const t = row / 5;
+        const [lx, ly] = slope(t, true), [rx, ryy] = slope(t, false);
+        c.strokeStyle = "rgba(8,5,3,0.55)"; c.lineWidth = Math.max(1, S * 0.035);
+        c.beginPath(); c.moveTo(X(lx + 0.1), Y(ly - 0.05)); c.quadraticCurveTo(X(ridgeX), Y(ly - roofH * 0.06 - 0.05), X(rx - 0.1), Y(ryy - 0.05)); c.stroke();
+      }
+      c.strokeStyle = rgba(o.roofLight || "#6a5634", 0.35); c.lineWidth = Math.max(1, S * 0.02);
+      for (let k = 0; k < w * 9; k++) {
+        const t = N.hash(seed, k, 111), left = N.hash(seed, k, 113) < 0.5, [sx, sy] = slope(t * 0.95, left);
+        const inx = sx + (ridgeX - sx) * N.hash(seed, k, 115) * 0.9, d = 0.15 + N.hash(seed, k, 117) * 0.3;
+        if (sy - d < ry) continue;
+        c.beginPath(); c.moveTo(X(inx), Y(sy - 0.04)); c.lineTo(X(inx + (left ? -0.05 : 0.05)), Y(sy - 0.04 - d)); c.stroke();
+      }
+      // світла кромка схилів і гребінь зі снопів
+      c.strokeStyle = rgba(o.roofLight || "#6a5634", 0.6); c.lineWidth = Math.max(1, S * 0.035);
+      c.beginPath(); for (let k = 0; k <= 12; k++) { const [x, y] = slope(k / 12, true); c.lineTo(X(x), Y(y)); }
+      for (let k = 12; k >= 0; k--) { const [x, y] = slope(k / 12, false); c.lineTo(X(x), Y(y)); } c.stroke();
+      c.strokeStyle = "#120c07"; c.lineWidth = S * 0.07; c.lineCap = "round";
+      for (let k = -1; k <= 1; k += 2) { c.beginPath(); c.moveTo(X(ridgeX - k * 0.3), Y(ridgeY - 0.28)); c.lineTo(X(ridgeX + k * 0.12), Y(ridgeY + 0.3)); c.stroke(); }
+      c.lineCap = "butt";
+    }
     // стіна
     const g = c.createLinearGradient(0, Y(yt), 0, Y(yb));
     g.addColorStop(0, "#3b2e23"); g.addColorStop(0.6, "#2c2119"); g.addColorStop(1, "#1a130e");

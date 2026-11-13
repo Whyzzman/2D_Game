@@ -6,7 +6,8 @@ const T = require("../../design/levels/painter/level-text.js");
 const ROOT = path.resolve(__dirname, "..", "..");
 const zoneName = process.argv[2] || "tomb";
 const zone = T.parse(fs.readFileSync(path.join(ROOT, "Assets/Game/Levels", zoneName + ".txt"), "utf8"));
-const CHUNK = 16, TERRAIN_PPU = 48, ROOM_PPU = 32, MARGIN = 3;
+// near (стіна кімнати й декор dress.py) — 48, як камінь: на 32 декор на екрані був розмитий і «піксельний» (2026-11-13)
+const CHUNK = 16, TERRAIN_PPU = 48, ROOM_PPU = 32, NEAR_PPU = 48, MARGIN = 3;
 const b = zone.bounds, c = zone.cell;
 const x0 = zone.origin[0] + b.minX * c, x1 = zone.origin[0] + b.maxX * c;
 const y0 = zone.origin[1] + b.minY * c, y1 = zone.origin[1] + b.maxY * c;
@@ -36,7 +37,8 @@ for (const r of zone.rooms) {
     console.log(`room ${r.id}_front ${w} ${h} what=room&id=${r.id}&layer=front&ppu=${ROOM_PPU}`);
   }
   for (const [layer, m] of [["mid", MARGIN], ["near", 0]]) {
-    const w = Math.round((r.w * c + 2 * m) * ROOM_PPU), h = Math.round((r.h * c + 2 * m) * ROOM_PPU);
-    console.log(`room ${r.id}_${layer} ${w} ${h} what=room&id=${r.id}&layer=${layer}&ppu=${ROOM_PPU}`);
+    const ppu = layer === "near" ? NEAR_PPU : ROOM_PPU;
+    const w = Math.round((r.w * c + 2 * m) * ppu), h = Math.round((r.h * c + 2 * m) * ppu);
+    console.log(`room ${r.id}_${layer} ${w} ${h} what=room&id=${r.id}&layer=${layer}&ppu=${ppu}`);
   }
 }

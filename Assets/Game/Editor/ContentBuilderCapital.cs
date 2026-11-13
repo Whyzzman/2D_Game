@@ -400,6 +400,14 @@ namespace ForgottenKingdom.EditorTools
         private static GameObject CapitalProp(Transform parent, string spriteName, Vector2 position,
             string layer, int order, float scale = 1f, bool flip = false)
         {
+            // Painted, the city's buildings are the painter's and its props dress.py's: the old doll-house pieces
+            // (a temple and houses twice the hero's height, carts, burnt trees, columns) stay out.
+            if (_capitalPainted && (spriteName.Contains("house") || spriteName.Contains("temple")
+                || spriteName.Contains("cart") || spriteName.Contains("tree") || spriteName.Contains("column")))
+            {
+                return null;
+            }
+
             var sprite = CapitalArt(spriteName);
             if (sprite == null)
             {

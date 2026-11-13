@@ -748,7 +748,15 @@
             // палі Боліт стоять і на нерівному дні: кожна до свого каменю, малюємо до найглибшого
             if (base === null) base = d; else if (look.stilts) base = Math.max(base, d); else if (base !== d) ok = false;
           }
-          if (ok) out.push({ x0: gx0, x1: gx1 + 1, top: gy, bottom: gy - base + 1 });
+          if (!ok) continue;
+          // вільне повітря над дахом (без каменю й уступів, у межах кімнати): там painter домальовує верх будови
+          let up = r.y + r.h - 1 - gy;
+          for (let k = gx0 - 1; k <= gx1 + 1; k++) {
+            let d = 1;
+            while (d <= up && !T.isRock(T.at(zone, k, gy + d)) && !T.isLedge(T.at(zone, k, gy + d))) d++;
+            up = Math.min(up, d - 1);
+          }
+          out.push({ x0: gx0, x1: gx1 + 1, top: gy, bottom: gy - base + 1, up });
         }
       }
     }
@@ -762,7 +770,7 @@
     if ((style !== "village" && style !== "capital" && !look.stilts && !look.ruins) || !M.facade) return;
     housesOf(zone, look).forEach((h, i) => {
       const [wx0, wyb] = T.world(zone, h.x0, h.bottom), [wx1, wyt] = T.world(zone, h.x1, h.top);
-      (look.stilts ? M.stilts : style === "village" ? M.facade : M.arcade)(f, wx0, wx1, wyb, wyt, look, seed + h.x0 * 7 + h.top * 13);
+      (look.stilts ? M.stilts : style === "village" ? M.facade : M.arcade)(f, wx0, wx1, wyb, wyt, look, seed + h.x0 * 7 + h.top * 13, h.up * zone.cell);
     });
   }
 

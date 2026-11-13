@@ -18,6 +18,9 @@ namespace ForgottenKingdom.EditorTools
         public const string PaintedRootName = "Painted";
         private const float TerrainPixelsPerUnit = 48f;
         private const float RoomPixelsPerUnit = 32f;
+
+        /// <summary>The near wall carries the room's props: as sharp as the stone (tools/level-art/jobs.js NEAR_PPU).</summary>
+        private const float NearPixelsPerUnit = 48f;
         private const float TerrainChunk = 16f;
         private const float RoomParallaxMargin = 3f;
         private const float RoomParallaxFactor = 0.15f;
@@ -57,7 +60,8 @@ namespace ForgottenKingdom.EditorTools
                 var terrain = path.Contains("/Terrain/");
                 importer.textureType = TextureImporterType.Sprite;
                 importer.spriteImportMode = SpriteImportMode.Single;
-                importer.spritePixelsPerUnit = terrain ? TerrainPixelsPerUnit : RoomPixelsPerUnit;
+                var nearLayer = path.EndsWith("_near.png");
+                importer.spritePixelsPerUnit = terrain ? TerrainPixelsPerUnit : nearLayer ? NearPixelsPerUnit : RoomPixelsPerUnit;
                 var settings = new TextureImporterSettings();
                 importer.ReadTextureSettings(settings);
                 settings.spriteAlignment = (int)SpriteAlignment.BottomLeft;
@@ -68,7 +72,7 @@ namespace ForgottenKingdom.EditorTools
                 importer.wrapMode = TextureWrapMode.Clamp;
                 importer.alphaIsTransparency = true;
                 importer.npotScale = TextureImporterNPOTScale.None;
-                importer.maxTextureSize = 2048;
+                importer.maxTextureSize = nearLayer ? 4096 : 2048;
                 // BC7 (CompressedHQ), 2026-11-11, KI-012: uncompressed the painted world held 1-2.4 GB of
                 // textures and an 8 GB Mac paged, freezing frames for up to 1.3 s. Normal-quality DXT turned the
                 // dark gradients into visible tiles and triangles; BC7 keeps them and takes a quarter of the memory.

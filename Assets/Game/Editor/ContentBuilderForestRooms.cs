@@ -501,6 +501,13 @@ namespace ForgottenKingdom.EditorTools
             {
                 foreach (var piece in pieces)
                 {
+                    // Painted, trees, ruins and statues are the painter's and dress.py's: the old pieces stay out.
+                    if (_forestPainted && !piece.Sprite.Contains("decal") && !piece.Sprite.Contains("roots")
+                        && !piece.Sprite.Contains("canopy"))
+                    {
+                        continue;
+                    }
+
                     var x = Mathf.Lerp(inside.xMin + 0.6f, inside.xMax - 0.6f, piece.X);
                     var at = piece.Y < 0f
                         ? new Vector2(x, FloorUnder(zone, room, x))

@@ -52,6 +52,7 @@ LUT = [tone(v) for v in range(256)] * 3
 # so the room's edge may show anything from 0 to 2 × MARGIN in from the painting's edge: the fade is long
 # and steep there (a neighbour seen from the next room had slid its lit middle up to the seam).
 PPU = 32
+NEAR_PPU = 48  # the near layer (tools/level-art/jobs.js)
 MARGIN = 3.0
 FADE = 5.5
 EDGE_DARK = (8, 10, 14)
@@ -98,7 +99,7 @@ BORDER_ALPHA = 0.6
 
 def border(near):
     w, h = Image.open(near).size
-    reach = BORDER * PPU
+    reach = BORDER * NEAR_PPU
     xs = [smooth(min(x, w - 1 - x) / reach) for x in range(w)]
     ys = [smooth(min(y, h - 1 - y) / reach) for y in range(h)]
     row = Image.new("L", (w, 1))

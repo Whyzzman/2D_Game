@@ -363,6 +363,15 @@ namespace ForgottenKingdom.EditorTools
             {
                 foreach (var piece in pieces)
                 {
+                    // Painted, the room's buildings are the painter's and its props dress.py's: the old doll-house
+                    // pieces (a church twice the hero's height, a barrel as tall as the hero) stay out; what
+                    // carries a light or a line across the room stays.
+                    if (_villagePainted && !piece.Sprite.Contains("lantern") && !piece.Sprite.Contains("garland")
+                        && !piece.Sprite.Contains("forge"))
+                    {
+                        continue;
+                    }
+
                     var x = Mathf.Lerp(inside.xMin + 0.6f, inside.xMax - 0.6f, piece.X);
                     var at = piece.Y < 0f
                         ? new Vector2(x, FloorUnder(zone, room, x))
