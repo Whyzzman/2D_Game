@@ -83,7 +83,41 @@
    * Малює шматок [wx0, wy0] … [wx0 + sx, wy0 + sy] у світових юнітах на canvas (ppu пікселів на юніт).
    * look — кольори зони.
    */
+  // Рука, а не лінійка (2026-11-13, користувач: «наче дитина гралася геометричними фігурами… виконай по-іншому, але
+  // красиво»; решено Claude за постійною згодою): шматок малюється із запасом і перекладається в кадр через плавний
+  // зсув за шумом у світових координатах — прямі бруси, колони й краї плит стають ледь кривими, як проведені пензлем.
+  // Зсув однаковий у сусідніх шматках (шум від світу, не від шматка), тож швів немає. По вертикалі він удвічі менший:
+  // верх уступу лишається там, де коллайдер.
+  const WOBBLE_X = 0.075, WOBBLE_Y = 0.03, WOBBLE_PAD = 0.25;
   function paintChunk(canvas, zone, wx0, wy0, sx, sy, ppu, look, seed) {
+    const P = WOBBLE_PAD, W = canvas.width, H = canvas.height, pp = Math.round(P * ppu);
+    const big = document.createElement("canvas");
+    big.width = W + 2 * pp; big.height = H + 2 * pp;
+    paintChunkRaw(big, zone, wx0 - pp / ppu, wy0 - pp / ppu, sx + 2 * pp / ppu, sy + 2 * pp / ppu, ppu, look, seed);
+    const src = big.getContext("2d").getImageData(0, 0, big.width, big.height).data, bw = big.width, bh = big.height;
+    const c = canvas.getContext("2d"), out = c.createImageData(W, H), o = out.data;
+    for (let j = 0; j < H; j++) {
+      const wy = wy0 + sy - (j + 0.5) / ppu;
+      for (let i = 0; i < W; i++) {
+        const wx = wx0 + (i + 0.5) / ppu;
+        const dx = (N.fbm(wx * 0.8, wy * 0.8, 911, 2) - 0.5) * 2 * WOBBLE_X + (N.noise2(wx * 5.1, wy * 5.1, 913) - 0.5) * 0.02;
+        const dy = (N.fbm(wx * 0.8 + 40, wy * 0.8, 917, 2) - 0.5) * 2 * WOBBLE_Y + (N.noise2(wx * 5.1, wy * 5.1 + 9, 919) - 0.5) * 0.012;
+        const fx = Math.min(bw - 1.001, Math.max(0, i + pp + dx * ppu)), fy = Math.min(bh - 1.001, Math.max(0, j + pp - dy * ppu));
+        const x0 = fx | 0, y0 = fy | 0, tx = fx - x0, ty = fy - y0;
+        const a = (y0 * bw + x0) * 4, b = a + 4, d = a + bw * 4, e = d + 4;
+        const wa = (1 - tx) * (1 - ty) * src[a + 3], wb = tx * (1 - ty) * src[b + 3], wd = (1 - tx) * ty * src[d + 3], we = tx * ty * src[e + 3];
+        const al = wa + wb + wd + we, k = (j * W + i) * 4;
+        if (al <= 0) continue;
+        o[k] = (src[a] * wa + src[b] * wb + src[d] * wd + src[e] * we) / al;
+        o[k + 1] = (src[a + 1] * wa + src[b + 1] * wb + src[d + 1] * wd + src[e + 1] * we) / al;
+        o[k + 2] = (src[a + 2] * wa + src[b + 2] * wb + src[d + 2] * wd + src[e + 2] * we) / al;
+        o[k + 3] = al;
+      }
+    }
+    c.putImageData(out, 0, 0);
+  }
+
+  function paintChunkRaw(canvas, zone, wx0, wy0, sx, sy, ppu, look, seed) {
     const c = canvas.getContext("2d");
     const W = canvas.width, H = canvas.height, cell = zone.cell;
     const M = 12; // запас клітинок довкола для розмиття

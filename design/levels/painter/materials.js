@@ -12,6 +12,15 @@
     return `rgba(${r},${g},${b},${a})`;
   }
 
+  // Без гострих кутів (2026-11-13, користувач: «щоб не було таких гострих кутів у декорі»; решено Claude за постійною
+  // згодою): кожен прямокутник матеріалів — із заокругленими кутами (дошка, брус, плита, вікно, колона).
+  function RR(c, stroke, x, y, w, h) {
+    const r = Math.min(Math.abs(w), Math.abs(h)) * 0.32, rad = Math.min(r, 9);
+    c.beginPath();
+    if (c.roundRect) c.roundRect(x, y, w, h, rad); else c.rect(x, y, w, h);
+    if (stroke) c.stroke(); else c.fill();
+  }
+
   // Палітри дерева й заліза зон.
   const WOOD = {
     tomb: { wood: "#3a3029", light: "#6e5a46", dark: "#17110d", iron: "#2b3038", rope: "#2e333c" },
@@ -47,7 +56,7 @@
     const y0 = f.y(top), h = S * t;
     // тінь під настилом
     c.fillStyle = "rgba(0,0,0,0.35)";
-    c.fillRect(f.x(x0) + S * 0.05, y0 + h, f.x(x1) - f.x(x0) - S * 0.1, S * 0.06);
+    RR(c, false, f.x(x0) + S * 0.05, y0 + h, f.x(x1) - f.x(x0) - S * 0.1, S * 0.06);
     // дошки: окремі, кожна своєї довжини й тону
     let x = x0;
     let k = 0;
@@ -81,7 +90,7 @@
     c.strokeStyle = rgba(pal.light, 0.85); c.lineWidth = Math.max(1.5, S * 0.03);
     c.beginPath(); c.moveTo(f.x(x0) + 1, y0 + 1); c.lineTo(f.x(x1) - 1, y0 + 1); c.stroke();
     c.strokeStyle = rgba(pal.dark, 0.9); c.lineWidth = Math.max(1, S * 0.02);
-    c.strokeRect(f.x(x0), y0, f.x(x1) - f.x(x0), h);
+    RR(c, true, f.x(x0), y0, f.x(x1) - f.x(x0), h);
   }
 
   function rope(f, x, yFrom, yTo, pal, seed, kind) {
@@ -119,7 +128,7 @@
     c.beginPath(); c.moveTo(f.x(wx), f.y(top - reach)); c.lineTo(f.x(wx - wallSide * reach), f.y(top - 0.28)); c.stroke();
     // залізний кутник у стіні
     c.fillStyle = pal.iron;
-    c.fillRect(f.x(wx) - (wallSide < 0 ? 0 : S * 0.12), f.y(top - reach) - S * 0.08, S * 0.12, S * 0.16);
+    RR(c, false, f.x(wx) - (wallSide < 0 ? 0 : S * 0.12), f.y(top - reach) - S * 0.08, S * 0.12, S * 0.16);
     planks(f, x0, x1, top, pal, seed, 0.28);
   }
 
@@ -128,7 +137,7 @@
     const c = f.c, S = f.ppu;
     // поперечини під настилом
     for (let x = x0 + 0.4; x < x1 - 0.2; x += 1.6) {
-      c.fillStyle = pal.dark; c.fillRect(f.x(x), f.y(top - 0.42), S * 0.26, S * 0.3);
+      c.fillStyle = pal.dark; RR(c, false, f.x(x), f.y(top - 0.42), S * 0.26, S * 0.3);
     }
     ceilings.forEach(([x, up]) => { if (up !== null) rope(f, x, up, top, pal, seed + Math.round(x * 7), hangKind); });
     planks(f, x0, x1, top, pal, seed, 0.3);
@@ -257,16 +266,16 @@
     const y0 = f.y(top), h = S * 0.48;
     const g = c.createLinearGradient(0, y0, 0, y0 + h);
     g.addColorStop(0, pal.stoneLight); g.addColorStop(0.3, pal.stone); g.addColorStop(1, pal.stoneDark);
-    c.fillStyle = g; c.fillRect(f.x(x0), y0, f.x(x1) - f.x(x0), h);
+    c.fillStyle = g; RR(c, false, f.x(x0), y0, f.x(x1) - f.x(x0), h);
     c.strokeStyle = rgba(pal.stoneDark, 0.9); c.lineWidth = Math.max(1, S * 0.02);
-    c.strokeRect(f.x(x0), y0, f.x(x1) - f.x(x0), h);
+    RR(c, true, f.x(x0), y0, f.x(x1) - f.x(x0), h);
     c.beginPath(); c.moveTo(f.x(x0), y0 + h * 0.4); c.lineTo(f.x(x1), y0 + h * 0.4); c.stroke();
     // консолі — сходинки, що звужуються до стіни
     const wx = wallSide < 0 ? x0 : x1;
     for (let i = 0; i < 3; i++) {
       const w = 0.9 - i * 0.28, yy = top - 0.32 - i * 0.2;
       const ax = wallSide < 0 ? f.x(wx) : f.x(wx - w), bx = wallSide < 0 ? f.x(wx + w) : f.x(wx);
-      c.fillStyle = i % 2 ? pal.stone : pal.stoneDark; c.fillRect(ax, f.y(yy), bx - ax, S * 0.2);
+      c.fillStyle = i % 2 ? pal.stone : pal.stoneDark; RR(c, false, ax, f.y(yy), bx - ax, S * 0.2);
     }
     c.strokeStyle = rgba(pal.stoneLight, 0.8); c.lineWidth = Math.max(1.5, S * 0.03);
     c.beginPath(); c.moveTo(f.x(x0) + 1, y0 + 1); c.lineTo(f.x(x1) - 1, y0 + 1); c.stroke();
@@ -359,7 +368,7 @@
     // відблиск світла на верхній третині й мох/сіль на краю
     const rim = c.createLinearGradient(0, f.y(top), 0, f.y(top - depth * 0.45));
     rim.addColorStop(0, rgba(look.rim || "#a9bdd8", 0.22)); rim.addColorStop(1, rgba(look.rim || "#a9bdd8", 0));
-    c.fillStyle = rim; c.fillRect(f.x(ax0), f.y(top), f.x(ax1) - f.x(ax0), S * depth * 0.45);
+    c.fillStyle = rim; RR(c, false, f.x(ax0), f.y(top), f.x(ax1) - f.x(ax0), S * depth * 0.45);
     c.restore();
     body();
     c.strokeStyle = "rgba(0,0,0,0.7)"; c.lineWidth = Math.max(1, S * 0.03); c.stroke();
@@ -407,13 +416,13 @@
       c.strokeStyle = rgba(pal.dark, 0.6); c.lineWidth = Math.max(1, S * 0.02);
       [-0.08, 0.06].forEach(o => { c.beginPath(); c.moveTo(f.x(x + o), f.y(yb)); c.lineTo(f.x(x + o), f.y(yt)); c.stroke(); });
       c.fillStyle = rgba(pal.iron, 0.95);
-      for (let y = yb + 0.6; y < yt - 0.2; y += 1.6 + N.hash(seed, Math.round(y * 3), 5) * 0.8) c.fillRect(f.x(x - half - 0.02), f.y(y + 0.08), S * (half * 2 + 0.04), S * 0.12);
+      for (let y = yb + 0.6; y < yt - 0.2; y += 1.6 + N.hash(seed, Math.round(y * 3), 5) * 0.8) RR(c, false, f.x(x - half - 0.02), f.y(y + 0.08), S * (half * 2 + 0.04), S * 0.12);
     } else if (kind === "stone") {
       // шви кладки, база й капітель
       c.strokeStyle = "rgba(0,0,0,0.4)"; c.lineWidth = Math.max(1, S * 0.02);
       for (let y = yb + 0.55; y < yt; y += 0.55) { c.beginPath(); c.moveTo(f.x(x - half), f.y(y)); c.lineTo(f.x(x + half), f.y(y)); c.stroke(); }
       c.fillStyle = pal.stoneDark;
-      if (grounded) c.fillRect(f.x(x - half - 0.14), f.y(yb + 0.32), S * (half * 2 + 0.28), S * 0.32);
+      if (grounded) RR(c, false, f.x(x - half - 0.14), f.y(yb + 0.32), S * (half * 2 + 0.28), S * 0.32);
     } else {
       // кора й мох
       c.strokeStyle = rgba(pal.dark, 0.55); c.lineWidth = Math.max(1, S * 0.025);
@@ -448,7 +457,7 @@
       if (wallH > 0.6) {
         const g2 = c.createLinearGradient(0, Y(wy1), 0, Y(wy0));
         g2.addColorStop(0, "#211811"); g2.addColorStop(1, "#2a2018");
-        c.fillStyle = g2; c.fillRect(X(ul), Y(wy1), (ur - ul) * S, (wy1 - wy0) * S);
+        c.fillStyle = g2; RR(c, false, X(ul), Y(wy1), (ur - ul) * S, (wy1 - wy0) * S);
         const n2 = Math.max(2, Math.round((ur - ul) / 2.4));
         c.lineCap = "butt";
         for (let i = 0; i <= n2; i++) {
@@ -461,7 +470,7 @@
               if (lit) {
                 const gl = c.createRadialGradient(X(cx), Y(wy + wh / 2), 0, X(cx), Y(wy + wh / 2), S * 1.6);
                 gl.addColorStop(0, rgba(o.windowLit || "#f4a852", 0.22)); gl.addColorStop(1, rgba(o.windowLit || "#f4a852", 0));
-                c.fillStyle = gl; c.fillRect(X(cx - 1.6), Y(wy + wh / 2 + 1.6), S * 3.2, S * 3.2);
+                c.fillStyle = gl; RR(c, false, X(cx - 1.6), Y(wy + wh / 2 + 1.6), S * 3.2, S * 3.2);
               }
               c.fillStyle = lit ? rgba(o.windowLit || "#f4a852", 0.85) : "#080504";
               c.beginPath(); c.moveTo(X(cx - ww / 2), Y(wy)); c.lineTo(X(cx - ww / 2), Y(wy + wh * 0.7));
@@ -484,8 +493,8 @@
       // димар за гребенем
       const chx = ridgeX + (N.hash(seed, 6, 107) < 0.5 ? -1 : 1) * w * 0.22, chTop = ridgeY + 0.25;
       if (up - (wallH > 0.6 ? wallH : 0) - roofH > 0.4) {
-        c.fillStyle = "#1a1512"; c.fillRect(X(chx - 0.22), Y(chTop), 0.44 * S, roofH * 0.7 * S);
-        c.fillStyle = "#26201b"; c.fillRect(X(chx - 0.28), Y(chTop + 0.1), 0.56 * S, 0.14 * S);
+        c.fillStyle = "#1a1512"; RR(c, false, X(chx - 0.22), Y(chTop), 0.44 * S, roofH * 0.7 * S);
+        c.fillStyle = "#26201b"; RR(c, false, X(chx - 0.28), Y(chTop + 0.1), 0.56 * S, 0.14 * S);
       }
       const rg = c.createLinearGradient(0, Y(ridgeY), 0, Y(ry));
       rg.addColorStop(0, "#3a2e1c"); rg.addColorStop(0.5, "#2a2014"); rg.addColorStop(1, "#18110a");
@@ -521,7 +530,7 @@
     // стіна
     const g = c.createLinearGradient(0, Y(yt), 0, Y(yb));
     g.addColorStop(0, "#3b2e23"); g.addColorStop(0.6, "#2c2119"); g.addColorStop(1, "#1a130e");
-    c.fillStyle = g; c.fillRect(X(l), Y(yt), (r - l) * S, h * S);
+    c.fillStyle = g; RR(c, false, X(l), Y(yt), (r - l) * S, h * S);
     // плями глини
     for (let k = 0; k < w * h * 0.5; k++) {
       const px = l + N.hash(seed, k, 3) * w, py = yb + N.hash(seed, k, 5) * h;
@@ -544,9 +553,9 @@
         if (s2 === 0 && i === door) {
           // двері: темний отвір, одвірок, клямка
           const dw = Math.min(1.0, (bx1 - bx0) * 0.6), dh = Math.min(1.9, (y1 - y0) * 0.8);
-          c.fillStyle = "#090605"; c.fillRect(X(cx - dw / 2), Y(yb + dh), dw * S, dh * S);
-          c.strokeStyle = pal.wood; c.lineWidth = S * 0.1; c.strokeRect(X(cx - dw / 2), Y(yb + dh), dw * S, dh * S);
-          c.fillStyle = rgba(pal.iron, 1); c.fillRect(X(cx + dw * 0.25), Y(yb + dh * 0.5), S * 0.08, S * 0.08);
+          c.fillStyle = "#090605"; RR(c, false, X(cx - dw / 2), Y(yb + dh), dw * S, dh * S);
+          c.strokeStyle = pal.wood; c.lineWidth = S * 0.1; RR(c, true, X(cx - dw / 2), Y(yb + dh), dw * S, dh * S);
+          c.fillStyle = rgba(pal.iron, 1); RR(c, false, X(cx + dw * 0.25), Y(yb + dh * 0.5), S * 0.08, S * 0.08);
         } else if (pick < 0.62) {
           // вікно: з вогником або з віконницями
           const ww = Math.min(0.8, (bx1 - bx0) * 0.45), wh = 0.9, wy = y0 + (y1 - y0) * 0.42;
@@ -554,14 +563,14 @@
           if (lit) {
             const gl = c.createRadialGradient(X(cx), Y(wy + wh / 2), 0, X(cx), Y(wy + wh / 2), S * 2.2);
             gl.addColorStop(0, rgba(o.windowLit || "#f4a852", 0.3)); gl.addColorStop(1, rgba(o.windowLit || "#f4a852", 0));
-            c.fillStyle = gl; c.fillRect(X(cx - 2.2), Y(wy + wh / 2 + 2.2), S * 4.4, S * 4.4);
+            c.fillStyle = gl; RR(c, false, X(cx - 2.2), Y(wy + wh / 2 + 2.2), S * 4.4, S * 4.4);
           }
           c.fillStyle = lit ? (o.windowLit || "#f4a852") : "#0a0706";
-          c.fillRect(X(cx - ww / 2), Y(wy + wh), ww * S, wh * S);
-          c.strokeStyle = "#0d0906"; c.lineWidth = S * 0.08; c.strokeRect(X(cx - ww / 2), Y(wy + wh), ww * S, wh * S);
+          RR(c, false, X(cx - ww / 2), Y(wy + wh), ww * S, wh * S);
+          c.strokeStyle = "#0d0906"; c.lineWidth = S * 0.08; RR(c, true, X(cx - ww / 2), Y(wy + wh), ww * S, wh * S);
           c.beginPath(); c.moveTo(X(cx), Y(wy + wh)); c.lineTo(X(cx), Y(wy)); c.moveTo(X(cx - ww / 2), Y(wy + wh / 2)); c.lineTo(X(cx + ww / 2), Y(wy + wh / 2)); c.stroke();
           if (!lit && N.hash(seed, i + s2 * 5, 31) < 0.5) { // причинена віконниця
-            c.fillStyle = pal.dark; c.fillRect(X(cx - ww / 2), Y(wy + wh), ww * 0.55 * S, wh * S);
+            c.fillStyle = pal.dark; RR(c, false, X(cx - ww / 2), Y(wy + wh), ww * 0.55 * S, wh * S);
           }
         } else if (pick < 0.85) {
           const flip = pick < 0.74;
@@ -584,7 +593,7 @@
     // земля під стіною темніша: хата стоїть, а не намальована
     const sh = c.createLinearGradient(0, Y(yb + 0.5), 0, Y(yb));
     sh.addColorStop(0, "rgba(0,0,0,0)"); sh.addColorStop(1, "rgba(0,0,0,0.5)");
-    c.fillStyle = sh; c.fillRect(X(l), Y(yb + 0.5), w * S, 0.5 * S);
+    c.fillStyle = sh; RR(c, false, X(l), Y(yb + 0.5), w * S, 0.5 * S);
     c.restore();
   }
 
@@ -615,7 +624,7 @@
       const cx = x0 + span * (i + 0.5), r = span * 0.5 - colW * 0.5;
       c.beginPath(); c.ellipse(X(cx), Y(spring), r * S, rise * S, 0, Math.PI, 0); c.stroke();
       c.beginPath(); c.ellipse(X(cx), Y(spring), (r + 0.22) * S, (rise + 0.2) * S, 0, Math.PI, 0); c.stroke();
-      c.fillStyle = pal.stoneLight; c.fillRect(X(cx - 0.12), Y(spring + rise + 0.22), S * 0.24, S * 0.26);
+      c.fillStyle = pal.stoneLight; RR(c, false, X(cx - 0.12), Y(spring + rise + 0.22), S * 0.24, S * 0.26);
     }
     // колони: стовбур із канелюрами, база, капітель; одна з середніх — надломлена
     const broken = n > 2 ? 1 + Math.floor(N.hash(seed, 3, 51) * (n - 1)) : -1;
@@ -624,17 +633,17 @@
       const top = i === broken ? yb + h * (0.3 + N.hash(seed, i, 53) * 0.2) : spring;
       const cg = c.createLinearGradient(X(cx - colW / 2), 0, X(cx + colW / 2), 0);
       cg.addColorStop(0, pal.stoneDark); cg.addColorStop(0.4, pal.stone); cg.addColorStop(0.65, pal.stoneLight); cg.addColorStop(1, pal.stoneDark);
-      c.fillStyle = cg; c.fillRect(X(cx - colW / 2), Y(top), colW * S, (top - yb) * S);
+      c.fillStyle = cg; RR(c, false, X(cx - colW / 2), Y(top), colW * S, (top - yb) * S);
       c.strokeStyle = "rgba(0,0,0,0.3)"; c.lineWidth = Math.max(1, S * 0.02);
       [-0.12, 0.02, 0.14].forEach(o => { c.beginPath(); c.moveTo(X(cx + o), Y(top)); c.lineTo(X(cx + o), Y(yb + 0.3)); c.stroke(); });
-      c.fillStyle = pal.stoneDark; c.fillRect(X(cx - colW / 2 - 0.14), Y(yb + 0.3), (colW + 0.28) * S, 0.3 * S);
+      c.fillStyle = pal.stoneDark; RR(c, false, X(cx - colW / 2 - 0.14), Y(yb + 0.3), (colW + 0.28) * S, 0.3 * S);
       if (i === broken) {
         // злам: рваний верх
         c.fillStyle = pal.stone; c.beginPath(); c.moveTo(X(cx - colW / 2), Y(top));
         c.lineTo(X(cx - colW * 0.2), Y(top + 0.22)); c.lineTo(X(cx + colW * 0.1), Y(top + 0.05)); c.lineTo(X(cx + colW / 2), Y(top + 0.3)); c.lineTo(X(cx + colW / 2), Y(top)); c.closePath(); c.fill();
       } else {
-        c.fillStyle = pal.stoneLight; c.fillRect(X(cx - colW / 2 - 0.16), Y(spring + 0.2), (colW + 0.32) * S, 0.2 * S);
-        c.fillStyle = pal.stone; c.fillRect(X(cx - colW / 2 - 0.08), Y(spring), (colW + 0.16) * S, 0.12 * S);
+        c.fillStyle = pal.stoneLight; RR(c, false, X(cx - colW / 2 - 0.16), Y(spring + 0.2), (colW + 0.32) * S, 0.2 * S);
+        c.fillStyle = pal.stone; RR(c, false, X(cx - colW / 2 - 0.08), Y(spring), (colW + 0.16) * S, 0.12 * S);
       }
     }
     // Ліс: мох на карнизі й капітелях, плющ по колонах
@@ -654,7 +663,7 @@
     // тінь під аркадою біля землі
     const sh = c.createLinearGradient(0, Y(yb + 0.4), 0, Y(yb));
     sh.addColorStop(0, "rgba(0,0,0,0)"); sh.addColorStop(1, "rgba(0,0,0,0.4)");
-    c.fillStyle = sh; c.fillRect(X(x0), Y(yb + 0.4), w * S, 0.4 * S);
+    c.fillStyle = sh; RR(c, false, X(x0), Y(yb + 0.4), w * S, 0.4 * S);
     c.restore();
   }
 
@@ -663,11 +672,11 @@
     const c = f.c, S = f.ppu, pal = look && look.ruins ? RUIN : WOOD.capital, y0 = f.y(top), h = S * 0.5;
     const g = c.createLinearGradient(0, y0, 0, y0 + h);
     g.addColorStop(0, pal.stoneLight); g.addColorStop(0.3, pal.stone); g.addColorStop(1, pal.stoneDark);
-    c.fillStyle = g; c.fillRect(f.x(x0 - 0.2), y0, f.x(x1 + 0.2) - f.x(x0 - 0.2), h);
-    c.strokeStyle = "rgba(0,0,0,0.75)"; c.lineWidth = Math.max(1, S * 0.03); c.strokeRect(f.x(x0 - 0.2), y0, f.x(x1 + 0.2) - f.x(x0 - 0.2), h);
+    c.fillStyle = g; RR(c, false, f.x(x0 - 0.2), y0, f.x(x1 + 0.2) - f.x(x0 - 0.2), h);
+    c.strokeStyle = "rgba(0,0,0,0.75)"; c.lineWidth = Math.max(1, S * 0.03); RR(c, true, f.x(x0 - 0.2), y0, f.x(x1 + 0.2) - f.x(x0 - 0.2), h);
     c.strokeStyle = "rgba(0,0,0,0.4)"; c.beginPath(); c.moveTo(f.x(x0 - 0.2), y0 + h * 0.45); c.lineTo(f.x(x1 + 0.2), y0 + h * 0.45); c.stroke();
     c.fillStyle = pal.stoneDark;
-    for (let x = x0; x < x1 - 0.1; x += 0.42) c.fillRect(f.x(x), y0 + h, S * 0.22, S * 0.14);
+    for (let x = x0; x < x1 - 0.1; x += 0.42) RR(c, false, f.x(x), y0 + h, S * 0.22, S * 0.14);
     c.strokeStyle = rgba(pal.stoneLight, 0.8); c.lineWidth = Math.max(1.5, S * 0.03);
     c.beginPath(); c.moveTo(f.x(x0 - 0.2) + 1, y0 + 1); c.lineTo(f.x(x1 + 0.2) - 1, y0 + 1); c.stroke();
   }
