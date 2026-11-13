@@ -478,13 +478,19 @@
             const c = f.c;
             c.save();
             c.beginPath();
-            const ax = f.x(wx0), bx = f.x(wx1), ay = f.y(wy), by = ay + f.ppu * 1.2;
+            // 2026-11-13, скріншот користувача («плити виходять за межі, літають у повітрі»): камінь під кромкою
+            // з'їдений ерозією всередину, а кромка йшла на всю ширину клітинки й нависала над повітрям. Біля
+            // відкритого краю кромка тепер закінчується там, де закінчується камінь.
+            const inset = zone.cell * 0.46;
+            const narrow = wx1 - wx0 < inset * 2 + 0.3;
+            const lx0 = wx0 + (openL && !narrow ? inset : 0), lx1 = wx1 - (openR && !narrow ? inset : 0);
+            const ax = f.x(lx0), bx = f.x(lx1), ay = f.y(wy), by = ay + f.ppu * 1.2;
             const rl = openL ? f.ppu * zone.cell * 0.84 : 0, rr = openR ? f.ppu * zone.cell * 0.84 : 0;
             c.moveTo(ax, by); c.lineTo(ax, ay + rl); c.quadraticCurveTo(ax, ay, ax + rl, ay);
             c.lineTo(bx - rr, ay); c.quadraticCurveTo(bx, ay, bx, ay + rr); c.lineTo(bx, by); c.closePath();
             c.rect(ax - 50, ay - f.ppu * 0.6, bx - ax + 100, f.ppu * 0.6); // трава над краєм не обрізається
             c.clip();
-            lip(f, wx0, wx1, wy, lookAt(zone, cx0 + Math.round((start + x) / 2), cy0 + y, look), seed);
+            lip(f, lx0, lx1, wy, lookAt(zone, cx0 + Math.round((start + x) / 2), cy0 + y, look), seed);
             c.restore();
             if (root.LevelProps) root.LevelProps.dress(f, zone, wx0, wx1, wy, lookAt(zone, cx0 + Math.round((start + x) / 2), cy0 + y, look), seed + y * 31 + start);
           }
@@ -879,6 +885,8 @@
           };
           const hangers = () => [[wx0 + 0.3, ceilingAt(gx0)], [wx1 - 0.3, ceilingAt(gx1 - 1)]];
           const wallSide = tree ? (tree.x === gx1 ? 1 : -1) : wallLeft ? -1 : 1;
+          // кромка не доходить до тонких вільних кінців брили: там вона звисала «крильцями» нижче самого каменю
+          const tip = Math.min(0.32, (wx1 - wx0) * 0.16), tipL = wallLeft ? 0 : tip, tipR = wallRight ? 0 : tip;
           const isRoof = (zoneName === "village" || zoneName === "capital" || look.stilts || look.ruins) && housesOf(zone, look).some(h => h.x0 === gx0 && h.top === gy);
           if (isRoof) {
             // дах хати / карниз аркади (housesOf): без підвісів — його тримає будова
@@ -899,12 +907,12 @@
             // вільна брила в Гробниці висить на двох ланцюгах до склепіння, якщо воно не надто високо
             if (!attach) hangers().forEach(([hx, up]) => { if (up !== null && up - wyt < 12) M.rope(f, hx, up, wyt - depth * 0.3, pal, s2 + Math.round(hx * 7), hangKind); });
             M.chunk(f, wx0, wx1, wyt, depth, tinted, s2, attach);
-            lip(f, wx0, wx1, wyt, lk, s2);
+            lip(f, wx0 + tipL, wx1 - tipR, wyt, lk, s2);
           } else if (kind === "outcrop") {
             // виступ стіни: та сама плита, що й підвісна, у кольорах кімнати, без ланцюгів — росте з каменю
             const lk = lookAt(zone, gx0, gy, look), tinted = Object.assign({}, lk, { stone: lk.lip, core: lk.shadowTint || lk.core });
             M.slab(f, wx0 - (wallLeft ? 0.25 : 0), wx1 + (wallRight ? 0.25 : 0), wyt, tinted, s2);
-            lip(f, wx0, wx1, wyt, lk, s2);
+            lip(f, wx0 + tipL, wx1 - tipR, wyt, lk, s2);
           } else if (kind === "shelf") M.shelf(f, wx0, wx1, wyt, wallSide, pal, s2);
           else if (kind === "branch") M.branch(f, wx0, wx1, wyt, wallSide, pal, s2);
           else if (kind === "balcony") M.balcony(f, wx0, wx1, wyt, wallSide, pal, s2);
@@ -915,7 +923,7 @@
           } else {
             hangers().forEach(([hx, up]) => { if (up !== null) M.rope(f, hx, up, wyt, pal, s2 + Math.round(hx * 7), hangKind); });
             if (kind === "log") M.log(f, wx0, wx1, wyt, pal, s2);
-            else if (kind === "slab") { const lk = lookAt(zone, gx0, gy, look), tinted = lk === look ? look : Object.assign({}, lk, { stone: lk.lip, core: lk.shadowTint }); M.slab(f, wx0, wx1, wyt, tinted, s2); lip(f, wx0, wx1, wyt, lk, s2); }
+            else if (kind === "slab") { const lk = lookAt(zone, gx0, gy, look), tinted = lk === look ? look : Object.assign({}, lk, { stone: lk.lip, core: lk.shadowTint }); M.slab(f, wx0, wx1, wyt, tinted, s2); lip(f, wx0 + tipL, wx1 - tipR, wyt, lk, s2); }
             else M.planks(f, wx0, wx1, wyt, pal, s2, 0.3);
           }
           start = -1;

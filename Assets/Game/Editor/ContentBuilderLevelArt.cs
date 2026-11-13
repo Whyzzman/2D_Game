@@ -24,6 +24,15 @@ namespace ForgottenKingdom.EditorTools
         private const float TerrainChunk = 16f;
         private const float RoomParallaxMargin = 3f;
         private const float RoomParallaxFactor = 0.15f;
+
+        /// <summary>
+        /// Zones whose rooms meet without a seam (2026-11-13, the user's screenshot of the Tomb): the far plan is not
+        /// cut by a mask at the room's edge — its picture fades out in alpha over its margin (tools/midjourney/place.py
+        /// SOFT_ZONES) and lies over its neighbours, so two paintings cross-fade. It slides a unit at most there.
+        /// </summary>
+        private static readonly string[] SoftSeamZones = { "Tomb" };
+
+        private const float SoftParallaxMargin = 1f;
         // The room's foreground (design/levels/painter/front.js): painted 2 units wider on each side,
         // it slides ahead of the camera — nearer than the play — by a fifth of its offset.
         private const float FrontMargin = 2f;
@@ -132,14 +141,21 @@ namespace ForgottenKingdom.EditorTools
                 if (far != null)
                 {
                     far.name = "Far";
-                    far.GetComponent<SpriteRenderer>().maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+                    var soft = System.Array.Exists(SoftSeamZones, name => LevelArtFolder(zone).EndsWith("/" + name));
+                    if (!soft)
+                    {
+                        far.GetComponent<SpriteRenderer>().maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+                    }
+
                     var parallax = far.AddComponent<RoomParallax>();
                     SetFloat(parallax, "_factor", RoomParallaxFactor);
-                    SetFloat(parallax, "_margin", RoomParallaxMargin);
+                    SetFloat(parallax, "_margin", soft ? SoftParallaxMargin : RoomParallaxMargin);
                     var centre = new SerializedObject(parallax);
                     centre.FindProperty("_roomCentre").vector2Value = bounds.center;
                     centre.ApplyModifiedPropertiesWithoutUndo();
 
+                    if (!soft)
+                    {
                     var mask = new GameObject("Mask");
                     mask.transform.SetParent(holder, false);
                     mask.transform.position = bounds.center;
@@ -154,6 +170,7 @@ namespace ForgottenKingdom.EditorTools
                     spriteMask.backSortingOrder = order - 1;
                     spriteMask.frontSortingLayerID = layer;
                     spriteMask.frontSortingOrder = order;
+                    }
                 }
 
                 var near = PaintedSprite(holder, $"{LevelArtFolder(zone)}/Rooms/{room.Id}_near.png", bounds.min,

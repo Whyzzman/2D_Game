@@ -200,9 +200,16 @@
       while (below >= 0 && root.LevelText.isAir(room.rows[below][x])) below--;
       clearance.push((y - below) * cell);
     }
+    // Стеля — лише справжнє склепіння: щонайменше 5 клітинок каменю в ряд на тій самій висоті (±1). З виступу
+    // на клітинку-дві пасма висіли «в повітрі» (скріншот користувача, 2026-11-13).
     const ceilingAt = wx => {
       const i = Math.floor((wx - rect.x) / cell);
-      return i < 0 || i >= ceilings.length ? null : ceilings[i];
+      if (i < 0 || i >= ceilings.length || ceilings[i] === null) return null;
+      for (let k = i - 2; k <= i + 2; k++) {
+        if (k < 0 || k >= ceilings.length) continue;
+        if (ceilings[k] === null || Math.abs(ceilings[k] - ceilings[i]) > cell * 1.01) return null;
+      }
+      return ceilings[i];
     };
     // Пасмо кінчається вище за голову героя в стрибку над найближчою поверхнею під ним (2026-10-28:
     // у Східній залі густі пасма злилися в чорну пляму й, зсунуті паралаксом, сховали героя).

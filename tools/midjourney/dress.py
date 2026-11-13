@@ -407,7 +407,7 @@ def dress(zone_name, zone, room, sprites, used_sets, lists):
         img = sprites.get(name, round(h_units * PPU), rng.random() < 0.5)
         wc, hc = -(-img.width // cpx) + 1, -(-img.height // cpx)
         for x0, x1, y in sorted(ceilings, key=lambda r: rng.random()):
-            if x1 - x0 < wc + 2:
+            if x1 - x0 < max(wc + 2, 6):  # a real vault, not a nub of rock: from a nub the thing hung in the air
                 continue
             sx = rng.randint(x0 + 1, x1 - wc - 1)
             top = y + 1

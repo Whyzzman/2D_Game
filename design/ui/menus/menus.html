@@ -997,6 +997,15 @@ document.fonts.ready.then(() => {
   setTimeout(() => veil.classList.remove("is-on"), 60);
   setTimeout(() => veil.classList.remove("is-intro"), 2400);
 });
+// ?state=options|pause|pause-options|confirm — одразу потрібний стан (для знімка інструментом).
+const wanted = new URLSearchParams(location.search).get("state");
+if (wanted) setTimeout(() => {
+  veil.classList.remove("is-on", "is-intro");
+  if (wanted === "options") { state.from = "title"; show("options"); }
+  else if (wanted === "pause") { state.from = "pause"; show("pause"); }
+  else if (wanted === "pause-options") { state.from = "pause"; show("options"); }
+  else if (wanted === "confirm") { state.hasSave = true; show("title"); show("confirm"); }
+}, 2700);
 </script>
 </body>
 </html>

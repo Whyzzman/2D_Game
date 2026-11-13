@@ -79,8 +79,32 @@ def smooth(t):
     return t * t * (3 - 2 * t)
 
 
-def feather(image):
+# Soft seams (2026-11-13, the user's screenshot of the Tomb: «the passage between rooms is very sharp in colour»):
+# in these zones a room's far plan is not cut by a mask at the room's edge and does not sink into a dark frame —
+# it fades out in alpha over its margin and lies over its neighbours, so two paintings cross-fade in the air
+# between two rooms. ContentBuilderLevelArt.SoftSeamZones is the same list; the layer slides 1 unit at most there.
+SOFT_ZONES = {"tomb"}
+SOFT_CLEAR, SOFT_FULL = 0.5, 4.0  # units from the picture's edge: see-through up to the first, solid from the second
+
+
+def feather(image, soft=False):
     w, h = image.size
+    if soft:
+        def ramp(n):
+            return [smooth((min(i, n - 1 - i) / PPU - SOFT_CLEAR) / (SOFT_FULL - SOFT_CLEAR)) for i in range(n)]
+        # a narrow room: the solid part never shrinks below a third of the side
+        def fit(values, n):
+            limit = n / 3
+            return [smooth((min(i, n - 1 - i) - SOFT_CLEAR * PPU) / max(1.0, limit - SOFT_CLEAR * PPU))
+                    for i in range(n)] if n < 2 * SOFT_FULL * PPU * 1.5 else values
+        xs, ys = fit(ramp(w), w), fit(ramp(h), h)
+        row = Image.new("L", (w, 1))
+        row.putdata([round(v * 255) for v in xs])
+        col = Image.new("L", (1, h))
+        col.putdata([round(v * 255) for v in ys])
+        out = image.convert("RGBA")
+        out.putalpha(ImageChops.multiply(row.resize((w, h)), col.resize((w, h))))
+        return out
     # a small room keeps its middle lit: the fade never takes more than a third of a side
     reach_x = min(FADE * PPU, w * 0.35)
     reach_y = min(FADE * PPU, h * 0.35)
@@ -105,6 +129,9 @@ BORDER_ALPHA = 0.85
 
 def border(near):
     w, h = Image.open(near).size
+    if near.parent.parent.name.lower() in SOFT_ZONES:  # soft seams: no dark frame, the layer only carries the props
+        save(Image.new("RGBA", (w, h), (0, 0, 0, 0)), near)
+        return
     reach = min(BORDER * NEAR_PPU, min(w, h) * 0.3)
     xs = [smooth(min(x, w - 1 - x) / reach) for x in range(w)]
     ys = [smooth(min(y, h - 1 - y) / reach) for y in range(h)]
@@ -162,7 +189,7 @@ def place(source, target):
     image = image.crop((left, top, left + tw, top + th))
     image = ImageEnhance.Color(image).enhance(SATURATION).point(LUT)
     image = atmosphere(image)
-    image = feather(image)
+    image = feather(image, target.parent.parent.name.lower() in SOFT_ZONES)
     save(image, target)
     near = target.with_name(target.name.replace("_mid.png", "_near.png"))
     if near.exists():
