@@ -412,3 +412,15 @@
 .pip--visible {
     display: flex;
 }
+
+
+/* 2026-11-13, the menus' rework: one frame for every panel — round, one quiet border, no inner line, no corner gems. */
+.gem {
+    display: none;
+}
+
+.options {
+    background-color: rgba(19, 17, 15, 0.97);
+    border-color: rgb(74, 62, 46);
+    border-radius: 14px;
+}

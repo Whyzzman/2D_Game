@@ -195,3 +195,15 @@
     margin-bottom: 0;
 }
 
+
+
+/* 2026-11-13, the menus' rework: one frame for every panel — round, one quiet border, no inner line, no corner gems. */
+.confirm__panel {
+    background-color: rgba(19, 17, 15, 0.97);
+    border-color: rgb(74, 62, 46);
+    border-radius: 14px;
+}
+
+.confirm__inset {
+    display: none;
+}

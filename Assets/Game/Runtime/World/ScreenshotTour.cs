@@ -137,18 +137,31 @@ namespace ForgottenKingdom
         private IEnumerator MenuTour()
         {
             var pause = FindAnyObjectByType<HudController>().Pause;
+            // Open == null: the next page of the window already open (E).
             var screens = new (string Name, Action Open)[]
             {
                 ("m1_pause", () => { }),
                 ("m2_options", pause.OpenOptions),
                 ("m3_controls", pause.OpenControls),
                 ("m4_equipment", pause.OpenEquipment),
+                ("m4b_loadout", null),
                 ("m5_character", pause.OpenCharacter),
                 ("m6_skills", pause.OpenSkills),
+                ("m6b_spells", null),
+                ("m6c_people", null),
+                ("m6d_bestiary", null),
                 ("m7_map", pause.OpenMap)
             };
             foreach (var screen in screens)
             {
+                if (screen.Open == null)
+                {
+                    yield return Tap(Key.E, 0.06f);
+                    yield return Wait(1.2f);
+                    yield return Shot(screen.Name);
+                    continue;
+                }
+
                 for (var i = 0; i < 4 && GamePause.IsPaused && !pause.IsOpen; i++)
                 {
                     yield return Tap(Key.Escape, 0.06f);
