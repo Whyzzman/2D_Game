@@ -63,6 +63,18 @@ namespace ForgottenKingdom
 
             yield return Shot("01_player_tomb");
 
+            // -menuTour: the menus only, as the player sees them over the game (2026-11-13, the menus' rework).
+            if (Array.IndexOf(Environment.GetCommandLineArgs(), "-menuTour") >= 0)
+            {
+                yield return MenuTour();
+                Destroy(FindAnyObjectByType<GameProgress>());
+                yield return null;
+                _stash.Restore();
+                InputSystem.RemoveDevice(_keyboard);
+                Application.Quit();
+                yield break;
+            }
+
             // Sword combat against the first zombie, facing it.
             yield return Place(motor, new Vector2(12.4f, 0.85f));
             yield return Tap(Key.A, 0.08f);
@@ -120,6 +132,39 @@ namespace ForgottenKingdom
             _stash.Restore();
             InputSystem.RemoveDevice(_keyboard);
             Application.Quit();
+        }
+
+        private IEnumerator MenuTour()
+        {
+            var pause = FindAnyObjectByType<HudController>().Pause;
+            var screens = new (string Name, Action Open)[]
+            {
+                ("m1_pause", () => { }),
+                ("m2_options", pause.OpenOptions),
+                ("m3_controls", pause.OpenControls),
+                ("m4_equipment", pause.OpenEquipment),
+                ("m5_character", pause.OpenCharacter),
+                ("m6_skills", pause.OpenSkills),
+                ("m7_map", pause.OpenMap)
+            };
+            foreach (var screen in screens)
+            {
+                for (var i = 0; i < 4 && GamePause.IsPaused && !pause.IsOpen; i++)
+                {
+                    yield return Tap(Key.Escape, 0.06f);
+                    yield return Wait(0.6f);
+                }
+
+                if (!pause.IsOpen)
+                {
+                    pause.Open();
+                    yield return Wait(0.8f);
+                }
+
+                screen.Open();
+                yield return Wait(1.4f);
+                yield return Shot(screen.Name);
+            }
         }
 
         private IEnumerator Place(PlayerMotor2D motor, Vector2 position)

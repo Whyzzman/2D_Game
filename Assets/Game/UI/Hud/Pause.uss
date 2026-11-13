@@ -30,7 +30,7 @@
     background-color: rgba(18, 15, 12, 0.96);
     border-width: 1px;
     border-color: rgb(107, 90, 66);
-    border-radius: 2px;
+    border-radius: 8px;
 }
 
 .pause__inset {
@@ -135,7 +135,7 @@
     background-color: rgb(23, 19, 15);
     border-width: 1px;
     border-color: rgb(107, 90, 66);
-    border-radius: 2px;
+    border-radius: 8px;
 }
 
 .ability__kicker {

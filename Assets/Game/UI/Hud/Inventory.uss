@@ -32,7 +32,7 @@
     background-color: rgb(23, 19, 15);
     border-width: 1px;
     border-color: rgb(107, 90, 66);
-    border-radius: 2px;
+    border-radius: 8px;
 }
 
 .inv__header {
@@ -177,7 +177,7 @@
     background-color: rgb(22, 18, 15);
     border-width: 1px;
     border-color: rgb(58, 47, 37);
-    border-radius: 2px;
+    border-radius: 8px;
 }
 
 .inv-slot--empty {
@@ -1202,4 +1202,72 @@
 .bst__row--unknown .bst__name {
     color: rgb(95, 87, 76);
     letter-spacing: 4px;
+}
+
+
+/*
+ * 2026-11-13, the menus' rework (the user: «redo all the menus — nicer, simpler, handier»; decided by Claude under
+ * the standing consent, by shots of the real screens, tools: -screenshotTour <folder> -menuTour). The window is one
+ * calm sheet over a nearly black game: no HUD peeking around it, no title repeating the lit tab, round corners,
+ * tabs as soft pills, empty cells without ornaments.
+ */
+.inv {
+    background-color: rgba(3, 3, 4, 0.93);
+}
+
+.inv__panel {
+    left: 56px;
+    top: 36px;
+    right: 56px;
+    bottom: 36px;
+    background-color: rgb(19, 17, 15);
+    border-color: rgb(74, 62, 46);
+    border-radius: 14px;
+}
+
+.inv__header {
+    padding: 14px 28px;
+    background-color: rgba(0, 0, 0, 0);
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+}
+
+.inv__title {
+    display: none;
+}
+
+.tab {
+    margin: 0 6px 0 0;
+    padding: 10px 20px;
+    border-radius: 18px;
+}
+
+.tab__text {
+    font-size: 16px;
+}
+
+.tab--active,
+.tab--active:hover,
+.tab--active:active {
+    background-color: rgba(201, 161, 74, 0.16);
+    border-color: rgba(201, 161, 74, 0.55);
+    border-bottom-color: rgba(201, 161, 74, 0.55);
+}
+
+.inv-slot {
+    border-radius: 12px;
+    background-color: rgb(26, 22, 19);
+}
+
+.inv-slot--empty {
+    opacity: 0.4;
+}
+
+.inv-slot--empty > .inv-slot__diamond {
+    display: none;
+}
+
+.list__row,
+.eq-slot {
+    border-radius: 10px;
 }

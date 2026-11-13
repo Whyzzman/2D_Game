@@ -57,7 +57,7 @@
     width: 10px;
     height: 46px;
     background-color: rgb(196, 182, 152);
-    border-radius: 2px;
+    border-radius: 8px;
 }
 
 .map__candle--tl { left: 30px; top: 150px; }
@@ -216,8 +216,9 @@
     bottom: 0;
 }
 
-.world-canvas__fog { opacity: 0.32; }
-.world-canvas__veil { opacity: 0.2; }
+/* 2026-11-13: the fog was a grey cloud over the whole sheet and hid the map it belongs to */
+.world-canvas__fog { opacity: 0.045; }
+.world-canvas__veil { opacity: 0.03; }
 
 .world-canvas__island,
 .map-canvas__room {
@@ -396,7 +397,7 @@
     background-color: rgb(23, 19, 15);
     border-width: 1px;
     border-color: rgb(138, 116, 52);
-    border-radius: 2px;
+    border-radius: 8px;
 }
 
 .shrine__menu {

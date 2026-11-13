@@ -26,7 +26,7 @@
     background-color: rgba(17, 14, 11, 0.96);
     border-width: 1px;
     border-color: rgb(107, 90, 66);
-    border-radius: 2px;
+    border-radius: 8px;
 }
 
 .dlg__name-plate {
@@ -145,7 +145,7 @@
     background-color: rgb(23, 19, 15);
     border-width: 1px;
     border-color: rgb(107, 90, 66);
-    border-radius: 2px;
+    border-radius: 8px;
 }
 
 .shop--rumour .shop__panel {
@@ -219,7 +219,7 @@
     background-color: rgba(11, 9, 7, 0.5);
     border-width: 1px;
     border-color: rgba(0, 0, 0, 0);
-    border-radius: 2px;
+    border-radius: 8px;
 }
 
 .shop__row--focused {

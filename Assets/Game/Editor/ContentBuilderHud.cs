@@ -42,7 +42,8 @@ namespace ForgottenKingdom.EditorTools
             settings.themeStyleSheet = AssetDatabase.LoadAssetAtPath<ThemeStyleSheet>(ThemePath);
             // The HTML is drawn for 1920x1080; the panel scales with the screen the same way.
             settings.scaleMode = PanelScaleMode.ScaleWithScreenSize;
-            settings.referenceResolution = new Vector2Int(1920, 1080);
+            // 2026-11-13, the menus' rework: the text read small — the whole interface is 14% larger.
+            settings.referenceResolution = new Vector2Int(1680, 945);
             settings.screenMatchMode = PanelScreenMatchMode.MatchWidthOrHeight;
             settings.match = 0.5f;
             settings.sortingOrder = 10;
