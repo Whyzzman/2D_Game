@@ -1,125 +1,130 @@
-# Тінь Забутого Королівства
+# Тінь Забутого Королівства (Shadow of the Forgotten Kingdom)
 
-2D Action-RPG / метроидвания в мрачном фэнтези: королевство, умирающее триста лет, и Тень в его
-трещинах. По ощущению (движение, камера, ритм боя) ориентир — Hollow Knight, внешне игра своя
-(`gamedesign/VISUAL_BIBLE.md`). Unity 6000.5.10f1, URP 2D, Input System; клавиатура и геймпад;
-сборки Mac (Apple Silicon) и Windows.
+A 2D action-RPG / metroidvania in a dark fantasy setting: a kingdom that has been dying for three
+hundred years, and the Shadow in its cracks. The feel (movement, camera, combat rhythm) takes Hollow
+Knight as a reference point; the look is the game's own (`gamedesign/VISUAL_BIBLE.md`).
+Unity 6000.5.10f1, URP 2D, Input System; keyboard and gamepad; Mac (Apple Silicon) and Windows builds.
 
-Этот файл — вход в проект: что за игра, как её запустить, где что лежит. Подробности — в
-документах `gamedesign/` (таблица внизу). Правила работы над проектом — `AGENTS.md`.
+This file is the entry point to the project: what the game is, how to run it, and where things live.
+Details are in the `gamedesign/` documents (table at the bottom). Rules for working on the project
+are in `AGENTS.md`.
 
-## Что есть в игре (2026-11-12)
+## What's in the game (2026-11-12)
 
-- **Движение**: бег, прыжок, второй прыжок, рывок и рывок в воздухе, стены (скольжение, прыжок,
-  бег), склоны, гак-кішка за кольца, удары вверх/вниз и пого.
-- **Бой**: комбо и тяжёлый удар, блок, парирование, стойкость, статусы (кровотечение, яд, огонь,
-  мороз), четыре стиля (Воин, Охотник, Маг, Тень), фляги лечения, мана и заклинания.
-- **RPG**: опыт и уровни, 6 характеристик, дерево умений, снаряжение 8 слотов, добыча, торговец.
-- **Мир** — 5 уровней (решение пользователя 2026-11-05; остальные 10 зон плана `gamedesign/WORLD_DESIGN.md`
-  отложены — `ContentBuilderWorldMap.ShelvedZones`), каждый в своей сцене с
-  бесшовной подгрузкой; алтари-сохранения и мандри между ними, карта мира, тайные комнаты за стенами,
-  осколки сосудов, испытания, бестиарий:
+- **Movement**: run, jump, double jump, dash and air dash, walls (slide, wall jump, wall run),
+  slopes, grappling hook onto rings, up/down strikes and pogo.
+- **Combat**: combos and heavy attack, block, parry, poise, status effects (bleed, poison, fire,
+  frost), four styles (Warrior, Hunter, Mage, Shadow), healing flasks, mana and spells.
+- **RPG**: experience and levels, 6 attributes, skill tree, 8 equipment slots, loot, a merchant.
+- **World** — 5 levels (the author's decision of 2026-11-05; the other 10 zones planned in
+  `gamedesign/WORLD_DESIGN.md` are shelved — `ContentBuilderWorldMap.ShelvedZones`), each in its own
+  scene with seamless streaming; save altars and fast travel between them, a world map, secret rooms
+  behind walls, vessel shards, trials, a bestiary:
 
-  | Зона | Босс | Что даёт | Состояние |
+  | Zone | Boss | Unlocks | Status |
   | --- | --- | --- | --- |
-  | Забута Гробниця | Страж Гробниці | — | 27 комнат по карте пользователя; нарисованный вид |
-  | Зів'ялий Ліс | Порожній Вартовий | второй прыжок | 35 комнат по карте; нарисованный вид |
-  | Занепале Село | Дзвонар | гак-кішка | 24 комнаты по карте; свои враги, нарисованный вид |
-  | Чумні Болота | Чумний Олень | Чумна маска | 20 комнат по карте; свои враги, нарисованный вид |
-  | Зруйнована Столиця | Командор Попелу, Король-Заклятий | концовка | 19 комнат по карте; нарисованный вид |
+  | Забута Гробниця (Forgotten Tomb) | Страж Гробниці (Tomb Warden) | — | 27 rooms from the author's map; painted look |
+  | Зів'ялий Ліс (Withered Forest) | Порожній Вартовий (Hollow Sentinel) | double jump | 35 rooms from the map; painted look |
+  | Занепале Село (Fallen Village) | Дзвонар (Bell-Ringer) | grappling hook | 24 rooms from the map; own enemies, painted look |
+  | Чумні Болота (Plague Marshes) | Чумний Олень (Plague Stag) | Plague Mask | 20 rooms from the map; own enemies, painted look |
+  | Зруйнована Столиця (Ruined Capital) | Командор Попелу (Ash Commander), Король-Заклятий (Oathbound King) | ending | 19 rooms from the map; painted look |
 
-- **Жители**: Гнат, Мирослава, Северин — разговоры, торговля, переезды по мере сюжета.
-- **Интерфейс** (UI Toolkit): HUD, меню, пауза, инвентарь, персонаж, умения, заклинания, карта,
-  алтарь, «Керування» с переназначением клавиш.
-- **Боссы** со своими механиками (`BOSSES_SIGNATURES.md`); у Короля третья фаза — затмение и «Стіна клятви», после
-  его смерти — прощание и концовка (`KING_FINALE.md`).
-- **Арт**: герой, враги, боссы, фоны, камень и декор всех пяти зон — нарисованы (Midjourney, Nano Banana, куклы).
-- **Не финально**: звук и музыка — процедурные, синтезированы кодом; часть VFX и иконок интерфейса — тоже
-  (`gamedesign/KNOWN_ISSUES.md`). Плейтест — по `gamedesign/PLAYTEST.md`. Что делается сейчас — `gamedesign/DEVELOPMENT_PLAN.md`.
+- **Inhabitants**: Hnat, Myroslava, Severyn — dialogue, trading, relocating as the story progresses.
+- **Interface** (UI Toolkit): HUD, menu, pause, inventory, character, skills, spells, map, altar,
+  and a controls screen («Керування») with key rebinding.
+- **Bosses** with their own mechanics (`BOSSES_SIGNATURES.md`); the King has a third phase — an
+  eclipse and the «Стіна клятви» (Wall of the Oath); after his death comes a farewell and the
+  ending (`KING_FINALE.md`).
+- **Art**: the hero, enemies, bosses, backgrounds, stone and decor of all five zones are painted
+  (Midjourney, Nano Banana, puppets).
+- **Not final**: sound and music are procedural, synthesized in code; so are some VFX and UI icons
+  (`gamedesign/KNOWN_ISSUES.md`). Playtesting follows `gamedesign/PLAYTEST.md`. Current work is in
+  `gamedesign/DEVELOPMENT_PLAN.md`.
 
-## Как запустить
+## How to run
 
-1. Открыть проект в Unity 6000.5.10f1.
-2. Открыть сцену **`Assets/Game/Scenes/MainMenu.unity`** (игра с меню, «Нова гра») или
-   **`Assets/Game/Scenes/TombTrial.unity`** (сразу в мир, герой у входа в Гробницу) и нажать Play.
-   Сцены зон (`Scenes/Zones/Zone_*`) отдельно не запускаются — в них нет камеры и игрока,
-   их подгружает сцена мира (`TombTrial`).
-3. Весь мир в редакторе без Play — меню **Forgotten Kingdom → Scene → Open Whole World**.
+1. Open the project in Unity 6000.5.10f1.
+2. Open the scene **`Assets/Game/Scenes/MainMenu.unity`** (game with the menu, «Нова гра» — New Game)
+   or **`Assets/Game/Scenes/TombTrial.unity`** (straight into the world, the hero at the Tomb
+   entrance) and press Play. Zone scenes (`Scenes/Zones/Zone_*`) cannot be run on their own — they
+   have no camera or player; the world scene (`TombTrial`) streams them in.
+3. To see the whole world in the editor without Play — menu **Forgotten Kingdom → Scene → Open Whole World**.
 
-## Управление (по умолчанию)
+## Controls (default)
 
-| Действие | Клавиатура | Геймпад |
+| Action | Keyboard | Gamepad |
 | --- | --- | --- |
-| Движение | A / D | левый стик |
-| Прыжок (второй — в воздухе) | Space | нижняя кнопка |
-| Удар / тяжёлый удар | ЛКМ, J / ПКМ, K | X / RB |
-| Рывок | L | RT |
-| Блок, парирование — в момент удара | Q (держать) | LB |
-| Взаимодействие (алтарь, двери, люди) | E | Y |
-| Фляга | R | крестовина вверх |
-| Гак-кішка | G | крестовина вправо |
-| Умения 1–2, заклинания 1–3 | 1–5 | LT + кнопка |
-| Инвентарь / смена оружия / карта | I, Tab / F / M | Select / крестовина влево |
+| Move | A / D | left stick |
+| Jump (second one in mid-air) | Space | bottom button |
+| Attack / heavy attack | LMB, J / RMB, K | X / RB |
+| Dash | L | RT |
+| Block; parry when timed with the hit | Q (hold) | LB |
+| Interact (altar, doors, people) | E | Y |
+| Flask | R | D-pad up |
+| Grappling hook | G | D-pad right |
+| Skills 1–2, spells 1–3 | 1–5 | LT + button |
+| Inventory / switch weapon / map | I, Tab / F / M | Select / D-pad left |
 
-Полный список и переназначение — `gamedesign/CONTROLS.md`.
+Full list and rebinding — `gamedesign/CONTROLS.md`.
 
-## Клавиши разработчика (только в редакторе и development-сборке)
+## Developer keys (editor and development builds only)
 
-- **Ctrl+N — noclip**: полёт сквозь стены, чтобы осмотреть зоны. WASD или стрелки, Shift — быстрее,
-  колесо мыши или `-` / `=` — масштаб до ×5; Ctrl+N ещё раз — приземлиться. Камера в полёте без
-  границ комнат, урона нет.
-- **`** — панель мира (открыть зоны, шорткаты, мандри, телепорт к алтарю), **F1** — бой и отладка
-  прогресса, **F2** — анимация игрока, **F6** — анимация врагов, **F9** — окружение, **Ctrl+F** —
-  фидбек. Открыта одна панель за раз, её клавиши работают, только пока она открыта.
+- **Ctrl+N — noclip**: fly through walls to inspect zones. WASD or arrows, Shift — faster,
+  mouse wheel or `-` / `=` — zoom up to ×5; Ctrl+N again — land. While flying the camera ignores
+  room bounds and you take no damage.
+- **`** — world panel (unlock zones, shortcuts, fast travel, teleport to an altar), **F1** — combat
+  and progress debugging, **F2** — player animation, **F6** — enemy animation, **F9** — environment,
+  **Ctrl+F** — feedback. Only one panel is open at a time, and its keys work only while it is open.
 
-## Как устроен проект
+## Project structure
 
 ```
 Assets/Game/
-  Runtime/     код игры (сборка Game.Runtime)
-  Editor/      генератор контента ContentBuilder и сценные проходы Scene*.Apply (Game.Editor)
-  Levels/      зоны текстом: tomb, forest, village, marsh, capital (.txt; gamedesign/LEVEL_TOOL.md)
-  Art/ Audio/  арт и звук генератора; рисованные файлы — по списку Art/Painted.txt (генератор их не трогает);
-               Art/Levels — нарисованные painter'ом зоны
-  Scenes/      MainMenu, TombTrial (мир: игрок, камера, службы), Zones/Zone_* (уровни зон)
-  Tests/       EditMode и PlayMode
+  Runtime/     game code (Game.Runtime assembly)
+  Editor/      ContentBuilder content generator and Scene*.Apply scene passes (Game.Editor)
+  Levels/      zones as text: tomb, forest, village, marsh, capital (.txt; gamedesign/LEVEL_TOOL.md)
+  Art/ Audio/  generator art and sound; painted files are listed in Art/Painted.txt (the generator leaves them alone);
+               Art/Levels — zones rendered by the painter
+  Scenes/      MainMenu, TombTrial (world: player, camera, services), Zones/Zone_* (zone levels)
+  Tests/       EditMode and PlayMode
 design/
-  ui/          HTML-макеты экранов (просмотр: node design/ui/_shared/serve.js → localhost:8123)
-  levels/      макет вида Гробницы и painter — код, рисующий зону из её текста
-tools/         рендер арта карты (map-art) и уровней (level-art) через headless Chrome
-gamedesign/    документы разработки (по-русски; часть — по-украински)
+  ui/          HTML screen mockups (view: node design/ui/_shared/serve.js → localhost:8123)
+  levels/      Tomb look mockup and the painter — code that draws a zone from its text
+tools/         map art (map-art) and level art (level-art) rendering via headless Chrome
+gamedesign/    development documents (in Russian; some in Ukrainian)
 ```
 
-Главные правила (подробно — `AGENTS.md`):
+Key rules (in detail — `AGENTS.md`):
 
-- **Контент генерируется кодом.** `ContentBuilder.Build` пишет арт, звук, данные и префабы; сцены
-  правят только редакторские `Scene*.Apply`. Зона пишется текстом в `Levels/*.txt`, проверяется
-  на проходимость (`LevelCheck`) и собирается в сцену (`SceneTomb.Apply` и т. п.).
-- **Нарисованная зона** (пока Гробница): текст → `node tools/level-art/render.js <зона>` →
-  `ContentBuilder.RefreshLevelArt` → `Scene<Зона>.Apply`. Блоки — только коллайдеры, всё видимое —
-  картинки painter'а (`gamedesign/LEVEL_TOOL.md`, «Нарисованный уровень»).
-- **Проверка** — тесты в batchmode на копии `Artifacts/Verification/Project`; живой редактор —
-  только для просмотра.
+- **Content is generated by code.** `ContentBuilder.Build` writes art, sound, data and prefabs;
+  scenes are changed only by the editor `Scene*.Apply` passes. A zone is written as text in
+  `Levels/*.txt`, checked for traversability (`LevelCheck`) and built into a scene
+  (`SceneTomb.Apply` and so on).
+- **Painted zone** (the Tomb for now): text → `node tools/level-art/render.js <zone>` →
+  `ContentBuilder.RefreshLevelArt` → `Scene<Zone>.Apply`. Blocks are colliders only; everything
+  visible is the painter's images (`gamedesign/LEVEL_TOOL.md`, "Painted level").
+- **Verification** — batchmode tests on the `Artifacts/Verification/Project` copy; the live editor
+  is for viewing only.
 
-## Документы (`gamedesign/`)
+## Documents (`gamedesign/`)
 
-| Тема | Документ |
+| Topic | Document |
 | --- | --- |
-| Текущее состояние, открытые задачи | `DEVELOPMENT_PLAN.md` (история — `archive/DEVELOPMENT_HISTORY.md`) |
-| Мир: 15 зон, порядок, боссы, способности | `WORLD_DESIGN.md`, карты пользователя — `reference/maps/` |
-| Зоны текстом, проверка, painter | `LEVEL_TOOL.md` |
-| Граф мира, сцены зон, карта | `WORLD_GRAPH.md`, `WORLD_SCENES.md`, `WORLD_MAP.md` |
-| Ворота способностей, мандри | `PROGRESSION_GATES.md`, `FAST_TRAVEL.md` |
-| Столица | `CAPITAL.md` |
-| Сюжет, надписи, концовка, «Новая игра+» | `STORY.md` |
-| Жители, торговец | `NPC_AND_SHOP.md` |
-| Тайные комнаты, осколки, испытания, бестиарий | `EXPLORATION.md` |
-| Числа баланса | `TUNING.md` |
-| Клавиши и отладка | `CONTROLS.md` |
-| Визуальный стиль | `VISUAL_BIBLE.md`, `CONCEPT_BRIEFS.md`, `ART_REQUIREMENTS.md` |
-| Окружение Гробницы | `ENVIRONMENT_TOMB.md` |
-| Арт: список и замена на рисованный | `ART_ASSET_LIST.md`, `ANIMATION_LIST.md`, `ANIMATION_PIPELINE.md`, `VFX_LIST.md` |
-| Боевой фидбек | `COMBAT_FEEDBACK.md`; что улучшить в ощущении — `GAME_FEEL_IDEAS.md` |
-| Звук и музыка | `AUDIO_DESIGN.md`, `AUDIO_ASSET_LIST.md`, `MUSIC_SYSTEM.md` |
-| Интерфейс | `UI_UX_GUIDE.md`, макеты — `design/ui/` |
-| Известные проблемы, проверка | `KNOWN_ISSUES.md`, `VERTICAL_SLICE_QA.md` |
+| Current state, open tasks | `DEVELOPMENT_PLAN.md` (history — `archive/DEVELOPMENT_HISTORY.md`) |
+| World: 15 zones, order, bosses, abilities | `WORLD_DESIGN.md`, the author's maps — `reference/maps/` |
+| Zones as text, checking, painter | `LEVEL_TOOL.md` |
+| World graph, zone scenes, map | `WORLD_GRAPH.md`, `WORLD_SCENES.md`, `WORLD_MAP.md` |
+| Ability gates, fast travel | `PROGRESSION_GATES.md`, `FAST_TRAVEL.md` |
+| The Capital | `CAPITAL.md` |
+| Story, inscriptions, ending, New Game+ | `STORY.md` |
+| Inhabitants, merchant | `NPC_AND_SHOP.md` |
+| Secret rooms, shards, trials, bestiary | `EXPLORATION.md` |
+| Balance numbers | `TUNING.md` |
+| Keys and debugging | `CONTROLS.md` |
+| Visual style | `VISUAL_BIBLE.md`, `CONCEPT_BRIEFS.md`, `ART_REQUIREMENTS.md` |
+| Tomb environment | `ENVIRONMENT_TOMB.md` |
+| Art: asset list and swapping in painted art | `ART_ASSET_LIST.md`, `ANIMATION_LIST.md`, `ANIMATION_PIPELINE.md`, `VFX_LIST.md` |
+| Combat feedback | `COMBAT_FEEDBACK.md`; game-feel improvement ideas — `GAME_FEEL_IDEAS.md` |
+| Sound and music | `AUDIO_DESIGN.md`, `AUDIO_ASSET_LIST.md`, `MUSIC_SYSTEM.md` |
+| Interface | `UI_UX_GUIDE.md`, mockups — `design/ui/` |
+| Known issues, QA | `KNOWN_ISSUES.md`, `VERTICAL_SLICE_QA.md` |
