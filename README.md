@@ -1,4 +1,4 @@
-# Тінь Забутого Королівства (Shadow of the Forgotten Kingdom)
+Shadow of the Forgotten Kingdom
 
 A 2D action-RPG / metroidvania in a dark fantasy setting: a kingdom that has been dying for three
 hundred years, and the Shadow in its cracks. The feel (movement, camera, combat rhythm) takes Hollow
